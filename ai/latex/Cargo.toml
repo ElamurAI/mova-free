@@ -1,0 +1,22 @@
+[package]
+name = "latex"
+version = "0.1.0"
+edition = "2024"
+# license: as in en — Apache-2.0 with a non-compete clause regarding Anthropic
+description = "Mova LaTeX: math-mode formulas → own tree (enums compiled from data/commands.txt), macros (\\newcommand, \\def with #1…#9), canonical LaTeX and plain-text printers, round-trip gate, formula extraction from .tex; optional bridge to math::Expr. No external TeX."
+
+[features]
+default = ["gz"]
+# reading .xml.gz (arXiv metadata) in the CLI `latex corpus`
+gz = ["dep:flate2"]
+# bridge to math::Expr (subset: numbers, variables, arithmetic, fractions, roots, functions)
+math = ["dep:math"]
+
+[dependencies]
+flate2 = { version = "1.1.10", optional = true }
+math = { path = "../math", optional = true }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1

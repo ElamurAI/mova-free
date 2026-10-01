@@ -1,0 +1,18 @@
+[package]
+name = "prag"
+version = "0.1.0"
+edition = "2024"
+# closed part: pragmatics is the smart annotator, not the open `en`
+publish = false
+description = "Mova pragmatics (closed): silver from Opus on open texts (tales, Tatoeba CC0) and transparent Rust models of the first slice — form, act, indirect, hedge, polarity, voice — perceptron and memory-based (IGTree, k-NN)."
+
+[dependencies]
+en = { path = "../en" }
+anyhow = "1.0.104"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1

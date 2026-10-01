@@ -1,0 +1,103 @@
+# math calc — LLM tests (independent author: claude-opus-5-5, effort high, 26.09.2026, tests3); never saw the code.
+# Prompts — prompts/calc-1.txt, calc-2.txt. Columns: id, expression, expected (exact; ERR — must be an error), source.
+# Frozen by hash before the first run (tests/vmm_calc.rs); re-hashed 01.10 after translating these comment lines.
+001	1/3 + 1/6	1/2	hand computation: 2/6 + 1/6 = 3/6 = 1/2
+002	0.1 + 0.2 == 0.3	true	exact decimals: 1/10 + 2/10 = 3/10
+003	2^(-3)	1/8	definition of negative exponent: 1/2^3
+004	(2/3)^(-2)	9/4	(3/2)^2 = 9/4
+005	2 + 3*4	14	precedence: * before +, 2 + 12
+006	(2^3)^2	64	8^2 = 64
+007	(-2)^3	-8	(-2)(-2)(-2) = -8
+008	5!	120	5*4*3*2*1 = 120
+009	2*3!	12	postfix factorial binds tighter than *: 2*6
+010	mod(-7, 3)	2	mathematical mod, sign of divisor: -7 = 3*(-3) + 2
+011	idiv(-7, 2)	-4	floor(-3.5) = -4
+012	round(5/2)	3	round half away from zero: 2.5 -> 3
+013	round(-5/2)	-3	round half away from zero: -2.5 -> -3
+014	floor(-7/2)	-4	largest integer <= -3.5
+015	ceil(-7/2)	-3	smallest integer >= -3.5
+016	trunc(-7/2)	-3	truncate toward zero: -3.5 -> -3
+017	num(6/8)	3	6/8 reduces to 3/4
+018	den(6/8)	4	6/8 reduces to 3/4
+019	frac(7/3)	1/3	7/3 = 2 + 1/3
+020	2^100	1267650600228229401496703205376	well-known value of 2^100
+021	30!	265252859812191058636308480000000	well-known value of 30! (OEIS A000142)
+022	3^50	717897987691852588770249	hand computation: 3^40 = 12157665459056928801, times 3^10 = 59049
+023	gcd(1071, 462)	21	Euclid: 1071 = 2*462 + 147, 462 = 3*147 + 21, 147 = 7*21
+024	lcm(12, 18)	36	12*18/gcd = 216/6 = 36
+025	gcd(2^40, 6^20)	1048576	6^20 = 2^20*3^20, so gcd = 2^20 = 1048576
+026	modpow(3, 1000000, 7)	4	3^6 ≡ 1 mod 7 (Fermat), 1000000 mod 6 = 4, 3^4 = 81 ≡ 4
+027	modpow(5, 1000000006, 1000000007)	1	Fermat's little theorem, 10^9+7 is prime
+028	modpow(2, 10^18, 13)	3	2^12 ≡ 1 mod 13, 10^18 ≡ 4 mod 12, 2^4 = 16 ≡ 3
+029	modinv(3, 7)	5	3*5 = 15 = 2*7 + 1
+030	modinv(2, 4)	ERR	gcd(2,4) = 2, so there is no inverse (the error case given in the docs)
+031	crt([2, 3], [3, 5])	8	8 mod 3 = 2, 8 mod 5 = 3, unique mod 15
+032	isprime(561)	false	561 = 3*11*17 (Carmichael number)
+033	isprime(1105)	false	1105 = 5*13*17 (Carmichael number)
+034	isprime(2147483647)	true	2^31-1 is a Mersenne prime (Euler)
+035	nextprime(100)	101	101 is prime and nothing lies strictly between 100 and 101
+036	prevprime(100)	97	98, 99 are composite and 97 is prime
+037	primepi(100)	25	there are 25 primes <= 100 (OEIS A000720)
+038	nthprime(100)	541	the 100th prime is 541 (OEIS A000040)
+039	factor(360)	[[2, 3], [3, 2], [5, 1]]	360 = 2^3 * 3^2 * 5
+040	divisors(28)	[1, 2, 4, 7, 14, 28]	divisors of 28 = 2^2*7
+041	tau(360)	24	360 = 2^3*3^2*5, (3+1)(2+1)(1+1) = 24
+042	sigma(28)	56	1+2+4+7+14+28 = 56 (28 is perfect)
+043	sigma(6, 2)	50	1^2 + 2^2 + 3^2 + 6^2 = 1+4+9+36 = 50
+044	phi(36)	12	36*(1-1/2)*(1-1/3) = 12
+045	mobius(30)	-1	30 = 2*3*5 is squarefree with 3 prime factors, (-1)^3
+046	valuation(100!, 5)	24	Legendre: floor(100/5) + floor(100/25) = 20 + 4
+047	digits(10, 2)	[1, 0, 1, 0]	10 = 8 + 2 = 1010 in binary
+048	digitsum(2^10)	7	2^10 = 1024, 1+0+2+4 = 7
+049	numdigits(2^100)	31	2^100 = 1267650600228229401496703205376 has 31 digits
+050	fromdigits([1, 0, 1, 1], 2)	11	1*8 + 0*4 + 1*2 + 1 = 11
+051	binom(10,3)	120	definition: 10*9*8/3! = 720/6
+052	binom(7,0)	1	definition: binom(n,0)=1
+053	binom(7,7)	1	definition: binom(n,n)=1
+054	binom(100,50)	100891344545564193334812497256	OEIS A000984 (central binomial coefficient, n=50)
+055	binom(50,25)	126410606437752	OEIS A000984 (central binomial coefficient, n=25)
+056	perm(5,2)	20	definition: 5*4
+057	catalan(10)	16796	OEIS A000108: C_10=16796
+058	catalan(10) == binom(20,10)/11	true	identity C_n = binom(2n,n)/(n+1); 184756/11 = 16796
+059	stirling2(5,2)	15	S(n,2) = 2^(n-1)-1 = 16-1
+060	stirling2(10,3)	9330	S(n,3) = (3^n - 3*2^n + 3)/6 = (59049-3072+3)/6
+061	stirling1(4,2)	11	|s(4,2)|=11; sign (-1)^(4-2)=+1 so signed and unsigned agree
+062	stirling1(5,1)	24	|s(n,1)|=(n-1)!=24; sign (-1)^(5-1)=+1 so both conventions agree
+063	bell(10)	115975	OEIS A000110: B_10=115975
+064	sum(stirling2(6,k),k,1,6) == bell(6)	true	identity B_n = sum_k S(n,k); 1+31+90+65+15+1 = 203 = B_6
+065	partitions(100)	190569292	OEIS A000041: p(100)=190569292
+066	partitionsk(7,1)	1	only the partition 7 itself (holds for "exactly k parts" and "at most k parts")
+067	partitionsdistinct(20)	64	OEIS A000009: q(20)=64
+068	derangements(10)	1334961	OEIS A000166: D_10=1334961
+069	10*derangements(9)+1 == derangements(10)	true	recurrence D_n = n*D_(n-1) + (-1)^n; 10*133496+1 = 1334961
+070	fib(100)	354224848179261915075	OEIS A000045: F_100
+071	sum(fib(k),k,1,10) == fib(12)-1	true	identity sum_{k=1}^n F_k = F_(n+2)-1; 143 = 144-1
+072	multinomial([2,3,4])	1260	9!/(2!3!4!) = 362880/288
+073	sum(binom(12,k),k,0,12)	4096	identity sum_k binom(n,k) = 2^n = 2^12
+074	sum(binom(5,k)*binom(7,6-k),k,0,5) == binom(12,6)	true	Vandermonde (k=6 term is 0): 7+105+350+350+105+7 = 924
+075	modpow(3,100,101)	1	Fermat little theorem: 101 is prime and 3^(p-1) ≡ 1 mod p
+076	mod(fact(12),13)	12	Wilson theorem: (p-1)! ≡ -1 mod p for p=13
+077	5!	120	definition: 5*4*3*2*1
+078	prod(k,k,1,10)	3628800	10! (bounds inclusive)
+079	count(isprime(k),k,1,100)	25	pi(100)=25 (OEIS A000720)
+080	filter(mod(k,7)==0,k,1,50)	[7, 14, 21, 28, 35, 42, 49]	hand computation: multiples of 7 up to 50
+081	list(k^2,k,1,5)	[1, 4, 9, 16, 25]	hand computation: squares 1..5
+082	forall(mod(k^2,4) <= 1,k,0,50)	true	squares are ≡ 0 or 1 mod 4
+083	exists(k^2 == 145,k,1,20)	false	12^2=144, 13^2=169; 145 is not a square
+084	first(k^2 > 1000,k,1,100)	32	31^2=961 <= 1000 < 1024=32^2
+085	maxof(k*(10-k),k,0,10)	25	k(10-k) is largest at k=5: 25
+086	minof(k^2-6*k,k,0,10)	-9	(k-3)^2-9 is smallest at k=3: -9
+087	len(range(3,10))	8	range inclusive: 3..10 has 8 elements
+088	sort([5,-1,3/2,0])	[-1, 0, 3/2, 5]	hand ordering
+089	reverse([1,2,3])	[3, 2, 1]	definition
+090	unique([1,1,2,3,3,3])	[1, 2, 3]	distinct values (input already sorted, so any order convention gives the same result)
+091	mean([1/2,1/3])	5/12	(1/2+1/3)/2 = (5/6)/2
+092	median([4,1,3,10])	7/2	sorted 1,3,4,10; mean of middle two (3+4)/2
+093	[10,20,30][-1]	30	index -1 is the last element
+094	[10,20,30][0]	10	index 0 is the first element
+095	range(2,6)	[2, 3, 4, 5, 6]	range inclusive of both ends
+096	0.1+0.2 == 0.3	true	exact rationals: 1/10+2/10 = 3/10
+097	1/3 < 0.334	true	1/3 = 1000/3000 < 1002/3000 = 0.334
+098	not (1 > 2) and (3 >= 3)	true	not false = true; true and true = true
+099	if(isprime(97),1,0)	1	97 is prime
+100	1/(binom(4,2)-6)	ERR	binom(4,2)=6, so this divides by zero

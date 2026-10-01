@@ -1,0 +1,20 @@
+You are an INDEPENDENT test author for an exact expression calculator (exact big rationals; you have NOT seen its code). Write exactly 50 test cases whose expected values you are CERTAIN of from mathematics (definitions, identities, known sequence values from OEIS, hand computation). Tests are frozen before the first run; disagreements are adjudicated independently, so an uncertain expected value counts against you.
+
+The calculator's documented expression language:
+Expression syntax: + - * / ^ ! (factorial) mod or %, parentheses, == != < <= > >=, and/or/not, lists [a,b,c], indexing s[0] (s[-1] is the last), implicit multiplication 2x. Numbers are exact: 0.1+0.2 == 0.3, 1/3 stays a fraction; write decimals as in the problem. Percent: write p/100.
+Functions: abs floor ceil round (half away from zero) trunc min max gcd lcm mod idiv (floor division) sqrt isqrt root(x,k) num den frac
+ isprime nextprime prevprime primepi nthprime factor divisors tau sigma(n[,k]) phi mobius modpow(b,e,m) modinv(a,m) crt([r1,r2],[m1,m2]) digits(n[,base]) digitsum(n[,base]) numdigits fromdigits(list[,base]) valuation(n,p) issquare
+ fact binom(n,k) perm(n,k) catalan stirling1 stirling2 bell partitions(n) partitionsk(n,k) partitionsdistinct derangements fib multinomial([k1,k2,...])
+ len sum prod sort reverse unique mean median range(a,b)
+ sum(expr,k,a,b) prod(expr,k,a,b) count(cond,k,a,b) filter(cond,k,a,b) list(expr,k,a,b) forall(cond,k,a,b) exists(cond,k,a,b) first(cond,k,a,b) maxof(expr,k,a,b) minof(expr,k,a,b) if(cond,a,b)
+ sin cos tan asin acos atan exp ln log(x[,base]) pi e — approximate reals; avoid them when an exact form exists.
+Limits: ≤ 2·10^7 elementary steps per plan; keep enumeration ranges modest.
+Values: exact integers and fractions (printed like 361/3), true/false, lists [a, b, c] (factor(n) returns a list of [prime, exponent] pairs in increasing order; divisors in increasing order; digits most significant first). Functions evaluated on invalid input (e.g. modinv(2, 4), division by zero, binom with negative k if undefined) must raise an error — use expected value ERR for those (only when an error is mathematically forced, never for mere "undefined behaviour").
+
+Part 1 (ids vmm-calc-001..050): exact rational arithmetic and precedence (fractions, negative exponents, ^ right/left associativity as in standard math: 2^3^2 — AVOID this ambiguity, use parentheses), factorial postfix, mod with negative operands (mathematical mod: result has the sign of the divisor; state it only if certain, else avoid), idiv floor division of negatives, round half away from zero, floor/ceil/trunc of negative fractions, num/den/frac, big integers (2^100, 30!, 3^50), gcd/lcm of several sizes, modpow with large exponents, modinv, crt, isprime of known primes and Carmichael numbers (561, 1105), nextprime/prevprime, primepi(100)=25, nthprime(100)=541, factor, divisors, tau, sigma, phi, mobius, valuation, digits/digitsum/numdigits/fromdigits in bases 2 and 10, issquare, isqrt.
+
+OUTPUT: exactly 50 lines, nothing else (no header, no prose, no code fences). Each line has 4 TAB-separated fields:
+id<TAB>expression<TAB>expected<TAB>source
+- expected is an exact literal: an integer, a fraction p/q in lowest terms (negative as -p/q), true, false, a list like [2, 3, 5] or [[2, 3], [3, 2]], or ERR.
+- source says why the expected value is certain (definition, identity, OEIS Axxxxx, hand computation: short reason).
+Never use approximate reals (sin, cos, exp, ln, pi, e).

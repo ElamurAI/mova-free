@@ -1,0 +1,195 @@
+loc L1 type=house name="the old man's home" ^s1
+char C1 type=human class=old_man name="a good old man" at=L1 gender=male age=old trait=good ^s1
+obj O1 type=body_part class=wen name="a wen like a tennis ball on his right cheek" part=C1 ^s1
+feel C1 +annoyed ^s2
+set C1 goal="get rid of the wen" ^s2
+event E1 verb=try agent=C1 patient=O1 how="everything he could think of" why="to get rid of the wen" ^s3
+char C2 type=human class=doctor name="many doctors far and near" num=many ^s4
+event E2 verb=consult agent=C1 patient=C2 why="to get rid of the wen" ^s4
+obj O2 type=medicine name="all kinds of medicines" num=many ^s4
+have C1 O2 cause=E2 ^s4
+event E3 verb=take agent=C1 patient=O2 how="both internally and externally" cause=E2 ^s4
+event E4 verb=help patient=C1 neg=1 how="it was all of no use" cause=E3 ^s5
+event E5 verb=grow patient=O1 how="bigger and bigger till nearly as big as his face" cause=E4 ^s6
+feel C1 +desperate cause=E5 ^s6
+event E6 verb=give_up agent=C1 about=O1 why="in despair" cause=E5 ^s6
+unset C1 goal cause=E6 why="he resigned himself to carry the lump all his life" ^s6
+loc L2 type=kitchen name="his kitchen" in=L1 here=0 ^s7
+obj O3 type=thing class=firewood name="the firewood" at=L2 ^s7
+event E7 verb=give_out patient=O3 at=L2 ^s7
+char C3 type=human class=wife name="his wife" at=L1 gender=female age=old goal="get firewood at once" ^s7
+rel R1 kind=spouse a=C1 b=C3 ^s7
+obj O4 type=tool class=ax name="his ax" at=C1 ^s7
+loc L3 type=mountain name="the hills not far from his home" here=0 ^s7
+loc L4 type=forest name="the woods up among the hills" in=L3 here=0 ^s7
+event E8 verb=set_out agent=C1 to=L4 instr=O4 why="his wife wanted firewood at once" cause=E7 ^s7
+move C1 to=L4 cause=E8 ^s7
+event E9 verb=enjoy agent=C1 at=L4 how="the fresh air of a fine early autumn day, in no hurry to get home" ^s8
+feel C1 +happy cause=E9 ^s8
+obj O5 type=thing class=firewood name="a goodly pile of wood" at=L4 ^s9
+event E10 verb=chop agent=C1 patient=O5 at=L4 instr=O4 when=afternoon why="to take back to his wife" ^s9
+move O5 to=C1 cause=E10 ^s9
+event E11 verb=turn_home agent=C1 at=L4 when=evening ^s10
+loc L5 type=path name="the mountain pass" in=L3 here=0 ^s11
+move C1 to=L5 cause=E11 ^s11
+event E12 verb=rain at=L5 how="the sky clouded and rain fell heavily" ^s11
+set C1 goal="find shelter from the rain" cause=E12 ^s12
+event E13 verb=look_for agent=C1 at=L5 how="not even a charcoal-burner's hut near" why="to find shelter" cause=E12 ^s12
+loc L6 type=tree name="the hollow tree" in=L5 here=0 ^s13
+event E14 verb=espy agent=C1 patient=L6 at=L5 how="a large hole in the hollow trunk" ^s13
+event E15 verb=creep_in agent=C1 to=L6 at=L5 how="easily, the hole was near the ground" ^s14
+move C1 to=L6 cause=E15 ^s14
+done C1 cause=E15 ^s14
+believe B1 who=C1 claim="it is only a mountain shower and the weather will soon clear" ^s14
+event E16 verb=storm how="the rain fell more heavily and a heavy thunderstorm broke over the mountain" ^s15
+feel C1 +disappointed cause=E16 ^s15
+believe B1 true=0 by=E16 ^s15
+feel C1 +afraid cause=E16 ^s16
+believe B2 who=C1 claim="he must die of fright" from=E16 ^s17
+event E17 verb=clear how="the country aglow in the rays of the setting sun" when=sunset ^s18
+believe B2 true=0 by=E17 ^s18
+feel C1 -afraid +hopeful cause=E17 ^s19
+event E18 verb=hear agent=C1 at=L6 how="the sound of approaching steps of several people" cause=E17 ^s19
+believe B3 who=C1 claim="his friends had come to look for him" from=E18 ^s20
+feel C1 +excited cause=E18 ^s20
+char C4 type=magical class=demon name="hundreds of demons" at=L5 num=many ^s21
+event E19 verb=see agent=C1 patient=C4 at=L6 ^s21
+feel C1 +surprised cause=E19 ^s21
+believe B3 true=0 by=E19 ^s21
+believe B3 status=dropped by=E19 ^s21
+mention C1 C4 ^s22
+set C4 trait=giant,big_eyed,long_nosed,big_mouthed ^s23
+obj O6 type=body_part class=horn name="horns on their foreheads" part=C4 num=many ^s24
+event E20 verb=fall agent=C1 at=L6 how="lost his balance and fell out of the hollow tree" cause=E19 ^s25
+move C1 to=L5 cause=E20 ^s25
+event E21 verb=see agent=C4 patient=C1 at=L5 neg=1 why="the tree was in the background" ^s26
+event E22 verb=creep_back agent=C1 to=L6 at=L5 cause=E21 ^s27
+move C1 to=L6 cause=E22 ^s27
+char C5 type=magical class=demon_chief name="the demon chief" at=L5 gender=male ^s28
+rel R2 kind=ruler a=C5 b=C4 ^s28
+event E23 verb=sit agent=C5 at=L5 how="with his back against the hollow tree" ^s28
+event E24 verb=dance agent=C4 at=L5 how="sitting round, some drinking and some dancing" ^s28
+obj O7 type=food name="food and wine" at=L5 ^s29
+event E25 verb=feast agent=C4+C5 patient=O7 at=L5 how="a great entertainment, enjoying themselves immensely" ^s29
+feel C4 +happy cause=E25 ^s29
+event E26 verb=laugh agent=C1 at=L6 why="their strange antics" cause=E24 ^s30
+feel C1 +amused cause=E24 ^s30
+say C1 act=express means="how amusing, I am old but have never seen anything so strange in all my life" id=E27 ^s31
+feel C1 +curious cause=E24 ^s32
+event E28 verb=step_out agent=C1 at=L6 why="he was so interested and excited that he forgot himself" cause=E24 ^s32
+move C1 to=L5 cause=E28 ^s32
+obj O8 type=drink class=sake name="a big cup of sake" at=C5 ^s33
+char C6 type=magical class=demon name="one of the demons dancing" at=L5 ^s33
+event E29 verb=dance agent=C6 at=L5 ^s33
+feel C5 +tired cause=E29 ^s34
+say C5 to=C4 act=evaluate+ask means="your dance is monotonous, I am tired of it; can anyone dance better than this fellow" why="he was bored" cause=E29 id=E30 ^s34 ^s35
+set C5 goal="see a better dance" cause=E30 ^s35
+set C1 status=expert_dancer ^s36
+believe B4 who=C1 claim="he could dance much better than the demon" from=E29 true=1 ^s36
+say C1 act=ask+warn means="shall I dance before these demons? if I do not please them they may kill me" id=E31 ^s37 ^s38
+feel C1 +afraid cause=E31 ^s38
+event E32 verb=overcome agent=C1 how="his fears were overcome by his love of dancing" cause=E30 ^s39
+feel C1 -afraid +brave cause=E32 ^s39
+event E33 verb=dance agent=C1 at=L5 how="came out before the whole party of demons and began at once" why="he could restrain himself no longer" cause=E32 ^s40
+set C1 goal="please the demons to save his life" cause=E33 ^s41
+event E34 verb=exert agent=C1 at=L5 how="his skill and wit to the utmost" why="his life probably depended on pleasing the demons" ^s41
+feel C5 +amused cause=E33 ^s42
+rel R3 kind=acquaintance a=C1 b=C5 cause=E33 ^s42
+say C5 to=C1 act=thank+offer means="thank you for your amusing dance, drink a cup of wine with us" cause=E33 id=E35 ^s42 ^s43
+obj O9 type=container class=cup name="his largest wine-cup" at=C5 ^s43
+event E36 verb=hand agent=C5 patient=O9 to=C1 at=L5 cause=E35 ^s43
+give C5 O9 to=C1 cause=E36 ^s43
+say C1 to=C5 act=thank+apologize means="I did not expect such kindness, I fear I disturbed your party by my unskillful dancing" why="to be humble" id=E37 ^s44 ^s45
+say C5 to=C1 act=disagree+request+evaluate means="no, you must come often and dance for us, your skill gave us much pleasure" cause=E37 id=E38 ^s46 ^s47
+plan P1 kind=wish who=C5 to=C1 what="the old man comes often to dance for the demons" src=E38 ^s47
+say C1 to=C5 act=thank+promise means="he would come often and dance" cause=E38 id=E39 ^s48
+plan P2 kind=promise who=C1 to=C5 what="come often and dance for the demons" src=E39 ^s48
+say C5 to=C1 act=ask means="will you come again tomorrow" id=E40 ^s49
+say C1 to=C5 act=promise means="certainly I will" cause=E40 id=E41 ^s50
+plan P3 kind=promise who=C1 to=C5 what="come again tomorrow to dance" src=E41 ^s50
+say C5 to=C1 act=request means="leave some pledge of your word with us" why="to make sure he comes back" cause=E41 id=E42 ^s51
+say C1 to=C5 act=agree means="whatever you like" cause=E42 id=E43 ^s52
+say C5 to=C4 act=ask means="what is the best thing he can leave as a pledge" id=E44 ^s53
+char C7 type=magical class=demon name="one of the demon's attendants" at=L5 ^s54
+say C7 to=C5 act=suggest means="the token must be the most important thing he possesses" cause=E44 id=E45 ^s54
+event E46 verb=see agent=C7 patient=O1 at=L5 ^s55
+say C7 to=C5 act=suggest means="take the lump from his right cheek and he will surely come tomorrow to get it back" why="mortal men consider a wen very fortunate" id=E47 ^s56
+believe B5 who=C7 claim="mortal men consider a wen very fortunate" from=E47 true=0 ^s56
+say C5 to=C7 act=evaluate means="you are very clever, he said, giving his horns an approving nod" cause=E47 id=E48 ^s57
+event E49 verb=take agent=C5 patient=O1 at=L5 how="stretched out a hairy arm and claw-like hand" why="as a pledge that the old man will come back" cause=E47 ^s58
+detach O1 to=C5 cause=E49 ^s58
+plan P4 kind=bargain who=C5 to=C1 what="keep the wen as a pledge until the old man comes back to dance" src=E42 ^s58
+event E50 verb=come_off patient=O1 how="as easily as a ripe plum from the tree" cause=E49 ^s59
+event E51 verb=vanish agent=C4+C5 at=L5 how="suddenly" ^s59
+feel C1 +puzzled cause=E51 ^s60
+mention C1 L5 ^s61
+event E52 verb=realize agent=C1 about=O1 at=L5 how="the lump had been taken away without any pain" cause=E49 ^s62
+feel C1 -puzzled +relieved cause=E52 ^s62
+obj O10 type=body_part class=cheek name="his right cheek" part=C1 ^s63
+event E53 verb=feel agent=C1 patient=O10 at=L5 why="to see if any scar remained" ^s63
+set O10 trait=smooth cause=E53 ^s63
+cursor at=L5 time=night ^s64
+event E54 verb=hurry_home agent=C1 at=L5 why="he realized how late it was" ^s65
+event E55 verb=pat agent=C1 patient=O10 how="all the time" why="to make sure of his good fortune in losing the wen" ^s66
+event E56 verb=run_and_dance agent=C1 to=L1 how="the whole way home" why="he was so happy" cause=E52 ^s67
+move C1 to=L1 cause=E56 ^s67
+feel C3 +worried cause=E54 ^s68
+say C1 to=C3 act=narrate means="all that had passed since he left home that afternoon" about=E49 id=E57 ^s69
+event E58 verb=show agent=C1 patient=O10 to=C3 at=L1 how="the ugly lump had disappeared from his face" cause=E57 ^s70
+feel C3 -worried +happy cause=E58 ^s70
+event E59 verb=grieve agent=C3 about=O1 how="a daily grief to see the horrid growth" why="in her youth she prided herself on his good looks" when=long_ago before=E58 ^s70
+loc L7 type=house name="the house next door" here=0 ^s71
+char C8 type=human class=old_man name="a wicked and disagreeable old man" at=L7 gender=male age=old trait=wicked,disagreeable ^s71
+rel R4 kind=acquaintance a=C1 b=C8 ^s71
+obj O11 type=body_part class=wen name="a wen on his left cheek" part=C8 ^s72
+feel C8 +annoyed ^s72
+set C8 goal="get rid of the wen" ^s72
+event E60 verb=try agent=C8 patient=O11 how="all manner of things, but in vain" when=long_ago ^s72
+char C9 type=human class=servant name="the servant" ^s73
+event E61 verb=hear agent=C8 about=E49 how="through the servant" ^s73
+feel C8 +eager cause=E61 ^s73
+event E62 verb=visit agent=C8 to=C1 when=evening cause=E61 ^s73
+move C8 to=L1 cause=E62 ^s73
+say C8 to=C1 act=request means="tell me everything about the loss of the wen" why="he wanted to lose his own wen" id=E63 ^s73
+say C1 to=C8 act=narrate means="all that had happened to him" about=E49 cause=E63 id=E64 ^s74
+say C1 to=C8 act=suggest means="hide in the hollow tree and be there in the late afternoon towards sunset" cause=E63 id=E65 ^s75
+plan P5 kind=plan who=C8 what="hide in the hollow tree so the demons take his wen" src=E65 ^s75
+believe B6 who=C8 claim="the demons will take his wen too" from=E64 ^s75
+cursor at=L6 time=next_day ^s76
+move C8 to=L6 ^s76
+event E66 verb=run_out agent=C8 to=C5 at=L6 how="ran out of the tree and knelt down before the oni" cause=E65 ^s76
+move C8 to=L5 cause=E66 ^s76
+say C8 to=C5 act=greet means="I have been waiting a long time for you to speak" id=E67 ^s76
+say C5 to=C8 act=greet means="you are the old man of yesterday" cause=E67 id=E68 ^s77
+believe B7 who=C5 claim="the second old man is the old man of yesterday" from=E68 true=0 ^s77
+rel R5 kind=acquaintance a=C5 b=C8 cause=E68 ^s77
+say C5 to=C8 act=thank+request means="thank you for coming, you must dance for us soon" id=E69 ^s78
+plan P6 kind=order who=C5 to=C8 what="dance for the demons" src=E69 ^s78
+obj O12 type=thing class=fan name="his fan" at=C8 ^s79
+event E70 verb=dance agent=C8 at=L5 instr=O12 cause=E69 ^s79
+plan P6 status=kept by=E70 ^s79
+set C8 status=unskilled_dancer ^s80
+believe B8 who=C8 claim="anything would please the demons" ^s81
+event E71 verb=hop_about agent=C8 at=L5 how="waving his arms and stamping his feet, imitating any dancing he had seen" ^s81
+feel C4 -happy +disappointed +annoyed cause=E71 ^s82
+say C4 act=evaluate means="how badly he dances today" cause=E71 id=E72 ^s82
+believe B8 true=0 by=E72 ^s82
+say C5 to=C8 act=evaluate means="your performance today is quite different from the dance of yesterday" cause=E71 id=E73 ^s83
+say C5 to=C8 act=disagree+offer means="we do not wish to see more such dancing, we will give you back the pledge" id=E74 ^s84
+event E75 verb=give_back agent=C5 patient=O1 to=C8 at=L5 why="they thought he was the old man of yesterday" cause=E74 ^s84
+attach O1 to=C8 cause=E75 ^s84
+plan P4 status=dropped by=E75 ^s84
+say C5 to=C8 act=request means="you must go away at once" id=E76 ^s85
+plan P7 kind=order who=C5 to=C8 what="go away at once" src=E76 ^s85
+feel C8 +shocked cause=E75 ^s86
+event E77 verb=feel agent=C8 at=L5 how="put up first one hand and then the other to each side of his face" why="to make sure he was not dreaming a horrible nightmare" cause=E75 ^s86
+set O1 name="a great wen on the right side of his face" cause=E75 ^s87
+unset C8 goal cause=E75 why="instead of losing his wen he now had one on each side" ^s87
+believe B6 true=0 by=E75 ^s87
+plan P5 status=broken by=E75 ^s87
+event E78 verb=disappear agent=C4+C5 at=L5 ^s88
+event E79 verb=return_home agent=C8 to=L7 how="there was nothing else for him to do" cause=E78 ^s88
+move C8 to=L7 cause=E79 ^s88
+plan P7 status=kept by=E79 ^s88
+feel C8 +sad cause=E75 ^s89
+say narrator act=evaluate means="he was a pitiful sight, his face with two large lumps looked just like a japanese gourd" about=C8 id=E80 ^s89

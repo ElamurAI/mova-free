@@ -1,0 +1,14 @@
+[package]
+name = "mlab-backend-bench"
+version = "0.1.0"
+edition = "2024"
+publish = false
+description = "mlab: comparison of linear algebra backends (faer vs nalgebra) — 1000×1000 multiplication and solve, 500×500 eig"
+
+[dependencies]
+faer = { version = "0.24", default-features = false, features = ["std", "linalg"] }
+nalgebra = "0.35"
+
+[profile.release]
+opt-level = 3
+codegen-units = 4

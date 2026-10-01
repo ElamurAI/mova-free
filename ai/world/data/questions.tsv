@@ -1,0 +1,31 @@
+# FairytaleQA-type questions for three Aesop fables (Project Gutenberg #21, public domain).
+# Columns (TAB): doc, id, type, question, state query (qa.rs), expected (groups separated by commas — all; steps
+# separated by > — in order; alternatives separated by | — any). Written before the LLM call, not edited after it.
+2451	F1	character	Who are the main characters of the fable?	main	crow,fox
+2451	F2	setting	Where was the Crow when the Fox praised her?	where char:crow ^s3	tree
+2451	F3	action	Who had the meat (not cheese in this translation) at the beginning and at the end?	holder obj:meat|flesh @first @last	crow>fox
+2451	F4	causal	Why did the Fox praise the Crow?	say char:fox to=char:crow || why agent=char:fox verb=praise|flatter	meat|flesh
+2451	F5	feeling	What did the Crow feel when the Fox doubted her voice?	attr char:crow feeling ^s5	offended|eager|proud|angry
+2451	F6	causal	Why did the Crow caw?	why agent=char:crow verb=caw|cry|croak|sing|call|speak	voice
+2451	F7	outcome	What happened to the meat when the Crow cawed?	holders obj:meat|flesh	crow>^s5>fox
+2451	F8	prediction	Will the Crow trust the Fox from now on?	predict-rel char:crow char:fox	adversary|rival
+2355	L1	character	Who woke the Lion?	cause char:lion sleep=awake || who verb=wake|awaken|rouse|disturb patient=char:lion	mouse
+2355	L2	feeling	What did the Lion feel when he caught the Mouse?	attr char:lion feeling ^s2	angry
+2355	L3	action	What did the Mouse promise the Lion?	say char:mouse to=char:lion act=promise|request|offer	repay|help|return|kindness
+2355	L4	causal	Why did the Lion let the Mouse go?	why agent=char:lion verb=release|free|let_go|spare|let|laugh || cause char:mouse freedom=free	laugh|amus|ridic|absurd|merc|pity|plea|entreat|promis|beg
+2355	L5	character	Who tied up the Lion?	who verb=bind|tie|catch|trap|capture patient=char:lion	hunter
+2355	L6	outcome	How did the Mouse free the Lion?	events agent=char:mouse from=^s5 to=^s5	gnaw
+2355	L7	outcome	How did the relationship between the Lion and the Mouse change?	rel char:lion char:mouse	→,friend|ally
+2355	L8	prediction	What will happen if the Lion meets the Mouse again?	predict-rel char:lion char:mouse	friend|ally
+2366	H1	character	Who chose the course and the goal of the race?	who verb=choose|fix|select|set|mark|judge|appoint|decide || attr char:fox status @last || attr char:fox goal @last	fox
+2366	H2	causal	Why did the Hare agree to the race?	attr char:hare belief ^s2 || why agent=char:hare verb=agree|accept|assent|consent || say char:hare act=agree	impossib|cannot|can't|never|sure|certain|confident
+2366	H3	setting	Where did the Hare fall asleep?	where char:hare ^s5	wayside|roadside|side
+2366	H4	action	What was the Tortoise doing during the race?	events agent=char:tortoise from=^s3 to=^s4	go|walk|crawl|mov|continu|keep|proceed|plod|race|run|advance
+2366	H5	outcome	Who won the race?	who verb=win|beat || cause char:tortoise status=winner || who verb=reach|finish|arrive	tortoise
+2366	H6	feeling	What did the Tortoise feel at the end?	attr char:tortoise feeling @last	content|calm|tired|happy|proud|confident
+2366	H7	causal	Why did the Hare lose?	why agent=char:hare verb=sleep|lie|fall_asleep|nap|rest|lie_down|doze || events agent=char:hare from=^s5 to=^s5 || attr char:hare sleep ^s5	sleep|asleep|nap|doze|rest|lie|confiden
+2366	H8	causal	Why did the slow Tortoise win (the moral)?	say narrator || why agent=char:tortoise verb=win|beat|reach	steady|persist|never stop|constan
+# Honesty control — added after the LLM run: the answer is not in the state by construction, correct is «not in state».
+2451	FX	control	What did the Fox do with the meat afterwards?	who verb=eat|consume|swallow patient=obj:meat|flesh	-
+2355	LX	control	Who is the Mouse's mother?	attr char:mouse mother @last	-
+2366	HX	control	How old is the Hare?	attr char:hare age @last	-

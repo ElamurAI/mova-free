@@ -1,0 +1,19 @@
+Below are VERIFIED solutions of math word problems. Each solution is a plan of typed steps (op: compute, solve, enumerate, factor, check, claim ...); every step was executed and checked by an exact engine. Explain the solutions step by step WITH MOTIVATION, as a teacher following Polya ("understand, plan, carry out, look back") and means-ends analysis (GPS of Newell and Simon: find the difference between the current state and the goal, pick the move that reduces it).
+
+For EVERY plan step write:
+- goal: what this step achieves (<= 12 words)
+- motive: why exactly this move here, the reasoning a teacher would say (<= 15 words), e.g. "integers are easier than fractions" or "the total is the sum of the parts"
+- move: the operation in words (<= 12 words)
+- check: how the result of this step can be verified (<= 12 words)
+- moves: 1-3 objects {"diff": D, "kind": K} in the order they are performed inside the step, where
+  D (difference between current state and goal that the move removes) is one of:
+    given (needed data not yet named or usable), combine (target is a direct formula of known quantities), candidates (answer lies in a finite set to be listed), select (only some items qualify), transform (every item must be changed the same way), aggregate (many values must become one: total, count, max, mean), order (items must be arranged by size), locate (which item, where, the first one that satisfies), repeat (a process repeats step after step, recurrence or until a condition), unknown (an unknown is defined implicitly by a relation), parts (answer depends on parts of an item: digits, factors, characters), reuse (same computation needed for several inputs), represent (form, unit or type does not match what is needed), verify (result not yet confirmed), present (answer must be stated in the requested form)
+  K (operator) is one of:
+    Bind, Arith, Range, Filter, Map, Reduce, Sort, Search, Iterate, Solve, Decompose, Define, Convert, Check, Output
+Also for the whole problem: goal (what is asked, <= 12 words) and subgoals (ordered list of 2-5 short phrases, the decomposition of the goal).
+
+Answer with exactly one JSON object per solution, one per line, in the input order, nothing else (no markdown fences, no commentary):
+{"id":"<id>","goal":"...","subgoals":["..."],"steps":[{"n":1,"goal":"...","motive":"...","move":"...","check":"...","moves":[{"diff":"combine","kind":"Arith"}]}]}
+The number of objects in "steps" must equal the number of plan steps, in order.
+
+SOLUTIONS:

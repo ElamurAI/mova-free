@@ -1,0 +1,103 @@
+# latex — LLM tests (independent author: claude-opus-5-5, effort high, 26.09.2026, tests3); did not see the code.
+# Prompts: prompts/latex-1.txt, latex-2.txt. Columns: id, kind (same diff err ok value count macro), a, b, source.
+# Frozen by hash before the first run (tests/vmm_latex.rs).
+001	same	\frac12	\frac{1}{2}	single-token args need no braces: \frac12 reads 1 and 2 as its two args
+002	same	x_1^2	x^2_1	order of sub/superscript is irrelevant in TeX
+003	same	a \le b	a \leq b	\le is a synonym of \leq (plain TeX \let)
+004	same	a \over b	\frac{a}{b}	infix \over takes the whole formula as numerator/denominator
+005	same	n \choose k	\binom{n}{k}	infix \choose is the same as amsmath \binom
+006	same	\sqrt2	\sqrt{2}	single-token argument without braces
+007	same	x \to y	x \rightarrow y	\to is a synonym of \rightarrow
+008	same	\big( x \big)	( x )	size commands have no structural effect
+009	same	a\,b\quad c	abc	spacing commands are dropped
+010	same	\sum\limits_{i=1}^n i	\sum_{i=1}^{n} i	\limits dropped; single-token superscript
+011	same	p \land q	p \wedge q	\land is a synonym of \wedge
+012	same	\lnot p	\neg p	\lnot is a synonym of \neg
+013	same	a \ne b	a \neq b	\ne is a synonym of \neq
+014	same	x^ab	x^{a}b	a script takes only the next single token
+015	same	\frac123	\frac{1}{2}3	\frac takes the tokens 1 and 2; the 3 follows as an ordinary atom
+016	same	\displaystyle \int_0^1 f	\int_{0}^{1} f	\displaystyle dropped; single-token scripts
+017	same	f \gets g	f \leftarrow g	\gets is a synonym of \leftarrow
+018	same	p \lor q	p \vee q	\lor is a synonym of \vee
+019	same	\sqrt[3]x	\sqrt[3]{x}	the mandatory arg of \sqrt is a single token after the optional arg
+020	same	\binom12	\binom{1}{2}	single-token args for \binom
+021	diff	x^{ab}	x^ab	x^ab is x^{a} followed by b
+022	diff	\frac{1}{2}3	\frac{1}{23}	3 is outside the denominator in a
+023	diff	a_{i}^{2}	a_{i^2}	a has sub i and sup 2; b has only a subscript i^2
+024	diff	\sqrt[3]{x}	\sqrt{3x}	cube root of x vs square root of 3x
+025	diff	-x^2	(-x)^2	the superscript binds to x only, not to -x
+026	diff	\sin x^2	(\sin x)^2	the superscript attaches to x in a, to the parenthesis group in b
+027	diff	\frac{a+b}{c}	a+\frac{b}{c}	the numerator scope differs
+028	diff	e^{-x}	e^-x	e^-x is e^{-} followed by x
+029	diff	x_{10}	x_10	x_10 is x_1 followed by 0
+030	diff	\sqrt{x}y	\sqrt{xy}	y is outside the radical in a
+031	diff	\int_0^{2\pi} f	\int_0^2\pi f	\int_0^2\pi has upper limit 2 and then \pi as an atom
+032	diff	\hat{ab}	\hat{a}b	the accent covers ab vs only a
+033	diff	\mathbf{ab}	\mathbf{a}b	the font scope covers ab vs only a
+034	diff	x^{2^3}	{x^2}^3	nested superscript vs a superscript on the group x^2
+035	diff	\binom{n}{k}	\frac{n}{k}	binomial vs fraction are distinct constructs
+036	err	\frac{1}{2	-	unbalanced {
+037	err	x^1^2	-	TeX error: Double superscript
+038	err	x_1_2	-	TeX error: Double subscript
+039	err	\left( x	-	\left without matching \right
+040	err	x \right)	-	\right without matching \left
+041	err	\begin{pmatrix} a \end{bmatrix}	-	\begin{pmatrix} ended by \end{bmatrix}
+042	err	\begin{cases} a & b	-	\begin{cases} without \end{cases}
+043	err	\frac{1}	-	\frac is missing its second argument at end of input
+044	err	a $ b	-	stray $ inside the formula
+045	err	{a+b	-	unbalanced {
+046	err	a+b}	-	unbalanced }
+047	err	x_1^2^3	-	TeX error: Double superscript
+048	err	\sqrt	-	\sqrt is missing its argument at end of input
+049	err	\left( a \middle| b	-	\left without matching \right
+050	err	x^	-	^ is missing its argument at end of input
+vmm-tex-051	ok	\frac{1}{1+\frac{1}{1+\frac{1}{x}}}	-	nested \frac, amsmath/KaTeX
+vmm-tex-052	ok	\left( \frac{a}{b} \middle| c \right)	-	e-TeX \left \middle \right
+vmm-tex-053	ok	\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}	-	amsmath pmatrix environment
+vmm-tex-054	ok	f(x) = \begin{cases} x^2 & x \ge 0 \\ -x & x < 0 \end{cases}	-	amsmath cases environment
+vmm-tex-055	ok	\sum_{\substack{0 \le i \le n \\ i \ne j}} a_{ij}	-	amsmath \substack under a big operator
+vmm-tex-056	ok	\operatorname{rank}(A) + \dim \ker A = n	-	amsmath \operatorname, standard log-like functions
+vmm-tex-057	ok	\hat{x} + \bar{y} + \vec{v} + \tilde{z}	-	standard math accents
+vmm-tex-058	ok	A \not\subset B	-	TeX \not negation
+vmm-tex-059	ok	\int_0^\infty e^{-x^2}\,dx = \frac{\sqrt{\pi}}{2}	-	integral with limits, thin space
+vmm-tex-060	ok	\lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n = e	-	\lim with subscript, scripted \right group
+vmm-tex-061	ok	\begin{aligned} a &= b + c \\ &= d \end{aligned}	-	amsmath aligned environment
+vmm-tex-062	ok	A \xrightarrow[\sim]{f} B	-	amsmath \xrightarrow with optional argument
+vmm-tex-063	ok	\bigcup_{i=1}^\infty A_i \subseteq X	-	big operator with limits
+vmm-tex-064	ok	\begin{vmatrix} a & b \\ c & d \end{vmatrix} = ad - bc	-	amsmath vmatrix environment
+vmm-tex-065	ok	\left\langle u, v \right\rangle = \|u\| \|v\| \cos\theta	-	\langle \rangle delimiters, \| norm
+vmm-tex-066	ok	\overbrace{a+b}^{n} + \underbrace{c+d}_{m}	-	TeX \overbrace \underbrace with labels
+vmm-tex-067	ok	\sqrt[3]{x^3 + y^3}	-	\sqrt with optional index
+vmm-tex-068	ok	\mathbb{R}^n \to \mathbb{R}, \quad x \mapsto \|x\|	-	amssymb \mathbb, arrows
+vmm-tex-069	ok	\binom{n}{k} = \frac{n!}{k!(n-k)!}	-	amsmath \binom
+vmm-tex-070	ok	\left\{ x \in \mathbb{Z} \,\middle|\, x^2 < 5 \right\}	-	set-builder with \left\{ \middle| \right\}
+vmm-tex-071	value	\frac{1}{2}+\frac{1}{3}	5/6	arithmetic 3/6+2/6
+vmm-tex-072	value	2(3+4)	14	implicit multiplication 2*7
+vmm-tex-073	value	-2^2	-4	unary minus binds looser than ^
+vmm-tex-074	value	\sqrt{16}+\sqrt[3]{27}	7	4+3
+vmm-tex-075	value	\frac{\frac{1}{2}}{\frac{3}{4}}	2/3	(1/2)*(4/3)
+vmm-tex-076	value	2^{10}	1024	arithmetic
+vmm-tex-077	value	|3-7| \cdot 2	8	|-4|*2
+vmm-tex-078	value	\left(\frac{2}{3}\right)^2	4/9	arithmetic
+vmm-tex-079	value	\sqrt{2}	~1.41421356237	sqrt(2)=1.414213562373...
+vmm-tex-080	value	12 \div 4 \times 3	9	left-to-right: (12/4)*3
+vmm-tex-081	value	2^{3^2}	512	2^9
+vmm-tex-082	value	\frac{1}{2} \cdot \frac{4}{3} - 1	-1/3	2/3-1
+vmm-tex-083	value	\sqrt{3}	~1.73205080757	sqrt(3)=1.7320508075688...
+vmm-tex-084	value	(1+2)^3 - 3^3	0	27-27
+vmm-tex-085	value	\frac{10}{4}-2^{-1}	2	5/2-1/2
+vmm-tex-086	count	Let $a$ and $b$ be given.\n$$c = a + b$$	3	two inline plus one $$ display
+vmm-tex-087	count	Price \$5 and $x$ here.	1	\$ is an escaped dollar sign
+vmm-tex-088	count	$a$ is fine % $b$ is commented\nand \(c\) too	2	text after % is a comment
+vmm-tex-089	count	\begin{equation*}x\end{equation*} and \[y\]	2	equation* environment plus \[ \]
+vmm-tex-090	count	\verb|$x$| and $y$	1	\verb contents are not math
+vmm-tex-091	count	\begin{align}a&=b\\c&=d\end{align}\nText $e$	2	a whole align environment counts as one
+vmm-tex-092	count	$a$\n\begin{verbatim}\n$b$\n\end{verbatim}\n$c$	2	verbatim environment contents are not math
+vmm-tex-093	count	\begin{multline}a\\b\end{multline} \(x\) \begin{displaymath}y\end{displaymath}	3	multline, \( \), displaymath
+vmm-tex-094	macro	\newcommand{\R}{\mathbb{R}}\n$x \in \R$	x \in \mathbb{R}	\newcommand with no arguments
+vmm-tex-095	macro	\newcommand{\norm}[1]{\left\| #1 \right\|}\n$\norm{v}$	\left\| v \right\|	\newcommand with one argument
+vmm-tex-096	macro	\def\eps{\varepsilon}\n$\eps > 0$	\varepsilon > 0	TeX \def
+vmm-tex-097	macro	\DeclareMathOperator{\tr}{tr}\n$\tr(A)$	\operatorname{tr}(A)	amsmath \DeclareMathOperator
+vmm-tex-098	macro	\newcommand{\pair}[2]{\langle #1, #2 \rangle}\n$\pair{a}{b}$	\langle a, b \rangle	\newcommand with two arguments
+vmm-tex-099	macro	\renewcommand{\vec}[1]{\mathbf{#1}}\n$\vec{x}$	\mathbf{x}	\renewcommand overrides the built-in
+vmm-tex-100	macro	\newcommand{\half}{\frac{1}{2}}\n$\half x$	\frac{1}{2} x	macro expands to a fraction

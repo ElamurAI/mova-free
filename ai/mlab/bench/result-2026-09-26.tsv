@@ -1,0 +1,12 @@
+task	faer, s	nalgebra, s	faer/nalgebra
+multiply 1000×1000	0.034	0.037	0.90
+solve 1000×1000 (LU)	0.017	0.103	0.17
+eig 500×500 nonsym., values only	0.080	0.213	0.38
+eig 500×500 nonsym., values and vectors	0.130	—	not supported by nalgebra
+eig 500×500 sym., values and vectors	0.032	0.105	0.30
+
+check: sum of product corners faer 2.732356110261 nalgebra 2.732356110261
+residual ‖Ax−b‖: faer 1.76e-11 nalgebra 1.61e-11
+max|AV−VD| nonsym.: faer 1.83e-13
+max|AV−VD| sym.: faer 1.89e-14 nalgebra 4.13e-14
+exit 0

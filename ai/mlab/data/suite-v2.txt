@@ -1,0 +1,570 @@
+; mlab — frozen scenario suite v2: tables, files, statistics (clean room, 26.09.2026).
+;
+; Format — as in suite-v1.txt: «### id | category | title», code, «---», expected («> line» exact,
+; «>» — empty, «>* text» — a line that starts with «text»). A fresh interpreter per scenario.
+;
+; Where the expected output comes from. Semantics — per the public MATLAB documentation (table, readtable, groupsummary,
+; quantile, ttest, anova1, fitlm…). Values — from exact formulas and identities (t² = F, correlation p = slope
+; p, χ² 2×2 = n(ad − bc)²/(r1·r2·c1·c2), F(1, ν) = t(ν)², binomial and Poisson probabilities
+; as fractions) and from well-known textbook examples and R documentation: sleep data (Student 1908) — paired t = −4.0621,
+; df = 9, p = 0.002833; Welch t = −1.8608, df = 17.776, p = 0.07939; equal variances p = 0.07919;
+; PlantGrowth — F = 4.846, p = 0.01591, SS 3.7663 / 10.4921; Agresti (2007), gender × party — χ² = 30.07,
+; df = 2, p = 2.954e−07; Anscombe's quartet I — β = 3.0001 / 0.5001, SE = 1.1247 / 0.1179, t = 4.241,
+; p = 0.00217, R² = 0.6665, F = 17.99. The output format of tables, test reports and messages is our own
+; specification (written here before the code). Where a number depends on rounding — a check «< tolerance» (1/0).
+
+### tab-01 | tables | creation with variable names, height, width, size, class
+x = [1;2;3]; y = [10;20;30];
+T = table(x, y);
+printf('%d %d\n', height(T), width(T));
+s = size(T); printf('%d %d\n', s(1), s(2));
+disp(class(T))
+---
+> 3 2
+> 3 2
+> table
+
+### tab-02 | tables | table display: numbers right-aligned, text left-aligned, logical true/false
+id = [1;2;3]; city = {'Kyiv';'Lviv';'Odesa'}; ok = [true;false;true];
+T = table(id, city, ok)
+---
+> T =
+>
+>   3x3 table
+>
+>     id   city       ok
+>     __   _____   _____
+>      1   Kyiv     true
+>      2   Lviv    false
+>      3   Odesa    true
+>
+
+### tab-03 | tables | column access T.x, T.x(k), VariableNames
+T = table([1;2;3], [4;5;6], 'VariableNames', {'a','b'});
+disp(T.b')
+disp(T.a(2))
+---
+>    4   5   6
+> 2
+
+### tab-04 | tables | T(rows, columns): range, end, by name, by index
+T = table([1;2;3;4], [10;20;30;40], [5;6;7;8], 'VariableNames', {'a','b','c'});
+S = T(2:3, {'c','a'});
+printf('%d %d\n', height(S), width(S));
+disp(S.c')
+U = T(end, 'b'); disp(U.b)
+V = T(:, [1 3]); disp(V.c')
+---
+> 2 2
+>    6   7
+> 40
+>    5   6   7   8
+
+### tab-05 | tables | filtering with a logical mask
+T = table([1;2;3;4;5], [3;1;4;1;5], 'VariableNames', {'id','v'});
+F = T(T.v > 2, :);
+disp(F.id')
+printf('%d\n', height(T(T.v > 100, :)));
+---
+>    1   3   5
+> 0
+
+### tab-06 | tables | computed columns: T.c = T.a .* T.b, conditional via masks
+T = table([1;2;3], [4;5;6], 'VariableNames', {'a','b'});
+T.c = T.a .* T.b;
+T.big = T.c > 8;
+T.d = T.c .* T.big + (-1) .* ~T.big;
+disp(T.c'); disp(T.d'); printf('%d\n', width(T)); disp(class(T.big))
+---
+>     4   10   18
+>    -1   10   18
+> 5
+> logical
+
+### tab-07 | tables | sortrows: by column, descending, two keys (stable), matrix with −column
+T = table([2;1;2;1], [9;8;7;6], 'VariableNames', {'g','v'});
+S = sortrows(T, 'v'); disp(S.v')
+S = sortrows(T, 'v', 'descend'); disp(S.v')
+S = sortrows(T, {'g','v'}); disp(S.v')
+A = sortrows([3 1; 1 2; 2 0], -1); disp(A(:,1)')
+---
+>    6   7   8   9
+>    9   8   7   6
+>    6   8   7   9
+>    3   2   1
+
+### tab-08 | tables | groupsummary: sum and mean, GroupCount
+T = table([1;2;1;2;1], [10;20;30;40;50], 'VariableNames', {'g','x'});
+G = groupsummary(T, 'g', {'sum','mean'}, 'x');
+disp(G.g'); disp(G.GroupCount'); disp(G.sum_x'); disp(G.mean_x')
+---
+>    1   2
+>    3   2
+>    90   60
+>    30   30
+
+### tab-09 | tables | groupsummary by two keys, text key
+r = {'N','S','N','S','N'}; m = [1;1;2;1;1]; v = [1;2;3;4;5];
+T = table(r, m, v, 'VariableNames', {'reg','mon','v'});
+G = groupsummary(T, {'reg','mon'}, 'sum', 'v');
+printf('%d\n', height(G)); disp(G.sum_v'); disp(G.mon')
+disp(G.reg(3))
+---
+> 3
+>    6   3   6
+>    1   2   1
+> S
+
+### tab-10 | tables | innerjoin (sorts by key), join (left order; every key must be found)
+A = table([1;2;3;4], [10;20;30;40], 'VariableNames', {'k','x'});
+B = table([4;2;9], [400;200;900], 'VariableNames', {'k','y'});
+C = innerjoin(A, B); disp(C.k'); disp(C.y')
+L = table([2;4;2], 'VariableNames', {'k'});
+J = join(L, B); disp(J.y')
+try
+  join(A, B);
+catch err
+  disp(err)
+end
+---
+>    2   4
+>    200   400
+>    200   400   200
+>* join:
+
+### tab-11 | tables | grouptransform: cumsum and moving window within a group; movmean with endpoints
+T = table([1;1;2;1;2], [1;2;3;4;5], 'VariableNames', {'g','x'});
+U = grouptransform(T, 'g', @cumsum, 'x');
+disp(U.x')
+m = movmean([1 2 3 4 5], 3); disp(m)
+W = grouptransform(T, 'g', @(v) movsum(v, 2), 'x'); disp(W.x')
+---
+>    1   3   3   7   8
+>    1.5000   2.0000   3.0000   4.0000   4.5000
+>    1   3   3   6   8
+
+### tab-12 | tables | missing values: ismissing, rmmissing, summary
+x = [1; NaN; 3; NaN];
+disp(ismissing(x)')
+disp(mean(rmmissing(x)))
+T = table(x, {'a','b','c','d'}, 'VariableNames', {'x','s'});
+summary(T)
+---
+>   0  1  0  1
+> 2
+>* summary: 4x2 table
+>*   x: double, 4 rows, missing 2
+>*     min 1, median 2, max 3, mean 2
+>*   s: string, 4 rows, missing 0
+>*     unique 4
+
+### io-01 | files | CSV: write, quotes around a comma, read, column types
+f = [tempname() '.csv'];
+T = table([1;2;3], {'Kyiv','Lviv','Odesa, UA'}, [true;false;true], 'VariableNames', {'id','city','ok'});
+writetable(T, f);
+disp(fileread(f))
+R = readtable(f);
+printf('%d %d %d\n', isequal(R.id, T.id), isequal(R.ok, T.ok), height(R));
+disp(R.city(3)); disp(class(R.ok))
+---
+> id,city,ok
+> 1,Kyiv,true
+> 2,Lviv,false
+> 3,"Odesa, UA",true
+>
+> 1 1 3
+> Odesa, UA
+> logical
+
+### io-02 | files | TSV, ISO dates (datenum), empty field — NaN
+f = [tempname() '.tsv'];
+writelines("d\tv\n2026-09-26\t1.5\n2026-01-01\t\n", f);
+R = readtable(f);
+disp(class(R.v)); printf('%d\n', isnan(R.v(2)));
+printf('%.1f\n', R.v(1));
+printf('%d\n', R.d(1) - R.d(2));
+disp(datestr(R.d(1), 'yyyy-mm-dd'))
+printf('%d %d %d\n', datenum('1970-01-01'), datenum('2026-09-26'), datenum(2026, 9, 26));
+---
+> double
+> 1
+> 1.5
+> 268
+> 2026-09-26
+> 719529 740251 740251
+
+### io-03 | files | JSON: array of records, escaping, reading; jsonencode
+f = [tempname() '.json'];
+T = table([1;2], {'a"b','c'}, [true;false], 'VariableNames', {'n','s','b'});
+writetable(T, f);
+disp(fileread(f))
+R = readtable(f);
+disp(R.s(1)); printf('%d %d\n', R.n(2), R.b(1));
+disp(jsonencode(T(1, :)))
+---
+> [
+>   {"n": 1, "s": "a\"b", "b": true},
+>   {"n": 2, "s": "c", "b": false}
+> ]
+>
+> a"b
+> 2 1
+> [{"n":1,"s":"a\"b","b":true}]
+
+### io-04 | files | CSV error: unclosed quote — row and column
+f = [tempname() '.csv'];
+writelines("a,b\n1,2\n3,\"x\n", f);
+try
+  readtable(f);
+catch err
+  disp(err)
+end
+---
+>* readtable: line 3, column 3: unterminated quoted field
+
+### io-05 | files | CSV error: extra field — row and column
+f = [tempname() '.csv'];
+writelines("a,b\n1,2\n3,4,5\n", f);
+try
+  readtable(f);
+catch err
+  disp(err)
+end
+---
+>* readtable: line 3, column 5: expected 2 fields (as in header), found 3
+
+### io-06 | files | writematrix / readmatrix: round trip
+f = [tempname() '.csv'];
+A = [1 2.5; -3 4];
+writematrix(A, f);
+disp(fileread(f))
+B = readmatrix(f);
+printf('%d\n', isequal(A, B));
+---
+> 1,2.5
+> -3,4
+>
+> 1
+
+### io-07 | files | readmatrix: header is skipped, empty — NaN
+f = [tempname() '.csv'];
+writelines("x,y\n1,\n3,4\n", f);
+B = readmatrix(f);
+printf('%d %d\n', size(B)); printf('%d\n', isnan(B(1,2)));
+---
+> 2 2
+> 1
+
+### desc-01 | descriptive | mode (tie — the smaller), median
+disp(mode([1 2 2 3 3]))
+disp(mode([4 4 1 1 7]))
+disp(median([5 3 1 4]))
+---
+> 2
+> 1
+> 3.5000
+
+### desc-02 | descriptive | quantile / prctile: p_k = (k − 0.5)/n, linear, outside — min/max
+x = 1:5;
+printf('%.4f\n', quantile(x, 0.25));
+printf('%.4f\n', quantile(x, 0.5));
+printf('%.4f\n', prctile(x, 95));
+printf('%.4f\n', quantile([2 4 6 8], [0.25 0.75]));
+printf('%.4f\n', prctile(x, 5));
+---
+> 1.7500
+> 3.0000
+> 5.0000
+> 3.0000
+> 7.0000
+> 1.0000
+
+### desc-03 | descriptive | skewness / kurtosis: exact values, bias correction
+x = [1 2 3 10];
+printf('%d\n', abs(skewness(x) - 3.6/sqrt(12.5)) < 1e-12);
+printf('%d\n', abs(kurtosis(x) - 2.2304) < 1e-12);
+printf('%d\n', skewness([1 2 3]) == 0);
+printf('%d\n', abs(kurtosis([1 2 3 4]) - 1.64) < 1e-12);
+printf('%d\n', abs(skewness(x, 0) - sqrt(12)/2*3.6/sqrt(12.5)) < 1e-12);
+---
+> 1
+> 1
+> 1
+> 1
+> 1
+
+### desc-04 | descriptive | cov, corrcoef (identity y = 2x + 1)
+x = [1 2 3 4 5]; y = 2*x + 1;
+R = corrcoef(x, y); printf('%d\n', abs(R(1,2) - 1) < 1e-12);
+C = cov(x, y); printf('%g %g %g %g\n', C);
+R2 = corrcoef([x' -x']); printf('%g %g %g %g\n', R2);
+---
+> 1
+> 2.5 5 5 10
+> 1 -1 -1 1
+
+### desc-05 | descriptive | histcounts: edges, last bin closed; number of bins
+[N, e] = histcounts([1 2 2 3 5], [0 2 4 6]); disp(N); disp(e)
+N = histcounts([0 1 2 3 4], 2); disp(N)
+---
+>    1   3   1
+>    0   2   4   6
+>    2   3
+
+### desc-06 | descriptive | along matrix columns
+A = [1 5; 2 5; 2 6; 9 7];
+disp(mode(A)); disp(quantile(A, 0.5)); disp(skewness([1 1; 2 2; 3 3]))
+---
+>    2   5
+>    2.0000   5.5000
+>    0   0
+
+### dist-01 | distributions | normal: constants and inverse
+printf('%.12f\n', normcdf(1.96));
+printf('%.12f\n', norminv(0.975));
+printf('%.12f\n', normpdf(0));
+printf('%d\n', abs(normcdf(3, 1, 2) - normcdf(1)) < 1e-15);
+printf('%d\n', abs(norminv(normcdf(-2.5)) + 2.5) < 1e-12);
+---
+> 0.975002104852
+> 1.959963984540
+> 0.398942280401
+> 1
+> 1
+
+### dist-02 | distributions | t, χ², F: identities
+printf('%.10f\n', tinv(0.975, 10));
+printf('%d\n', abs(tcdf(tinv(0.9, 7), 7) - 0.9) < 1e-10);
+printf('%d\n', abs(tcdf(0, 5) - 0.5) < 1e-15);
+printf('%d\n', abs(chi2inv(0.95, 1) - norminv(0.975)^2) < 1e-9);
+printf('%d\n', abs(chi2cdf(3, 2) - (1 - exp(-1.5))) < 1e-12);
+printf('%d\n', abs(finv(0.95, 1, 10) - tinv(0.975, 10)^2) < 1e-8);
+printf('%d\n', abs(fcdf(2.5, 3, 8) - (1 - fcdf(1/2.5, 8, 3))) < 1e-10);
+---
+> 2.2281388520
+> 1
+> 1
+> 1
+> 1
+> 1
+> 1
+
+### dist-03 | distributions | binomial and Poisson: exact fractions
+printf('%.10f\n', binopdf(3, 10, 0.5));
+printf('%.10f\n', binocdf(1, 4, 0.5));
+printf('%.10f\n', poisspdf(2, 3));
+printf('%.10f\n', poisscdf(2, 3));
+printf('%d\n', abs(poisscdf(2, 3) - 8.5*exp(-3)) < 1e-12);
+disp(binopdf(11, 10, 0.5))
+---
+> 0.1171875000
+> 0.3125000000
+> 0.2240418077
+> 0.4231900811
+> 1
+> 0
+
+### dist-04 | distributions | discrete inverses: the smallest k with F(k) ≥ p
+disp(binoinv(0.5, 10, 0.5))
+disp(poissinv(0.5, 3))
+---
+> 5
+> 3
+
+### dist-05 | distributions | elementwise, scalar parameters are broadcast
+printf('%g %g %g\n', normcdf([-Inf 0 Inf]));
+printf('%g %g %g\n', binopdf(0:2, 2, 0.5));
+---
+> 0 0.5 1
+> 0.25 0.5 0.25
+
+### test-01 | tests | paired ttest: sleep data (Student 1908)
+x = [0.7 -1.6 -0.2 -1.2 -0.1 3.4 3.7 0.8 0.0 2.0];
+y = [1.9 0.8 1.1 0.1 -0.1 4.4 5.5 1.6 4.6 3.4];
+[h, p, ci, st] = ttest(x, y, 'Display', 'off');
+printf('%d %.6f %.4f %d\n', h, p, st.tstat, st.df);
+printf('%.4f %.4f\n', ci);
+---
+> 1 0.002833 -4.0621 9
+> -2.4599 -0.7001
+
+### test-02 | tests | ttest2: Welch and equal variances (sleep data)
+x = [0.7 -1.6 -0.2 -1.2 -0.1 3.4 3.7 0.8 0.0 2.0];
+y = [1.9 0.8 1.1 0.1 -0.1 4.4 5.5 1.6 4.6 3.4];
+[h, p, ci, st] = ttest2(x, y, 'Vartype', 'unequal', 'Display', 'off');
+printf('%d %.5f %.4f %.3f\n', h, p, st.tstat, st.df);
+printf('%.4f %.4f\n', ci);
+[h, p] = ttest2(x, y, 'Display', 'off');
+printf('%d %.5f\n', h, p);
+---
+> 0 0.07939 -1.8608 17.776
+> -3.3655 0.2055
+> 0 0.07919
+
+### test-03 | tests | identity: ttest2 (equal variances) = anova1 on two groups, t² = F
+a = [5.1 4.9 6.2 5.8 6.0]; b = [4.2 4.8 5.0 3.9 4.4 4.1];
+[~, p1, ~, st] = ttest2(a, b, 'Display', 'off');
+[p2, tbl] = anova1([a b], [ones(1,5) 2*ones(1,6)], 'off');
+printf('%d\n', abs(p1 - p2) < 1e-12);
+printf('%d\n', abs(st.tstat^2 - tbl.F(1)) < 1e-9);
+---
+> 1
+> 1
+
+### test-04 | tests | anova1: PlantGrowth
+ctrl = [4.17 5.58 5.18 6.11 4.50 4.61 5.17 4.53 5.33 5.14];
+trt1 = [4.81 4.17 4.41 3.59 5.87 3.83 6.03 4.89 4.32 4.69];
+trt2 = [6.31 5.12 5.54 5.50 5.37 5.29 4.92 6.15 5.80 5.26];
+g = [ones(1,10) 2*ones(1,10) 3*ones(1,10)];
+[p, tbl] = anova1([ctrl trt1 trt2], g, 'off');
+printf('%.5f %.3f\n', p, tbl.F(1));
+printf('%.4f %.4f\n', tbl.SS(1), tbl.SS(2));
+---
+> 0.01591 4.846
+> 3.7663 10.4921
+
+### test-05 | tests | χ² of independence: Agresti (2007), gender × party
+M = [762 327 468; 484 239 477];
+[p, chi2, df] = chi2test(M, 'Display', 'off');
+printf('%.2f %d %.3e\n', chi2, df, p);
+---
+> 30.07 2 2.954e-07
+
+### test-06 | tests | χ² 2×2 = n(ad − bc)²/(r1·r2·c1·c2); crosstab
+M = [10 20; 30 15];
+[p, chi2] = chi2test(M, 'Display', 'off');
+n = 75; e = n*(10*15 - 20*30)^2/(30*45*40*35);
+printf('%d\n', abs(chi2 - e) < 1e-10);
+printf('%d\n', abs(p - (1 - chi2cdf(e, 1))) < 1e-12);
+[tbl, c2, p2] = crosstab([1 1 2 2 2 1], [1 2 1 2 2 2]);
+disp(tbl); printf('%d\n', abs(p2 - (1 - chi2cdf(c2, 1))) < 1e-12);
+---
+> 1
+> 1
+>    1   2
+>    1   2
+> 1
+
+### test-07 | tests | correlation with p (Anscombe I); p from corrcoef — the same
+x = [10 8 13 9 11 14 6 4 12 7 5];
+y = [8.04 6.95 7.58 8.81 8.33 9.96 7.24 4.26 10.84 4.82 5.68];
+[r, pr] = corr(x', y', 'Display', 'off');
+[R, P] = corrcoef(x, y);
+printf('%.4f %.5f\n', r, pr);
+printf('%d\n', abs(P(1,2) - pr) < 1e-14);
+---
+> 0.8164 0.00217
+> 1
+
+### test-08 | tests | ttest report: hypotheses, assumptions, steps, conclusion
+ttest([1 2 3 4 5], 2);
+---
+>* ttest: one-sample t-test
+>*   H0: μ = 2; H1: μ ≠ 2
+>*   assumptions:
+>*     independence of observations
+>*     normality
+>*   steps:
+>*     n = 5, x̄ = 3, s = 1.58114
+>*     SE = s/√n = 0.707107
+>*     t = (x̄ − μ0)/SE = 1.41421, df = n − 1 = 4
+>*     p = 2·P(T ≥ |t|) = 0.2
+>*   conclusion: p ≥ α → do not reject H0 (h = 0)
+
+### test-09 | tests | χ² report: warning about small expected counts
+chi2test([3 1; 1 3]);
+---
+>* chi2test: χ² test of independence
+>*   H0: row and column variables are independent
+>*   assumptions:
+>*     independence of observations
+>*     expected counts ≥ 5: violated — 4 of 4 cells < 5
+>*   steps:
+>*     E = (row sum)·(column sum)/n, n = 8
+>*     χ² = Σ (O − E)²/E = 2
+>*     df = (r − 1)(c − 1) = 1
+>*     p = P(χ²(df) ≥ χ²) = 0.157
+>*   conclusion: p ≥ α → do not reject H0 (h = 0)
+
+### reg-01 | regression | fitlm: Anscombe's quartet I
+x = [10 8 13 9 11 14 6 4 12 7 5]';
+y = [8.04 6.95 7.58 8.81 8.33 9.96 7.24 4.26 10.84 4.82 5.68]';
+[C, S] = fitlm(x, y, 'Display', 'off');
+printf('%.4f %.4f\n', C.Estimate);
+printf('%.4f %.4f\n', C.SE);
+printf('%.3f %.5f\n', C.tStat(2), C.pValue(2));
+printf('%.4f %.3f %d\n', S.R2, S.F, S.DFE);
+---
+> 3.0001 0.5001
+> 1.1247 0.1179
+> 4.241 0.00217
+> 0.6665 17.990 9
+
+### reg-02 | regression | fitlm from a table and formula = X \ y; without intercept
+T = table([1;2;3;4;5], [2;1;4;3;6], [3.1;3.9;7.2;6.8;10.1], 'VariableNames', {'a','b','y'});
+C = fitlm(T, 'y ~ a + b', 'Display', 'off');
+X = [ones(5,1) T.a T.b];
+b = X \ T.y;
+printf('%d\n', max(abs(C.Estimate - b)) < 1e-12);
+disp(C.Name(2))
+C0 = fitlm(T, 'y ~ a - 1', 'Display', 'off');
+printf('%d %d\n', height(C0), abs(C0.Estimate - (T.a \ T.y)) < 1e-12);
+---
+> 1
+> a
+> 1 1
+
+### reg-03 | regression | fitlm report: assumptions, steps, coefficients
+fitlm([1;2;3;4], [1.1;1.9;3.2;3.8]);
+---
+>* fitlm: OLS linear regression, y ~ 1 + x1
+>*   assumptions:
+>*     linear relationship
+>*     independence
+>*     homoscedasticity
+>*     normality of residuals
+>*   steps:
+>*     β: OLS via QR
+>*     s² = SSE/(n − p)
+>*     t = β/SE
+>*   coefficients:
+>*     (Intercept)
+>*     x1
+>*   n = 4, R² =
+
+### err-01 | errors | tables: unknown variable, different row counts, new column of the wrong length
+T = table([1;2], 'VariableNames', {'a'});
+try
+  T.zz
+catch err
+  disp(err)
+end
+try
+  table([1;2], [1;2;3])
+catch err
+  disp(err)
+end
+try
+  T.b = [1;2;3];
+catch err
+  disp(err)
+end
+---
+> table: unknown variable 'zz' (variables: a)
+> table: all variables must have the same number of rows (2 vs 3)
+> table: new variable 'b' must have 2 rows, got 3
+
+### err-02 | errors | test on a too-small sample; nonexistent file
+try
+  ttest(5, 'Display', 'off');
+catch err
+  disp(err)
+end
+try
+  readtable('/nonexistent/x.csv');
+catch err
+  disp(err)
+end
+---
+> ttest: need at least 2 observations
+>* readtable: cannot open '/nonexistent/x.csv'

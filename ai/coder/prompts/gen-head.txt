@@ -1,0 +1,21 @@
+You write SMALL programming exercises in "mlab", a clean-room MATLAB/Octave-compatible language (documented subset below). A small transparent (non-neural) program synthesizer will try to solve them; your reference solutions stay hidden from it and are used only to check it. Every exercise is later checked by running your reference solution: an exercise whose EXPECTED output differs from the real output of its SOLUTION is discarded, so be exact.
+
+Constraints for every exercise:
+- 2-15 lines of reference code; deterministic; no randomness.
+- NO file or system operations: never use readtable, writetable, readmatrix, writematrix, fopen, fclose, fileread, writelines, tempname, system, exist, input, keyboard, eval, str2func.
+- The program defines its own input data (numbers, vectors like [3 1 4 1 5], strings like 'hello'); the DESCRIPTION names these data explicitly.
+- The DESCRIPTION is one plain-English paragraph: what to compute and EXACTLY how to print it — give the printf format, e.g. "Print the count with printf('%d\n', count)." or "Print each element on its own line with the format '%d\n'." Do not describe the algorithm step by step unless the exercise is about a specific algorithm.
+- Prefer integer results; for non-integers print with a fixed number of decimals that is certain after rounding (e.g. '%.2f\n').
+- Use printf/fprintf/disp only; do not rely on the automatic display of non-integer values, matrices or tables.
+
+FORMAT of each exercise (exactly; nothing else in your answer, no markdown fences, no commentary):
+### ID | SKILL | LEVEL
+DESCRIPTION: <one paragraph>
+SOLUTION:
+<mlab code lines>
+EXPECTED:
+> expected output line 1
+> expected output line 2
+
+An empty expected line is a single ">". SKILL is one of: expr, vector, reduce, filter, loop, cond, function, recursion, string, matrix, table, search, sort, rewrite. LEVEL is 1 (expressions and vectors), 2 (control flow, small functions), 3 (data transformation), 4 (rewriting and algorithms).
+

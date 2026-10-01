@@ -1,0 +1,53 @@
+% Sample document for the latex crate tests (original text). Macros from the preamble must expand
+% in the body formulas; comments, the escaped \$ and verbatim are not formulas.
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\norm}[1]{\left\| #1 \right\|}
+\newcommand{\ip}[2][\cdot]{\langle #1, #2 \rangle}
+\renewcommand{\epsilon}{\varepsilon}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\def\half{\frac{1}{2}}
+\def\pair(#1,#2){\left(#1, #2\right)}
+\let\oldsqrt\sqrt
+\begin{document}
+
+Let $x \in \R^n$ and $\epsilon > 0$. The price is \$5, not a formula. % $\notaformula$
+Then \(\norm{x}_2 \le \sqrt{n}\,\norm{x}_\infty\) and
+\[ \tr(AB) = \tr(BA), \qquad \hat{x} = \argmin_{y \in \R^n} \half \norm{Ay - b}^2 . \]
+
+\begin{equation}\label{eq:quad}
+  x_{1,2} = \frac{-b \pm \oldsqrt{b^2 - 4ac}}{2a}
+\end{equation}
+
+\begin{align*}
+  f(x) &= \sum_{k=0}^{\infty} \frac{f^{(k)}(0)}{k!} x^k \\
+       &\approx 1 + x + \frac{x^2}{2} \nonumber \\
+\end{align*}
+
+\begin{gather}
+  \ip{u}{v} = \ip[\omega]{u}{v}, \quad \pair(a,b) \ne \pair(b,a)
+\end{gather}
+
+$$ A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad
+   |A| = \begin{vmatrix} 1 & 2 \\ 3 & 4 \end{vmatrix} = -2 $$
+
+\begin{verbatim}
+$this is not math$
+\end{verbatim}
+
+\begin{alignat}{2}
+  u_t &= \Delta u + f(u), &\quad& x \in \Omega \\
+  u   &= 0,               &    & x \in \partial\Omega
+\end{alignat}
+
+\begin{multline}
+  \int_0^1 \!\! \left( \sum_{i=1}^{n} a_i \cos(i \pi t) \right)^2 dt \\
+  = \frac{1}{2} \sum_{i=1}^{n} a_i^2
+\end{multline}
+
+A piecewise function:
+\[ |x| = \begin{cases} x, & x \ge 0, \\ -x, & \text{otherwise.} \end{cases} \]
+
+\end{document}

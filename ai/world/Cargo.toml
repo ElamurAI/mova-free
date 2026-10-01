@@ -1,0 +1,24 @@
+[package]
+name = "world"
+version = "0.1.0"
+edition = "2024"
+# closed part: the story world is an MMM module, not the open `en`
+publish = false
+description = "Mova story world (closed): entities as identities with immutable states (deltas, shared memory), registries, cursor, append-only mentions; a change language written by the big model (Opus) and executed by Rust with gates; answers to questions straight from the state."
+
+[dependencies]
+# prag: LLM call (`prag::opus`), the closed set of speech acts (`prag::schema::Act`), database reading (`prag::data::duck_query`)
+prag = { path = "../prag" }
+# en: lexicon in code — lemmas of question words and past tense of verbs in answers (read-only)
+en = { path = "../en" }
+# math: exact core (rational numbers) and text numbers for the quantitative layer
+math = { path = "../math" }
+# level 1 (global): values (predicates), states of trouble and relief, verb classes
+global = { path = "../global" }
+anyhow = "1.0.104"
+serde_json = "1.0.151"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1

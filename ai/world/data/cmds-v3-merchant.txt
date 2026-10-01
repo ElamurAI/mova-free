@@ -1,0 +1,215 @@
+loc L1 type=kingdom class=empire name="the Persian Empire" ^s1
+char C1 type=human class=king name="the best monarch of his time" gender=male status=king trait=good at=L1 ^s1
+event E1 verb=die patient=C1 at=L1 ^s2
+set C1 life=dead cause=E1 ^s2
+set L1 trait=prosperous,powerful cause=E1 ^s2
+char C2 type=human class=sultan name="Schahriar" gender=male father=C1 at=L1 ^s3
+char C3 type=human class=king name="Schahzeman" gender=male father=C1 at=L1 ^s3
+rel R1 kind=kin a=C2 b=C3 ^s3
+event E2 verb=forbid patient=C2 about=L1 why="the laws of the empire forbade sharing his dominions with his brother" ^s3
+feel C2 +sad cause=E2 ^s3
+loc L2 type=country name="Great Tartary" in=L1 here=0 ^s4
+event E3 verb=cut_off agent=C2 patient=L2 why="to share his dominions with his brother" when=after_ten_years ^s4
+event E4 verb=make_king agent=C2 patient=C3 cause=E3 ^s4
+set C3 status=king cause=E4 ^s4
+feel C2 -sad cause=E4 ^s4
+char C4 type=human class=sultana name="the sultana" gender=female at=L1 ^s5
+rel R2 kind=spouse a=C2 b=C4 ^s5
+obj O1 type=clothing class=dress name="the finest dresses" num=many at=C2 ^s5
+obj O2 type=jewel name="the most beautiful jewels" num=many at=C2 ^s5
+event E5 verb=give agent=C2 patient=O1 to=C4 why="he loved her more than all the world" ^s5
+give C2 O1 to=C4 cause=E5 ^s5
+give C2 O2 to=C4 cause=E5 ^s5
+feel C2 +loving +happy cause=E5 ^s5
+event E6 verb=deceive agent=C4 patient=C2 how="completely" ^s6
+event E7 verb=discover agent=C2 about=E6 how="accidentally" when=after_several_years cause=E6 ^s6
+know who=C2 fact=E6 from=^s6 how=saw by=E7 ^s6
+feel C2 +ashamed +sad -happy cause=E7 ^s6
+char C5 type=human class=vizir name="the grand-vizir" gender=male at=L1 ^s6
+rel R3 kind=ruler a=C2 b=C5 ^s6
+say C2 to=C5 act=request means="put the sultana to death" why="he felt obliged to carry out the law of the land" cause=E7 id=E8 ^s6
+plan P1 kind=order who=C2 to=C5 what="put the sultana to death" src=E8 ^s6
+event E9 verb=put_to_death agent=C5 patient=C4 cause=E8 ^s6
+set C4 life=dead cause=E9 ^s6
+plan P1 status=kept by=E9 ^s6
+say C2 act=assert means="all women are as wicked as the sultana, and the fewer the world contained the better" why="the blow almost made his mind give way" cause=E9 id=E10 ^s7
+believe B1 who=C2 claim="all women are as wicked as the sultana" from=E7 true=0 ^s7
+set C2 status=distraught cause=E7 ^s7
+plan P2 kind=plan who=C2 what="marry a fresh wife every evening and have her strangled the next morning" src=E10 ^s8
+char C6 type=human class=bride name="the unhappy brides" gender=female num=many ^s8
+plan P3 kind=task who=C5 to=C2 what="provide the Sultan with a fresh bride every day" ^s8
+event E11 verb=marry agent=C2 patient=C6 when=every_evening cause=E10 ^s8
+event E12 verb=strangle patient=C6 when=following_morning why="he believed all women were wicked" cause=E11 ^s8
+set C6 life=dead cause=E12 ^s8
+event E13 verb=provide agent=C5 patient=C6 to=C2 how="with reluctance" about=P3 ^s9
+feel C5 +upset cause=E12 ^s9
+loc L3 type=town name="the town" in=L1 ^s10
+char C7 type=human class=townspeople name="the people of the town" num=many at=L3 ^s10
+rel R4 kind=ruler a=C2 b=C7 ^s10
+feel C7 +horrified cause=E12 ^s10
+event E14 verb=lament agent=C7 at=L3 how="cries and lamentations" cause=E12 ^s10
+feel C7 +sad +afraid cause=E12 ^s11
+event E15 verb=curse agent=C7 patient=C2 at=L3 how="instead of the blessings formerly heaped on his head" cause=E12 ^s11
+rel R4 fact=E15 ^s11
+loc L4 type=house name="the grand-vizir's house" in=L3 ^s12
+move C5 to=L4 ^s12
+char C8 type=human class=daughter name="Scheherazade" gender=female father=C5 at=L4 ^s12
+char C9 type=human class=daughter name="Dinarzade" gender=female father=C5 at=L4 ^s12
+rel R5 kind=parent a=C5 b=C8 ^s12
+rel R6 kind=parent a=C5 b=C9 ^s12
+rel R7 kind=kin a=C8 b=C9 ^s12
+set C9 trait=ordinary ^s13
+set C8 trait=clever,courageous ^s13
+event E16 verb=educate agent=C5 patient=C8 how="the best masters in philosophy, medicine, history and the fine arts" when=long_ago ^s14
+set C8 status=learned,beautiful cause=E16 ^s14
+feel C5 +proud cause=E16 ^s15
+say C8 to=C5 act=request means="I have a favour to ask of you" id=E17 ^s15
+say C8 to=C5 act=ask means="will you grant it to me" id=E18 ^s16
+say C5 to=C8 act=promise means="I can refuse you nothing that is just and reasonable" cause=E18 id=E19 ^s17
+plan P4 kind=promise who=C5 to=C8 what="grant her favour if it is just and reasonable" src=E19 ^s17
+say C8 to=C5 act=assert means="I am determined to stop the Sultan's barbarous practice and deliver the girls and mothers" why="to save the girls and mothers from their awful fate" id=E20 ^s18 ^s19
+set C8 goal="stop the Sultan's barbarous practice and deliver the girls and mothers" ^s19
+plan P5 kind=plan who=C8 what="stop the Sultan's barbarous practice and deliver the girls and mothers" src=E20 ^s19
+say C5 to=C8 act=evaluate+ask means="it would be excellent, but how do you propose to accomplish it" cause=E20 id=E21 ^s20
+say C8 to=C5 act=request means="allow the honour of being the Sultan's next bride to fall upon me" why="to stop the Sultan's practice" id=E22 ^s21
+plan P6 kind=wish who=C8 to=C5 what="be given to the Sultan as his next bride" src=E22 ^s21
+say C5 to=C8 act=ask means="have you lost your senses? what has put such a thing into your head" cause=E22 id=E23 ^s22 ^s23
+feel C5 +horrified cause=E22 ^s23
+say C5 to=C8 act=warn means="you ought to know what it means to be the sultan's bride" id=E24 ^s24
+say C8 to=C5 act=assert means="I know it well and am not afraid; if I fail my death is glorious, if I succeed I serve my country" cause=E24 id=E25 ^s25 ^s26
+feel C8 +brave cause=E24 ^s26
+say C5 to=C8 act=disagree means="it is of no use, I shall never consent" id=E26 ^s27
+say C5 to=C8 act=warn means="if the Sultan ordered me to plunge a dagger in your heart I should have to obey; what a task for a father" id=E27 ^s28 ^s29
+say C5 to=C8 act=request means="if you do not fear death, fear the anguish you would cause me" why="he loves his daughter" id=E28 ^s30
+say C8 to=C5 act=ask means="once again, will you grant me what I ask" id=E29 ^s31
+say C5 to=C8 act=ask means="why are you so obstinate and resolved upon your own ruin" id=E30 ^s32 ^s33
+event E31 verb=refuse agent=C8 about=E30 how="absolutely refused to attend to her father's words" ^s34
+event E32 verb=give_way agent=C5 how="in despair" cause=E31 ^s34
+feel C5 +desperate +sad cause=E31 ^s34
+plan P4 status=kept by=E32 ^s34
+loc L5 type=palace name="the palace" in=L3 ^s34
+move C2 to=L5 ^s34
+event E33 verb=go agent=C5 to=L5 how="sadly" cause=E32 ^s34
+move C5 to=L5 cause=E33 ^s34
+say C5 to=C2 act=assert means="the following evening he would bring him Scheherazade" id=E34 ^s34
+plan P7 kind=promise who=C5 to=C2 what="bring Scheherazade to the Sultan the following evening" src=E34 ^s34
+feel C2 +surprised cause=E34 ^s35
+say C2 to=C5 act=ask means="how have you made up your mind to sacrifice your own daughter to me" cause=E34 id=E35 ^s36
+say C5 to=C2 act=assert means="it is her own wish; even the sad fate that awaits her could not hold her back" id=E36 ^s37 ^s38
+say C2 to=C5 act=warn means="let there be no mistake; you will have to take her life yourself" id=E37 ^s39 ^s40
+plan P8 kind=order who=C2 to=C5 what="take Scheherazade's life himself the morning after the wedding" src=E37 ^s40
+say C2 to=C5 act=warn means="if you refuse, your head shall pay forfeit" id=E38 ^s41
+plan P9 kind=threat who=C2 to=C5 what="the vizir's head shall pay forfeit if he refuses to kill Scheherazade" src=E38 ^s41
+say C5 to=C2 act=promise means="whatever the cost, I will obey you" id=E39 ^s42 ^s43
+plan P10 kind=promise who=C5 to=C2 what="obey the Sultan whatever the cost" src=E39 ^s43
+say C5 to=C2 act=assert means="though a father, I am also your subject" id=E40 ^s44
+say C2 to=C5 act=agree means="he might bring his daughter as soon as he liked" cause=E39 id=E41 ^s45
+event E42 verb=go_back agent=C5 to=L4 ^s46
+move C5 to=L4 cause=E42 ^s46
+say C5 to=C8 act=assert means="the Sultan will receive her as his bride" cause=E41 id=E43 ^s46
+feel C8 +happy cause=E43 ^s46
+say C8 to=C5 act=thank+express means="thanks for yielding to her wishes; she hopes he will never repent allowing her to marry the Sultan" why="he was still bowed down with grief" id=E44 ^s47
+event E45 verb=prepare agent=C8 at=L4 why="for the marriage" ^s48
+say C8 act=request means="send for her sister Dinarzade to speak to her" id=E46 ^s48
+event E47 verb=meet agent=C8+C9 at=L4 how="alone" cause=E46 ^s49
+say C8 to=C9 act=request means="I want your help in a very important affair; my father will take me to the palace to marry the Sultan" id=E48 ^s50 ^s51
+say C8 to=C9 act=assert means="I shall beg the Sultan, as a last favour, to let you sleep in our chamber on my last night" id=E49 ^s52
+plan P11 kind=plan who=C8 what="beg the Sultan to let Dinarzade sleep in their chamber" src=E49 ^s52
+say C8 to=C9 act=request means="wake me an hour before dawn and beg me to tell one of my charming stories" id=E50 ^s53
+say C8 to=C9 act=assert means="then I shall begin, and hope by this means to deliver the people from terror" about=P5 id=E51 ^s54
+say C9 to=C8 act=agree+promise means="she would do with pleasure what her sister wished" cause=E50 id=E52 ^s55
+plan P12 kind=promise who=C9 to=C8 what="wake Scheherazade an hour before dawn and ask her for a charming story" src=E52 ^s55
+event E53 verb=conduct agent=C5 patient=C8 to=L5 when=usual_hour ^s56
+move C5 to=L5 cause=E53 ^s56
+move C8 to=L5 cause=E53 ^s56
+plan P7 status=kept by=E53 ^s56
+plan P6 status=kept by=E53 ^s56
+event E54 verb=leave agent=C5 patient=C8 at=L5 how="alone with the Sultan" ^s56
+rel R8 kind=spouse a=C2 b=C8 cause=E53 ^s56
+say C2 to=C8 act=request means="raise your veil" id=E55 ^s56
+feel C2 +admiring cause=E55 ^s56
+event E56 verb=weep agent=C8 at=L5 ^s57
+say C2 to=C8 act=ask means="what is the matter" cause=E56 id=E57 ^s57
+say C8 to=C2 act=assert means="I have a sister who loves me as tenderly as I love her" cause=E57 id=E58 ^s58
+say C8 to=C2 act=request means="allow my sister to sleep this night in the same room, as it is our last together" why="to carry out her plan with Dinarzade" id=E59 ^s59
+plan P11 status=kept by=E59 ^s59
+say C2 to=C8 act=agree cause=E59 id=E60 ^s60
+event E61 verb=send_for agent=C2 patient=C9 cause=E60 ^s60
+move C9 to=L5 cause=E61 ^s60
+cursor at=L5 time=hour_before_daybreak ^s61
+event E62 verb=wake agent=C9 at=L5 ^s61
+set C9 sleep=awake cause=E62 ^s61
+say C9 to=C8 act=request means="if you are not asleep, tell me before sunrise one of your charming stories; it is the last time" why="she had promised her sister" cause=E62 id=E63 ^s61 ^s62
+plan P12 status=kept by=E63 ^s62
+event E64 verb=answer agent=C8 patient=C9 neg=1 ^s63
+say C8 to=C2 act=ask means="will your highness permit me to do as my sister asks" id=E65 ^s64
+say C2 to=C8 act=agree means="willingly" cause=E65 id=E66 ^s65
+say C8 to=C2+C9 act=narrate means="the story of the merchant and the genius" why="to deliver the people from the terror by her stories" cause=E66 id=E67 ^s66
+frame open F1 narrator=C8 to=C2+C9 level=1 world=new src=E67 ^s66
+char C10 type=human class=merchant name="the merchant" gender=male ^s67
+set C10 status=rich ^s68
+event E68 verb=journey agent=C10 why="to arrange his affairs" when=from_time_to_time ^s69
+loc L6 type=house name="the merchant's home" ^s70
+move C10 to=L6 ^s70
+obj O3 type=animal class=horse name="his horse" at=C10 ^s70
+obj O4 type=container class=wallet name="a small wallet" at=C10 ^s70
+obj O5 type=food name="a few biscuits and dates" num=few at=C10 ^s70
+event E69 verb=set_out agent=C10 at=L6 how="on his horse" why="he had to pass through the desert where no food was to be got" ^s70
+loc L7 type=land class=desert name="the desert" here=0 ^s70
+event E70 verb=arrive agent=C10 how="without any mishap" ^s71
+event E71 verb=set_out agent=C10 why="to return home after finishing his business" cause=E70 ^s71
+move C10 to=L7 cause=E71 ^s71
+loc L8 type=place class=grove name="some trees" in=L7 ^s72
+event E72 verb=turn_out agent=C10 to=L8 why="the heat of the sun was very great" when=fourth_day ^s72
+move C10 to=L8 cause=E72 ^s72
+obj O6 type=tree class=walnut_tree name="a large walnut-tree" at=L8 ^s73
+obj O7 type=water class=fountain name="a fountain of clear and running water" at=L8 ^s73
+event E73 verb=find agent=C10 patient=O7 at=L8 ^s73
+event E74 verb=dismount agent=C10 patient=O3 at=L8 ^s74
+event E75 verb=fasten agent=C10 patient=O3 at=L8 how="to a branch of the tree" ^s74
+move O3 to=L8 cause=E75 ^s74
+event E76 verb=sit agent=C10 at=L8 how="by the fountain, after taking dates and biscuits from his wallet" ^s74
+event E77 verb=eat agent=C10 patient=O5 at=L8 how="a frugal meal" ^s75
+event E78 verb=wash agent=C10 at=L8 how="his face and hands in the fountain" ^s75
+char C11 type=magical class=genius name="an enormous genius" gender=male ^s76
+obj O8 type=weapon class=scimitar name="a scimitar" at=C11 ^s76
+event E79 verb=come agent=C11 to=L8 how="white with rage, scimitar in hand" ^s76
+move C11 to=L8 cause=E79 ^s76
+feel C11 +angry cause=E79 ^s76
+char C12 type=magical class=genius name="the genius's son" gender=male ^s77
+rel R9 kind=parent a=C11 b=C12 ^s77
+event E80 verb=kill agent=C10 patient=C12 before=E79 ^s77
+set C12 life=dead cause=E80 ^s77
+say C11 to=C10 act=request+warn means="arise and let me kill you as you have killed my son" why="to avenge his son" id=E81 ^s77
+plan P13 kind=threat who=C11 to=C10 what="kill the merchant as he killed the genius's son" src=E81 ^s77
+claim K1 who=C11 about=E80 status=believes interp="the merchant killed his son" ^s77
+event E82 verb=yell agent=C11 at=L8 how="frightful" ^s78
+feel C10 +afraid cause=E82 ^s79
+say C10 to=C11 act=ask means="what can I have done to you to deserve death" cause=E81 id=E83 ^s79
+say C11 to=C10 act=warn means="I shall kill you as you have killed my son" id=E84 ^s80
+say C10 to=C11 act=disagree means="how can I have killed your son? I do not know him and have never seen him" id=E85 ^s81 ^s82
+claim K2 who=C10 about=E80 status=doubts interp="he could not have killed a son he never saw" from=E85 ^s82
+say C11 to=C10 act=ask means="did you not sit on the ground, eat dates from your wallet and throw the stones about" id=E86 ^s83
+obj O9 type=stone class=date_stone name="the date stones" num=many at=L8 ^s83
+event E87 verb=throw agent=C10 patient=O9 at=L8 during=E77 how="about, whilst eating the dates" ^s83
+say C10 to=C11 act=agree means="yes, I certainly did so" cause=E86 id=E88 ^s84
+say C11 to=C10 act=assert means="whilst you threw the stones my son passed by, and one struck him in the eye and killed him" id=E89 ^s85
+event E90 verb=pass_by agent=C12 during=E87 ^s85
+reveal E80 to=C10 by=E89 instr=O9 cause=E87 during=E77 interp="a date stone the merchant threw struck the passing son in the eye and killed him" right=K1 wrong=K2 ^s85
+say C11 to=C10 act=warn means="so I shall kill you" id=E91 ^s86
+say C10 to=C11 act=apologize+request means="forgive me" id=E92 ^s87
+say C11 to=C10 act=disagree means="I will have no mercy on you" cause=E92 id=E93 ^s88
+say C10 to=C11 act=request means="I killed your son quite unintentionally, so spare my life" why="to save his life" id=E94 ^s89
+claim K3 who=C10 about=E80 status=knows interp="he killed the son unintentionally with a date stone" from=E89 ^s89
+say C11 to=C10 act=disagree means="I shall kill you as you killed my son" id=E95 ^s90
+event E96 verb=seize agent=C11 patient=C10 at=L8 how="by the arm, and threw him on the ground" ^s90
+set C10 freedom=captive cause=E96 ^s90
+event E97 verb=lift agent=C11 patient=O8 at=L8 why="to cut off the merchant's head" ^s90
+event E98 verb=bewail agent=C10 at=L8 how="protesting his innocence, bewailing his wife and children" why="to avert his fate" ^s91
+feel C10 +desperate cause=E96 ^s91
+event E99 verb=wait agent=C11 at=L8 how="with his raised scimitar" cause=E98 ^s92
+event E100 verb=pity agent=C11 patient=C10 neg=1 how="not in the least touched" ^s92
+frame close F1 ^s93
+cursor at=L5 time=day ^s93
+event E101 verb=stop agent=C8 at=L5 about=E67 why="it was day and the Sultan always rose early to attend the council" ^s93
+say C9 to=C8 act=evaluate means="this is a wonderful story" cause=E101 id=E102 ^s94

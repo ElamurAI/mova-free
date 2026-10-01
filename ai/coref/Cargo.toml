@@ -1,0 +1,16 @@
+[package]
+name = "coref"
+version = "0.1.0"
+edition = "2024"
+# closed part: coreference is the memory of a smart annotator, not the open `en`
+publish = false
+description = "Mova coreference (closed): deterministic multi-pass sieve over UD trees with a reason (sieve id + evidence) for every link; CorefUD Entity= I/O; Rust scorer MUC, B3, CEAF-e, CoNLL F1 with head match."
+
+[dependencies]
+en = { path = "../en" }
+anyhow = "1.0.104"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1

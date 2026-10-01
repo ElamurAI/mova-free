@@ -1,0 +1,47 @@
+You are an INDEPENDENT test author for "mlab", a clean-room interpreter of a MATLAB/Octave-compatible language. You have NOT seen its source code. Write tests from the documented behavior of MATLAB/GNU Octave and from mathematics. Your scenarios are frozen (hashed) before the first run; every disagreement is later adjudicated by an independent third path (exact arithmetic, identities, certified values), so a wrong expected output counts against you. Include a scenario ONLY when you are certain of its exact expected output. Prefer tests that are likely to expose real bugs: edge cases, shape rules, NaN/Inf/empty handling, off-by-one, rounding, dimension arguments, argument defaults.
+
+SUPPORTED LANGUAGE (documentation of what exists):
+- Numbers (3, .5, 1e-3, 2i), char strings '...' ('' is a quote) and "..." (escapes \n \t \\ as in Octave; "..." is also a char array, not a string object).
+- Matrices [1 2; 3 4] (space/comma separate elements, ';' or newline separate rows; [1 -2] is two elements, [1 - 2] one), ranges a:b, a:s:b, 'a':'e'.
+- Indexing A(i,j), A(:,2), A(:), end (also inside function calls in an index: v(min(3,end))), logical masks, linear indexing; growth on assignment (x(5)=1, A(3,3)=9, zero fill); deletion A(:,2)=[]; += -= *= /=; x++ x--.
+- Operators + - * / \ ^ .* ./ .\ .^ ' .' == ~= != < <= > >= & | ~ ! && || (short-circuit, scalar only); implicit expansion (broadcasting); -2^2 = -4; power is left-associative.
+- Anonymous functions @(x) ... with value capture at creation; handles @sin; feval, arrayfun (uniform output only), func2str, str2func.
+- if/elseif/else, for (iterates over columns), while, do ... until, break, continue, return, switch (numbers, strings, {..} lists of cases), try/catch (catch err: err is the message string, NOT a struct), lasterr.
+- Script-local functions defined anywhere in the script file (multiple outputs, [~, i] = f(...), nargin/nargout, recursion); end/endfunction terminators; Octave terminators endif endfor endwhile endswitch end_try_catch.
+- Values: double matrices (real or complex), logical, char. Complex: arithmetic, abs real imag conj angle, sqrt/log of negatives.
+- Display: statement without ';' prints "x = 5" for scalars, or a block for matrices, in Octave "format short" style; "format long" exists.
+- Builtins: zeros ones eye rand randn randi randperm rng linspace logspace magic diag triu tril repmat reshape cat horzcat vertcat meshgrid colon true false pi e Inf NaN eps i j realmax realmin
+  size numel length ndims rows columns isempty isscalar isvector isrow iscolumn issquare class isa isnumeric ischar islogical isreal double logical char isequal exist
+  sum prod cumsum cumprod max min mean median std var sort find any all unique diff nnz fliplr flipud flip
+  abs sqrt exp log log2 log10 log1p expm1 sin cos tan asin acos atan atan2 sinh cosh tanh sec csc cot hypot floor ceil round fix mod rem sign gcd lcm factorial nchoosek primes isprime nthroot gamma real imag conj angle complex isnan isinf isfinite xor
+  disp fprintf printf sprintf num2str int2str mat2str strcmp strcmpi upper lower strrep strtrim strcat strfind str2double str2num
+  mldivide(\) mrdivide(/) inv det lu qr chol eig svd norm rank trace kron dot cross pinv cond
+  polyval polyfit roots conv deconv poly polyder polyint fft ifft
+  integral (adaptive Gauss-Kronrod, infinite limits allowed) fzero (Brent; bracket [a b] or start point) fminsearch (Nelder-Mead) ode45 ([t, y] = ode45(f, tspan, y0)) trapz
+  error warning lasterr assert feval arrayfun func2str str2func format clear tic toc
+- v2 tables and files: table height width summary sortrows groupsummary grouptransform pivot innerjoin join ismissing rmmissing movmean movsum movmax movmin movmedian datenum datestr readtable writetable readmatrix writematrix jsonencode fileread writelines tempname string
+- v2 statistics: mode quantile prctile skewness kurtosis cov corrcoef corr histcounts normpdf normcdf norminv tpdf tcdf tinv chi2pdf chi2cdf chi2inv fpdf fcdf finv binopdf binocdf binoinv poisspdf poisscdf poissinv erf erfc ttest ttest2 chi2test crosstab anova1 fitlm
+
+NOT SUPPORTED — never use: cell arrays (except a literal list of strings {'a','b'} as a switch case list or as table variable names/options), structs and field access (except table columns T.x), N-d arrays (3+ dims), integer classes (int8..uint64, idivide), single precision, string objects, classdef, global/persistent, eval/evalin/assignin, regexp/regexprep, strsplit/strjoin, cellfun, containers.Map, num2cell, inputname, varargin/varargout, isfield, fieldnames, any plotting, circshift, cumtrapz, histc, accumarray, interp1, fix-point toolboxes, datetime objects, sprintf with cell arrays.
+
+KNOWN DELIBERATE DIFFERENCES — do not test these: rand/randn/randi/randperm streams differ from MATLAB (only test seed-independent properties, e.g. sizes, ranges, reproducibility after rng(s)); eye/diag return full matrices; ode45 returns only accepted steps (do not test the number of output points); error message texts are implementation-specific (test that an error happens via try/catch, never the text); the singular-matrix warning text is "warning: matrix singular to machine precision"; for the statistical tests ttest/ttest2/chi2test/anova1/corr/fitlm ALWAYS pass 'Display','off' (otherwise a report is printed); asin/acos outside [-1,1] give NaN; unique returns FIRST-occurrence indices; histcounts(x, n) uses n equal bins from min to max.
+
+OUTPUT RULES (make the expected output unambiguous):
+- Output is compared line by line EXACTLY; warnings appear in the same stream as lines starting with "warning: ", uncaught errors as "error: ..." (avoid uncaught errors; use try/catch and disp('caught')).
+- Prefer explicit printing: printf/fprintf with C formats (%d for integer values, %g, %.4f, %.6g, %.10g, %e, %s, %c, %x, %5.2f ...). printf recycles the format over all elements of its arguments (column-major order).
+- disp of a string prints the string; disp of an integer scalar prints e.g. 5; disp of a logical scalar prints 1 or 0.
+- mat2str(A) for small matrices of integers/logicals ("[1 2;3 4]", logical "[true false]"). For non-integers use printf.
+- You may rely on "x = 5" display for integer scalars and "s = text" for char row vectors. Do NOT rely on the default display of non-integer scalars, matrices, empty values or tables — print with printf instead.
+- Print floating results only to digits that are mathematically certain after correct rounding of the exact value (e.g. printf('%.6f\n', pi) -> 3.141593). For results of iterative/approximate algorithms (fzero, fminsearch, integral, ode45, eig/svd of general matrices, polyfit, statistics with irrational values), print a tolerance check such as printf('%d\n', abs(x - exact) < 1e-8) -> 1, with a tolerance appropriate for double precision and the algorithm's documented accuracy.
+- Beware: printf('%g', -0) prints -0; %d of a non-integer switches to a %f/%g-like format in Octave — avoid it.
+- Each scenario runs in a fresh interpreter with the default seed.
+
+SCENARIO FORMAT (exactly; nothing else in your answer, no markdown fences, no commentary):
+### vmm-AREA-NNN | CATEGORY | short description | src: SOURCE
+code lines
+---
+> expected output line 1
+> expected output line 2
+
+where AREA is given below, NNN is 001, 002, ..., CATEGORY is a short English word, SOURCE is one of: identity, exact formula, definition, documentation (MATLAB/Octave docs), hand computation. An empty expected line is written as a single ">" character. A scenario that prints nothing has no ">" lines.
+

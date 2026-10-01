@@ -1,0 +1,699 @@
+# Table of LaTeX math-mode commands. build.rs compiles it into code (table.rs in OUT_DIR):
+# the enums Sym, FracKind, Accent, Font, TextStyle, Stack, XArrow, EnvKind and constant `match`es
+# (command name → Entry, character → Sym, environment name → EnvKind). Nothing is read from disk
+# at run time. A duplicate form or an unknown kind or class is a build error.
+#
+# Columns are separated by spaces or tabs. Forms are the last columns; `\name` is a command, a single
+# character is a character in the formula. The first form is canonical: `to_latex` prints it.
+#   sym   Id  class  text  forms…   — symbol; class: ord op opn fn fnl bin rel open close fence punct inner,
+#                                     suffix /d — may be a delimiter after \left/\right; text — for
+#                                     plain-text output (Unicode); the text itself, if it is a single character
+#                                     not yet taken, also becomes a form (Unicode in the source: ≤ → \le)
+#   frac  Id  forms…   — prefix fraction (\frac{a}{b});  infix Id forms… — infix ({a \over b})
+#   accent/font/text/stack/xarrow Id forms…  — commands with arguments
+#   fontsw Id forms…   — old font switch ({\bf x}), Id is a Font variant
+#   class Id forms…    — \mathrel{…} etc., Id is a Class variant
+#   env   Id names…    — environment \begin{name}; plainenv Id forms… — the same as a command (\pmatrix{…})
+#   other kinds (eqno sqrt root genfrac unicode left right middle begin end opname opnamelim not space spacearg kern ignore
+#   ignorearg phantom splice smash color textcolor newcommand providecommand def let declareop
+#   rowsep sup sub) — Id «-», behaviour is defined by the parser.
+#
+# Source of the list — own knowledge of LaTeX/amsmath/amssymb; the KaTeX function list (MIT) is only a reference
+# for what to support. Command frequencies in arXiv annotations: data/runs/latex-2026-09-26/.
+
+# ---- Greek lowercase
+sym Alpha ord α \alpha
+sym Beta ord β \beta
+sym Gamma ord γ \gamma
+sym Delta ord δ \delta
+sym Epsilon ord ϵ \epsilon
+sym Varepsilon ord ε \varepsilon
+sym Zeta ord ζ \zeta
+sym Eta ord η \eta
+sym Theta ord θ \theta
+sym Vartheta ord ϑ \vartheta
+sym Iota ord ι \iota
+sym Kappa ord κ \kappa
+sym Varkappa ord ϰ \varkappa
+sym Lambda ord λ \lambda
+sym Mu ord μ \mu
+sym Nu ord ν \nu
+sym Xi ord ξ \xi
+sym Omicron ord ο \omicron
+sym Pi ord π \pi
+sym Varpi ord ϖ \varpi
+sym Rho ord ρ \rho
+sym Varrho ord ϱ \varrho
+sym Sigma ord σ \sigma
+sym Varsigma ord ς \varsigma
+sym Tau ord τ \tau
+sym Upsilon ord υ \upsilon
+sym Phi ord ϕ \phi
+sym Varphi ord φ \varphi
+sym Chi ord χ \chi
+sym Psi ord ψ \psi
+sym Omega ord ω \omega
+sym Digamma ord ϝ \digamma
+# ---- Greek uppercase
+sym UpGamma ord Γ \Gamma
+sym UpDelta ord Δ \Delta
+sym UpTheta ord Θ \Theta
+sym UpLambda ord Λ \Lambda
+sym UpXi ord Ξ \Xi
+sym UpPi ord Π \Pi
+sym UpSigma ord Σ \Sigma
+sym UpUpsilon ord Υ \Upsilon
+sym UpPhi ord Φ \Phi
+sym UpPsi ord Ψ \Psi
+sym UpOmega ord Ω \Omega
+sym VarUpGamma ord Γ \varGamma
+sym VarUpDelta ord Δ \varDelta
+sym VarUpTheta ord Θ \varTheta
+sym VarUpLambda ord Λ \varLambda
+sym VarUpXi ord Ξ \varXi
+sym VarUpPi ord Π \varPi
+sym VarUpSigma ord Σ \varSigma
+sym VarUpUpsilon ord Υ \varUpsilon
+sym VarUpPhi ord Φ \varPhi
+sym VarUpPsi ord Ψ \varPsi
+sym VarUpOmega ord Ω \varOmega
+sym UpAlpha ord Α \Alpha
+sym UpBeta ord Β \Beta
+sym UpEpsilon ord Ε \Epsilon
+sym UpZeta ord Ζ \Zeta
+sym UpEta ord Η \Eta
+sym UpIota ord Ι \Iota
+sym UpKappa ord Κ \Kappa
+sym UpMu ord Μ \Mu
+sym UpNu ord Ν \Nu
+sym UpOmicron ord Ο \Omicron
+sym UpRho ord Ρ \Rho
+sym UpTau ord Τ \Tau
+sym UpChi ord Χ \Chi
+# ---- Hebrew
+sym Aleph ord ℵ \aleph
+sym Beth ord ℶ \beth
+sym Gimel ord ℷ \gimel
+sym Daleth ord ℸ \daleth
+# ---- ordinary symbols
+sym Infty ord ∞ \infty
+sym Partial ord ∂ \partial
+sym Nabla ord ∇ \nabla
+sym Forall ord ∀ \forall
+sym Exists ord ∃ \exists
+sym Nexists ord ∄ \nexists
+sym Neg ord ¬ \neg \lnot
+sym Emptyset ord ∅ \emptyset
+sym Varnothing ord ∅ \varnothing
+sym Hbar ord ℏ \hbar \hslash
+sym Ell ord ℓ \ell
+sym Wp ord ℘ \wp
+sym Re ord ℜ \Re
+sym Im ord ℑ \Im
+sym Imath ord ı \imath
+sym Jmath ord ȷ \jmath
+sym Prime ord ′ \prime
+sym Backprime ord ‵ \backprime
+sym Angle ord ∠ \angle
+sym MeasuredAngle ord ∡ \measuredangle
+sym SphericalAngle ord ∢ \sphericalangle
+sym Triangle ord △ \triangle \vartriangle
+sym TriangleDown ord ▽ \triangledown
+sym Square ord □ \square \Box
+sym BlackSquare ord ■ \blacksquare
+sym DiamondOrd ord ◇ \Diamond
+sym Lozenge ord ◊ \lozenge
+sym BlackLozenge ord ⧫ \blacklozenge
+sym BigStar ord ★ \bigstar
+sym DiamondSuit ord ♢ \diamondsuit
+sym HeartSuit ord ♡ \heartsuit
+sym ClubSuit ord ♣ \clubsuit
+sym SpadeSuit ord ♠ \spadesuit
+sym Flat ord ♭ \flat
+sym Natural ord ♮ \natural
+sym Sharp ord ♯ \sharp
+sym Top ord ⊤ \top
+sym Bot ord ⊥ \bot
+sym Checkmark ord ✓ \checkmark
+sym Surd ord √ \surd
+sym Degree ord ° \degree
+sym Bbbk ord 𝕜 \Bbbk
+sym Eth ord ð \eth
+sym Mho ord ℧ \mho
+sym Complement ord ∁ \complement
+sym Finv ord Ⅎ \Finv
+sym Game ord ⅁ \Game
+sym Section ord § \S
+sym Pilcrow ord ¶ \P
+sym Dag ord † \dag
+sym Ddag ord ‡ \ddag
+sym Copyright ord © \copyright
+sym Pounds ord £ \pounds \mathsterling
+sym Yen ord ¥ \yen
+sym Maltese ord ✠ \maltese
+sym CircledR ord ® \circledR
+sym CircledS ord Ⓢ \circledS
+sym Ldots inner … \ldots \dots \dotsc \dotso \hdots \mathellipsis
+sym Cdots inner ⋯ \cdots \dotsb \dotsm \dotsi
+sym Vdots ord ⋮ \vdots
+sym Ddots inner ⋱ \ddots
+sym Iddots inner ⋰ \iddots
+sym Hash ord # \#
+sym Percent ord % \%
+sym Amp ord & \&
+sym Dollar ord $ \$
+sym Underscore ord _ \_
+sym Backslash ord/d \ \backslash
+sym Period ord . .
+sym Slash ord/d / / \slash
+sym Question close ? ?
+sym Bang close ! !
+# ---- binary operations
+sym Plus bin + +
+sym Minus bin − -
+sym Pm bin ± \pm
+sym Mp bin ∓ \mp
+sym Times bin × \times
+sym Div bin ÷ \div
+sym Cdot bin ⋅ \cdot \centerdot
+sym Ast bin ∗ * \ast
+sym Star bin ⋆ \star
+sym Circ bin ∘ \circ
+sym Bullet bin • \bullet
+sym Oplus bin ⊕ \oplus
+sym Ominus bin ⊖ \ominus
+sym Otimes bin ⊗ \otimes
+sym Oslash bin ⊘ \oslash
+sym Odot bin ⊙ \odot
+sym Bigcirc bin ◯ \bigcirc
+sym Cap bin ∩ \cap
+sym Cup bin ∪ \cup
+sym DoubleCap bin ⋒ \Cap \doublecap
+sym DoubleCup bin ⋓ \Cup \doublecup
+sym Sqcap bin ⊓ \sqcap
+sym Sqcup bin ⊔ \sqcup
+sym Uplus bin ⊎ \uplus
+sym Vee bin ∨ \vee \lor
+sym Wedge bin ∧ \wedge \land
+sym Setminus bin ∖ \setminus \smallsetminus
+sym Wr bin ≀ \wr
+sym DiamondBin bin ⋄ \diamond
+sym BigTriangleUp bin △ \bigtriangleup
+sym BigTriangleDown bin ▽ \bigtriangledown
+sym TriangleLeft bin ◃ \triangleleft
+sym TriangleRight bin ▹ \triangleright
+sym Lhd bin ⊲ \lhd
+sym Rhd bin ⊳ \rhd
+sym Unlhd bin ⊴ \unlhd
+sym Unrhd bin ⊵ \unrhd
+sym Amalg bin ⨿ \amalg
+sym Dagger bin † \dagger
+sym Ddagger bin ‡ \ddagger
+sym Ltimes bin ⋉ \ltimes
+sym Rtimes bin ⋊ \rtimes
+sym LeftThreeTimes bin ⋋ \leftthreetimes
+sym RightThreeTimes bin ⋌ \rightthreetimes
+sym Boxplus bin ⊞ \boxplus
+sym Boxminus bin ⊟ \boxminus
+sym Boxtimes bin ⊠ \boxtimes
+sym Boxdot bin ⊡ \boxdot
+sym CircledAst bin ⊛ \circledast
+sym CircledCirc bin ⊚ \circledcirc
+sym CircledDash bin ⊝ \circleddash
+sym Dotplus bin ∔ \dotplus
+sym DivideOnTimes bin ⋇ \divideontimes
+sym Intercal bin ⊺ \intercal
+sym Barwedge bin ⊼ \barwedge
+sym Veebar bin ⊻ \veebar
+sym CurlyWedge bin ⋏ \curlywedge
+sym CurlyVee bin ⋎ \curlyvee
+sym DoubleBarWedge bin ⩞ \doublebarwedge
+sym Bmod bin mod \bmod \mod
+# ---- relations
+sym Eq rel = =
+sym Lt rel < < \lt \textless
+sym Gt rel > > \gt \textgreater
+sym Colon rel : :
+sym Le rel ≤ \le \leq
+sym Ge rel ≥ \ge \geq
+sym Leqslant rel ⩽ \leqslant
+sym Geqslant rel ⩾ \geqslant
+sym Leqq rel ≦ \leqq
+sym Geqq rel ≧ \geqq
+sym Ne rel ≠ \ne \neq
+sym Ll rel ≪ \ll
+sym Gg rel ≫ \gg
+sym Lll rel ⋘ \lll \llless
+sym Ggg rel ⋙ \ggg \gggtr
+sym Lesssim rel ≲ \lesssim
+sym Gtrsim rel ≳ \gtrsim
+sym Lessapprox rel ⪅ \lessapprox
+sym Gtrapprox rel ⪆ \gtrapprox
+sym Lessgtr rel ≶ \lessgtr
+sym Gtrless rel ≷ \gtrless
+sym Lesseqgtr rel ⋚ \lesseqgtr
+sym Gtreqless rel ⋛ \gtreqless
+sym Lessdot rel ⋖ \lessdot
+sym Gtrdot rel ⋗ \gtrdot
+sym Lneq rel ⪇ \lneq
+sym Gneq rel ⪈ \gneq
+sym Lneqq rel ≨ \lneqq
+sym Gneqq rel ≩ \gneqq
+sym Lnsim rel ⋦ \lnsim
+sym Gnsim rel ⋧ \gnsim
+sym Prec rel ≺ \prec
+sym Succ rel ≻ \succ
+sym Preceq rel ⪯ \preceq
+sym Succeq rel ⪰ \succeq
+sym Preccurlyeq rel ≼ \preccurlyeq
+sym Succcurlyeq rel ≽ \succcurlyeq
+sym Precsim rel ≾ \precsim
+sym Succsim rel ≿ \succsim
+sym Precneqq rel ⪵ \precneqq
+sym Succneqq rel ⪶ \succneqq
+sym Precnsim rel ⋨ \precnsim
+sym Succnsim rel ⋩ \succnsim
+sym Sim rel ∼ \sim \thicksim
+sym Simeq rel ≃ \simeq
+sym Approx rel ≈ \approx \thickapprox
+sym Approxeq rel ≊ \approxeq
+sym Cong rel ≅ \cong
+sym Equiv rel ≡ \equiv
+sym Propto rel ∝ \propto \varpropto
+sym Asymp rel ≍ \asymp
+sym Doteq rel ≐ \doteq
+sym DoteqDot rel ≑ \doteqdot \Doteq
+sym Triangleq rel ≜ \triangleq
+sym Coloneqq rel ≔ \coloneqq
+sym Eqqcolon rel ≕ \eqqcolon
+sym Eqcirc rel ≖ \eqcirc
+sym Circeq rel ≗ \circeq
+sym Bumpeq rel ≏ \bumpeq
+sym DoubleBumpeq rel ≎ \Bumpeq
+sym Backsim rel ∽ \backsim
+sym Backsimeq rel ⋍ \backsimeq
+sym Eqsim rel ≂ \eqsim
+sym Risingdotseq rel ≓ \risingdotseq
+sym Fallingdotseq rel ≒ \fallingdotseq
+sym Models rel ⊨ \models \vDash
+sym Vdash rel ⊢ \vdash
+sym Dashv rel ⊣ \dashv
+sym DoubleVdash rel ⊩ \Vdash
+sym Vvdash rel ⊪ \Vvdash
+sym In rel ∈ \in
+sym Ni rel ∋ \ni \owns
+sym Notin rel ∉ \notin
+sym Notni rel ∌ \notni
+sym Subset rel ⊂ \subset
+sym Supset rel ⊃ \supset
+sym Subseteq rel ⊆ \subseteq
+sym Supseteq rel ⊇ \supseteq
+sym Subsetneq rel ⊊ \subsetneq \varsubsetneq
+sym Supsetneq rel ⊋ \supsetneq \varsupsetneq
+sym Subseteqq rel ⫅ \subseteqq
+sym Supseteqq rel ⫆ \supseteqq
+sym Subsetneqq rel ⫋ \subsetneqq \varsubsetneqq
+sym Supsetneqq rel ⫌ \supsetneqq \varsupsetneqq
+sym Nsubset rel ⊄ \nsubset
+sym Nsupset rel ⊅ \nsupset
+sym Nsubseteq rel ⊈ \nsubseteq
+sym Nsupseteq rel ⊉ \nsupseteq
+sym Sqsubset rel ⊏ \sqsubset
+sym Sqsupset rel ⊐ \sqsupset
+sym Sqsubseteq rel ⊑ \sqsubseteq
+sym Sqsupseteq rel ⊒ \sqsupseteq
+sym DoubleSubset rel ⋐ \Subset
+sym DoubleSupset rel ⋑ \Supset
+sym Mid rel ∣ \mid \shortmid
+sym Nmid rel ∤ \nmid \nshortmid
+sym Parallel rel ∥ \parallel \shortparallel
+sym Nparallel rel ∦ \nparallel \nshortparallel
+sym Perp rel ⊥ \perp
+sym Smile rel ⌣ \smile
+sym Frown rel ⌢ \frown
+sym Bowtie rel ⋈ \bowtie \Join
+sym Pitchfork rel ⋔ \pitchfork
+sym Between rel ≬ \between
+sym Therefore rel ∴ \therefore
+sym Because rel ∵ \because
+sym Multimap rel ⊸ \multimap
+sym Ncong rel ≇ \ncong
+sym Nsim rel ≁ \nsim
+sym Nsimeq rel ≄ \nsimeq
+sym Napprox rel ≉ \napprox
+sym Nequiv rel ≢ \nequiv
+sym Nleq rel ≰ \nleq \nleqslant
+sym Ngeq rel ≱ \ngeq \ngeqslant
+sym Nless rel ≮ \nless
+sym Ngtr rel ≯ \ngtr
+sym Nprec rel ⊀ \nprec
+sym Nsucc rel ⊁ \nsucc
+sym Npreceq rel ⋠ \npreceq
+sym Nsucceq rel ⋡ \nsucceq
+sym Nvdash rel ⊬ \nvdash
+sym NvDash rel ⊭ \nvDash
+sym NVdash rel ⊮ \nVdash
+sym Ntriangleleft rel ⋪ \ntriangleleft
+sym Ntriangleright rel ⋫ \ntriangleright
+sym Ntrianglelefteq rel ⋬ \ntrianglelefteq
+sym Ntrianglerighteq rel ⋭ \ntrianglerighteq
+sym Trianglelefteq rel ⊴ \trianglelefteq
+sym Trianglerighteq rel ⊵ \trianglerighteq
+sym Vartriangleleft rel ⊲ \vartriangleleft
+sym Vartriangleright rel ⊳ \vartriangleright
+# ---- arrows (relations)
+sym To rel → \to \rightarrow
+sym Gets rel ← \gets \leftarrow
+sym LeftRightArrow rel ↔ \leftrightarrow
+sym DRightarrow rel ⇒ \Rightarrow
+sym DLeftarrow rel ⇐ \Leftarrow
+sym DLeftrightarrow rel ⇔ \Leftrightarrow
+sym Implies rel ⟹ \implies
+sym Impliedby rel ⟸ \impliedby
+sym Iff rel ⟺ \iff
+sym Mapsto rel ↦ \mapsto
+sym Longmapsto rel ⟼ \longmapsto
+sym Longrightarrow rel ⟶ \longrightarrow
+sym Longleftarrow rel ⟵ \longleftarrow
+sym Longleftrightarrow rel ⟷ \longleftrightarrow
+sym DLongrightarrow rel ⟹ \Longrightarrow
+sym DLongleftarrow rel ⟸ \Longleftarrow
+sym DLongleftrightarrow rel ⟺ \Longleftrightarrow
+sym Hookrightarrow rel ↪ \hookrightarrow
+sym Hookleftarrow rel ↩ \hookleftarrow
+sym Uparrow rel/d ↑ \uparrow
+sym Downarrow rel/d ↓ \downarrow
+sym Updownarrow rel/d ↕ \updownarrow
+sym DUparrow rel/d ⇑ \Uparrow
+sym DDownarrow rel/d ⇓ \Downarrow
+sym DUpdownarrow rel/d ⇕ \Updownarrow
+sym Nearrow rel ↗ \nearrow
+sym Searrow rel ↘ \searrow
+sym Swarrow rel ↙ \swarrow
+sym Nwarrow rel ↖ \nwarrow
+sym Rightharpoonup rel ⇀ \rightharpoonup
+sym Rightharpoondown rel ⇁ \rightharpoondown
+sym Leftharpoonup rel ↼ \leftharpoonup
+sym Leftharpoondown rel ↽ \leftharpoondown
+sym Rightleftharpoons rel ⇌ \rightleftharpoons
+sym Leftrightharpoons rel ⇋ \leftrightharpoons
+sym Upharpoonright rel ↾ \upharpoonright \restriction
+sym Upharpoonleft rel ↿ \upharpoonleft
+sym Downharpoonright rel ⇂ \downharpoonright
+sym Downharpoonleft rel ⇃ \downharpoonleft
+sym Twoheadrightarrow rel ↠ \twoheadrightarrow
+sym Twoheadleftarrow rel ↞ \twoheadleftarrow
+sym Rightarrowtail rel ↣ \rightarrowtail
+sym Leftarrowtail rel ↢ \leftarrowtail
+sym Dashrightarrow rel ⇢ \dashrightarrow
+sym Dashleftarrow rel ⇠ \dashleftarrow
+sym Curvearrowright rel ↷ \curvearrowright
+sym Curvearrowleft rel ↶ \curvearrowleft
+sym Circlearrowright rel ↻ \circlearrowright
+sym Circlearrowleft rel ↺ \circlearrowleft
+sym Rightsquigarrow rel ⇝ \rightsquigarrow \leadsto
+sym Leftrightsquigarrow rel ↭ \leftrightsquigarrow
+sym Rightrightarrows rel ⇉ \rightrightarrows
+sym Leftleftarrows rel ⇇ \leftleftarrows
+sym Rightleftarrows rel ⇄ \rightleftarrows
+sym Leftrightarrows rel ⇆ \leftrightarrows
+sym DRrightarrow rel ⇛ \Rrightarrow
+sym DLleftarrow rel ⇚ \Lleftarrow
+sym Looparrowright rel ↬ \looparrowright
+sym Looparrowleft rel ↫ \looparrowleft
+sym Nrightarrow rel ↛ \nrightarrow
+sym Nleftarrow rel ↚ \nleftarrow
+sym NRightarrow rel ⇏ \nRightarrow
+sym NLeftarrow rel ⇍ \nLeftarrow
+sym Nleftrightarrow rel ↮ \nleftrightarrow
+sym NLeftrightarrow rel ⇎ \nLeftrightarrow
+# ---- delimiters
+sym LParen open ( (
+sym RParen close ) )
+sym LBrack open [ [ \lbrack
+sym RBrack close ] ] \rbrack
+sym LBrace open { \{ \lbrace
+sym RBrace close } \} \rbrace
+sym Langle open ⟨ \langle \lang
+sym Rangle close ⟩ \rangle \rang
+sym Lfloor open ⌊ \lfloor
+sym Rfloor close ⌋ \rfloor
+sym Lceil open ⌈ \lceil
+sym Rceil close ⌉ \rceil
+sym Vert fence | | \vert \arrowvert
+sym DVert fence ‖ \| \Vert \Arrowvert
+sym Lvert open | \lvert
+sym Rvert close | \rvert
+sym LDVert open ‖ \lVert
+sym RDVert close ‖ \rVert
+sym Lgroup open ⟮ \lgroup
+sym Rgroup close ⟯ \rgroup
+sym Lmoustache open ⎰ \lmoustache
+sym Rmoustache close ⎱ \rmoustache
+sym Ulcorner open ⌜ \ulcorner
+sym Urcorner close ⌝ \urcorner
+sym Llcorner open ⌞ \llcorner
+sym Lrcorner close ⌟ \lrcorner
+sym LLBracket open ⟦ \llbracket
+sym RRBracket close ⟧ \rrbracket
+# ---- punctuation
+sym Comma punct , ,
+sym Semicolon punct ; ;
+sym ColonPunct punct : \colon
+# ---- large operators (limits above and below)
+sym Sum op ∑ \sum
+sym Prod op ∏ \prod
+sym Coprod op ∐ \coprod
+sym Bigcup op ⋃ \bigcup
+sym Bigcap op ⋂ \bigcap
+sym Bigsqcup op ⨆ \bigsqcup
+sym Bigvee op ⋁ \bigvee
+sym Bigwedge op ⋀ \bigwedge
+sym Bigoplus op ⨁ \bigoplus
+sym Bigotimes op ⨂ \bigotimes
+sym Bigodot op ⨀ \bigodot
+sym Biguplus op ⨄ \biguplus
+# ---- integrals (limits at the side)
+sym Int opn ∫ \int \intop \smallint
+sym Iint opn ∬ \iint
+sym Iiint opn ∭ \iiint
+sym Iiiint opn ⨌ \iiiint
+sym Oint opn ∮ \oint
+sym Oiint opn ∯ \oiint
+sym Oiiint opn ∰ \oiiint
+sym Idotsint opn ∫⋯∫ \idotsint
+# ---- functions (like log)
+sym Arccos fn arccos \arccos
+sym Arcsin fn arcsin \arcsin
+sym Arctan fn arctan \arctan \arctg
+sym Arccot fn arccot \arcctg
+sym Arg fn arg \arg
+sym Cos fn cos \cos
+sym Cosh fn cosh \cosh \ch
+sym Cot fn cot \cot \cotg \ctg
+sym Coth fn coth \coth \cth
+sym Csc fn csc \csc \cosec
+sym Deg fn deg \deg
+sym Dim fn dim \dim
+sym Exp fn exp \exp
+sym Hom fn hom \hom
+sym Ker fn ker \ker
+sym Lg fn lg \lg
+sym Ln fn ln \ln
+sym Log fn log \log
+sym Sec fn sec \sec
+sym Sin fn sin \sin
+sym Sinh fn sinh \sinh \sh
+sym Tan fn tan \tan \tg
+sym Tanh fn tanh \tanh \th
+sym Sgn fn sgn \sgn
+# ---- functions with limits below (like lim)
+sym Det fnl det \det
+sym Gcd fnl gcd \gcd
+sym Inf fnl inf \inf
+sym Lim fnl lim \lim
+sym Liminf fnl liminf \liminf
+sym Limsup fnl limsup \limsup
+sym Max fnl max \max
+sym Min fnl min \min
+sym Pr fnl Pr \Pr
+sym Sup fnl sup \sup
+sym Injlim fnl injlim \injlim
+sym Projlim fnl projlim \projlim
+sym Varinjlim fnl injlim \varinjlim
+sym Varprojlim fnl projlim \varprojlim
+sym Varliminf fnl liminf \varliminf
+sym Varlimsup fnl limsup \varlimsup
+sym Argmax fnl argmax \argmax
+sym Argmin fnl argmin \argmin
+sym Plim fnl plim \plim
+
+# ---- fractions
+frac Frac \frac
+frac DFrac \dfrac
+frac TFrac \tfrac
+frac CFrac \cfrac
+frac Binom \binom
+frac DBinom \dbinom
+frac TBinom \tbinom
+infix Frac \over
+infix Binom \choose
+infix Atop \atop
+infix Brack \brack
+infix Brace \brace
+
+# ---- accents and decorations (one argument)
+accent Hat \hat
+accent WideHat \widehat
+accent Check \check
+accent WideCheck \widecheck
+accent Tilde \tilde
+accent WideTilde \widetilde
+accent Acute \acute
+accent Grave \grave
+accent Dot \dot
+accent DDot \ddot
+accent DDDot \dddot
+accent DDDDot \ddddot
+accent Breve \breve
+accent Bar \bar
+accent Vec \vec
+accent Ring \mathring
+accent Overline \overline
+accent Underline \underline
+accent OverRightArrow \overrightarrow
+accent OverLeftArrow \overleftarrow
+accent OverLeftRightArrow \overleftrightarrow
+accent UnderRightArrow \underrightarrow
+accent UnderLeftArrow \underleftarrow
+accent UnderLeftRightArrow \underleftrightarrow
+accent OverBrace \overbrace
+accent UnderBrace \underbrace
+accent OverGroup \overgroup
+accent UnderGroup \undergroup
+accent UTilde \utilde
+accent Boxed \boxed
+accent Cancel \cancel
+accent BCancel \bcancel
+accent XCancel \xcancel
+accent Sout \sout
+accent Pmod \pmod
+accent Pod \pod
+
+# ---- fonts (argument) and old switches ({\bf x})
+font Bb \mathbb \Bbb \mathbbm \mathds
+font Bf \mathbf \bold
+font BoldSym \boldsymbol \bm \pmb
+font Cal \mathcal \Cal
+font Scr \mathscr \EuScript \mathpzc
+font Frak \mathfrak \frak \goth
+font Rm \mathrm \mathup
+font It \mathit
+font Sf \mathsf
+font Tt \mathtt
+font Normal \mathnormal
+fontsw Bf \bf
+fontsw Rm \rm
+fontsw It \it \sl
+fontsw Cal \cal
+fontsw Sf \sf
+fontsw Tt \tt
+
+# ---- text inside a formula
+text Plain \text \textrm \textup \textnormal \mbox \hbox \textmd \intertext
+text It \textit \textsl \emph
+text Bf \textbf
+text Sf \textsf
+text Tt \texttt
+text Sc \textsc
+
+# ---- atom class
+class Ord \mathord
+class Op \mathop
+class Bin \mathbin
+class Rel \mathrel
+class Open \mathopen
+class Close \mathclose
+class Punct \mathpunct
+class Inner \mathinner
+
+# ---- over/under scripts and labelled arrows
+stack Over \overset
+stack Under \underset
+stack Rel \stackrel
+xarrow Right \xrightarrow
+xarrow Left \xleftarrow
+xarrow LeftRight \xleftrightarrow
+xarrow DRight \xRightarrow
+xarrow DLeft \xLeftarrow
+xarrow DLeftRight \xLeftrightarrow
+xarrow MapsTo \xmapsto
+xarrow HookRight \xhookrightarrow
+xarrow HookLeft \xhookleftarrow
+xarrow TwoHeadRight \xtwoheadrightarrow
+xarrow TwoHeadLeft \xtwoheadleftarrow
+xarrow LongEqual \xlongequal
+xarrow RightHarpoonUp \xrightharpoonup
+xarrow RightLeftHarpoons \xrightleftharpoons
+
+# ---- environments (\begin{name}) and their plain TeX-style commands
+env Matrix matrix matrix*
+env PMatrix pmatrix pmatrix*
+env BMatrix bmatrix bmatrix*
+env BraceMatrix Bmatrix Bmatrix*
+env VMatrix vmatrix vmatrix*
+env DVMatrix Vmatrix Vmatrix*
+env SmallMatrix smallmatrix smallmatrix*
+env Array array darray
+env Subarray subarray
+env Cases cases
+env DCases dcases
+env RCases rcases
+env Aligned aligned
+env AlignedAt alignedat
+env Gathered gathered
+env Split split
+# plain TeX: \pmatrix{…}; AMS-TeX: \pmatrix … \endpmatrix (no braces)
+plainenv Matrix \matrix
+plainenv PMatrix \pmatrix
+plainenv BMatrix \bmatrix
+plainenv VMatrix \vmatrix
+plainenv DVMatrix \Vmatrix
+plainenv Cases \cases
+plainenv Aligned \aligned
+plainenv AlignedAt \alignedat
+plainenv Gathered \gathered
+plainenv Substack \substack
+
+# ---- behaviour defined by the parser
+sqrt - \sqrt
+root - \root
+genfrac - \genfrac
+unicode - \unicode
+left - \left
+right - \right
+middle - \middle
+begin - \begin
+end - \end
+opname - \operatorname
+opnamelim - \operatornamewithlimits
+not - \not
+space - \, \: \; \! \> \hfill \hfil \hss \quad \qquad \enspace \enskip \thinspace \medspace \thickspace \negthinspace \negmedspace \negthickspace \space \nobreakspace \/
+spacearg - \hspace \mspace \vspace
+kern - \kern \mkern \hskip \mskip
+ignore - \limits \nolimits \displaylimits \displaystyle \textstyle \scriptstyle \scriptscriptstyle \nonumber \notag \relax \allowbreak \nobreak \protect \mathstrut \strut \big \Big \bigg \Bigg \bigl \bigr \bigm \Bigl \Bigr \Bigm \biggl \biggr \biggm \Biggl \Biggr \Biggm \hline \hdashline \displaybreak \smallskip \medskip \bigskip \noindent \par \nolinebreak \linebreak \small \tiny \scriptsize \footnotesize \normalsize \large \Large \LARGE \huge \Huge \boldmath \unboldmath
+ignorearg - \label \tag
+eqno - \eqno \leqno
+phantom - \phantom \hphantom \vphantom
+splice - \ensuremath \mathrlap \mathllap \mathclap \rlap \llap \clap
+smash - \smash
+color - \color
+textcolor - \textcolor
+newcommand - \newcommand \renewcommand
+providecommand - \providecommand
+def - \def \gdef \edef \xdef
+let - \let
+declareop - \DeclareMathOperator
+rowsep - \\ \cr \newline
+sup - \sp
+sub - \sb

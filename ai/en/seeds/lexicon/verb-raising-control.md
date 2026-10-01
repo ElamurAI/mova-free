@@ -1,0 +1,11 @@
+# Raising, control and "object + infinitive"
+
+**Gist.** Verbs with an infinitive "lend" it a subject in different ways. Raising verbs (*seem, appear, tend, happen, be likely*) have no agent of their own: *He seems to know* = "it seems that he knows". Subject-control verbs (*want, try, hope, decide, promise*): *I want to go* — the one who wants is the one who goes. Object-control verbs (*ask, tell, persuade, convince, urge, order, allow, cause*): *I asked him to stay* — *him* is the one who stays. Verbs of thinking and wanting with "object + infinitive" (*believe, consider, expect, want, find, like*): *I believe him to be honest* — *him* is grammatically the object of the main verb but semantically the subject of the infinitive.
+
+**Conditions and exceptions.** In EWT, with verbs of speech and urging that allow two objects (*ask, tell, allow, convince, urge, persuade, cause*), the person is `iobj`, while with verbs of perception, causation and thinking (*let, make, have, get, keep, find, want, help, see, consider*) it is `obj`. Raising verbs have no passive and no direct object (see `verb-no-passive.md`, `verb-copula-like.md`). With *there*: *There seems to be a problem* — the formal subject raises, the notional one stays with *be*.
+
+**Examples.** *Sue asked George to respond* — `xcomp(asked, respond)`. — *I consider him honest* — `obj(him)`, `xcomp(honest)`. — *The cat seems to be in pain* — `xcomp(seems, pain)`.
+
+**In UD.** All three types are `xcomp`; the difference lies in the presence and type of object (`obj`/`iobj`) of the main verb. Enhanced annotation shows who the subject of the infinitive is.
+
+**Sources.** https://universaldependencies.org/en/dep/xcomp.html, https://universaldependencies.org/u/dep/xcomp.html; https://universaldependencies.org/en/specific-syntax.html, Functional control; PropBank 3.1 `seem.xml` (seem.01: only ARG1, ARG2), `want.xml`, `persuade.xml` (persuade.01: ARG1 «impelled agent», ARG2 «impelled action»); Poutsma, *GLME*, Part II, ch. XIX, §19 (infinitive after verbs with a personal object); Jespersen, MEG V, ch. XVIII «Subject + Infinitive as Object of Main Verb» (text-1, p. 304); Brown 1851, Rule XIX, Obs. 4 (the object before the infinitive — «subject or agent of that infinitive»).

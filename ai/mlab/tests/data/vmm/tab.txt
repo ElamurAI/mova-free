@@ -1,0 +1,433 @@
+; mlab — LLM scenarios, area «tab» (independent author: claude-opus-5-5, effort high, 26.09.2026, branch tests3).
+; The author did not see the mlab code; prompt — prompts/mlab-head.txt + prompts/tail-tab.txt. Format — as data/suite-v1.txt;
+; where the expected output comes from — the «src:» field of the header. Frozen by hash before the first run (tests/vmm_suites.rs).
+
+### vmm-tab-001 | construct | table from workspace variables takes their names | src: documentation
+x = [1;2;3];
+y = [4;5;6];
+T = table(x, y);
+printf('%d %d\n', height(T), width(T));
+printf('%d\n', T.y(2));
+---
+> 3 2
+> 5
+
+### vmm-tab-002 | shape | size of a table is rows by variables | src: documentation
+T = table([1;2;3;4], [5;6;7;8], [9;10;11;12]);
+s = size(T);
+printf('%d %d\n', s);
+---
+> 4 3
+
+### vmm-tab-003 | construct | VariableNames option names the columns | src: documentation
+T = table([1;2], [3;4], 'VariableNames', {'a','b'});
+printf('%d\n', T.a + T.b);
+---
+> 4
+> 6
+
+### vmm-tab-004 | construct | default names Var1 Var2 for inputs that are not variables | src: documentation
+T = table([1;2;3], [4;5;6]);
+printf('%d\n', T.Var2(3));
+printf('%d\n', T.Var1(1));
+---
+> 6
+> 1
+
+### vmm-tab-005 | construct | mixed named and unnamed inputs use VarN by position | src: documentation
+x = [7;8];
+T = table(x, [1;2]);
+printf('%d %d\n', T.x(2), T.Var2(1));
+---
+> 8 1
+
+### vmm-tab-006 | arithmetic | new variable from elementwise column arithmetic | src: hand computation
+x = [1;2;3];
+y = [4;5;6];
+T = table(x, y);
+T.z = T.x .* T.y;
+printf('%d\n', T.z);
+printf('%d\n', width(T));
+---
+> 4
+> 10
+> 18
+> 3
+
+### vmm-tab-007 | broadcast | scalar assignment to a new variable fills every row | src: documentation
+T = table([1;2;3;4], 'VariableNames', {'a'});
+T.c = 5;
+printf('%d\n', sum(T.c));
+printf('%d %d\n', size(T.c));
+---
+> 20
+> 4 1
+
+### vmm-tab-008 | assign | T.x(k) assignment changes the table but not the source variable | src: documentation
+x = [1;2;3];
+T = table(x);
+T.x(2) = 10;
+printf('%d\n', sum(T.x));
+printf('%d\n', x(2));
+---
+> 14
+> 2
+
+### vmm-tab-009 | indexing | row selection by index vector keeps the requested order | src: documentation
+T = table([10;20;30;40], [1;2;3;4], 'VariableNames', {'a','b'});
+S = T([4 2], :);
+printf('%d\n', height(S));
+printf('%d\n', S.a);
+---
+> 2
+> 40
+> 20
+
+### vmm-tab-010 | indexing | row selection by logical mask built from columns | src: hand computation
+T = table([10;20;30;40], [1;2;3;4], 'VariableNames', {'a','b'});
+S = T(T.a > 15 & T.b < 4, :);
+printf('%d\n', height(S));
+printf('%d\n', S.a);
+---
+> 2
+> 20
+> 30
+
+### vmm-tab-011 | indexing | end in table row indexing | src: documentation
+T = table([10;20;30;40], [1;2;3;4], 'VariableNames', {'a','b'});
+S = T(end, :);
+printf('%d %d\n', S.a, S.b);
+R = T(end-1:end, :);
+printf('%d\n', sum(R.a));
+---
+> 40 4
+> 70
+
+### vmm-tab-012 | selection | selecting variables by name list keeps the list order | src: documentation
+T = table([1;2], [3;4], [5;6], 'VariableNames', {'a','b','c'});
+S = T(:, {'c','a'});
+printf('%d %d\n', width(S), height(S));
+printf('%d\n', S.c(1));
+U = S(:, 1);
+printf('%d %d\n', width(U), U.c(2));
+---
+> 2 2
+> 5
+> 1 6
+
+### vmm-tab-013 | selection | selecting a variable by numeric index | src: documentation
+T = table([1;2], [3;4], [5;6], 'VariableNames', {'a','b','c'});
+S = T(:, 2);
+printf('%d\n', width(S));
+printf('%d\n', S.b);
+---
+> 1
+> 3
+> 4
+
+### vmm-tab-014 | empty | a mask matching no rows gives a 0-row table | src: documentation
+T = table([1;2], [3;4], [5;6], 'VariableNames', {'a','b','c'});
+S = T(T.a > 100, :);
+printf('%d %d\n', height(S), width(S));
+disp(isempty(S));
+---
+> 0 3
+> 1
+
+### vmm-tab-015 | sort | sortrows ascending by a named variable | src: hand computation
+T = table([3;1;2], [30;10;20], 'VariableNames', {'x','y'});
+S = sortrows(T, 'x');
+printf('%d\n', S.y);
+---
+> 10
+> 20
+> 30
+
+### vmm-tab-016 | sort | sortrows descending by a named variable | src: hand computation
+T = table([3;1;2;5], [1;2;3;4], 'VariableNames', {'x','y'});
+S = sortrows(T, 'x', 'descend');
+printf('%d\n', S.y);
+---
+> 4
+> 1
+> 3
+> 2
+
+### vmm-tab-017 | sort | sortrows keeps tied rows in their original order | src: documentation
+T = table([2;1;2;1;1], [1;2;3;4;5], 'VariableNames', {'g','v'});
+S = sortrows(T, 'g');
+printf('%d\n', S.v);
+---
+> 2
+> 4
+> 5
+> 1
+> 3
+
+### vmm-tab-018 | sort | sortrows by two keys | src: hand computation
+T = table([2;1;2;1], [5;7;3;6], [1;2;3;4], 'VariableNames', {'a','b','id'});
+S = sortrows(T, {'a','b'});
+printf('%d\n', S.id);
+---
+> 4
+> 2
+> 3
+> 1
+
+### vmm-tab-019 | sort | sortrows by two keys with different directions | src: documentation
+T = table([2;1;2;1], [5;7;3;6], [1;2;3;4], 'VariableNames', {'a','b','id'});
+S = sortrows(T, {'a','b'}, {'ascend','descend'});
+printf('%d\n', S.id);
+---
+> 2
+> 4
+> 1
+> 3
+
+### vmm-tab-020 | sort | second output of sortrows is the row permutation | src: documentation
+T = table([3;1;2], [30;10;20], 'VariableNames', {'x','y'});
+[S, i] = sortrows(T, 'x');
+printf('%d\n', i);
+printf('%d\n', S.x(1));
+---
+> 2
+> 3
+> 1
+> 1
+
+### vmm-tab-021 | sort | ascending sortrows puts NaN last | src: documentation
+T = table([2;NaN;1], [1;2;3], 'VariableNames', {'x','y'});
+S = sortrows(T, 'x');
+printf('%d\n', S.y);
+---
+> 3
+> 1
+> 2
+
+### vmm-tab-022 | group | groupsummary sum gives g, GroupCount, sum_x with groups sorted | src: hand computation
+g = [2;1;2;1;3];
+x = [10;20;30;40;50];
+T = table(g, x);
+G = groupsummary(T, 'g', 'sum', 'x');
+printf('%d %d %d\n', [G.g G.GroupCount G.sum_x]');
+printf('%d\n', width(G));
+---
+> 1 2 60
+> 2 2 40
+> 3 1 50
+> 3
+
+### vmm-tab-023 | group | groupsummary mean | src: hand computation
+g = [2;1;2;1;3];
+x = [10;20;30;45;50];
+T = table(g, x);
+G = groupsummary(T, 'g', 'mean', 'x');
+printf('%g\n', G.mean_x);
+---
+> 32.5
+> 20
+> 50
+
+### vmm-tab-024 | group | groupsummary max and min | src: hand computation
+g = [2;1;2;1;3];
+x = [10;20;30;40;50];
+T = table(g, x);
+G1 = groupsummary(T, 'g', 'max', 'x');
+G2 = groupsummary(T, 'g', 'min', 'x');
+printf('%d\n', G1.max_x);
+printf('%d\n', G2.min_x);
+---
+> 40
+> 30
+> 50
+> 20
+> 10
+> 50
+
+### vmm-tab-025 | group | groupsummary with only a grouping variable counts rows | src: documentation
+g = [2;1;2;1;3];
+x = [10;20;30;40;50];
+T = table(g, x);
+G = groupsummary(T, 'g');
+printf('%d\n', width(G));
+printf('%d\n', G.GroupCount);
+---
+> 2
+> 2
+> 2
+> 1
+
+### vmm-tab-026 | group | groupsummary by a text key sorts the groups alphabetically | src: hand computation
+T = table({'b';'a';'b';'c';'a'}, [1;2;3;4;5], 'VariableNames', {'g','x'});
+G = groupsummary(T, 'g', 'sum', 'x');
+printf('%d\n', height(G));
+printf('%d %d\n', [G.GroupCount G.sum_x]');
+---
+> 3
+> 2 7
+> 2 4
+> 1 4
+
+### vmm-tab-027 | group | groupsummary with a list of methods | src: documentation
+g = [2;1;2;1;3];
+x = [10;20;30;40;50];
+T = table(g, x);
+G = groupsummary(T, 'g', {'sum','max'}, 'x');
+printf('%d\n', width(G));
+printf('%d %d\n', [G.sum_x G.max_x]');
+---
+> 4
+> 60 40
+> 40 30
+> 50 50
+
+### vmm-tab-028 | join | innerjoin keeps only matching keys, sorted by key | src: documentation
+A = table([3;1;2], [30;10;20], 'VariableNames', {'k','a'});
+B = table([2;3;4], [200;300;400], 'VariableNames', {'k','b'});
+C = innerjoin(A, B);
+printf('%d %d\n', height(C), width(C));
+printf('%d %d %d\n', [C.k C.a C.b]');
+---
+> 2 3
+> 2 20 200
+> 3 30 300
+
+### vmm-tab-029 | join | innerjoin with a repeated left key makes one row per match | src: hand computation
+A = table([1;1;2;5], [1;2;3;4], 'VariableNames', {'k','a'});
+B = table([1;2;3], [10;20;30], 'VariableNames', {'k','b'});
+C = innerjoin(A, B);
+printf('%d\n', height(C));
+disp(mat2str(C.k'));
+printf('%d %d\n', sum(C.a), sum(C.b));
+---
+> 3
+> [1 1 2]
+> 6 40
+
+### vmm-tab-030 | join | join keeps the left table's row order | src: documentation
+A = table([3;1;2], [30;10;20], 'VariableNames', {'k','a'});
+B = table([1;2;3;4], [100;200;300;400], 'VariableNames', {'k','b'});
+C = join(A, B);
+printf('%d %d\n', height(C), width(C));
+printf('%d\n', C.b);
+---
+> 3 3
+> 300
+> 100
+> 200
+
+### vmm-tab-031 | missing | ismissing and rmmissing on a table with NaN | src: documentation
+T = table([1;NaN;3], [4;5;NaN], 'VariableNames', {'a','b'});
+M = ismissing(T);
+printf('%d %d\n', size(M));
+printf('%d\n', nnz(M));
+R = rmmissing(T);
+printf('%d\n', height(R));
+printf('%d %d\n', R.a, R.b);
+---
+> 3 2
+> 2
+> 1
+> 1 4
+
+### vmm-tab-032 | missing | ismissing and rmmissing on a numeric vector | src: documentation
+v = [1 NaN 3 NaN 5];
+disp(mat2str(ismissing(v)));
+disp(mat2str(rmmissing(v)));
+---
+> [false true false true false]
+> [1 3 5]
+
+### vmm-tab-033 | moving | movmean and movsum with window 3 shrink at the ends | src: documentation
+x = [1;2;3;4;5];
+m = movmean(x, 3);
+printf('%d %d\n', size(m));
+printf('%g\n', m);
+disp(mat2str(movsum(x', 3)));
+---
+> 5 1
+> 1.5
+> 2
+> 3
+> 4
+> 4.5
+> [3 6 9 12 9]
+
+### vmm-tab-034 | moving | movmax and movmin with window 3 | src: hand computation
+x = [3 1 4 1 5 9 2 6];
+disp(mat2str(movmax(x, 3)));
+disp(mat2str(movmin(x, 3)));
+---
+> [3 4 4 5 9 9 9 6]
+> [1 1 1 1 1 2 2 2]
+
+### vmm-tab-035 | moving | movsum with an even window and with a [kb kf] window | src: documentation
+x = [1 2 3 4 5];
+disp(mat2str(movsum(x, 4)));
+disp(mat2str(movsum([1 2 3 4], [0 1])));
+---
+> [3 6 10 14 12]
+> [3 5 7 4]
+
+### vmm-tab-036 | moving | movmedian window 3, and movmean includes NaN by default | src: documentation
+disp(mat2str(movmedian([5 1 3 2 4], 3)));
+printf('%g\n', movmean([1 NaN 3], 3));
+---
+> [3 3 2 3 3]
+> NaN
+> NaN
+> NaN
+
+### vmm-tab-037 | files | writetable then readtable round trip | src: documentation
+x = [1;2;3];
+y = [1.5;-2.25;3];
+T = table(x, y);
+f = [tempname '.csv'];
+writetable(T, f);
+R = readtable(f);
+printf('%d %d\n', size(R));
+printf('%g\n', R.y);
+printf('%d\n', sum(R.x));
+---
+> 3 2
+> 1.5
+> -2.25
+> 3
+> 6
+
+### vmm-tab-038 | files | writematrix then readmatrix round trip | src: documentation
+M = [1.5 -2 3; 4 5.25 6];
+f = [tempname '.csv'];
+writematrix(M, f);
+R = readmatrix(f);
+printf('%d %d\n', size(R));
+disp(isequal(R, M));
+---
+> 2 3
+> 1
+
+### vmm-tab-039 | text | filter rows by comparing a text column with == "a" | src: documentation
+T = table({'a';'b';'a';'c'}, [1;2;3;4], 'VariableNames', {'name','v'});
+S = T(T.name == "a", :);
+printf('%d\n', height(S));
+printf('%d\n', S.v);
+printf('%d\n', nnz(T.name ~= "a"));
+U = T(T.name == "a" & T.v > 1, :);
+printf('%d\n', U.v);
+---
+> 2
+> 1
+> 3
+> 2
+> 3
+
+### vmm-tab-040 | pipeline | derived column then groupsummary on it | src: hand computation
+g = [1;2;1;2;2];
+x = [1;2;3;4;5];
+T = table(g, x);
+T.z = 2*T.x + 1;
+G = groupsummary(T, 'g', 'sum', 'z');
+printf('%d %d\n', [G.GroupCount G.sum_z]');
+---
+> 2 10
+> 3 25

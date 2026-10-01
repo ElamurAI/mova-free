@@ -1,0 +1,534 @@
+; mlab — LLM scenarios, area «red» (independent author: claude-opus-5-5, effort high, 26.09.2026, branch tests3).
+; The author did not see the mlab code; prompt — prompts/mlab-head.txt + prompts/tail-red.txt. Format — as data/suite-v1.txt;
+; where the expected output comes from — the «src:» field of the header. Frozen by hash before the first run (tests/vmm_suites.rs).
+
+### vmm-red-001 | sum | sum along dims, default dim, singleton dim, logical input | src: documentation
+A = [1 2 3; 4 5 6];
+disp(mat2str(sum(A)))
+disp(mat2str(sum(A, 2)))
+disp(mat2str(sum([1 2 3])))
+disp(mat2str(sum([1 2 3], 1)))
+disp(class(sum([true true])))
+---
+> [5 7 9]
+> [6;15]
+> 6
+> [1 2 3]
+> double
+### vmm-red-002 | prod | prod along dims and empty reductions | src: documentation
+disp(mat2str(prod([1 2; 3 4])))
+disp(mat2str(prod([1 2; 3 4], 2)))
+printf('%d %d\n', sum([]), prod([]))
+disp(mat2str(sum(zeros(0,3))))
+disp(mat2str(prod(zeros(0,2))))
+---
+> [3 8]
+> [2;12]
+> 0 1
+> [0 0 0]
+> [1 1]
+### vmm-red-003 | max | index of first maximum and minimum | src: documentation
+[m, i] = max([3 7 2 7 1]);
+printf('%d %d\n', m, i)
+[m, i] = min([4 1 5 1]);
+printf('%d %d\n', m, i)
+[m, i] = max([5; 5; 5]);
+printf('%d %d\n', m, i)
+---
+> 7 2
+> 1 2
+> 5 1
+### vmm-red-004 | max | max/min with empty second arg and dimension | src: documentation
+A = [1 5 3; 9 2 9];
+[m, i] = max(A, [], 2);
+disp(mat2str(m)); disp(mat2str(i))
+[m, i] = max(A);
+disp(mat2str(m)); disp(mat2str(i))
+disp(mat2str(min(A, [], 1)))
+disp(mat2str(max([1 5 3], [], 1)))
+---
+> [5;9]
+> [2;1]
+> [9 5 9]
+> [2 1 2]
+> [1 2 3]
+> [1 5 3]
+### vmm-red-005 | max | element-wise max/min with broadcasting | src: documentation
+disp(mat2str(max([1 5 3], 2)))
+disp(mat2str(max([1; 4], [2 3])))
+disp(mat2str(min([1 5 3], [4 2 6])))
+disp(mat2str(min([1 2; 3 4], [0 5])))
+---
+> [2 5 3]
+> [2 3;4 4]
+> [1 2 3]
+> [0 2;0 4]
+### vmm-red-006 | nan | max/min ignore NaN unless all NaN | src: documentation
+printf('%g\n', max([1 NaN 3]))
+printf('%g\n', min([NaN NaN]))
+[m, i] = max([NaN 2 NaN 5]);
+printf('%g %d\n', m, i)
+printf('%g\n', max(NaN, 2))
+disp(mat2str(min([NaN 1; 2 NaN])))
+---
+> 3
+> NaN
+> 5 4
+> 2
+> [2 1]
+### vmm-red-007 | complex | max/min of complex compare by magnitude | src: documentation
+[m, i] = max([1i, 3, 4i]);
+printf('%g %g %d\n', real(m), imag(m), i)
+m = min([3, 2i, -1]);
+printf('%g %g\n', real(m), imag(m))
+printf('%g\n', abs(max([3+4i, -6, 5i])))
+---
+> 0 4 3
+> -1 0
+> 6
+### vmm-red-008 | sort | sort descending, along dims | src: documentation
+[s, i] = sort([3 1 2], 'descend');
+disp(mat2str(s)); disp(mat2str(i))
+A = [3 1 2; 0 5 4];
+disp(mat2str(sort(A)))
+disp(mat2str(sort(A, 2)))
+disp(mat2str(sort(A, 2, 'descend')))
+disp(mat2str(sort([3; 1; 2])))
+---
+> [3 2 1]
+> [1 3 2]
+> [0 1 2;3 5 4]
+> [1 2 3;0 4 5]
+> [3 2 1;5 4 0]
+> [1;2;3]
+### vmm-red-009 | sort | sort is stable for ties ascending and descending | src: documentation
+[s, i] = sort([2 1 2 1 3]);
+disp(mat2str(i))
+[s, i] = sort([2 1 2 1 3], 'descend');
+disp(mat2str(s))
+disp(mat2str(i))
+---
+> [2 4 1 3 5]
+> [3 2 2 1 1]
+> [5 1 3 2 4]
+### vmm-red-010 | sort | NaN placed last ascending, first descending | src: documentation
+[s, i] = sort([3 NaN 1 2]);
+disp(mat2str(s))
+disp(mat2str(i))
+disp(mat2str(sort([3 NaN 1 2], 'descend')))
+---
+> [1 2 3 NaN]
+> [3 4 1 2]
+> [NaN 3 2 1]
+### vmm-red-011 | find | find with count limit and orientation | src: documentation
+x = [0 3 0 5 7 0 2];
+disp(mat2str(find(x)))
+disp(mat2str(find(x, 2)))
+disp(mat2str(find(x > 4)))
+disp(mat2str(find(x', 2)))
+disp(mat2str(find(x, 10)))
+printf('%d\n', numel(find(zeros(1,3))))
+---
+> [2 4 5 7]
+> [2 4]
+> [4 5]
+> [2;4]
+> [2 4 5 7]
+> 0
+### vmm-red-012 | find | row/column subscripts in column-major order | src: documentation
+A = [0 2; 3 0; 4 5];
+[r, c] = find(A);
+disp(mat2str(r))
+disp(mat2str(c))
+disp(mat2str(find(A)))
+[r, c] = find([0 1 1]);
+disp(mat2str(r))
+disp(mat2str(c))
+---
+> [2;3;1;3]
+> [1;1;2;2]
+> [2;3;4;6]
+> [1 1]
+> [2 3]
+### vmm-red-013 | logical | any/all on empty and along dims | src: documentation
+disp(any([]))
+disp(all([]))
+disp(mat2str(all(zeros(0,3))))
+disp(mat2str(any(zeros(0,3))))
+A = [0 1; 0 0];
+disp(mat2str(any(A)))
+disp(mat2str(any(A, 2)))
+disp(mat2str(all([1 2; 0 3])))
+disp(mat2str(all([1 2; 0 3], 2)))
+---
+> 0
+> 1
+> [true true true]
+> [false false false]
+> [false true]
+> [true;false]
+> [false true]
+> [true;false]
+### vmm-red-014 | unique | sorted unique values with first-occurrence indices | src: documentation
+[u, i, j] = unique([3 1 3 2 1]);
+disp(mat2str(u))
+disp(mat2str(i(:)'))
+disp(mat2str(j(:)'))
+disp(mat2str(unique([4; 2; 4])))
+disp(mat2str(unique([2 2 2])))
+disp(mat2str(unique([3 1; 1 2])))
+---
+> [1 2 3]
+> [2 4 1]
+> [3 1 3 2 1]
+> [2;4]
+> 2
+> [1;2;3]
+### vmm-red-015 | nnz | count of nonzero elements including NaN | src: definition
+printf('%d\n', nnz([1 0 2; 0 0 3]))
+printf('%d\n', nnz([]))
+printf('%d\n', nnz([NaN 0 -1]))
+printf('%d\n', nnz([true false true]))
+---
+> 3
+> 0
+> 2
+> 2
+### vmm-red-016 | cumsum | cumsum default dim and along dim 2 | src: documentation
+A = [1 2 3; 4 5 6];
+disp(mat2str(cumsum(A)))
+disp(mat2str(cumsum(A, 2)))
+disp(mat2str(cumsum([1 2 3])))
+disp(mat2str(cumsum([1; 2; 3])))
+disp(mat2str(cumsum([1 2 3], 1)))
+---
+> [1 2 3;5 7 9]
+> [1 3 6;4 9 15]
+> [1 3 6]
+> [1;3;6]
+> [1 2 3]
+### vmm-red-017 | cumprod | cumprod default dim and along dim 2 | src: hand computation
+disp(mat2str(cumprod([1 2 3 4])))
+disp(mat2str(cumprod([1 2; 3 4])))
+disp(mat2str(cumprod([1 2; 3 4], 2)))
+disp(mat2str(cumprod([2; 0; 5])))
+---
+> [1 2 6 24]
+> [1 2;3 8]
+> [1 2;3 12]
+> [2;0;0]
+### vmm-red-018 | diff | diff orders, dims, and too-high order | src: documentation
+x = [1 4 9 16 25];
+disp(mat2str(diff(x)))
+disp(mat2str(diff(x, 2)))
+disp(mat2str(diff(x, 3)))
+disp(mat2str(diff([1 2; 4 8])))
+disp(mat2str(diff([1 2 4; 3 5 9], 1, 2)))
+disp(mat2str(diff([1; 4; 9])))
+printf('%d\n', numel(diff(x, 5)))
+---
+> [3 5 7 9]
+> [2 2 2]
+> [0 0]
+> [3 6]
+> [1 2;2 4]
+> [3;5]
+> 0
+### vmm-red-019 | median | median even/odd counts, columns, rows, NaN | src: definition
+printf('%g\n', median([4 1 3 2]))
+printf('%g\n', median([3 1 2]))
+disp(mat2str(median([1 2; 3 4; 5 6])))
+printf('%g\n', median([1 NaN 3]))
+printf('%g %g\n', median([1 4; 2 8], 2))
+---
+> 2.5
+> 2
+> [3 4]
+> NaN
+> 2.5 5
+### vmm-red-020 | mean | mean column-wise, row-wise, vectors | src: definition
+printf('%g %g\n', mean([1 2; 3 4]))
+printf('%g\n', mean([1 2; 3 4], 2))
+printf('%g\n', mean([1 2 3 4]))
+printf('%g\n', mean([1; 2; 3; 4; 10]))
+printf('%g\n', mean(mean([1 2; 3 4])))
+disp(mat2str(mean([1 2 3 4], 1)))
+---
+> 2 3
+> 1.5
+> 3.5
+> 2.5
+> 4
+> 2.5
+> [1 2 3 4]
+### vmm-red-021 | std | std/var N-1 default, N with flag 1 | src: exact formula
+x = [2 4 4 4 5 5 7 9];
+printf('%.6f\n', var(x))
+printf('%g\n', var(x, 1))
+printf('%.6f\n', std(x))
+printf('%g\n', std(x, 1))
+printf('%g %g\n', var([1 2; 3 4]))
+printf('%g\n', var(7))
+---
+> 4.571429
+> 4
+> 2.138090
+> 2
+> 2 2
+> 0
+### vmm-red-022 | mod | mod/rem with negative operands and zero divisor | src: documentation
+printf('%d %d\n', mod(-7, 3), rem(-7, 3))
+printf('%d %d\n', mod(7, -3), rem(7, -3))
+printf('%d\n', mod(5, 0))
+disp(mat2str(mod([-5 -4 -2 -1 1 2 4 5], 3)))
+disp(mat2str(rem([-5 -4 4 5], 3)))
+printf('%d %d\n', mod(-7, -3), rem(-7, -3))
+---
+> 2 -1
+> -2 1
+> 5
+> [1 2 1 2 1 2 1 2]
+> [-2 -1 1 2]
+> -1 -1
+### vmm-red-023 | mod | mod/rem with non-integer operands | src: exact formula
+printf('%g\n', mod(5.5, 2))
+printf('%g\n', mod(-5.5, 2))
+printf('%g\n', rem(-5.5, 2))
+printf('%g\n', mod(-4.5, 0))
+printf('%g\n', mod(2.75, 0.5))
+printf('%g\n', mod(-1, 2.5))
+---
+> 1.5
+> 0.5
+> -1.5
+> -4.5
+> 0.25
+> 1.5
+### vmm-red-024 | round | round half away from zero, no x+0.5 bug | src: documentation
+disp(mat2str(round([-2.5 -1.5 -0.5 0.5 1.5 2.5])))
+printf('%g\n', round(2.4999))
+printf('%g\n', round(-3.6))
+printf('%g\n', round(0.49999999999999994))
+---
+> [-3 -2 -1 1 2 3]
+> 2
+> -4
+> 0
+### vmm-red-025 | rounding | floor/ceil/fix of negatives, Inf, NaN | src: definition
+disp(mat2str(floor([-2.5 2.5 -3])))
+disp(mat2str(ceil([-2.5 2.5 3])))
+disp(mat2str(fix([-2.5 2.5 -3.7 3.7])))
+printf('%g\n', floor(-0.0001))
+printf('%g %g\n', floor(Inf), ceil(-Inf))
+printf('%g\n', fix(NaN))
+---
+> [-3 2 -3]
+> [-2 3 3]
+> [-2 2 -3 3]
+> -1
+> Inf -Inf
+> NaN
+### vmm-red-026 | sign | sign of reals, Inf, NaN, complex | src: documentation
+disp(mat2str(sign([-3 0 2.5])))
+printf('%g\n', sign(NaN))
+printf('%g %g\n', sign(-Inf), sign(Inf))
+z = sign(3+4i);
+printf('%g %g\n', real(z), imag(z))
+---
+> [-1 0 1]
+> NaN
+> -1 1
+> 0.6 0.8
+### vmm-red-027 | gcd | gcd/lcm element-wise with scalar expansion | src: hand computation
+disp(mat2str(gcd([12 18 7], [8 24 21])))
+disp(mat2str(lcm([4 6], [6 8])))
+printf('%d %d\n', gcd(0, 5), gcd(-12, 18))
+disp(mat2str(gcd(12, [8 9 10])))
+printf('%d\n', lcm(3, 4))
+---
+> [4 6 7]
+> [12 24]
+> 5 6
+> [4 3 2]
+> 12
+### vmm-red-028 | factorial | factorial scalar, vector, zero, overflow | src: definition
+printf('%d\n', factorial(0))
+printf('%d\n', factorial(5))
+disp(mat2str(factorial([0 1 2 3 4])))
+printf('%d\n', factorial(10))
+printf('%g\n', factorial(171))
+---
+> 1
+> 120
+> [1 1 2 6 24]
+> 3628800
+> Inf
+### vmm-red-029 | nchoosek | binomial coefficients | src: exact formula
+printf('%d\n', nchoosek(5, 2))
+printf('%d\n', nchoosek(10, 3))
+printf('%d %d\n', nchoosek(4, 0), nchoosek(4, 4))
+printf('%d\n', nchoosek(30, 15))
+printf('%d\n', nchoosek(52, 5))
+---
+> 10
+> 120
+> 1 1
+> 155117520
+> 2598960
+### vmm-red-030 | nchoosek | combination rows in lexicographic position order | src: documentation
+disp(mat2str(nchoosek([1 2 3 4], 2)))
+disp(mat2str(nchoosek([5 7 9], 3)))
+disp(mat2str(nchoosek([4 2 7], 2)))
+printf('%d %d\n', size(nchoosek(1:5, 3)))
+---
+> [1 2;1 3;1 4;2 3;2 4;3 4]
+> [5 7 9]
+> [4 2;4 7;2 7]
+> 10 3
+### vmm-red-031 | primes | primes list and isprime on vector | src: definition
+disp(mat2str(primes(20)))
+disp(mat2str(isprime([1 2 9 11 0])))
+printf('%d\n', numel(primes(100)))
+disp(mat2str(primes(2)))
+printf('%d\n', numel(primes(1)))
+disp(isprime(97))
+---
+> [2 3 5 7 11 13 17 19]
+> [false true false true false]
+> 25
+> 2
+> 0
+> 1
+### vmm-red-032 | roots | nthroot of negatives and hypot without overflow | src: exact formula
+printf('%g\n', nthroot(-8, 3))
+printf('%g\n', nthroot(81, 4))
+printf('%g\n', hypot(3, 4))
+printf('%g %g\n', hypot([5 8], [12 15]))
+printf('%g\n', hypot(1e200, 1e200))
+---
+> -2
+> 3
+> 5
+> 13 17
+> 1.41421e+200
+### vmm-red-033 | explog | exp/log identities, log of zero and negative | src: identity
+printf('%g %g\n', exp(0), log(1))
+printf('%.6f\n', exp(1))
+printf('%g\n', log(0))
+printf('%g\n', exp(-Inf))
+z = log(-1);
+printf('%.6f %.6f\n', real(z), imag(z))
+printf('%d\n', abs(log(exp(2.5)) - 2.5) < 1e-14)
+printf('%d\n', abs(exp(log(7)) - 7) < 1e-13)
+---
+> 1 0
+> 2.718282
+> -Inf
+> 0
+> 0.000000 3.141593
+> 1
+> 1
+### vmm-red-034 | log | log2/log10 of exact powers | src: identity
+printf('%g\n', log2(1024))
+printf('%g\n', log10(1000))
+printf('%g\n', log2([1 2 8 0.5]))
+printf('%g\n', log10(0.001))
+printf('%g\n', log2(0))
+---
+> 10
+> 3
+> 0
+> 1
+> 3
+> -1
+> -3
+> -Inf
+### vmm-red-035 | gamma | gamma at integers, half, and pole at zero | src: identity
+printf('%g\n', gamma(5))
+printf('%g\n', gamma(1))
+printf('%d\n', abs(gamma(0.5)^2 - pi) < 1e-12)
+printf('%g\n', gamma(0))
+printf('%g\n', gamma(11))
+---
+> 24
+> 1
+> 1
+> Inf
+> 3.6288e+06
+### vmm-red-036 | linspace | linspace endpoints, default count, degenerate counts | src: documentation
+x = linspace(0, 1, 5);
+printf('%g\n', x)
+printf('%d\n', numel(linspace(1, 2)))
+y = linspace(0, 0.3, 7);
+printf('%d %d\n', y(1) == 0, y(end) == 0.3)
+disp(mat2str(linspace(5, 1, 5)))
+printf('%g\n', linspace(0, 1, 1))
+printf('%d %d\n', size(linspace(0, 1, 0)))
+---
+> 0
+> 0.25
+> 0.5
+> 0.75
+> 1
+> 100
+> 1 1
+> [5 4 3 2 1]
+> 1
+> 1 0
+### vmm-red-037 | logspace | logspace values and default count | src: documentation
+printf('%g\n', logspace(0, 3, 4))
+printf('%d\n', numel(logspace(0, 2)))
+printf('%g\n', logspace(-1, 1, 3))
+---
+> 1
+> 10
+> 100
+> 1000
+> 50
+> 0.1
+> 1
+> 10
+### vmm-red-038 | colon | empty ranges, negative step, float step count, char range | src: documentation
+printf('%d\n', numel(1:0))
+printf('%d %d\n', size(1:0))
+disp(mat2str(10:-3:1))
+printf('%d\n', numel(0:0.1:1))
+printf('%d\n', numel(0:0.1:0.3))
+disp('a':'e')
+disp(mat2str(colon(1, 3)))
+disp(mat2str(colon(1, 2, 7)))
+---
+> 0
+> 1 0
+> [10 7 4 1]
+> 11
+> 4
+> abcde
+> [1 2 3]
+> [1 3 5 7]
+### vmm-red-039 | magic | magic(3), magic(4) exact values and sums | src: documentation
+disp(mat2str(magic(3)))
+disp(mat2str(magic(4)))
+disp(mat2str(sum(magic(4))))
+disp(mat2str(sum(magic(5), 2)'))
+---
+> [8 1 6;3 5 7;4 9 2]
+> [16 2 3 13;5 11 10 8;9 7 6 12;4 14 15 1]
+> [34 34 34 34]
+> [65 65 65 65 65]
+### vmm-red-040 | flip | flip/fliplr/flipud on vectors and matrices | src: documentation
+disp(mat2str(fliplr([1 2 3])))
+disp(mat2str(flipud([1; 2; 3])))
+disp(mat2str(flip([1 2; 3 4])))
+disp(mat2str(flip([1 2 3])))
+disp(mat2str(flip([1 2; 3 4], 2)))
+disp(mat2str(fliplr([1 2; 3 4])))
+disp(mat2str(flipud([1 2 3])))
+---
+> [3 2 1]
+> [3;2;1]
+> [3 4;1 2]
+> [3 2 1]
+> [2 1;4 3]
+> [2 1;4 3]
+> [1 2 3]

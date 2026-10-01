@@ -1,0 +1,186 @@
+# Frozen suite v1 of the math module (26.09.2026). Written BEFORE the understanding code; hash — in the worklog.
+# Do not tune to it: failures are reported as they are. A new suite version means a new file and a new hash.
+#
+# Columns: id <TAB> question <TAB> expected.
+# Expected:
+#   <number> [unit]   — exact value in that unit: integer, decimal, fraction a/b (a, b — decimals);
+#                       a leading «≈» — approximate comparison (relative error 1e-6);
+#                       the unit must match the answer's unit; no unit — a dimensionless number.
+#                       Δ°C, Δ°F, ΔK — temperature difference; °C, °F, K — absolute temperature.
+#   NU            — honest «don't understand»;
+#   ERR:dim       — dimension error;
+#   ERR:temp      — absolute temperature where only a difference is allowed (or vice versa);
+#   ERR:overflow  — overflow of the exact core;
+#   ERR:div0      — division by zero.
+#
+# --- percent of a number (sample «What is 15% of 80?» and paraphrases)
+pct-01	What is 15% of 80?	12
+pct-02	What's 15 percent of 80?	12
+pct-03	Calculate 15% of 80.	12
+pct-04	How much is 15% of 80?	12
+pct-05	Find 15 percent of 80.	12
+pct-06	What is 20% of 250?	50
+pct-07	What is 7.5% of 200?	15
+pct-08	What is 150% of 40?	60
+pct-09	What is 12.5 percent of 48?	6
+pct-10	What is 3% of 1000?	30
+# --- arithmetic (sample «What is 12 plus 30?» and paraphrases)
+ar-01	What is 12 plus 30?	42
+ar-02	What is 12 + 30?	42
+ar-03	What's 12 plus 30?	42
+ar-04	Add 12 and 30.	42
+ar-05	What is the sum of 12 and 30?	42
+ar-06	How much is 100 minus 37?	63
+ar-07	Subtract 37 from 100.	63
+ar-08	What is 6 times 7?	42
+ar-09	What is the product of 6 and 7?	42
+ar-10	What is 84 divided by 4?	21
+ar-11	What is 7 divided by 2?	7/2
+ar-12	What is 1 divided by 3?	1/3
+ar-13	What is 2 to the power of 10?	1024
+ar-14	What is the square root of 144?	12
+ar-15	What is 3 + 4 * 2?	11
+ar-16	What is 0.1 plus 0.2?	0.3
+ar-17	What is 2.5 times 4?	10
+ar-18	What is -5 plus 3?	-2
+ar-19	What is 1,000 plus 250?	1250
+ar-20	What is the square root of 2?	≈1.41421356
+ar-21	What is 2 to the power of 126?	85070591730234615865843651857942052864
+# --- numbers in words
+w-01	What is half of 64?	32
+w-02	What is a dozen times three?	36
+w-03	What is twenty plus one hundred?	120
+w-04	How much is two thousand minus five hundred?	1500
+w-05	What is eleven times twelve?	132
+w-06	What is two dozen plus four?	28
+w-07	What is half of twenty?	10
+w-08	What is one hundred divided by four?	25
+w-09	What is three thousand plus seven?	3007
+w-10	What is fifteen percent of eighty?	12
+# --- conversions (samples «Convert 72°F to Celsius», «How much is 10 miles in km?» and paraphrases)
+cv-01	Convert 72°F to Celsius	200/9 °C
+cv-02	Convert 72 °F to °C.	200/9 °C
+cv-03	What is 72 degrees Fahrenheit in Celsius?	200/9 °C
+cv-04	What is 72 F in Celsius?	200/9 °C
+cv-05	How much is 72°F in degrees Celsius?	200/9 °C
+cv-06	Convert 20°C to Fahrenheit.	68 °F
+cv-07	What is 100 degrees Celsius in Fahrenheit?	212 °F
+cv-08	Convert 0 °C to kelvin.	273.15 K
+cv-09	Convert -40 °F to Celsius.	-40 °C
+cv-10	If it's 30°C, what is that in Fahrenheit?	86 °F
+cv-11	Convert 10°F to Celsius.	-110/9 °C
+cv-12	How much is 10 miles in km?	16.09344 km
+cv-13	How many kilometers is 10 miles?	16.09344 km
+cv-14	Convert 10 mi to km.	16.09344 km
+cv-15	What is 10 miles in kilometers?	16.09344 km
+cv-16	How many feet are in a mile?	5280 ft
+cv-17	Convert 5 feet to centimeters.	152.4 cm
+cv-18	How many inches is 1 meter?	100/2.54 in
+cv-19	Convert 12 mm to inches.	12/25.4 in
+cv-20	Convert 60 mph to km/h.	96.56064 km/h
+cv-21	What is 100 km/h in mph?	100/1.609344 mph
+cv-22	Convert 10 m/s to km/h.	36 km/h
+cv-23	What is 25 mph in km/h?	40.2336 km/h
+cv-24	How many pounds is 5 kg?	5/0.45359237 lb
+cv-25	Convert 2 lb to grams.	907.18474 g
+cv-26	How many seconds are in a day?	86400 s
+cv-27	How many minutes are in a week?	10080 min
+cv-28	Convert 1013.25 hPa to inHg.	101325/3386.388640341 inHg
+cv-29	Convert 30 inHg to hPa.	1015.9165921023 hPa
+cv-30	Convert 25 m/s to km/h.	90 km/h
+# --- temperature difference (sample «What is the difference between 72°F and 60°F?» and paraphrases)
+td-01	What is the difference between 72°F and 60°F?	12 Δ°F
+td-02	What's the difference between 72 °F and 60 °F?	12 Δ°F
+td-03	What is the difference between 20°C and 5°C?	15 Δ°C
+td-04	How much warmer is 25°C than 18°C?	7 Δ°C
+td-05	What is the difference between 72°F and 20°C?	4 Δ°F
+td-06	Convert a change of 10°F to Celsius.	50/9 Δ°C
+td-07	Convert a temperature difference of 9 °F to °C.	5 Δ°C
+td-08	What is the difference between 72°F and 60°F in Celsius?	20/3 Δ°C
+td-09	Convert the difference between 72°F and 60°F to kelvin.	20/3 ΔK
+td-10	What is 20°C plus a change of 9°F?	25 °C
+td-11	The temperature rose by 18°F. How much is that in Celsius?	10 Δ°C
+td-12	If it is 72°F and it gets 10°F warmer, what is the temperature?	82 °F
+# --- statistics (sample «What is the average of 3, 5 and 10?» and paraphrases)
+st-01	What is the average of 3, 5 and 10?	6
+st-02	What's the mean of 3, 5, and 10?	6
+st-03	Find the average of 3, 5, 10.	6
+st-04	What is the arithmetic mean of 3, 5 and 10?	6
+st-05	Calculate the average of 3, 5 and 10.	6
+st-06	What is the median of 3, 5 and 10?	5
+st-07	What is the median of 1, 2, 3 and 4?	5/2
+st-08	What is the maximum of 3, 9 and 4?	9
+st-09	What is the minimum of 3, 9 and 4?	3
+st-10	What is the sum of 3, 5 and 10?	18
+st-11	What is the average of 72°F, 75°F and 69°F?	72 °F
+st-12	What is the average temperature of 20°C, 22°C and 27°C?	23 °C
+st-13	What is the average of 10 km, 20 km and 30 km?	20 km
+st-14	What is the average of 1.5, 2.5 and 3.5?	2.5
+st-15	What is the mean of 2, 4, 4, 4, 5, 5, 7 and 9?	5
+st-16	What is the median of 7, 1 and 4?	4
+st-17	What is the range of 3, 9 and 4?	6
+st-18	What is the average of the highs 72, 75, 69, 70, 74, 71 and 73?	72
+st-19	What is the median of 12 mm, 3 mm and 7 mm?	7 mm
+st-20	What is the average of 72°F and 20°C?	70 °F
+# --- probability of «at least once» (the rain sample and paraphrases)
+pr-01	If the chance of rain is 30% each day, what is the chance of rain at least once in 3 days?	65.7 %
+pr-02	The chance of rain is 30% per day. What is the probability of rain at least once in 3 days?	65.7 %
+pr-03	What is the probability of at least one rainy day in 3 days if the daily chance of rain is 30%?	65.7 %
+pr-04	What is the probability of rain at least once in 3 days with a 30% chance each day?	65.7 %
+pr-05	If there is a 50% chance of rain each day, what is the chance of rain at least once in 2 days?	75 %
+pr-06	With a 10% daily chance of snow, what is the chance of snow at least once in 7 days?	52.17031 %
+pr-07	What is the chance of rain at least once in a week if the chance is 10% each day?	52.17031 %
+pr-08	What is the chance of rain at least once if the chance is 20% on Monday and 40% on Tuesday?	52 %
+pr-09	If the chance of rain is 30% each day, what is the chance of no rain in 3 days?	34.3 %
+pr-10	If the chance of rain is 30% each day, what is the chance that it rains every day for 3 days?	2.7 %
+pr-11	If the chance of rain is 30% each day, what is the chance of rain at least once in two days?	51 %
+pr-12	If the chance of rain is 100% each day, what is the chance of rain at least once in 3 days?	100 %
+# --- percent change and percentage share
+pc-01	What is the percent change from 50 to 75?	50 %
+pc-02	What is the percentage increase from 80 to 100?	25 %
+pc-03	What is the percent change from 100 to 80?	-20 %
+pc-04	By what percent did the price rise from 20 to 25?	25 %
+pc-05	What percent of 80 is 12?	15 %
+pc-06	12 is what percent of 80?	15 %
+pc-07	What is 80 increased by 15%?	92
+pc-08	What is 80 decreased by 25%?	60
+# --- mixed units
+mx-01	What is 5 km plus 300 m?	5.3 km
+mx-02	What is 2 hours plus 30 minutes?	2.5 h
+mx-03	What is 1 mile minus 1 km?	609.344/1609.344 mi
+mx-04	What is 90 km divided by 2 hours?	45 km/h
+mx-05	What is 3 times 5 km?	15 km
+mx-06	How far do you travel in 3 hours at 60 mph?	180 mi
+# --- negative controls: dimension
+nd-01	What is 5 km plus 3 kg?	ERR:dim
+nd-02	What is 5 km + 3 kg?	ERR:dim
+nd-03	Add 10 miles and 5 pounds.	ERR:dim
+nd-04	Convert 5 kg to km.	ERR:dim
+nd-05	Convert 72°F to km.	ERR:dim
+nd-06	What is 3 hours plus 20 meters?	ERR:dim
+nd-07	What is the average of 3 km and 5 kg?	ERR:dim
+nd-08	What is 10 km/h in kg?	ERR:dim
+# --- negative controls: nonsense → «don't understand»
+nn-01	What is the color of 15?	NU
+nn-02	Convert happiness to Celsius.	NU
+nn-03	Purple elephants dance on Tuesday.	NU
+nn-04	What is the capital of France?	NU
+nn-05	How much is a banana in km?	NU
+nn-06	What is 15% of?	NU
+nn-07	What is the average of?	NU
+nn-08	What is the square root of banana?	NU
+nn-09	What is 12 plus?	NU
+nn-10	Is it going to rain tomorrow?	NU
+nn-11	Convert 72 to Celsius.	NU
+nn-12	What is 15 of 80?	NU
+# --- negative controls: overflow and division by zero
+no-01	What is 10 to the power of 50?	ERR:overflow
+no-02	What is 99999999999999999999 times 99999999999999999999?	ERR:overflow
+no-03	What is 2 to the power of 200?	ERR:overflow
+no-04	What is 2 to the power of 127?	ERR:overflow
+no-05	What is 5 divided by 0?	ERR:div0
+# --- negative controls: absolute temperature vs difference
+nt-01	What is 72°F plus 60°F?	ERR:temp
+nt-02	What is 72°F + 10°F?	ERR:temp
+nt-03	What is the sum of 20°C and 30°C?	ERR:temp
+nt-04	What is 20°C times 2?	ERR:temp

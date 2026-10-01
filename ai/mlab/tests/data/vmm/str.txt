@@ -1,0 +1,547 @@
+; mlab — LLM scenarios, area «str» (independent author: claude-opus-5-5, effort high, 26.09.2026, branch tests3).
+; The author did not see the mlab code; prompt — prompts/mlab-head.txt + prompts/tail-str.txt. Format — as data/suite-v1.txt;
+; where the expected output comes from — the «src:» field of the header. Frozen by hash before the first run (tests/vmm_suites.rs).
+
+### vmm-str-001 | concat | horizontal concatenation of char rows | src: documentation
+s = ['abc', 'def'];
+printf('[%s]\n', s);
+t = ['x', ' ', 'y'];
+printf('[%s]\n', t);
+disp(length(t))
+---
+> [abcdef]
+> [x y]
+> 3
+
+### vmm-str-002 | concat | vertical concatenation builds a char matrix | src: documentation
+M = ['abc'; 'def'];
+disp(mat2str(size(M)))
+disp(M(2,:))
+disp(M(:,1)')
+disp(numel(M))
+disp(length(M))
+---
+> [2 3]
+> def
+> ad
+> 6
+> 3
+
+### vmm-str-003 | conversion | double of char gives character codes | src: definition
+disp(mat2str(double('AZ az')))
+disp(mat2str(double('0')))
+disp(class(double('a')))
+---
+> [65 90 32 97 122]
+> 48
+> double
+
+### vmm-str-004 | conversion | char of numeric codes | src: definition
+s = char([72 101 108 108 111]);
+disp(s)
+disp(class(s))
+disp(char(65:70))
+---
+> Hello
+> char
+> ABCDEF
+
+### vmm-str-005 | arithmetic | char arithmetic yields double | src: documentation
+x = 'a' + 1
+disp(class(x))
+disp(mat2str('abc' + 1))
+disp(char('abc' + 1))
+disp('z' - 'a')
+c = char(mod('xyz' - 'a' + 3, 26) + 'a');
+disp(c)
+disp(char('hello' - 32))
+---
+> x = 98
+> double
+> [98 99 100]
+> bcd
+> 25
+> abc
+> HELLO
+
+### vmm-str-006 | indexing | reversing and strided indexing of strings | src: hand computation
+s = 'hello world';
+disp(s(end:-1:1))
+disp(s(1:2:end))
+disp(s(end))
+disp(s([1 7]))
+---
+> dlrow olleh
+> hlowrd
+> d
+> hw
+
+### vmm-str-007 | compare | elementwise == on strings | src: documentation
+disp(mat2str('abc' == 'abd'))
+disp(mat2str('hello' == 'l'))
+disp(sum('hello' == 'l'))
+disp(isequal('abc', 'abc'))
+disp(class('a' == 'a'))
+---
+> [true true false]
+> [false false true true false]
+> 2
+> 1
+> logical
+
+### vmm-str-008 | indexing | find and logical masks on strings | src: hand computation
+disp(mat2str(find('banana' == 'a')))
+s = 'a b c';
+t = s(s ~= ' ');
+printf('[%s]\n', t);
+---
+> [2 4 6]
+> [abc]
+
+### vmm-str-009 | compare | strcmp and strcmpi | src: documentation
+disp(strcmp('abc', 'abc'))
+disp(strcmp('abc', 'abcd'))
+disp(strcmp('abc', 'ABC'))
+disp(strcmpi('abc', 'ABC'))
+disp(strcmpi('abc', 'ABCD'))
+disp(strcmp('a', 97))
+disp(strcmp('', ''))
+---
+> 1
+> 0
+> 0
+> 1
+> 0
+> 0
+> 1
+
+### vmm-str-010 | case | upper and lower | src: documentation
+disp(upper('Hello World 123!'))
+disp(lower('MiXeD CaSe_X'))
+M = upper(['ab'; 'cd']);
+disp(M)
+---
+> HELLO WORLD 123!
+> mixed case_x
+> AB
+> CD
+
+### vmm-str-011 | replace | strrep basic replacements | src: documentation
+disp(strrep('hello world', 'o', '0'))
+disp(strrep('abc', 'b', 'XYZ'))
+printf('[%s]\n', strrep('a-b-c', '-', ''));
+disp(strrep('abc', 'x', 'y'))
+disp(isempty(strrep('abc', 'abc', '')))
+---
+> hell0 w0rld
+> aXYZc
+> [abc]
+> abc
+> 1
+
+### vmm-str-012 | replace | strrep replaces overlapping matches (MATLAB doc) | src: documentation
+disp(strrep('aaa', 'aa', 'b'))
+disp(strrep('abc 2 def 22 ghi 222 jkl 2222', '22', '*'))
+---
+> bb
+> abc 2 def * ghi ** jkl ***
+
+### vmm-str-013 | trim | strtrim removes leading and trailing whitespace | src: documentation
+s = sprintf('\t  ab c \t\n');
+printf('[%s]\n', strtrim(s));
+printf('[%s]\n', strtrim('   x'));
+disp(isempty(strtrim('    ')))
+disp(length(strtrim(' a b ')))
+---
+> [ab c]
+> [x]
+> 1
+> 3
+
+### vmm-str-014 | concat | strcat removes trailing whitespace of char args | src: documentation
+printf('[%s]\n', strcat('Hello', ' ', 'World'));
+printf('[%s]\n', strcat('a ', 'b '));
+printf('[%s]\n', strcat(' a', 'b'));
+printf('[%s]\n', strcat('x', 'y', 'z'));
+---
+> [HelloWorld]
+> [ab]
+> [ ab]
+> [xyz]
+
+### vmm-str-015 | search | strfind all and overlapping matches | src: documentation
+disp(mat2str(strfind('abababa', 'aba')))
+disp(mat2str(strfind('aaaa', 'aa')))
+disp(isempty(strfind('abc', 'x')))
+disp(isempty(strfind('ab', 'abc')))
+disp(strfind('hello', 'llo'))
+disp(mat2str(strfind('the cat and the hat', 'the')))
+disp(mat2str(strfind('the cat and the hat', 'at')))
+---
+> [1 3 5]
+> [1 2 3]
+> 1
+> 1
+> 3
+> [1 13]
+> [6 18]
+
+### vmm-str-016 | num2str | num2str of integers | src: documentation
+disp(num2str(42))
+disp(num2str(-7))
+disp(num2str(0))
+disp(num2str(1000000))
+disp(num2str([1 2 3]))
+printf('[%s]\n', num2str(12345));
+---
+> 42
+> -7
+> 0
+> 1000000
+> 1  2  3
+> [12345]
+
+### vmm-str-017 | num2str | num2str of non-integers and precision | src: documentation
+disp(num2str(pi))
+disp(num2str(pi, 8))
+disp(num2str(pi, 10))
+disp(num2str(0.5))
+disp(num2str(-0.25))
+disp(num2str(1/3))
+disp(num2str(123.456))
+x = str2double(num2str(pi, 10));
+printf('%d\n', abs(x - pi) < 1e-9);
+---
+> 3.1416
+> 3.1415927
+> 3.141592654
+> 0.5
+> -0.25
+> 0.33333
+> 123.456
+> 1
+
+### vmm-str-018 | int2str | int2str rounds half away from zero | src: documentation
+disp(int2str(2.5))
+disp(int2str(-2.5))
+disp(int2str(3.49))
+disp(int2str([1.2 2.7]))
+disp(class(int2str(7)))
+---
+> 3
+> -3
+> 3
+> 1  3
+> char
+
+### vmm-str-019 | mat2str | mat2str of matrices, columns, logicals | src: documentation
+disp(mat2str([1 -2; 3 4]))
+disp(mat2str([1; 2; 3]))
+disp(mat2str([true false; false true]))
+disp(mat2str(5))
+disp(mat2str([0.5 -1.25]))
+---
+> [1 -2;3 4]
+> [1;2;3]
+> [true false;false true]
+> 5
+> [0.5 -1.25]
+
+### vmm-str-020 | mat2str | mat2str with precision argument | src: documentation
+disp(mat2str(pi, 4))
+disp(mat2str([pi exp(1)], 3))
+disp(mat2str(-pi, 2))
+disp(mat2str(true))
+---
+> 3.142
+> [3.14 2.72]
+> -3.1
+> true
+
+### vmm-str-021 | sprintf | integer conversions with width and flags | src: documentation
+printf('[%s]\n', sprintf('%d', 42));
+printf('[%s]\n', sprintf('%5d', 42));
+printf('[%s]\n', sprintf('%-5d|', 42));
+printf('[%s]\n', sprintf('%05d', 42));
+printf('[%s]\n', sprintf('%+d', 5));
+printf('[%s]\n', sprintf('%5d', -42));
+printf('[%s]\n', sprintf('%5s|', 'ab'));
+printf('[%s]\n', sprintf('%-5s|', 'ab'));
+---
+> [42]
+> [   42]
+> [42   |]
+> [00042]
+> [+5]
+> [  -42]
+> [   ab|]
+> [ab   |]
+
+### vmm-str-022 | sprintf | fixed-point float conversions | src: exact formula
+disp(sprintf('%05.1f', 3.14159))
+disp(sprintf('%.2f', 2.675))
+printf('[%s]\n', sprintf('%8.3f|', -1.5));
+disp(sprintf('%.3f', 1/3))
+---
+> 003.1
+> 2.67
+> [  -1.500|]
+> 0.333
+
+### vmm-str-023 | sprintf | exponent format %e | src: exact formula
+disp(sprintf('%e', 12345.678))
+disp(sprintf('%.2e', 0.000123))
+disp(sprintf('%e', 0))
+disp(sprintf('%.3e', -2.5))
+---
+> 1.234568e+04
+> 1.23e-04
+> 0.000000e+00
+> -2.500e+00
+
+### vmm-str-024 | sprintf | general format %g switching | src: documentation
+disp(sprintf('%g', 0.0001))
+disp(sprintf('%g', 0.00001))
+disp(sprintf('%g', 123456))
+disp(sprintf('%g', 1234567))
+disp(sprintf('%g', 2.5))
+disp(sprintf('%g', 100000))
+disp(sprintf('%g', 1e6))
+---
+> 0.0001
+> 1e-05
+> 123456
+> 1.23457e+06
+> 2.5
+> 100000
+> 1e+06
+
+### vmm-str-025 | sprintf | hex, octal, char, percent and string conversions | src: documentation
+disp(sprintf('%x', 255))
+disp(sprintf('%X', 255))
+disp(sprintf('%o', 8))
+disp(sprintf('%x', 3735928559))
+disp(sprintf('%c%c%c', 72, 105, 33))
+disp(sprintf('%d%%', 50))
+disp(sprintf('%s', 'abc'))
+disp(sprintf('%.3s', 'abcdef'))
+---
+> ff
+> FF
+> 10
+> deadbeef
+> Hi!
+> 50%
+> abc
+> abc
+
+### vmm-str-026 | sprintf | format recycling over vector arguments | src: documentation
+printf('%s\n', sprintf('%d,', [1 2 3]));
+printf('%d-%d\n', [1 2; 3 4]);
+s = sprintf('%d', [10 20 30]);
+disp(s)
+disp(sprintf('%s=%d;', 'a', 1, 'b', 2))
+---
+> 1,2,3,
+> 1-3
+> 2-4
+> 102030
+> a=1;b=2;
+
+### vmm-str-027 | sprintf | format without arguments and escape processing | src: documentation
+disp(sprintf('hello'))
+s = sprintf('a\tb');
+disp(mat2str(double(s)))
+s = sprintf('x\ny');
+disp(length(s))
+printf('%s\n', sprintf('100%%'));
+disp(sprintf('a\\b'))
+---
+> hello
+> [97 9 98]
+> 3
+> 100%
+> a\b
+
+### vmm-str-028 | sprintf | char data with %d and numbers with %s | src: documentation
+disp(sprintf('%d', 'abc'))
+disp(sprintf('%s', 65))
+disp(sprintf('%s', 'A', 'B'))
+disp(sprintf('%d %s', 5, 'xy'))
+---
+> 979899
+> A
+> AB
+> 5 xy
+
+### vmm-str-029 | parse | str2num evaluates numeric text | src: documentation
+disp(mat2str(str2num('[1 2 3]')))
+disp(str2num('3+4'))
+disp(mat2str(str2num('[1 2; 3 4]')))
+x = str2num('2^10');
+disp(x)
+---
+> [1 2 3]
+> 7
+> [1 2;3 4]
+> 1024
+
+### vmm-str-030 | parse | str2double valid and invalid text | src: documentation
+printf('%g\n', str2double('3.5'));
+printf('%g\n', str2double('1e3'));
+disp(isnan(str2double('abc')))
+printf('%g\n', str2double('  42  '));
+printf('%g\n', str2double('-0.125'));
+disp(isnan(str2double('')))
+---
+> 3.5
+> 1000
+> 1
+> 42
+> -0.125
+> 1
+
+### vmm-str-031 | size | empty strings, length and size | src: documentation
+disp(isempty(''))
+disp(mat2str(size('')))
+disp(mat2str(size('hello')))
+disp(length('hello'))
+disp(isempty(' '))
+disp(ischar(''))
+---
+> 1
+> [0 0]
+> [1 5]
+> 5
+> 0
+> 1
+
+### vmm-str-032 | whitespace | blanks and deblank | src: documentation
+printf('[%s]\n', blanks(3));
+disp(length(blanks(5)))
+printf('[%s]\n', deblank('  ab  '));
+printf('[%s]\n', deblank(sprintf('x\t \n')));
+disp(isempty(blanks(0)))
+---
+> [   ]
+> 5
+> [  ab]
+> [x]
+> 1
+
+### vmm-str-033 | predicates | isspace and isdigit | src: documentation
+disp(mat2str(isspace("a b\tc")))
+disp(mat2str(isdigit('a1b2')))
+disp(sum(isdigit('R2D2 C3PO')))
+disp(class(isspace('x')))
+---
+> [false true false true false]
+> [false true false true]
+> 3
+> logical
+
+### vmm-str-034 | reshape | fliplr, flipud and repmat on strings | src: documentation
+disp(fliplr('abc'))
+disp(repmat('ab', 1, 3))
+M = repmat('ab', 2, 2);
+disp(M)
+disp(mat2str(size(M)))
+disp(flipud(['ab'; 'cd']))
+---
+> cba
+> ababab
+> abab
+> abab
+> [2 4]
+> cd
+> ab
+
+### vmm-str-035 | escapes | double-quoted escapes vs single-quoted literal | src: documentation
+s = "a\tb";
+disp(mat2str(double(s)))
+t = 'a\tb';
+disp(length(t))
+u = "a\\b";
+disp(u)
+disp(length(u))
+printf("[%s]\n", "x\ny");
+disp(class("abc"))
+---
+> [97 9 98]
+> 4
+> a\b
+> 3
+> [x
+> y]
+> char
+
+### vmm-str-036 | display | display of char row variables | src: documentation
+s = 'hello'
+t = ['ab', 'cd']
+q = 'it''s'
+---
+> s = hello
+> t = abcd
+> q = it's
+
+### vmm-str-037 | assign | char growth pads with char(0) and deletion | src: documentation
+s = 'ab';
+s(5) = 'e';
+disp(mat2str(double(s)))
+t = 'hello';
+t(2) = [];
+disp(t)
+t([1 end]) = [];
+disp(t)
+u = 'cat';
+u(1) = 'b';
+disp(u)
+---
+> [97 98 0 0 101]
+> hllo
+> ll
+> bat
+
+### vmm-str-038 | concat | concatenating char with numbers yields char | src: documentation
+s = ['A' 66 67];
+disp(s)
+disp(class(s))
+t = [65 'b'];
+disp(class(t))
+disp(t)
+u = ['x'; 'y'];
+disp(mat2str(size(u)))
+---
+> ABC
+> char
+> char
+> Ab
+> [2 1]
+
+### vmm-str-039 | range | character ranges, sort and unique on strings | src: documentation
+disp('a':'e')
+disp(class('a':'e'))
+disp(char('a' + (0:4)*2))
+disp(sort('hello'))
+disp(unique('hello'))
+---
+> abcde
+> char
+> acegi
+> ehllo
+> ehlo
+
+### vmm-str-040 | predicates | ischar and class of text values | src: documentation
+disp(ischar('a'))
+disp(ischar(97))
+disp(class('a'))
+disp(isnumeric('a'))
+disp(ischar(char(97)))
+disp(isempty(char([])))
+---
+> 1
+> 0
+> char
+> 0
+> 1
+> 1

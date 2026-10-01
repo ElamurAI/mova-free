@@ -1,0 +1,353 @@
+; mlab — LLM scenarios, area «idx» (independent author: claude-opus-5-5, effort high, 26.09.2026, branch tests3).
+; The author did not see the mlab code; prompt — prompts/mlab-head.txt + prompts/tail-idx.txt. Format — as data/suite-v1.txt;
+; where the expected output comes from — the «src:» field of the header. Frozen by hash before the first run (tests/vmm_suites.rs).
+
+### vmm-idx-001 | linear | linear indexing of a matrix is column-major | src: documentation
+A = [1 2 3; 4 5 6];
+disp(A(2))
+disp(A(5))
+disp(A(6))
+---
+> 4
+> 3
+> 6
+
+### vmm-idx-002 | colon | A(:) is a column in column-major order | src: documentation
+A = [1 2 3; 4 5 6];
+disp(mat2str(A(:)))
+printf('%d %d\n', size(A(:)))
+---
+> [1;4;2;5;3;6]
+> 6 1
+
+### vmm-idx-003 | colon | A(:,k) is a column and A(k,:) is a row | src: documentation
+A = [1 2 3; 4 5 6];
+disp(mat2str(A(:,2)))
+disp(mat2str(A(2,:)))
+---
+> [2;5]
+> [4 5 6]
+
+### vmm-idx-004 | end | arithmetic with end | src: hand computation
+v = 10:10:100;
+disp(v(end))
+disp(v(end-1))
+disp(v(end/2))
+---
+> 100
+> 90
+> 50
+
+### vmm-idx-005 | end | end used in both dimensions | src: hand computation
+A = magic(4);
+disp(A(end,end))
+disp(A(end-1,1))
+disp(A(end))
+disp(A(end-1,end-2))
+---
+> 1
+> 9
+> 1
+> 7
+
+### vmm-idx-006 | end | end inside a nested function call in an index | src: documentation
+v = [5 6 7 8 9];
+disp(v(min(3,end)))
+disp(v(max(1,end-10)))
+disp(v(min(10,end)))
+---
+> 7
+> 5
+> 9
+
+### vmm-idx-007 | logical | a same-size logical mask on a matrix gives a column | src: documentation
+A = [1 -2; -3 4];
+B = A(A>0);
+disp(mat2str(B))
+printf('%d %d\n', size(B))
+---
+> [1;4]
+> 2 1
+
+### vmm-idx-008 | logical | a logical mask on a row vector gives a row | src: documentation
+v = [3 -1 4 -1 5];
+disp(mat2str(v(v>0)))
+---
+> [3 4 5]
+
+### vmm-idx-009 | logical | a mask shorter than the vector | src: documentation
+v = [10 20 30 40 50];
+disp(mat2str(v(logical([1 0 1]))))
+---
+> [10 30]
+
+### vmm-idx-010 | logical | a logical mask on the left side of an assignment | src: documentation
+v = [1 -2 3 -4];
+v(v<0) = 0;
+disp(mat2str(v))
+---
+> [1 0 3 0]
+
+### vmm-idx-011 | shape | indexing a matrix with a matrix of indices takes the index's shape | src: documentation
+A = magic(3);
+B = A([1 2; 3 4]);
+disp(mat2str(B))
+---
+> [8 3;4 1]
+
+### vmm-idx-012 | shape | a vector indexed by a vector keeps its own orientation | src: documentation
+v = (1:5)';
+disp(mat2str(v([1 3 5])))
+r = 1:5;
+disp(mat2str(r([1;2])))
+---
+> [1;3;5]
+> [1 2]
+
+### vmm-idx-013 | shape | linear index vectors into a matrix give the index's shape | src: documentation
+A = [1 2; 3 4];
+disp(mat2str(A([1 4])))
+disp(mat2str(A([1;4])))
+disp(mat2str(A(:)'))
+---
+> [1 4]
+> [1;4]
+> [1 3 2 4]
+
+### vmm-idx-014 | repeat | repeated indices and indexing a vector by itself | src: hand computation
+v = [7 8 9];
+disp(mat2str(v([1 1 3 3 2])))
+w = [3 1 2];
+disp(mat2str(w(w)))
+---
+> [7 7 9 9 8]
+> [2 3 1]
+
+### vmm-idx-015 | empty | empty indices give empty results with the right orientation | src: documentation
+v = 1:5;
+printf('%d %d\n', size(v(1:0)))
+c = (1:5)';
+printf('%d %d\n', size(c(1:0)))
+disp(numel(v([])))
+disp(isempty(v([])))
+---
+> 1 0
+> 0 1
+> 0
+> 1
+
+### vmm-idx-016 | growth | A(2,5)=1 on a 2x2 fills with zeros | src: documentation
+A = [1 2; 3 4];
+A(2,5) = 1;
+disp(mat2str(A))
+printf('%d %d\n', size(A))
+---
+> [1 2 0 0 0;3 4 0 0 1]
+> 2 5
+
+### vmm-idx-017 | growth | a row vector grows as a row with zero fill | src: documentation
+v = [1 2];
+v(5) = 9;
+disp(mat2str(v))
+---
+> [1 2 0 0 9]
+
+### vmm-idx-018 | growth | a scalar or undefined variable grows into a row | src: documentation
+x = 5;
+x(3) = 1;
+disp(mat2str(x))
+y(3) = 1;
+disp(mat2str(y))
+---
+> [5 0 1]
+> [0 0 1]
+
+### vmm-idx-019 | growth | a column vector grows as a column | src: documentation
+c = [1; 2];
+c(4) = 7;
+disp(mat2str(c))
+---
+> [1;2;0;7]
+
+### vmm-idx-020 | deletion | deleting a column | src: documentation
+A = [1 2 3; 4 5 6; 7 8 9];
+A(:,2) = [];
+disp(mat2str(A))
+printf('%d %d\n', size(A))
+---
+> [1 3;4 6;7 9]
+> 3 2
+
+### vmm-idx-021 | deletion | deleting a row | src: documentation
+A = [1 2 3; 4 5 6; 7 8 9];
+A(1,:) = [];
+disp(mat2str(A))
+---
+> [4 5 6;7 8 9]
+
+### vmm-idx-022 | deletion | deleting by linear index turns a matrix into a row | src: documentation
+A = [1 2; 3 4];
+A(2) = [];
+disp(mat2str(A))
+printf('%d %d\n', size(A))
+---
+> [1 2 4]
+> 1 3
+
+### vmm-idx-023 | deletion | deleting elements of a column vector keeps a column | src: documentation
+c = (1:5)';
+c([2 4]) = [];
+disp(mat2str(c))
+---
+> [1;3;5]
+
+### vmm-idx-024 | deletion | deleting with a logical mask | src: hand computation
+v = 1:6;
+v(mod(v,2)==0) = [];
+disp(mat2str(v))
+---
+> [1 3 5]
+
+### vmm-idx-025 | assign | assigning a scalar to a whole row and a whole column | src: documentation
+A = zeros(3);
+A(2,:) = 7;
+A(:,3) = 1;
+disp(mat2str(A))
+---
+> [0 0 1;7 7 1;0 0 1]
+
+### vmm-idx-026 | assign | A(:) = vector fills in column-major order | src: documentation
+A = zeros(2,3);
+A(:) = 1:6;
+disp(mat2str(A))
+printf('%d %d\n', size(A))
+---
+> [1 3 5;2 4 6]
+> 2 3
+
+### vmm-idx-027 | assign | block assignment with matching sizes | src: documentation
+A = zeros(3);
+A(1:2, 2:3) = [1 2; 3 4];
+disp(mat2str(A))
+---
+> [0 1 2;0 3 4;0 0 0]
+
+### vmm-idx-028 | growth | appending with x(end+1) in a loop | src: hand computation
+x = [];
+for k = 1:4, x(end+1) = k^2; end
+disp(mat2str(x))
+printf('%d %d\n', size(x))
+---
+> [1 4 9 16]
+> 1 4
+
+### vmm-idx-029 | error | invalid reads raise errors | src: documentation
+v = [1 2 3];
+try, y = v(4); disp('no'); catch, disp('caught'); end
+try, y = v(0); disp('no'); catch, disp('caught'); end
+try, y = v(1.5); disp('no'); catch, disp('caught'); end
+A = [1 2; 3 4];
+try, y = A(3,1); disp('no'); catch, disp('caught'); end
+---
+> caught
+> caught
+> caught
+> caught
+
+### vmm-idx-030 | assign | assigning a vector of the other orientation to a row or column slice | src: documentation
+A = zeros(3);
+A(:,1) = [1 2 3];
+A(2,:) = [4; 5; 6];
+disp(mat2str(A))
+---
+> [1 0 0;4 5 6;3 0 0]
+
+### vmm-idx-031 | size | sizes of indexing results | src: documentation
+A = ones(3,4);
+printf('%d %d\n', size(A(:,1)))
+printf('%d %d\n', size(A(1,:)))
+printf('%d %d\n', size(A(:)))
+printf('%d %d\n', size(A(2:3, [1 4])))
+---
+> 3 1
+> 1 4
+> 12 1
+> 2 2
+
+### vmm-idx-032 | repeat | repeated row indices | src: hand computation
+A = [1 2; 3 4];
+disp(mat2str(A([2 2 1], :)))
+---
+> [3 4;3 4;1 2]
+
+### vmm-idx-033 | growth | a scalar grows into a 3x3 by assigning A(3,3) | src: documentation
+A = 1;
+A(3,3) = 9;
+disp(mat2str(A))
+---
+> [1 0 0;0 0 0;0 0 9]
+
+### vmm-idx-034 | end | reversing with end and assigning to end+1:end+2 | src: hand computation
+v = 1:5;
+disp(mat2str(v(end:-1:1)))
+v(end+1:end+2) = [6 7];
+disp(mat2str(v))
+---
+> [5 4 3 2 1]
+> [1 2 3 4 5 6 7]
+
+### vmm-idx-035 | logical | masked assignment on a matrix | src: hand computation
+A = magic(3);
+A(A>5) = 0;
+disp(mat2str(A))
+---
+> [0 1 0;3 5 0;4 0 2]
+
+### vmm-idx-036 | logical | a logical identity mask pulls out the diagonal as a column | src: hand computation
+A = magic(3);
+disp(mat2str(A(logical(eye(3)))))
+---
+> [8;5;2]
+
+### vmm-idx-037 | empty | empty ranges and an all-false mask on a matrix or row | src: documentation
+A = magic(3);
+printf('%d %d\n', size(A(1:0, :)))
+printf('%d %d\n', size(A(:, 1:0)))
+v = 1:3;
+printf('%d %d\n', size(v(false(1,3))))
+---
+> 0 3
+> 3 0
+> 1 0
+
+### vmm-idx-038 | assign | compound assignment on indexed elements, and increment | src: documentation
+v = [1 2 3];
+v(2) += 10;
+v(end) *= 2;
+disp(mat2str(v))
+x = 5;
+x++;
+disp(x)
+---
+> [1 12 6]
+> 6
+
+### vmm-idx-039 | submatrix | row/column index vectors, and end inside an inner index | src: hand computation
+A = magic(4);
+disp(mat2str(A([1 3],[2 4])))
+disp(A(end, A(1,end)-10))
+---
+> [2 13;7 12]
+> 15
+
+### vmm-idx-040 | error | ambiguous growth, size mismatch and bad deletion raise errors and leave A unchanged | src: documentation
+A = [1 2; 3 4];
+try, A(7) = 1; disp('grew'); catch, disp('caught'); end
+try, A(1,:) = [1 2 3]; disp('assigned'); catch, disp('caught'); end
+try, A(1,2) = []; disp('deleted'); catch, disp('caught'); end
+disp(mat2str(A))
+---
+> caught
+> caught
+> caught
+> [1 2;3 4]

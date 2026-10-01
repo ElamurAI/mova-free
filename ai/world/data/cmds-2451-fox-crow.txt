@@ -1,0 +1,26 @@
+loc L1 type=ground ^s1
+loc L2 type=tree in=L1 ^s1
+char C1 type=animal class=crow name="the Crow" at=L1 gender=female ^s1
+obj O1 type=food class=meat name="a bit of meat" ^s1
+event E1 verb=steal agent=C1 patient=O1 ^s1
+have C1 O1 cause=E1 ^s1
+event E2 verb=perch agent=C1 to=L2 ^s1
+move C1 to=L2 cause=E2 ^s1
+event E3 verb=hold agent=C1 patient=O1 at=L2 how="in her beak" ^s1
+char C2 type=animal class=fox name="the Fox" at=L1 gender=male trait=wily,cunning ^s2
+event E4 verb=see agent=C2 patient=C1 at=L1 ^s2
+set C2 goal="to get the meat for himself" status=hungry ^s2
+rel R1 kind=stranger a=C2 b=C1 ^s2
+say C2 to=C1 act=evaluate indirect=1 sincere=0 means="caw aloud to prove your voice so you drop the meat" why="he wants the Crow to open her beak and drop the meat" id=E5 ^s3 ^s4
+rel R1 fact=E5 ^s4
+say narrator act=assert means="the Fox's praise was a deceitful trick" id=E6 ^s5
+set C1 goal="to prove that her voice is fine" feeling=proud cause=E5 ^s5
+event E7 verb=caw agent=C1 at=L2 why="she wanted to refute the slight on her voice" how="loudly" ^s5
+event E8 verb=drop agent=C1 patient=O1 at=L2 why="she opened her beak to caw" ^s5
+move O1 to=L1 cause=E8 ^s5
+event E9 verb=pick_up agent=C2 patient=O1 at=L1 how="quickly" why="he wanted the meat" ^s6
+move O1 to=C2 cause=E9 ^s6
+rel R1 kind=adversary cause=E9 ^s6
+say C2 to=C1 act=evaluate means="your voice is fine but you are foolish to trust flattery" why="he mocks the Crow he has tricked" id=E10 ^s6
+set C2 feeling=amused cause=E9 ^s6
+set C1 feeling=ashamed cause=E10 ^s6

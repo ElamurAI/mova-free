@@ -1,0 +1,526 @@
+; mlab — LLM scenarios, area «edge» (independent author: claude-opus-5-5, effort high, 26.09.2026, branch tests3).
+; The author did not see the mlab code; prompt — prompts/mlab-head.txt + prompts/tail-edge.txt. Format — as data/suite-v1.txt;
+; where the expected output comes from — the «src:» field of the header. Frozen by hash before the first run (tests/vmm_suites.rs).
+
+### vmm-edge-001 | syntax | whitespace and unary minus inside brackets | src: documentation
+a = [1 -1];
+b = [1 - 1];
+c = [1 , -1];
+d = [1 -1 - 1];
+printf('%d %d %d %d\n', numel(a), numel(b), numel(c), numel(d));
+disp(mat2str(d))
+disp(mat2str(b))
+---
+> 2 1 2 2
+> [1 -2]
+> 0
+
+### vmm-edge-002 | syntax | variable followed by spaced minus or paren in brackets | src: documentation
+a = 5;
+x = [a -1];
+y = [a - 1];
+z = [a-1];
+w = [a -1 a];
+q = [a (2)];
+disp(mat2str(x))
+disp(mat2str(y))
+disp(mat2str(z))
+disp(mat2str(w))
+disp(mat2str(q))
+---
+> [5 -1]
+> 4
+> 4
+> [5 -1 5]
+> [5 2]
+
+### vmm-edge-003 | syntax | unary plus inside brackets | src: documentation
+disp(mat2str([1 +2]))
+disp(mat2str([1 + 2]))
+disp(mat2str([1+ 2]))
+disp(mat2str([1 +2 +3]))
+---
+> [1 2]
+> 3
+> 3
+> [1 2 3]
+
+### vmm-edge-004 | indexing | transpose applied after indexing | src: definition
+A = [1 2 3; 4 5 6];
+B = A(1,:)';
+printf('%d %d\n', size(B));
+disp(mat2str(B))
+disp(mat2str(A(:,2)'))
+disp(mat2str(A'))
+printf('%g %g\n', imag((1+2i)'), imag((1+2i).'));
+---
+> 3 1
+> [1;2;3]
+> [2 5]
+> [1 4;2 5;3 6]
+> -2 2
+
+### vmm-edge-005 | syntax | comments after line continuation | src: documentation
+x = [1 2 ... first comment
+     3];
+y = 1 + ... second comment
+    2;
+printf('%d %d\n', numel(x), y);
+% full comment line
+z = 4; % trailing comment
+printf('%d\n', z);
+---
+> 3 3
+> 4
+
+### vmm-edge-006 | semantics | ans set by expressions but not by assignments or bare variables | src: documentation
+3 + 4;
+disp(ans)
+x = 10;
+disp(ans)
+x;
+disp(ans)
+max([1 9 2]);
+disp(ans)
+---
+> 7
+> 7
+> 7
+> 9
+
+### vmm-edge-007 | scoping | variable shadowing a builtin then clear | src: documentation
+sum = [10 20 30];
+disp(sum(2))
+clear sum
+disp(sum([1 2 3]))
+---
+> 20
+> 6
+
+### vmm-edge-008 | shape | size with dimension argument beyond ndims | src: documentation
+A = zeros(2,3);
+printf('%d %d %d %d\n', size(A,1), size(A,2), size(A,3), ndims(A));
+[r, c] = size(A);
+printf('%d %d\n', r, c);
+s = 7;
+printf('%d %d %d\n', size(s,1), size(s,2), size(s,5));
+---
+> 2 3 1 2
+> 2 3
+> 1 1 1
+
+### vmm-edge-009 | empty | size numel length isempty of empty matrices | src: documentation
+E = zeros(0,3);
+printf('%d %d\n', size(E));
+printf('%d %d %d\n', numel(E), length(E), isempty(E));
+printf('%d %d\n', isempty([]), isempty(0));
+printf('%d %d\n', size(''));
+---
+> 0 3
+> 0 0 1
+> 1 0
+> 0 0
+
+### vmm-edge-010 | empty | concatenation with empty operands | src: documentation
+a = [[] 1 2];
+b = [zeros(1,0), 5];
+c = [[]; 3; 4];
+d = [zeros(0,3); 1 2 3];
+disp(mat2str(a))
+disp(mat2str(b))
+disp(mat2str(c))
+disp(mat2str(d))
+printf('%d %d\n', size([[] []]));
+---
+> [1 2]
+> 5
+> [3;4]
+> [1 2 3]
+> 0 0
+
+### vmm-edge-011 | error | dimension mismatch in concatenation raises error | src: documentation
+try
+  x = [1 2; 3];
+  disp('no error')
+catch
+  disp('caught')
+end
+try
+  y = [[1;2] [1;2;3]];
+  disp('no error')
+catch
+  disp('caught')
+end
+---
+> caught
+> caught
+
+### vmm-edge-012 | shape | reshape uses column-major order | src: documentation
+A = reshape(1:6, 2, 3);
+disp(mat2str(A))
+disp(mat2str(reshape(A, 3, 2)))
+disp(mat2str(reshape(A, 1, [])))
+try
+  reshape(1:6, 4, 2);
+  disp('no error')
+catch
+  disp('caught')
+end
+---
+> [1 3 5;2 4 6]
+> [1 4;2 5;3 6]
+> [1 2 3 4 5 6]
+> caught
+
+### vmm-edge-013 | shape | repmat of matrices and single count argument | src: documentation
+disp(mat2str(repmat([1 2; 3 4], 2, 3)))
+disp(mat2str(repmat([1 2], 2)))
+disp(mat2str(repmat(7, 1, 3)))
+---
+> [1 2 1 2 1 2;3 4 3 4 3 4;1 2 1 2 1 2;3 4 3 4 3 4]
+> [1 2 1 2;1 2 1 2]
+> [7 7 7]
+
+### vmm-edge-014 | shape | cat horzcat vertcat along dimensions | src: documentation
+A = [1 2]; B = [3 4];
+disp(mat2str(cat(1, A, B)))
+disp(mat2str(cat(2, A, B)))
+disp(mat2str(vertcat(A, B, [5 6])))
+disp(mat2str(horzcat([1;2], [3;4])))
+---
+> [1 2;3 4]
+> [1 2 3 4]
+> [1 2;3 4;5 6]
+> [1 3;2 4]
+
+### vmm-edge-015 | indexing | linear indexing and end in matrices | src: hand computation
+A = magic(4);
+printf('%d %d %d %d\n', A(end), A(end,1), A(1,end), A(5));
+printf('%d\n', A(end-1));
+---
+> 1 4 13 2
+> 12
+
+### vmm-edge-016 | indexing | logical masks shorter than array and matrix masks | src: documentation
+v = [10 20 30 40 50];
+disp(mat2str(v(logical([1 0 1]))))
+w = (1:5)';
+disp(mat2str(w(logical([0 1 1]))))
+A = [1 2; 3 4];
+disp(mat2str(A(A > 1)))
+v(v > 25) = 0;
+disp(mat2str(v))
+---
+> [10 30]
+> [2;3]
+> [3;2;4]
+> [10 20 0 0 0]
+
+### vmm-edge-017 | empty | reductions and cumulative functions on empty inputs | src: documentation
+disp(sum([]))
+disp(prod([]))
+disp(mat2str(sum(zeros(0,3))))
+printf('%d %d\n', size(cumsum(zeros(0,3))));
+printf('%d %d\n', size(max([])));
+---
+> 0
+> 1
+> [0 0 0]
+> 0 3
+> 0 0
+
+### vmm-edge-018 | comparison | isequal with different shapes and NaN | src: documentation
+printf('%d\n', isequal([1 2 3], [1;2;3]));
+printf('%d\n', isequal([1 2 3], [1 2 3]));
+printf('%d\n', isequal(zeros(1,0), zeros(0,1)));
+printf('%d\n', isequal(NaN, NaN));
+printf('%d\n', isequal([1 2], [1 2], [1 2]));
+---
+> 0
+> 1
+> 0
+> 0
+> 1
+
+### vmm-edge-019 | comparison | isequal ignores logical versus double class | src: documentation
+printf('%d\n', isequal(true, 1));
+printf('%d\n', isequal([true false true], [1 0 1]));
+printf('%d\n', isequal(logical([1 0]), [1 0 0]));
+---
+> 1
+> 1
+> 0
+
+### vmm-edge-020 | types | class of mixed concatenation | src: documentation
+disp(class([true 2]))
+disp(class(['a' 66]))
+disp(['a' 66])
+disp(class([true false]))
+disp(class('a' + 1))
+disp(class(true + true))
+---
+> double
+> char
+> aB
+> logical
+> double
+> double
+
+### vmm-edge-021 | nan | sort places NaN last ascending and first descending | src: documentation
+disp(mat2str(sort([3 NaN 1 2])))
+disp(mat2str(sort([3 NaN 1 2], 'descend')))
+[s, i] = sort([3 NaN 1 2]);
+disp(mat2str(i))
+---
+> [1 2 3 NaN]
+> [NaN 3 2 1]
+> [3 4 1 2]
+
+### vmm-edge-022 | nan | unique and max/min with NaN values | src: documentation
+disp(mat2str(unique([2 NaN 1 NaN 2])))
+[m, k] = max([NaN 5 2]);
+printf('%d %d\n', m, k);
+printf('%g\n', max([NaN NaN]));
+printf('%g\n', min([4 NaN -1]));
+printf('%g\n', max(NaN, 3));
+---
+> [1 2 NaN NaN]
+> 5 2
+> NaN
+> -1
+> 3
+
+### vmm-edge-023 | ieee | negative zero creation and printing | src: definition
+z = 1/-Inf;
+printf('%g\n', z);
+printf('%d\n', z == 0);
+printf('%g\n', 1/z);
+printf('%g\n', abs(z));
+printf('%g\n', 0 * -1);
+---
+> -0
+> 1
+> -Inf
+> 0
+> -0
+
+### vmm-edge-024 | ieee | Inf and NaN arithmetic | src: definition
+printf('%g %g %g %g\n', Inf - Inf, 0 * Inf, Inf / Inf, Inf + Inf);
+printf('%d %d\n', isnan(Inf - Inf), isinf(-Inf));
+printf('%g %g\n', 1/0, -1/0);
+printf('%g\n', 0/0);
+---
+> NaN NaN NaN Inf
+> 1 1
+> Inf -Inf
+> NaN
+
+### vmm-edge-025 | ieee | num2str with 17 digits round-trips 0.1 | src: exact formula
+s = num2str(0.1, 17);
+disp(s)
+printf('%d\n', str2double(s) == 0.1);
+printf('%.17g\n', 0.1 + 0.2);
+printf('%d\n', 0.1 + 0.2 == 0.3);
+---
+> 0.10000000000000001
+> 1
+> 0.30000000000000004
+> 0
+
+### vmm-edge-026 | ieee | integer limits of doubles near 2^53 and eps | src: exact formula
+x = 2^53;
+printf('%d\n', x + 1 == x);
+printf('%.0f\n', x + 1);
+printf('%.0f\n', x + 2);
+printf('%d\n', floor(x + 1) == x);
+printf('%d %d\n', 1 + eps > 1, 1 + eps/2 == 1);
+---
+> 1
+> 9007199254740992
+> 9007199254740994
+> 1
+> 1 1
+
+### vmm-edge-027 | complex | zero imaginary part is narrowed after arithmetic but not by complex() | src: documentation
+z = (1 + 2i) - 2i;
+printf('%d\n', isreal(z));
+w = (1 + 2i) * (1 - 2i);
+printf('%d %g\n', isreal(w), w);
+c = complex(1, 0);
+printf('%d\n', isreal(c));
+---
+> 1
+> 1 5
+> 0
+
+### vmm-edge-028 | complex | sqrt of negative and real cube root | src: exact formula
+z = sqrt(-4);
+printf('%g %g\n', real(z), imag(z));
+printf('%d\n', isreal(z));
+printf('%g\n', nthroot(-8, 3));
+printf('%d\n', isreal((-8)^(1/3)));
+printf('%g\n', abs(3 + 4i));
+---
+> 0 2
+> 0
+> -2
+> 0
+> 5
+
+### vmm-edge-029 | rounding | abs of -0, round half away from zero, mod/rem signs | src: documentation
+printf('%g\n', abs(-0));
+printf('%g %g %g\n', round(2.5), round(-2.5), round(0.5));
+printf('%g %g\n', fix(-2.7), floor(-2.7));
+printf('%g %g %g\n', mod(-1, 3), rem(-1, 3), mod(5, 0));
+---
+> 0
+> 3 -3 1
+> -2 -3
+> 2 -1 5
+
+### vmm-edge-030 | types | sum and mean of logical return double | src: documentation
+s = sum([true true false]);
+disp(class(s))
+disp(s)
+printf('%.2f\n', mean(logical([1 0 1 1])));
+disp(class(mean([true false])))
+printf('%d\n', nnz([true false true]));
+---
+> double
+> 2
+> 0.75
+> double
+> 2
+
+### vmm-edge-031 | shape | colon linearization and its transpose | src: documentation
+A = [1 2; 3 4];
+v = A(:)';
+printf('%d %d\n', size(v));
+disp(mat2str(v))
+printf('%d %d\n', size(A(:)));
+r = 1:3;
+printf('%d %d\n', size(r(:)));
+---
+> 1 4
+> [1 3 2 4]
+> 4 1
+> 3 1
+
+### vmm-edge-032 | indexing | reversed and repeated ranges as matrix indices | src: documentation
+A = [1 2 3; 4 5 6];
+disp(mat2str(A(:, end:-1:1)))
+disp(mat2str(A(end:-1:1, :)))
+disp(mat2str(A(:, [1 1])))
+disp(mat2str(A([2 1], [3 1])))
+---
+> [3 2 1;6 5 4]
+> [4 5 6;1 2 3]
+> [1 1;4 4]
+> [6 4;3 1]
+
+### vmm-edge-033 | syntax | command-style versus function-style calls | src: documentation
+disp hello
+disp('hello')
+x = 3;
+printf('%d\n', exist('x'));
+clear x
+printf('%d\n', exist('x'));
+---
+> hello
+> hello
+> 1
+> 0
+
+### vmm-edge-034 | indexing | growth on assignment with zero fill | src: documentation
+x = [];
+x(5) = 1;
+disp(mat2str(x))
+A = [1 2];
+A(3,3) = 9;
+disp(mat2str(A))
+y = 1:3;
+y(end+1) = 4;
+disp(mat2str(y))
+---
+> [0 0 0 0 1]
+> [1 2 0;0 0 0;0 0 9]
+> [1 2 3 4]
+
+### vmm-edge-035 | indexing | deletion of rows, columns and linear elements | src: documentation
+A = magic(3);
+A(:,2) = [];
+disp(mat2str(A))
+A(2,:) = [];
+disp(mat2str(A))
+v = 1:5;
+v([1 end]) = [];
+disp(mat2str(v))
+B = [1 2; 3 4];
+B(2) = [];
+disp(mat2str(B))
+---
+> [8 6;3 7;4 2]
+> [8 6;4 2]
+> [2 3 4]
+> [1 2 4]
+
+### vmm-edge-036 | operators | compound assignment and increment operators | src: hand computation
+x = 5;
+x += 3;
+x *= 2;
+x -= 1;
+x /= 3;
+disp(x)
+x++;
+disp(x)
+x--;
+x--;
+disp(x)
+---
+> 5
+> 6
+> 4
+
+### vmm-edge-037 | operators | power precedence with unary minus and left associativity | src: documentation
+printf('%g %g %g %g\n', -2^2, 2^3^2, 2^-1, -2^-2);
+disp(mat2str(-[1 2].^2))
+---
+> -4 64 0.5 -0.25
+> [-1 -4]
+
+### vmm-edge-038 | indexing | end inside function calls within an index | src: documentation
+v = [5 8 2 9];
+disp(v(min(10, end)))
+disp(v(end-1))
+disp(v(max(1, end-10)))
+A = magic(3);
+disp(A(end, min(2, end)))
+---
+> 9
+> 2
+> 5
+> 9
+
+### vmm-edge-039 | strings | doubled quotes and escapes in single vs double quotes | src: documentation
+s = 'it''s';
+disp(s)
+printf('%d\n', length(s));
+printf('%d %d\n', length("a\nb"), length('a\nb'));
+---
+> it's
+> 4
+> 3 4
+
+### vmm-edge-040 | strings | character ranges and char arithmetic | src: documentation
+r = 'a':'e';
+disp(r)
+disp(class(r))
+printf('%d\n', 'a' + 1);
+disp(char('a' + 1))
+disp(mat2str(double('AZ')))
+---
+> abcde
+> char
+> 98
+> b
+> [65 90]

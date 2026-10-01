@@ -1,0 +1,2119 @@
+; mlab — frozen scenario suite v1 (clean room, 26.09.2026).
+;
+; Format. A block starts with the line «### id | category | title». Then code in the mlab language, then the line «---»,
+; then the expected output: each line prefixed with «> » (an empty line — «>»); «>* text» — a line
+; that starts with «text». The output is the merged stream in order of appearance: regular output,
+; «warning: …», «error: …». Each scenario runs in a fresh interpreter with the default seed.
+;
+; Where the expected output comes from. Language behaviour — per the public MATLAB/Octave documentation (syntax, semantics,
+; output format: format short — 5 significant digits, aligned columns). Values — from identities and exact
+; answers (A·inv(A) = I, A·V = V·D, U·S·V' = A, Fibonacci, exact roots), not from other programs:
+; there is no Octave on the box. Where a number depends on rounding, the scenario prints a check «< tolerance» (1/0).
+
+### syn-01 | syntax | assignment, «;» suppresses output
+x = 3
+y = 2.5;
+z = x * 2
+---
+> x = 3
+> z = 6
+
+### syn-02 | syntax | comments and line continuation
+% comment
+a = 1 + ... rest of line is a comment
+    2   % trailing comment
+# Octave-style comment
+b = a * 10;
+disp(b)
+---
+> a = 3
+> 30
+
+### syn-03 | syntax | comma and semicolon between statements
+a = 1, b = 2; c = 3
+---
+> a = 1
+> c = 3
+
+### syn-04 | syntax | single- and double-quoted strings
+s = 'it''s'
+t = "two\nlines";
+disp(t)
+u = ['ab', 'cd']
+---
+> s = it's
+> two
+> lines
+> u = abcd
+
+### syn-05 | syntax | block comment
+%{
+x = 100
+%}
+x = 5
+---
+> x = 5
+
+### syn-06 | syntax | numbers with an exponent and a leading dot
+a = .5 + 1e2
+b = 2.5e-1 * 4
+---
+> a = 100.50
+> b = 1
+
+### syn-07 | syntax | the ans variable
+3 + 4;
+ans * 2
+---
+> ans = 14
+
+### syn-08 | syntax | Octave-style endif / endwhile / endfor
+s = 0;
+k = 0;
+while k < 3
+  k = k + 1;
+  if k ~= 2
+    s = s + k;
+  endif
+endwhile
+for j = 1:2
+  s = s + 10;
+endfor
+disp(s)
+---
+> 24
+
+### syn-09 | syntax | operators != and ! (Octave)
+a = 3 != 4
+b = !true
+---
+> a = 1
+> b = 0
+
+### syn-10 | syntax | spaces in matrix literals
+a = [1 -2]
+b = [1 - 2]
+c = [1 , 2
+     3 , 4]
+---
+> a =
+>
+>    1  -2
+>
+> b = -1
+> c =
+>
+>    1   2
+>    3   4
+>
+
+### syn-11 | syntax | apostrophe: transpose vs string
+v = [1 2 3];
+w = [v' v']
+s = ['a' 'b']
+---
+> w =
+>
+>    1   1
+>    2   2
+>    3   3
+>
+> s = ab
+
+### syn-12 | syntax | command syntax format long / short
+format long
+x = pi
+format short
+x
+---
+> x = 3.141592653589793
+> x = 3.1416
+
+### syn-13 | syntax | one-line loop, variable display
+for k = 1:2, k, end
+---
+> k = 1
+> k = 2
+
+### syn-14 | syntax | imaginary unit in a literal
+z = 3 + 4i;
+disp(abs(z))
+---
+> 5
+
+### syn-15 | syntax | logical values
+t = true
+f = [true false true]
+---
+> t = 1
+> f =
+>
+>   1  0  1
+>
+
+### fmt-01 | output | non-integer: 5 significant digits
+a = pi
+b = -0.5
+c = 12.5
+d = 1234.5
+---
+> a = 3.1416
+> b = -0.5000
+> c = 12.500
+> d = 1234.5
+
+### fmt-02 | output | e-format for large and small, 0.0x
+a = 12345.678
+b = 0.001
+c = 0.05
+---
+> a = 1.2346e+04
+> b = 1.0000e-03
+> c = 0.050000
+
+### fmt-03 | output | Inf and NaN
+x = 1/0
+y = -1/0
+z = 0/0
+---
+> x = Inf
+> y = -Inf
+> z = NaN
+
+### fmt-04 | output | non-integer matrix with a negative
+A = [1.5 2.25; -3 4]
+---
+> A =
+>
+>    1.5000   2.2500
+>   -3.0000   4.0000
+>
+
+### fmt-05 | output | exact zero in a non-integer matrix
+v = [0 0.25 0.5]
+---
+> v =
+>
+>         0   0.2500   0.5000
+>
+
+### fmt-06 | output | common format for different magnitudes
+[100.5 2]
+---
+> ans =
+>
+>    100.5000     2.0000
+>
+
+### fmt-07 | output | matrix e-format
+[1e-5 1]
+---
+> ans =
+>
+>    1.0000e-05   1.0000e+00
+>
+
+### fmt-08 | output | empty matrices
+x = []
+y = zeros(0, 3)
+z = 1:0
+---
+> x = [](0x0)
+> y = [](0x3)
+> z = [](1x0)
+
+### fmt-09 | output | char matrix
+c = ['ab'; 'cd']
+---
+> c =
+>
+> ab
+> cd
+>
+
+### fmt-10 | output | integer matrix: width by the largest
+M = [10 -200; 3 4]
+---
+> M =
+>
+>     10  -200
+>      3     4
+>
+
+### fmt-11 | output | Inf and NaN in an integer matrix
+[1 NaN -Inf]
+---
+> ans =
+>
+>      1   NaN  -Inf
+>
+
+### fmt-12 | output | complex scalars
+z = 3 - 4i
+w = sqrt(-4)
+u = 0.5 + 1.25i
+---
+> z = 3 - 4i
+> w = 0 + 2i
+> u = 0.5000 + 1.2500i
+
+### fmt-13 | output | format long
+format long
+x = 1/3
+v = [pi; 1]
+---
+> x = 0.333333333333333
+> v =
+>
+>    3.141592653589793
+>    1.000000000000000
+>
+
+### fmt-14 | output | a column with different digit counts
+v = [1; 22; 333]
+---
+> v =
+>
+>      1
+>     22
+>    333
+>
+
+### fmt-15 | output | disp
+disp([1 2; 3 4])
+disp(pi)
+disp(-2)
+disp('abc')
+---
+>    1   2
+>    3   4
+> 3.1416
+> -2
+> abc
+
+### fmt-16 | output | range with a fractional step
+r = 0:0.25:1
+---
+> r =
+>
+>         0   0.2500   0.5000   0.7500   1.0000
+>
+
+### fmt-17 | output | logical matrix
+[1 2 3] > 2
+---
+> ans =
+>
+>   0  0  1
+>
+
+### fmt-18 | output | function handles
+f = @(x) x.^2 + 1
+g = @sin
+---
+> f =
+>
+> @(x) x .^ 2 + 1
+>
+> g = @sin
+
+### fmt-19 | output | variable name without assignment
+x = 7;
+x
+---
+> x = 7
+
+### fmt-20 | output | negative non-integer with two digits
+v = [-12.5; 1]
+---
+> v =
+>
+>   -12.5000
+>     1.0000
+>
+
+### mat-01 | matrices | ranges
+a = 1:5
+b = 10:-3:1
+---
+> a =
+>
+>    1   2   3   4   5
+>
+> b =
+>
+>    10    7    4    1
+>
+
+### mat-02 | matrices | size of a range with a fractional step
+size(1:0.5:3)
+---
+> ans =
+>
+>    1   5
+>
+
+### mat-03 | matrices | concatenation
+A = [1 2]; B = [3 4];
+C = [A; B]
+D = [A, B]
+---
+> C =
+>
+>    1   2
+>    3   4
+>
+> D =
+>
+>    1   2   3   4
+>
+
+### mat-04 | matrices | concatenation with empty and nested
+x = [[] 1 2]
+M = [eye(2), [5; 6]]
+---
+> x =
+>
+>    1   2
+>
+> M =
+>
+>    1   0   5
+>    0   1   6
+>
+
+### mat-05 | matrices | dimension mismatch in concatenation
+[1 2; 3]
+---
+> error: vertical dimensions mismatch (1x2 vs 1x1)
+
+### mat-06 | matrices | zeros and ones
+Z = zeros(2, 3)
+O = ones(2)
+---
+> Z =
+>
+>    0   0   0
+>    0   0   0
+>
+> O =
+>
+>    1   1
+>    1   1
+>
+
+### mat-07 | matrices | linspace
+x = linspace(0, 1, 5)
+---
+> x =
+>
+>         0   0.2500   0.5000   0.7500   1.0000
+>
+
+### mat-08 | matrices | repmat and reshape
+R = repmat([1 2], 2, 2)
+S = reshape(1:6, 2, 3)
+T = reshape(1:6, 3, [])
+---
+> R =
+>
+>    1   2   1   2
+>    1   2   1   2
+>
+> S =
+>
+>    1   3   5
+>    2   4   6
+>
+> T =
+>
+>    1   4
+>    2   5
+>    3   6
+>
+
+### mat-09 | matrices | size, numel, length
+A = zeros(3, 5);
+n = numel(A)
+L = length(A)
+[r, c] = size(A)
+s2 = size(A, 2)
+---
+> n = 15
+> L = 5
+> r = 3
+> c = 5
+> s2 = 5
+
+### mat-10 | matrices | shape predicates
+disp([isempty([]), isscalar(5), isvector([1 2 3]), isvector(ones(2))])
+---
+>   1  1  1  0
+
+### mat-11 | matrices | diag
+D = diag([1 2 3]);
+disp(D(2,2) + D(1,2))
+v = diag([1 2; 3 4])
+---
+> 2
+> v =
+>
+>    1
+>    4
+>
+
+### mat-12 | matrices | magic, triu, tril
+M = magic(4)
+U = triu(M)
+L = tril(magic(3))
+---
+> M =
+>
+>    16    2    3   13
+>     5   11   10    8
+>     9    7    6   12
+>     4   14   15    1
+>
+> U =
+>
+>    16    2    3   13
+>     0   11   10    8
+>     0    0    6   12
+>     0    0    0    1
+>
+> L =
+>
+>    8   0   0
+>    3   5   0
+>    4   9   2
+>
+
+### mat-13 | matrices | magic square property 6×6
+M = magic(6);
+disp([sum(M(:,1)), sum(M(2,:)), trace(M), sum(diag(fliplr(M)))])
+---
+>    111   111   111   111
+
+### mat-14 | matrices | magic(3)
+magic(3)
+---
+> ans =
+>
+>    8   1   6
+>    3   5   7
+>    4   9   2
+>
+
+### mat-15 | matrices | transposed range
+x = (1:3)'
+---
+> x =
+>
+>    1
+>    2
+>    3
+>
+
+### idx-01 | indexing | two-dimensional and linear
+A = [1 2 3; 4 5 6; 7 8 9];
+a = A(2,3)
+b = A(8)
+c = A(end, 1)
+d = A(end)
+---
+> a = 6
+> b = 6
+> c = 7
+> d = 9
+
+### idx-02 | indexing | colon and ranges
+A = [1 2 3; 4 5 6; 7 8 9];
+r = A(2, :)
+c = A(:, 2)
+s = A(1:2, [1 3])
+---
+> r =
+>
+>    4   5   6
+>
+> c =
+>
+>    2
+>    5
+>    8
+>
+> s =
+>
+>    1   3
+>    4   6
+>
+
+### idx-03 | indexing | end in arithmetic
+v = 10:10:50;
+a = v(end-1)
+b = v([1 end])
+c = v(end:-2:1)
+---
+> a = 40
+> b =
+>
+>    10   50
+>
+> c =
+>
+>    50   30   10
+>
+
+### idx-04 | indexing | logical mask: read and assign
+v = [5 -3 8 -1 0];
+p = v(v > 0)
+v(v < 0) = 0
+---
+> p =
+>
+>    5   8
+>
+> v =
+>
+>    5   0   8   0   0
+>
+
+### idx-05 | indexing | find
+v = [0 3 0 7];
+k = find(v)
+[r, c] = find([0 1; 1 0])
+---
+> k =
+>
+>    2   4
+>
+> r =
+>
+>    2
+>    1
+>
+> c =
+>
+>    1
+>    2
+>
+
+### idx-06 | indexing | growing a vector by assignment
+x = [];
+x(3) = 7
+---
+> x =
+>
+>    0   0   7
+>
+
+### idx-07 | indexing | growing a matrix by assignment
+A = [1 2; 3 4];
+A(3, 3) = 9
+---
+> A =
+>
+>    1   2   0
+>    3   4   0
+>    0   0   9
+>
+
+### idx-08 | indexing | assigning a column and a row
+A = zeros(2, 3);
+A(:, 2) = 5;
+A(2, :) = [7 8 9]
+---
+> A =
+>
+>    0   5   0
+>    7   8   9
+>
+
+### idx-09 | indexing | deleting elements and a column
+v = 1:5;
+v([2 4]) = []
+A = magic(3);
+A(:, 2) = []
+---
+> v =
+>
+>    1   3   5
+>
+> A =
+>
+>    8   6
+>    3   7
+>    4   2
+>
+
+### idx-10 | indexing | out of bounds, linear index
+v = [1 2 3];
+v(5)
+---
+> error: v(5): out of bound 3 (dimensions are 1x3)
+
+### idx-11 | indexing | out of bounds, two indices
+A = ones(2);
+A(3, 1)
+---
+> error: A(3,_): out of bound 2 (dimensions are 2x2)
+
+### idx-12 | indexing | non-integer index
+v = 1:3;
+v(1.5)
+---
+> error: v(1.5): subscripts must be either integers 1 to (2^63)-1 or logicals
+
+### idx-13 | indexing | A(:) and result shape
+A = [1 2; 3 4];
+v = A(:)'
+v2 = 11:16;
+w = v2([1 2; 3 4])
+c = [10; 20; 30];
+d = c([1 3])
+---
+> v =
+>
+>    1   3   2   4
+>
+> w =
+>
+>    11   12
+>    13   14
+>
+> d =
+>
+>    10
+>    30
+>
+
+### idx-14 | indexing | end inside a function call in an index
+v = [4 8 15 16 23 42];
+x = v(min(3, end))
+y = v(round(end/2))
+---
+> x = 15
+> y = 15
+
+### idx-15 | indexing | a logical matrix mask gives a column
+A = [1 5; 7 2];
+b = A(A > 1)
+---
+> b =
+>
+>    7
+>    5
+>    2
+>
+
+### idx-16 | indexing | deleting rows
+A = magic(4);
+A([1 3], :) = [];
+disp(size(A))
+disp(A)
+---
+>    2   4
+>     5   11   10    8
+>     4   14   15    1
+
+### idx-17 | indexing | mismatch on assignment
+A = zeros(2);
+A(:, 1) = [1 2 3]
+---
+> error: =: nonconformant arguments (op1 is 2x1, op2 is 1x3)
+
+### idx-18 | indexing | linear assignment into a matrix, mask
+A = zeros(2, 2);
+A([1 4]) = [5 6];
+A(A == 0) = -1
+---
+> A =
+>
+>    5  -1
+>   -1   6
+>
+
+### idx-19 | indexing | character string
+s = 'hello world';
+t = s(1:5)
+u = s(end:-1:7)
+---
+> t = hello
+> u = dlrow
+
+### op-01 | operators | precedence and power associativity
+a = 2 + 3 * 4
+b = (2 + 3) * 4
+c = -2 ^ 2
+d = 2 ^ -1
+e1 = 2 ^ 3 ^ 2
+---
+> a = 14
+> b = 20
+> c = -4
+> d = 0.5000
+> e1 = 64
+
+### op-02 | operators | matrix multiplication
+A = [1 2; 3 4];
+B = [5 6; 7 8];
+C = A * B
+---
+> C =
+>
+>    19   22
+>    43   50
+>
+
+### op-03 | operators | elementwise operations
+A = [1 2; 3 4];
+P = A .* A
+Q = A ./ [2 2; 2 2]
+R = A .^ 2
+---
+> P =
+>
+>     1    4
+>     9   16
+>
+> Q =
+>
+>    0.5000   1.0000
+>    1.5000   2.0000
+>
+> R =
+>
+>     1    4
+>     9   16
+>
+
+### op-04 | operators | conjugate and plain transpose
+z = [1+2i, 3-1i];
+a = z'
+b = z.'
+---
+> a =
+>
+>    1 - 2i
+>    3 + 1i
+>
+> b =
+>
+>    1 + 2i
+>    3 - 1i
+>
+
+### op-05 | operators | comparison and logic
+v = [1 2 3 4];
+a = v >= 2 & v < 4
+b = ~(v == 2)
+c = xor(true, [true false])
+---
+> a =
+>
+>   0  1  1  0
+>
+> b =
+>
+>   1  0  1  1
+>
+> c =
+>
+>   0  1
+>
+
+### op-06 | operators | short-circuit
+x = [];
+if isempty(x) || x(1) > 0
+  disp('empty or positive')
+end
+---
+> empty or positive
+
+### op-07 | operators | implicit expansion
+a = [1 2 3] + [10; 20]
+---
+> a =
+>
+>    11   12   13
+>    21   22   23
+>
+
+### op-08 | operators | mismatched sizes in addition
+[1 2] + [1 2 3]
+---
+> error: operator +: nonconformant arguments (op1 is 1x2, op2 is 1x3)
+
+### op-09 | operators | mismatched sizes in multiplication
+[1 2] * [3 4]
+---
+> error: operator *: nonconformant arguments (op1 is 1x2, op2 is 1x2)
+
+### op-10 | operators | left division
+A = [2 1; 1 3];
+b = [3; 5];
+x = A \ b
+---
+> x =
+>
+>    0.8000
+>    1.4000
+>
+
+### op-11 | operators | right division
+x = [3 5] / [2 1; 1 3]
+---
+> x =
+>
+>    0.8000   1.4000
+>
+
+### op-12 | operators | matrix power: Fibonacci numbers
+A = [1 1; 1 0];
+F = A ^ 10
+---
+> F =
+>
+>    89   55
+>    55   34
+>
+
+### op-13 | operators | scalar and matrix
+A = [1 2; 3 4];
+B = 2 * A - 1
+C = A / 2
+---
+> B =
+>
+>    1   3
+>    5   7
+>
+> C =
+>
+>    0.5000   1.0000
+>    1.5000   2.0000
+>
+
+### op-14 | operators | unary minus and negation
+v = -[1 -2 3]
+w = ~[1 0 2]
+---
+> v =
+>
+>   -1   2  -3
+>
+> w =
+>
+>   0  1  0
+>
+
+### op-15 | operators | character arithmetic
+c = 'a' + 1
+s = char([72 105])
+d = double('AB')
+---
+> c = 98
+> s = Hi
+> d =
+>
+>    65   66
+>
+
+### op-16 | operators | colon is lower than +
+x = 1:2+1
+---
+> x =
+>
+>    1   2   3
+>
+
+### op-17 | operators | elementwise string comparison
+'abc' == 'abd'
+---
+> ans =
+>
+>   1  1  0
+>
+
+### op-18 | operators | fractional power of a negative — complex
+z = (-8)^(1/3)
+---
+> z = 1.0000 + 1.7321i
+
+### op-19 | operators | left division of scalars
+2 \ 8
+---
+> ans = 4
+
+### ctl-01 | control | if / elseif / else
+for x = [-2 0 3]
+  if x < 0
+    disp('negative')
+  elseif x == 0
+    disp('zero')
+  else
+    disp('positive')
+  end
+end
+---
+> negative
+> zero
+> positive
+
+### ctl-02 | control | while and break
+n = 0;
+while true
+  n = n + 1;
+  if n^2 > 50
+    break
+  end
+end
+disp(n)
+---
+> 8
+
+### ctl-03 | control | continue
+s = 0;
+for k = 1:10
+  if mod(k, 2) == 0
+    continue
+  end
+  s = s + k;
+end
+s
+---
+> s = 25
+
+### ctl-04 | control | switch with numbers and a list of cases
+for v = [1 2 5]
+  switch v
+    case 1
+      disp('one')
+    case {2, 3}
+      disp('two or three')
+    otherwise
+      disp('other')
+  end
+end
+---
+> one
+> two or three
+> other
+
+### ctl-05 | control | switch with strings
+s = 'beta';
+switch s
+  case 'alpha'
+    disp(1)
+  case {'beta', 'gamma'}
+    disp(2)
+end
+---
+> 2
+
+### ctl-06 | control | for over matrix columns
+for c = [1 2; 3 4]
+  disp(c')
+end
+---
+>    1   3
+>    2   4
+
+### ctl-07 | control | break only from the inner loop
+count = 0;
+for i = 1:3
+  for j = 1:3
+    if j > i
+      break
+    end
+    count = count + 1;
+  end
+end
+count
+---
+> count = 6
+
+### ctl-08 | control | condition from a matrix and an empty
+if [1 1 0]
+  disp('yes')
+else
+  disp('no')
+end
+if []
+  disp('empty true')
+else
+  disp('empty false')
+end
+---
+> no
+> empty false
+
+### ctl-09 | control | while with a compound condition
+a = 1; b = 100;
+while a < b && b > 50
+  a = a * 2;
+  b = b - 10;
+end
+[a b]
+---
+> ans =
+>
+>    32   50
+>
+
+### ctl-10 | control | try / catch and lasterr
+try
+  error('my failure');
+catch
+  disp('caught');
+end
+disp(lasterr())
+---
+> caught
+> my failure
+
+### ctl-11 | control | empty loop range
+for k = 1:0
+  disp('never')
+end
+disp('done')
+---
+> done
+
+### ctl-12 | control | loop variable after the loop
+for k = 1:4
+end
+k
+---
+> k = 4
+
+### ctl-13 | control | an uncaught error stops the script
+disp('before')
+error('Stop here: %d', 42)
+disp('after')
+---
+> before
+> error: Stop here: 42
+
+### fn-01 | functions | user function at the end of the script
+disp(sq(3))
+disp(sq([1 2 3]))
+function y = sq(x)
+  y = x .^ 2;
+end
+---
+> 9
+>    1   4   9
+
+### fn-02 | functions | multiple results
+[s, p] = sp(3, 4)
+function [s, p] = sp(a, b)
+  s = a + b;
+  p = a * b;
+end
+---
+> s = 7
+> p = 12
+
+### fn-03 | functions | nargin and default values
+disp(addn(5))
+disp(addn(5, 10))
+function r = addn(a, b)
+  if nargin < 2
+    b = 1;
+  end
+  r = a + b;
+end
+---
+> 6
+> 15
+
+### fn-04 | functions | recursion
+disp(fact(10))
+function r = fact(n)
+  if n <= 1
+    r = 1;
+  else
+    r = n * fact(n - 1);
+  end
+end
+---
+> 3628800
+
+### fn-05 | functions | anonymous function captures values at creation
+a = 2;
+f = @(x) a * x;
+a = 100;
+disp(f(5))
+---
+> 10
+
+### fn-06 | functions | builtin handles and feval
+g = @sqrt;
+disp(g(16))
+disp(feval(@max, [3 9 2]))
+disp(feval('min', [3 9 2]))
+---
+> 4
+> 9
+> 2
+
+### fn-07 | functions | anonymous with two arguments and nested
+h = @(x, y) x.^2 + y;
+k = @(t) h(t, 1);
+disp(k(3))
+---
+> 10
+
+### fn-08 | functions | arrayfun
+v = arrayfun(@(x) x * 2 + 1, [1 2 3])
+---
+> v =
+>
+>    3   5   7
+>
+
+### fn-09 | functions | early return
+disp(firstneg([3 -1 -5]))
+function i = firstneg(v)
+  i = 0;
+  for k = 1:numel(v)
+    if v(k) < 0
+      i = k;
+      return
+    end
+  end
+end
+---
+> 2
+
+### fn-10 | functions | function without a result
+greet('Mova')
+function greet(name)
+  fprintf('Hello, %s!\n', name);
+end
+---
+> Hello, Mova!
+
+### fn-11 | functions | skipped result ~
+[~, idx] = max([4 9 1])
+---
+> idx = 2
+
+### fn-12 | functions | func2str
+f = @(x) sin(x) + 1;
+disp(func2str(f))
+---
+> @(x) sin (x) + 1
+
+### fn-13 | functions | function variables are local
+x = 5;
+setx();
+disp(x)
+function setx()
+  x = 99;
+end
+---
+> 5
+
+### fn-14 | functions | a function calls another local one
+disp(outer(3))
+function r = outer(x)
+  r = inner(x) + 1;
+end
+function r = inner(x)
+  r = x * 10;
+end
+---
+> 31
+
+### red-01 | reductions | sum and prod
+A = [1 2 3; 4 5 6];
+s1 = sum(A)
+s2 = sum(A, 2)
+p = prod([1 2 3 4])
+t = sum(A(:))
+---
+> s1 =
+>
+>    5   7   9
+>
+> s2 =
+>
+>     6
+>    15
+>
+> p = 24
+> t = 21
+
+### red-02 | reductions | cumsum and cumprod
+c = cumsum([1 2 3 4])
+d = cumprod([1 2 3 4])
+e2 = cumsum([1 2; 3 4])
+---
+> c =
+>
+>     1    3    6   10
+>
+> d =
+>
+>     1    2    6   24
+>
+> e2 =
+>
+>    1   2
+>    4   6
+>
+
+### red-03 | reductions | max and min with indices
+[m, i] = max([3 7 2 7])
+[n, j] = min([3 7 2 7])
+---
+> m = 7
+> i = 2
+> n = 2
+> j = 3
+
+### red-04 | reductions | max by columns, by rows, with a number
+A = [1 8; 5 3];
+a = max(A)
+b = max(A, [], 2)
+c = max(A, 4)
+d = min(A(:))
+---
+> a =
+>
+>    5   8
+>
+> b =
+>
+>    8
+>    5
+>
+> c =
+>
+>    4   8
+>    5   4
+>
+> d = 1
+
+### red-05 | reductions | mean and median
+a = mean([1 2 3 4])
+b = median([3 1 4 1 5])
+c = median([1 2 3 4])
+d = mean([1 2; 3 4])
+---
+> a = 2.5000
+> b = 3
+> c = 2.5000
+> d =
+>
+>    2   3
+>
+
+### red-06 | reductions | var and std
+v = [2 4 4 4 5 5 7 9];
+a = var(v)
+b = std(v)
+c = var(v, 1)
+d = std(v, 1)
+---
+> a = 4.5714
+> b = 2.1381
+> c = 4
+> d = 2
+
+### red-07 | reductions | sort with indices and descending
+[s, i] = sort([3 1 2])
+d = sort([3 1 2], 'descend')
+---
+> s =
+>
+>    1   2   3
+>
+> i =
+>
+>    2   3   1
+>
+> d =
+>
+>    3   2   1
+>
+
+### red-08 | reductions | sort of a matrix by columns
+sort([3 1; 1 2; 2 0])
+---
+> ans =
+>
+>    1   0
+>    2   1
+>    3   2
+>
+
+### red-09 | reductions | any and all
+a = any([0 0 1])
+b = all([1 1 0])
+c = all([1 2; 3 4] > 0)
+d = any([0 0; 0 1])
+---
+> a = 1
+> b = 0
+> c =
+>
+>   1  1
+>
+> d =
+>
+>   0  1
+>
+
+### red-10 | reductions | sizes of created matrices
+disp(size(zeros(2, 3)))
+disp(size(ones([4 1])))
+disp(sum(sum(eye(4))))
+---
+>    2   3
+>    4   1
+> 4
+
+### red-11 | reductions | rand is deterministic with a seed
+rand('seed', 7);
+a = rand(1, 5);
+rand('seed', 7);
+b = rand(1, 5);
+disp(isequal(a, b))
+disp(all(a >= 0 & a < 1))
+disp(size(randn(3, 2)))
+---
+> 1
+> 1
+>    3   2
+
+### red-12 | reductions | randn: mean and spread
+rng(42);
+x = randn(1, 10000);
+disp(abs(mean(x)) < 0.05)
+disp(abs(std(x) - 1) < 0.05)
+---
+> 1
+> 1
+
+### red-13 | reductions | linspace: endpoints and step
+x = linspace(1, 2, 11);
+disp(numel(x))
+disp(x(end) == 2)
+disp(x(6))
+---
+> 11
+> 1
+> 1.5000
+
+### red-14 | reductions | sums of an empty
+a = sum([])
+b = prod([])
+---
+> a = 0
+> b = 1
+
+### red-15 | reductions | find with a count limit
+f = find([5 0 6 0 7], 2)
+---
+> f =
+>
+>    1   3
+>
+
+### red-16 | reductions | cumsum along the second dimension
+cumsum([1 2; 3 4], 2)
+---
+> ans =
+>
+>    1   3
+>    3   7
+>
+
+### red-17 | reductions | mean by rows
+A = [1 2; 3 5];
+m = mean(A, 2)
+---
+> m =
+>
+>    1.5000
+>    4.0000
+>
+
+### red-18 | reductions | length of a string
+n = length('hello')
+---
+> n = 5
+
+### red-19 | reductions | unique, diff, fliplr, flipud
+u = unique([3 1 2 3 1])
+d = diff([1 4 9 16])
+f = fliplr([1 2 3])
+g = flipud([1; 2])
+---
+> u =
+>
+>    1   2   3
+>
+> d =
+>
+>    3   5   7
+>
+> f =
+>
+>    3   2   1
+>
+> g =
+>
+>    2
+>    1
+>
+
+### red-20 | reductions | isequal
+a = isequal([1 2], [1 2])
+b = isequal([1 2], [1 2 3])
+---
+> a = 1
+> b = 0
+
+### elem-01 | elementwise | abs, sqrt, exp, log
+a = abs([-3 4])
+b = sqrt([4 9 16])
+c = exp(0)
+d = log(1)
+disp(abs(log(exp(2)) - 2) < 1e-15)
+---
+> a =
+>
+>    3   4
+>
+> b =
+>
+>    2   3   4
+>
+> c = 1
+> d = 0
+> 1
+
+### elem-02 | elementwise | trigonometric identities
+x = linspace(0, 2*pi, 7);
+disp(max(abs(sin(x).^2 + cos(x).^2 - 1)) < 1e-15)
+disp(abs(tan(pi/4) - 1) < 1e-15)
+disp(atan2(1, 1) * 4 == pi)
+---
+> 1
+> 1
+> 1
+
+### elem-03 | elementwise | floor, ceil, round, fix
+v = [-2.5 -1.5 1.5 2.5];
+a = floor(v)
+b = ceil(v)
+c = round(v)
+d = fix(v)
+---
+> a =
+>
+>   -3  -2   1   2
+>
+> b =
+>
+>   -2  -1   2   3
+>
+> c =
+>
+>   -3  -2   2   3
+>
+> d =
+>
+>   -2  -1   1   2
+>
+
+### elem-04 | elementwise | mod and rem: signs
+a = mod(-7, 3)
+b = rem(-7, 3)
+c = mod(7, -3)
+d = mod(5.5, 2)
+e1 = mod(5, 0)
+---
+> a = 2
+> b = -1
+> c = -2
+> d = 1.5000
+> e1 = 5
+
+### elem-05 | elementwise | sign and max with NaN
+s = sign([-2 0 3])
+m = max([1 NaN 3])
+---
+> s =
+>
+>   -1   0   1
+>
+> m = 3
+
+### elem-06 | elementwise | log of a negative, exp of a vector
+log(-1)
+exp([0 1])
+---
+> ans = 0 + 3.1416i
+> ans =
+>
+>    1.0000   2.7183
+>
+
+### elem-07 | elementwise | square root of a negative
+sqrt(-9)
+---
+> ans = 0 + 3i
+
+### elem-08 | elementwise | gcd, lcm, factorial, nchoosek, primes
+a = gcd(12, 18)
+b = lcm(4, 6)
+c = factorial(5)
+d = nchoosek(5, 2)
+p = primes(20)
+---
+> a = 6
+> b = 12
+> c = 120
+> d = 10
+> p =
+>
+>     2    3    5    7   11   13   17   19
+>
+
+### elem-09 | elementwise | hypot, nthroot, log2, log10
+a = hypot(3, 4)
+b = nthroot(-27, 3)
+c = log2(8)
+disp(abs(log10(1000) - 3) < 1e-15)
+---
+> a = 5
+> b = -3
+> c = 3
+> 1
+
+### io-01 | output-functions | fprintf: formats
+fprintf('%d apples\n', 5)
+fprintf('%5.2f|\n', pi)
+fprintf('%-6s|\n', 'ab')
+fprintf('%e\n', 12345.678)
+fprintf('%g %g\n', 0.0001, 1e6)
+---
+> 5 apples
+>  3.14|
+> ab    |
+> 1.234568e+04
+> 0.0001 1e+06
+
+### io-02 | output-functions | fprintf: format reuse over elements
+fprintf('%d,', [1 2 3]); fprintf('\n');
+fprintf('%d-%d\n', [1 2; 3 4])
+---
+> 1,2,3,
+> 1-3
+> 2-4
+
+### io-03 | output-functions | sprintf and num2str
+s = sprintf('%.3f', 2/3)
+t = num2str(pi)
+u = num2str(42)
+disp(['x = ' num2str(7)])
+---
+> s = 0.667
+> t = 3.1416
+> u = 42
+> x = 7
+
+### io-04 | output-functions | mat2str
+disp(mat2str([1 2; 3 4]))
+disp(mat2str([0.5 -1]))
+disp(mat2str(logical([1 0])))
+---
+> [1 2;3 4]
+> [0.5 -1]
+> [true false]
+
+### io-05 | output-functions | fprintf with a percent sign
+fprintf('100%%\n')
+---
+> 100%
+
+### io-06 | output-functions | num2str of an integer vector
+disp(num2str([1 2 3]))
+---
+> 1  2  3
+
+### io-07 | output-functions | sprintf: %s and %c
+x = sprintf('%s-%c', 'ab', 67)
+---
+> x = ab-C
+
+### io-08 | output-functions | flags + and 0
+fprintf('%+d %05.1f\n', 7, 3.14159)
+---
+> +7 003.1
+
+### io-09 | output-functions | int2str
+int2str(2.7)
+---
+> ans = 3
+
+### io-10 | output-functions | fprintf with a string and a number
+fprintf('%s: %d\n', 'n', 3)
+---
+> n: 3
+
+### la-01 | linear algebra | det
+disp(det([2 1; 1 3]))
+disp(round(det(magic(3))))
+disp(abs(det(magic(4))) < 1e-9)
+---
+> 5
+> -360
+> 1
+
+### la-02 | linear algebra | inv: A·inv(A) = I
+A = [4 7; 2 6];
+B = inv(A);
+disp(norm(A * B - eye(2)) < 1e-12)
+disp(round(B * 10))
+---
+> 1
+>    6  -7
+>   -2   4
+
+### la-03 | linear algebra | inv of a singular matrix — warning and Inf
+B = inv([1 2; 2 4])
+---
+> warning: matrix singular to machine precision
+> B =
+>
+>    Inf   Inf
+>    Inf   Inf
+>
+
+### la-04 | linear algebra | \ for 3×3: residual and exact solution
+A = [4 -2 1; -2 4 -2; 1 -2 4];
+b = [11; -16; 17];
+x = A \ b;
+disp(norm(A * x - b) < 1e-12)
+disp(round(x'))
+---
+> 1
+>    1  -2   3
+
+### la-05 | linear algebra | \ for an overdetermined system (least squares)
+A = [1 0; 1 1; 1 2];
+b = [1; 3; 5];
+c = A \ b;
+disp(round(c' * 1000) / 1000)
+---
+>    1   2
+
+### la-06 | linear algebra | lu with permutation
+A = [1 2; 3 4];
+[L, U, P] = lu(A);
+disp(norm(P * A - L * U) < 1e-12)
+disp(U)
+---
+> 1
+>    3.0000   4.0000
+>         0   0.6667
+
+### la-07 | linear algebra | qr
+A = [3 1; 4 2];
+[Q, R] = qr(A);
+disp(norm(Q * R - A) < 1e-12)
+disp(norm(Q' * Q - eye(2)) < 1e-12)
+disp(abs(R(2,1)) < 1e-15)
+disp(round(abs(R(1,1)) * 1000) / 1000)
+---
+> 1
+> 1
+> 1
+> 5
+
+### la-08 | linear algebra | chol
+A = [4 2; 2 3];
+R = chol(A)
+disp(norm(R' * R - A) < 1e-12)
+---
+> R =
+>
+>    2.0000   1.0000
+>         0   1.4142
+>
+> 1
+
+### la-09 | linear algebra | chol of a non-positive-definite matrix
+chol([1 2; 2 1])
+---
+> error: chol: input matrix must be positive definite
+
+### la-10 | linear algebra | eig of a symmetric matrix
+A = [2 1; 1 2];
+e1 = round(eig(A)' * 1e10) / 1e10
+[V, D] = eig(A);
+disp(norm(A * V - V * D) < 1e-12)
+---
+> e1 =
+>
+>    1   3
+>
+> 1
+
+### la-11 | linear algebra | eig with complex eigenvalues
+A = [0 -1; 1 0];
+e = eig(A);
+disp(round(sort(imag(e))' * 1e10) / 1e10)
+disp(max(abs(real(e))) < 1e-15)
+---
+>   -1   1
+> 1
+
+### la-12 | linear algebra | eig of a nonsymmetric matrix: A·V = V·D and exact values
+A = [1 2; 3 4];
+[V, D] = eig(A);
+disp(norm(A * V - V * D) < 1e-12)
+lam = sort(diag(D));
+disp(abs(lam - [(5 - sqrt(33))/2; (5 + sqrt(33))/2])' < 1e-12)
+---
+> 1
+>   1  1
+
+### la-13 | linear algebra | svd: reconstruction U·S·V'
+A = [3 0; 0 4; 0 0];
+s = round(svd(A)' * 1e10) / 1e10
+[U, S, V] = svd(A);
+disp(norm(U * S * V' - A) < 1e-12)
+disp(size(S))
+---
+> s =
+>
+>    4   3
+>
+> 1
+>    3   2
+
+### la-14 | linear algebra | norm
+v = [3 4];
+a = norm(v)
+b = norm(v, 1)
+c = norm(v, Inf)
+d = norm([1 2; 3 4], 'fro')
+---
+> a = 5
+> b = 7
+> c = 4
+> d = 5.4772
+
+### la-15 | linear algebra | rank, trace, kron
+r1 = rank(magic(4))
+r2 = rank(eye(3))
+t = trace([1 2; 3 4])
+K = kron([1 2], [1; 1])
+---
+> r1 = 3
+> r2 = 3
+> t = 5
+> K =
+>
+>    1   2
+>    1   2
+>
+
+### la-16 | linear algebra | \ of a singular matrix: warning and minimum-norm solution
+x = [1 2; 2 4] \ [1; 2]
+---
+> warning: matrix singular to machine precision
+> x =
+>
+>    0.2000
+>    0.4000
+>
+
+### la-17 | linear algebra | dot and cross
+d = dot([1 2 3], [4 5 6])
+c = cross([1 0 0], [0 1 0])
+---
+> d = 32
+> c =
+>
+>    0   0   1
+>
+
+### la-18 | linear algebra | det(AB) = det(A)·det(B), inv(A)·A = I
+A = [2 0 1; 1 3 2; 1 1 1];
+B = [1 2 0; 0 1 3; 2 0 1];
+disp(abs(det(A * B) - det(A) * det(B)) < 1e-10)
+disp(norm(inv(A) * A - eye(3)) < 1e-12)
+---
+> 1
+> 1
+
+### la-19 | linear algebra | A^-1 equals inv(A)
+disp(norm([2 1; 1 3]^-1 - inv([2 1; 1 3])) < 1e-15)
+---
+> 1
+
+### la-20 | linear algebra | sum of eigenvalues = trace
+A = magic(4);
+disp(abs(sum(eig(A)) - trace(A)) < 1e-10)
+---
+> 1
+
+### gate-01 | gates | singular consistent system: warning, answer verified
+A = magic(4);
+x = A \ [34; 34; 34; 34];
+disp(norm(A * x - 34) < 1e-10)
+---
+> warning: matrix singular to machine precision
+> 1
+
+### gate-02 | gates | well-conditioned 50×50: the gate stays silent
+rng(1);
+A = rand(50) + 50 * eye(50);
+b = rand(50, 1);
+x = A \ b;
+disp(norm(A * x - b) / norm(b) < 1e-12)
+---
+> 1
+
+### gate-03 | gates | eig of a symmetric 6×6: the gate stays silent
+rng(3);
+B = rand(6);
+A = B + B';
+[V, D] = eig(A);
+disp(norm(A * V - V * D) < 1e-10)
+disp(norm(V' * V - eye(6)) < 1e-10)
+---
+> 1
+> 1
+
+### poly-01 | polynomials | polyval
+p = [1 -3 2];
+v = polyval(p, [0 1 2 3])
+---
+> v =
+>
+>    2   0   0   2
+>
+
+### poly-02 | polynomials | roots with real roots
+r = round(sort(roots([1 -6 11 -6]))' * 1e8) / 1e8
+---
+> r =
+>
+>    1   2   3
+>
+
+### poly-03 | polynomials | roots with complex roots
+r = roots([1 0 4]);
+disp(round(sort(imag(r))' * 1e8) / 1e8)
+disp(max(abs(real(r))) < 1e-12)
+---
+>   -2   2
+> 1
+
+### poly-04 | polynomials | conv and deconv
+c = conv([1 2], [1 3])
+[q, r] = deconv([1 5 6], [1 2])
+---
+> c =
+>
+>    1   5   6
+>
+> q =
+>
+>    1   3
+>
+> r =
+>
+>    0   0   0
+>
+
+### poly-05 | polynomials | polyfit of a line
+x = 0:4;
+y = 3 * x - 2;
+p = polyfit(x, y, 1);
+disp(round(p * 1e8) / 1e8)
+---
+>    3  -2
+
+### poly-06 | polynomials | polyfit of a parabola
+x = linspace(-1, 1, 9);
+y = 2 * x.^2 - x + 0.5;
+p = polyfit(x, y, 2);
+disp(max(abs(p - [2 -1 0.5])) < 1e-10)
+---
+> 1
+
+### poly-07 | polynomials | poly from roots
+disp(poly([2 3]))
+---
+>    1  -5   6
+
+### fft-01 | spectrum | fft of a delta
+X = fft([1 0 0 0])
+---
+> X =
+>
+>    1   1   1   1
+>
+
+### fft-02 | spectrum | fft [1 2 3 4]: real and imaginary parts
+X = fft([1 2 3 4]);
+disp(real(X))
+disp(imag(X))
+---
+>    10   -2   -2   -2
+>    0   2   0  -2
+
+### fft-03 | spectrum | ifft(fft(x)) = x and Parseval
+x = [1 5 2 8 3];
+X = fft(x);
+disp(max(abs(ifft(X) - x)) < 1e-12)
+disp(abs(sum(abs(X).^2) / 5 - sum(x.^2)) < 1e-9)
+---
+> 1
+> 1
+
+### fft-04 | spectrum | cosine peak
+n = 16;
+t = 0:n-1;
+x = cos(2 * pi * 3 * t / n);
+X = abs(fft(x));
+[~, k] = max(X(1:n/2));
+disp(k - 1)
+disp(round(X(4)))
+---
+> 3
+> 8
+
+### fft-05 | spectrum | fft with padding to n
+disp(numel(fft([1 2 3], 8)))
+---
+> 8
+
+### fft-06 | spectrum | fft of a matrix by columns
+A = [1 2; 3 4];
+disp(real(fft(A)))
+---
+>    4   6
+>   -2  -2
+
+### num-01 | numerical methods | integral of a polynomial
+q = integral(@(x) x.^2, 0, 3);
+disp(abs(q - 9) < 1e-10)
+---
+> 1
+
+### num-02 | numerical methods | integral: infinite limits, 1/x
+q1 = integral(@(x) exp(-x.^2), -Inf, Inf);
+disp(abs(q1 - sqrt(pi)) < 1e-6)
+q2 = integral(@(x) 1 ./ x, 1, exp(1));
+disp(abs(q2 - 1) < 1e-8)
+---
+> 1
+> 1
+
+### num-03 | numerical methods | fzero with an interval and from a point
+r1 = fzero(@(x) x.^2 - 2, [0 2]);
+disp(abs(r1 - sqrt(2)) < 1e-10)
+r2 = fzero(@cos, 1);
+disp(abs(r2 - pi/2) < 1e-10)
+---
+> 1
+> 1
+
+### num-04 | numerical methods | fzero without a sign change
+fzero(@(x) x.^2 + 1, [0 1])
+---
+> error: fzero: not a valid initial bracketing
+
+### num-05 | numerical methods | fminsearch of a quadratic
+f = @(p) (p(1) - 1).^2 + (p(2) + 2).^2;
+p = fminsearch(f, [0 0]);
+disp(norm(p - [1 -2]) < 1e-3)
+---
+> 1
+
+### num-06 | numerical methods | fminsearch of Rosenbrock
+rosen = @(x) 100 * (x(2) - x(1)^2)^2 + (1 - x(1))^2;
+x = fminsearch(rosen, [-1.2 1]);
+disp(norm(x - [1 1]) < 1e-3)
+---
+> 1
+
+### num-07 | numerical methods | ode45: exponential decay
+[t, y] = ode45(@(t, y) -y, [0 1], 1);
+disp(abs(y(end) - exp(-1)) < 1e-3)
+disp(t(end) == 1)
+disp(size(t, 2) == 1)
+---
+> 1
+> 1
+> 1
+
+### num-08 | numerical methods | ode45: oscillator at given points
+f = @(t, y) [y(2); -y(1)];
+[t, y] = ode45(f, [0 pi/2 pi], [1; 0]);
+disp(size(y))
+disp(max(abs(y(end, :) - [-1 0])) < 1e-2)
+---
+>    3   2
+> 1
+
+### num-09 | numerical methods | trapz
+x = 0:0.5:2;
+disp(trapz(x, x.^2))
+---
+> 2.7500
+
+### err-01 | errors | undefined variable
+y = x + 1
+---
+> error: 'x' undefined
+
+### err-02 | errors | error with an identifier and a format
+error('MyPkg:myid', 'Value %d too big', 7)
+---
+> error: Value 7 too big
+
+### err-03 | errors | syntax error: the script does not run at all
+disp(1)
+x = (1 + 2
+---
+> parse error near line 2, column 11: expected ')'
+
+### err-04 | errors | error inside a function
+f(0)
+function f(x)
+  if x == 0
+    error('f: x must be nonzero');
+  end
+end
+---
+> error: f: x must be nonzero
+
+### err-05 | errors | undefined function
+foo(1)
+---
+> error: 'foo' undefined
+
+### err-06 | errors | mismatched sizes in left division
+[1 2; 3 4] \ [1 2 3]'
+---
+> error: operator \: nonconformant arguments (op1 is 2x2, op2 is 3x1)
+
+### err-07 | errors | too many arguments
+sq(1, 2)
+function y = sq(x)
+  y = x^2;
+end
+---
+> error: sq: function called with too many inputs

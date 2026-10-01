@@ -1,0 +1,566 @@
+; mlab — LLM scenarios, area «la» (independent author: claude-opus-5-5, effort high, 26.09.2026, branch tests3).
+; The author did not see the mlab code; prompt — prompts/mlab-head.txt + prompts/tail-la.txt. Format — as data/suite-v1.txt;
+; where the expected output comes from — the «src:» field of the header. Frozen by hash before the first run (tests/vmm_suites.rs).
+
+### vmm-la-001 | det | det of upper and lower triangular matrices is the product of the diagonal | src: identity
+A = [2 3 1; 0 4 5; 0 0 -3];
+printf('%d\n', round(det(A)));
+L = [1 0 0; 7 -2 0; 4 5 6];
+printf('%d\n', round(det(L)));
+---
+> -24
+> -12
+
+### vmm-la-002 | det | det of permutation matrices is the sign of the permutation | src: definition
+P1 = [0 1 0; 0 0 1; 1 0 0];
+P2 = [0 1 0; 1 0 0; 0 0 1];
+printf('%d\n', round(det(P1)));
+printf('%d\n', round(det(P2)));
+printf('%d\n', round(det(eye(4))));
+---
+> 1
+> -1
+> 1
+
+### vmm-la-003 | det | det of singular matrices is zero within tolerance | src: identity
+printf('%d\n', abs(det([1 2 3; 4 5 6; 7 8 9])) < 1e-10);
+printf('%d\n', abs(det(magic(4))) < 1e-9);
+printf('%d\n', det(zeros(3)) == 0);
+---
+> 1
+> 1
+> 1
+
+### vmm-la-004 | det | det of small integer matrices | src: hand computation
+printf('%d\n', round(det(magic(3))));
+printf('%d\n', round(det([2 -1 0; -1 2 -1; 0 -1 2])));
+printf('%d\n', round(det([1 2; 3 4])));
+printf('%d\n', round(det([1 1 1; 1 2 4; 1 3 9])));
+---
+> -360
+> 4
+> -2
+> 2
+
+### vmm-la-005 | det | det is multiplicative, transpose-invariant, scales by k^n; det of empty is 1 | src: identity
+A = [2 1 0; 1 3 1; 0 1 4];
+B = [1 2 0; 0 1 3; 1 0 1];
+printf('%d\n', round(det(A)));
+printf('%d\n', round(det(B)));
+printf('%d\n', abs(det(A*B) - det(A)*det(B)) < 1e-9);
+printf('%d\n', abs(det(A') - det(A)) < 1e-12);
+printf('%d\n', round(det(2*A)));
+disp(det([]));
+---
+> 18
+> 7
+> 1
+> 1
+> 144
+> 1
+
+### vmm-la-006 | inv | inverse of a 2x2 integer matrix and of a scalar | src: exact formula
+A = [2 1; 1 1];
+disp(mat2str(round(inv(A))));
+printf('%d\n', norm(A*inv(A) - eye(2)) < 1e-12);
+printf('%g\n', inv(4));
+---
+> [1 -1;-1 2]
+> 1
+> 0.25
+
+### vmm-la-007 | inv | inverse of a 3x3 unimodular integer matrix | src: hand computation
+A = [1 2 3; 0 1 4; 5 6 0];
+disp(mat2str(round(inv(A))));
+printf('%d\n', norm(A*inv(A) - eye(3)) < 1e-10);
+printf('%d\n', norm(inv(A)*A - eye(3)) < 1e-10);
+---
+> [-24 18 5;20 -15 -4;-5 4 1]
+> 1
+> 1
+
+### vmm-la-008 | inv | inverse with rational entries and inverse of a diagonal matrix | src: exact formula
+A = [4 7; 2 6];
+printf('%.4f\n', inv(A));
+printf('%g\n', diag(inv(diag([2 4 5]))));
+---
+> 0.6000
+> -0.2000
+> -0.7000
+> 0.4000
+> 0.5
+> 0.25
+> 0.2
+
+### vmm-la-009 | mldivide | square system with an integer solution | src: hand computation
+A = [2 1 -1; -3 -1 2; -2 1 2];
+b = [8; -11; -3];
+x = A \ b;
+printf('%d\n', round(x));
+printf('%d\n', norm(A*x - b) < 1e-10);
+printf('%d %d\n', size(x));
+---
+> 2
+> 3
+> -1
+> 1
+> 3 1
+
+### vmm-la-010 | mldivide | multiple right-hand sides, triangular system, scalar left divide | src: hand computation
+A = [2 0; 0 4];
+B = [2 4; 8 12];
+disp(mat2str(round(A \ B)));
+U = [1 2 3; 0 1 4; 0 0 2];
+b = [6; 5; 2];
+printf('%d\n', round(U \ b));
+disp(mat2str(2 \ [4 6]));
+---
+> [1 2;2 3]
+> 1
+> 1
+> 1
+> [2 3]
+
+### vmm-la-011 | lstsq | overdetermined system whose points lie exactly on a line | src: exact formula
+x = [0; 1; 2; 3];
+y = 2*x + 1;
+A = [x ones(4, 1)];
+c = A \ y;
+printf('%.6f\n', c);
+printf('%d\n', norm(A*c - y) < 1e-12);
+printf('%d %d\n', size(c));
+---
+> 2.000000
+> 1.000000
+> 1
+> 2 1
+
+### vmm-la-012 | lstsq | least squares line through non-collinear points matches the normal equations | src: hand computation
+A = [0 1; 1 1; 2 1];
+y = [0; 1; 3];
+c = A \ y;
+printf('%.6f\n', c);
+printf('%d\n', norm(A'*(A*c - y)) < 1e-12);
+---
+> 1.500000
+> -0.166667
+> 1
+
+### vmm-la-013 | mrdivide | b/A solves x*A = b | src: hand computation
+A = [2 1; 1 3];
+b = [4 7];
+x = b / A;
+printf('%d\n', round(x));
+printf('%d %d\n', size(x));
+printf('%d\n', norm(x*A - b) < 1e-12);
+disp(mat2str([4 6] / 2));
+---
+> 1
+> 2
+> 1 2
+> 1
+> [2 3]
+
+### vmm-la-014 | rank | full, deficient and zero-matrix ranks | src: definition
+printf('%d\n', rank(magic(4)));
+printf('%d\n', rank(zeros(3)));
+printf('%d\n', rank(eye(4)));
+printf('%d\n', rank([1 2; 2 4]));
+printf('%d\n', rank(ones(3, 5)));
+printf('%d\n', rank([1 2 3 4; 2 4 6 8; 1 0 1 0]));
+---
+> 3
+> 0
+> 4
+> 1
+> 1
+> 2
+
+### vmm-la-015 | trace | trace values and trace(A*B) == trace(B*A) | src: identity
+printf('%d\n', trace([1 2; 3 4]));
+printf('%d\n', trace(magic(4)));
+printf('%d\n', trace(magic(3)));
+printf('%d\n', trace(5));
+A = [1 2 3; 4 5 6];
+B = [1 0; 2 1; 0 3];
+printf('%d\n', trace(A*B) == trace(B*A));
+printf('%d\n', trace(A*B));
+---
+> 5
+> 34
+> 15
+> 5
+> 1
+> 29
+
+### vmm-la-016 | norm | vector norms 2, 1, Inf, -Inf and p | src: definition
+printf('%g\n', norm([3 4]));
+printf('%g\n', norm([3 4], 1));
+printf('%g\n', norm([3 -4], Inf));
+printf('%g\n', norm([3 -1 2], -Inf));
+printf('%g\n', norm([1; 2; 2]));
+printf('%d\n', abs(norm([1 2 2], 3) - 17^(1/3)) < 1e-12);
+---
+> 5
+> 7
+> 4
+> 1
+> 3
+> 1
+
+### vmm-la-017 | norm | matrix 1-norm, Inf-norm and Frobenius norm | src: definition
+A = [1 -2; 3 4];
+printf('%g\n', norm(A, 1));
+printf('%g\n', norm(A, Inf));
+printf('%.6f\n', norm(A, 'fro'));
+---
+> 6
+> 7
+> 5.477226
+
+### vmm-la-018 | norm | matrix 2-norm of diagonal, rotation and a general 2x2 matrix | src: exact formula
+D = diag([3 -7 2]);
+printf('%d\n', abs(norm(D) - 7) < 1e-12);
+t = 0.7;
+Q = [cos(t) -sin(t); sin(t) cos(t)];
+printf('%d\n', abs(norm(Q) - 1) < 1e-12);
+A = [1 2; 3 4];
+printf('%d\n', abs(norm(A) - sqrt(15 + sqrt(221))) < 1e-12);
+---
+> 1
+> 1
+> 1
+
+### vmm-la-019 | eig | eigenvalues of symmetric matrices are in ascending order in a column | src: exact formula
+e = eig([2 1; 1 2]);
+printf('%.6f\n', e);
+e = eig([2 -1 0; -1 2 -1; 0 -1 2]);
+printf('%.6f\n', e);
+printf('%d %d\n', size(e));
+---
+> 1.000000
+> 3.000000
+> 0.585786
+> 2.000000
+> 3.414214
+> 3 1
+
+### vmm-la-020 | eig | eigenvalues of triangular matrices are the diagonal entries | src: identity
+A = [1 5 7; 0 3 2; 0 0 -2];
+printf('%.6f\n', sort(real(eig(A))));
+B = [4 0; 9 -1];
+printf('%.6f\n', sort(real(eig(B))));
+---
+> -2.000000
+> 1.000000
+> 3.000000
+> -1.000000
+> 4.000000
+
+### vmm-la-021 | eig | companion matrix with real roots and a rotation with eigenvalues +-i | src: exact formula
+e = eig([0 1; -2 -3]);
+printf('%.6f\n', sort(real(e)));
+printf('%d\n', all(abs(imag(e)) < 1e-12));
+e = eig([0 -1; 1 0]);
+printf('%d\n', all(abs(real(e)) < 1e-12));
+printf('%d\n', all(abs(sort(imag(e)) - [-1; 1]) < 1e-12));
+---
+> -2.000000
+> -1.000000
+> 1
+> 1
+> 1
+
+### vmm-la-022 | eig | [V,D] = eig of a symmetric matrix with eigenvalues 2, 4, 5 | src: hand computation
+A = [4 1 0; 1 3 1; 0 1 4];
+[V, D] = eig(A);
+printf('%d\n', norm(A*V - V*D) < 1e-10);
+printf('%d\n', norm(V'*V - eye(3)) < 1e-10);
+printf('%d\n', norm(D - diag(diag(D))) < 1e-14);
+printf('%.6f\n', diag(D));
+---
+> 1
+> 1
+> 1
+> 2.000000
+> 4.000000
+> 5.000000
+
+### vmm-la-023 | svd | singular values of a diagonal matrix and of [3 0; 4 5], in descending order | src: exact formula
+s = svd(diag([3 -5 1]));
+printf('%.6f\n', s);
+s = svd([3 0; 4 5]);
+printf('%.6f\n', s);
+---
+> 5.000000
+> 3.000000
+> 1.000000
+> 6.708204
+> 2.236068
+
+### vmm-la-024 | svd | rank-one outer product has a single nonzero singular value norm(u)*norm(v) | src: identity
+u = [1; 2; 2];
+v = [3; 4];
+A = u * v';
+s = svd(A);
+printf('%d\n', numel(s));
+printf('%d\n', abs(s(1) - 15) < 1e-10);
+printf('%d\n', abs(s(2)) < 1e-10);
+printf('%d\n', rank(A));
+---
+> 2
+> 1
+> 1
+> 1
+
+### vmm-la-025 | svd | full SVD shapes and reconstruction U*S*V' = A | src: documentation
+A = [1 2; 3 4; 5 6];
+[U, S, V] = svd(A);
+printf('%d %d\n', size(U));
+printf('%d %d\n', size(S));
+printf('%d %d\n', size(V));
+printf('%d\n', norm(U*S*V' - A) < 1e-10);
+printf('%d\n', norm(U'*U - eye(3)) < 1e-10);
+printf('%d\n', norm(V'*V - eye(2)) < 1e-10);
+printf('%d\n', S(1,1) >= S(2,2) && S(2,2) > 0);
+---
+> 3 3
+> 3 2
+> 2 2
+> 1
+> 1
+> 1
+> 1
+
+### vmm-la-026 | lu | [L,U,P] = lu with partial pivoting, P*A = L*U | src: documentation
+A = [1 2 3; 4 5 6; 7 8 10];
+[L, U, P] = lu(A);
+printf('%d\n', norm(P*A - L*U) < 1e-12);
+printf('%d\n', isequal(L, tril(L)));
+printf('%d\n', isequal(U, triu(U)));
+printf('%d\n', all(diag(L) == 1));
+printf('%d\n', all(abs(L(:)) <= 1));
+disp(mat2str(P));
+printf('%g\n', U(1,1));
+---
+> 1
+> 1
+> 1
+> 1
+> 1
+> [0 0 1;1 0 0;0 1 0]
+> 7
+
+### vmm-la-027 | lu | two-output lu returns permuted L; exact factors when no pivoting is needed | src: hand computation
+A = [1 2 3; 4 5 6; 7 8 10];
+[L, U] = lu(A);
+printf('%d\n', norm(L*U - A) < 1e-12);
+disp(mat2str(L(3,:)));
+printf('%d\n', isequal(L, tril(L)));
+B = [4 3; 2 1];
+[L2, U2] = lu(B);
+printf('%g\n', L2);
+printf('%g\n', U2);
+---
+> 1
+> [1 0 0]
+> 0
+> 1
+> 0.5
+> 0
+> 1
+> 4
+> 0
+> 3
+> -0.5
+
+### vmm-la-028 | qr | full and economy QR: Q orthogonal, R upper triangular, Q*R = A | src: documentation
+A = [1 2; 3 4; 5 6];
+[Q, R] = qr(A);
+printf('%d %d\n', size(Q));
+printf('%d %d\n', size(R));
+printf('%d\n', norm(Q'*Q - eye(3)) < 1e-12);
+printf('%d\n', norm(Q*R - A) < 1e-12);
+printf('%d\n', norm(tril(R, -1)) < 1e-12);
+printf('%d\n', abs(abs(R(1,1)) - sqrt(35)) < 1e-12);
+[Q1, R1] = qr(A, 0);
+printf('%d %d\n', size(Q1));
+printf('%d %d\n', size(R1));
+printf('%d\n', norm(Q1*R1 - A) < 1e-12);
+---
+> 3 3
+> 3 2
+> 1
+> 1
+> 1
+> 1
+> 3 2
+> 2 2
+> 1
+
+### vmm-la-029 | chol | Cholesky factor of [4 2; 2 3] is [2 1; 0 sqrt(2)] | src: hand computation
+A = [4 2; 2 3];
+R = chol(A);
+printf('%.6f\n', R(1,1), R(1,2), R(2,2));
+printf('%d\n', R(2,1) == 0);
+printf('%d\n', norm(R'*R - A) < 1e-12);
+---
+> 2.000000
+> 1.000000
+> 1.414214
+> 1
+> 1
+
+### vmm-la-030 | chol | 3x3 SPD matrix with an integer Cholesky factor | src: hand computation
+A = [4 12 -16; 12 37 -43; -16 -43 98];
+R = chol(A);
+disp(mat2str(round(R)));
+printf('%d\n', norm(R'*R - A) < 1e-10);
+---
+> [2 6 -8;0 1 5;0 0 3]
+> 1
+
+### vmm-la-031 | chol | chol of non-positive-definite matrices raises an error | src: documentation
+try
+  R = chol([1 2; 2 1]);
+  disp('no error');
+catch
+  disp('caught');
+end
+try
+  R = chol([1 0; 0 -1]);
+  disp('no error');
+catch
+  disp('caught');
+end
+---
+> caught
+> caught
+
+### vmm-la-032 | kron | Kronecker products | src: definition
+disp(mat2str(kron([1 2; 3 4], [1 1])));
+disp(mat2str(kron(eye(2), [1 2; 3 4])));
+disp(mat2str(kron([1; 2], [1 2 3])));
+disp(mat2str(kron(2, [1 2])));
+printf('%d %d\n', size(kron(ones(2, 3), ones(4, 5))));
+---
+> [1 1 2 2;3 3 4 4]
+> [1 2 0 0;3 4 0 0;0 0 1 2;0 0 3 4]
+> [1 2 3;2 4 6]
+> [2 4]
+> 8 15
+
+### vmm-la-033 | dot | dot of vectors, column-wise dot of matrices, conjugation of the first argument | src: definition
+printf('%d\n', dot([1 2 3], [4 5 6]));
+printf('%d\n', dot([1; -2; 3], [3; 2; 1]));
+disp(mat2str(dot([1 2; 3 4], [5 6; 7 8])));
+d = dot([1i 1], [1i 1]);
+printf('%g\n', real(d));
+printf('%d\n', imag(d) == 0);
+---
+> 32
+> 2
+> [26 44]
+> 2
+> 1
+
+### vmm-la-034 | cross | cross products: right-hand rule, anticommutativity, orthogonality | src: definition
+disp(mat2str(cross([1 0 0], [0 1 0])));
+disp(mat2str(cross([0 1 0], [1 0 0])));
+disp(mat2str(cross([1 2 3], [4 5 6])));
+c = cross([1; 0; 0], [0; 1; 0]);
+printf('%d %d\n', size(c));
+disp(dot(cross([1 2 3], [4 5 6]), [1 2 3]));
+---
+> [0 0 1]
+> [0 0 -1]
+> [-3 6 -3]
+> 3 1
+> 0
+
+### vmm-la-035 | pinv | pseudo-inverse of rank-deficient, invertible and zero matrices | src: identity
+A = [1 2; 2 4];
+P = pinv(A);
+printf('%d\n', norm(A*P*A - A) < 1e-10);
+printf('%d\n', norm(P*A*P - P) < 1e-10);
+printf('%d\n', norm(P - A/25) < 1e-12);
+printf('%d\n', norm(pinv([2 1; 1 1]) - [1 -1; -1 2]) < 1e-12);
+Z = pinv(zeros(2, 3));
+printf('%d %d\n', size(Z));
+printf('%d\n', all(Z(:) == 0));
+---
+> 1
+> 1
+> 1
+> 1
+> 3 2
+> 1
+
+### vmm-la-036 | cond | 2-norm condition numbers of diagonal, identity, orthogonal and 2x2 matrices | src: exact formula
+printf('%d\n', abs(cond(diag([2 -10 0.5])) - 20) < 1e-10);
+printf('%d\n', abs(cond(eye(3)) - 1) < 1e-14);
+t = 1.1;
+Q = [cos(t) -sin(t); sin(t) cos(t)];
+printf('%d\n', abs(cond(Q) - 1) < 1e-12);
+printf('%d\n', abs(cond([1 2; 3 4]) - (15 + sqrt(221))/2) < 1e-10);
+---
+> 1
+> 1
+> 1
+> 1
+
+### vmm-la-037 | inv | inverse of an exactly singular matrix warns and gives Inf entries | src: documentation
+A = [1 2; 2 4];
+B = inv(A);
+printf('%d\n', any(isinf(B(:))));
+---
+> warning: matrix singular to machine precision
+> 1
+
+### vmm-la-038 | mpower | matrix power vs elementwise power, A^0, A^3, A^-1 | src: definition
+A = [1 2; 3 4];
+disp(mat2str(A^2));
+disp(mat2str(A.^2));
+disp(mat2str(A^0));
+disp(mat2str(A^3));
+B = [2 1; 1 1];
+disp(mat2str(round(B^-1)));
+printf('%d\n', norm(B^-1 - inv(B)) < 1e-12);
+---
+> [7 10;15 22]
+> [1 4;9 16]
+> [1 0;0 1]
+> [37 54;81 118]
+> [1 -1;-1 2]
+> 1
+
+### vmm-la-039 | mpower | integer powers of the Fibonacci matrix are exact | src: identity
+F = [1 1; 1 0];
+disp(mat2str(F^10));
+disp(mat2str(F^20));
+disp(mat2str(F^1));
+printf('%d\n', isequal(F^10, [89 55; 55 34]));
+---
+> [89 55;55 34]
+> [10946 6765;6765 4181]
+> [1 1;1 0]
+> 1
+
+### vmm-la-040 | orthogonal | Householder reflector identities: involutory, orthogonal, symmetric, det -1 | src: identity
+v = [1; 2; 2];
+H = eye(3) - 2 * (v * v') / (v' * v);
+printf('%d\n', norm(H*H - eye(3)) < 1e-12);
+printf('%d\n', norm(H'*H - eye(3)) < 1e-12);
+printf('%d\n', abs(det(H) + 1) < 1e-12);
+printf('%d\n', norm(H - H') < 1e-15);
+printf('%d\n', norm(H*v + v) < 1e-12);
+printf('%d\n', abs(norm(H*[3; 1; 4]) - norm([3; 1; 4])) < 1e-12);
+printf('%.6f\n', H(1,1));
+---
+> 1
+> 1
+> 1
+> 1
+> 1
+> 1
+> 0.777778

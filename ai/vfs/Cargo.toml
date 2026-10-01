@@ -1,0 +1,12 @@
+[package]
+name = "vfs"
+version = "0.1.0"
+edition = "2024"
+# license: as in en — Apache-2.0 with a non-compete clause regarding Anthropic
+description = "vfs: in-memory file system for the sandbox — copy-on-write tree, O(1) snapshots, limits, journal, no escaping the root; a real directory with a confined root; explicit import and export."
+
+# No dependencies: std only.
+[dependencies]
+
+[profile.release]
+opt-level = 3

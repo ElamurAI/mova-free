@@ -1,0 +1,312 @@
+; mlab file scenario suite (vfs, 26.09): files, directories, paths, OS errors.
+; Each scenario — a fresh file system. WASI gate: the same output natively with --fs mem, with --fs dir:<dir> and
+; as mlab.wasm in our WASI host (wasi-host, test mlab_wasm_same_output). Only errors with an OS error number —
+; texts with an explanation (escaping the root, limits) do not cross the WASI boundary; separate tests check them.
+; Expected output checked by hand against MATLAB/Octave semantics (exist 2/7, mkdir of an existing one — a warning,
+; rmdir of a nonempty one — an error, readdir with . and .. in byte order) and against glibc strerror texts.
+
+### fs-01 | files | writelines / fileread: round trip
+f = '/tmp/a.txt';
+writelines({'alpha', 'beta'}, f);
+disp(fileread(f))
+---
+> alpha
+> beta
+>
+
+### fs-02 | files | writematrix / readmatrix: relative path from the root
+A = [1 2 3; 4 5 6];
+writematrix(A, 'm.csv');
+disp(fileread('m.csv'))
+B = readmatrix('m.csv');
+disp(isequal(A, B))
+---
+> 1,2,3
+> 4,5,6
+>
+> 1
+
+### fs-03 | directories | mkdir with parents, writetable TSV into a nested directory
+mkdir('out/sub');
+T = table([1; 2], ["x"; "y"], 'VariableNames', {'n', 's'});
+writetable(T, 'out/sub/t.tsv');
+R = readtable('/out/sub/t.tsv');
+disp(R)
+disp(fileread('out/sub/t.tsv'))
+---
+>     n   s
+>     _   _
+>     1   x
+>     2   y
+> n	s
+> 1	x
+> 2	y
+>
+
+### fs-04 | files | writetable JSON, fileread, readtable
+T = table([10; 20], [true; false], 'VariableNames', {'v', 'ok'});
+f = [tempname() '.json'];
+writetable(T, f);
+disp(fileread(f))
+R = readtable(f);
+disp(R)
+---
+> [
+>   {"v": 10, "ok": true},
+>   {"v": 20, "ok": false}
+> ]
+>
+>      v      ok
+>     __   _____
+>     10    true
+>     20   false
+
+### fs-05 | directories | isfile / isfolder before and after
+disp([isfile('/d/a.txt'), isfolder('/d')])
+mkdir('/d');
+writelines('x', '/d/a.txt');
+disp([isfile('/d/a.txt'), isfolder('/d'), isfile('/d'), isfolder('/d/a.txt')])
+---
+>   0  0
+>   1  1  0  0
+
+### fs-06 | directories | exist for files and directories
+mkdir('/e');
+writelines('1', '/e/f.csv');
+x = 3;
+disp([exist('/e/f.csv'), exist('/e'), exist('/e/none'), exist('x'), exist('sin')])
+disp([exist('/e/f.csv', 'file'), exist('/e', 'file'), exist('/e', 'dir'), exist('/e/f.csv', 'dir')])
+---
+>    2   7   0   1   5
+>    2   7   7   0
+
+### fs-07 | directories | readdir: byte order, . and ..
+mkdir('/r');
+writelines('1', '/r/b.csv');
+writelines('2', '/r/a.csv');
+writelines('3', '/r/B.csv');
+mkdir('/r/zdir');
+L = readdir('/r');
+disp(numel(L))
+disp(L)
+---
+> 6
+> .
+> ..
+> B.csv
+> a.csv
+> b.csv
+> zdir
+
+### fs-08 | files | delete: the file disappears; nonexistent — a warning
+writelines('x', '/tmp/del.txt');
+delete('/tmp/del.txt');
+disp(isfile('/tmp/del.txt'))
+delete('/tmp/del.txt');
+disp('after')
+---
+> 0
+> warning: delete: no such file: /tmp/del.txt
+> after
+
+### fs-09 | files | movefile: renaming and moving into a directory
+writelines('payload', '/tmp/m1.txt');
+movefile('/tmp/m1.txt', '/tmp/m2.txt');
+disp([isfile('/tmp/m1.txt'), isfile('/tmp/m2.txt')])
+mkdir('/dest');
+movefile('/tmp/m2.txt', '/dest');
+disp(fileread('/dest/m2.txt'))
+---
+>   0  1
+> payload
+>
+
+### fs-10 | files | copyfile: the copy is independent of the original
+writelines('orig', '/tmp/c1.txt');
+copyfile('/tmp/c1.txt', '/tmp/c2.txt');
+writelines('changed', '/tmp/c2.txt');
+disp(fileread('/tmp/c1.txt'))
+disp(fileread('/tmp/c2.txt'))
+---
+> orig
+>
+> changed
+>
+
+### fs-11 | directories | rmdir: empty, nonempty — an error, 's' — recursive
+mkdir('/k/empty');
+mkdir('/k/full');
+writelines('1', '/k/full/f.txt');
+rmdir('/k/empty');
+disp(isfolder('/k/empty'))
+try
+  rmdir('/k/full');
+catch err
+  disp(err)
+end
+rmdir('/k/full', 's');
+disp([isfolder('/k/full'), isfolder('/k')])
+---
+> 0
+> rmdir: cannot remove '/k/full': Directory not empty (os error 39)
+>   0  1
+
+### fs-12 | directories | mkdir of an existing one — a warning; [st, msg]
+mkdir('/w');
+mkdir('/w');
+[st, msg] = mkdir('/w');
+disp(st)
+disp(msg)
+[st2, msg2] = mkdir('/w2');
+disp(st2)
+disp(isempty(msg2))
+---
+> warning: Directory already exists.
+> 1
+> Directory already exists.
+> 1
+> 1
+
+### fs-13 | files | tempname: different names in /tmp
+a = tempname();
+b = tempname();
+disp(strcmp(a, b))
+writelines('1', a);
+writelines('2', b);
+disp(fileread(a))
+disp(fileread(b))
+---
+> 0
+> 1
+>
+> 2
+>
+
+### fs-14 | paths | ./ and ../ inside the root
+mkdir('a/b');
+writelines('deep', 'a/b/../c.txt');
+disp(fileread('a/c.txt'))
+disp(fileread('/a/./b/../c.txt'))
+disp(isfile('a/b/../../a/c.txt'))
+---
+> deep
+>
+> deep
+>
+> 1
+
+### fs-15 | errors | fileread of a nonexistent file
+try
+  fileread('/nope.txt');
+catch err
+  disp(err)
+end
+---
+> fileread: cannot open '/nope.txt': No such file or directory (os error 2)
+
+### fs-16 | errors | readtable on a directory
+mkdir('/dd');
+try
+  readtable('/dd');
+catch err
+  disp(err)
+end
+---
+> readtable: cannot open '/dd': Is a directory (os error 21)
+
+### fs-17 | errors | writelines into a nonexistent directory
+try
+  writelines('x', '/no/such/dir/f.txt');
+catch err
+  disp(err)
+end
+---
+> writelines: cannot write '/no/such/dir/f.txt': No such file or directory (os error 2)
+
+### fs-18 | files | overwrite with a shorter one — the old tail disappears
+writelines('a much longer first version', '/tmp/o.txt');
+writelines('short', '/tmp/o.txt');
+disp(fileread('/tmp/o.txt'))
+---
+> short
+>
+
+### fs-19 | files | a larger file: magic(20) there and back
+M = magic(20);
+writematrix(M, '/tmp/big.csv');
+N = readmatrix('/tmp/big.csv');
+disp(isequal(M, N))
+disp(sum(N(:)))
+---
+> 1
+> 80200
+
+### fs-20 | files | CSV with tricky text: comma, quotes, "007"
+T = table({'a,b'; 'say "hi"'; '007'}, [1; 2; 3], 'VariableNames', {'txt', 'k'});
+writetable(T, '/tmp/q.csv');
+disp(fileread('/tmp/q.csv'))
+R = readtable('/tmp/q.csv');
+disp(R)
+---
+> txt,k
+> "a,b",1
+> "say ""hi""",2
+> "007",3
+>
+>     txt        k
+>     ________   _
+>     a,b        1
+>     say "hi"   2
+>     007        3
+
+### fs-21 | errors | movefile of a nonexistent file with [st, msg]
+[st, msg] = movefile('/none.txt', '/x.txt');
+disp(st)
+disp(msg)
+---
+> 0
+> movefile: cannot move '/none.txt' to '/x.txt': No such file or directory (os error 2)
+
+### fs-22 | files | non-Latin file name
+writelines('ναι', '/tmp/αρχείο.txt');
+disp(fileread('/tmp/αρχείο.txt'))
+L = readdir('/tmp');
+disp(L(3))
+---
+> ναι
+>
+> αρχείο.txt
+
+### fs-23 | directories | 50 files in a directory
+mkdir('/many');
+for k = 1:50
+  writematrix(k, sprintf('/many/f%02d.csv', k));
+end
+L = readdir('/many');
+disp(numel(L))
+s = 0;
+for k = 1:50
+  s = s + readmatrix(sprintf('/many/f%02d.csv', k));
+end
+disp(s)
+---
+> 52
+> 1275
+
+### fs-24 | files | readmatrix TSV with 'Delimiter'
+writelines("1\t2\n3\t4\n", '/tmp/t.txt');
+B = readmatrix('/tmp/t.txt', 'Delimiter', '\t');
+disp(B)
+---
+>    1   2
+>    3   4
+
+### fs-25 | directories | rmdir with [st, msg] on a nonempty one
+mkdir('/q');
+writelines('1', '/q/f');
+[st, msg] = rmdir('/q');
+disp(st)
+disp(isfile('/q/f'))
+---
+> 0
+> 1
