@@ -2,7 +2,7 @@
 //!
 //! 1. Opus annotates every step of the verified math v2 solutions: goal, motive, move, check and a
 //!    "difference → operator" pair (`diff`, `kind`). Annotations are data tagged with the source `vmm`.
-//! 2. The MMM learns transparently:
+//! 2. The SLM learns transparently:
 //!    - a "difference between state and goal → move" table (means-ends analysis, GPS of Newell and Simon);
 //!    - an averaged perceptron choosing the next move from state and goal features;
 //!    - subgoal order — bigrams of differences from the annotated solutions.

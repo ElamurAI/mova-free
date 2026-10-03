@@ -1,5 +1,5 @@
 //! Tasks: ~100 from Opus, ~50 adapted from exercises in open books. The reference (solution and output) is seen only by
-//! task-set verification, the judge and the control; the MMM gets `Public` — the description without the reference.
+//! task-set verification, the judge and the control; the SLM gets `Public` — the description without the reference.
 
 use std::path::{Path, PathBuf};
 
@@ -27,7 +27,7 @@ pub struct Task {
     pub split: String,
 }
 
-/// What the MMM sees: no reference.
+/// What the SLM sees: no reference.
 #[derive(Clone, Debug)]
 pub struct Public {
     pub id: String,

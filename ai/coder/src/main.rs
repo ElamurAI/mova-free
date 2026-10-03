@@ -1,4 +1,4 @@
-//! coder — MMM (small language model) learns to code in the mlab language in a "student — architect" loop (README).
+//! coder — SLM (small language model) learns to code in the mlab language in a "student — architect" loop (README).
 
 mod arch2;
 mod arch3;
@@ -239,7 +239,7 @@ fn load_model() -> Result<motiv::Model> {
     Ok(serde_json::from_str(&std::fs::read_to_string(&p).with_context(|| p.display().to_string())?)?)
 }
 
-/// Solve all tasks of a round. The MMM sees only `Public` (without the reference).
+/// Solve all tasks of a round. The SLM sees only `Public` (without the reference).
 fn cmd_solve(r: usize, arch: &str, flags: &[String]) -> Result<()> {
     let tasks = tasks::load()?;
     let bm = load_memory()?;
@@ -398,7 +398,7 @@ fn cmd_architect(r: usize) -> Result<()> {
     for v in sorted.iter().rev().take(4) {
         picked.push(*v);
     }
-    text.push_str("\nTRAINING EXAMPLES (task, MMM program, MMM explanation, judge verdict):\n");
+    text.push_str("\nTRAINING EXAMPLES (task, SLM program, SLM explanation, judge verdict):\n");
     for v in picked {
         let id = v["task"].as_str().unwrap_or("");
         let s = &sols[id];

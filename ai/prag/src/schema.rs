@@ -68,7 +68,7 @@ pub struct Labels {
     pub means: String,
 }
 
-/// A field the MMM learns (all except `means`).
+/// A field the SLM learns (all except `means`).
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug, Serialize, Deserialize)]
 pub enum Field {
     Form,

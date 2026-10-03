@@ -1,4 +1,4 @@
-//! Global level of the MMM (small language model) — compiled static links (`train/README.md`): values,
+//! Global level of the SLM (small language model) — compiled static links (`train/README.md`): values,
 //! concepts, shortcuts between them, verb classes. Source: the seeds `seeds/**/*.md`; `build.rs` stitches them
 //! into tables, so nothing is read from disk at runtime. Every conclusion says which link and file it came from.
 
@@ -161,6 +161,16 @@ pub fn capable(noun: &str) -> Vec<&'static str> {
     CONCEPTS.iter().filter(|c| c.name.starts_with("can_") && c.words.contains(&noun)).map(|c| &c.name[4..]).collect()
 }
 
+/// A selectional-preference list from ```selection (`seeds/shortcuts/selection.md`); empty if none.
+pub fn selection(name: &str) -> &'static [&'static str] {
+    SELECTION.iter().find(|(n, _)| *n == name).map(|(_, ws)| *ws).unwrap_or(&[])
+}
+
+/// Categories (```category) whose word list contains the word, in table order (deterministic).
+pub fn categories_of(word: &str) -> Vec<&'static str> {
+    CONCEPTS.iter().filter(|c| c.category && c.words.contains(&word)).map(|c| c.name).collect()
+}
+
 /// Principle by predicate name.
 pub fn principle_by_rule(rule: &str) -> Option<&'static PrincipleDef> {
     PRINCIPLES.iter().find(|p| p.rule == rule)
@@ -190,7 +200,7 @@ pub fn judge(text: &str) -> Vec<Judgment> {
     out
 }
 
-/// The MMM's report on its own work on a query — for self-assessment by the same level-1 principles.
+/// The SLM's report on its own work on a query — for self-assessment by the same level-1 principles.
 #[derive(Clone, Debug, Default)]
 pub struct SelfReport {
     /// how many branches were considered (beam, top-K)
@@ -215,7 +225,7 @@ pub struct SelfReport {
 
 /// Self-assessment. Design note: level 3 should understand that more of its own branches means perseverance,
 /// a better answer means quality and diligence, and a slow result means "I am slow". The principles come from level 1,
-/// the same ones the MMM uses to judge fable characters; here the predicates are over its own actions.
+/// the same ones the SLM uses to judge fable characters; here the predicates are over its own actions.
 pub fn self_judge(r: &SelfReport) -> Vec<Judgment> {
     let mut out = Vec::new();
     let mut push = |rule: &str, violated: bool, because: String| {
@@ -283,6 +293,16 @@ mod tests {
     }
 
     #[test]
+    fn selection_lists() {
+        assert!(selection("agent_animate").contains(&"eat"));
+        assert!(selection("animate_cats").contains(&"wd_animal"));
+        assert!(categories_of("cheese").contains(&"wd_food"));
+        // negative control: unknown list and unknown word
+        assert!(selection("zzz").is_empty());
+        assert!(categories_of("zzzz").is_empty());
+    }
+
+    #[test]
     fn values_from_fables() {
         let j = judge("The fox flattered the crow and grabbed the cheese.");
         assert!(j.iter().any(|x| x.principle == "truth" && x.violated));
@@ -291,4 +311,322 @@ mod tests {
         assert!(j.iter().all(|x| !x.violated) && j.iter().any(|x| x.principle == "help-neighbour"));
         assert!(judge("The crow sat on a branch.").is_empty());
     }
+}
+
+/// The hot layer of level-1 knowledge: files in the folder named by `GLOBAL_HOT`, read once at start-up, override
+/// or extend the cold tables compiled into the binary — new knowledge tried without recompiling; it moves into the
+/// cold layer (`data/`) only after the gates. Files (all optional, same formats as `data/`):
+/// `absurdity-roles.tsv`, `absurdity-roles-tale.tsv` (verb, noun, SUBJ, OBJ) and `idioms.tsv` (verb, object, kind,
+/// …; kind `none` removes a cold entry).
+struct Hot {
+    real: std::collections::HashMap<(String, String), [u8; 2]>,
+    tale: std::collections::HashMap<(String, String), [u8; 2]>,
+    idioms: std::collections::HashMap<(String, String), &'static str>,
+}
+
+fn hot() -> &'static Hot {
+    static H: std::sync::OnceLock<Hot> = std::sync::OnceLock::new();
+    H.get_or_init(|| {
+        let dir = std::env::var("GLOBAL_HOT").ok().map(std::path::PathBuf::from);
+        let read = |name: &str| dir.as_ref().and_then(|d| std::fs::read_to_string(d.join(name)).ok()).unwrap_or_default();
+        let cells = |t: String| {
+            t.lines()
+                .filter(|l| !l.starts_with('#'))
+                .filter_map(|l| {
+                    let c: Vec<&str> = l.split('\t').collect();
+                    if c.len() < 4 {
+                        return None;
+                    }
+                    let (s, o): (u8, u8) = (c[2].parse().ok()?, c[3].parse().ok()?);
+                    Some(((c[0].to_string(), c[1].to_string()), [s.min(4), o.min(4)]))
+                })
+                .collect()
+        };
+        let idioms = read("idioms.tsv")
+            .lines()
+            .filter(|l| !l.starts_with('#'))
+            .filter_map(|l| {
+                let c: Vec<&str> = l.split('\t').collect();
+                let kind: &'static str = match *c.get(2)? {
+                    "idiom" => "idiom",
+                    "light-verb" => "light-verb",
+                    "collocation" => "collocation",
+                    "phrasal-verb" => "phrasal-verb",
+                    "candidate" => "candidate",
+                    _ => "none",
+                };
+                Some(((c[0].to_string(), c[1].to_string()), kind))
+            })
+            .collect();
+        Hot { real: cells(read("absurdity-roles.tsv")), tale: cells(read("absurdity-roles-tale.tsv")), idioms }
+    })
+}
+
+/// Absurdity matrix (real-world scale, `data/absurdity-roles.tsv`, `docs/absurdity.md`): `[SUBJ, OBJ]` scores 0–4
+/// of `noun` as the doer / the direct object of `verb`; `None` if the cell is unknown. The hot layer comes first.
+pub fn absurdity(verb: &str, noun: &str) -> Option<[u8; 2]> {
+    if let Some(v) = hot().real.get(&(verb.to_string(), noun.to_string())) {
+        return Some(*v);
+    }
+    let v = ABSURD_VERBS.binary_search(&verb).ok()? as u16;
+    let n = ABSURD_NOUNS.binary_search(&noun).ok()? as u16;
+    ABSURD_CELLS.binary_search_by(|c| (c.0, c.1).cmp(&(v, n))).ok().map(|i| [ABSURD_CELLS[i].2, ABSURD_CELLS[i].3])
+}
+
+/// Absurdity in a domain: `"tale"` uses the fairy-tale layer where it has the cell, otherwise the real-world
+/// table; any other domain (`"real"`) is the real-world table.
+pub fn absurdity_in(domain: &str, verb: &str, noun: &str) -> Option<[u8; 2]> {
+    if domain == "tale" {
+        if let Some(v) = hot().tale.get(&(verb.to_string(), noun.to_string())) {
+            return Some(*v);
+        }
+        let v = ABSURD_VERBS.binary_search(&verb).ok()? as u16;
+        let n = ABSURD_NOUNS.binary_search(&noun).ok()? as u16;
+        if let Ok(i) = ABSURD_TALE_CELLS.binary_search_by(|c| (c.0, c.1).cmp(&(v, n))) {
+            return Some([ABSURD_TALE_CELLS[i].2, ABSURD_TALE_CELLS[i].3]);
+        }
+    }
+    absurdity(verb, noun)
+}
+
+/// Is the verb a row of the absurdity matrix?
+pub fn absurd_has_verb(verb: &str) -> bool {
+    ABSURD_VERBS.binary_search(&verb).is_ok() || hot().real.keys().any(|(v, _)| v == verb)
+}
+
+/// Is the noun a column of the absurdity matrix?
+pub fn absurd_has_noun(noun: &str) -> bool {
+    ABSURD_NOUNS.binary_search(&noun).is_ok() || hot().real.keys().any(|(_, n)| n == noun)
+}
+
+#[cfg(test)]
+mod absurd_tests {
+    #[test]
+    fn matrix_cells() {
+        // the fox eats, the cheese is eaten; the cheese does not eat
+        assert_eq!(super::absurdity("eat", "fox").map(|s| s[0]), Some(0));
+        assert_eq!(super::absurdity("eat", "cheese").map(|s| s[0]), Some(4));
+        assert_eq!(super::absurdity("eat", "cheese").map(|s| s[1]), Some(0));
+        // negative control: unknown words give no cell
+        assert_eq!(super::absurdity("eat", "zorb"), None);
+        assert!(!super::absurd_has_verb("gnaw"));
+        assert!(super::absurd_has_noun("crow"));
+        // the fairy-tale layer: a fox may talk, cheese still does not eat
+        assert!(super::absurdity_in("tale", "say", "fox").unwrap()[0] < super::absurdity_in("real", "say", "fox").unwrap()[0]);
+        assert_eq!(super::absurdity_in("tale", "eat", "cheese").map(|s| s[0]), Some(4));
+    }
+}
+
+/// Is the verb intransitive by the absurdity matrix: the OBJ score is 4 for at least 80% of the nouns in its row ("live" 84%: "live a life"; "eat" 57%)?
+pub fn absurd_intransitive(verb: &str) -> bool {
+    let Ok(v) = ABSURD_VERBS.binary_search(&verb) else { return false };
+    let v = v as u16;
+    let lo = ABSURD_CELLS.partition_point(|c| c.0 < v);
+    let hi = ABSURD_CELLS.partition_point(|c| c.0 <= v);
+    let row = &ABSURD_CELLS[lo..hi];
+    !row.is_empty() && row.iter().filter(|c| c.3 == 4).count() * 10 >= row.len() * 8
+}
+
+#[cfg(test)]
+mod intransitive_tests {
+    #[test]
+    fn go_is_intransitive_eat_is_not() {
+        assert!(super::absurd_intransitive("go"));
+        assert!(super::absurd_intransitive("live"));
+        // negative control
+        assert!(!super::absurd_intransitive("eat"));
+        assert!(!super::absurd_intransitive("zorb"));
+    }
+}
+
+/// The kind of a verbal multiword expression ("idiom", "light-verb", "collocation", "phrasal-verb") for a verb and
+/// its object or particle (`data/idioms.tsv`); `None` if the pair is not a known expression.
+pub fn idiom(verb: &str, object: &str) -> Option<&'static str> {
+    if let Some(k) = hot().idioms.get(&(verb.to_string(), object.to_string())) {
+        return (*k != "none").then_some(*k);
+    }
+    IDIOMS.binary_search_by(|x| (x.0, x.1).cmp(&(verb, object))).ok().map(|i| IDIOMS[i].2)
+}
+
+#[cfg(test)]
+mod idiom_tests {
+    #[test]
+    fn known_expressions() {
+        assert_eq!(super::idiom("take", "place"), Some("idiom"));
+        assert_eq!(super::idiom("open", "fire"), Some("idiom"));
+        assert_eq!(super::idiom("pay", "attention"), Some("idiom"));
+        assert_eq!(super::idiom("give", "up"), Some("phrasal-verb"));
+        // negative control
+        assert_eq!(super::idiom("eat", "table"), None);
+    }
+}
+
+/// One entry of the expression base (`data/expressions.tsv`, CC BY-SA, Wiktionary): what an expression really means.
+#[derive(Clone, Debug)]
+pub struct Expression {
+    pub phrase: &'static str,
+    /// idiom | proverb | phrase | phrasal-verb | verb-phrase | multiword | word
+    pub kind: &'static str,
+    pub pos: &'static str,
+    pub meaning: &'static str,
+    /// register labels with the meaning of the labelled sense ("slang: …; humorous: …")
+    pub register: &'static str,
+    /// regional varieties with the meaning of the labelled sense ("UK: …; Australia: …")
+    pub variety: &'static str,
+}
+
+fn expression_base() -> &'static std::collections::BTreeMap<&'static str, Vec<Expression>> {
+    static BASE: std::sync::OnceLock<std::collections::BTreeMap<&'static str, Vec<Expression>>> = std::sync::OnceLock::new();
+    BASE.get_or_init(|| {
+        let mut m: std::collections::BTreeMap<&'static str, Vec<Expression>> = std::collections::BTreeMap::new();
+        for l in include_str!("../data/expressions.tsv").lines().filter(|l| !l.starts_with('#')) {
+            let c: Vec<&'static str> = l.split('\t').collect();
+            if c.len() >= 4 {
+                m.entry(c[0]).or_default().push(Expression { phrase: c[0], kind: c[1], pos: c[2], meaning: c[3], register: c.get(4).copied().unwrap_or(""), variety: c.get(5).copied().unwrap_or("") });
+            }
+        }
+        m
+    })
+}
+
+/// Entries for an exact phrase (lowercase, words separated by single spaces).
+pub fn expression(phrase: &str) -> &'static [Expression] {
+    expression_base().get(phrase).map(Vec::as_slice).unwrap_or(&[])
+}
+
+/// The domain a register label switches on: slang, formal, humour, hidden meaning.
+pub fn register_domain(label: &str) -> Option<&'static str> {
+    match label {
+        "slang" | "internet slang" | "informal" | "colloquial" | "vulgar" | "derogatory" | "offensive" | "nonstandard" => Some("slang"),
+        "formal" | "literary" | "archaic" | "legal" | "law" | "officialese" | "bureaucratese" | "poetic" => Some("formal"),
+        "humorous" | "jocular" | "ironic" | "sarcastic" => Some("humor"),
+        "euphemistic" | "euphemism" | "figurative" | "figuratively" | "idiomatic" => Some("hidden-meaning"),
+        _ => None,
+    }
+}
+
+/// A found expression: word span `[start, end)`, the entry, and the domains its labels switch on.
+#[derive(Clone, Debug)]
+pub struct ExprMatch {
+    pub start: usize,
+    pub end: usize,
+    pub entry: Expression,
+    pub domains: Vec<&'static str>,
+}
+
+/// Expressions in a sentence given its lowercase forms and lemmas: multiword matches on forms ("spill the beans")
+/// and on lemmas ("kicked the bucket" → kick the bucket), non-overlapping, longest first.
+pub fn expressions_in_sentence(forms: &[&str], lemmas: &[&str]) -> Vec<ExprMatch> {
+    let mut out = expressions_in(lemmas);
+    for m in expressions_in(forms) {
+        if m.end - m.start > 1 && !out.iter().any(|x| x.end - x.start > 1 && x.start < m.end && m.start < x.end) {
+            out.push(m);
+        }
+    }
+    out.sort_by_key(|m| (m.start, std::cmp::Reverse(m.end)));
+    out
+}
+
+/// Expressions in a lemma sequence, longest first, non-overlapping for multiword ones: "one's" matches a possessive
+/// (my, your, his, her, its, our, their), "someone"/"something" match any one word. Single words count only with
+/// a register label (they switch on a domain).
+pub fn expressions_in(lemmas: &[&str]) -> Vec<ExprMatch> {
+    const POSS: [&str; 7] = ["my", "your", "his", "her", "its", "our", "their"];
+    let lower: Vec<String> = lemmas.iter().map(|w| w.to_lowercase()).collect();
+    let mut out = Vec::new();
+    let mut used = vec![false; lower.len()];
+    for len in (1..=6).rev() {
+        for start in 0..lower.len().saturating_sub(len - 1) {
+            if used[start..start + len].iter().any(|u| *u) {
+                continue;
+            }
+            let words = &lower[start..start + len];
+            // candidate phrases: as is, and with a possessive or one placeholder generalised
+            let mut cands = vec![words.join(" ")];
+            for (i, w) in words.iter().enumerate() {
+                let mut g = words.to_vec();
+                if POSS.contains(&w.as_str()) {
+                    g[i] = "one's".into();
+                    cands.push(g.join(" "));
+                } else if len >= 3 && i > 0 && i + 1 < len {
+                    // a placeholder only inside a phrase ("give someone the slip"); at an edge it matches
+                    // anything ("said good" ~ "something good")
+                    for ph in ["someone", "something", "somebody"] {
+                        g[i] = ph.into();
+                        cands.push(g.join(" "));
+                    }
+                }
+            }
+            for c in cands {
+                for e in expression(&c) {
+                    if len == 1 && e.register.is_empty() && e.variety.is_empty() {
+                        continue;
+                    }
+                    // an entry without a real gloss ("do n't" → ".") is no reading
+                    if e.meaning.chars().filter(|c| c.is_alphabetic()).count() < 3 || e.meaning.contains("[[") {
+                        continue;
+                    }
+                    // a domain is switched on only through the main sense ("kick the bucket" = to die: humorous,
+                    // euphemistic); a rare labelled sense does not ("old" has a slang sense, "give up" too)
+                    let labels = e.register.split("; ").filter_map(|x| x.split_once(": ")).filter(|(_, g)| *g == e.meaning).map(|(l, _)| l.trim());
+                    let mut domains: Vec<&'static str> = labels.filter_map(register_domain).collect();
+                    // a regional variety on the main sense switches the variety on ("variety:UK")
+                    for v in e.variety.split("; ").filter_map(|x| x.split_once(": ")).filter(|(_, g)| *g == e.meaning).map(|(v, _)| v.trim()) {
+                        domains.push(match v {
+                            "US" => "variety:US", "UK" => "variety:UK", "Australia" => "variety:Australia", "Scotland" => "variety:Scotland",
+                            "Ireland" => "variety:Ireland", "India" => "variety:India", "Canada" => "variety:Canada", "New Zealand" => "variety:New Zealand",
+                            "South Africa" => "variety:South Africa", "Singapore" => "variety:Singapore", "Philippines" => "variety:Philippines",
+                            "North America" => "variety:North America", "Nigeria" => "variety:Nigeria", _ => "variety:Wales",
+                        });
+                    }
+                    if len == 1 && domains.is_empty() {
+                        continue;
+                    }
+                    domains.sort();
+                    domains.dedup();
+                    out.push(ExprMatch { start, end: start + len, entry: e.clone(), domains });
+                    if len > 1 {
+                        used[start..start + len].iter_mut().for_each(|u| *u = true);
+                    }
+                    break;
+                }
+                if used[start] && len > 1 {
+                    break;
+                }
+            }
+        }
+    }
+    out.sort_by_key(|m| (m.start, std::cmp::Reverse(m.end)));
+    out
+}
+
+#[cfg(test)]
+mod expression_tests {
+    #[test]
+    fn real_meanings_and_domains() {
+        let m = super::expressions_in(&["he", "kick", "the", "bucket", "yesterday"]);
+        let k = m.iter().find(|x| x.entry.phrase == "kick the bucket").expect("kick the bucket");
+        assert_eq!(k.entry.meaning, "To die.");
+        assert!(k.domains.contains(&"humor") && k.domains.contains(&"hidden-meaning"));
+        // a possessive generalises to one's
+        assert!(super::expressions_in(&["she", "lose", "her", "temper"]).iter().any(|x| x.entry.phrase == "lose one's temper"));
+        // negative control: a literal sentence has no multiword expression and switches on no domain
+        let lit = super::expressions_in(&["the", "old", "dog", "eat", "the", "meat"]);
+        assert!(lit.iter().all(|x| x.end - x.start == 1 && x.domains.is_empty()), "{lit:?}");
+        assert!(lit.is_empty(), "{lit:?}");
+        // forms find what lemmas lose
+        assert!(super::expressions_in_sentence(&["spill", "the", "beans"], &["spill", "the", "bean"]).iter().any(|x| x.entry.phrase == "spill the beans"));
+    }
+}
+
+/// Register lexicons measured on corpora (`data/register-<name>.tsv`: word, z — log-odds against the pooled other
+/// corpora, Monroe et al. 2008; `world register-stats`): "legal", "tale", "children". The z of a word, if listed.
+pub fn register_z(name: &str, word: &str) -> Option<f32> {
+    type Lex = std::collections::BTreeMap<&'static str, f32>;
+    static LEX: std::sync::OnceLock<Vec<(&'static str, Lex)>> = std::sync::OnceLock::new();
+    let all = LEX.get_or_init(|| {
+        let parse = |t: &'static str| -> Lex { t.lines().filter(|l| !l.starts_with('#')).filter_map(|l| l.split_once('\t')).filter_map(|(w, z)| Some((w, z.parse().ok()?))).collect() };
+        vec![("legal", parse(include_str!("../data/register-legal.tsv"))), ("tale", parse(include_str!("../data/register-tale.tsv"))), ("children", parse(include_str!("../data/register-children.tsv")))]
+    });
+    all.iter().find(|(n, _)| *n == name).and_then(|(_, m)| m.get(word).copied())
 }

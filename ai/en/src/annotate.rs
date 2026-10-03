@@ -91,6 +91,11 @@ impl Annotator {
     pub fn annotate<S: AsRef<str>>(&self, forms: &[S]) -> Vec<Word> {
         annotate(&self.model, &self.ud, forms)
     }
+
+    /// Full UD for the `k` best trees (best first) with parser scores.
+    pub fn annotate_kbest<S: AsRef<str>>(&self, forms: &[S], k: usize) -> Vec<(f32, Vec<Word>)> {
+        annotate_kbest(&self.model, &self.ud, forms, k)
+    }
 }
 
 /// Full UD on fixed tokens: tagger → parser → UPOS (from the node's children) → FEATS per sentence → lemmas.
@@ -107,6 +112,32 @@ pub fn annotate<S: AsRef<str>>(model: &Model, ud: &Ud, forms: &[S]) -> Vec<Word>
         .iter()
         .enumerate()
         .map(|(i, w)| Word { form: w.to_string(), lemma: model.morph.lemmatize(w, tags[i]), upos: upos[i], tag: tags[i], feats: feats[i], head: heads[i], rel: rels[i] })
+        .collect()
+}
+
+/// Full UD for each of the `k` best trees (best first) with the parser's path score: the same pipeline as
+/// `annotate`, UPOS and FEATS recomputed per tree.
+pub fn annotate_kbest<S: AsRef<str>>(model: &Model, ud: &Ud, forms: &[S], k: usize) -> Vec<(f32, Vec<Word>)> {
+    let words: Vec<&str> = forms.iter().map(AsRef::as_ref).collect();
+    let tags = model.tagger.tag(&words);
+    let lemmas: Vec<String> = words.iter().enumerate().map(|(i, w)| model.morph.lemmatize(w, tags[i])).collect();
+    model
+        .parser
+        .parse_kbest(&words, &tags, k)
+        .into_iter()
+        .map(|(score, tree)| {
+            let heads: Vec<usize> = tree.iter().map(|x| x.0).collect();
+            let rels: Vec<Rel> = tree.iter().map(|x| x.1).collect();
+            let kids = kids_of(&heads, &rels);
+            let upos: Vec<UPos> = (0..words.len()).map(|i| ud.upos(&View { form: words[i], tag: tags[i], rel: rels[i], kids: kids[i], agr: 0 })).collect();
+            let feats = ud.feats_sentence(&words, &tags, &upos, &heads, &rels);
+            let ws = words
+                .iter()
+                .enumerate()
+                .map(|(i, w)| Word { form: w.to_string(), lemma: lemmas[i].clone(), upos: upos[i], tag: tags[i], feats: feats[i], head: heads[i], rel: rels[i] })
+                .collect();
+            (score, ws)
+        })
         .collect()
 }
 

@@ -2,7 +2,7 @@
 
 One page per scientific work Mova uses: a summary in our own words, the link, authors, the license of the paper, how Mova uses it, and how much it helped. Pages marked **measured** report a number from Mova's own experiments, including ideas that did not help; the others describe the role of the work (a rule source, a design, background) and say it was not measured separately.
 
-The papers themselves are not copied here; follow the links. Summaries are written from the cards of the Elamur Research library 🦉.
+The papers themselves are not copied here; follow the links. Summaries are written from the cards of the internal Elamur Research library 🦉.
 
 105 works.
 

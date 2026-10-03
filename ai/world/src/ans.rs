@@ -1,4 +1,4 @@
-//! Natural-language answers to FairytaleQA questions — from the world state, without the LLM (MMM).
+//! Natural-language answers to FairytaleQA questions — from the world state, without the LLM (SLM).
 //!
 //! 1. **Question parsing** (deterministic): wh-word, auxiliary verb, subject, main verb,
 //!    the rest; the subordinate clause after `when/after/before/because/if…` is the "time anchor"; negation; future.
@@ -104,7 +104,7 @@ pub fn past(verb: &str) -> String {
     s
 }
 
-/// Feeling synonyms in questions → tags of the closed set (MMM question understanding).
+/// Feeling synonyms in questions → tags of the closed set (SLM question understanding).
 const FEEL_SYN: &[(&str, &str)] = &[
     ("delighted", "happy"), ("glad", "happy"), ("joyful", "happy"), ("overjoyed", "happy"), ("pleased", "happy"), ("cheerful", "happy"),
     ("merry", "happy"), ("joy", "happy"), ("happiness", "happy"), ("unhappy", "sad"), ("sorrowful", "sad"), ("miserable", "sad"),

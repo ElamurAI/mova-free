@@ -1,4 +1,4 @@
-//! math — the MMM's (small language model's) base mathematics module: an exact symbolic core (rationals, expression
+//! math — the SLM's (small language model's) base mathematics module: an exact symbolic core (rationals, expression
 //! trees, units with dimensions and affine temperature), steps and independent checks, understanding of English
 //! questions via the UD tree from `en`. Deterministic, on the CPU, no LLM.
 

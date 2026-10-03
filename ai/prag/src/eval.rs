@@ -1,4 +1,4 @@
-//! Evaluation of the pragmatics MMM (small language model): features (`feats`), three models behind a shared interface (`model`), 80/20 split —
+//! Evaluation of the pragmatics SLM (small language model): features (`feats`), three models behind a shared interface (`model`), 80/20 split —
 //! tales by document, Tatoeba by sentence. For each field:
 //! - accuracy and macro-F1 against held-out silver, baseline — majority class of the training set;
 //! - negative control — the same models on shuffled labels must score at baseline level;
@@ -220,7 +220,7 @@ pub fn run(dir: &Path, model_path: &Path, gum: Option<&Path>, seed: u64) -> Resu
     let gy: Vec<Vec<usize>> = Field::ALL.iter().map(|f| test.iter().map(|&i| f.get(&gold[&i])).collect()).collect();
 
     let mut rep = String::new();
-    let _ = writeln!(rep, "# Pragmatics MMM evaluation (seed {seed})\n");
+    let _ = writeln!(rep, "# Pragmatics SLM evaluation (seed {seed})\n");
     let _ = writeln!(
         rep,
         "Silver: {} sentences (tales {}, Tatoeba {}); train {} / test {} (tales split by document, Tatoeba by sentence).",
@@ -373,7 +373,7 @@ pub fn run(dir: &Path, model_path: &Path, gum: Option<&Path>, seed: u64) -> Resu
 
     // examples with explanations (test)
     let mut ex = String::new();
-    let _ = writeln!(ex, "# Examples of MMM decisions on test (LLM silver vs three models)\n");
+    let _ = writeln!(ex, "# Examples of SLM decisions on test (LLM silver vs three models)\n");
     let show = |i: usize, why_title: &str, ex: &mut String| {
         let it = &items[i];
         let g = &gold[&i];

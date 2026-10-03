@@ -1,7 +1,7 @@
 //! v2: learning — a memory of verified solutions, not weights in a black box. Each solution:
 //! problem features, method, plan, trace. The method is chosen by an averaged perceptron over problem features —
 //! transparent: you can see which features and with what weight won. A plan template is a verified plan in which
-//! the numbers from the problem are replaced by slots `#k`; for a similar problem the MMM substitutes its numbers and executes the plan
+//! the numbers from the problem are replaced by slots `#k`; for a similar problem the SLM substitutes its numbers and executes the plan
 //! by itself, without the LLM — and the answer passes the same gate.
 
 use std::collections::{BTreeMap, HashMap, HashSet};

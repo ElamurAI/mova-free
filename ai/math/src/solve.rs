@@ -1,8 +1,8 @@
 //! v2: solver — three measurement configurations.
 //! - A: the LLM alone — answer only;
-//! - B: the LLM writes a plan, the MMM executes and checks it; if it fails — back to the LLM with the reason (≤ 2 retries),
+//! - B: the LLM writes a plan, the SLM executes and checks it; if it fails — back to the LLM with the reason (≤ 2 retries),
 //!   then an honest "not solved";
-//! - C: the MMM itself chooses the method (perceptron) and the plan (a template from the memory of verified solutions) — without the LLM;
+//! - C: the SLM itself chooses the method (perceptron) and the plan (a template from the memory of verified solutions) — without the LLM;
 //!   where it cannot — the answer of configuration B.
 
 use std::collections::HashMap;
@@ -39,14 +39,14 @@ pub struct Record {
     pub input_tokens: u64,
     pub output_tokens: u64,
     pub secs: f64,
-    /// C: the answer was given by the MMM alone
-    pub by_mmm: bool,
-    pub mmm_method: Option<String>,
-    pub mmm_margin: Option<f64>,
-    pub mmm_why: Vec<(String, f64)>,
-    pub mmm_template_from: Option<String>,
+    /// C: the answer was given by the SLM alone
+    pub by_slm: bool,
+    pub slm_method: Option<String>,
+    pub slm_margin: Option<f64>,
+    pub slm_why: Vec<(String, f64)>,
+    pub slm_template_from: Option<String>,
     pub error: Option<String>,
-    /// gate rejection reasons by round (what the MMM returned to the LLM)
+    /// gate rejection reasons by round (what the SLM returned to the LLM)
     #[serde(default)]
     pub history: Vec<String>,
 }
@@ -149,7 +149,7 @@ fn plans_by_id(text: &str) -> HashMap<String, (Plan, Value)> {
     m
 }
 
-/// B: LLM plan → execution and checking by the MMM → retries with the reason.
+/// B: LLM plan → execution and checking by the SLM → retries with the reason.
 pub fn run_b(r: &Run, ps: &[Problem], tag: &str) -> Vec<Record> {
     let lock = Mutex::new(());
     batched(ps, r.batch, r.par, &|i, chunk| {
@@ -238,7 +238,7 @@ pub fn memos_from(ps: &[Problem], recs: &[Record]) -> Vec<Memo> {
     }).collect()
 }
 
-/// C: the MMM alone — the perceptron chooses the method, a template from memory gives the plan; otherwise — the B answer.
+/// C: the SLM alone — the perceptron chooses the method, a template from memory gives the plan; otherwise — the B answer.
 pub fn run_c(ps: &[Problem], memos: &[Memo], b: &HashMap<String, Record>, min_margin: f64, min_sim: f64, plan_secs: f64) -> Vec<Record> {
     let refs: Vec<&Memo> = memos.iter().collect();
     let perc = Perceptron::train(&refs, 10);
@@ -246,9 +246,9 @@ pub fn run_c(ps: &[Problem], memos: &[Memo], b: &HashMap<String, Record>, min_ma
         let feats = memory::features(p);
         let mut rec = Record { id: p.id.clone(), level: p.level, split: p.split.clone(), config: "C".into(), ..Default::default() };
         if let Some(g) = perc.guess(&feats) {
-            rec.mmm_method = Some(g.method.clone());
-            rec.mmm_margin = Some(g.margin);
-            rec.mmm_why = g.why.clone();
+            rec.slm_method = Some(g.method.clone());
+            rec.slm_margin = Some(g.margin);
+            rec.slm_why = g.why.clone();
             let nums = memory::numbers(&p.question).len();
             if g.margin >= min_margin {
                 // the nearest verified solution of the same method with the same number of numbers
@@ -262,7 +262,7 @@ pub fn run_c(ps: &[Problem], memos: &[Memo], b: &HashMap<String, Record>, min_ma
                     pl.id = p.id.clone();
                     let mut ex = expect_for(p);
                     if !p.options.is_empty() {
-                        // the MMM chooses the option itself: the only option with a computed value
+                        // the SLM chooses the option itself: the only option with a computed value
                         let t0 = plan::run(&pl, &Expect { options: Vec::new(), ..ex.clone() }, plan_secs);
                         let val = t0.answer.as_deref().and_then(crate::big::parse_q);
                         let hits: Vec<String> = p.options.iter().filter(|(_, c)| val.is_some() && plan::option_value(c) == val).map(|(k, _)| k.clone()).collect();
@@ -274,7 +274,7 @@ pub fn run_c(ps: &[Problem], memos: &[Memo], b: &HashMap<String, Record>, min_ma
                     }
                     let t = plan::run(&pl, &ex, plan_secs);
                     if t.verified() {
-                        rec.by_mmm = true;
+                        rec.by_slm = true;
                         rec.method = g.method.clone();
                         rec.plan = serde_json::to_value(&pl).unwrap_or(Value::Null);
                         rec.answer = t.answer.clone();
@@ -283,7 +283,7 @@ pub fn run_c(ps: &[Problem], memos: &[Memo], b: &HashMap<String, Record>, min_ma
                         rec.correct = grade(p, rec.answer.as_deref(), rec.option.as_deref());
                         rec.secs = t.secs;
                         rec.trace = Some(t);
-                        rec.mmm_template_from = Some(m.id.clone());
+                        rec.slm_template_from = Some(m.id.clone());
                         return rec;
                     }
                 }
@@ -316,8 +316,8 @@ pub struct Summary {
     pub verified: usize,
     pub verified_correct: usize,
     pub errors: usize,
-    pub by_mmm: usize,
-    pub by_mmm_correct: usize,
+    pub by_slm: usize,
+    pub by_slm_correct: usize,
     pub cost: f64,
     pub in_tok: u64,
     pub out_tok: u64,
@@ -332,8 +332,8 @@ pub fn summarize(recs: &[&Record]) -> Summary {
         s.verified += r.verified as usize;
         s.verified_correct += (r.verified && r.correct) as usize;
         s.errors += r.error.is_some() as usize;
-        s.by_mmm += r.by_mmm as usize;
-        s.by_mmm_correct += (r.by_mmm && r.correct) as usize;
+        s.by_slm += r.by_slm as usize;
+        s.by_slm_correct += (r.by_slm && r.correct) as usize;
         s.cost += r.cost_usd;
         s.in_tok += r.input_tokens;
         s.out_tok += r.output_tokens;
@@ -343,7 +343,7 @@ pub fn summarize(recs: &[&Record]) -> Summary {
 }
 
 /// Level 4: proofs in Lean. Round 0 — "LLM alone" (first attempt without feedback, configuration A);
-/// with retries on Lean errors (≤ `max_retries`) — "LLM + MMM" (configuration B).
+/// with retries on Lean errors (≤ `max_retries`) — "LLM + SLM" (configuration B).
 pub fn run_lean(r: &Run, ts: &[crate::lean::Theorem], dir: &Path, tag: &str) -> Vec<Record> {
     use crate::lean;
     let lock = Mutex::new(());

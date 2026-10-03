@@ -6,7 +6,7 @@
 
 **Examples.**
 - The Ant and the Grasshopper (Aesop): the ant diligently stores food in summer while the grasshopper sings — in winter the grasshopper goes hungry.
-- The MMM itself (design note: a better answer means quality and diligence): an answer that passed independent verification by the core.
+- The SLM itself (design note: a better answer means quality and diligence): an answer that passed independent verification by the core.
 
 **Sources.** Aesop's fables; Col 3:23 ("whatever you do, work at it with all your heart").
 

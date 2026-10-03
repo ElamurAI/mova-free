@@ -135,7 +135,7 @@ Add `--qread` to the SVAMP command to use the world reader as a judge feature.
 What the output reports (in order):
 1. `<set> (exact gold): training with gold N; no tree …; no exact tree X; tree not in text order Y`. This is the training data and the **excluded items** with their reasons: no exact tree, or a tree not buildable in text order.
 2. `epoch k: correct on training a/N`: training accuracy per epoch.
-3. `<set> test: MMM alone (v4) correct acc/n (p%)`: **the headline test accuracy**.
+3. `<set> test: SLM alone (v4) correct acc/n (p%)`: **the headline test accuracy**.
 4. `top-K: correct among them …`: how often the right answer is among the top-K candidates.
 5. Self-assessment:
    - accuracy when only answering above a confidence threshold (`threshold`);

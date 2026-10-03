@@ -7,7 +7,9 @@ come from here (level 3 does not invent knowledge).
 
 **Conditions and exceptions.** "Fits inside" is the same as "smaller than"; "above/below" for shapes is the same
 vertical as north/south on a map, but with a different name. Time order is within one narrative:
-yesterday is earlier than this morning.
+yesterday is earlier than this morning. "Today" and "tomorrow" follow yesterday as whole days
+(`day`). Days of the week have their own order (`week`), separate from the parts of
+a day: "on monday" and "on tuesday" stamp two different times of a story (SVAMP: "played tag with 5 kids on monday").
 
 **Examples.** "The kitchen is north of the garden" → from the garden to the kitchen is north (n).
 "The box fits inside the chest; the chest is smaller than the suitcase" → the box is smaller than the suitcase.
@@ -32,4 +34,13 @@ yesterday: order=0
 morning: order=1
 afternoon: order=2
 evening: order=3
+today: day=1
+tomorrow: day=2
+monday: week=1
+tuesday: week=2
+wednesday: week=3
+thursday: week=4
+friday: week=5
+saturday: week=6
+sunday: week=7
 ```

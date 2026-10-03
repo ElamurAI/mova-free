@@ -1,4 +1,4 @@
-//! coref — MMM (small language model) coreference (closed part of Mova): a deterministic multi-pass sieve over
+//! coref — SLM (small language model) coreference (closed part of Mova): a deterministic multi-pass sieve over
 //! UD trees, where every link carries the sieve id and evidence; reading and writing CorefUD (`Entity=` in MISC);
 //! MUC, B³, CEAF-e, CoNLL F1 scorer with head-based matching (CRAC).
 //!

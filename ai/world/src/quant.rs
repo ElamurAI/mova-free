@@ -3,7 +3,7 @@
 //! The story world holds individual objects; here — quantities: state `entity.thing → number`, changes are anchored to
 //! sentences (`@N`) and labelled with a principle (`k=`), as advised by Chi, Feltovich, Glaser 1981 (an expert groups by
 //! principle, not by surface). Executed by the exact core (`math::big`, rational numbers). The LLM writes a script,
-//! the gate passes only one that gives the reference answer and takes numbers from the text; the MMM learns on verified scripts.
+//! the gate passes only one that gives the reference answer and takes numbers from the text; the SLM learns on verified scripts.
 //!
 //! ```text
 //! @1 set janet.egg = 16            k=total

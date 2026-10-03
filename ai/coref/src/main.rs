@@ -1,4 +1,4 @@
-//! coref — MMM (small language model) coreference (closed part).
+//! coref — SLM (small language model) coreference (closed part).
 //!
 //!   coref resolve <in.conllu> [--trees <trees.conllu>]           CoNLL-U with Entity= (CorefUD) to stdout
 //!   coref explain <in.conllu> [<doc-id>] [--trees <trees>]       document chains with reasons (sieve id + evidence)
@@ -99,10 +99,10 @@ fn main() -> Result<()> {
             let gold_path = Path::new(&a.pos[0]);
             let (_, gold_docs) = load(gold_path, None)?;
             let (ud, docs) = load(gold_path, a.trees.as_deref())?;
-            let label = a.label.clone().unwrap_or_else(|| if a.trees.is_some() { "MMM trees".into() } else { "gold trees".into() });
+            let label = a.label.clone().unwrap_or_else(|| if a.trees.is_some() { "SLM trees".into() } else { "gold trees".into() });
             let stem = gold_path.file_stem().unwrap_or_default().to_string_lossy().into_owned();
-            let tag = if a.trees.is_some() { "mmm" } else { "gold" };
-            let mut report = format!("# MMM coreference: {stem}, {label}\n");
+            let tag = if a.trees.is_some() { "slm" } else { "gold" };
+            let mut report = format!("# SLM coreference: {stem}, {label}\n");
             let t0 = std::time::Instant::now();
             eval::run(&label, &gold_docs, &Input { label: label.clone(), ud, docs }, &mut report, Some(&out.join(format!("{stem}.{tag}-trees.coref.conllu"))), Some(&out.join(format!("{stem}.{tag}-trees.errors.tsv"))))?;
             report.push_str(&format!("\nMeasurement time: {:.1} s.\n", t0.elapsed().as_secs_f64()));

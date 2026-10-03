@@ -1,4 +1,4 @@
--- Pragmatics in the database: LLM silver vs MMM (cross-validated) predictions — match rate per field for each
+-- Pragmatics in the database: LLM silver vs SLM (cross-validated) predictions — match rate per field for each
 -- model, and how many sentences are in each set. `db sql data/db/mova.duckdb prag/sql/silver-vs-rust.sql`
 WITH s AS (SELECT * FROM prag_labels WHERE source = 'silver'),
      r AS (SELECT * FROM prag_labels WHERE source = 'rust')

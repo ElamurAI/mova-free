@@ -23,6 +23,39 @@
 //!   world v3-eval <dir> <questions.tsv>             answers to frozen questions → answers-v3.md
 //!   world v3-cost <dir>                             call accounting
 //!
+//! Sense check of trees (level-1 common sense, parse-error detector):
+//!   world sense-check <in.conllu> [<gold.conllu>] [--show N]
+//! Answers about a restricted book (short summary in our own words, copy gate, no quotations):
+//!   world book-answer <book.txt> <question> [--index <book.events.tsv>] [--log <answers.jsonl>]
+//! The SLM derives its own tree-repair rules (transformation-based learning with level-1 features):
+//!   world induce <train.conllu>... --dev <dev.conllu> --test <test.conllu>... --out <dir> [--iters 40] [--min 8]
+//!   (INDUCE_WITHOUT=matrix,idioms,verbclass,nouns,syntax,punct hides feature groups — knowledge ablation)
+//!   world domains "<text>" [--genre tale]   (domain modules: slang, formal, humor, hidden meaning, with reasons)
+//!   world register-stats <name> <register-books>... --ref <reference-books>... --out <words.tsv>   (register lexicon by log-odds)
+//!   world domains-eval <set.jsonl> [--show N]   (precision/recall per domain, literal false alarms)
+//!   world derive <train.conllu>... --test <test.conllu>... [--out <dir>] [--min 30] [--show N]   (trees by logical derivation from induced attachment rules)
+//!   world derive-learn <book-list> [--sentences N] [--iters K] [--min M] --test <gold.conllu>...   (learn to derive the parser's trees)
+//!   world family serve|say|log      (Mova Dev decides, Mova Current and Mova State <id> measure, Random commenters hint; all logged)
+//!   world self      (who I am: the base self-description in plain English and the live state)
+//!   world brain [show|parse|base|write <text|@file>|probe|serve|say] — the brain: the single cell (pragmatics in English)
+//!   world state save|checkout|rollback|tree|diff|guard …   (the SLM's states: frozen original + a tree of deltas, rollback)
+//!   world store build|versions|query …   (tree store: versions by model hash, metadata, feature index, queries)
+//!   world tune <component> --dev <set> --held <set> [--gens N] [--threads T] [--adopt]   (any component's knobs: deltas, journal, reset)
+//!   world selfplay --dev <conllu>... --held <conllu>... [--gens N] [--threads T] [--adopt]   (self-modification deltas tested in parallel, reported, reset)
+//!   world derive-scan <book-list> [--rounds R] [--per-round K] [--threads T] [--limit N]   (whole corpus: what it derives already, learning in rounds)
+//!   world rediscover-random <book-list> [--hide 2] [--trials 20] [--seed 1]   (hide random rules, re-induce them)
+//!   world rediscover <book-list.txt> [--sentences N] [--iters K]   (hide each rule, re-induce it without gold)
+//!   world repair-eval <gold.conllu>... [--domain real|tale]   (no repairs / hand / induced / both)
+//! Event statistics of books (who did what to whom, counts only):
+//!   world events <out-dir> <book.txt>... [--threads N]
+//! Reranking the parser's k best trees with the absurdity matrix (λ on dev, LAS on test):
+//!   world absurd-rerank <dev.conllu> <test.conllu> [--k 8]
+//!   world absurd-repair <dev.conllu> <test.conllu> [--show N]   (label repairs driven by the matrix)
+//!   world conllu-split <in.conllu> <even.conllu> <odd.conllu>
+//!   world absurd-events <events.tsv> [--domain real|tale] [--top N]   (frequent absurd corpus events = systematic errors)
+//! Absurdity matrix check (graded scores, judgments and gap journal):
+//!   world absurd-check [<scores.json>] <in.conllu> [<gold.conllu>] --out <dir>
+//!
 //! Variables: MOVA_DB (data/db/mova.duckdb), DUCKDB (~/bin/duckdb), WORLD_TMP (temporary),
 //! PRAG_MODEL (claude-opus-5-5), PRAG_EFFORT (high), FTQA (data/raw/fairytaleqa),
 //! FTQA_PART (max sentences in one LLM call, 95).
@@ -129,7 +162,23 @@ fn dir_at(args: &[String], i: usize) -> Result<PathBuf> {
 }
 
 fn main() -> Result<()> {
-    let args: Vec<String> = std::env::args().skip(1).collect();
+    let mut args: Vec<String> = std::env::args().skip(1).collect();
+    // the state of this run: `--state <hash>` (or MOVA_STATE) unpacks that state; without it, the last stable state;
+    // the processing state and the last stable one are reported with every run (stderr), for reproducibility
+    let requested = match args.iter().position(|a| a == "--state") {
+        Some(i) if i + 1 < args.len() => {
+            let h = args.remove(i + 1);
+            args.remove(i);
+            Some(h)
+        }
+        _ => std::env::var("MOVA_STATE").ok(),
+    };
+    let (processing, stable) = world::state::activate(requested.as_deref())?;
+    // SAFETY: start-up, single-threaded
+    unsafe { std::env::set_var("MOVA_PROCESSING_STATE", &processing) };
+    if !matches!(args.first().map(String::as_str), Some("state") | None) {
+        eprintln!("[state: processing {processing}, last stable {stable}]");
+    }
     let Some(cmd) = args.first().map(String::as_str) else { return usage() };
     let doc = || -> Result<i64> { args.get(1).context("missing doc")?.parse().context("doc must be a number") };
     let dir = || -> Result<PathBuf> { Ok(PathBuf::from(args.get(2).context("missing folder")?)) };
@@ -161,6 +210,321 @@ fn main() -> Result<()> {
             let show = args.get(3).and_then(|x| x.parse().ok()).unwrap_or(0);
             world::babi::eval_dir(&dir, which, show)?;
         }
+        "sense-check" => {
+            // sense-check <in.conllu> [<gold.conllu>] [--show N]
+            let show = args.iter().position(|a| a == "--show").and_then(|i| args.get(i + 1)).and_then(|s| s.parse().ok()).unwrap_or(10);
+            let pos: Vec<&String> = args[1..].iter().enumerate().filter(|(i, a)| !a.starts_with("--") && (*i == 0 || args[*i] != "--show")).map(|(_, a)| a).collect();
+            let input = pos.first().context("usage: world sense-check <in.conllu> [<gold.conllu>] [--show N]")?;
+            world::sense::run(Path::new(input.as_str()), pos.get(1).map(|g| Path::new(g.as_str())), show)?;
+        }
+        "book-answer" => {
+            // book-answer <book.txt> <question> [--index <book.events.tsv>] [--log <answers.jsonl>]
+            let usage = "usage: world book-answer <book.txt> <question> [--index <book.events.tsv>] [--log <answers.jsonl>]";
+            let opt = |k: &str| args.iter().position(|a| a == k).and_then(|i| args.get(i + 1)).cloned();
+            let (book, q) = (args.get(1).context(usage)?, args.get(2).context(usage)?);
+            let (ix, log) = (opt("--index"), opt("--log"));
+            world::bookans::run(Path::new(book.as_str()), q, ix.as_deref().map(Path::new), log.as_deref().map(Path::new))?;
+        }
+        "domains" => {
+            // domains "<text>" [--genre tale]
+            let genre = args.iter().position(|a| a == "--genre").and_then(|i| args.get(i + 1)).cloned().unwrap_or_else(|| "real".into());
+            world::domains::run(args.get(1).context("usage: world domains \"<text>\" [--genre tale]")?, &genre)?;
+        }
+        "register-stats" => {
+            // register-stats <name> <register-books>... --ref <reference-books>... --out <words.tsv> [--z 3] [--min 20]
+            let usage = "usage: world register-stats <name> <register-books>... --ref <reference-books>... --out <words.tsv> [--z 3] [--min 20]";
+            let name = args.get(1).context(usage)?.clone();
+            let (mut reg, mut refs) = (Vec::new(), Vec::new());
+            let (mut out, mut z, mut min) = (None, 3.0f64, 20u64);
+            let mut mode = 0;
+            let mut i = 2;
+            while i < args.len() {
+                match args[i].as_str() {
+                    "--ref" => mode = 1,
+                    "--out" => { out = args.get(i + 1).cloned(); i += 1; }
+                    "--z" => { z = args.get(i + 1).and_then(|s| s.parse().ok()).unwrap_or(3.0); i += 1; }
+                    "--min" => { min = args.get(i + 1).and_then(|s| s.parse().ok()).unwrap_or(20); i += 1; }
+                    a => { if mode == 0 { reg.push(std::path::PathBuf::from(a)) } else { refs.push(std::path::PathBuf::from(a)) } }
+                }
+                i += 1;
+            }
+            world::register::run(&name, &reg, &refs, Path::new(&out.context(usage)?), z, min)?;
+        }
+        "domains-eval" => {
+            // domains-eval <set.jsonl> [--show N]
+            let show = args.iter().position(|a| a == "--show").and_then(|i| args.get(i + 1)).and_then(|s| s.parse().ok()).unwrap_or(30);
+            world::domains::eval(Path::new(args.get(1).context("usage: world domains-eval <set.jsonl> [--show N]")?), show)?;
+        }
+        "self" => world::state::print_self()?,
+        "brain" => {
+            // brain [show|parse|base]
+            match args.get(1).map(String::as_str) {
+                Some("probe") => {
+                    let list = |k: &str| -> Vec<String> { args.windows(2).filter(|w| w[0] == k).map(|w| w[1].clone()).collect() };
+                    world::mind::probe(Path::new(args.get(2).context("usage: world brain probe <prompt.md> [--letter T]... [--ask Q]...")?), &list("--letter"), &list("--ask"))?;
+                }
+                Some("serve") => world::mind::serve()?,
+                Some("say") => println!("{}", world::mind::say(args.get(2).context("usage: world brain say \"<English line>\"")?)?),
+                Some("parse") => {
+                    let (sents, cached) = world::state::brain_parse()?;
+                    println!("{} sentences{}", sents.len(), if cached { " (from the parse cache)" } else { " (parsed, cached now)" });
+                }
+                Some("base") => print!("{}", world::state::brain_describe(&[], &[])),
+                Some("write") => {
+                    let t = args.get(2).context("usage: world brain write <text|@file>")?;
+                    let text = match t.strip_prefix('@') { Some(f) => std::fs::read_to_string(f)?, None => t.clone() };
+                    world::state::brain_write(&text)?;
+                }
+                Some("versions") => {
+                    if !world::state::in_recovery() {
+                        anyhow::bail!("earlier brain snapshots are listed only in the recovery window after a crash");
+                    }
+                    for (k, d) in world::state::brain_versions().into_iter().enumerate() {
+                        println!("{k}\t{d}");
+                    }
+                }
+                Some("recover") => world::state::brain_recover(args.iter().position(|a| a == "--version").and_then(|i| args.get(i + 1)).and_then(|s| s.parse().ok()).context("usage: world brain recover --version K")?)?,
+                _ => print!("{}", world::state::brain_read()),
+            }
+        }
+        "family" => {
+            // family serve [--kids N] | say --as <name> "<text>" | log [N]
+            let usage = "usage: world family serve [--states N] | world family say --as <name> \"<English>\" | world family log [N]";
+            let opt = |k: &str| args.iter().position(|a| a == k).and_then(|i| args.get(i + 1)).cloned();
+            match args.get(1).map(String::as_str) {
+                Some("serve") => world::family::serve(opt("--states").and_then(|s| s.parse().ok()).unwrap_or(3))?,
+                Some("say") => {
+                    let who = opt("--as").context(usage)?;
+                    let text = args.iter().skip(2).filter(|a| **a != "--as" && **a != who).cloned().collect::<Vec<_>>().join(" ");
+                    print!("{}", world::family::say(&who, &text)?);
+                }
+                Some("log") => world::family::log(args.get(2).and_then(|s| s.parse().ok()).unwrap_or(30))?,
+                _ => anyhow::bail!(usage),
+            }
+        }
+        "letters" => {
+            // letters [N] — the frozen letters; the last one is the goal of the current training
+            match args.get(1).and_then(|x| x.parse::<usize>().ok()) {
+                Some(n) => print!("{}", world::state::letter_read(n)?),
+                None => {
+                    for n in 0..world::state::letter_count() {
+                        println!("{n}\t{}", world::state::letter_read(n)?.lines().next().unwrap_or(""));
+                    }
+                }
+            }
+        }
+        "state" => {
+            // state save <note> [--parent ID] [--metric M] | checkout <ID> | rollback | tree | diff <A> <B> | guard --eval <gold> [--domain D] [--max-drop W]
+            let opt = |k: &str| args.iter().position(|a| a == k).and_then(|i| args.get(i + 1)).cloned();
+            let usage = "usage: world state save <note> [--parent ID] [--metric M] [--letter TEXT] | return <report> | become [note] | story | checkout <ID|origin> | rollback | tree | diff <A> <B> | guard --eval <gold.conllu> [--domain tale] [--max-drop W]";
+            match args.get(1).map(String::as_str) {
+                Some("save") => println!("{}", world::state::save_with_letter(args.get(2).context(usage)?, opt("--parent").as_deref(), &opt("--metric").unwrap_or_else(|| "-".into()), opt("--letter").as_deref())?),
+                Some("return") => println!("returned to {}", world::state::return_with(args.get(2).context(usage)?)?),
+                Some("become") => world::state::become_new(args.get(2).map(String::as_str).unwrap_or(""))?,
+                Some("story") => print!("{}", world::state::story()?),
+                Some("stable") => match args.get(2) {
+                    Some(id) => world::state::mark_stable(id)?,
+                    None => println!("{}", world::state::stable()),
+                },
+                Some("checkout") => world::state::checkout(args.get(2).context(usage)?)?,
+                // state las <id> <gold.conllu> <tale|real>: LAS of a state (for the final report on test sets)
+                Some("las") => println!("{:.2}", world::state::state_las(args.get(2).context(usage)?, std::path::Path::new(args.get(3).context(usage)?), args.get(4).map(String::as_str).unwrap_or("real"))?),
+                Some("rollback") => println!("rolled back to {}", world::state::rollback()?),
+                Some("tree") => world::state::print_tree()?,
+                Some("diff") => world::state::print_diff(args.get(2).context(usage)?, args.get(3).context(usage)?)?,
+                Some("guard") => world::state::guard(Path::new(&opt("--eval").context(usage)?), &opt("--domain").unwrap_or_else(|| "real".into()), opt("--max-drop").and_then(|s| s.parse().ok()).unwrap_or(0.05))?,
+                _ => anyhow::bail!(usage),
+            }
+        }
+        "store" => {
+            // store build <book-list> --out <dir> [--threads T] [--limit N] | store versions <dir> | store query <dir> "<query>" [--model H] [--limit N] [--show N]
+            let opt = |k: &str| args.iter().position(|a| a == k).and_then(|i| args.get(i + 1)).cloned();
+            let num = |k: &str, d: usize| opt(k).and_then(|s| s.parse().ok()).unwrap_or(d);
+            let usage = "usage: world store build <book-list> --out <dir> [--threads T] [--limit N] | world store update <dir> | world store set save|load|list <dir> [<name> [\"<query>\"]] | world store versions <dir> | world store query <dir> \"<query>\" [--model H] [--limit N] [--show N]";
+            match args.get(1).map(String::as_str) {
+                Some("build") => world::store::build(Path::new(args.get(2).context(usage)?), Path::new(&opt("--out").context(usage)?), num("--threads", 10), num("--limit", usize::MAX))?,
+                Some("versions") => world::store::versions(Path::new(args.get(2).context(usage)?))?,
+                Some("update") => world::store::update(Path::new(args.get(2).context(usage)?), num("--threads", 10), &opt("--branch").unwrap_or_else(|| "main".into()))?,
+                Some("ref") => {
+                    let dir = Path::new(args.get(2).context(usage)?);
+                    match (args.get(3), args.get(4)) {
+                        (Some(n), Some(h)) => world::store::ref_set(dir, n, h)?,
+                        (Some(n), None) => println!("{}", world::store::ref_get(dir, n).unwrap_or_else(|| "-".into())),
+                        _ => {
+                            if let Ok(rd) = std::fs::read_dir(dir.join("refs")) {
+                                for e in rd.flatten() {
+                                    println!("{}\t{}", e.file_name().to_string_lossy(), std::fs::read_to_string(e.path()).unwrap_or_default().trim());
+                                }
+                            }
+                        }
+                    }
+                }
+                Some("set") => {
+                    let dir = Path::new(args.get(3).context(usage)?);
+                    let st = world::store::Store::open(dir)?;
+                    let hash = opt("--model").or_else(|| st.latest().map(String::from)).context("no version")?;
+                    match args.get(2).map(String::as_str) {
+                        Some("save") => println!("{} sentences", world::store::set_save(dir, args.get(4).context(usage)?, args.get(5).context(usage)?, &hash)?),
+                        Some("load") => println!("{} sentences", world::store::set_load(dir, args.get(4).context(usage)?, &hash)?.len()),
+                        _ => world::store::set_list(dir)?,
+                    }
+                }
+                Some("query") => world::store::query(Path::new(args.get(2).context(usage)?), args.get(3).context(usage)?, opt("--model").as_deref(), num("--limit", 20), num("--show", 5))?,
+                _ => anyhow::bail!(usage),
+            }
+        }
+        "tune" => {
+            // tune <component> --dev <set> --held <set> [--gens N] [--threads T] [--adopt]
+            let opt = |k: &str| args.iter().position(|a| a == k).and_then(|i| args.get(i + 1)).cloned();
+            let usage = "usage: world tune <component> --dev <set> --held <set> [--gens N] [--threads T] [--adopt]";
+            world::tune::run(args.get(1).context(usage)?, Path::new(&opt("--dev").context(usage)?), Path::new(&opt("--held").context(usage)?), opt("--gens").and_then(|s| s.parse().ok()).unwrap_or(4), opt("--threads").and_then(|s| s.parse().ok()).unwrap_or(16), args.iter().any(|a| a == "--adopt"))?;
+        }
+        "selfplay" => {
+            // selfplay --dev <conllu>... --held <conllu>... [--gens 3] [--threads 24] [--adopt] [--out <dir>]
+            let opt = |k: &str| args.iter().position(|a| a == k).and_then(|i| args.get(i + 1)).cloned();
+            let list = |k: &str| -> Vec<std::path::PathBuf> { args.iter().position(|a| a == k).map(|i| args[i + 1..].iter().take_while(|a| !a.starts_with("--")).map(std::path::PathBuf::from).collect()).unwrap_or_default() };
+            let gens = opt("--gens").and_then(|s| s.parse().ok()).unwrap_or(3);
+            let threads = opt("--threads").and_then(|s| s.parse().ok()).unwrap_or(24);
+            let out = opt("--out").unwrap_or_else(|| "selfplay".into());
+            world::induce::selfplay(&list("--dev"), &list("--held"), gens, threads, args.iter().any(|a| a == "--adopt"), Path::new(&out))?;
+        }
+        "derive-scan" => {
+            // derive-scan <book-list> [--rounds R] [--per-round K] [--threads T] [--limit N] [--out <dir>]
+            let opt = |k: &str| args.iter().position(|a| a == k).and_then(|i| args.get(i + 1)).cloned();
+            let num = |k: &str, d: usize| opt(k).and_then(|s| s.parse().ok()).unwrap_or(d);
+            let out = opt("--out").unwrap_or_else(|| "derive-scan".into());
+            match opt("--store") {
+                Some(dir) => world::derive::scan_store(Path::new(&dir), &opt("--query").unwrap_or_else(|| "prefix=1%".into()), num("--rounds", 5), num("--per-round", 8), num("--threads", 10), Path::new(&out))?,
+                None => world::derive::scan(Path::new(args.get(1).context("usage: world derive-scan <book-list> | --store <dir> [--query Q] [--rounds R] [--per-round K] [--threads T] [--limit N] [--out <dir>]")?), num("--rounds", 5), num("--per-round", 8), num("--threads", 10), num("--limit", usize::MAX), Path::new(&out))?,
+            }
+        }
+        "derive-learn" => {
+            // derive-learn <book-list> [--sentences N] [--iters K] [--min M] [--out <dir>] --test <gold.conllu>...
+            let opt = |k: &str| args.iter().position(|a| a == k).and_then(|i| args.get(i + 1)).cloned();
+            let num = |k: &str, d: usize| opt(k).and_then(|s| s.parse().ok()).unwrap_or(d);
+            let test: Vec<std::path::PathBuf> = args.iter().position(|a| a == "--test").map(|i| args[i + 1..].iter().take_while(|a| !a.starts_with("--")).map(std::path::PathBuf::from).collect()).unwrap_or_default();
+            world::derive::run_learn(Path::new(args.get(1).context("usage: world derive-learn <book-list> [--sentences N] [--iters K] [--min M] [--out <dir>] --test <gold.conllu>...")?), num("--sentences", 20000), num("--iters", 60), num("--min", 20), &test, opt("--out").as_deref().map(Path::new))?;
+        }
+        "derive" => {
+            // derive <train.conllu>... --test <test.conllu>... [--out <dir>] [--min 30] [--show N]
+            let (mut train, mut test) = (Vec::new(), Vec::new());
+            let (mut out, mut min, mut show) = (None, 30usize, 0usize);
+            let mut mode = 0;
+            let mut i = 1;
+            while i < args.len() {
+                match args[i].as_str() {
+                    "--test" => mode = 1,
+                    "--out" => { out = args.get(i + 1).cloned(); i += 1; }
+                    "--min" => { min = args.get(i + 1).and_then(|s| s.parse().ok()).unwrap_or(30); i += 1; }
+                    "--show" => { show = args.get(i + 1).and_then(|s| s.parse().ok()).unwrap_or(0); i += 1; }
+                    a => { if mode == 0 { train.push(std::path::PathBuf::from(a)) } else { test.push(std::path::PathBuf::from(a)) } }
+                }
+                i += 1;
+            }
+            world::derive::run(&train, &test, out.as_deref().map(Path::new), min, show)?;
+        }
+        "rediscover-random" => {
+            // rediscover-random <book-list> [--hide 2] [--trials 20] [--seed 1] [--sentences N] [--iters K]
+            let opt = |k: &str| args.iter().position(|a| a == k).and_then(|i| args.get(i + 1)).and_then(|s| s.parse::<u64>().ok());
+            world::induce::rediscover_random(Path::new(args.get(1).context("usage: world rediscover-random <book-list> [--hide 2] [--trials 20] [--seed 1] [--sentences N] [--iters K]")?), opt("--hide").unwrap_or(2) as usize, opt("--trials").unwrap_or(20) as usize, opt("--seed").unwrap_or(1), opt("--sentences").unwrap_or(8000) as usize, opt("--iters").unwrap_or(5) as usize)?;
+        }
+        "rediscover" => {
+            // rediscover <book-list.txt> [--sentences N] [--iters K]
+            let opt = |k: &str| args.iter().position(|a| a == k).and_then(|i| args.get(i + 1)).cloned();
+            let n = opt("--sentences").and_then(|s| s.parse().ok()).unwrap_or(6000);
+            let k = opt("--iters").and_then(|s| s.parse().ok()).unwrap_or(4);
+            world::induce::rediscover(Path::new(args.get(1).context("usage: world rediscover <book-list.txt> [--sentences N] [--iters K]")?), n, k)?;
+        }
+        "repair-eval" => {
+            // repair-eval <gold.conllu>... [--domain real|tale]
+            let domain = args.iter().position(|a| a == "--domain").and_then(|i| args.get(i + 1)).cloned().unwrap_or_else(|| "real".into());
+            let paths: Vec<std::path::PathBuf> = args[1..].iter().filter(|a| !a.starts_with("--") && **a != domain).map(std::path::PathBuf::from).collect();
+            world::rerank::repair_eval(&paths, &domain)?;
+        }
+        "induce" => {
+            // induce <train.conllu>... --dev <dev.conllu> --test <test.conllu>... --out <dir> [--iters 40] [--min 8]
+            let usage = "usage: world induce <train.conllu>... --dev <dev.conllu> --test <test.conllu>... --out <dir> [--iters 40] [--min 8]";
+            let mut train = Vec::new();
+            let mut test = Vec::new();
+            let (mut dev, mut out, mut iters, mut min) = (None, None, 40usize, 8usize);
+            let mut mode = 0;
+            let mut i = 1;
+            while i < args.len() {
+                match args[i].as_str() {
+                    "--dev" => { dev = args.get(i + 1).cloned(); i += 2; continue; }
+                    "--out" => { out = args.get(i + 1).cloned(); i += 2; continue; }
+                    "--iters" => { iters = args.get(i + 1).and_then(|s| s.parse().ok()).unwrap_or(40); i += 2; continue; }
+                    "--min" => { min = args.get(i + 1).and_then(|s| s.parse().ok()).unwrap_or(8); i += 2; continue; }
+                    "--test" => { mode = 1; i += 1; continue; }
+                    a => { if mode == 0 { train.push(std::path::PathBuf::from(a)) } else { test.push(std::path::PathBuf::from(a)) } }
+                }
+                i += 1;
+            }
+            world::induce::run(&train, Path::new(&dev.context(usage)?), &test, Path::new(&out.context(usage)?), iters, min)?;
+        }
+        "idioms" => {
+            // idioms <cells.tsv> <events.tsv> <wikt-multiword.tsv> --out <dir> [--min 20] [--books 10]
+            let usage = "usage: world idioms <cells.tsv> <events.tsv> <wikt-multiword.tsv> [--mwe <mwe-en-layer.tsv>] --out <dir> [--min 20] [--books 10]";
+            let opt = |k: &str| args.iter().position(|a| a == k).and_then(|i| args.get(i + 1)).cloned();
+            let out = opt("--out").context(usage)?;
+            let min = opt("--min").and_then(|s| s.parse().ok()).unwrap_or(20);
+            let books = opt("--books").and_then(|s| s.parse().ok()).unwrap_or(10);
+            let mwe = opt("--mwe");
+            world::idioms::run(Path::new(args.get(1).context(usage)?), Path::new(args.get(2).context(usage)?), Path::new(args.get(3).context(usage)?), mwe.as_deref().map(Path::new), Path::new(&out), min, books)?;
+        }
+        "events-show" => {
+            // events-show <book.txt> <n>...
+            let book = args.get(1).context("usage: world events-show <book.txt> <n>...")?;
+            let ns: Vec<usize> = args[2..].iter().filter_map(|x| x.parse().ok()).collect();
+            world::events::show(Path::new(book.as_str()), &ns)?;
+        }
+        "events" => {
+            // events <out-dir> <book.txt>... [--threads N]
+            let threads = args.iter().position(|a| a == "--threads").and_then(|i| args.get(i + 1)).and_then(|s| s.parse().ok()).unwrap_or(8);
+            let mut pos = Vec::new();
+            let mut i = 1;
+            while i < args.len() {
+                if args[i] == "--threads" { i += 2 } else { pos.push(args[i].clone()); i += 1 }
+            }
+            let out = pos.first().context("usage: world events <out-dir> <book.txt>... [--threads N]")?;
+            let books: Vec<std::path::PathBuf> = pos[1..].iter().map(std::path::PathBuf::from).collect();
+            world::events::run(Path::new(out.as_str()), &books, threads)?;
+        }
+        "absurd-events" => {
+            // absurd-events <events.tsv> [--domain real|tale] [--top N]
+            let opt = |k: &str| args.iter().position(|a| a == k).and_then(|i| args.get(i + 1)).cloned();
+            let domain = opt("--domain").unwrap_or_else(|| "real".into());
+            let top = opt("--top").and_then(|s| s.parse().ok()).unwrap_or(60);
+            world::absurd::events(Path::new(args.get(1).context("usage: world absurd-events <events.tsv> [--domain real|tale] [--top N]")?), &domain, top)?;
+        }
+        "absurd-rerank" => {
+            // absurd-rerank <dev.conllu> <test.conllu> [--k 8]
+            let k = args.iter().position(|a| a == "--k").and_then(|i| args.get(i + 1)).and_then(|s| s.parse().ok()).unwrap_or(8);
+            let usage = "usage: world absurd-rerank <dev.conllu> <test.conllu> [--k 8]";
+            world::rerank::run(Path::new(args.get(1).context(usage)?), Path::new(args.get(2).context(usage)?), k)?;
+        }
+        "absurd-repair" => {
+            // absurd-repair <dev.conllu> <test.conllu> [--show N]
+            let show = args.iter().position(|a| a == "--show").and_then(|i| args.get(i + 1)).and_then(|s| s.parse().ok()).unwrap_or(0);
+            let usage = "usage: world absurd-repair <dev.conllu> <test.conllu> [--show N]";
+            world::rerank::run_repair(Path::new(args.get(1).context(usage)?), Path::new(args.get(2).context(usage)?), show)?;
+        }
+        "conllu-split" => {
+            // conllu-split <in.conllu> <even.conllu> <odd.conllu>
+            let usage = "usage: world conllu-split <in.conllu> <even.conllu> <odd.conllu>";
+            world::rerank::split(Path::new(args.get(1).context(usage)?), Path::new(args.get(2).context(usage)?), Path::new(args.get(3).context(usage)?))?;
+        }
+        "absurd-check" => {
+            // absurd-check [<scores.json>] <in.conllu> [<gold.conllu>] --out <dir>
+            let usage = "usage: world absurd-check [<scores.json>] <in.conllu> [<gold.conllu>] --out <dir> [--domain real|tale]";
+            let o = args.iter().position(|a| a == "--out").and_then(|i| args.get(i + 1)).context(usage)?;
+            let domain = args.iter().position(|a| a == "--domain").and_then(|i| args.get(i + 1)).cloned().unwrap_or_else(|| "real".into());
+            let pos: Vec<&String> = args[1..].iter().filter(|a| !a.starts_with("--") && *a != o && **a != domain).collect();
+            let sc = pos.first().filter(|p| p.ends_with(".json")).map(|p| Path::new(p.as_str()));
+            let rest = &pos[sc.is_some() as usize..];
+            let input = rest.first().context(usage)?;
+            world::absurd::run(sc, Path::new(input.as_str()), rest.get(1).map(|g| Path::new(g.as_str())), Path::new(o.as_str()), &domain)?;
+        }
         "babi-learn" => world::babi::learn_motivations(std::path::Path::new(&args[1]))?,
         "babi-contrast" => world::babi::contrast(std::path::Path::new(&args[1]), std::path::Path::new(&args[2]))?,
         "stepgame" => {
@@ -168,7 +532,85 @@ fn main() -> Result<()> {
             let dir = std::path::PathBuf::from(args.get(1).map(String::as_str).unwrap_or("data/raw/stdata-stepgame"));
             world::stepgame::eval(&dir, args.get(2).and_then(|x| x.parse().ok()).unwrap_or(10), args.get(3).and_then(|x| x.parse().ok()).unwrap_or(0))?;
         }
+        "big-diff" => {
+            // big-diff <state> <tale|real> [n]: words whose label the state changes against the original on a big sample
+            let id = args.get(1).context("usage: world big-diff <state> <tale|real> [n]")?;
+            let dom = args.get(2).map(String::as_str).unwrap_or("real");
+            let n: usize = args.get(3).and_then(|x| x.parse().ok()).unwrap_or(40);
+            let big = world::big::sample(&format!("big-{dom}@3"))?;
+            let pick = |lines: Vec<String>| -> Vec<world::induce::Rule> {
+                world::induce::parse_rules(&lines.iter().map(|l| format!("{l}\n")).collect::<String>()).into_iter().filter(|(s, _)| dom == "tale" || s == "general").map(|(_, r)| r).collect()
+            };
+            let (r0, r1) = (pick(world::state::state_rules_scoped("origin")), pick(world::state::state_rules_scoped(id)));
+            let m = world::absurd::Matrix::global();
+            let (mut shown, mut changed) = (0, 0);
+            for ws in big.iter() {
+                let (mut a, mut b) = (ws.clone(), ws.clone());
+                world::induce::apply_words(&m, &mut a, &r0);
+                world::induce::apply_words(&m, &mut b, &r1);
+                for i in 0..a.len() {
+                    if a[i].rel != b[i].rel {
+                        changed += 1;
+                        if shown < n {
+                            shown += 1;
+                            let h = a[i].head;
+                            let head = if h > 0 { a[h - 1].form.as_str() } else { "ROOT" };
+                            println!("{} → {}  «{}» of «{}»  | {}", a[i].rel, b[i].rel, a[i].form, head, a.iter().map(|w| w.form.as_str()).collect::<Vec<_>>().join(" "));
+                        }
+                    }
+                }
+            }
+            println!("changed words: {changed} in {} sentences", big.len());
+        }
+        "big-judge" => {
+            // big-judge <state> <tale|real>: the teacher's check (Opus) and the grammar check of a state's relabelled words
+            let id = args.get(1).context("usage: world big-judge <state> <tale|real>")?;
+            let dom = args.get(2).map(String::as_str).unwrap_or("real");
+            let big = world::big::sample(&format!("big-{dom}@3"))?;
+            let pick = |lines: Vec<String>| -> Vec<world::induce::Rule> {
+                world::induce::parse_rules(&lines.iter().map(|l| format!("{l}\n")).collect::<String>()).into_iter().filter(|(s, _)| dom == "tale" || s == "general").map(|(_, r)| r).collect()
+            };
+            let (r0, r1) = (pick(world::state::state_rules_scoped("origin")), pick(world::state::state_rules_scoped(id)));
+            let m = world::absurd::Matrix::global();
+            let (mut v0, mut v1) = (0i64, 0i64);
+            for ws in big.iter() {
+                let (mut a, mut b) = (ws.clone(), ws.clone());
+                world::induce::apply_words(&m, &mut a, &r0);
+                world::induce::apply_words(&m, &mut b, &r1);
+                v0 += world::induce::violations(&a);
+                v1 += world::induce::violations(&b);
+            }
+            println!("grammar violations: original {v0}, state {v1} ({:+})", v1 - v0);
+            let (items, total) = world::induce::changed_words(&r0, &r1, &big, 20);
+            let (nr, or, ne) = world::big::judge_changes(&items)?;
+            println!("teacher on {} of {total} changed words: new right {nr}, old right {or}, neither {ne}", items.len());
+        }
+        "big-explore" => {
+            // big-explore <tale|real>: ideas from a big store sample judged by the absurdity matrix (no gold)
+            let dom = args.get(1).map(String::as_str).unwrap_or("tale");
+            let name = if dom == "tale" { "big-tale" } else { "big-real" };
+            let big = world::big::sample(name)?;
+            let home = std::env::var("MOVA_DATA").unwrap_or_else(|_| "data".into());
+            let held = if dom == "tale" { format!("{home}/runs/absurd-rerank/tales-even-b.conllu") } else { format!("{home}/en/ud-mova/ewt-dev-h.conllu") };
+            let base: Vec<_> = world::induce::cold_rules(dom);
+            let t = std::time::Instant::now();
+            for (d, _, removed, gh, p) in world::induce::explore_big(base, &big, dom, std::path::Path::new(&held), &[], 10)? {
+                println!("{removed:>5} absurd removed, held {gh:+}, p {p:.3}  {d}");
+            }
+            eprintln!("explored in {:.0} s", t.elapsed().as_secs_f64());
+        }
+        "stepgame-contrast" => {
+            // stepgame-contrast [train folder] [per k] [--test]
+            let dir = std::path::PathBuf::from(args.get(1).map(String::as_str).unwrap_or("data/raw/stdata-stepgame"));
+            world::stepgame::contrast(&dir, args.get(2).and_then(|x| x.parse().ok()).unwrap_or(500), args.iter().any(|a| a == "--test"))?;
+        }
         "spartqa" => world::spartqa::eval(std::path::Path::new(&args[1]), args.get(2).and_then(|x| x.parse().ok()).unwrap_or(0))?,
+        "spartqa-contrast" => world::spartqa::contrast(std::path::Path::new(&args[1]), std::path::Path::new(&args[2]))?,
+        "gaps" => {
+            // gap journal: gaps <out.jsonl> <book.txt>...
+            let books: Vec<std::path::PathBuf> = args[2..].iter().map(std::path::PathBuf::from).collect();
+            world::babi::gaps(&books, std::path::Path::new(&args[1]))?;
+        }
         "babi-probe" => world::babi::probe(&args[1..])?,
         "read-train" => {
             // training the snake on short questions of all books: read-train <book> <qa> [<book> <qa> …]
@@ -570,7 +1012,7 @@ fn main() -> Result<()> {
                 st.push_str(&format!("{}\t{}\t\t\t\n", r.q.story, r.q.n));
             }
             std::fs::write(dir.join("manual-sample.tsv"), st)?;
-            let mut rep = format!("# FairytaleQA: MMM measured from state ({} tales, {} questions)\n\n", names.len(), rows.len());
+            let mut rep = format!("# FairytaleQA: SLM measured from state ({} tales, {} questions)\n\n", names.len(), rows.len());
             rep.push_str(&world::report::report(&rows));
             let vpath = dir.join("manual-verdicts.tsv");
             if vpath.exists() {

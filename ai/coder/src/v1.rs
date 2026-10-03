@@ -1,4 +1,4 @@
-//! MMM coder v1 — motivated steps (design idea), two modes:
+//! SLM coder v1 — motivated steps (design idea), two modes:
 //! - **fast** — a ready-made tool at the top level: an mlab built-in (`sum`, `sort`, `find`…) or
 //!   a verified program from memory (v0 template);
 //! - **stepwise** — the same subgoals without a ready-made tool: loops, counters, insertion sort.

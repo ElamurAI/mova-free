@@ -1,10 +1,10 @@
 //! Pragmatics features — a fixed set of slots with symbolic values (as in TiMBL), the same for
-//! all MMM models: the perceptron sees them as "slot=value" indicators, IGTree and k-NN as a vector.
+//! all SLM models: the perceptron sees them as "slot=value" indicators, IGTree and k-NN as a vector.
 //!
 //! Utterance: if the sentence contains direct speech, the labels describe it (that is how the LLM annotates), so the words and UD tree
 //! are taken from the quoted text, while the narrator's frame ("said Hans") only yields frame features. Quotes
 //! are tracked across the sentences of a paragraph: speech carried over from the previous sentence is direct too.
-//! Tree — `en::annotate` (MMM model `ud-ewt-eslspok.bin`) on the utterance tokens.
+//! Tree — `en::annotate` (SLM model `ud-ewt-eslspok.bin`) on the utterance tokens.
 
 use std::collections::HashMap;
 

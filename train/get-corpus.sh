@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Download the Mova corpus from research.elamur.ai, check its SHA-256 and unpack it into corpus/.
-# Usage: train/get-corpus.sh [version]     (default 0.2)
+# Usage: train/get-corpus.sh [version]     (default 0.3)
 set -euo pipefail
-v="${1:-0.2}"
+v="${1:-0.3}"
 base="https://research.elamur.ai/download/${v%%.*}/$v"
 root="$(cd "$(dirname "$0")/.." && pwd)"
 tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT

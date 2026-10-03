@@ -1,4 +1,4 @@
-//! v2: the LLM plan language → execution and checking by the MMM. A plan is JSON: steps `{id, op, …}` and an answer.
+//! v2: the LLM plan language → execution and checking by the SLM. A plan is JSON: steps `{id, op, …}` and an answer.
 //! Operations: compute, solve, factor, expand, derive, enumerate, check, claim. Every step yields traces with
 //! checks; the gate passes the answer only when all checks are green, `check` steps are true,
 //! `claim` hypotheses survived enumeration, and the answer type and the chosen option (for tests) match
@@ -92,7 +92,7 @@ impl Trace {
     }
 }
 
-/// What the MMM knows about the problem in advance (plausibility gates).
+/// What the SLM knows about the problem in advance (plausibility gates).
 #[derive(Clone, Debug, Default)]
 pub struct Expect {
     /// the answer must be an integer (a count of items etc.)
@@ -116,14 +116,14 @@ fn range_spec(v: &Value) -> Result<(String, String, String), String> {
     }
 }
 
-/// Run a plan. `lim_secs` is the time limit for the whole plan. A panic inside the MMM is not a crash of the run but
+/// Run a plan. `lim_secs` is the time limit for the whole plan. A panic inside the SLM is not a crash of the run but
 /// a gate failure with a reason.
 pub fn run(plan: &Plan, expect: &Expect, lim_secs: f64) -> Trace {
     match std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| run_inner(plan, expect, lim_secs))) {
         Ok(t) => t,
         Err(e) => {
             let msg = e.downcast_ref::<String>().cloned().or_else(|| e.downcast_ref::<&str>().map(|s| s.to_string())).unwrap_or_default();
-            Trace { steps: Vec::new(), answer: None, approx: false, option: plan.option.clone(), fails: vec![format!("internal MMM error (panic): {msg}")], secs: 0.0, checks_ok: 0, checks_total: 0 }
+            Trace { steps: Vec::new(), answer: None, approx: false, option: plan.option.clone(), fails: vec![format!("internal SLM error (panic): {msg}")], secs: 0.0, checks_ok: 0, checks_total: 0 }
         }
     }
 }
@@ -740,7 +740,7 @@ pub fn run_with_tamper(plan: &Plan, expect: &Expect, tamper_id: &str, fake: &str
     let mut p = plan.clone();
     for st in p.steps.iter_mut() {
         if st.id.as_deref() == Some(tamper_id) {
-            // tampered result: the same id but a false value (as if the MMM «made a mistake»)
+            // tampered result: the same id but a false value (as if the SLM «made a mistake»)
             let orig = st.expr.clone().unwrap_or_default();
             st.op = "tampered".into();
             st.expr = Some(format!("{fake}|{orig}"));

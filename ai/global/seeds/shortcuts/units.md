@@ -2,6 +2,11 @@
 
 **Gist.** "X per Y" is a rate: quantity = rate × number of units; identical units combine only by addition and subtraction (UnitDep, Roy & Roth 2017).
 
+A comparative before "than" says "more" ("18 inches farther than the grasshopper") unless it is a lesser word
+("26 inches lesser than the frog", "4 push-ups less than David").
+
+Money is one quantity whatever it is called: "$ 15", "15 dollars" and "how much money" count the same thing.
+
 **Examples.** "$2 per egg", "60 miles an hour", "3 books each".
 
 **Sources.** Roy & Roth 2017 (AAAI), "Unit Dependency Graph".
@@ -9,6 +14,7 @@
 ```concept
 rate: per each every
 total: total altogether together combined sum
+money: money dollar cent buck
 ```
 
 ```link
@@ -26,6 +32,7 @@ subtract: minus difference
 
 ```concept
 compare: more than fewer less difference
+lesser: fewer less lesser shorter smaller younger lighter lower cheaper
 ```
 
 ```link

@@ -1,5 +1,5 @@
 //! v2, tier 4: formal proofs in Lean 4 + Mathlib. The statement is fixed (from the set), the LLM writes only
-//! the proof body after `:= by`; the MMM assembles the file itself (so the statement cannot be swapped), runs
+//! the proof body after `:= by`; the SLM assembles the file itself (so the statement cannot be swapped), runs
 //! `lake env lean` in the project folder `data/lean/mathproofs` (offline: no `lake update`,
 //! `cache get`) and accepts a proof only when Lean reports no errors and no `sorry`, and the text contains no
 //! `sorry`/`admit`/`axiom`/`native_decide`/`unsafe`. If it fails, Lean's errors go back to the LLM (≤ 2 retries).

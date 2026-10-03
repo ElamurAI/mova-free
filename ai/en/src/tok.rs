@@ -340,6 +340,13 @@ fn push_word(out: &mut Vec<Tok>, w: &str, space_after: bool, lx: &Lexicon) {
             return;
         }
     }
+    // "cannot" is two words in UD (EWT: multiword token can|not); found by the absurdity matrix ("cannot help"
+    // read as a verb "cannot" with an object, 02.10)
+    if lower == "cannot" {
+        out.push(Tok { form: w[..3].to_string(), space_after: false });
+        out.push(Tok { form: w[3..].to_string(), space_after });
+        return;
+    }
     for cl in CLITICS {
         if lower.len() > cl.len() && lower.ends_with(cl) {
             let cut = w.len() - w.chars().rev().take(cl.chars().count()).map(char::len_utf8).sum::<usize>();
@@ -405,6 +412,7 @@ mod tests {
         lx.abbrev.insert("mr.".into());
         lx.abbrev.insert("u.s.".into());
         assert_eq!(forms("Mr. Smith didn't go to the U.S. today.", &lx), ["Mr.", "Smith", "did", "n't", "go", "to", "the", "U.S.", "today", "."]);
+        assert_eq!(forms("I cannot help it. Cannot!", &lx), ["I", "can", "not", "help", "it", ".", "Can", "not", "!"]);
         assert_eq!(forms("It costs $3.50, i.e. 10% more...", &lx), ["It", "costs", "$", "3.50", ",", "i.e", ".", "10", "%", "more", "..."]);
         assert_eq!(forms("John's search-engine (and e-mail) wares?", &lx), ["John", "'s", "search", "-", "engine", "(", "and", "e", "-", "mail", ")", "wares", "?"]);
         lx.hyphen_words.insert("e-mail".into());

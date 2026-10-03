@@ -10,9 +10,12 @@
 //!   prag gate <run dir>
 //!       only the gates over already received raw outputs
 //!   prag eval <run dir> <en model> [--gum en_gum-ud-test.conllu] [--seed 26]
-//!       features, training and measurement of MMM models (perceptron, IGTree, k-NN) against held-out silver,
+//!       features, training and measurement of SLM models (perceptron, IGTree, k-NN) against held-out silver,
 //!       baseline, negative control, model agreement, speed; form vs GUM s_type (measurement only);
-//!       MMM predictions (cross-validated by document) → rust-<model>.tsv for `db prag`
+//!       SLM predictions (cross-validated by document) → rust-<model>.tsv for `db prag`
+//!
+//!   prag lens <en model> <text>
+//!       expressions with their real meanings (idioms, proverbs, phrasal verbs, slang …) and the domains to switch on
 //!
 //! Variables: PRAG_MODEL (claude-opus-5-5), PRAG_EFFORT (medium), DUCKDB (~/bin/duckdb).
 
@@ -82,6 +85,19 @@ fn main() -> Result<()> {
             let dir = Path::new(&pos[0]);
             let items = data::read_items(&dir.join("items.jsonl"))?;
             gate_report(dir, &items)
+        }
+        ("lens", 2) => {
+            // lens <en model> <text>: expressions with their real meanings and the domains to switch on
+            let a = en::annotate::Annotator::load(Path::new(&pos[0]))?;
+            let forms: Vec<String> = a.tokenize(&pos[1]).into_iter().map(|t| t.form).collect();
+            let words = a.annotate(&forms);
+            let l = prag::lens::lens(&words);
+            for r in &l.readings {
+                println!("{:24} {:12} {}{}", r.text, r.kind, r.meaning, if r.register.is_empty() { String::new() } else { format!("  [{}]", r.register) });
+            }
+            println!("domains: {}", if l.domains.is_empty() { "-".to_string() } else { l.domains.join(", ") });
+            println!("means: {}", prag::lens::means(&l));
+            Ok(())
         }
         ("eval", 2) => prag::eval::run(Path::new(&pos[0]), Path::new(&pos[1]), o.get("gum").map(std::path::PathBuf::from).as_deref(), num(&o, "seed", 26)? as u64),
         _ => usage(),

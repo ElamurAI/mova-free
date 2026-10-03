@@ -22,7 +22,12 @@ unknown or restricts the purpose of use.
 | `ai/en/seeds/**`, `ai/global/seeds/**` (except below), `ai/prag/data/cues.tsv`, `ai/math/data/**`, `ai/latex/data/**`, `ai/mlab/data/**` | written for Mova | ours, Apache-2.0 OR MIT |
 | `ai/global/seeds/shortcuts/atomic-*.md` | derived from ATOMIC-2020 (Hwang et al. 2021) | CC BY 4.0 |
 | `ai/global/seeds/wikidata/core.md` | derived from Wikidata | CC0 1.0 |
-| `ai/world/data/**` | questions on Aesop's fables (Project Gutenberg #21) | text public domain; questions ours |
+| `ai/world/data/**` (except below) | questions on Aesop's fables (Project Gutenberg #21) | text public domain; questions ours |
+| `ai/world/data/rules-induced.tsv` | tree-repair rules induced by Mova (`world induce`) | ours, Apache-2.0 OR MIT |
+| `ai/global/data/absurdity-roles.tsv`, `ai/global/data/absurdity-roles-tale.tsv` | the absurdity matrix: plausibility scores rated by a language model for Mova | ours, Apache-2.0 OR MIT |
+| `ai/global/data/register-*.tsv` | register lexicons: log-odds counts over public-domain Project Gutenberg books | ours, Apache-2.0 OR MIT (texts public domain) |
+| `ai/global/data/expressions.tsv` | expressions, meanings, register and variety labels derived from the English Wiktionary (https://en.wiktionary.org) | CC BY-SA 4.0 |
+| `ai/global/data/idioms.tsv` | verbal multiword expressions: Wiktionary, STREUSLE, ConceptNet (CC BY-SA 4.0), MAGPIE and PARSEME 1.3 annotations (CC BY 4.0), WordNet (WordNet license), corpus statistics over public-domain books | CC BY-SA 4.0 |
 | `ai/mlab/tests/data/ext/nist/**` | NIST StRD reference datasets | public domain (U.S. Government work) |
 | `ai/mlab/tests/data/ext/boost/**` | Boost.Math test data | Boost Software License 1.0 (`LICENSE_1_0.txt`) |
 | `ai/*/tests/data/vmm/**`, `ai/coder/prompts/**` | prompts and model outputs produced for Mova | ours, Apache-2.0 OR MIT |

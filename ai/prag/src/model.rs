@@ -1,4 +1,4 @@
-//! MMM models behind the shared `Classifier` interface — they run side by side and are compared on the same
+//! SLM models behind the shared `Classifier` interface — they run side by side and are compared on the same
 //! features (`feats`), the same split and the same table:
 //! - **perceptron** — averaged, "slot=value" indicators; explanation — the features that tipped the balance
 //!   (weight difference between the chosen and the runner-up class);

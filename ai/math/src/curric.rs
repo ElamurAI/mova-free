@@ -181,7 +181,7 @@ pub fn prep(raw: &Path, out: &Path) -> Result<Vec<(u8, usize)>> {
     Ok(counts)
 }
 
-/// Training level 5: a sample of GSM8K train (MIT) — only for the MMM's memory, split `train`, not used in C measurements.
+/// Training level 5: a sample of GSM8K train (MIT) — only for the SLM's memory, split `train`, not used in C measurements.
 /// Raw file — `gsm8k/train.jsonl` (from `train.parquet` via DuckDB).
 pub const TRAIN_LEVEL: u8 = 5;
 
@@ -203,7 +203,7 @@ pub fn prep_train(raw: &Path, out: &Path, n: usize) -> Result<usize> {
     Ok(ps.len())
 }
 
-/// Levels from which the MMM takes memory: curriculum 0–3 and the training one.
+/// Levels from which the SLM takes memory: curriculum 0–3 and the training one.
 pub const MEMORY_LEVELS: [u8; 5] = [0, 1, 2, 3, TRAIN_LEVEL];
 
 pub fn load_level(dir: &Path, level: u8) -> Result<Vec<Problem>> {
@@ -331,7 +331,7 @@ Example:
 {"id":"ex1","method":"arith","steps":[{"id":"eggs_left","op":"compute","expr":"16 - 3 - 4"},{"id":"income","op":"compute","expr":"eggs_left * 2"},{"op":"check","expr":"income / 2 + 3 + 4 == 16","why":"eggs sold + eaten + baked = laid"}],"answer":"income","type":"integer"}
 "#;
 
-/// Configuration B: the LLM writes a plan, the MMM executes and checks it.
+/// Configuration B: the LLM writes a plan, the SLM executes and checks it.
 pub fn prompt_plans(ps: &[Problem], hints: &[(String, String)]) -> String {
     let mut s = String::from(PLAN_SPEC);
     s.push_str("\nProblems:\n\n");

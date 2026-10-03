@@ -1,4 +1,4 @@
-//! MMM coder v0 — templates: nearest memory example (BM25 over lemmas) → adaptation (names, constants, format,
+//! SLM coder v0 — templates: nearest memory example (BM25 over lemmas) → adaptation (names, constants, format,
 //! built-ins of the same type) → a small search over variants with static scoring (no execution).
 
 use serde::{Deserialize, Serialize};

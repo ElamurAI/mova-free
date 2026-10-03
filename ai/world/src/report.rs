@@ -1,4 +1,4 @@
-//! Measurement on FairytaleQA: MMM answers from the state, fallback anchor, baseline, ROUGE-L; slices by question
+//! Measurement on FairytaleQA: SLM answers from the state, fallback anchor, baseline, ROUGE-L; slices by question
 //! type and by explicit/inferred; share of "not in state"; a sample for manual checking and its summary.
 
 use std::collections::BTreeMap;
@@ -13,8 +13,8 @@ use crate::world::World;
 pub struct Row {
     pub q: Qa,
     pub a: Answer,
-    /// ROUGE-L: MMM (not in state → 0), MMM+anchor, baseline
-    pub r_mmm: f64,
+    /// ROUGE-L: SLM (not in state → 0), SLM+anchor, baseline
+    pub r_slm: f64,
     pub r_anchor: f64,
     pub base: String,
     pub r_base: f64,
@@ -24,15 +24,15 @@ pub fn eval_tale(w: &World, qs: &[Qa]) -> Vec<Row> {
     qs.iter()
         .map(|q| {
             let a = answer(w, q);
-            let r_mmm = if a.src == Src::State { rouge_q(&a.text, q) } else { 0.0 };
+            let r_slm = if a.src == Src::State { rouge_q(&a.text, q) } else { 0.0 };
             let fb = match (&a.src, &a.anchor) {
-                (Src::State, _) => r_mmm,
+                (Src::State, _) => r_slm,
                 (Src::None, Some((_, s))) => rouge_q(s, q),
                 (Src::None, None) => 0.0,
             };
             let (_, base) = baseline(w, q);
             let r_base = rouge_q(&base, q);
-            Row { q: q.clone(), a, r_mmm, r_anchor: fb, base, r_base }
+            Row { q: q.clone(), a, r_slm, r_anchor: fb, base, r_base }
         })
         .collect()
 }
@@ -44,13 +44,13 @@ fn cell(s: &str) -> String {
 /// FairytaleQA types in the paper's order.
 pub const ATTRS: &[&str] = &["character", "setting", "action", "feeling", "causal relationship", "outcome resolution", "prediction"];
 
-/// Aggregate: N, ROUGE-L MMM, MMM on answered only, MMM+anchor, baseline, share of "not in state".
+/// Aggregate: N, ROUGE-L SLM, SLM on answered only, SLM+anchor, baseline, share of "not in state".
 #[derive(Default, Clone, Copy)]
 pub struct Agg {
     pub n: usize,
-    pub mmm: f64,
+    pub slm: f64,
     pub answered: usize,
-    pub mmm_answered: f64,
+    pub slm_answered: f64,
     pub anchor: f64,
     pub base: f64,
 }
@@ -58,12 +58,12 @@ pub struct Agg {
 impl Agg {
     pub fn add(&mut self, r: &Row) {
         self.n += 1;
-        self.mmm += r.r_mmm;
+        self.slm += r.r_slm;
         self.anchor += r.r_anchor;
         self.base += r.r_base;
         if r.a.src == Src::State {
             self.answered += 1;
-            self.mmm_answered += r.r_mmm;
+            self.slm_answered += r.r_slm;
         }
     }
 
@@ -73,8 +73,8 @@ impl Agg {
         format!(
             "| {name} | {} | {:.3} | {:.3} | {:.3} | {:.3} | {:.0}% |",
             self.n,
-            self.mmm / n,
-            self.mmm_answered / ans,
+            self.slm / n,
+            self.slm_answered / ans,
             self.anchor / n,
             self.base / n,
             100.0 * (self.n - self.answered) as f64 / n
@@ -82,7 +82,7 @@ impl Agg {
     }
 }
 
-const HEAD: &str = "| slice | N | ROUGE-L MMM | MMM, answered only | MMM + anchor | baseline | not in state |\n|---|---|---|---|---|---|---|\n";
+const HEAD: &str = "| slice | N | ROUGE-L SLM | SLM, answered only | SLM + anchor | baseline | not in state |\n|---|---|---|---|---|---|---|\n";
 
 /// Report: slices and tables.
 pub fn report(rows: &[Row]) -> String {
@@ -117,7 +117,7 @@ pub fn report(rows: &[Row]) -> String {
     for (k, g) in &by_tale {
         let _ = writeln!(o, "{}", g.line(k));
     }
-    o.push_str("\n## By question parse intent (MMM)\n\n");
+    o.push_str("\n## By question parse intent (SLM)\n\n");
     o.push_str(HEAD);
     for (k, g) in &by_intent {
         let _ = writeln!(o, "{}", g.line(k));
@@ -127,7 +127,7 @@ pub fn report(rows: &[Row]) -> String {
 
 /// All answers — TSV (for manual checking and analysis).
 pub fn rows_tsv(rows: &[Row]) -> String {
-    let mut o = String::from("story\tn\tattr\tex\tquestion\tanswer1\tanswer2\tsrc\tmmm\tr_mmm\tanchor\tr_anchor\tbase\tr_base\tframe\tnote\n");
+    let mut o = String::from("story\tn\tattr\tex\tquestion\tanswer1\tanswer2\tsrc\tmmm\tr_slm\tanchor\tr_anchor\tbase\tr_base\tframe\tnote\n");
     for r in rows {
         let _ = writeln!(
             o,
@@ -141,7 +141,7 @@ pub fn rows_tsv(rows: &[Row]) -> String {
             cell(&r.q.a2),
             if r.a.src == Src::State { "state" } else { "none" },
             cell(&r.a.text),
-            r.r_mmm,
+            r.r_slm,
             cell(&r.a.anchor.as_ref().map(|x| format!("^s{} {}", x.0, x.1)).unwrap_or_default()),
             r.r_anchor,
             cell(&r.base),
@@ -155,11 +155,11 @@ pub fn rows_tsv(rows: &[Row]) -> String {
 
 /// A story's answers — md.
 pub fn tale_md(name: &str, rows: &[Row]) -> String {
-    let mut o = format!("# FairytaleQA: {name} — MMM answers from the state\n\n");
-    o.push_str("| # | type | e/i | question | reference | MMM (state) | R | anchor | R | baseline | R |\n|---|---|---|---|---|---|---|---|---|---|---|\n");
+    let mut o = format!("# FairytaleQA: {name} — SLM answers from the state\n\n");
+    o.push_str("| # | type | e/i | question | reference | SLM (state) | R | anchor | R | baseline | R |\n|---|---|---|---|---|---|---|---|---|---|---|\n");
     for r in rows {
         let refs = if r.q.a2.is_empty() { r.q.a1.clone() } else { format!("{} / {}", r.q.a1, r.q.a2) };
-        let mmm = if r.a.src == Src::State { format!("{} ({})", r.a.text, r.a.note) } else { format!("not in state: {}", r.a.note) };
+        let slm = if r.a.src == Src::State { format!("{} ({})", r.a.text, r.a.note) } else { format!("not in state: {}", r.a.note) };
         let anc = if r.a.src == Src::None { r.a.anchor.as_ref().map(|x| format!("^s{} {}", x.0, x.1)).unwrap_or("—".into()) } else { "—".into() };
         let _ = writeln!(
             o,
@@ -169,8 +169,8 @@ pub fn tale_md(name: &str, rows: &[Row]) -> String {
             if r.q.ex == "explicit" { "e" } else { "i" },
             cell(&r.q.question),
             cell(&refs),
-            cell(&mmm),
-            r.r_mmm,
+            cell(&slm),
+            r.r_slm,
             cell(&anc),
             r.r_anchor,
             cell(&r.base),
@@ -203,7 +203,7 @@ pub fn sample<'a>(rows: &'a [Row], k: usize, salt: &str, exclude: &std::collecti
     out
 }
 
-/// Manual verdicts (`story<TAB>n<TAB>mmm<TAB>baseline<TAB>state<TAB>comment`; 1 — correct, 0.5 — partial,
+/// Manual verdicts (`story<TAB>n<TAB>slm<TAB>baseline<TAB>state<TAB>comment`; 1 — correct, 0.5 — partial,
 /// 0 — no; "state" — whether the answer is in the world state at all).
 pub fn read_verdicts(text: &str) -> BTreeMap<(String, usize), (f64, f64, f64, String)> {
     let mut m = BTreeMap::new();
@@ -221,9 +221,9 @@ pub fn read_verdicts(text: &str) -> BTreeMap<(String, usize), (f64, f64, f64, St
     m
 }
 
-/// Accuracy on the sample by type: MMM (not in state — 0) and baseline.
+/// Accuracy on the sample by type: SLM (not in state — 0) and baseline.
 pub fn manual_md(rows: &[&Row], v: &BTreeMap<(String, usize), (f64, f64, f64, String)>) -> String {
-    let mut o = String::from("| type | N | MMM accuracy | of them not in state | answer is in state | baseline accuracy |\n|---|---|---|---|---|---|\n");
+    let mut o = String::from("| type | N | SLM accuracy | of them not in state | answer is in state | baseline accuracy |\n|---|---|---|---|---|---|\n");
     let mut tot = (0usize, 0.0, 0usize, 0.0, 0.0);
     for a in ATTRS {
         let mut n = 0;

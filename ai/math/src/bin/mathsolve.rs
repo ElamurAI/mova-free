@@ -1,9 +1,9 @@
-//! math v2 — curriculum-based solver: the LLM writes a plan, the MMM executes and verifies it.
+//! math v2 — curriculum-based solver: the LLM writes a plan, the SLM executes and verifies it.
 //!   mathsolve prep                         — level sets from raw files (data/raw/mathsolve)
 //!   mathsolve prep-train [N]                — training level 5: N GSM8K train problems (default 1000)
 //!   mathsolve arith [--train N] [--epochs E] [--leaves L] [--beam B] — v3: subproblem trees on GSM8K (no LLM)
 //!   mathsolve run <level> <A|B> [--split dev|held|all] [--limit N] [--batch K] [--par P] [--reserve $]
-//!   mathsolve c <level>                    — configuration C (MMM alone) on the held-out split
+//!   mathsolve c <level>                    — configuration C (SLM alone) on the held-out split
 //!   mathsolve memory                       — memory of verified solutions (JSONL) → DuckDB
 //!   mathsolve report                       — table: level × configuration
 //!   mathsolve plan <file.json>             — execute a plan locally, show the trace
@@ -55,31 +55,61 @@ fn main() -> Result<()> {
         }
         "qread-text" => {
             let ann = en::annotate::Annotator::load(std::path::Path::new(math::understand::MODEL))?;
-            let (v, w) = math::qread::answer_text(&ann, &args[1..].join(" "));
-            println!("{v:?} unread {:?}\n{}", w.unread, w.log.join("\n"));
+            let text = args[1..].join(" ");
+            if std::env::var("QREAD_TREE").is_ok() {
+                print!("{}", math::qread::trees(&ann, &text));
+            }
+            let (v, w) = math::qread::answer_text(&ann, &text);
+            println!("{v:?} unread {:?} gate {:?}\n{}", w.unread, math::qread::abstain(&w, v), w.log.join("\n"));
         }
         "qread" => {
-            // world v2: qread [svamp|svamp-train] [show N] — coverage and accuracy when the world answers
+            // world v2: qread [svamp|svamp-train|asdiv|mawps-<file>] [show N] — coverage and accuracy when the world answers
+            // (ASDiv validation and MAWPS files: an outside check of precision, not for development)
             let set = args.get(1).cloned().unwrap_or_else(|| "svamp".into());
             let show: usize = args.get(2).and_then(|x| x.parse().ok()).unwrap_or(0);
-            let f = if set == "svamp-train" { "mwpdata-svamp/svamp-train.json" } else { "mwpdata-svamp/svamp-test.json" };
+            let raw = home().join("raw");
+            let read_json = |f: &str| -> Result<Vec<serde_json::Value>> { Ok(serde_json::from_str(&std::fs::read_to_string(raw.join(f))?)?) };
+            let lead_num = |v: &serde_json::Value| -> f64 {
+                v.as_f64().or_else(|| v.as_str().and_then(|s| s.split_whitespace().next()).and_then(|s| s.parse().ok())).unwrap_or(f64::NAN)
+            };
+            let d: Vec<serde_json::Value> = if set == "asdiv" {
+                read_json("mwpdata-asdiv/asdiv-validation.json")?.iter().map(|x| serde_json::json!({"Body": x["body"], "Question": x["question"], "Answer": lead_num(&x["answer"]), "Equation": x["formula"]})).collect()
+            } else if let Some(f) = set.strip_prefix("mawps-") {
+                read_json(&format!("mwpdata-mawps/{f}.json"))?.iter().map(|x| serde_json::json!({"Text": x["sQuestion"], "Answer": lead_num(&x["lSolutions"][0]), "Equation": x["lEquations"][0]})).collect()
+            } else {
+                read_json(if set == "svamp-train" { "mwpdata-svamp/svamp-train.json" } else { "mwpdata-svamp/svamp-test.json" })?
+            };
             let ann = en::annotate::Annotator::load(std::path::Path::new(math::understand::MODEL))?;
-            let d: Vec<serde_json::Value> = serde_json::from_str(&std::fs::read_to_string(home().join("raw").join(f))?)?;
             let (mut ans, mut ok, mut shown) = (0, 0, 0);
             let mut dump = String::new();
+            // QREAD_ABSTAIN=<reason|all>: show abstentions instead of errors
+            let show_abst_s = std::env::var("QREAD_ABSTAIN").ok();
+            let show_abst = show_abst_s.as_deref();
+            let mut reasons: std::collections::BTreeMap<&str, usize> = Default::default();
             for (i, x) in d.iter().enumerate() {
                 let body = x["Body"].as_str().unwrap_or("");
                 let q = x["Question"].as_str().unwrap_or("");
                 let g = x["Answer"].as_f64().unwrap_or(f64::NAN);
-                let (v, w) = math::qread::answer(&ann, body, q);
+                let (v, w) = match x["Text"].as_str() {
+                    Some(t) => math::qread::answer_text(&ann, t),
+                    None => math::qread::answer(&ann, body, q),
+                };
                 // strict gate: the world has read every number
-                let v = if std::env::var("QREAD_STRICT").is_ok() && !w.unread.is_empty() { None } else { v };
+                let why = math::qread::abstain(&w, v);
+                *reasons.entry(why.unwrap_or("answered")).or_insert(0usize) += 1;
+                if why.is_some() && show_abst.is_some_and(|r| why == Some(r) || r == "all") && shown < show {
+                    shown += 1;
+                    println!("? {body} {q}\n  ({}, gold {g}, {})\n  {}", why.unwrap_or(""), x["Equation"].as_str().unwrap_or(""), w.log.join(" | "));
+                }
+                let v = if std::env::var("QREAD_STRICT").is_ok() && why.is_some() { None } else { v };
                 if let Some(v) = v {
                     ans += 1;
                     let good = (v - g).abs() < 1e-6;
                     ok += usize::from(good);
-                    dump.push_str(&format!("{i}\t{}\t{v}\n", u8::from(good)));
-                    if !good && shown < show {
+                    // the query path that answered (the log entry before «answer:»)
+                    let path = w.log.iter().rev().nth(1).map(|l| l.split([':', ' ']).take(3).collect::<Vec<_>>().join(" ")).unwrap_or_default();
+                    dump.push_str(&format!("{i}\t{}\t{v}\t{path}\n", u8::from(good)));
+                    if !good && shown < show && show_abst.is_none() {
                         shown += 1;
                         println!("✗ {body} {q}\n  → {v} (gold {g}, {})\n  {}", x["Equation"].as_str().unwrap_or(""), w.log.join(" | "));
                     }
@@ -88,6 +118,7 @@ fn main() -> Result<()> {
             if let Ok(p) = std::env::var("QREAD_DUMP") {
                 std::fs::write(p, dump)?;
             }
+            println!("gate: {reasons:?}");
             println!("{set}: the world answered {ans}/{}, of them correct {ok} ({:.1}%)", d.len(), 100.0 * ok as f64 / ans.max(1) as f64);
         }
         "steps" => {
@@ -259,7 +290,7 @@ fn main() -> Result<()> {
                     if pick.is_some_and(|i| (cs[i].2 - g).abs() < 1e-6) { acc += 1; }
                 }
                 let n = test.len();
-                println!("{set} test: MMM alone (DAG) correct {acc}/{n} ({:.1}%); first {top1}; correct in top-{} {intop}; {:.1} s", 100.0 * acc as f64 / n as f64, rk.max(1), t0.elapsed().as_secs_f64());
+                println!("{set} test: SLM alone (DAG) correct {acc}/{n} ({:.1}%); first {top1}; correct in top-{} {intop}; {:.1} s", 100.0 * acc as f64 / n as f64, rk.max(1), t0.elapsed().as_secs_f64());
                 return Ok(());
             }
             // sentence principles from world scripts (world::quant): a classifier, cross-validated on training
@@ -317,7 +348,7 @@ fn main() -> Result<()> {
             let use_qread = args.iter().any(|a| a == "--qread");
             let qread_of = |text: &str| -> Option<(f64, String)> {
                 let (v, w) = math::qread::answer_text(&ann, text);
-                if !w.unread.is_empty() { return None; }
+                if math::qread::abstain(&w, v).is_some() { return None; }
                 v.map(|v| (v, format!("qread:{}", math::qread::kind(&w))))
             };
             if use_qread {
@@ -686,7 +717,7 @@ fn main() -> Result<()> {
             }
             let n = rows.len();
             let acc = rows.iter().filter(|r| r.0).count();
-            println!("{set} test: MMM alone (v4) correct {acc}/{n} ({:.1}%)", 100.0 * acc as f64 / n as f64);
+            println!("{set} test: SLM alone (v4) correct {acc}/{n} ({:.1}%)", 100.0 * acc as f64 / n as f64);
             if rk > 0 { println!("  top-{rk}: correct among them {in_topk}, first without reranking {top1_base}"); }
             if !selfs.is_empty() {
                 // humility as routing: below the threshold — I do not answer, I call the LLM
@@ -743,7 +774,7 @@ fn main() -> Result<()> {
                     }
                     println!("  LLM hints: {} cases, hinted branch correct in {helped}; spent ${:.2} (equiv.)", hint_cases.len(), v.spent());
                 }
-                println!("  who I am (level 1): {}", global::self_describe("mmm").join(" → "));
+                println!("  who I am (level 1): {}", global::self_describe("slm").join(" → "));
                 println!("  trigger debug — module \"judge\": {}", global::self_describe("module_judge").first().copied().unwrap_or(""));
                 println!("                  module \"second opinion\": {}", global::self_describe("module_second_opinion").first().copied().unwrap_or(""));
                 for (k, n) in &trig { println!("    {k}: {n}"); }
@@ -835,11 +866,11 @@ fn main() -> Result<()> {
             }
             let n = rows.len();
             let acc = rows.iter().filter(|r| r.0).count();
-            println!("GSM8K test: MMM alone correct {acc}/{n} ({:.1}%); a tree exists for {cover_t} ({:.1}%)", 100.0 * acc as f64 / n as f64, 100.0 * cover_t as f64 / n as f64);
+            println!("GSM8K test: SLM alone correct {acc}/{n} ({:.1}%); a tree exists for {cover_t} ({:.1}%)", 100.0 * acc as f64 / n as f64, 100.0 * cover_t as f64 / n as f64);
             for (sz, (ok, n)) in &by_size {
                 println!("  smallest tree {} leaves: {ok}/{n} ({:.1}%)", if *sz == 99 { "none ≤L".to_string() } else { sz.to_string() }, 100.0 * *ok as f64 / (*n).max(1) as f64);
             }
-            // accuracy versus coverage by margin: the MMM answers only when confident, the rest goes to the LLM
+            // accuracy versus coverage by margin: the SLM answers only when confident, the rest goes to the LLM
             rows.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
             for frac in [0.1, 0.2, 0.3, 0.5, 1.0] {
                 let k = ((n as f64) * frac) as usize;
@@ -900,10 +931,10 @@ fn main() -> Result<()> {
             std::fs::write(&cpath, text)?;
             let refs: Vec<&Record> = recs.iter().collect();
             let s = solve::summarize(&refs);
-            let agree = recs.iter().filter(|r| r.mmm_method.is_some() && b.get(&r.id).is_some_and(|br| Some(&br.method) == r.mmm_method.as_ref())).count();
-            println!("C, level {level}: memory {} solutions; held-out {}; MMM alone {} (correct {}); perceptron method = LLM method in {agree}; correct overall {}", memos.len(), s.n, s.by_mmm, s.by_mmm_correct, s.correct);
-            for r in recs.iter().filter(|r| r.by_mmm) {
-                println!("  {} — method {} (margin {:.2}; features {}), template from {}, answer {} {}", r.id, r.method, r.mmm_margin.unwrap_or(0.0), r.mmm_why.iter().map(|(f, w)| format!("{f}:{w:.2}")).collect::<Vec<_>>().join(" "), r.mmm_template_from.clone().unwrap_or_default(), r.answer.clone().unwrap_or_default(), if r.correct { "✓" } else { "✗" });
+            let agree = recs.iter().filter(|r| r.slm_method.is_some() && b.get(&r.id).is_some_and(|br| Some(&br.method) == r.slm_method.as_ref())).count();
+            println!("C, level {level}: memory {} solutions; held-out {}; SLM alone {} (correct {}); perceptron method = LLM method in {agree}; correct overall {}", memos.len(), s.n, s.by_slm, s.by_slm_correct, s.correct);
+            for r in recs.iter().filter(|r| r.by_slm) {
+                println!("  {} — method {} (margin {:.2}; features {}), template from {}, answer {} {}", r.id, r.method, r.slm_margin.unwrap_or(0.0), r.slm_why.iter().map(|(f, w)| format!("{f}:{w:.2}")).collect::<Vec<_>>().join(" "), r.slm_template_from.clone().unwrap_or_default(), r.answer.clone().unwrap_or_default(), if r.correct { "✓" } else { "✗" });
             }
         }
         "memory" => {
@@ -926,7 +957,7 @@ fn main() -> Result<()> {
             let db = home().join("db/mathsolve.duckdb");
             let sql = format!(
                 "CREATE OR REPLACE TABLE solutions AS SELECT id, level, split, source, method, answer, correct, checks_ok, checks_total, template IS NOT NULL AS has_template, question, feats, plan FROM read_json_auto('{}', maximum_object_size=67108864);\
-                 CREATE OR REPLACE TABLE records AS SELECT id, level, split, config, answer, option, verified, correct, rounds, method, cost_usd, input_tokens, output_tokens, secs, by_mmm, mmm_method, mmm_margin, error FROM read_json_auto(['{}', '{}'], maximum_object_size=67108864, union_by_name=true);\
+                 CREATE OR REPLACE TABLE records AS SELECT id, level, split, config, answer, option, verified, correct, rounds, method, cost_usd, input_tokens, output_tokens, secs, by_slm, slm_method, slm_margin, error FROM read_json_auto(['{}', '{}'], maximum_object_size=67108864, union_by_name=true);\
                  CREATE OR REPLACE TABLE calls AS SELECT * FROM read_json_auto('{}');\
                  SELECT (SELECT count(*) FROM solutions) AS solutions, (SELECT count(*) FROM records) AS records, (SELECT count(*) FROM calls) AS calls;",
                 mpath.display(), records.display(), dir.join("records-c.jsonl").display(), calls.display()
@@ -937,7 +968,7 @@ fn main() -> Result<()> {
         "report" => {
             let mut all = solve::load_records(&records);
             all.extend(solve::load_records(&dir.join("records-c.jsonl")));
-            println!("| level | split | configuration | problems | correct | % | verified | MMM alone (correct) | $ | $/problem | output tokens | s |");
+            println!("| level | split | configuration | problems | correct | % | verified | SLM alone (correct) | $ | $/problem | output tokens | s |");
             println!("|---|---|---|---|---|---|---|---|---|---|---|---|");
             for level in 0..=4u8 {
                 for split in ["dev", "held"] {
@@ -947,7 +978,7 @@ fn main() -> Result<()> {
                             continue;
                         }
                         let s = solve::summarize(&rs);
-                        println!("| {level} | {split} | {config} | {} | {} | {:.1} | {} | {} ({}) | {:.2} | {:.4} | {} | {:.0} |", s.n, s.correct, 100.0 * s.correct as f64 / s.n as f64, s.verified, s.by_mmm, s.by_mmm_correct, s.cost, s.cost / s.n as f64, s.out_tok, s.secs);
+                        println!("| {level} | {split} | {config} | {} | {} | {:.1} | {} | {} ({}) | {:.2} | {:.4} | {} | {:.0} |", s.n, s.correct, 100.0 * s.correct as f64 / s.n as f64, s.verified, s.by_slm, s.by_slm_correct, s.cost, s.cost / s.n as f64, s.out_tok, s.secs);
                     }
                 }
             }

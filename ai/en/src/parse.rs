@@ -611,6 +611,10 @@ impl Parser {
     /// Beam step: each hypothesis × each allowed action, the best `beam` remain. `gold` is the
     /// gold-path action at this step (during training): the gold hypothesis takes the gold label.
     fn step(&self, sent: &Sent, beam: &[Item], gold: Option<(Act, Rel)>) -> Vec<Item> {
+        self.step_w(sent, beam, gold, self.beam)
+    }
+
+    fn step_w(&self, sent: &Sent, beam: &[Item], gold: Option<(Act, Rel)>, width: usize) -> Vec<Item> {
         let mut cand: Vec<(f32, usize, Act)> = Vec::with_capacity(beam.len() * 3);
         for (bi, it) in beam.iter().enumerate() {
             if it.c.terminal() {
@@ -626,7 +630,7 @@ impl Parser {
         // on ties the gold hypothesis ranks lower (so a tie does not hide an error)
         let is_gold = |bi: usize, a: Act| beam[bi].gold && gold.is_some_and(|(ga, _)| ga == a);
         cand.sort_by(|x, y| y.0.total_cmp(&x.0).then(is_gold(x.1, x.2).cmp(&is_gold(y.1, y.2))));
-        cand.truncate(self.beam.max(1));
+        cand.truncate(width.max(1));
         cand.into_iter()
             .map(|(score, bi, a)| {
                 let src = &beam[bi];
@@ -703,6 +707,29 @@ impl Parser {
             c.apply(a, l);
         }
         ((1..=words.len()).map(|i| (c.head[i].unwrap_or(0), c.label[i])).collect(), steps)
+    }
+
+    /// The `k` best distinct trees of a beam of width `k` (best first) with their path scores — candidates for
+    /// reranking with knowledge the parser does not have (e.g. the absurdity matrix).
+    pub fn parse_kbest(&self, words: &[&str], tags: &[Tag], k: usize) -> Vec<(f32, Vec<(usize, Rel)>)> {
+        let n = words.len();
+        let sent = self.sent(words, tags, None);
+        let mut beam = vec![Item { c: Config::new(n), score: 0.0, path: Vec::new(), gold: false }];
+        while beam.iter().any(|it| !it.c.terminal()) {
+            let next = self.step_w(&sent, &beam, None, k);
+            if next.is_empty() {
+                break;
+            }
+            beam = next;
+        }
+        let mut out: Vec<(f32, Vec<(usize, Rel)>)> = Vec::new();
+        for it in beam {
+            let t: Vec<(usize, Rel)> = (1..=n).map(|i| (it.c.head[i].unwrap_or(0), it.c.label[i])).collect();
+            if !out.iter().any(|(_, o)| *o == t) {
+                out.push((it.score, t));
+            }
+        }
+        out
     }
 
     /// Path (action, label) of the best beam hypothesis.

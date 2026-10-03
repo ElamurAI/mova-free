@@ -179,6 +179,8 @@ pub struct Story {
     last_subj: Vec<String>,
     /// names that were capitalized in the story (in questions they may be lowercase)
     names: BTreeSet<String>,
+    /// who «I» is: set by «I am Mova» or «My name is Mova»; «I» in later sentences means this name
+    me: Option<String>,
 }
 
 fn pronoun(l: &str) -> bool {
@@ -211,11 +213,26 @@ impl Story {
         }
         let g: Vec<usize> = g;
         let v: Vec<String> = g.into_iter().map(|k| if self.names.contains(&s.w[k].form.to_lowercase()) { s.w[k].form.to_lowercase() } else { s.np(k) }).collect();
+        // «I» is the speaker: once I know my name, «I» is that name
+        let v: Vec<String> = v.into_iter().map(|x| if (x == "i" || x == "me") && self.me.is_some() { self.me.clone().unwrap() } else { x }).collect();
         self.last_subj = v.clone();
         v
     }
 
     /// Rename an entity throughout the world (fixing a name spoiled by lemmatization).
+    /// Give the speaker its name (once; a name never changes). Returns false if a different name is already set.
+    pub fn set_me(&mut self, name: &str) -> bool {
+        let n = name.to_lowercase();
+        match &self.me {
+            Some(m) => *m == n,
+            None => {
+                self.names.insert(n.clone());
+                self.me = Some(n);
+                true
+            }
+        }
+    }
+
     fn rename(&mut self, from: &str, to: &str) {
         let f = |x: &mut String| {
             if x == from {
@@ -458,6 +475,26 @@ impl Story {
                     }
                 }
             }
+            // «I am Mova», «My name is Mova»: who I am — set once, a name never changes; facts told about «i» so far
+            // move to the name. Only a short identity sentence counts (rule lines like «… it is obj …» do not).
+            UPos::PROPN if s.w.len() <= 6 && (subj.iter().any(|a| a == "i") || (subj.iter().any(|a| a == "name") && s.w.iter().any(|w| w.lemma.eq_ignore_ascii_case("my")))) => {
+                let name = s.w[r].form.to_lowercase();
+                self.names.insert(name.clone());
+                if let Some(m) = &self.me {
+                    if *m != name {
+                        return Ok(Some(format!("my name is {m}; a name does not change")));
+                    }
+                }
+                if self.me.is_none() {
+                    if self.entities().contains("i") {
+                        self.rename("i", &name);
+                    }
+                    if let Some(c) = self.isa.remove("i") {
+                        self.isa.insert(name.clone(), c);
+                    }
+                    self.me = Some(name);
+                }
+            }
             _ => return Ok(Some(format!("copula with «{}» ({:?})", s.lem(r), s.w[r].upos))),
         }
         Ok(None)
@@ -619,6 +656,42 @@ impl Story {
 
     /// Answer to a question with an explanation; «?» is a gap.
     pub fn ask(&self, q: &str) -> Result<(String, String)> {
+        // questions about the speaker or the listener: «Who are you?», «What am I?», «Where are you?» — «you» asked
+        // of me and «I» said by me are the same self
+        let words: Vec<String> = q.split_whitespace().map(|w| w.trim_matches(|c: char| !c.is_alphanumeric()).to_lowercase()).filter(|w| !w.is_empty()).collect();
+        let selfref = |w: &str| matches!(w, "you" | "i");
+        if words.len() == 3 && matches!(words[1].as_str(), "are" | "am") && selfref(&words[2]) {
+            return match (words[0].as_str(), &self.me) {
+                ("who", Some(m)) => Ok((m.clone(), format!("I am {m}{}", self.isa.get(m).map(|c| format!(", a {c}")).unwrap_or_default()))),
+                ("what", Some(m)) => match self.isa.get(m) {
+                    Some(c) => Ok((c.clone(), format!("{m} is a {c}"))),
+                    None => Ok(("?".into(), format!("I am {m}, but nobody told me what {m} is"))),
+                },
+                ("what", None) => match self.isa.get("i") {
+                    Some(c) => Ok((c.clone(), format!("I am a {c}"))),
+                    None => Ok(("?".into(), "nobody told me who I am".into())),
+                },
+                ("who", None) => Ok(("?".into(), "nobody told me who I am".into())),
+                (_, Some(m)) => {
+                    let q2 = format!("{} is {}?", words[0], m);
+                    self.ask(&q2)
+                }
+                _ => Ok(("?".into(), "nobody told me who I am".into())),
+            };
+        }
+        // «Where are you going / What do you carry» and the like: «you» → my name
+        if let Some(m) = &self.me {
+            if words.iter().any(|w| w == "you" || w == "i") {
+                let q2: Vec<String> = q.split_whitespace().map(|w| {
+                    let c = w.trim_matches(|c: char| !c.is_alphanumeric()).to_lowercase();
+                    if c == "you" || c == "i" { w.to_lowercase().replace(&c, m) } else if c == "are" || c == "am" { w.replace(&c, "is") } else { w.to_string() }
+                }).collect();
+                let q2 = q2.join(" ");
+                if q2 != q {
+                    return self.ask(&q2);
+                }
+            }
+        }
         // story names in a question may be lowercase — restore the case so the tree is correct
         let recased: Vec<String> = q
             .split_whitespace()
@@ -880,6 +953,110 @@ pub fn eval_file(path: &Path, show: usize) -> Result<(usize, usize, Vec<String>)
 
 /// All 20 tasks (test) in the `en/` folder.
 /// Debugging: trees and answers for story lines (questions — with «?»).
+/// Gap journal: read whole books paragraph by paragraph into the story world and collect everything the
+/// reader could not understand (verb without a class at level 1, copula it cannot parse, direct speech,
+/// errors), with counts, the number of books and examples. Writes `<out>` as JSON lines, most frequent first.
+pub fn gaps(books: &[std::path::PathBuf], out: &Path) -> Result<()> {
+    // first «…» in a reason is its item; the reason with items blanked is its kind
+    let split_reason = |why: &str| -> (String, String) {
+        let mut kind = String::new();
+        let mut item = String::new();
+        let mut rest = why;
+        while let Some(a) = rest.find('\u{ab}') {
+            kind.push_str(&rest[..a]);
+            let after = &rest[a + '\u{ab}'.len_utf8()..];
+            let Some(b) = after.find('\u{bb}') else { break };
+            if item.is_empty() {
+                item = after[..b].to_string();
+            }
+            kind.push_str("\u{ab}\u{2026}\u{bb}");
+            rest = &after[b + '\u{bb}'.len_utf8()..];
+        }
+        kind.push_str(rest);
+        (kind.split(':').next().unwrap_or("").trim().to_string(), item)
+    };
+    // kind|item → (count, books, examples)
+    let mut acc: BTreeMap<(String, String), (usize, BTreeSet<String>, Vec<String>)> = BTreeMap::new();
+    let (mut read_ok, mut total) = (0usize, 0usize);
+    for b in books {
+        let name = b.file_stem().map(|x| x.to_string_lossy().to_string()).unwrap_or_default();
+        let Ok(t) = std::fs::read_to_string(b) else { continue };
+        let start = t.find("*** START OF").and_then(|i| t[i..].find('\n').map(|j| i + j + 1)).unwrap_or(0);
+        let end = t.find("*** END OF").unwrap_or(t.len());
+        // CRLF texts: normalise, or a whole book is one paragraph (found by the tree store, 02.10)
+        let body = t[start..end.max(start)].replace("\r\n", "\n");
+        for para in body.split("\n\n") {
+            let para = para.split_whitespace().collect::<Vec<_>>().join(" ");
+            if para.len() < 20 || para.chars().filter(|c| c.is_uppercase()).count() * 2 > para.len() {
+                continue;
+            }
+            let mut st = Story::default();
+            for sent in split_sentences(&para) {
+                let words = sent.split_whitespace().count();
+                if !(3..=45).contains(&words) {
+                    continue;
+                }
+                total += 1;
+                let mut note = |kind: &str, item: &str| {
+                    let e = acc.entry((kind.to_string(), item.to_string())).or_default();
+                    e.0 += 1;
+                    e.1.insert(name.clone());
+                    if e.2.len() < 3 {
+                        e.2.push(sent.chars().take(160).collect());
+                    }
+                };
+                if sent.contains(['"', '\u{201c}', '\u{201d}']) || sent.contains("\u{2018}") && sent.contains("\u{2019} ") {
+                    note("direct speech (not modeled)", "");
+                    continue;
+                }
+                if sent.trim_end().ends_with('?') {
+                    note("question in narration", "");
+                    continue;
+                }
+                match st.read(&sent) {
+                    Ok(None) => read_ok += 1,
+                    Ok(Some(why)) => {
+                        let (kind, item) = split_reason(&why);
+                        note(&kind, &item);
+                    }
+                    Err(e) => note("error", &format!("{e}").chars().take(60).collect::<String>()),
+                }
+            }
+        }
+    }
+    let mut rows: Vec<_> = acc.into_iter().collect();
+    rows.sort_by(|a, b| b.1.0.cmp(&a.1.0).then(a.0.cmp(&b.0)));
+    let mut w = String::new();
+    for ((kind, item), (n, bk, ex)) in &rows {
+        let j = serde_json::json!({"kind": kind, "item": item, "count": n, "books": bk.len(), "examples": ex});
+        w.push_str(&j.to_string());
+        w.push('\n');
+    }
+    std::fs::write(out, w)?;
+    println!("sentences {total}, read fully {read_ok} ({:.1}%), gap kinds {}", 100.0 * read_ok as f64 / total.max(1) as f64, rows.len());
+    for ((kind, item), (n, bk, _)) in rows.iter().take(40) {
+        println!("{n:>7} {:>4} books  {kind}{}", bk.len(), if item.is_empty() { String::new() } else { format!(": {item}") });
+    }
+    Ok(())
+}
+
+/// Sentence split on . ! ? followed by space and an upper-case letter or a quote.
+pub fn split_sentences(t: &str) -> Vec<String> {
+    let mut out = Vec::new();
+    let mut cur = String::new();
+    let cs: Vec<char> = t.chars().collect();
+    for i in 0..cs.len() {
+        cur.push(cs[i]);
+        if matches!(cs[i], '.' | '!' | '?') && cs.get(i + 1) == Some(&' ') && cs.get(i + 2).is_some_and(|c| c.is_uppercase() || matches!(c, '"' | '\u{201c}' | '\u{2018}')) {
+            out.push(std::mem::take(&mut cur).trim().to_string());
+        }
+    }
+    if !cur.trim().is_empty() {
+        out.push(cur.trim().to_string());
+    }
+    out
+}
+
 pub fn probe(lines: &[String]) -> Result<()> {
     let mut st = Story::default();
     for l in lines {

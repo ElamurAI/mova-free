@@ -54,7 +54,7 @@ pub fn read_questions(text: &str) -> Result<Vec<Question>, String> {
     Ok(out)
 }
 
-/// MMM answer: text with anchors or "not in state" with a reason.
+/// SLM answer: text with anchors or "not in state" with a reason.
 #[derive(Clone, Debug)]
 pub struct Answer {
     pub text: String,
@@ -488,8 +488,8 @@ pub const CONTROL: &str = "control";
 /// Answers to a document's questions: md table, separately — the honesty control.
 pub fn answers_md(w: &World, qs: &[Question]) -> (String, Score) {
     let mut o = format!("# Answers from the state: {} (doc {})\n\n", w.text.title, w.text.doc);
-    o.push_str("The MMM answers from the world state and history, without the LLM. The query is a pre-formalized question.\n\n");
-    o.push_str("| # | type | question | query | MMM answer | expected | verdict |\n|---|---|---|---|---|---|---|\n");
+    o.push_str("The SLM answers from the world state and history, without the LLM. The query is a pre-formalized question.\n\n");
+    o.push_str("| # | type | question | query | SLM answer | expected | verdict |\n|---|---|---|---|---|---|---|\n");
     let mut n = Score::default();
     let cell = |s: &str| s.replace('|', "\\|");
     let mut ctrl = String::new();
@@ -513,7 +513,7 @@ pub fn answers_md(w: &World, qs: &[Question]) -> (String, Score) {
     let _ = writeln!(o, "\nHit {}, miss {}, not in state {} (of {}).", n.hit, n.miss, n.none, n.hit + n.miss + n.none);
     if n.ctrl > 0 {
         o.push_str("\n## Honesty control\n\nQuestions whose answers are not in the state by construction (added after the run as a negative control of the answerer): correct is \"not in state\", not a made-up answer.\n\n");
-        o.push_str("| # | question | query | MMM answer | result |\n|---|---|---|---|---|\n");
+        o.push_str("| # | question | query | SLM answer | result |\n|---|---|---|---|---|\n");
         o.push_str(&ctrl);
         let _ = writeln!(o, "\nHonest {} of {}.",
  n.ctrl_ok, n.ctrl);

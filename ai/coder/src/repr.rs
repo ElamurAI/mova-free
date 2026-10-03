@@ -1,4 +1,4 @@
-//! Two code representations (design note: "directly — the MMM sees the code as text…; and as a representation of the parsed AST structure"):
+//! Two code representations (design note: "directly — the SLM sees the code as text…; and as a representation of the parsed AST structure"):
 //! 1. **text** — mlab lexer tokens and token n-grams (variable names → VAR, numbers → NUM, strings → STR,
 //!    built-ins — by their own name); robust to invalid code (if the lexer fails — split by character classes);
 //! 2. **AST** — nodes, "parent > child" edges, paths from the statement root (length 3), paths between leaves

@@ -816,7 +816,7 @@ pub fn eval_feel(valid: &std::path::Path, test: &std::path::Path) -> Result<()> 
 //
 // Design note: when training on fairy tales and books, Opus medium can create lots of simple questions for each
 // paragraph, and across many paragraphs; the answer must be very short — then checking the answer won't need
-// Opus for training and validating the MMM. Wide input (a batch of paragraphs), dense output (lines with an answer ≤ 3 words).
+// Opus for training and validating the SLM. Wide input (a batch of paragraphs), dense output (lines with an answer ≤ 3 words).
 // Gate without the LLM: the answer is ≤ 3 words and appears verbatim in the paragraph text (for multi-paragraph ones — in the batch text).
 
 pub fn qgen(book_dir: &std::path::Path, out: &std::path::Path, stories: usize, per_call: usize) -> Result<()> {

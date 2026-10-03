@@ -14,6 +14,11 @@ machine-readable blocks it defines.
 | [en-seeds-verbal.md](en-seeds-verbal.md) | `ai/en/seeds/verbal` | verbs and clauses: auxiliaries, objects, complements |
 | [en-seeds-errors.md](en-seeds-errors.md) | `ai/en/seeds/errors` | typical annotation errors and the rules that catch them |
 | [dialect-mova.md](dialect-mova.md) | `ai/dialects/mova` | Mova's dialect of Universal Dependencies and the converters to and from it |
+| [absurdity.md](absurdity.md) | `ai/global/data`, `ai/world` | the absurdity matrix: plausibility of events, debug and working modes, repairs |
+| [induce.md](induce.md) | `ai/world` | tree-repair rules the model induces itself; knowledge ablation; hidden rules coming back |
+| [selfplay.md](selfplay.md) | `ai/world` | self-modification experiments, the experiment journal, tuning any component |
+| [derive.md](derive.md) | `ai/world` | dependency trees by logical derivation |
+| [pragmatics-expressions.md](pragmatics-expressions.md) | `ai/global/data`, `ai/prag`, `ai/world` | expressions with real meanings, register and variety labels, domain modules |
 
 Grammar seeds in `ai/en/seeds` carry ```` ```rule ```` blocks that the rule
 engine `en::expert` loads at run time (`en expert-check`); a test gate checks

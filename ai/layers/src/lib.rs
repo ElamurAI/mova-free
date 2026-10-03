@@ -1,4 +1,4 @@
-//! Three levels of MMM (small language model) logic (`train/README.md`):
+//! Three levels of SLM (small language model) logic (`train/README.md`):
 //! 1. **Global** — principles and values, the exact core (mathematics; later physics, chemistry), world structure,
 //!    shortcuts and links. Compiled, always on.
 //! 2. **Domain modules** — the full power of one field; plugged in when the context calls for them.
@@ -11,7 +11,7 @@ use math::calc;
 
 pub use global::{SelfReport, self_judge};
 
-/// Operating mode. Design note: step-by-step explanations are a separate MMM mode for training, debugging, or when
+/// Operating mode. Design note: step-by-step explanations are a separate SLM mode for training, debugging, or when
 /// the user asked for them in the prompt; normally just the answer, fast.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Mode {
@@ -26,7 +26,7 @@ pub enum Why {
     UserAsked,
 }
 
-/// A query to the MMM: text, mode and (later) parse.
+/// A query to the SLM: text, mode and (later) parse.
 #[derive(Clone, Debug)]
 pub struct Query {
     pub text: String,

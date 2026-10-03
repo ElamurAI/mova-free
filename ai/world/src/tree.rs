@@ -48,6 +48,10 @@ impl Tree {
             .map(|(i, f)| if i == 0 || f == "i" || name_like(f) { cap(f) } else { f.clone() })
             .collect();
         let mut w = a.annotate(&cased);
+        // matrix-driven label repairs (inverted subject, bare oblique): `rerank::repairs`, docs/absurdity.md
+        if std::env::var("WORLD_NO_REPAIR").is_err() {
+            crate::rerank::repair_words(&mut w);
+        }
         for x in &mut w {
             x.form = x.form.to_lowercase();
             x.lemma = x.lemma.to_lowercase();
