@@ -16,7 +16,7 @@ Notes: [docs/release-0.4.md](docs/release-0.4.md).
 - **`install.sh`**: downloads the model `en.bin` into `$MOVA_DATA/en/models/` with a SHA-256 check.
 - **Corpus 0.4** (<https://research.elamur.ai/corpus/0.4/>), under CC BY-SA 4.0 as a whole: the school's books, the agreed school treebank, silver and bronze trees, the pupils' dictionary, maths scripts, contrast sets.
 - This changelog, a Limits section and a licences table in the README.
-- **One Cargo workspace** at the root: `cargo build --release` builds every crate into `target/release/`, with one `Cargo.lock` (the same dependency versions as the per-crate locks of 0.3).
+- **One Cargo workspace** at the root: `cargo build --release` builds every CPU crate into `target/release/` with no CUDA (the GPU parser on request), with one `Cargo.lock` (the same dependency versions as the per-crate locks of 0.3).
 
 ### Changed
 

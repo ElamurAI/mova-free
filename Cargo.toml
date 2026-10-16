@@ -40,6 +40,45 @@ members = [
     "weather",
     "world",
 ]
+# `cargo build` without -p builds these: everything but the CUDA-only GPU parser, so the CPU-only build needs no CUDA.
+# gparse builds with `-p gparse` or through `-p world --features gpu`.
+default-members = [
+    "annot",
+    "coref",
+    "en",
+    "global",
+    "kg",
+    "latex",
+    "layers",
+    "math",
+    "math/bigbench",
+    "mlab",
+    "mlab/bench",
+    "onto",
+    "prag",
+    "qagen",
+    "tools/bench",
+    "tools/cycle",
+    "tools/db",
+    "tools/dict-lessons",
+    "tools/gutenberg",
+    "tools/jobs",
+    "tools/kaggle",
+    "tools/mathlib",
+    "tools/parsecmp",
+    "tools/school-sents",
+    "tools/sources",
+    "tools/treeagree",
+    "tools/treebanks",
+    "tools/value",
+    "tools/wikt-count",
+    "tools/wikt-idioms",
+    "tools/wikt-page",
+    "vfs",
+    "wasi-host",
+    "weather",
+    "world",
+]
 exclude = ["tera"]
 
 [workspace.package]

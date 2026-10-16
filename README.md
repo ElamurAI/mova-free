@@ -54,7 +54,7 @@ cargo build --release
 ```
 
 - `./install.sh` downloads the trained model `en.bin` for release 0.4 from `https://research.elamur.ai/download/0/0.4/`, checks its SHA-256 and puts it at `$MOVA_DATA/en/models/en.bin`. Models and corpora live outside the repo, in the **data directory** `$MOVA_DATA` (default `~/mova-data`): `MOVA_DATA=/srv/mova ./install.sh` puts it elsewhere, and `MOVA_MODELS_URL=<base url>` picks another mirror. It needs `curl` and `sha256sum`; running it again leaves an up-to-date model alone.
-- `cargo build --release` at the root builds the workspace (a recent stable Rust, edition 2024; developed with 1.99); the binaries are in `target/release/`.
+- `cargo build --release` at the root builds every CPU crate of the workspace (a recent stable Rust, edition 2024; developed with 1.99; no CUDA needed); the binaries are in `target/release/`. The GPU parser `gparse` needs CUDA and builds only on request (`-p gparse`, or `-p world --features gpu`).
 
 In the examples below, lines starting with `#` under a command show its output.
 
