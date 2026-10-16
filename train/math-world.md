@@ -1,11 +1,11 @@
 # Word problems: exact core, step solver, world scripts, world reader, SVAMP / GSM8K
 
-Crates: `ai/math` (exact core, step solver `mathsolve`, world reader `qread`) and `ai/world` (world scripts: format, checker, optional LLM writer). The crates do **not** form a Cargo workspace. Each has its own `Cargo.lock`, so pass `--manifest-path`. `ai/math` has three binaries (`math`, `mathsolve`, `vmmtests`) and no `default-run`, so `--bin` is required:
+Crates: `math` (exact core, step solver `mathsolve`, world reader `qread`) and `world` (world scripts: format, checker, optional LLM writer). Both belong to the root Cargo workspace; pick one with `-p` or `--manifest-path`. `math` has three binaries (`math`, `mathsolve`, `vmmtests`) and no `default-run`, so `--bin` is required:
 
 ```sh
-cargo run --release --manifest-path ai/math/Cargo.toml --bin mathsolve -- <cmd> ...
-cargo run --release --manifest-path ai/math/Cargo.toml --bin math      -- <cmd> ...
-cargo run --release --manifest-path ai/world/Cargo.toml                -- <cmd> ...
+cargo run --release --manifest-path math/Cargo.toml --bin mathsolve -- <cmd> ...
+cargo run --release --manifest-path math/Cargo.toml --bin math      -- <cmd> ...
+cargo run --release --manifest-path world/Cargo.toml                -- <cmd> ...
 ```
 
 ---
@@ -16,7 +16,7 @@ cargo run --release --manifest-path ai/world/Cargo.toml                -- <cmd> 
 Three things to know before running anything beyond `calc` and `controls`.
 
 ### Steps
-1. **Parser model.** `mathsolve` (`steps`, `qread`, `qread-text`) loads the `en` UD model shipped in `ai/en/models/ud-ewt-eslspok.bin` (the path is fixed at build time). To use your own model, train it with `en train` (see retrain-the-parser.md) and replace that file, or use `MATH_EN_MODEL` with the `math` binary.
+1. **Parser model.** `mathsolve` (`steps`, `qread`, `qread-text`) loads the `en` UD model shipped in `en/models/en.bin` (the path is fixed at build time). To use your own model, train it with `en train` (see retrain-the-parser.md) and replace that file, or use `MATH_EN_MODEL` with the `math` binary.
 2. **Run directory.** Every `mathsolve` command creates its run directory at startup: `MATH2_RUN`, or `$MOVA_DATA/runs/math2-2026-09-26`. Set it explicitly:
    ```sh
    export MATH2_RUN=runs/math2
@@ -33,8 +33,8 @@ Three things to know before running anything beyond `calc` and `controls`.
 
 ### Gist
 All arithmetic is exact:
-- **v1** (`ai/math/src/rat.rs`, i128) for units and temperatures. An overflow is an explicit `Overflow` error, never a silent f64.
-- **v2** (`ai/math/src/big.rs`) for word problems: arbitrary-size integers and rationals via `dashu` (`Q = RBig`, always reduced).
+- **v1** (`math/src/rat.rs`, i128) for units and temperatures. An overflow is an explicit `Overflow` error, never a silent f64.
+- **v2** (`math/src/big.rs`) for word problems: arbitrary-size integers and rationals via `dashu` (`Q = RBig`, always reduced).
 
 `calc.rs` evaluates expressions on v2. Every result gets an **independent check**: the same expression computed with different arithmetic (f64, or a fingerprint modulo 2^61−1 for huge integers). A failed check blocks the answer.
 
@@ -46,16 +46,16 @@ All arithmetic is exact:
 ### Steps
 ```sh
 # expression -> exact value + independent check
-cargo run --release --manifest-path ai/math/Cargo.toml --bin mathsolve -- calc "3^40 + 17" "(16 - 3 - 4) * 2"
+cargo run --release --manifest-path math/Cargo.toml --bin mathsolve -- calc "3^40 + 17" "(16 - 3 - 4) * 2"
 
 # negative controls: each must be RED (caught); exits non-zero if any passes
-cargo run --release --manifest-path ai/math/Cargo.toml --bin mathsolve -- controls
+cargo run --release --manifest-path math/Cargo.toml --bin mathsolve -- controls
 
 # English question -> expression tree -> steps, checks, answer (units, %, stats, probability)
-cargo run --release --manifest-path ai/math/Cargo.toml --bin math -- eval "What is 15% of 80?"
+cargo run --release --manifest-path math/Cargo.toml --bin math -- eval "What is 15% of 80?"
 
 # frozen suite: id <TAB> question <TAB> expected
-cargo run --release --manifest-path ai/math/Cargo.toml --bin math -- test ai/math/data/suite-v1.tsv
+cargo run --release --manifest-path math/Cargo.toml --bin math -- test math/data/suite-v1.tsv
 ```
 
 ### Example
@@ -93,7 +93,7 @@ With `--exact`, the gold trees come from SVAMP equations (`( 290.0 / 2.0 )`) or 
 - Trying a feature or idea as a flag and measuring it against the baseline.
 
 ### Steps
-The flags come from the `"steps"` arm of `ai/math/src/bin/mathsolve.rs`. Defaults are in brackets.
+The flags come from the `"steps"` arm of `math/src/bin/mathsolve.rs`. Defaults are in brackets.
 
 | flag | meaning |
 |---|---|
@@ -123,11 +123,11 @@ Environment variables:
 The configuration used as the benchmark baseline:
 ```sh
 export MATH2_RUN=runs/math2
-MATH_NOLEX=1 cargo run --release --manifest-path ai/math/Cargo.toml --bin mathsolve -- \
+MATH_NOLEX=1 cargo run --release --manifest-path math/Cargo.toml --bin mathsolve -- \
   steps --set svamp --exact --epochs 20 --beam 32 --rerank 5 --world corpus/math-scripts/scripts.jsonl
 
 # GSM8K, same settings without --world
-MATH_NOLEX=1 cargo run --release --manifest-path ai/math/Cargo.toml --bin mathsolve -- \
+MATH_NOLEX=1 cargo run --release --manifest-path math/Cargo.toml --bin mathsolve -- \
   steps --set gsm8k --exact --epochs 20 --beam 32 --rerank 5
 ```
 Add `--qread` to the SVAMP command to use the world reader as a judge feature.
@@ -158,7 +158,7 @@ A world script turns a word problem into a **quantity world**:
 - the state is `entity.thing → exact number`;
 - every command is anchored to the sentence that justifies it (`@N`) and labelled with the principle it applies (`k=`).
 
-The executor (`ai/world/src/quant.rs`: `parse_line`, `run`, `check`) runs scripts with the exact core. It accepts a script only if it passes every gate.
+The executor (`world/src/quant.rs`: `parse_line`, `run`, `check`) runs scripts with the exact core. It accepts a script only if it passes every gate.
 
 ### When to use
 - Reading or writing training data for the world writer.
@@ -209,9 +209,9 @@ Script file `s.txt` for SVAMP train item `chal-777`:
 @3 ask philip.banana_per_group
 ```
 ```sh
-cargo run --release --manifest-path ai/world/Cargo.toml -- quant-check svamp-train svamp-train-chal-777 s.txt
+cargo run --release --manifest-path world/Cargo.toml -- quant-check svamp-train svamp-train-chal-777 s.txt
 # answer Some("145"); errors 0
-cargo run --release --manifest-path ai/world/Cargo.toml -- quant-stats corpus/math-scripts
+cargo run --release --manifest-path world/Cargo.toml -- quant-stats corpus/math-scripts
 # green counts per set, plus principle and verb histograms (reads <dir>/scripts.jsonl)
 ```
 A script that uses `300` instead of `290` fails with two errors: `number 300 not from the text up to sentence @1` and `answer 300 ≠ reference 145`.
@@ -219,14 +219,14 @@ A script that uses `300` instead of `290` fails with two errors: `number 300 not
 ### Pitfalls
 - `k=` must be preceded by a space; it is split off with `rsplit_once(" k=")`.
 - Set names for `quant-check`/`quant-vmm` are `svamp-train`, `svamp-test`, `gsm8k-train` and `gsm8k-test`. SVAMP ids are `<set>-<ID>`; GSM8K ids are `<set>-<index>`.
-- Negative controls live in `ai/world/src/quant.rs` tests and must stay red: `cargo test --release --manifest-path ai/world/Cargo.toml --lib quant`.
+- Negative controls live in `world/src/quant.rs` tests and must stay red: `cargo test --release --manifest-path world/Cargo.toml --lib quant`.
 
 ---
 
 ## 4. Training the world writer
 
 ### Gist
-The small model learns to write the quantity world itself (`ai/math/src/qworld.rs`):
+The small model learns to write the quantity world itself (`math/src/qworld.rs`):
 - `WorldModel` labels each number with an action (`=`, `+`, `-`, rate) and a cell;
 - `AskModel` picks a query template (`State`, `Diff`, `Sum`, `Ratio`, `Product`).
 
@@ -238,13 +238,13 @@ You have verified scripts (shipped in `corpus/math-scripts/` or generated yourse
 ### Steps
 1. Optional: generate more scripts with an LLM. `quant-vmm` sends batches to an LLM through a CLI (`claude -p`), checks each script, retries red ones once with the error list (the gold answer is never shown), and appends to `<dir>/scripts.jsonl`. LLM costs are logged in `<dir>/calls.jsonl`. It resumes by skipping ids already present. This step is paid and optional:
    ```sh
-   MOVA_SUBSCRIPTION=1 cargo run --release --manifest-path ai/world/Cargo.toml -- \
+   MOVA_SUBSCRIPTION=1 cargo run --release --manifest-path world/Cargo.toml -- \
      quant-vmm svamp-train runs/quant --limit 20 --batch 10 --par 2 --cap 2
    ```
    `MOVA_SUBSCRIPTION=1` makes the CLI use its own login instead of looking for a locally stored API key. `--cap` is the spend ceiling in USD [10]. The model and effort come from `PRAG_MODEL` / `PRAG_EFFORT` [medium].
 2. Train and use the writer inside `steps` (it is not saved; it is retrained on every run):
    ```sh
-   cargo run --release --manifest-path ai/math/Cargo.toml --bin mathsolve -- \
+   cargo run --release --manifest-path math/Cargo.toml --bin mathsolve -- \
      steps --set svamp --exact --rerank 5 --world corpus/math-scripts/scripts.jsonl --world-feat
    ```
 3. Read the report lines:
@@ -261,7 +261,7 @@ You have verified scripts (shipped in `corpus/math-scripts/` or generated yourse
 ## 5. World reader: `qread` (world v2 for numbers)
 
 ### Gist
-`ai/math/src/qread.rs` reads a problem as **events in time**:
+`math/src/qread.rs` reads a problem as **events in time**:
 - **who**: the subject; a pronoun maps to the previous subject;
 - **what**: the noun with its modifiers;
 - **how much**: a number, or an unknown variable for "some" / "several";
@@ -278,11 +278,11 @@ If the world doesn't understand something, it returns `None` with a reason in th
 ### Steps
 ```sh
 # probe one problem (the last sentence is the question)
-cargo run --release --manifest-path ai/math/Cargo.toml --bin mathsolve -- qread-text \
+cargo run --release --manifest-path math/Cargo.toml --bin mathsolve -- qread-text \
   "Paul had some crayons. He gave 52 crayons to his friends and lost 535 crayons. He had 492 crayons left. How many crayons did he have at first?"
 
 # coverage and accuracy on SVAMP: qread [svamp|svamp-train] [N = wrong answers to print]
-cargo run --release --manifest-path ai/math/Cargo.toml --bin mathsolve -- qread svamp 5
+cargo run --release --manifest-path math/Cargo.toml --bin mathsolve -- qread svamp 5
 ```
 - `QREAD_STRICT=1`: only answer when every number was read.
 - `QREAD_DUMP=<file>`: write `index<TAB>ok<TAB>value` for every answered item.

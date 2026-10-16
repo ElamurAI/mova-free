@@ -1,0 +1,19 @@
+[package]
+name = "wasi-host"
+version.workspace = true
+edition = "2024"
+# license: Elamur Cosmic License (LICENSE.md at the repo root)
+description = "wasi-host: runs wasm32-wasip1 modules in a sandbox — wasmi engine, WASI preview1 over vfs (in-memory file system), virtual clock, seeded randomness, no network."
+
+[[bin]]
+name = "wasi-run"
+path = "src/main.rs"
+
+[dependencies]
+vfs = { path = "../vfs" }
+# wasmi — a WASM interpreter in Rust (MIT/Apache-2.0); without `wat` (the text format is not needed); `simd` — faer in mlab.wasm uses simd128.
+wasmi = { version = "2.0.0", default-features = false, features = ["std", "validate", "stable", "auto-dispatch", "simd"] }
+
+[dev-dependencies]
+# native mlab — the reference for the gate "same output natively and in the guest"
+mlab = { path = "../mlab" }

@@ -1,0 +1,49 @@
+lesson: 199
+title: Exam 2: some left over, some missing
+level: primary-4
+stars: 3
+explain: Sharing p each leaves some over; sharing q each leaves some missing. Going from p to q each, every child needs q - p more.
+explain: Those extra things are the ones left over plus the ones missing, so the number of children is (left over + missing) ÷ (q - p).
+explain: Each child gets 3 sweets and 8 are left; to give 5 each, 4 are missing. (8 + 4) ÷ (5 - 3) = 6 children, and 3 × 6 + 8 = 26 sweets.
+vars: a=name t=thing c=4..15 p=2..6 d=1..4 r=2..20 z=2..9
+let: q = p + d
+let: s = d * c - r
+need: s >= 2
+answer: p * c + r
+exercise: A teacher shares candies among the children of a group. If each child gets {p} candies, {r} candies are left over. If each child gets {q} candies, {s} candies are missing. How many candies does the teacher have?
+exercise: {a} puts apples into baskets. If {p} apples go in each basket, {r} apples are left. To put {q} apples in each basket, {a.he} would need {s} more apples. How many apples does {a} have?
+exercise: Books are put on shelves. With {p} books on each shelf, {r} books have no place. With {q} books on each shelf, {s} more books would be needed to fill the shelves. How many books are there?
+exercise: {a} gives out {t} to friends. Giving {p} {t} to each friend leaves {r} {t}; giving {q} {t} to each friend would need {s} {t} more. How many {t} does {a} have?
+exercise: Some pencils are shared among pupils. If every pupil gets {p} pencils, {r} pencils remain. If every pupil gets {q} pencils, there are {s} pencils too few. How many pencils are there?
+test: With {q} {t} per child, {a} would be {s} {t} short; with {p} per child, {a.he} has {r} to spare. How many {t} does {a} have?
+test: A group of tourists hires boats. If {p} people sit in each boat, {r} people stay on the shore. If {q} people sit in each boat, {s} seats stay empty. How many tourists are there?
+test: Handing {q} stickers to each pupil runs {s} stickers short, while handing {p} to each leaves {r}. How many stickers are being handed out?
+test: The {t} cost {z} dollars a bag. {a} packs them for {a.his} classmates: {p} for each classmate leaves {r} over, but {q} for each would need {s} more. How many {t} has {a} got?
+exercise: If each child gets {p} candies, {r} candies are left. If each child gets {q} candies, {s} more candies are needed. How many candies are there?
+exercise: How many apples does a teacher have, if giving {p} apples to every pupil leaves {r}, and giving {q} to every pupil needs {s} more?
+exercise: A coach in Texas hands out balls to the teams. With {p} balls per team, {r} balls are left over. With {q} balls per team, the coach is {s} balls short. How many balls does the coach have?
+exercise: {a} shares {t}: {p} each leaves {r}; {q} each is {s} short. How many {t} in all?
+exercise: {a} in Toronto puts photos into an album. Putting {p} photos on each page leaves {r} photos without a page; putting {q} on each page would need {s} more photos to fill every page. How many photos does {a} have?
+exercise: Some cookies are shared out at a party in London. If every guest gets {p} cookies, {r} cookies remain. If every guest gets {q} cookies, there are {s} cookies too few. How many cookies are there altogether?
+exercise: {a} hands out {t} to the children in a group: {p.words} each leaves {r} {t} over, but {q.words} each would need {s} more {t}. How many {t} does {a} have in total?
+exercise: Pencils are put into boxes in a school in Sydney. With {p} pencils per box, {r} pencils are left. With {q} pencils per box, {s} pencils are missing. How many pencils are there?
+test: A teacher in Dublin finds that {q} worksheets per pupil leaves the class {s} short, but {p} per pupil leaves {r} spare. How many worksheets are there?
+test: What is the number of {t}, if sharing {p} per friend leaves {r} over, and sharing {q} per friend falls {s} short?
+test: Guests at a wedding in Wales sit at tables. If {p} guests sit at each table, {r} guests have no seat. If {q} guests sit at each table, {s} seats are empty. How many guests are there?
+test: {a} gives every classmate {p} {t} and keeps {r}. Had {a.he} wanted to give every classmate {q}, {a.he} would have been {s} {t} short. How many {t} did {a} start with?
+test: A farmer in Ontario packs eggs into cartons that cost {z} dollars each: {q} to a carton would need {s} more eggs, but {p} to a carton leaves {r} unpacked. How many eggs are there?
+test: Marbles are shared among players. At {p} apiece, {r} are left; at {q} apiece, {s} are lacking. How many marbles are there?
+exercise: sharing candies, {p} each n {r} left over, {q} each n {s} short. how many candies total
+exercise: {a} puts apples in baskets, {p} a basket n {r} left, {q} a basket n needs {s} more. how many apples
+exercise: {a}'s sharing {t}, {p} per kid leaves {r+1} — no wait, {r} spare, {q} per kid n {a.he}'s {s} short. how many {t} {a} got
+exercise: {a} says {p*c}. nah forgot the leftovers. {p} {t} each kid n {r} left, {q} each n {s} short. how many {t}
+test: {q} each n {a}'s {s} {t} short, {p} each n theres {r} spare. how many {t} {a} got
+test: benches, {p} kids a bench n {r} kids left standing; {q} a bench n {s} spots empty. how many kids
+test: party bags, {p} {t} each n {r} left, {q} each n {s} missing, theres like 3 colours btw. how many {t}
+exam: It is given that, were each child of a group to receive {p} candies, a surplus of {r} candies would remain, whereas, were each to receive {q} candies, a deficiency of {s} candies would arise. Determine the number of candies held by the teacher.
+exam: Ascertain the number of apples in the possession of {a}, whereas the placing of {p} apples in each basket leaves {r} apples over, and the placing of {q} apples in each basket would require a further {s} apples.
+exam: A stock of books is to be apportioned among a number of pupils. Whereas {p} books per pupil leaves a remainder of {r} books, and {q} books per pupil leaves a shortfall of {s} books, state the total number of books in the stock.
+exam: Compute the total number of stickers to be distributed among the members of a club, given that an allocation of {p} per member results in {r} stickers in excess and an allocation of {q} per member results in {s} stickers wanting.
+exercise: Grandma passed away and left a tin of sweets for her grandchildren. If each gets {p}, {r} are left over; if each gets {q}, {s} are missing. How many sweets were in the tin?
+exercise: Since Dad was laid off, the family packs lunches for a school trip. With {p} sandwiches in each lunchbox, {r} are left over; with {q} in each, they are {s} short. How many sandwiches did they make?
+test: teacher's 'having a moment' again. sharing sweets: {p} each n {r} left, {q} each n we're {s} short. how many sweets she got, come on, it's not rocket science

@@ -1,0 +1,46 @@
+lesson: 189
+title: Crossing the river with one boat
+level: primary-4
+stars: 3
+explain: The boat cannot cross empty, so after every trip across except the last one somebody must row it back.
+explain: So each trip there and back moves one fewer than the boat holds; the last trip across takes a full boat.
+explain: 11 people, a boat for 4: the first trip takes 4 across; each return and trip then adds 3 more: 4, 7, 10, 11. That is 4 trips across and 3 back, 7 crossings.
+vars: a=name c=2..6 n=3..40
+need: n > c
+let: f = (n - 1 + c - 2 - (n - 1 + c - 2) % (c - 1)) / (c - 1)
+answer: 2 * f - 1
+exercise: {n} children must cross a river in one boat. The boat holds at most {c} children, and it needs someone in it to row it back. How many times does the boat cross the river, counting the trips there and the trips back?
+exercise: A group of {n} campers has one boat that can carry {c} people at most. Someone must always row it. How many crossings, there and back together, are needed to get everyone across?
+exercise: {n} scouts and a boat for {c} people are on one bank. The boat cannot move by itself. What is the least number of crossings, both ways counted, to bring all the scouts to the other bank?
+exercise: {a} and {n - 1} friends want to cross a lake in a boat that holds {c} people. The boat must be rowed every time. How many crossings does the boat make in all, at the least?
+test: A boat carries no more than {c} passengers, the rower included, and must be rowed back for the others each time. What is the fewest number of times it must cross the river so that a class of {n} pupils all reach the far side?
+test: All {n} hikers must reach the other side of a river. Their only boat fits {c} people and never sails empty. Counting every crossing in either direction, how few crossings are possible?
+test: How many crossings in both directions does a boat for {c} people need, at least, to bring {n} tourists over a river, if someone has to be on board every time?
+exercise: There is one rowing boat for {n} children who need to get across a river. It holds no more than {c} children, and someone has to row it back each time. How many crossings does the boat make in all, both ways counted?
+exercise: How many crossings, there and back together, are needed to take {n} campers over a lake in Maine in one boat that carries {c} people at most, if the boat must always be rowed?
+exercise: A canoe for {c} people is the only way across a river in Canada for {n} hikers. It cannot cross empty. What is the smallest number of crossings, both directions counted?
+exercise: {a} and {n - 1} classmates in Scotland must cross a loch in a boat that holds {c} people. Someone always has to row. At least how many crossings does the boat make, both ways?
+exercise: {n} people, one boat for {c}, and someone must be in the boat on every crossing. What is the fewest number of crossings, both ways?
+exercise: A small ferry in New Zealand carries up to {c} passengers, the one steering included, and it never crosses empty. How many crossings in both directions are needed to carry {n} passengers to the far shore?
+exercise: On one bank of a river stand {n.words} children, and their boat holds {c.words}. The boat needs a rower every time. How many times in all, there and back, must the boat cross?
+exercise: On a camping trip in Ireland, {n} friends must cross a river in a boat for {c}. Somebody has to bring the boat back each time. What is the least number of crossings, the trips back included?
+test: What is the least number of times a boat must cross a river, there or back, to take {n} children over, if it holds {c} children and cannot travel without one on board?
+test: {a}'s class of {n} must get over a stream in Oregon. Their raft holds {c} at most and has to be paddled every time. Counting each crossing in either direction, how few crossings will do?
+test: There are {n} travellers and a dinghy that seats {c}. It cannot sail empty, so someone must return with it. Give the smallest total of crossings, both ways.
+test: A rowing boat on a lake in Queensland carries no more than {c} people, and someone must always be rowing. At the least, how many crossings in all bring a team of {n} across?
+test: To get {n} pupils over to an island, a teacher has one boat for {c} people that must be rowed each way. How many crossings, both ways, are needed at the fewest?
+test: Counting trips across and trips back, how many crossings at least are needed for {n} people with a boat seating {c}, if the boat never crosses by itself?
+exercise: {n} of us gotta get over the river, one boat, fits {c} max n someone has to row it back. how many crossings, there n back counted
+exercise: camp group's {n+2} kids, no wait {n}, boat takes {c} at most incl the rower. how many times it cross the river so everyone's over?
+exercise: {n} kids, boat holds {c}, river's like 40 m wide btw. someone always rows. how many crossings total there and back
+exercise: {a} says one trip does it lol. nah boat only takes {c}, theres {n} kids, someone's gotta row back. how many crossings really
+test: boat takes {c} ppl max with the rower, {n} in our class, all gotta get over. least crossings, there n back?
+test: {n+1} scouts — no hang on, {n} — one boat for {c}, gets rowed back each time. fewest crossings?
+test: teacher says 2 crossings is enough?? boat fits {c}, {n} kids, someone rows it back. whats the right number of crossings
+exam: A company of {n} children is to be conveyed across a river by means of a single boat, the capacity of which is limited to {c} children, and which cannot return without at least one occupant to row it. Determine the total number of crossings, outward and return, necessary for the conveyance of the entire company.
+exam: It is given that {n} campers possess a single boat of maximum capacity {c} persons, which must at all times be rowed by one of their number. Ascertain the minimum number of crossings, counting both directions, required in order that all campers reach the opposite bank.
+exam: Whereas {n} travellers are to cross a river in one boat accommodating no more than {c} persons, and whereas the boat requires a rower for every crossing including each return, state the least aggregate number of crossings.
+exam: Compute the minimum number of passages of a boat across a river, whether outward or return, by which a party of {n} persons may be transferred to the far bank, the boat carrying at most {c} persons and requiring at least one person aboard on each passage.
+exercise: {n+1} campers signed up, but one was 'under the weather' and stayed in the tent. The rest must cross a river in one boat that holds at most {c} people, and someone has to row it back each time. How many crossings, there and back together, does it take?
+exercise: A scout leader brings {n} scouts to the river. She is 'no spring chicken' and stays on this bank with the bus. The boat holds at most {c} people, and someone must row it back. How many crossings, there and back, get all the scouts across?
+test: {n+2} kids on the trip, 2 got sent home with a tummy bug (gross). boat takes {c} max n somebody has to row it back. how many crossings there n back for the rest, come on

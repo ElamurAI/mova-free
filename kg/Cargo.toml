@@ -1,0 +1,10 @@
+[package]
+name = "kg"
+version.workspace = true
+edition = "2024"
+description = "Mova knowledge graph: simple sentences → facts; u64 ids (heap:local), 28-byte edges as columns (CSR), delta+zstd on disk."
+
+[dependencies]
+anyhow = "1.0.104"
+bzip2 = "0.6.1"
+zstd = "0.14"

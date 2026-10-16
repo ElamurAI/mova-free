@@ -4,7 +4,7 @@
 
 To adapt Mova to a new domain you do not fine-tune weights. You add knowledge in three places:
 
-1. **General knowledge** that every domain needs goes into **global seeds** (`ai/global/seeds`).
+1. **General knowledge** that every domain needs goes into **global seeds** (`global/seeds`).
 2. **The depth of your field** goes into a **domain module**: a crate that implements
    `layers::Domain`, with its own seeds and tables.
 3. **Your text** is read by the existing context-level readers (`en`, `world`, `math`, `prag`). If
@@ -27,7 +27,7 @@ and a published list of excluded items.
 - Write down the task in one sentence, the input format and the answer format.
 - Split the data once into train, valid and test, and save the split as files. Never tune on test.
 - Record the license of every source. Treebank data used for parser training must be registered in
-  `ai/en/data/train-licenses.tsv` (see [retrain-the-parser.md](retrain-the-parser.md)). For
+  `en/data/train-licenses.tsv` (see [retrain-the-parser.md](retrain-the-parser.md)). For
   everything else, keep a sources table in your module's README. Data and models keep the licenses
   of their sources.
 
@@ -38,7 +38,7 @@ with no class, a state with no known consequence, an unknown relation. Collect t
 That list is your work queue.
 
 ```sh
-cargo run --release --manifest-path ai/world/Cargo.toml -- \
+cargo run --release --manifest-path world/Cargo.toml -- \
   babi-probe "Mary restocked the pantry." "Where is Mary?"
 # Mary restocked the pantry. → Some("verb «restock» has no class at level 1")
 # ? Where is Mary? → ("?", "where mary is — unknown")
@@ -53,7 +53,7 @@ or a reader for your case already exists.
   bigger box") go into global seeds. See [add-a-seed.md](add-a-seed.md) for the exact block syntax
   and the build gates.
 - Facts only an expert knows belong in your domain module. Give the module its own `seeds/` folder
-  and a `build.rs`. `ai/global/build.rs` (about 180 lines) is a good template: walk `seeds/**/*.md`,
+  and a `build.rs`. `global/build.rs` (about 180 lines) is a good template: walk `seeds/**/*.md`,
   parse fenced blocks, panic with the file name on any undeclared reference or duplicate, and write
   `OUT_DIR/<module>.rs`.
 - Keep culture-specific or "trick" logic out of level 1. Level 1 holds common human knowledge.
@@ -65,7 +65,7 @@ for "not mine / cannot". `layers::Context::route` tries the global level first, 
 above the threshold (0.5 by default), then escalates. Every routing decision is logged with all the
 scores.
 
-Example: a small `pantry` crate next to `ai/layers` (`ai/pantry/Cargo.toml` depends on
+Example: a small `pantry` crate next to `layers` (`pantry/Cargo.toml` depends on
 `layers = { path = "../layers" }` and `global = { path = "../global" }`). The sign of each step comes
 from the global verb classes, so the module explains itself through level 1:
 
@@ -127,7 +127,7 @@ mod tests {
 ```
 
 ```sh
-cargo test --release --manifest-path ai/pantry/Cargo.toml
+cargo test --release --manifest-path pantry/Cargo.toml
 ```
 
 This sketch is deliberately naive. A real module reads the parsed tree from `en` and the quantity
@@ -165,7 +165,7 @@ flavour, convert them first (see [dialects-and-converters.md](dialects-and-conve
    Test the difference with an exact sign test on the discordant items. `mlab` computes it:
 
    ```sh
-   cargo run --release --manifest-path ai/mlab/Cargo.toml -- \
+   cargo run --release --manifest-path mlab/Cargo.toml -- \
      -e 'fixed = 19; broken = 6; p = min(1, 2 * binocdf(min(fixed, broken), fixed + broken, 0.5))'
    # p = 0.014633
    ```
@@ -189,9 +189,9 @@ flavour, convert them first (see [dialects-and-converters.md](dialects-and-conve
 ## Example: one iteration
 
 1. `babi-probe` on a domain sentence prints "verb `restock` has no class at the global level".
-2. Add `restock` to the `get` line of `ai/global/seeds/shortcuts/possession.md`, or put it in your
+2. Add `restock` to the `get` line of `global/seeds/shortcuts/possession.md`, or put it in your
    own class in the domain seeds.
-3. `cargo test --release --manifest-path ai/global/Cargo.toml`, then the domain tests.
+3. `cargo test --release --manifest-path global/Cargo.toml`, then the domain tests.
 4. Run the full valid set twice. Then compare per item with the previous run: fixed 14, broken 3,
    sign test p = 0.013. Keep the change. A verb class is a solver feature, so if "broken" had
    outweighed "fixed", you would add the word as a plain `concept` for explanations instead.
@@ -207,7 +207,7 @@ flavour, convert them first (see [dialects-and-converters.md](dialects-and-conve
   watch rules that fire often on gold data.
 - **A silent `None` is fine; a confident wrong answer is not.** Let the module escalate with a report
   of what it tried, and turn the report into seeds.
-- **Shared dependencies.** Changing `ai/en` or `ai/global` changes every module that depends on
+- **Shared dependencies.** Changing `en` or `global` changes every module that depends on
   them. Re-measure all the benchmarks you report, not only your own.
 - **Licenses travel with data.** A model trained on non-commercial data is non-commercial. Register
   your sources before training (see [retrain-the-parser.md](retrain-the-parser.md)).

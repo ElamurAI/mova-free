@@ -1,0 +1,48 @@
+lesson: 119
+title: A story in three steps
+stars: 1
+explain: A long story can be solved one step at a time: find one number, use it to find the next, then finish.
+explain: «Ben buys 3 packs of 6 cards and 4 packs of 5 cards, then gives away 7.» Step one: 3 × 6 = 18. Step two: 4 × 5 = 20, and 18 + 20 = 38.
+explain: Step three: 38 - 7 = 31 cards. Write each step down so no number is lost.
+vars: a=name b=name t=thing p=2..6 q=3..10 r=2..6 s=3..10 g=2..20
+need: q != s
+need: g < p * q + r * s
+answer: p * q + r * s - g
+exercise: {a} buys {p} packs of {q} {t} and {r} packs of {s} {t}. Then {a.he} gives {g} {t} to {b}. How many {t} does {a} have now?
+exercise: A shop has {p} boxes of {q} pens and {r} boxes of {s} pens. It sells {g} pens. How many pens are left?
+exercise: {a} collects {q} shells a day for {p} days and {s} shells a day for {r} days. {g} of the shells break. How many shells are not broken?
+exercise: In a hall there are {p} rows of {q} chairs and {r} rows of {s} chairs. {g} chairs are broken. How many chairs can be used?
+exercise: {a} earns {q} dollars a day for {p} days and {s} dollars a day for {r} more days. {a.He} spends {g} dollars. How many dollars does {a.he} have left?
+exercise: A baker bakes {p} trays of {q} buns and {r} trays of {s} rolls. {g} of them are sold. How many buns and rolls are left?
+test: {g} of the {t} were lost after {a} filled {p} bags with {q} {t} each and {r} bags with {s} {t} each. How many {t} does {a} still have?
+test: A train has {p} cars with {q} people in each and {r} cars with {s} people in each. At the station {g} people get off. How many people stay on the train?
+test: How many stamps are left in {a}'s album if it held {p} pages of {q} stamps and {r} pages of {s} stamps, and {a.he} took out {g} stamps?
+test: {a} planted {p} rows of {q} tulips and {r} rows of {s} daisies. A rabbit ate {g} of the flowers. How many flowers are left in the garden?
+exercise: {a} buys {p} packs with {q} {t} in each and {r} packs with {s} {t} in each, then hands out {g} {t} to friends. How many {t} does {a.he} have left?
+exercise: A shop in Chicago gets {p} boxes of {q} pens and {r} boxes of {s} pens. {g} pens are sold. How many pens remain in the shop?
+exercise: How many shells does {a} have that are not broken? {a.He} collected {q} shells per day on a beach in Cornwall for {p} days, then {s} per day for {r} days, and {g} of them broke.
+exercise: A hall in Calgary has {p} rows of {q} seats and {r} rows of {s} seats. {g} seats are broken. How many seats can people sit on?
+exercise: {a} earned {q} dollars every day for {p} days and {s} dollars every day for another {r} days, then spent {g} dollars. How many dollars does {a.he} have now?
+exercise: A baker in Brisbane makes {p} trays of {q} muffins and {r} trays of {s} scones. {g} are sold. How many muffins and scones are still unsold?
+exercise: Work out {p} × {q} + {r} × {s} − {g}.
+exercise: {a} has {p} bags of {q} {t} and {r} bags of {s} {t}. {a.He} gives {g} {t} to {b}. How many {t} does {a} still have in all?
+test: How many {t} are left when {a} fills {p} jars with {q} {t} apiece and {r} jars with {s} {t} apiece, and then {g} {t} go missing?
+test: A tram in Melbourne has {p} rows with {q} passengers per row and {r} rows with {s} passengers per row. {g} passengers get off at the next stop. How many passengers are still on the tram?
+test: An orchard in Oregon has {p} rows of {q} pear trees and {r} rows of {s} plum trees. {g} trees are cut down. How many trees are left in the orchard?
+test: {b} saved {q} pounds a week for {p} weeks and {s} pounds a week for the next {r} weeks. Then {b.he} spent {g} pounds on a scooter. How many pounds does {b.he} still have?
+test: A school camp in Queensland has {p} tents that sleep {q} children each and {r} tents that sleep {s} each. {g} beds are taken. How many beds are still free?
+test: Subtract {g} from the total of {p} groups of {q} and {r} groups of {s}. What do you get?
+exercise: {a} got {p} packs of {q} {t} and {r} packs of {s}, gave {b} {g}. how many {a.he} got now
+exercise: {p} rows of {q} chairs, {r} rows of {s+1}, no wait, {s} chairs, and {g} broke. how many chairs we can use
+exercise: {b} reckons it's {p*q+r*s+g} cos you add the {g}. {a} has {p} bags of {q} {t} and {r} bags of {s} {t} and gives {g} away. nah that's wrong, how many {a.he} got really?
+exercise: {a} earned {q} bucks a day for {p} days, then {s} a day for {r} days, then spent {g} on games. oh and {a.he}'s {p+6}. how much money {a.he} got left
+test: train's got {p} cars w/ {q} people each and {r} cars w/ {s} each. {g} get off. how many still on
+test: {a} filled {p} jars with {q} {t} each, then {r} jars of {s} each, and lost {g+2}, sorry, {g} {t}. how many are left
+test: {b} did {p+r} × {q} − {g} for this, that's wrong right? {p} rows of {q} tulips, {r} rows of {s} daisies, a rabbit ate {g}. how many flowers left for real
+exam: It is given that {a} acquires {p} packs of {q} {t} together with {r} packs of {s} {t}, and subsequently transfers {g} {t} to {b}. Determine the aggregate quantity of {t} remaining in the possession of {a}.
+exam: Whereas a retail establishment holds {p} boxes of {q} pens and {r} boxes of {s} pens, and {g} pens are thereafter sold, ascertain the number of pens remaining in stock.
+exam: Shells were collected at the rate of {q} per day for a period of {p} days and at the rate of {s} per day for a further {r} days; {g} of the shells so collected were found to be broken. State the number of unbroken shells.
+exam: Compute the total quantity of {t} remaining, given {p} packs containing {q} {t} each, {r} packs containing {s} {t} each, and the subsequent removal of {g} {t}.
+exercise: When Grandma passed away, {a} got her sewing things: {p} tins of {q} buttons and {r} jars of {s} buttons. {a.He} gave {g} buttons to {b}. How many buttons does {a} have now?
+exercise: Business was "challenging", so the shop sold things off cheap. It had {p} boxes of {q} pens and {r} boxes of {s} pens, and it sold {g} pens. How many pens are left?
+test: my "little darling" of a brother binned {g} of my {t}, the pest. had {p} packs of {q} and {r} packs of {s}. how many i got now

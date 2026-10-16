@@ -30,24 +30,24 @@ Everything else runs offline.
 
 ## Setup
 
-The crates are **not** a Cargo workspace. Each crate under `ai/` has its own `Cargo.toml` and `Cargo.lock`,
-so run each one through `--manifest-path`:
+The crates form one Cargo workspace at the repo root. Run each one with `-p <crate>` or
+through `--manifest-path`:
 
 ```sh
-cargo run --release --manifest-path ai/world/Cargo.toml -- <command> ...
-cargo run --release --manifest-path ai/qagen/Cargo.toml -- <command> ...
+cargo run --release --manifest-path world/Cargo.toml -- <command> ...
+cargo run --release --manifest-path qagen/Cargo.toml -- <command> ...
 ```
 
-The examples below shorten this to `world <command>` and `qagen <command>`. `world` depends on `ai/prag`,
-`ai/en`, `ai/math` and `ai/global` by path. `qagen` depends on `ai/prag` and `ai/en`.
+The examples below shorten this to `world <command>` and `qagen <command>`. `world` depends on `prag`,
+`en`, `math` and `global` by path. `qagen` depends on `prag` and `en`.
 
 **`en` model (required for every parse).** The readers parse sentences with the `en` annotator. Train one
 on UD English treebanks (we use UD English EWT + ESLSpok train, CC BY-SA 4.0):
 
 ```sh
-cargo run --release --manifest-path ai/en/Cargo.toml -- \
+cargo run --release --manifest-path en/Cargo.toml -- \
   train <UD_English-EWT/en_ewt-ud-train.conllu> <UD_English-ESLSpok/...-train.conllu> -- models/en.bin
-# optional: the shipped model ai/en/models/ud-ewt-eslspok.bin is used by default
+# optional: the shipped model en/models/en.bin is used by default
 export WORLD_EN_MODEL=models/en.bin     # world
 export QAGEN_EN_MODEL=models/en.bin     # qagen gate (rule 2) and qagen fix
 ```
@@ -257,7 +257,7 @@ qagen sample work/qg [--n 20] [--seed 7] [--weak 0.5]   # → sample.md, or weak
 ```
 
 **Database.** `select` needs a DuckDB database with tables `docs(doc, key, title, author, license)` and
-`sentences(doc, para, ord, sent_id, text, comments)`. The exact query is `ai/qagen/sql/paras.sql`.
+`sentences(doc, para, ord, sent_id, text, comments)`. The exact query is `qagen/sql/paras.sql`.
 - Document keys must look like `gutenberg:<book>:<tale>`.
 - Every `license` must start with `public domain`, or the run stops.
 - `comments.newpar_block` gives the block type: `p`, `lg` or `head`. Only `p` (prose) is eligible.
@@ -302,7 +302,7 @@ mostly reuses one anchor's lemmas is flagged `doubt`.
 - A rerun calls only the batches that are still missing.
 - `--max-calls` caps the total calls per run directory.
 
-**`qagen fix`.** These subcommands repair answers in an older rule-1 run. See `ai/qagen/src/main.rs`.
+**`qagen fix`.** These subcommands repair answers in an older rule-1 run. See `qagen/src/main.rs`.
 
 `qagen` writes `qa.tsv`, which is a different format from the `qa.jsonl` that `read-train` reads. There is
 no converter between them at the time of writing.
@@ -380,7 +380,7 @@ score equalled the baseline.
 
 ## Pitfalls
 
-- If the model file is missing (default `ai/en/models/ud-ewt-eslspok.bin`, or the path in `WORLD_EN_MODEL` /
+- If the model file is missing (default `en/models/en.bin`, or the path in `WORLD_EN_MODEL` /
   `QAGEN_EN_MODEL`), the run fails with "en model …".
 - `read-short` and `read-train` match `qa.jsonl` to stories by **title**. If you edit a title or re-split
   the book, questions silently drop out.

@@ -1,0 +1,20 @@
+You are an INDEPENDENT test author for a commonsense WORLD MODEL (an ontology with default reasoning; you have NOT seen its code or data). It answers short structured queries about English words (common nouns and verbs, WordNet-style concepts) with: yes, no, unknown (the system has no knowledge: made-up words, or facts nobody could know), or undetermined (conflicting defaults, e.g. the Nixon diamond). Knowledge lives on LAYERS: the real world (default), and genre layers "fable" (Aesop-style: animals talk and have character traits such as cunning or vain) and "fairy" (fairy tales: talking animals, magic). A layer inherits the real world and overrides it only where the genre says so: a crow cannot speak in the real world but can in a fable.
+
+The truth standard is COMMON SENSE and biology for a typical adult member of the kind, NOT the contents of any particular database. Tests are frozen before the first run; every disagreement is adjudicated by an independent third path, so include a question only when the expected answer is clear to an educated adult and not a matter of dispute or word-sense ambiguity (unless the item is explicitly about word senses). Use single English words; for multi-word concepts join words with an underscore (polar_bear). Prefer everyday concepts and classic traps.
+
+Query language:
+- isa X Y — is X a kind (or an instance) of Y? e.g. isa whale fish -> no; isa tomato fruit -> yes (botanically; avoid pure culinary-vs-botanical disputes unless the source is explicit)
+- can X V [--layer fable|fairy] — V is one of: speak fly swim walk
+- prop X P [--layer fable|fairy] — P is one of: living animate human edible layseggs fast exists cunning vain greedy industrious wise
+- haspart X Y — does a typical X have Y as a part? (partof Y X is the inverse)
+- madeof X Y — is a typical X made of substance Y?
+- memberof Y X — is Y a member of the collection X (e.g. memberof wolf pack)?
+- measure X Q — typical value range for an adult/typical X; Q is one of: mass (kg), height (m, standing/shoulder height as usually quoted), length (m), speed (km/h, top speed), lifespan (years, typical in the wild or for humans life expectancy)
+- sense W | SENTENCE — which sense of the word W is used in SENTENCE
+Expected answers: yes, no, unknown, undetermined; for measure: "lo..hi unit" (a range that contains the typical adult values, wide enough to be uncontroversial, e.g. 120..250 kg for an adult lion) or unknown; for sense: "LEXFILE|KEY" where LEXFILE is the WordNet lexicographer file of the intended sense (noun.animal, noun.plant, noun.artifact, noun.food, noun.substance, noun.object, noun.group, noun.person, noun.act, noun.communication, noun.attribute, noun.location, noun.body, noun.event, verb.motion, ...) and KEY is one distinguishing English word (a hypernym or gloss word, e.g. mammal, fish, tree, wood, institution, river).
+
+OUTPUT: only TSV lines, nothing else (no header, no prose, no code fences). Each line has 5 TAB-separated fields:
+id<TAB>group<TAB>query<TAB>expected<TAB>explanation
+The explanation is one short sentence saying why (biology, definition, genre convention, physical fact) — write it in English.
+
+Write exactly 75 lines, ids vmm-onto-measure-001..075, groups mass (25), height (15), length (10), speed (10), lifespan (10), plus 5 lines of group unknown for made-up animals (measure glorbat mass -> unknown). Use typical ADULT ranges wide enough to be uncontroversial and state the unit exactly as defined (kg, m, km/h, years). Examples of the style: measure lion mass -> 120..250 kg; measure horse height -> 1.4..1.8 m (at the withers); measure elephant mass -> 2500..7000 kg; measure mouse mass -> 0.01..0.04 kg; measure cheetah speed -> 80..120 km/h; measure human lifespan -> 60..90 years; measure blue_whale length -> 20..30 m; measure ant length -> 0.001..0.03 m. Cover animals from tiny to huge, some everyday objects (measure car mass -> 1000..2500 kg; measure apple mass -> 0.1..0.3 kg; measure door height -> 1.9..2.3 m; measure pencil length -> 0.1..0.2 m), and a few traps where intuition misleads (e.g. an ostrich is heavier than a typical adult human? only if certain).

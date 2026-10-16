@@ -1,0 +1,47 @@
+lesson: 182
+title: Sure of one of each of two colours
+level: primary-4
+stars: 3
+explain: To be sure of a red one and a blue one, imagine the worst luck: all the others come first, and of red and blue only the larger colour.
+explain: The unlucky hand takes every green one and every one of the larger colour of red and blue, and still lacks the other colour; one more is sure.
+explain: With 5 red, 8 blue and 4 green: the unlucky hand takes 4 green and 8 blue, that is 12, and the 13th must be red. So 13 are sure.
+vars: a=name r=3..15 b=3..15 g=2..12
+let: big = r * (r >= b) + b * (r < b)
+need: r != b
+answer: g + big + 1
+exercise: A bag holds {r} red, {b} blue and {g} green marbles. What is the least number of marbles {a} must take out without looking to be sure of having at least one red and at least one blue marble?
+exercise: In a dark drawer there are {r} red, {b} blue and {g} green socks. How many socks must {a} take to be certain of getting both a red sock and a blue sock?
+exercise: A box has {r} red, {b} blue and {g} green pencils. {a} takes pencils with closed eyes. At least how many must {a.he} take to be sure of one red and one blue pencil among them?
+exercise: There are {r} red, {b} blue and {g} green cards face down. What is the smallest number of cards {a} must turn over to be certain that both a red and a blue card are among them?
+exercise: A jar has {r} red, {b} blue and {g} green buttons. How many buttons must {a} pull out blindly to be sure of at least one red and one blue button?
+test: {a} needs a red balloon and a blue one for a party. In a dark sack there are {g} green, {b} blue and {r} red balloons. What is the fewest balloons {a.he} can take out and be certain to have both?
+test: Among {r} red, {b} blue and {g} green beads in a bag, how many must be drawn without looking so that a red bead and a blue bead are surely drawn?
+test: {a} wants to be sure of drawing at least one blue and at least one red ticket from a hat holding {b} blue, {g} green and {r} red tickets. How few tickets can {a.he} draw?
+exercise: What is the least number of socks {a} must take from a dark drawer with {r} red, {b} blue and {g} green socks to be sure of a red sock and a blue sock?
+exercise: A bag in a classroom in Ohio holds {r} red, {b} blue and {g} green counters. Without looking, how many counters must {a} take to be certain of at least one red and at least one blue?
+exercise: {r} red, {b} blue and {g} green balls are in a box. Draw without looking. How many draws guarantee a red ball and a blue ball?
+exercise: In a sweet jar in a shop in York there are {r} red, {b} blue and {g} green gumdrops. How many must {a} take with closed eyes to be sure of having a red one and a blue one?
+exercise: A pencil case holds {r} red, {b} blue and {g} green pencils. At least how many must {a} take out blindly to be certain that both a red pencil and a blue pencil are in {a.his} hand?
+exercise: {a} in Toronto picks crayons from a box without looking. The box has {g} green, {r} red and {b} blue crayons. What is the fewest crayons that make sure {a.he} has a red one and a blue one?
+exercise: A pile of {r} red, {b} blue and {g} green cards lies face down. How many cards must {a} turn over, at the least, to be sure of at least one red card and one blue card?
+exercise: A gumball machine in Sydney holds {r} red, {b} blue and {g} green gumballs and gives them out at random. How many gumballs must {a} buy to be certain of getting at least one red and at least one blue?
+test: How many ribbons must be taken blindly from a box of {g} green, {r} red and {b} blue ribbons to make sure that the ribbons taken include a red one and a blue one?
+test: {a} is in a dark shed in New Zealand with {r} red, {b} blue and {g} green buckets. To be certain of carrying out a red bucket and a blue bucket, how many buckets must {a.he} carry out at least?
+test: Blindfolded, {a} takes T-shirts from a pile of {b} blue, {r} red and {g} green ones. What is the smallest number that guarantees a red T-shirt and a blue T-shirt among them?
+test: A hat in Dublin holds {r} red, {g} green and {b} blue tickets. At least how many tickets must be drawn so that red and blue are both certain to appear?
+test: Each coin in a toy machine in Texas gives a random ball, and the machine holds {b} blue, {g} green and {r} red balls. How many coins guarantee that {a} gets a blue ball and a red ball?
+test: What is the fewest marbles that must be drawn without looking from {r} red, {b} blue and {g} green marbles to be certain of one marble of each of the colours red and blue?
+exercise: bag got {r} red {b} blue {g} green marbles, no peeking. least {a} pulls to def get a red n a blue
+exercise: dark drawer, {r} red {b} blue {g} green socks. how many grab to be sure of both a red n a blue one
+exercise: {r} red, {b} blue, {g+1} green — sorry, {g} green sweets in a jar. eyes shut, fewest to take for at least 1 red and 1 blue
+exercise: Sam says 3, one of each lol. nah. {r} red {b} blue {g} green balls in a sack, least to be sure of a red and a blue
+test: box w {r} red pens, {b} blue pens, {g} green, eyes shut. how many {a} gotta take to have at least 1 red + 1 blue for sure
+test: {g} green, {r} red, {b} blue cubes in a bag (bro already took his 5 out, forget those). least number out to surely get red and blue
+test: Mia reckons {g}+2, the greens n then one each. nah not enough. {r} red {b} blue {g} green socks in the dark, how many to be sure of a red and a blue
+exercise: Since Dad was let go, the lights have been cut off, so {a} picks marbles from a bag in the dark: {r} red, {b} blue and {g} green. What is the least number {a.he} must take to be sure of at least one red and at least one blue?
+exercise: gran passed away, clearing her drawer in the dark cos the bulb's blown. {r} red {b} blue {g} green socks. how many to grab to be sure of a red AND a blue, hurry up
+test: The shop was economical with the truth and called its bag of {r} red, {b} blue and {g} green balls "a nice mix". Blindfolded, how many balls must {a} pull out to be certain of a red one and a blue one?
+exam: A bag contains {r} red, {b} blue and {g} green marbles. Determine the minimum number of marbles which must be withdrawn without inspection in order that it be certain that at least one red marble and at least one blue marble have been obtained.
+exam: It is given that a drawer contains {r} red, {b} blue and {g} green socks. Ascertain the least number of socks which {a} must withdraw in darkness so as to guarantee the possession of both a red sock and a blue sock.
+exam: State the smallest number of pencils which must be taken blindly from a box containing {r} red, {b} blue and {g} green pencils, in order to ensure that no fewer than one red pencil and one blue pencil are among those taken.
+exam: Whereas a container holds {r} red, {b} blue and {g} green buttons, determine the least number of buttons which must be removed without observation in order that the presence of at least one button of each of the colours red and blue among them be assured.

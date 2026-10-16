@@ -1,0 +1,9 @@
+# Mova corpus in the database — what `db corpus <db>` loads. Columns separated by TAB:
+# kind	source	dialect	documents (newdoc | idprefix | file | -)	sentence matching (new | auto | existing)	files (glob, "~" — home)
+# Order matters: texts first (treebanks, corpus), then annotations on existing sentences (calibration on EWT test).
+treebank	gold	ud-2.18	newdoc	new	$MOVA_DATA/en/ud/ud-treebanks-v2.18/UD_English-*/*.conllu
+corpus	bronze	ud-2.18	idprefix	auto	~/Mova/corpus/mova-bronze-en.conllu
+corpus	silver	ud-2.18	idprefix	auto	~/Mova/corpus/mova-silver-en.conllu
+calib	opus	ud-2.18	-	existing	$MOVA_DATA/annot/runs/calib-*/opus-a.conllu
+calib	opus	ud-2.18	-	existing	$MOVA_DATA/annot/runs/calib-*/final.conllu
+calib	rust	ud-2.18	-	existing	$MOVA_DATA/annot/runs/calib-*/rust-b.conllu

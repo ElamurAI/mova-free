@@ -12,6 +12,12 @@ is printed as a sentence with its counts.
 Rules are scoped like the matrix layers: **domain rules** — everything induced on the training domain;
 **general rules** — those that do not hurt a dev set of another domain.
 
+## Speed and the GPU mode (2026-10-15)
+
+The scoring now runs on numbers and threads, with atoms cached across iterations. With `--features gpu` and `MOVA_EXEC=gpu`, break counting runs as an exact CUDA kernel. Rules and reports are identical in both modes. Timings are in docs/gpu-exec.md: at 152 k sentences, 10 iterations take 5 min 39 s on the CPU and 33 s on the GPU. The original code needed about 20 min for a single iteration at 54 k sentences. `MOVA_TIMING=1` prints the phases.
+
+On today's data (train EWT + ESLSpok + the agreed school train, parsed by `en-school.bin`, which was trained on the same kind of data), the inducer finds only 3 rules at 54 k sentences and 10 at 152 k. Train LAS is 90.4 / 91.3: the parser already fits its training sets, so few label-only errors pass `--min 8` and precision 0.85. The rules change nothing on EWT dev (79.88), the school test (90.68) or EWT test (80.62). For the inducer to learn something, it needs errors the parser does not already know: text the parser has never seen, with gold or teacher trees.
+
 ## Runs (2026-10-02)
 
 Train on the parser's errors where it has not seen the text (training on EWT train finds only 2 rules: the
@@ -28,7 +34,7 @@ The first rule found in every run is the inverted subject — "obj → nsubj IF 
 an idiom, no comma or quote before" — rediscovered without being told, and better than the hand-written version
 (56 fixed / 2 broken on the tales test). Others: nsubj:pass → nsubj when the head has another object; parataxis →
 conj; obj → obl:unmarked for measure/time nouns the matrix finds absurd as objects; nsubj → obl:unmarked for a
-measure/time noun when the verb already has a subject. Rules: `data/runs/induce-v3/rules.tsv`.
+measure/time noun when the verb already has a subject. Rules: `$MOVA_DATA/runs/induce-v3/rules.tsv`.
 
 Next: induce on more held-out domains (EWT folds parsed by a model that did not see them), structural rules (head
 changes), and wire the domain/general rule sets into the reader in place of the hand-written repairs.

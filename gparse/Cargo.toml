@@ -1,0 +1,10 @@
+[package]
+name = "gparse"
+version.workspace = true
+edition = "2021"
+# license: Elamur Cosmic License (LICENSE.md at the repo root)
+description = "MMM dependency parser trained by gradient descent on the GPU: transformer encoder from scratch, biaffine heads, joint tags and relations, Eisner decoding. Rust + candle (CUDA)."
+
+[dependencies]
+candle-core = { version = "0.9", features = ["cuda"] }
+candle-nn = { version = "0.9", features = ["cuda"] }

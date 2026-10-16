@@ -8,7 +8,7 @@
 The paper checks whether the two largest English UD treebanks, EWT and GUM, which have different origins and conversion histories, are converging, and whether it makes sense to train joint models on them. First, each pair of consecutive releases from v2.6 to v2.11 is compared with the official CoNLL 2018 scorer, treating the newer release as gold, to locate the changes in tokenization, tags, lemmas and dependencies that caused the largest shifts. Then a parser is trained on every version of each corpus and on both combined, and tested across corpora. Consistency grows with each release both within and between the treebanks, and v2.11 is best on all metrics. Joint training still lags slightly behind in-domain training, but the gap has become very small, so a combined model is reasonable for new genres. The method applies to any language with several treebanks.
 
 ## How Mova uses it
-Background for the English grammar expert system (`ai/en/src/expert.rs`), whose rules live in `ai/en/seeds/errors/`:
+Background for the English grammar expert system (`en/src/expert.rs`), whose rules live in `en/seeds/errors/`:
 - `english-treebank-conventions.md`: divergences between EWT and GUM are treated as conventions, not rule errors; a much higher violation count on GUM than on EWT signals a convention difference.
 - `adjectives-in-names.md` (rule `en.errors.adj-not-compound`): since v2.8, adjectives in proper names are ADJ with `amod`, not `compound`.
 - `dep-last-resort.md` (rule `en.errors.dep-last-resort`): `dep` should be rare, following the v2.11 clean-up of `dep` uses.

@@ -1,0 +1,12 @@
+[package]
+name = "annot"
+version.workspace = true
+edition = "2024"
+description = "Mova annotator subproject: Opus (max) annotates random sentences in CoNLL-U, the Rust annotator (en) annotates the same tokens, Opus adjudicates both; Rust gates validate; silver data trains the en modules."
+
+[dependencies]
+ureq = { version = "2", features = ["json"] }
+en = { path = "../en" }
+anyhow = "1.0.104"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"

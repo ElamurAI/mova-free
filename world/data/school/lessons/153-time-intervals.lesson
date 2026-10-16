@@ -1,0 +1,53 @@
+lesson: 153
+title: How long it lasts: from one clock time to another
+level: primary-3
+stars: 0
+explain: To find how long something lasts, count from the start time to the end time.
+explain: Count the minutes up to the next full hour, then the full hours, then the minutes after the last full hour.
+explain: From 9:40 to 11:15: 20 minutes to 10:00, 60 minutes to 11:00, and 15 more minutes: 20 + 60 + 15 = 95 minutes.
+vars: a=name h=8..16 g=0..2 x=0..11 y=0..11
+let: m1 = 5 * x
+let: m2 = 5 * y
+let: t1 = (m1 - m1 % 10) / 10
+let: u1 = m1 % 10
+let: t2 = (m2 - m2 % 10) / 10
+let: u2 = m2 % 10
+need: g * 60 + m2 - m1 >= 15
+answer: g * 60 + m2 - m1
+exercise: A lesson starts at {h}:{t1}{u1} and ends at {h+g}:{t2}{u2}. How many minutes does it last?
+exercise: {a} began reading at {h}:{t1}{u1} and stopped at {h+g}:{t2}{u2}. For how many minutes did {a.he} read?
+exercise: The train leaves at {h}:{t1}{u1} and arrives at {h+g}:{t2}{u2}. How many minutes is the trip?
+exercise: A football match started at {h}:{t1}{u1} and ended at {h+g}:{t2}{u2}. How many minutes did the match take?
+exercise: A shop closes at {h}:{t1}{u1} and opens again at {h+g}:{t2}{u2}. For how many minutes is it closed?
+test: How many minutes pass from {h}:{t1}{u1} to {h+g}:{t2}{u2}?
+test: {a}'s swimming practice ran from {h}:{t1}{u1} until {h+g}:{t2}{u2}. How long was it in minutes?
+test: At {h}:{t1}{u1} {a} switched on the computer, and at {h+g}:{t2}{u2} {a.he} switched it off. For how many minutes was it on?
+test: The museum tour began at {h}:{t1}{u1}. It finished at {h+g}:{t2}{u2}. Find its length in minutes.
+exercise: How long, in minutes, is a film that begins at {h}:{t1}{u1} and finishes at {h+g}:{t2}{u2}?
+exercise: {a}'s piano lesson in Chicago goes from {h}:{t1}{u1} to {h+g}:{t2}{u2}. How many minutes is the lesson?
+exercise: A bus left Leeds at {h}:{t1}{u1} and reached York at {h+g}:{t2}{u2}. How many minutes did the journey take?
+exercise: The library in Toronto was closed from {h}:{t1}{u1} until {h+g}:{t2}{u2}. For how many minutes was it closed?
+exercise: A cricket game in Sydney began at {h}:{t1}{u1} and was over at {h+g}:{t2}{u2}. How many minutes did it last?
+exercise: {a} started baking at {h}:{t1}{u1}, and the bread was out of the oven at {h+g}:{t2}{u2}. How many minutes did the baking take?
+exercise: The ferry left Wellington at {h}:{t1}{u1} and docked in Picton at {h+g}:{t2}{u2}. How long was the crossing in minutes?
+exercise: From {h}:{t1}{u1} to {h+g}:{t2}{u2}, {a} played in the park. How many minutes did {a.he} play?
+test: {a} got on a train in Dublin at {h}:{t1}{u1} and got off at {h+g}:{t2}{u2}. How many minutes was {a.he} on the train?
+test: Find the number of minutes between {h}:{t1}{u1} and {h+g}:{t2}{u2}.
+test: A school concert in Ohio ran from {h}:{t1}{u1} to {h+g}:{t2}{u2}. What was its length in minutes?
+test: The power went off at {h}:{t1}{u1} and came back on at {h+g}:{t2}{u2}. For how many minutes was the power off?
+test: A plane took off from Brisbane at {h}:{t1}{u1} and landed at {h+g}:{t2}{u2} the same day. How many minutes was it in the air?
+test: {a} waited at the dentist's from {h}:{t1}{u1} until {h+g}:{t2}{u2}. How many minutes did {a.he} wait?
+exercise: lesson from {h}:{t1}{u1} till {h+g}:{t2}{u2}, how many mins is that
+exercise: {a} started reading {h}:{t1}{u1}, stopped {h+g}:{t2}{u2}. how long, in minutes
+exercise: match kicked off {h}:{t1}{u1} and ended {h+g+1}:{t2}{u2} — no sorry, {h+g}:{t2}{u2}. how many minutes
+exercise: my mate says {h}:{t1}{u1} to {h+g}:{t2}{u2} is {g*60+m2-m1+60} mins. nah he's an hour out. how many minutes really
+test: bus {h}:{t1}{u1} to {h+g}:{t2}{u2}, and it was 3 stops late lol. how many mins on the bus
+test: we waited from {h}:{t1}{u1} til {h+g}:{t2}{u2} at the docs. mins?
+test: {a} reckons {h}:{t1}{u1} → {h+g}:{t2}{u2} is {g*60+m2-m1+10} minutes. that right? how long actually
+exam: It is given that a lesson commences at {h}:{t1}{u1} and concludes at {h+g}:{t2}{u2} on the same day. Determine the duration of the lesson in minutes.
+exam: Whereas {a} commenced reading at {h}:{t1}{u1} and ceased at {h+g}:{t2}{u2}, ascertain the number of minutes for which {a.he} read.
+exam: Ascertain the number of minutes elapsing between {h}:{t1}{u1} and {h+g}:{t2}{u2} of the same day.
+exam: A train departs at {h}:{t1}{u1} and arrives at its destination at {h+g}:{t2}{u2} on the same day. State the duration of the journey, expressed in minutes.
+exercise: Grandad's celebration of life began at {h}:{t1}{u1} and ended at {h+g}:{t2}{u2}. How many minutes did it last?
+exercise: {a} was economical with the truth about homework and said it took "ages", but {a.he} started at {h}:{t1}{u1} and stopped at {h+g}:{t2}{u2}. How many minutes did {a.he} really work?
+test: uncle's "between jobs" so he's on the sofa from {h}:{t1}{u1} till {h+g}:{t2}{u2}, bloody useless. how many mins is that

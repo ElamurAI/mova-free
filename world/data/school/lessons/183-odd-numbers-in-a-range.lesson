@@ -1,0 +1,48 @@
+lesson: 183
+title: How many odd numbers in a range
+level: primary-3
+stars: 2
+explain: Odd and even numbers take turns, so in a range about half of the numbers are odd; the ends decide whether it is one more or one less.
+explain: From 1 up to a number there are as many odd numbers as half of the number, rounded up: from 1 to 9 there are 5, from 1 to 10 also 5.
+explain: From 14 to 31: odd numbers from 1 to 31 are 16, from 1 to 13 are 7, so from 14 to 31 there are 16 - 7 = 9.
+vars: a=name lo=1..60 d=5..80
+let: hi = lo + d
+let: odd = (hi + 1 - (hi + 1) % 2) / 2 - (lo - lo % 2) / 2
+answer: odd
+exercise: How many odd numbers are there from {lo} to {hi}, counting both {lo} and {hi}?
+exercise: The houses on a street are numbered from {lo} to {hi}. The houses with odd numbers are on the left side. How many houses are on the left side?
+exercise: {a} writes all the whole numbers from {lo} to {hi}. How many of the numbers {a.he} writes are odd?
+exercise: Tickets are numbered from {lo} to {hi}. Every ticket with an odd number wins a prize. How many tickets win a prize?
+exercise: The pages of a story run from page {lo} to page {hi}. How many of these pages have an odd number?
+exercise: Seats in a hall are numbered {lo} to {hi}. Only the seats with odd numbers are by the window. How many seats are by the window?
+test: Lockers numbered {lo} through {hi} stand in a row, and {a} opens every locker whose number cannot be split into two equal whole halves. How many lockers does {a.he} open?
+test: Count the numbers between {lo} and {hi}, both included, that leave a remainder of 1 when divided by 2.
+test: {a} reads a book from page {lo} to page {hi} and puts a sticker on each page whose number is not even. How many stickers does {a.he} use?
+exercise: Counting both ends, how many odd numbers are there from {lo} to {hi}?
+exercise: Houses on a street in Boston are numbered {lo} to {hi}. The odd-numbered houses are on the north side. How many houses are on the north side?
+exercise: {a} in Leeds lists every whole number from {lo} up to {hi}. How many odd numbers are on the list?
+exercise: Odd numbers from {lo} to {hi}, both included: how many?
+exercise: Raffle tickets at a fair in Ontario are numbered {lo} to {hi}. Each ticket with an odd number gets a free drink. How many tickets get a free drink?
+exercise: {a} reads a comic from page {lo} through page {hi}. How many of the pages {a.he} reads have odd numbers?
+exercise: In a cinema in Perth the seats are numbered from {lo} to {hi}, and the odd-numbered seats are blue. How many blue seats are there?
+exercise: Mailboxes in a building in Dublin are numbered {lo} to {hi}. The odd-numbered mailboxes are on the left wall. How many mailboxes are on the left wall?
+test: How many of the whole numbers from {lo} up to and including {hi} end in 1, 3, 5, 7 or 9?
+test: {a} in Wellington hops along a number line from {lo} to {hi} and claps on every odd number, the ends included. How many claps does {a.he} make?
+test: Runners in a race in Chicago wear numbers {lo} to {hi}. Runners with odd numbers start first. How many runners start first?
+test: In a long row of lockers numbered {lo} to {hi}, every odd-numbered locker is painted red. How many red lockers are there?
+test: Between {lo} and {hi}, with {lo} and {hi} themselves counted, how many numbers are odd?
+test: A teacher in Glasgow gives a star to every pupil whose register number is odd; the numbers run from {lo} to {hi}. How many stars does she give?
+exercise: how many odd numbers from {lo} to {hi}, both counted
+exercise: houses go {lo} to {hi}, odd ones on the left. how many on the left
+exercise: odd numbers {lo} up to {hi+2} — no wait, {hi}, both ends in. how many
+exercise: raffle tickets {lo} to {hi}, {a} wins on the odd ones (tickets were 2 bucks each btw). how many winning tickets
+test: Sam says {hi}-{lo} = {d} of em. nah. how many odd numbers between {lo} and {hi}, counting the ends
+test: lockers numbered {lo} thru {hi}, odd ones painted blue. how many blue
+test: {a} counts odd numbers only, starts {lo}, stops {hi}. how many does {a.he} say
+exercise: The late Mrs Cole lived on a street with houses numbered {lo} to {hi}. Leaflets for her memorial go only to the houses with odd numbers. How many leaflets are needed?
+exercise: postie got let go so i'm doing his round, odd numbers only, {lo} to {hi}. how many bloody houses
+test: {a} was economical with the truth when {a.he} said {a.he} had counted the odd numbers between {lo} and {hi}, counting {lo} and {hi} themselves. How many odd numbers are there really?
+exam: Determine the cardinality of the set of odd whole numbers lying between {lo} and {hi}, both bounds being included.
+exam: The houses of a street bear the numbers {lo} to {hi} inclusive, those bearing odd numbers being situated upon the left-hand side. Ascertain the number of houses situated upon the left-hand side.
+exam: State the number of odd integers n satisfying the condition {lo} ≤ n ≤ {hi}.
+exam: It is given that tickets numbered consecutively from {lo} to {hi} inclusive have been issued, and that a prize is awarded in respect of every ticket bearing an odd number. Determine the number of prizes awarded.

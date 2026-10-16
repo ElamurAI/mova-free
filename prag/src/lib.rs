@@ -1,0 +1,25 @@
+//! prag — Mova pragmatics: the first cut of the schema (docs/context.md,
+//! "Pragmatics: what was meant") — form, speech act, indirectness, hedging, evaluation, voice and
+//! "what was meant". Silver comes from the LLM (Opus) on open texts with a commercial licence (tales in
+//! the public domain, Tatoeba CC0); the SLM is transparent Rust models over features from the UD tree (`en`),
+//! words and context: an averaged perceptron and memory-based models (IGTree, k nearest neighbours — TiMBL).
+//! The common model interface is `model::Classifier`, so several types work side by side.
+
+pub mod data;
+pub mod eval;
+pub mod feats;
+pub mod fbench;
+pub mod frames;
+pub mod infer;
+pub mod irony;
+pub mod lens;
+pub mod model;
+pub mod opus;
+pub mod agree;
+pub mod roles;
+pub mod rsa;
+pub mod rules;
+pub mod schema;
+pub mod vn;
+pub mod vnconv;
+pub mod silver;

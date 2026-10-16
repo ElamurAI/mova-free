@@ -1,0 +1,62 @@
+# onto v2: contested candidates from wd-candidates.tsv (confidence 0.45–0.8) — LLM second opinion (claude-opus-5-5, effort high). Not the truth: into the core only after a human.
+# concept	synset	prop	value	source	confidence	vmm	why
+water	oewn-07951744-n	color	Q3133 green	Q29053744 liquid water P462 normal	0.54	no	Water is typically colorless; green comes from algae or depth
+wolf	oewn-02116752-n	food	Q89 apple	Q18498 grey wolf P1034 normal	0.54	no	Wolves are carnivores; apples are not typical wolf food
+fox	oewn-02120985-n	habitat	Q205895 landmass	Q25324 Canidae P2974 normal ← anchor Q8331 fox (2 steps)	0.59	refine	"Landmass" is too general: forests, grasslands, tundra
+salmon	oewn-02537365-n	material	Q8195619 human food	Q951964 food product P186 normal ← anchor Q2796766 salmon (3 steps)	0.50	no	Wrong sense: this is the live fish, not something made of food
+rabbit	oewn-02326697-n	no_part	Q5 human	Q24249370 non-human animal P3113 normal ← anchor Q9394 rabbit (3 steps)	0.50	no	Nonsense: "human" is not a body part
+bear	oewn-02134305-n	part	Q170430 predation	Q81875 carnivore P527 normal ← anchor Q30090244 bear (1 steps)	0.69	no	Predation is a behavior, not a body part
+bear	oewn-02134305-n	use	Q30090244 bear	Q11788 Ursidae P366 normal ← anchor Q30090244 bear (1 steps)	0.69	no	Circular: the value is the concept itself
+water	oewn-07951744-n	color	Q5960345 turquoise	Q29053744 liquid water P462 normal	0.54	no	Typical water is colorless, not turquoise
+wolf	oewn-02116752-n	food	Q144 dog	Q18498 grey wolf P1034 normal	0.54	no	Wolves rarely eat dogs; wild ungulates are their typical prey
+wolf	oewn-02116752-n	habitat	Q205895 landmass	Q25324 Canidae P2974 normal ← anchor Q18498 grey wolf (1 steps)	0.46	refine	"Landmass" is too general: forests, tundra, grasslands, mountains
+salmon	oewn-02537365-n	material	Q25403900 food ingredient	Q951964 food product P186 normal ← anchor Q2796766 salmon (3 steps)	0.50	no	Wrong sense: the live fish is not made of an ingredient
+cat	oewn-02124272-n	no_part	Q5 human	Q24249370 non-human animal P3113 normal ← anchor Q146 cat (3 steps)	0.50	no	Nonsense: "human" is not a body part
+bear	oewn-02134305-n	part	Q2961137 necrophagy	Q81875 carnivore P527 normal ← anchor Q30090244 bear (1 steps)	0.69	no	Scavenging is a behavior, not a body part
+bear	oewn-02134305-n	use	Q2095 food	Q223930 game P366 normal ← anchor Q30090244 bear (3 steps)	0.50	no	Bears are mainly wild animals; food use is not default knowledge
+water	oewn-07951744-n	color	Q11567495 colorlessness	Q29053744 liquid water P462 normal	0.54	yes	Pure water is colorless
+wolf	oewn-02116752-n	food	Q146 cat	Q18498 grey wolf P1034 normal	0.54	no	Cats are not typical wolf prey
+horse	oewn-02377103-n	habitat	Q4421 forest	Q27742 Equus ferus P2974 normal ← anchor Q726 horse (1 steps)	0.69	no	Horses live on grasslands, pastures and farms, not forests
+herring	oewn-02534659-n	material	Q8195619 human food	Q951964 food product P186 normal ← anchor Q3127419 herring (3 steps)	0.50	no	Wrong sense: the live fish is not made of food
+dog	oewn-02086723-n	no_part	Q5 human	Q24249370 non-human animal P3113 normal ← anchor Q144 dog (3 steps)	0.50	no	Nonsense: "human" is not a body part
+bear	oewn-02134305-n	part	Q1074 skin	Q223930 game P527 normal ← anchor Q30090244 bear (3 steps)	0.50	yes	Bears have skin, covered with fur
+bear	oewn-02134305-n	use	Q381165 trophy	Q223930 game P366 normal ← anchor Q30090244 bear (3 steps)	0.50	no	Trophy use comes from the game class, not a typical purpose
+water	oewn-07951744-n	color	Q17244894 dark brown	Q29053744 liquid water P462 normal	0.54	no	Typical water is colorless, not dark brown
+wolf	oewn-02116752-n	food	Q152 fish	Q18498 grey wolf P1034 normal	0.54	no	Wolves eat fish only occasionally; typical prey is deer, elk, moose
+horse	oewn-02377103-n	habitat	Q1006733 grassland	Q27742 Equus ferus P2974 normal ← anchor Q726 horse (1 steps)	0.69	yes	Horses are grassland grazers
+herring	oewn-02534659-n	material	Q25403900 food ingredient	Q951964 food product P186 normal ← anchor Q3127419 herring (3 steps)	0.50	no	Wrong sense: the live fish is not made of an ingredient
+horse	oewn-02377103-n	no_part	Q5 human	Q24249370 non-human animal P3113 normal ← anchor Q726 horse (3 steps)	0.50	no	Nonsense: "human" is not a body part
+bear	oewn-02134305-n	part	Q19862498 game meat	Q223930 game P527 normal ← anchor Q30090244 bear (3 steps)	0.50	refine	"Game meat" means hunted meat; the bear's part is meat/flesh
+bear	oewn-02134305-n	use	Q878138 fur trade	Q223930 game P366 normal ← anchor Q30090244 bear (3 steps)	0.50	no	Fur trade comes from the game class, not a typical purpose
+water	oewn-07951744-n	color	Q23444 white	Q283 water P462 normal ← anchor Q29053744 liquid water (1 steps)	0.46	no	Liquid water is not white; only snow, ice or foam is
+wolf	oewn-02116752-n	food	Q830 cattle	Q18498 grey wolf P1034 normal	0.54	refine	Wolves sometimes take livestock but mainly eat deer, elk, moose
+fish	oewn-02514684-n	habitat	Q9430 ocean	Q152 fish P2974 normal	0.63	yes	Many fish live in the ocean; this is common knowledge.
+apple	oewn-07755101-n	material	Q8195619 human food	Q951964 food product P186 normal ← anchor Q89 apple (3 steps)	0.50	no	The value is food, not a material; wrong property.
+cow	oewn-02406106-n	no_part	Q202771 Y chromosome	Q43445 female organism P3113 normal ← anchor Q11748378 cow (2 steps)	0.59	yes	A cow is female, so it has no Y chromosome.
+rabbit	oewn-02326697-n	part	Q103459 livestock	Q622852 domesticated animal P527 normal ← anchor Q9394 rabbit (2 steps)	0.59	no	Livestock is a category, not a body part.
+bear	oewn-02134305-n	use	Q9338417 leathermaking	Q223930 game P366 normal ← anchor Q30090244 bear (3 steps)	0.50	no	Bears are not typically used for leathermaking.
+water	oewn-07951744-n	color	Q1396399 colorless	Q283 water P462 normal ← anchor Q29053744 liquid water (1 steps)	0.46	yes	Pure water is colorless.
+wolf	oewn-02116752-n	food	Q5113 bird	Q18498 grey wolf P1034 normal	0.54	refine	Mainly hoofed animals such as deer, elk and moose; birds are rare.
+fish	oewn-02514684-n	habitat	Q15324 body of water	Q152 fish P2974 normal	0.63	yes	Fish live in bodies of water.
+apple	oewn-07755101-n	material	Q25403900 food ingredient	Q951964 food product P186 normal ← anchor Q89 apple (3 steps)	0.50	no	The value is a food role, not a material.
+goat	oewn-02419165-n	no_part	Q5 human	Q24249370 non-human animal P3113 normal ← anchor Q2934 goat (3 steps)	0.50	no	A human is not a part; the value is meaningless here.
+cat	oewn-02124272-n	part	Q103459 livestock	Q622852 domesticated animal P527 normal ← anchor Q146 cat (2 steps)	0.59	no	Livestock is not a body part; cats aren't livestock anyway.
+bear	oewn-02134305-n	use	Q30897420 Q30897420	Q223930 game P366 normal ← anchor Q30090244 bear (3 steps)	0.50	no	The value is an unlabeled item with no meaning.
+water	oewn-07951744-n	color	Q5148636 color of water	Q283 water P462 normal ← anchor Q29053744 liquid water (1 steps)	0.46	refine	Say colorless (slightly bluish in bulk); the current value is circular.
+wolf	oewn-02116752-n	food	Q7368 sheep	Q18498 grey wolf P1034 normal	0.54	yes	Wolves are well known for preying on sheep.
+fish	oewn-02514684-n	habitat	Q102192 fresh water	Q152 fish P2974 normal	0.63	yes	Many common fish live in rivers and lakes.
+pear	oewn-07783823-n	material	Q8195619 human food	Q951964 food product P186 normal ← anchor Q13099586 pear (3 steps)	0.50	no	The value is a food role, not what a pear is made of.
+sheep	oewn-02414351-n	no_part	Q5 human	Q24249370 non-human animal P3113 normal ← anchor Q7368 sheep (3 steps)	0.50	no	A human is not a part; the value is meaningless.
+dog	oewn-02086723-n	part	Q103459 livestock	Q622852 domesticated animal P527 normal ← anchor Q144 dog (2 steps)	0.59	no	Livestock is not a part of a dog.
+cat	oewn-02124272-n	use	Q16514899 companionship	Q39201 pet P366 normal ← anchor Q146 cat (1 steps)	0.69	yes	Cats are kept as pets for companionship.
+spade	oewn-04273770-n	color	Q23445 black	Q2094951 spade P462 normal	0.63	no	Wrong sense: black belongs to the card suit, not the digging tool.
+wolf	oewn-02116752-n	food	Q8332 red fox	Q18498 grey wolf P1034 normal	0.54	no	Wolves may kill foxes but rarely eat them.
+fish	oewn-02514684-n	habitat	Q105533 brackish water	Q152 fish P2974 normal	0.63	no	Only a few fish live in brackish water.
+pear	oewn-07783823-n	material	Q25403900 food ingredient	Q951964 food product P186 normal ← anchor Q13099586 pear (3 steps)	0.50	no	The value is a food role, not a material.
+pig	oewn-02398058-n	no_part	Q5 human	Q24249370 non-human animal P3113 normal ← anchor Q787 pig (3 steps)	0.50	no	A human is not a part; the value is meaningless.
+horse	oewn-02377103-n	part	Q103459 livestock	Q622852 domesticated animal P527 normal ← anchor Q726 horse (2 steps)	0.59	no	Livestock is not a body part.
+cat	oewn-02124272-n	use	Q11451 agriculture	Q1936487 beneficial organism P366 normal ← anchor Q146 cat (2 steps)	0.59	refine	Pest control: cats catch rodents on farms.
+wolf	oewn-02116752-n	food	Q10978 grape	Q18498 grey wolf P1034 normal	0.54	no	Wolves are carnivores and don't typically eat grapes.
+fish	oewn-02514684-n	habitat	Q1070117 deep sea	Q152 fish P2974 normal	0.63	no	Only specialized fish live in the deep sea; not typical.
+plum	oewn-07767427-n	material	Q8195619 human food	Q951964 food product P186 normal ← anchor Q12372598 plum (3 steps)	0.50	no	The value is a food role, not a material.
+monkey	oewn-02486953-n	no_part	Q5 human	Q24249370 non-human animal P3113 normal ← anchor Q1367 monkey (1 steps)	0.69	no	A human is not a part; the value is meaningless.

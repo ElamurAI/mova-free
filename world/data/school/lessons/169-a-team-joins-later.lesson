@@ -1,0 +1,50 @@
+lesson: 169
+title: Working alone first, then together
+level: primary-4
+stars: 2
+explain: When one team starts alone and the other joins later, first take away the work done alone, then share the rest at the speed of both teams.
+explain: A job of 300 m: team A lays 40 m a day and works alone for 2 days, laying 80 m; 220 m are left.
+explain: Then B joins with 15 m a day: together 55 m a day, so 220 / 55 = 4 more days, and the whole job takes 2 + 4 = 6 days.
+vars: a=name b=name p=10..50 q=10..50 d=2..4 t=2..6 z=2..5
+let: N = p * d + (p + q) * t
+let: e = d + 1
+need: N <= 900
+answer: d + t
+exercise: Team A lays {p} metres of road a day and team B lays {q} metres a day. The road is {N} metres long. Team A works alone for {d} days, then team B joins. How many days does the whole road take?
+exercise: {a} picks {p} apples an hour and {b} picks {q} apples an hour. {a} starts alone; after {d} hours {b} joins in. How many hours in all does it take to pick {N} apples?
+exercise: A pipe lets {p} litres a minute into a tank of {N} litres. After {d} minutes a second pipe giving {q} litres a minute is opened too. How many minutes after the start is the tank full?
+exercise: A printer prints {p} pages a minute. A job has {N} pages. After {d} minutes a second printer, {q} pages a minute, starts helping. How many minutes does the whole job take?
+exercise: One workshop makes {p} chairs a day. After {d} days another workshop making {q} chairs a day joins the order for {N} chairs. In how many days from the start is the order finished?
+exercise: {a} works alone on a {N}-piece puzzle for {d} hours, placing {p} pieces an hour. Then {b} helps, placing {q} pieces an hour. How many hours does the puzzle take in all?
+test: How many days does a {N}-metre fence take to paint if one painter does {p} metres a day alone for the first {d} days, and from the {e.ord} day a second painter adds {q} metres a day?
+test: A {N}-page book is being typed. {a} types {p} pages a day and starts on the first day; {b}, who types {q} pages a day, starts on day {e} and they type together to the end. On which day is the book finished?
+test: Two pumps empty a pond holding {N} buckets. Pump A, {p} buckets an hour, runs from the start. Pump B, {q} buckets an hour, is switched on {d} hours later and runs to the end. The pond has {z} ducks. How many hours does emptying the pond take?
+test: For {d} days only crew one worked on a {N}-metre ditch, digging {p} metres a day; then crew two, digging {q} metres a day, came to help and they finished together. How long did the ditch take, in days?
+exercise: A crew in Ohio paves {p} metres of road a day. After {d} days a second crew, paving {q} metres a day, joins it. The road is {N} metres long. How many days does the whole job take?
+exercise: How many hours does it take to pick {N} strawberries if {a} picks {p} an hour alone for the first {d} hours and then {b} joins in, picking {q} an hour?
+exercise: A hose fills a pool of {N} litres at {p} litres a minute. {d} minutes later a second hose is turned on that adds {q} litres a minute. How many minutes after the first hose was turned on is the pool full?
+exercise: {a} starts stuffing {N} envelopes for a school in Dublin, {p} envelopes an hour. After {d.words} hours {b} helps, stuffing {q} an hour. How many hours does the whole task take?
+exercise: A factory in Ontario must make {N} toys. One machine makes {p} toys a day alone for {d} days; then a second machine making {q} toys a day starts too. In how many days in total are the toys made?
+exercise: For the first {d} days only {a} works on a wall of {N} bricks, laying {p} bricks a day. Then {b}, laying {q} bricks a day, joins {a.him}. How many days does the wall take altogether?
+exercise: A fair in Sydney orders {N} cakes. One baker bakes {p} cakes an hour and starts alone; {d} hours later a second baker starts too, baking {q} cakes an hour. How many hours from the start until the order is done?
+exercise: {N} sandbags must be filled. One team fills {p} bags an hour and works alone for {d} hours, then a team filling {q} bags an hour joins it. How many hours does the job take in total?
+test: {a} and {b} rake {N} square metres of lawn in a park in London. {a} rakes {p} square metres an hour and begins alone; {b} rakes {q} an hour and starts {d} hours later. They work until the lawn is done. How many hours does it take from the start?
+test: A mill in Wales has to grind {N} sacks of grain. Its first wheel grinds {p} sacks a day from day one; a second wheel grinding {q} sacks a day starts on day {e}, and both run to the end. On which day is all the grain ground?
+test: How many minutes does it take to fill a tank of {N} litres if a tap running {p} litres a minute is on from the start and a second tap running {q} litres a minute is opened after {d} minutes?
+test: A painter in Halifax paints {p} metres of fence each day, working alone for {d} days. Then a helper painting {q} metres a day joins in, and the {N}-metre fence is finished. How many days did it take altogether?
+test: Two harvesters on a farm in Kansas cut {N} rows of wheat. The first cuts {p} rows an hour from the start; the second, {q} rows an hour, starts after {d} hours. The farm has {z} barns. How long, in hours, does the harvest take?
+test: {N} pages had to be copied. {a}'s copier, {p} pages a minute, ran alone for the first {d} minutes, then {b}'s copier, {q} pages a minute, joined it. In how many minutes was the copying finished?
+exercise: team A {p} m a day, team B {q}. road's {N} m. A alone {d} days then B joins. how many days altogether
+exercise: {a} picks {p} apples an hour, starts alone, {b} joins after {e} hours — no wait, after {d} hours, picks {q} an hour. {N} apples, how many hours all up
+exercise: pipe {p} l a min into {N} l tank, after {d} min second pipe {q} l a min. Sam says {t} minutes. nah, how many mins from the start really
+exercise: tank's {N} l, pipe {p} l/min, after {d} mins another pipe {q} l/min, oh and {z} kids watching. how many mins from start til full
+test: crew 1 does {p} m a day, starts alone, {d} days later crew 2 joins doing {q}. job's {N} m. days in total?
+test: {a} knits {p} rows a day on {a.his} own for {d} days then {b} helps with {q} a day, {N} rows. how many days the whole thing
+test: printer does {p} pages a min, alone {d} min, then 2nd one joins {q} a min. {N} pages, {z} of em in colour btw. minutes from start?
+exercise: Team B's foreman was "let go", so team B started late. Team A lays {p} metres of road a day alone for {d} days, then team B, laying {q} metres a day, joins in. The road is {N} metres long. How many days does the whole road take?
+exercise: {b} was "resting {b.his} eyes" — fast asleep, lazy sod — so {a} picked {p} apples an hour alone for {d} hours. then {b} woke up and joined at {q} an hour. {N} apples. how many hours all up
+test: After the old farmer passed on, his two nephews dug up his {N} potatoes: the first, digging {p} potatoes an hour, started alone, and the second, digging {q} an hour, came {d} hours later. How many hours did the digging last altogether?
+exam: It is given that team A lays {p} metres of road per day and team B {q} metres per day, the road being {N} metres in length. Team A works alone for {d} days, whereupon team B joins it. Determine the total number of days required for the completion of the road.
+exam: Whereas {a} picks {p} apples per hour and {b} {q} apples per hour, {a} commencing alone and {b} joining after {d} hours, ascertain the total number of hours required to pick {N} apples.
+exam: An empty tank of {N} litres is filled by a first pump delivering {p} litres per minute, operating alone for {d} minutes, subsequent to which a second pump delivering {q} litres per minute is also set in operation. Ascertain the total number of minutes, reckoned from the start of the first pump, requisite for the filling of the tank.
+exam: A manuscript of {N} pages is to be typed. One clerk types {p} pages per day and works unaided for the first {d} days, whereafter a second clerk typing {q} pages per day joins the undertaking. State the total duration of the undertaking in days.

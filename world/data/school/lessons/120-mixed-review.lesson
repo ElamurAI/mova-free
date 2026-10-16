@@ -1,0 +1,54 @@
+lesson: 120
+title: Mixed challenge: reasoning stories
+stars: 2
+explain: Each story here is one of the kinds met before: a price per thing, a speed, ages, a pattern, a ratio, an average, or working backwards.
+explain: First ask: what kind of story is it? Then use its rule: price of one × how many; speed × hours; the difference of ages never changes.
+explain: Example: 3 kites cost 15 dollars, so one costs 15 / 3 = 5 and 6 kites cost 6 × 5 = 30 dollars.
+vars: a=name b=name p=2..6 u=2..9 m=2..9 g=2..6
+let: z = m * u
+need: p != m
+need: z > 2 * g + 1
+need: z > p + 1
+need: z - (m - 1) * g >= 1
+answer: z
+exercise: {p} pens cost {p*u} dollars. How many dollars do {m} pens cost?
+exercise: A bike goes {p*u} km in {p} hours. At the same speed, how many km does it go in {m} hours?
+exercise: For every {p} red beads there are {u} blue beads. There are {p*m} red beads. How many blue beads are there?
+exercise: {a} is {z+g} years old. How old was {a.he} {g} years ago?
+exercise: {a} scored {z+g}, {z-g} and {z} points in three games. What is {a.his} average score?
+exercise: A toy robot moves {p} metres every minute. How many minutes does it take to move {p*z} metres?
+exercise: {a} spent half of {a.his} money and then {g} dollars more. {a.He} has {z/2-g} dollars left. How many dollars did {a.he} have at first?
+exercise: On day 1 {a} reads {z-(m-1)*g} pages, and each day {g} pages more than the day before. How many pages does {a.he} read on day {m}?
+test: {b} is {g} years older than {a}. In {p} years {b} will be {z+g+p}. How old is {a} now?
+test: A tortoise walks {p} metres in a minute. The path across the garden is {p*z} metres long. How many minutes does the tortoise take to cross it?
+test: {a} paid {p*u} dollars for {p} tickets to a show that lasts {g} hours. {b} needs {m} tickets at the same price. How much will {b} pay, in dollars?
+test: There are {u} cats for every {p} dogs at the shelter, and {p*m} dogs in all. How many cats are there?
+test: Four days of rain gave {z+g}, {z-g}, {z+p} and {z-p} mm. What was the average rainfall a day, in mm?
+exercise: In a shop in Ohio, {p} notebooks cost {p*u} dollars altogether. What do {m} notebooks cost, in dollars?
+exercise: A car in Australia travels {p*u} km in {p} hours. Keeping the same speed, how far does it travel in {m} hours, in km?
+exercise: There are {u} blue beads for every {p} red beads on a necklace. The necklace has {p*m} red beads. How many blue beads does it have?
+exercise: How old was {a} {g} years ago, if {a.he} is {z+g} now?
+exercise: {a}'s scores in three rugby matches in Wellington were {z-g}, {z} and {z+g} points. What is {a.his} mean score per match?
+exercise: How many minutes does a toy train take to go {p*z} metres if it goes {p} metres per minute?
+exercise: {a} spent half of {a.his} pounds at a fair, then {g} pounds more on candyfloss, and {z/2-g} pounds were left. How many pounds did {a.he} have to start with?
+exercise: {a} reads {z-(m-1)*g} pages on the first day of the holidays and {g} more pages each day than the day before. How many pages does {a.he} read on day {m}?
+test: {a} is {g} years younger than {b}. {p} years from now, {b} will be {z+g+p}. What is {a}'s age now?
+test: A duckling waddles across a garden in Kent at {p} metres a minute. The garden is {p*z} metres across. How many minutes does the crossing take?
+test: Bus tickets in Dublin all cost the same: {p} tickets are {p*u} euros. The ride lasts {g} hours. How many euros are {m} tickets?
+test: At an animal shelter in Toronto there are {u} rabbits to every {p} guinea pigs. There are {p*m} guinea pigs. How many rabbits are there?
+test: The temperatures at noon on four days in Perth were {z+g}, {z-g}, {z+p} and {z-p} degrees. What was the average noon temperature, in degrees?
+test: {b} had some money, spent half of it on a kite, and then {g} dollars more on string. {z/2-g} dollars remained. How much money did {b} have before shopping, in dollars?
+exercise: {p} pens r {p*u} bucks. how much for {m} then
+exercise: {a}'s {z+g+1}, no wait, {z+g}. how old was {a.he} {g} years ago
+exercise: {b} reckons u times them: {p*u} × {m} = {p*u*m}. {p} pens cost {p*u} dollars. nah that's wrong innit, how much for {m} pens
+exercise: bike does {p*u} km in {p} hrs, we went past a farm with {g+3} cows lol. same speed how far in {m} hrs
+test: {a} blew half {a.his} cash then {g} more on chips, {z/2-g} left. how much {a.he} have to start
+test: {u} cats for every {p} dogs at the shelter, {p*m+1} dogs, no sorry, {p*m} dogs. how many cats
+test: tortoise does {p} m a minute, path's {p*z} m, it's like {g} o'clock too. how many mins to cross
+exam: It is given that {p} pens are priced in aggregate at {p*u} dollars. Determine the total expenditure incurred in the purchase of {m} such pens.
+exam: A bicycle traverses a distance of {p*u} km in {p} hours. On the assumption that its speed remains constant, ascertain the distance, in kilometres, traversed in {m} hours.
+exam: Whereas red beads and blue beads are present in the fixed ratio of {p} to {u}, and the number of red beads is {p*m}, state the number of blue beads.
+exam: Compute the cost, in dollars, of {m} articles, given that {p} identical articles are priced at {p*u} dollars in total.
+exercise: Grandad's old car finally gave up the ghost, so {a} rides a bike now. It goes {p*u} km in {p} hours. At the same speed, how many km does it go in {m} hours?
+exercise: Money's a bit tight since Mum was laid off, so she checks the prices: {p} loaves cost {p*u} dollars. How many dollars do {m} loaves cost?
+test: they call it a "price adjustment", total rip-off. {p} tins were {p*u} dollars. how much for {m}, same price

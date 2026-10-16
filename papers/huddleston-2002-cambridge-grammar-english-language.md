@@ -8,7 +8,7 @@
 This is a large reference grammar of contemporary Standard English, written by a team led by the two authors. It describes English syntax and morphology systematically, using a carefully defined set of categories (word classes) and functions (subject, object, complement, modifier and so on). It departs from traditional school grammar in several places, for example in how it treats prepositions, determinatives and subordinators. It is widely used by linguists and computational linguists as an authoritative source on what English constructions are possible. Among many other topics, it discusses which adjectives can take a noun phrase complement directly, such as *worth*, *like* and *unlike*.
 
 ## How Mova uses it
-- `ai/en/seeds/verbal/core-objects.md` — the rule `en.verbal.object-head-adjective` states that among adjectives only *worth*, *like* and *unlike* take a direct object (`obj`/`iobj`) in UD.
+- `en/seeds/verbal/core-objects.md` — the rule `en.verbal.object-head-adjective` states that among adjectives only *worth*, *like* and *unlike* take a direct object (`obj`/`iobj`) in UD.
 - The rule's source is given as the UD English documentation (core arguments), which itself follows this grammar, plus Poutsma 1923; the book is used indirectly, through UD's guidelines, not read directly.
 - The rule is a declarative check on parsed trees with severity "warn", used to flag suspicious annotation or parser output.
 

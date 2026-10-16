@@ -8,10 +8,10 @@
 Jespersen's multi-volume descriptive grammar of English, written over four decades, covers the language from Shakespeare to the 1930s and explains each present-day form through its history. Every phenomenon is illustrated by many dated quotations from literature, labelled as British or American, vulgar, archaic or poetic, which makes the work a large corpus of usage in its own right. Jespersen splits grammar into morphology (from form to meaning, the hearer's view) and syntax (from meaning to form, the speaker's view), and uses his own terminology: ranks (primary, secondary, tertiary words), nexus versus junction, conversion as a zero suffix, and "metanalysis" for re-segmentation of words. Mova uses five parts: four on syntax and the morphology volume. For annotation checking it is most valuable for its inventories of forms (irregular verbs, suffixes), its spelling rules for inflection, and its systematic account of doublet forms and which one is used attributively or predicatively.
 
 ## How Mova uses it
-- The most widely cited grammar in the seeds: about 70 files across ai/en/seeds/morph/, ai/en/seeds/verbal/ and ai/en/seeds/lexicon/, and about 44 executable rules of the grammar expert system (ai/en/src/expert.rs) name it as a source.
-- Verb lexicon lists: copula-like verbs that take no object, verbs taking an infinitive vs a gerund object, verbs licensing an indirect object, verbs without a passive, retained objects in the passive (ai/en/seeds/lexicon/verb-*.md).
-- Morphology: lemma checks for homograph past forms and "lay" as past of "lie", -ness nouns, conversion and word-formation suffixes, plural mutation, pronoun paradigms (ai/en/seeds/morph/).
-- Syntax: subject inversion in questions, do-support, negation, passive subjects, indirect object before direct object, open complements (ai/en/seeds/verbal/).
+- The most widely cited grammar in the seeds: about 70 files across en/seeds/morph/, en/seeds/verbal/ and en/seeds/lexicon/, and about 44 executable rules of the grammar expert system (en/src/expert.rs) name it as a source.
+- Verb lexicon lists: copula-like verbs that take no object, verbs taking an infinitive vs a gerund object, verbs licensing an indirect object, verbs without a passive, retained objects in the passive (en/seeds/lexicon/verb-*.md).
+- Morphology: lemma checks for homograph past forms and "lay" as past of "lie", -ness nouns, conversion and word-formation suffixes, plural mutation, pronoun paradigms (en/seeds/morph/).
+- Syntax: subject inversion in questions, do-support, negation, passive subjects, indirect object before direct object, open complements (en/seeds/verbal/).
 - Jespersen's descriptions are turned into conditions on Universal Dependencies trees; his rank and nexus ideas also inform the language-independent annotation design in the annot crate (background).
 
 ## Effectiveness in Mova

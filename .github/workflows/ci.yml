@@ -1,0 +1,43 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      MOVA_DATA: ${{ github.workspace }}/../mova-data
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Cache the model
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.MOVA_DATA }}/en/models
+          key: en-model-${{ hashFiles('install.sh') }}
+      - name: Fetch the model (en.bin, SHA-256 checked)
+        run: ./install.sh
+      - name: Build the workspace (CPU only)
+        run: cargo build --release --locked
+      - name: Unit tests
+        run: tests/run.sh
+      - name: Deterministic (the same story read twice gives the same bytes)
+        run: |
+          W=target/release/world
+          $W babi-probe "Mary went to the kitchen." "Mary picked up the apple." "Mary went to the garden." "Where is the apple?" > a.txt
+          $W babi-probe "Mary went to the kitchen." "Mary picked up the apple." "Mary went to the garden." "Where is the apple?" > b.txt
+          cmp a.txt b.txt
+          grep -F '("garden", "apple in mary")' a.txt

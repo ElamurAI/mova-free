@@ -46,8 +46,8 @@ with a domain prompt, which keeps the cost small. The domain of a text comes fro
 
 Each step is a separate run, measured before the next one starts.
 
-1. **Roles** (pilot done: 5 verbs × 302 nouns,: verb × noun → SUBJ and OBJ scores.
-   Now: 100 frequent tale verbs × 302 nouns, 4 waves of 25 verbs, 20 minutes apart (`data/runs/absurd-roles`).
+1. **Roles** (pilot done: 5 verbs × 302 nouns, $0.24): verb × noun → SUBJ and OBJ scores.
+   Now: 100 frequent tale verbs × 302 nouns, 4 waves of 25 verbs, 20 minutes apart (`runs/absurd-roles` in the data directory).
 2. **Compile**: scores → `global` table (build.rs, integer ids, source noted per cell);
    `sense-check` uses graded scores; measure precision/recall against gold trees.
 3. **Reranking A/B**: parser k-best → least-absurd choice; paired test on LAS.
@@ -90,8 +90,8 @@ Deterministic (two runs, identical logs).
 | 4 | 4/6 | 64/85 = 75.3% |
 
 Coverage of verbs with a noun argument: tales 44.9% → 57.3%, EWT 31% → 37%. Still monotone; score 4 marks a
-parse error three times out of four on the tales.
-Runs: `data/runs/absurd-check-105/`.
+parse error three times out of four on the tales. Waves 2–4 ran on the subscription (`annot direct-run`).
+Runs: `runs/absurd-check-105/` in the data directory.
 
 ## Reranking and repair (2026-10-02)
 
@@ -111,13 +111,13 @@ obl:unmarked, 6 nsubj:pass for nsubj — candidates the beam never proposes (one
 Tales test LAS 76.85 → 76.88 (paired bootstrap p = 0.002): small, precise, significant. The main value is
 cheaper development — the matrix points at the errors and says which fix fits — rather than a large LAS gain.
 
-## Growth on 2026-10-02 (rated through a batch API)
+## Growth on 2026-10-02 (Batches API, $36 of a $40 budget)
 
-| step | cells |
-|---|---|
-| fairy-tale layer, 105 verbs | 27 589 |
-| roles, 300 new verbs × 302 nouns | 90 585 |
-| roles, 405 verbs × 299 new nouns | 121 053 |
+| step | cells | cost |
+|---|---|---|
+| fairy-tale layer, 105 verbs (rest after 19 on the subscription) | 27 589 | $3.20 |
+| roles, 300 new verbs × 302 nouns | 90 585 | $13.00 |
+| roles, 405 verbs × 299 new nouns | 121 053 | $19.78 |
 
 Level 1 now: 405 verbs × 601 nouns = 243 346 real-world cells + the tale layer for the first 105 verbs.
 
@@ -176,12 +176,12 @@ Idioms are a level-1 base, not a hand list. `tools/wikt-idioms` reads the Englis
 multiword entries: 9 085 idioms, 61 684 verb phrases, 3 381 phrases, 1 519 proverbs); `world idioms <cells.tsv>
 <events.tsv> <wikt.tsv> --out <dir>` joins them with corpus statistics — PMI of verb and object over dependency
 arcs in 5.78 M sentences (syntax-aware PMI after Bogdanova 2026, PARSEME 2.0; association over frequency, Dunn
-2019) — and the matrix (literal reading odd or absurd). Result `global/data/idioms.tsv` (CC BY-SA, Wiktionary):
+2019) — and the matrix (literal reading odd or absurd). Result `idioms.tsv` (CC BY-SA, Wiktionary; kept out of the free release):
 8 057 pairs — idioms (make one's way, take part, pay attention), light verbs (take place, take care, make an
 effort), collocations (tell a story, shake one's head), 564 phrasal verbs (give up, carry out); corpus-only pairs
 are `candidate` and never suppress an alarm (the negative control caught "eat mouse" as a corpus "idiom").
 
 In the matrix a dictionary-confirmed idiom, light verb or collocation is not literally absurd as an object, and
 with an idiomatic object the doer is not judged ("the marriage took place"). Corpus absurd share 9.1% → 8.9%.
-Asked the research library for MAGPIE, PARSEME 1.3 English, EPIE and the classics (Sag et al. 2002, Church & Hanks
+Requested for the library: MAGPIE, PARSEME 1.3 English, EPIE and the classics (Sag et al. 2002, Church & Hanks
 1990, Fazly et al. 2009, Constant et al. 2017) and LLM-and-idiom studies.

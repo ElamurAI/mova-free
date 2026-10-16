@@ -1,0 +1,12 @@
+[package]
+name = "layers"
+version.workspace = true
+edition = "2024"
+description = "Mova SLM: three levels of logic — global (principles, exact core, shortcuts), domain modules, context — with transparent routing (docs/design-three-levels.md)."
+
+[dependencies]
+# global mathematics — the exact core
+math = { path = "../math" }
+# global level — compiled static links (values, shortcuts, verb classes)
+
+global = { path = "../global" }

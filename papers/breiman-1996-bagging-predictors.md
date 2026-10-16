@@ -8,7 +8,7 @@
 Bagging ("bootstrap aggregating") builds several versions of a predictor by training each on a bootstrap resample of the training set and then combines them, by voting for classification or averaging for regression. The paper argues that the gain comes from reducing variance: learners whose output changes a lot with small perturbations of the data, such as decision trees or subset selection in regression, benefit most, whereas stable learners such as nearest neighbours gain little or nothing. Experiments on real and simulated datasets show substantial error reductions for unstable methods. The idea became a foundation of later ensemble methods such as random forests.
 
 ## How Mova uses it
-- `ai/math/src/bin/mathsolve.rs` (`--bag`) — for the arithmetic word-problem solver, two extra beam-search perceptron models are trained with reversed and with shuffled training order (instead of bootstrap resamples), and their top-K candidate solutions are pooled for the reranking judge.
+- `math/src/bin/mathsolve.rs` (`--bag`) — for the arithmetic word-problem solver, two extra beam-search perceptron models are trained with reversed and with shuffled training order (instead of bootstrap resamples), and their top-K candidate solutions are pooled for the reranking judge.
 - `--bag-judge` — a variant where the judge is trained on the merged candidates of the three models with a "votes" feature (how many models proposed the answer).
 
 ## Effectiveness in Mova

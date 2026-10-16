@@ -8,7 +8,7 @@
 The paper proposes a systematic methodology for testing the numerical accuracy of statistical software packages. It argues that users tend to trust the numbers a package prints, although numerical errors in estimation, random number generation and statistical distributions can be serious. The method has three parts: tests of estimation (using the NIST Statistical Reference Datasets with certified values for univariate statistics, ANOVA, linear and nonlinear regression), tests of random number generators, and tests of statistical distribution functions. Accuracy is summarised with the log relative error (LRE), which roughly counts the number of correct significant digits in a computed result compared with the certified value. Datasets are graded by difficulty, so a package can be judged by how gracefully its accuracy degrades on ill-conditioned problems. The work became a standard reference for benchmarking statistical and spreadsheet software.
 
 ## How Mova uses it
-- `ai/mlab/tests/ext_nist.rs` — the MATLAB-compatible numeric engine `mlab` is tested on NIST StRD datasets (11 regressions, 11 ANOVA, 9 univariate; data files under `ai/mlab/tests/data/ext/nist/`).
+- `mlab/tests/ext_nist.rs` — the MATLAB-compatible numeric engine `mlab` is tested on NIST StRD datasets (11 regressions, 11 ANOVA, 9 univariate; data files under `mlab/tests/data/ext/nist/`).
 - The yardstick is LRE as defined in this paper, capped at 15 digits; the test prints a table of minimum LRE per dataset for `fitlm`, the backslash solver and `anova1`.
 - The methodology is adopted directly (certified values, difficulty grades, LRE); no part of the paper is reimplemented beyond the metric.
 

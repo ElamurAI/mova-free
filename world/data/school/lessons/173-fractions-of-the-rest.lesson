@@ -1,0 +1,51 @@
+lesson: 173
+title: A part, then a part of the rest
+level: primary-4
+stars: 1
+explain: «1/4 of the rest» means a part of what is left, not of the whole: first find what is left, then take its part.
+explain: A ribbon is 60 cm. 1/3 is cut off: 60 / 3 = 20 cm, and 40 cm remain.
+explain: Then 1/4 of the remaining part is cut off: 40 / 4 = 10 cm, so 40 - 10 = 30 cm are left.
+vars: a=name n=12..360 p=3..6 u=1..3 q=2..5
+need: u < p
+need: u == 1 || p % u != 0
+let: r = n / p * (p - u)
+let: left = r / q * (q - 1)
+answer: left
+exercise: A ribbon is {n} cm long. {a} cuts off {u}/{p} of it and then 1/{q} of the remaining part. How many centimetres of ribbon are left?
+exercise: {a} had {n} dollars. {a.He} spent {u}/{p} of the money on a bike helmet and 1/{q} of the remaining money on a book. How many dollars does {a.he} have left?
+exercise: A book has {n} pages. On the first day {a} read {u}/{p} of the book, and on the second day 1/{q} of the remaining pages. How many pages are still to read?
+exercise: A farmer had {n} eggs. He sold {u}/{p} of them in the morning and 1/{q} of the rest in the afternoon. How many eggs does he still have?
+exercise: There were {n} litres of water in a tank. First {u}/{p} of the water was used, then 1/{q} of what was left. How many litres are in the tank now?
+exercise: A road is {n} km long. In the first week workers repaired {u}/{p} of it, and in the second week 1/{q} of the part that was still not repaired. How many kilometres are not repaired yet?
+test: {a} has {n} stamps. {u}/{p} of them come from Europe, and 1/{q} of the others come from Asia. The rest come from Africa. How many stamps come from Africa?
+test: Of {n} children at a camp, {u}/{p} went swimming. Of those who stayed, 1/{q} went to paint, and everyone else played football. How many children played football?
+test: A shop got {n} kg of flour. After selling {u}/{p} of it on Monday and 1/{q} of the remainder on Tuesday, how many kilograms were not sold?
+test: {n} people bought tickets for a show. {u}/{p} of the tickets were for the balcony; 1/{q} of the other tickets were for the front rows. The remaining tickets were for the back rows. How many tickets were for the back rows?
+exercise: {a} lives in Ohio and has {n} dollars. {a.He} spends {u}/{p} of it on a scooter, then 1/{q} of what remains on a game. How many dollars does {a.he} still have?
+exercise: How many pages are left to read? A book has {n} pages; {a} read {u}/{p} of them on Saturday and 1/{q} of the remaining pages on Sunday.
+exercise: A baker in Dublin had {n} buns. He sold {u}/{p} of them before noon and 1/{q} of the rest after noon. How many buns remain?
+exercise: A fence in a park in Toronto is {n} m long. On Monday {u}/{p} of the fence was painted, and on Tuesday 1/{q} of the unpainted part. How many metres are still unpainted?
+exercise: Start with {n}. Take away {u}/{p} of it, then take away 1/{q} of what is left. What remains?
+exercise: A school kitchen in Leeds has {n} kg of potatoes. The cooks use {u}/{p} of them on Monday and 1/{q} of the remaining potatoes on Tuesday. How many kilograms of potatoes are left?
+exercise: {a} had {n} marbles. {a.He} gave away {u}/{p} of them to friends in Sydney, then gave away 1/{q} of the marbles still left to a cousin. How many marbles does {a.he} have now?
+exercise: A water tank on a farm in Queensland holds {n} litres. The cows drink {u}/{p} of the water, and then the sheep drink 1/{q} of what remains. How many litres are still in the tank?
+test: Of the {n} sheep on a farm in New Zealand, {u}/{p} were sheared in the morning. In the afternoon 1/{q} of the unsheared sheep were sheared. How many sheep are not sheared yet?
+test: How many kilometres of the trip are left? The trip is {n} km long; on day one {a}'s family drove {u}/{p} of it, and on day two they drove 1/{q} of the remaining distance.
+test: A cake shop in Texas baked {n} cupcakes. {u}/{p} were sold by lunchtime, and 1/{q} of those not yet sold were sold by teatime. How many cupcakes were still unsold?
+test: {a} has {n} points in a game. {a.He} loses {u}/{p} of them, then loses 1/{q} of the points that remain. How many points does {a.he} keep?
+test: A library in Wellington got {n} new books. {u}/{p} went to the children's room, and 1/{q} of the remainder went to the reading room. The other books went on the main shelves. How many books went on the main shelves?
+test: A garden covers {n} square metres: {u}/{p} of it is lawn, 1/{q} of the rest is a pond, and the remaining part is flower beds. How many square metres are flower beds?
+exercise: {a} got {n} bucks, blew {u}/{p} of it on a helmet then 1/{q} of whats left on a book. how much {a.he} got left
+exercise: ribbon's {n+10} cm — no wait, {n} cm. {a} cuts off {u}/{p}, then 1/{q} of the rest. how many cm left?
+exercise: book's {n} pages, {a} read {u}/{p} day one, oh and the bus was 20 min late, anyway day two 1/{q} of the pages left. how many pages still to go
+exercise: Sam says just take {u}/{p} and 1/{q} both off the whole {n}. nah, the 1/{q} is of the rest. farmer had {n} eggs, sold {u}/{p} morning, 1/{q} of the rest arvo. how many eggs he got now
+test: {n} kids at camp, {u}/{p} went swimming, 1/{q} of the ones that stayed went painting, rest played footy. how many played footy
+test: tank had {n+5} — nah sorry, {n} litres. used {u}/{p}, then 1/{q} of whats left. litres in the tank now?
+test: {a}'s got {n} stamps (been collecting since age 7 lol), {u}/{p} from Europe, 1/{q} of the others from Asia, rest Africa. how many Africa ones
+exercise: Great-uncle Joe passed on and left {n} dollars. {u}/{p} of it paid for the funeral, and 1/{q} of the rest went to charity. How many dollars are left?
+exercise: dad's "between jobs" so we got {n} dollars to last. {u}/{p} of it on rent, 1/{q} of what's left on food. how much left then, don't just sit there
+test: A company with {n} workers "let go" {u}/{p} of them, and then 1/{q} of those still there "took early retirement". How many workers are still at the company?
+exam: A ribbon measuring {n} centimetres in length is given. Whereas a portion equal to {u}/{p} of the entire length is first removed, and subsequently a portion equal to 1/{q} of the remaining length is likewise removed, determine the length, in centimetres, of the ribbon that remains.
+exam: It is given that a sum of {n} dollars was originally held by {a}. Expenditure amounting to {u}/{p} of the said sum was incurred upon a helmet, and thereafter expenditure amounting to 1/{q} of the residual sum was incurred upon a book. Ascertain the number of dollars remaining in the possession of {a}.
+exam: Pursuant to the reading schedule, a volume of {n} pages was read as follows: {u}/{p} of the total on the first day, and 1/{q} of the pages then outstanding on the second day. State the number of pages which remain unread.
+exam: Determine the quantity of water, in litres, remaining in a reservoir which initially contained {n} litres, given that {u}/{p} of the initial contents was first drawn off and that 1/{q} of the residual contents was subsequently drawn off.

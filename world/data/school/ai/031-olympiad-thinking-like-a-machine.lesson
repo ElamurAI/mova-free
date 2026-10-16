@@ -1,0 +1,52 @@
+course: ai
+lesson: 31
+title: Olympiad: thinking like a machine, Bebras puzzles ★★★
+level: primary-4
+stars: 3
+explain: Computers do not guess like people do: they follow exact steps, count what they have seen and ask yes-or-no questions, and Bebras puzzles let you think the same way.
+explain: Picture a game of "guess my number" from 1 to 16: the smart first question is "Is it more than 8?", because whatever the answer, half the numbers are gone at once.
+explain: A next-word guesser is a counting machine: if after "the" it saw "cat" five times and "dog" twice, it picks "cat", without knowing what a cat is.
+explain: A picture sorter learns whatever pattern is easiest in its examples, even a wrong one, like snow behind every wolf, so the examples matter as much as the machine.
+explain: Robots and programs do exactly what the steps say, not what you meant, so a step in the wrong order or a fuzzy word like "somewhere nice" is a bug waiting to happen.
+fact: In "guess my number" with yes-or-no answers, halving each time is best: 4 questions always find a number from 1 to 16, 5 from 1 to 32, and 7 from 1 to 100.
+fact: Three lamps that are each on or off make 2 × 2 × 2 = 8 different signals; four lamps make 16.
+fact: A simple next-word guesser counts which words came after a word in its text and picks the one it saw most often.
+fact: In a famous test, scientists trained a picture sorter on wolf photos with snow behind them; it learned to look at the snow, not the animal, and called a husky on snow a wolf.
+fact: A machine can only learn patterns that are in its examples; if a kind of example is missing, it may get that kind wrong.
+fact: A sorting machine that asks yes-or-no questions one after another, each answer choosing the next question, is called a decision tree.
+fact: A robot follows its steps exactly; a mistake in the steps is called a bug, and finding and fixing it is called debugging.
+fact: In a knockout contest, every match knocks out exactly one player, so 8 players need 7 matches and 16 players need 15 to find one winner.
+fact: A spam filter can give points to warning words and flag a message when its points reach a set number.
+fact: Bots read text in chunks, not letter by letter, and it was reported that some of them miscounted the r's in "strawberry", which has three.
+fact: A number rule such as "double it and add 1" turns 1 into 3, 3 into 7, 7 into 15 and 15 into 31.
+fact: Three right turns face the same way as one left turn, and two left turns face you backwards.
+exercise: Pip thinks of a whole number from 1 to 16 and only answers yes or no. What is the fewest questions that always finds it? | 4 | 16 | 15 | 10
+exercise: The same game, but now the number is from 1 to 100. How many yes-or-no questions are always enough if you halve each time? | 7 | 10 | 50 | 99
+exercise: A robot shows signals with 3 lamps, each either on or off. How many different signals can it show, counting all lamps off? | 8 | 6 | 3 | 9
+exercise: A tiny bot learned only from "the cat sat. the dog ran. the cat ate. the sun set." Which word will it guess after "the"? | cat, as it came after "the" twice | sun, since it was the very last one | dog, as dogs are the most loved pets | sat, since it often goes with cat
+exercise: Scientists' picture sorter called a husky standing in snow a wolf. Why? | It had learned to look at the snow, not at the animal | Huskies and wolves are really the very same animal | The husky in the photo was howling at the Moon | The sorter was tired after looking at so many photos
+exercise: Eight children have an arm-wrestling knockout: the loser of each match is out. How many matches until there is one champion? | 7 | 8 | 4 | 16
+exercise: Robo faces north. It does: turn right, turn right, turn right. Which way does it face now? | west | east | south | north
+exercise: Points: "free" 2, "winner" 2, "urgent" 1, "click" 1. A message is flagged at 4 points or more. Which one is flagged? | Winner! A free prize is waiting | Urgent: click to see your homework | Free biscuits in the staffroom today | You are the winner of the spelling quiz
+exercise: How many times does the letter r appear in "strawberry"? | 3 | 2 | 1 | 4
+exercise: A sorting tree asks "Feathers?" Yes: "Can it fly?" (yes robin, no penguin). No: "Lives in water?" (yes shark, no cat). No feathers, lives in water: what is it? | shark | penguin | robin | cat
+exercise: What comes next: 1, 3, 7, 15, ...? | 31 | 23 | 30 | 17
+exercise: A dog-spotting app was trained only on photos of brown dogs. What may happen with a white dog? | It may not know it is a dog, having never seen one like it | It will paint the white dog brown in the photo to match | It will work perfectly, since every dog looks the same | It will ask the dog to wait until it has learned more
+exercise: Mia's robot steps: "fill the cup with water, then put the cup under the tap". What is the bug? | The order: the cup must go under the tap first | The cup is too small to hold any water at all | Robots are not allowed to use taps in kitchens | There is no bug, the steps will work just fine
+exercise: How many different signals can four on-or-off lamps show? | 16 | 8 | 4 | 12
+exercise: Which order of questions finds a number from 1 to 8 fastest? | "More than 4?", then halve what is left | "Is it 1?", "Is it 2?" and so on up to 8 | "Is it 8?" first, then go downwards one by one | "Is it odd?", then ask about each number in turn
+test: "bro's thinking of a number 1 to 32 and says i'll never get it in under a million guesses lol. how many yes/no qs do i actually need" | 5 | 32 | 6 | 16
+test: "my bot said strawberry has 2 r's. sus or nah?" | Sus: there are 3, and bots read in chunks, not letter by letter | No cap, it's 2, since the double r only counts once | Nah it's right, bots never get spelling wrong | Sus, it's actually 4 if you count the capital
+test: Robo faces east. It does: turn left, turn left, turn right. Which way does it face now? | north | south | east | west
+test: "my mate's AI app keeps saying his husky's a wolf whenever it's in the snow lol". What would help fix the sorter most? | Training it on wolves without snow and huskies in snow | Showing it lots more wolves standing in the snow | Telling it once, very firmly, that it's wrong | Turning the brightness of every photo right up
+test: "Gran reckons a knockout for 16 teams takes forever, like a hundred matches". How many matches are really needed? | 15 | 16 | 100 | 8
+test: Ella says: "With 3 lamps you can only make 3 signals, one for each lamp." Is she right? | No: each lamp is on or off, so 2 × 2 × 2 = 8 | Yes: one lamp per signal is the only way | No: you can make 6, two for each of the lamps | Yes, but only if all the lamps are the same colour
+test: Odd one out: which instruction can a robot NOT follow exactly? | Go somewhere nice | Go forward 3 squares | Turn left once | Pick up the red block
+test: Ollie's chat log: after "I'm" came "starving" 5 times, "fine" 3 times, "bored" 2 times. Which word will a simple next-word guesser pick after "I'm"? | starving | fine | bored | hungry
+test: Dad's filter flags at 4 points or more (free 2, winner 2, urgent 1, click 1). "Urgent!! click here, it's free". Flagged? | Yes, it scores exactly 4 | No, it needs more than 4 points to be flagged | No, it scores only 3 points | Yes, it scores 6 points in total
+test: Put the steps for teaching a picture sorter in a sensible order. | Collect labelled photos, let it learn, test it on new photos | Test it on new photos, collect photos, then let it learn | Let it learn first, then collect the photos it needs | Collect photos, test it, then throw away the labels
+test: The teacher says Robo had "one tiny bug": it drove the class cake off the table. How big was the problem really? | A small mistake in the steps made a big mess | Nothing went wrong, it was only a joke | There was a real insect inside the robot | The robot chose to ruin the cake on purpose
+exam: A participant conceals an integer between 1 and 64 inclusive and responds only "yes" or "no". Ascertain the least number of questions which is always sufficient. | 6 | 8 | 32 | 63
+exam: It is given that a knockout competition commences with 32 entrants and that each match eliminates precisely one entrant. Determine the number of matches required. | 31 | 32 | 16 | 64
+exam: Which of the following statements most accurately characterises the error of the picture sorter that classified a husky upon snow as a wolf? | It had associated the snowy background, rather than the animal, with wolves | It had been instructed deliberately to confuse the two species | It had insufficient light by which to perceive the photograph | It had been trained exclusively upon photographs of domestic cats
+exam: Identify the next term of the sequence 2, 5, 11, 23, ..., in which each term is formed by doubling the previous term and adding one. | 47 | 46 | 45 | 35

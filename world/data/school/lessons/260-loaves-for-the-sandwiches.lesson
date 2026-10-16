@@ -1,0 +1,34 @@
+lesson: 260
+title: Planning the whole party
+level: primary-4
+stars: 2
+explain: A sandwich takes 2 slices of bread. A loaf has a set number of slices, and a shop sells only whole loaves.
+explain: Count the sandwiches, double them to get the slices, then find how many whole loaves give that many slices.
+explain: If the slices are not used up exactly, buy one more loaf: 12 guests × 2 sandwiches = 24 sandwiches = 48 slices; 2 loaves of 20 give 40, too few, so buy 3.
+vars: a=name b=name g=4..15 k=1..3 L=16..24
+let: s = g * k * 2
+need: s > L
+answer: (s + L - 1 - (s + L - 1) % L) / L
+exercise: {a} is making {k} sandwiches for each of {g} guests. A loaf has {L} slices. How many loaves must {a.he} buy?
+exercise: There are {g} children at the party, and each will eat {k} sandwiches. The bread comes in loaves of {L} slices. How many loaves are needed?
+exercise: {a}'s mum makes sandwiches for {g} people, {k} sandwiches each. Each loaf has {L} slices. What is the least number of loaves she needs?
+exercise: The club picnic is for {g} members, with {k} sandwiches for every member. How many loaves of {L} slices does the club buy?
+exercise: {a} and {b} prepare {k} sandwiches for each of their {g} guests. How many loaves of {L} slices do they need?
+exercise: {g} guests, {k} sandwiches each, loaf's got {L} slices. how many loaves
+exercise: party for {g+1}, no wait {g} kids, {k} sangas each, loaves are {L} slices. how many loaves to buy
+exercise: we're doing {k} sandwiches a head for {g} people, oh and {a} wants ham not cheese, loaf has {L} slices. how many loaves
+exercise: how many loaves of {L} slices for {g} of us at {k} sarnies each
+exercise: mum says {k} sandwiches each for the {g} guests, bread's {L} slices a loaf. loaves?
+test: What is the smallest number of {L}-slice loaves that makes {k} sandwiches for every one of {g} guests?
+test: Every one of {g} campers gets {k} sandwiches. With {L} slices in a loaf, how many loaves must the camp cook open?
+test: {a} wants enough bread for {g} people to have {k} sandwiches apiece. Loaves are sold with {L} slices. How many loaves will {a} buy?
+test: {g} people, {k} sandwiches each, {L}-slice loaves. how many
+test: {a} reckons {g} people at {k} sandwiches each need {g*k} slices so like 1 loaf of {L}. nah. how many loaves really
+test: {g} guests coming, {b} bringing {g} cupcakes, {k} sandwiches each, {L} slices a loaf. how many loaves
+exam: It is given that {g.words} guests are each to receive {k.words} sandwiches, and that bread is procurable solely in loaves of {L} slices. Determine the minimum number of loaves to be purchased.
+exam: A catering order requires {k} sandwiches per head for {g} attendees. Whereas each loaf comprises {L} slices, ascertain the least quantity of whole loaves sufficient for the order.
+exam: Compute the smallest number of loaves of {L} slices whose bread suffices for the preparation of {k} sandwiches in respect of each of {g} persons.
+exam: Pursuant to the provision of {k} sandwiches apiece to {g} guests, state the minimum number of whole loaves, each of {L} slices, that must be acquired.
+exercise: {g+1} guests were coming, but Auntie Jo is expecting and cannot travel this week, so {g} come. Each eats {k} sandwiches, and a loaf has {L} slices. How many loaves must {a} buy?
+exercise: dad forgot to buy bread, yeah right, lazy git, so now it's panic: {g} kids, {k} sandwiches each, {L} slices a loaf. how many loaves, quick?
+test: Since {a}'s mum was let go, the party has no caterer. She makes {k} sandwiches for each of {g} children, using loaves of {L} slices. How many loaves must be bought?

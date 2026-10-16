@@ -8,7 +8,7 @@
 The paper compares graph-based and transition-based dependency parsing within one framework based on beam search and a discriminatively trained perceptron. It shows that a transition-based parser does not have to be greedy: decoding with a beam of partial action sequences, combined with perceptron training with early update (stop and update as soon as the gold sequence falls out of the beam), gives a strong transition-based parser. A graph-based parser is formulated with the same beam-search decoder. Because the two approaches use different kinds of features, the authors combine them into a single model whose score sums both feature sets, and report that the combination improves over each parser alone on English and Chinese.
 
 ## How Mova uses it
-- `ai/en/src/parse.rs`: the English UD parser is an arc-standard transition system (SHIFT / LEFT(label) / RIGHT(label)) with weight tables trained by an averaged perceptron. Decoding uses a beam of 8 hypotheses, and training uses beam search with early update, as in this paper.
+- `en/src/parse.rs`: the English UD parser is an arc-standard transition system (SHIFT / LEFT(label) / RIGHT(label)) with weight tables trained by an averaged perceptron. Decoding uses a beam of 8 hypotheses, and training uses beam search with early update, as in this paper.
 - Only the transition-based half is used; the graph-based parser and the combined model are not implemented.
 
 ## Effectiveness in Mova

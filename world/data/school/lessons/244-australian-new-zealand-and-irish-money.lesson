@@ -1,0 +1,38 @@
+lesson: 244
+title: Australian, New Zealand and Irish money
+level: primary-4
+stars: 1
+explain: In Australia and New Zealand a dollar is worth 100 cents, and in Ireland a euro is worth 100 cents.
+explain: A price like $4.50 means 4 dollars and 50 cents, which is 450 cents. To find the change in cents, turn the note into cents and take away the cost of everything in cents.
+explain: 3 ice creams at $4.50 cost 1350 cents; from a $20 note, which is 2000 cents, the change is 2000 - 1350 = 650 cents.
+vars: a=name b=name j=1..3 k=2..4 x=1..8 y=0..9 z=2..9
+let: note = (j == 1) * 10 + (j == 2) * 20 + (j == 3) * 50
+let: p = x * 100 + y * 10
+let: cost = k * p
+need: cost < note * 100
+answer: note * 100 - cost
+exercise: In Sydney, {a} buys {k} meat pies at ${x}.{y}0 each and pays with a ${note} note. How many cents of change does {a.he} get?
+exercise: An ice cream in Auckland costs ${x}.{y}0. {a} buys {k} and hands over a ${note} note. How much change is that in cents?
+exercise: In a café in Dublin, a sandwich costs €{x}.{y}0. {a} buys {k} sandwiches with a €{note} note. How many cents of change does {a.he} receive?
+exercise: {a} pays for {k} tickets to the pool in Perth at ${x}.{y}0 each with a ${note} note. How many cents come back?
+exercise: At a market in Cork, {a} buys {k} punnets of strawberries at €{x}.{y}0 a punnet and pays with €{note}. What is the change in cents?
+exercise: {k} sausage sizzles at ${x}.{y}0, paid with a {note} buck note. how many cents change
+exercise: {a} bought {k} flat whites for the olds at ${x}.{y}0 each, gave a ${note+10}, no wait, a ${note} note. cents back?
+exercise: heaps of people at the beach this arvo lol, {a} got {k} ice blocks ${x}.{y}0 each, paid ${note}. change in cents?
+exercise: {b} reckons {k} portions of chips at €{x}.{y}0 from a €{note} note leaves {note*100-p} cents. that right? what's the real change in cents
+exercise: {a} grabbed {k} pies at the footy, ${x}.{y}0 each, handed over ${note}. how many cents {a.he} get back
+exercise: {k} bags of hot chips in Christchurch ${x}.{y}0 a bag, paid with {note} dollars. change in cents pls
+test: How many cents does a ${note} note leave after {k} lamingtons at ${x}.{y}0 apiece are paid for?
+test: {a} hands over €{note} for {k} bus fares in Galway, each costing €{x}.{y}0. What change is due, in cents?
+test: With a ${note} note, {a} pays for {k} kiwifruit smoothies priced at ${x}.{y}0. What does {a.he} get back in cents?
+test: {a} buys {k} comics at ${x}.{y}0 each and pays with a ${note} note; {b} buys a cap for ${z}. How many cents of change does {a} get?
+test: {k} toasties €{x}.{y}0 each, paid €{note}. how many cents back
+test: mum gave {a} a ${note} note for {k} loaves at ${x}.{y}0, how many cents she get back
+test: The bill for {k} ferry tickets in Wellington is ${x}.{y}0 a ticket. A ${note} note is handed over. State the change in cents.
+exam: Determine, in cents, the change due to {a}, who tenders a note of {note} dollars in respect of {k.words} meat pies priced at {x} dollars and {y*10} cents apiece.
+exam: It is given that a purchaser in Ireland surrenders a €{note} note and acquires {k} sandwiches at €{x}.{y}0 per sandwich. Ascertain the residual sum, expressed in cents.
+exam: A quantity of {k} ice creams, each priced at ${x}.{y}0, having been paid for with a single ${note} note, state the change to be returned in cents.
+exam: Whereas a note to the value of {note} New Zealand dollars is presented at the counter and goods amounting to {k} times ${x}.{y}0 are received, compute the balance owing, in cents.
+exercise: In Sydney, after Uncle Jim was let go from the mine, {a} pays for {k} meat pies at ${x}.{y}0 each with a ${note} note. How many cents of change come back?
+exercise: auckland, stinking hot, and {b}'s a bit careful with money, stingy git won't chip in. so {a} buys {k} ice creams at ${x}.{y}0 each with a ${note} note. how many cents change?
+test: {a}'s grandad, who passed on last winter, left a ${note} note in a birthday card. {a} spends it on {k} footy tickets at ${x}.{y}0 each. What change, in cents, is left?

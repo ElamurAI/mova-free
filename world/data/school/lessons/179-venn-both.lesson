@@ -1,0 +1,51 @@
+lesson: 179
+title: Two circles: how many are in both?
+level: primary-4
+stars: 2
+explain: Those who are in at least one circle are the whole group without those in neither circle.
+explain: Adding the two circles counts the middle part twice, so the sum is bigger than «at least one» by exactly the number in both.
+explain: 30 children, 6 like neither: 24 like at least one. 15 like football and 13 like chess: 15 + 13 = 28, so 28 - 24 = 4 like both.
+vars: n=15..40 a=5..30 b=5..30 x=1..12
+need: x < a && x < b
+let: z = n - (a + b - x)
+need: z >= 2
+need: a - x >= 2 && b - x >= 2
+answer: x
+exercise: There are {n} children in a class. {a} like football, {b} like chess, and {z} like neither. How many children like both football and chess?
+exercise: In a group of {n} pupils, {a} have a dog and {b} have a cat. {z} pupils have no dog and no cat. How many pupils have both a dog and a cat?
+exercise: {n} children are at a camp. {a} go swimming and {b} go to the drawing club; {z} children do neither. How many children do both?
+exercise: Of {n} pupils, {a} learn French and {b} learn German, and {z} learn neither language. How many pupils learn both languages?
+exercise: {n} people were asked about fruit: {a} like apples, {b} like bananas, and {z} like neither. How many like both?
+exercise: In a class of {n}, {a-x} pupils play only the piano, {b-x} play only the guitar, and {z} play neither. The others play both. How many play both?
+test: {z} of the {n} passengers on a bus have neither a bag nor an umbrella. {b} have an umbrella and {a} have a bag. How many have a bag and an umbrella?
+test: A class of {n} went on a trip. {a-x} pupils saw only the lions, {b-x} saw only the bears, and {z} saw neither because they stayed in the café. The rest saw both. How many saw both?
+test: Every child in a club of {n} was asked two questions. {b} answered «yes» to the second, {a} to the first, and {z} said «no» to both. How many children said «yes» to both questions?
+test: {a} pupils have a brother, {b} have a sister, and {z} have neither. The class has {n} pupils. How many pupils have both a brother and a sister?
+exercise: A class in Texas has {n} pupils. {a} play soccer, {b} play baseball, and {z} play neither sport. How many pupils play both sports?
+exercise: How many children like both cats and dogs, if out of {n} children {a} like cats, {b} like dogs and {z} like neither?
+exercise: Of {n} families in a village in Ireland, {a} have a car, {b} have a bike, and {z} have neither. How many families have both a car and a bike?
+exercise: {n} pupils: {a} take the bus, {b} bring a packed lunch, {z} do neither. How many do both?
+exercise: At a camp in Canada there are {n.words} children. {a} go hiking, {b} go canoeing, and {z} do neither. How many children go hiking and canoeing too?
+exercise: A shop in London had {n} customers. {a} bought bread, {b} bought milk, and {z} bought neither. How many customers bought bread and milk together?
+exercise: In a Year 4 class of {n} in Sydney, {a-x} pupils went only to the beach this summer, {b-x} only to the mountains, and {z} to neither. The others went to both. How many went to both?
+exercise: {z} of the {n} guests at a party in Auckland drink neither tea nor coffee. {a} drink tea and {b} drink coffee. How many guests drink both?
+test: In a club of {n} pupils in Canada, {a} can ski and {b} can skate, while {z} can do neither. How many can both ski and skate?
+test: A race in Dublin has {n} runners. {a} wore a cap, {b} wore gloves, and {z} wore neither. How many runners wore a cap and gloves?
+test: {b} of the {n} houses in a village in Wales have a garden and {a} have a garage; {z} houses have neither. How many houses have a garden as well as a garage?
+test: Of {n} dogs at a show in Scotland, {a} have long hair, {b} have a black coat, and {z} have short hair and a coat that is not black. How many dogs have long hair and a black coat?
+test: In a vote of {n} children in Ohio, {a} said yes to pizza, {b} said yes to tacos, and {z} said yes to neither. How many said yes to both?
+test: In a group of {n} tourists in New Zealand, {a-x} visited only the glacier, {b-x} visited only the caves, {z} visited neither, and the rest visited both. How many visited both?
+exercise: {n} kids, {a} like footy, {b} like chess, {z} like neither. how many like both
+exercise: {n} of us — {a} got dogs, {b} got cats, {z} got no pets at all. how many got both
+exercise: class is {n+1} — no wait, {n} kids. {a} swim, {b} do piano, {z} do neither. how many do both
+exercise: Mia says it's {n} minus {z}. nah. {n} pupils, {a} like apples, {b} like pears, {z} like neither, how many like both
+test: out of {n} on the trip {a} had sandwiches, {b} had pizza, {z} had neither (bus was 30 min late btw). how many had both
+test: {a} read comics, {b} play games, {z} do neither, there's {n} of em. how many do both
+test: {n} kids, {a} been to the zoo, {b} to the museum, {z} to neither. how many been to both then
+exercise: Of {n} children, {a} have a grandparent who has passed away, {b} have a pet that has "gone to a better place", and {z} have neither. How many children have both?
+exercise: {n} kids in class. {a} got "could try harder" on the report (lazy), {b} got "lively" (can't sit still), {z} got neither. how many got both, ya muppet
+test: A school lists {n} pupils. {a} have been "economical with the truth" about homework, {b} have been late, and {z} have been neither. Find how many have been both.
+exam: Of a class comprising {n} children, it is recorded that {a} express a preference for football, {b} express a preference for chess, and {z} express a preference for neither. Determine the number of children who express a preference for both.
+exam: Within a cohort of {n} pupils, {a} are owners of a dog and {b} are owners of a cat, whereas {z} own neither animal. Ascertain the number of pupils who are owners of both a dog and a cat.
+exam: State the number of members of a group of {n} persons who belong to both the choir and the orchestra, given that {a} belong to the choir, {b} belong to the orchestra, and {z} belong to neither body.
+exam: It is given that, of {n} visitors to a library, {a} borrowed a book, {b} borrowed a magazine, and {z} borrowed nothing. Determine the number of visitors who borrowed both a book and a magazine.

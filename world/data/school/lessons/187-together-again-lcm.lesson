@@ -1,0 +1,50 @@
+lesson: 187
+title: When together again
+level: primary-4
+stars: 2
+explain: Two things that repeat meet again at the smallest number that is a multiple of both repeat times.
+explain: Buses every 6 and every 8 minutes: multiples of 8 are 8, 16, 24 …, and 24 is the first that 6 also divides.
+explain: So the buses leave together again after 24 minutes. Check the multiples of the larger time one by one.
+vars: a=name b=name g=1..6 p=2..7 q=3..9
+need: p < q
+need: (p % 2 != 0 || q % 2 != 0) && (p % 3 != 0 || q % 3 != 0)
+let: x = g * p
+let: y = g * q
+need: y <= 60
+answer: g * p * q
+exercise: Two buses leave the station together at 8 o'clock. One leaves every {x} minutes, the other every {y} minutes. After how many minutes will they leave together again?
+exercise: {a} visits the library every {x} days and {b} every {y} days. They meet there today. In how many days will they both be at the library on the same day again?
+exercise: One lighthouse flashes every {x} seconds and another every {y} seconds. They flash together now. After how many seconds will they flash together again?
+exercise: Two bells ring together. One rings every {x} minutes and the other every {y} minutes. In how many minutes will they next ring together?
+exercise: {a} waters the plants every {x} days and cleans the fish tank every {y} days. {a.He} did both today. In how many days will {a.he} do both on the same day again?
+test: {a} walks once round a big park in {x} minutes and {b} in {y} minutes. They start together at the gate and keep walking round. How many minutes pass before they are both at the gate together again?
+test: A red light blinks once every {x} seconds and a green light once every {y} seconds. They have just blinked at the same moment. How many seconds is it until the next time they blink together?
+test: Ferry A sails every {x} minutes and ferry B every {y} minutes; both sailed at 9 o'clock. How many minutes after 9 do they next sail at the same time?
+exercise: Every {x} minutes a bus leaves for Boston, and every {y} minutes a bus leaves for Albany. Both left together at noon. How many minutes until they leave together again?
+exercise: How many days from now will {a} and {b} next be at the swimming pool on the same day, if {a} swims every {x} days, {b} every {y} days, and both swam today?
+exercise: In a park in Toronto, one fountain sprays every {x} seconds and another every {y} seconds. They have just sprayed together. After how many seconds do they next spray together?
+exercise: {a} has football practice every {x} days and {b} has it every {y} days. Both had practice today. How many days until they next have practice on the same day?
+exercise: Two clocks in a shop in Dublin chime, one every {x} minutes and the other every {y} minutes. They chimed together just now. In how many minutes will they chime together again?
+exercise: A bus every {x} min, a tram every {y} min, both leaving now. How many minutes until they leave at the same time again?
+exercise: A drum beats every {x.words} seconds and a bell rings every {y.words} seconds. They sounded together a moment ago. How many seconds pass before they sound together again?
+exercise: At a station in Sydney, trains to Parramatta leave every {x} minutes and trains to Bondi every {y} minutes. One train to each place left at 7 o'clock. How many minutes later do two such trains leave together again?
+test: {a} and {b} run laps of a track: {a} takes {x} seconds a lap and {b} takes {y} seconds. They start side by side at the line. After how many seconds are they both at the line at the same moment again?
+test: Two sprinklers on a lawn in Auckland have just come on together. The first comes on every {x} minutes, the second every {y} minutes. What is the shortest time, in minutes, before both come on at once again?
+test: {a} gets a postcard from Grandma every {x} days and one from {a.his} uncle every {y} days. Today both arrived. How many days must {a.he} wait for both to arrive on one day again?
+test: What is the smallest number of minutes after which two alarms, one going off every {x} minutes and the other every {y} minutes, sound together again, if they sounded together at 6 o'clock?
+test: Two machines in a factory in Glasgow stamp boxes, one every {x} seconds and one every {y} seconds. Both stamped at the same moment just now. In how many seconds will they next stamp at the same moment?
+test: A school library in Ohio gets new magazines every {x} days and new comics every {y} days. Both came in today. In how many days will both come in on one day again?
+exercise: buses every {x} n {y} mins, both just left. how many mins till they leave together again
+exercise: {a} goes swimming every {x} days, {b} every {y+1} — no wait, every {y} days. both went today. how many days till same day again?
+exercise: one lighthouse flashes every {x} secs, other one every {y}, me n my 2 cousins watching from the beach. they just flashed together, how many secs till they do it again
+exercise: {b} says just add em, {x}+{y}. nah — bells ringing every {x} and every {y} mins, rang together just now, when they ring together again, in mins?
+test: {a} does a lap in {x} min, {b} in {y} min, they start same time at the gate. how long till theyre both back at the gate together, mins?
+test: two sprinklers came on together, one goes every {x+1} mins — nah my bad, every {x} — n the other every {y}. how many mins till both again?
+test: my mate reckons its {y} mins cos thats the bigger one. buses every {x} and every {y} min left together, when together again for real, how many mins?
+exam: Two omnibuses depart simultaneously from a terminus; the first departs at intervals of {x} minutes and the second at intervals of {y} minutes. Determine the number of minutes which shall elapse before their next simultaneous departure.
+exam: It is given that {a} attends the library at intervals of {x} days and {b} at intervals of {y} days, both being in attendance on the present day. Ascertain the number of days hence on which both shall next be in attendance on the same day.
+exam: Whereas two lamps are switched on together, the first flashing every {x} seconds and the second every {y} seconds, state the least number of seconds after which both lamps shall again flash simultaneously.
+exam: Compute the least positive number of days after which two recurrent events, the one occurring every {x} days and the other every {y} days, and both occurring on the present day, shall next coincide.
+exercise: {a} used to visit Gran every week, but since she moved into assisted living {a.he} goes every {x} days, and {b} goes every {y} days. They were both there today. In how many days will they both visit on the same day again?
+exercise: Dad got let go and now does 'flexible hours': he works a shift every {x} days. Mum works a shift every {y} days. Both worked today. In how many days will they both work on the same day again?
+test: nan's 'between carers' so me n {b} take turns, me every {x} days, {b} every {y}, we were both there today. how many days till we both turn up again. and dont say 7 ya muppet

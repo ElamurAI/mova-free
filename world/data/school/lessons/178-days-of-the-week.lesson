@@ -1,0 +1,47 @@
+lesson: 178
+title: Days of the week after many days
+level: primary-4
+stars: 0
+explain: Number the days of the week: Monday is 1, Tuesday 2, …, Sunday 7. Every 7 days the same day comes back.
+explain: So for «in N days» only the remainder of N divided by 7 matters: count that many days on from today, going from 7 back to 1.
+explain: Today is day 5 (Friday). In 30 days: 30 = 4 × 7 + 2, so count 2 days on: 6, 7 — it will be day 7, Sunday.
+vars: a=name w=1..7 n=15..100
+need: n % 7 != 0
+answer: (w - 1 + n) % 7 + 1
+exercise: Number the days of the week from Monday (1) to Sunday (7). Today is day {w}. Which day of the week will it be in {n} days? Give its number.
+exercise: Monday is day 1 and Sunday is day 7. {a}'s birthday is in {n} days, and today is day {w}. On which day of the week is the birthday? Answer with its number.
+exercise: The 1st of a month is day {w} of the week (Monday = 1, Sunday = 7). Which day of the week is the {(n%7+22).ord} of that month? Give the number of the day.
+exercise: Days of the week are numbered 1 (Monday) to 7 (Sunday). Today is day {w}. What is the number of the day of the week {n} days from now, that is {(n-n%7)/7} full weeks and a few days more?
+exercise: With Monday as 1 and Sunday as 7, today is day {w}. {a} goes on holiday in {n} days. What is the number of that day of the week?
+test: A trip starts on day {w} of the week and lasts {n+1} days, so it ends {n} days after it starts. Monday is day 1 and Sunday day 7. On which day of the week does the trip end?
+test: Counting Monday as 1, Tuesday as 2 and so on to Sunday as 7, tomorrow will be day {w%7+1}. Which day will it be {n-1} days after tomorrow?
+test: A ship leaves port on day {w} of the week (Monday 1, …, Sunday 7) and arrives {n} days later. On which day of the week does it arrive? Give the number.
+test: The school fair is {n} days from today. Today is day {w}, where Monday is day 1 and Sunday is day 7. Which numbered day of the week is the fair on?
+exercise: Today is day {w} of the week, counting Monday as 1 and Sunday as 7. What day number will it be {n} days from today?
+exercise: {a} lives in Canada and numbers the days of the week from Monday (day 1) to Sunday (day 7). Today is day {w}. In {n.words} days {a.he} flies to Toronto. Which day number is that?
+exercise: What is the number of the day of the week {n} days after day {w}, if Monday = 1, …, Sunday = 7?
+exercise: Monday = 1, Sunday = 7. Today: day {w}. Which day is it {n} days later?
+exercise: A seed is planted in a garden in Kent on day {w} of the week (Monday = 1, …, Sunday = 7). It sprouts {n} days later. On which day of the week, as a number, does it sprout?
+exercise: Sunday is day 7 and Monday is day 1. In Sydney today is day {w}. {a}'s cousin comes to visit in {n} days. Give the number of the day of the visit.
+exercise: In {n} days the summer holidays start in Dublin. Today is day {w} of the week, where Monday is 1 and Sunday is 7. Which day number do the holidays start on?
+exercise: Using 1 for Monday up to 7 for Sunday, {a} notes that today is day {w}. What is the number of the day of the week exactly {n} days later?
+test: A library book in Leeds is due back {n} days after today, and today is day {w} of the week (Monday = 1, …, Sunday = 7). On which day of the week, given as a number, is it due?
+test: {a} starts a jigsaw puzzle on day {w} of the week and finishes it {n} days later. Take Monday as day 1 and Sunday as day 7. What number is the day {a.he} finishes?
+test: If the week runs from Monday, day 1, to Sunday, day 7, and today is day {w}, which day is {n} days on?
+test: A countdown in Auckland shows {n} days to the school concert. It is day {w} of the week today (Monday counts as 1, Sunday as 7). Which day of the week is the concert? Give its number.
+test: Starting today, day {w} of the week (Monday is 1, Sunday is 7), {a} waits {n} days for {a.his} new bike. On which day of the week does the bike come? Give its number.
+test: A plant in Ohio must be watered again {n} days after today. Today is day {w}: Monday is 1 and Sunday is 7. Which numbered day of the week will that be?
+exercise: mon=1 … sun=7. today's day {w}. what day in {n} days? just the number
+exercise: {a}'s bday in {n} days, today's day {w} (mon is 1, sun 7). what day number is that
+exercise: today's day {w}, trip's in {n+1} — no sorry, {n} days. which day of the week (1 = mon, 7 = sun)
+exercise: it's day {w} today (monday's 1, sunday 7), camp starts in {n} days and lasts 5 days but whatever. what day number does camp start
+test: Sam says just add em, day {w+n}. nah thats not even a day lol. today day {w}, monday 1 sunday 7, what day number is it {n} days from now
+test: {n} days from now, if today's day {w} — mon 1 to sun 7 — which day number we on
+test: days go mon 1 thru sun 7. its day {w}. {a}'s holiday's {n} days off. what number day's that
+exercise: Monday is day 1 and Sunday is day 7. Grandad passed away on day {w}, and his will is read {n} days later. On which day of the week is it read? Give its number.
+exercise: dad got let go today, day {w} (mon=1, sun=7). new job starts in {n} days, thank god. what day's that, number pls
+test: {a}'s goldfish "went to sleep forever" on day {w} of the week, counting Monday as 1 and Sunday as 7. {a} buys a new one {n} days later. What is the number of that day?
+exam: The days of the week being numbered consecutively from Monday (one) to Sunday (seven), and the present day being day number {w}, determine the number of the day of the week which shall fall {n} days hence.
+exam: It is given that the present day is day {w} of the week, Monday being reckoned as day 1 and Sunday as day 7. Ascertain the number of the day of the week upon which an event scheduled {n} days from the present day shall occur.
+exam: Pursuant to the convention whereby Monday is designated day 1 and Sunday day 7, state the number of the weekday which follows the present day, day {w}, after the elapse of {n} days.
+exam: A journey commences on day {w} of the week, the days being numbered from Monday (1) to Sunday (7), and is of {n} days' duration. Determine the number of the day of the week upon which the journey concludes, the day of conclusion being {n} days after the day of commencement.

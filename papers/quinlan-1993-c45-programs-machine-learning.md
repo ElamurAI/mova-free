@@ -8,7 +8,7 @@
 The book presents C4.5, a widely used algorithm and program for learning decision trees and rule sets from labelled examples. Trees are grown top-down by repeatedly choosing the attribute that best separates the classes. Because plain information gain favours attributes with many values, the book uses the gain ratio: information gain divided by the split information (the entropy of the attribute's value distribution). It also covers handling of continuous attributes, missing values, pruning to avoid overfitting, and conversion of trees into production rules. The accompanying source code made C4.5 a reference baseline in machine learning for many years.
 
 ## How Mova uses it
-- `ai/prag/src/model.rs` — the function `gain_ratio` computes (H(Y) − Σ p(v) H(Y|v)) / SplitInfo for each feature slot, following this book (and the same weighting as in the TiMBL memory-based learning package).
+- `prag/src/model.rs` — the function `gain_ratio` computes (H(Y) − Σ p(v) H(Y|v)) / SplitInfo for each feature slot, following this book (and the same weighting as in the TiMBL memory-based learning package).
 - Gain ratio orders feature slots in IGTree (most informative slot at the root) and weights slots in the overlap distance of the k-NN (IB1) classifier.
 - Only the gain-ratio criterion is used; C4.5's tree growing, pruning and rule extraction are not implemented.
 

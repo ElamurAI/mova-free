@@ -1,0 +1,52 @@
+lesson: 200
+title: Exam 3: heads, and a difference of legs
+level: primary-4
+stars: 3
+explain: Chickens have 2 legs, rabbits 4. Suppose all the heads were chickens: the chickens' legs would be ahead by 2 × heads.
+explain: Each time one chicken becomes a rabbit, the chickens lose 2 legs and the rabbits gain 4, so the difference moves by 2 + 4 = 6.
+explain: 20 heads, and the rabbits' legs are 20 more than the chickens' legs: from 40 behind to 20 ahead is 60, so 60 ÷ 6 = 10 rabbits. Check: 40 legs and 10 chickens with 20 legs.
+vars: r=3..20 c=3..20 z=2..9
+need: 4 * r > 3 * c
+need: 3 * r - 2 * c >= 2
+let: h = r + c
+let: d4 = 4 * r - 2 * c
+let: d3 = 3 * r - 2 * c
+let: d8 = 8 * r - 6 * c
+answer: r
+exercise: A farm has chickens and rabbits, {h} heads in all. The rabbits have {d4} more legs than the chickens. How many rabbits are there?
+exercise: In a yard there are ducks and goats, {h} animals in all. The goats have {d4} more legs than the ducks. How many goats are in the yard?
+exercise: A shop has bicycles and tricycles, {h} in all. The tricycles have {d3} more wheels than the bicycles. How many tricycles are there?
+exercise: A box holds spiders and beetles, {h} in all. A spider has 8 legs and a beetle has 6. The spiders have {d8} more legs than the beetles. How many spiders are in the box?
+exercise: There are {h} hens and dogs on a farm. The dogs have {d4} more legs than the hens. How many dogs are there?
+test: The chickens in a cage have {d4} fewer legs than the rabbits in it, and {h} heads can be counted in the cage. How many of the animals are rabbits?
+test: Counting the feet in a barn, the farmer finds that the cows have {d4} more feet than the geese. There are {h} cows and geese. How many cows are there?
+test: {h} children ride bicycles or tricycles in the park, one child on each. The tricycle wheels are {d3} more than the bicycle wheels. How many children ride tricycles?
+test: {z} cats sleep in the barn, but they are not counted. The barn also holds chickens and rabbits: {h} heads, and the rabbits have {d4} legs more than the chickens. How many rabbits live in the barn?
+exercise: There are chickens and rabbits on a farm in Iowa, {h} heads altogether. The rabbits' legs outnumber the chickens' legs by {d4}. How many rabbits are there?
+exercise: How many rabbits are in a hutch with chickens if there are {h} heads in total and the rabbits have {d4} more legs than the chickens?
+exercise: A field in Wales has sheep and geese, {h} animals in total. The sheep have {d4} legs more than the geese. How many sheep are in the field?
+exercise: {h} heads, chickens and rabbits; the rabbits' legs minus the chickens' legs is {d4}. How many rabbits?
+exercise: A bike shop in Toronto has bicycles and tricycles, {h} of them in all. All the tricycles together have {d3} more wheels than all the bicycles. How many tricycles does it have?
+exercise: On a farm in Queensland there are turkeys and horses, {h} in total. The horses have {d4} more legs than the turkeys. How many horses are there?
+exercise: A jar holds spiders and beetles, {h} creatures in all. A spider has eight legs and a beetle six. The spiders' legs are {d8} more than the beetles' legs. How many spiders are in the jar?
+exercise: There are {h.words} animals in a pen, pigs and ducks. Together the pigs have {d4} more legs than the ducks. How many pigs are in the pen?
+test: The ducks on a pond in Ireland have {d4} fewer legs than the goats grazing beside it, and there are {h} ducks and goats in all. How many goats are there?
+test: {h} heads are in a farmyard in Ohio, all belonging to dogs or chickens. Counting the legs, the dogs have {d4} more than the chickens. How many dogs are there?
+test: In a playground in Auckland there are {h} cycles, each a bicycle or a tricycle. The tricycles have {d3} wheels more than the bicycles. How many are tricycles?
+test: What is the number of rabbits, if chickens and rabbits have {h} heads in total and the chickens have {d4} fewer legs than the rabbits?
+test: A zoo keeper in London counts {h} heads of ostriches and zebras. The zebras' legs are {d4} more than the ostriches' legs. A parrot also sits on the fence. How many zebras are there?
+test: With eight legs on every spider and six on every beetle, a box of {h} spiders and beetles has {d8} more spider legs than beetle legs. How many spiders are in the box?
+exercise: chickens n rabbits, {h} heads, rabbits got {d4} more legs than chickens. how many rabbits
+exercise: ducks n goats in the yard, {h} of em, goats {d4+2} — no, {d4} more legs than ducks. how many goats
+exercise: farm with {h} heads, chickens n rabbits, {z} cows in the next field too but whatever, rabbits have {d4} more legs than chickens. how many rabbits
+exercise: my bro says {h} rabbits cos {h} heads lol. nah, chickens n rabbits {h} heads, rabbits' legs {d4} more than chickens'. rabbits how many
+test: {h} heads, dogs n chickens, dogs got {d4} more legs. how many dogs
+test: bikes n trikes, {h} of em, trikes got {d3} more wheels than bikes. how many trikes
+test: spiders n beetles, {h+1} in the box, no sorry {h}, spiders {d8} more legs than beetles. how many spiders
+exam: A farm accommodates chickens and rabbits, the aggregate number of heads being {h}. It is given that the rabbits possess, in total, {d4} legs more than the chickens. Determine the number of rabbits.
+exam: Whereas a yard contains ducks and goats to the number of {h} animals in all, and the legs of the goats exceed in number those of the ducks by {d4}, ascertain the number of goats.
+exam: State the number of tricycles in a yard containing solely tricycles and bicycles, given that there are {h} vehicles in total and that the wheels of the tricycles exceed in number the wheels of the bicycles by {d3}.
+exam: It is given that a collection of spiders and beetles comprises {h} creatures, and that the spiders, each having eight legs, possess in aggregate {d8} legs more than the beetles, each having six legs. Determine the number of spiders.
+exercise: Grandad passed away and left a farm of chickens and rabbits, {h} heads in all. The rabbits have {d4} more legs than the chickens. How many rabbits did he leave?
+exercise: Last week the farmer culled some of the chickens. Now the farm has chickens and rabbits, {h} heads in all, and the rabbits have {d4} more legs than the chickens. How many rabbits are there?
+test: sod the fox. after he 'paid a visit' we got chickens n rabbits left, {h} heads, rabbits got {d4} more legs than the chickens. how many rabbits, quick

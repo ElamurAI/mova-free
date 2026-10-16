@@ -2,7 +2,7 @@
 
 ## Gist
 
-`ai/en` is Mova's English annotator. It produces full UD output: tokens, PTB tag (XPOS), UPOS,
+`en` is Mova's English annotator. It produces full UD output: tokens, PTB tag (XPOS), UPOS,
 FEATS, lemma, head and relation. The learned parts are an averaged-perceptron PTB tagger, a
 transition-based (arc-standard) parser with a beam, and back-off tables for UPOS and FEATS. They
 train from CoNLL-U treebanks in seconds to about a minute on one CPU core. The result is one binary
@@ -29,9 +29,9 @@ have no license gate. Use them for research data such as NC treebanks.
   `ADD`, ...). A sentence with even one token without a known PTB tag is **dropped silently**.
   Treebanks without PTB XPOS give the trainer nothing.
 - **Known relations in DEPREL.** These are the UD 2.18 English relations listed in
-  `ai/en/src/gram.rs` (`Rel`). An unknown subtype falls back to its base (`det:poss` -> `det`). An
+  `en/src/gram.rs` (`Rel`). An unknown subtype falls back to its base (`det:poss` -> `det`). An
   unknown base relation is a read error with the file and line number.
-- **English.** The dictionary compiled into the binary (`ai/en/data/lemmas.tsv`, `forms.tsv`) is
+- **English.** The dictionary compiled into the binary (`en/data/lemmas.tsv`, `forms.tsv`) is
   English.
 - Ideally the data is in Mova's dialect, `mova`. See [dialects-and-converters.md](dialects-and-converters.md).
 
@@ -52,7 +52,7 @@ English treebanks are named `UD_English-*` and their files `en_<name>-ud-{train,
 
    A bare `train.conllu` is rejected. Keep the source name in the file name.
 
-2. **Register the license** in `ai/en/data/train-licenses.tsv`. Use one line per source, three
+2. **Register the license** in `en/data/train-licenses.tsv`. Use one line per source, three
    tab-separated columns:
 
    ```
@@ -75,7 +75,7 @@ English treebanks are named `UD_English-*` and their files `en_<name>-ud-{train,
    with CoNLL 2018 metrics (UPOS, XPOS, UFeats, Lemmas, UAS, LAS, CLAS, MLAS, BLEX):
 
    ```sh
-   cargo run --release --manifest-path ai/en/Cargo.toml -- \
+   cargo run --release --manifest-path en/Cargo.toml -- \
      ud-eval data/my-treebank/en_mytb-ud-train.conllu -- data/my-treebank/en_mytb-ud-test.conllu
    ```
 
@@ -87,7 +87,7 @@ English treebanks are named `UD_English-*` and their files `en_<name>-ud-{train,
    then optional check files:
 
    ```sh
-   cargo run --release --manifest-path ai/en/Cargo.toml -- \
+   cargo run --release --manifest-path en/Cargo.toml -- \
      train data/ud/en_ewt-ud-train.conllu data/my-treebank/en_mytb-ud-train.conllu \
      -- models/en-mytb.bin data/my-treebank/en_mytb-ud-dev.conllu
    ```
@@ -102,22 +102,22 @@ English treebanks are named `UD_English-*` and their files `en_<name>-ud-{train,
 5. **Use the model.**
 
    ```sh
-   cargo run --release --manifest-path ai/en/Cargo.toml -- \
+   cargo run --release --manifest-path en/Cargo.toml -- \
      annotate models/en-mytb.bin data/my-treebank/en_mytb-ud-test.conllu notes.txt > out.conllu
    ```
 
    - A `.conllu` input is annotated on its gold tokens.
    - Any other file is plain text, one sentence per line, tokenized by the model.
    - Output is CoNLL-U on stdout. Load and speed figures go to stderr.
-   - Other crates load `ai/en/models/ud-ewt-eslspok.bin` by default; to use another model set
-     `WORLD_EN_MODEL` (`ai/world`), `MATH_EN_MODEL` (`ai/math`) or `QAGEN_EN_MODEL` (`ai/qagen`), or replace
+   - Other crates load `en/models/en.bin` by default; to use another model set
+     `WORLD_EN_MODEL` (`world`), `MATH_EN_MODEL` (`math`) or `QAGEN_EN_MODEL` (`qagen`), or replace
      that file.
 
 ## The model file
 
 - **Location:** wherever you point `en train`. No fixed directory exists. Model files are build
   artifacts, so keep them out of the source tree.
-- **Format** (`ai/en/src/store.rs`): a custom binary serde encoding.
+- **Format** (`en/src/store.rs`): a custom binary serde encoding.
   - It is not self-describing: fields are written in order, numbers are little-endian, and lengths
     and enum variants are LEB128.
   - **Header:** the magic `MOVA-EN\0`, the format version (`u32`, currently 1), the sizes of the
@@ -135,15 +135,15 @@ English treebanks are named `UD_English-*` and their files `en_<name>-ud-{train,
 
 ```sh
 # 1. register the source (tab-separated; "yes" = commercial use allowed)
-printf 'mytb\tCC BY 4.0\tyes\n' >> ai/en/data/train-licenses.tsv
+printf 'mytb\tCC BY 4.0\tyes\n' >> en/data/train-licenses.tsv
 
 # 2. optional: bring an older or treebank-specific dialect into mova first
-cargo run --release --manifest-path ai/en/Cargo.toml -- \
-  convert ai/dialects/ud-2.14 ud-2.14 mova data/my-treebank/en_mytb-ud-train.conllu \
+cargo run --release --manifest-path en/Cargo.toml -- \
+  convert dialects/ud-2.14 ud-2.14 mova data/my-treebank/en_mytb-ud-train.conllu \
   > data/mova/mytb-train.conllu
 
 # 3. train on EWT + your data, check the round trip on dev
-cargo run --release --manifest-path ai/en/Cargo.toml -- \
+cargo run --release --manifest-path en/Cargo.toml -- \
   train data/ud/en_ewt-ud-train.conllu data/mova/mytb-train.conllu \
   -- models/en-mytb.bin data/my-treebank/en_mytb-ud-dev.conllu
 ```

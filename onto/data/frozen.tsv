@@ -1,0 +1,80 @@
+# Frozen world-model set v1 — written 2026-09-26 before the queries were implemented (the onto crate had no code yet).
+# The gold is truth by common sense and biology, not by the data: the system answer is only checked against it.
+# Answers: yes / no / unknown (the word is not in the world model) / undetermined (conflicting inheritance).
+# For `frame` the gold is a frame name that must be among the verb's frames.
+# Layers: real (default) → fable → aesop → tale:2451; real → fairy → nights; real → fairy → grimm.
+# id	group	query	gold	note
+q01	isa	isa apple fruit	yes	an apple is a fruit
+q02	isa	isa whale fish	no	trap: a whale is a mammal
+q03	isa	isa whale mammal	yes	a whale is a mammal
+q04	isa	isa bat bird	no	trap: a bat is a mammal
+q05	isa	isa bat mammal	yes	a bat is a mammal
+q06	isa	isa penguin bird	yes	a penguin is a bird, though it does not fly
+q07	isa	isa crow bird	yes	a crow is a bird
+q08	isa	isa cheese food	yes	cheese is food
+q09	isa	isa dolphin fish	no	trap: a dolphin is a mammal
+q10	isa	isa shark fish	yes	a shark is a fish
+q11	isa	isa spider insect	no	trap: a spider is an arachnid
+q12	isa	isa mushroom plant	no	trap: a mushroom is not a plant
+q13	isa	isa hare rabbit	no	trap: hare and rabbit are different genera
+q14	isa	isa lion cat	yes	a lion is a big cat
+q15	isa	isa wolf dog	no	trap: a wolf is not a dog
+q16	isa	isa oak tree	yes	an oak is a tree
+q17	isa	isa stone food	no	a stone is not food
+q18	isa	isa paris city	yes	instance: Paris is a city
+q19	isa	isa blorft animal	unknown	unknown word
+q20	prop	can bird fly	yes	by default
+q21	prop	can crow fly	yes	inherited from bird
+q22	prop	can penguin fly	no	exception
+q23	prop	can ostrich fly	no	exception
+q24	prop	can bat fly	yes	exception among mammals
+q25	prop	can whale fly	no	mammal
+q26	prop	can fox fly	no	mammal
+q27	prop	can whale swim	yes	a whale swims
+q28	prop	can penguin swim	yes	a penguin swims
+q29	prop	can crow speak	no	real world
+q30	prop	can parrot speak	yes	a parrot imitates speech
+q31	prop	can stone speak	no	inanimate
+q32	prop	prop apple edible	yes	edible
+q33	prop	prop stone edible	no	inedible
+q34	prop	prop toadstool edible	no	a toadstool is inedible
+q35	prop	prop fox animate	yes	an animal is a living being
+q36	prop	prop king human	yes	a king is a human
+q37	prop	prop fox human	no	a fox is not a human
+q38	prop	prop platypus lays_eggs	yes	exception: a mammal that lays eggs
+q39	prop	prop dog lays_eggs	no	mammal
+q40	prop	prop hare fast	yes	a hare is fast
+q41	prop	prop tortoise fast	no	a tortoise is slow
+q42	prop	can zzyzx fly	unknown	unknown word
+q43	layer	can crow speak --layer fable	yes	in a fable animals talk
+q44	layer	can fox speak --layer tale:2451	yes	a tale inherits its genre
+q45	layer	can stone speak --layer fable	no	the genre gives speech to animals, not to stones
+q46	layer	prop crow human --layer fable	no	talks, but is not a human
+q47	layer	can penguin fly --layer fable	no	a real-world exception is visible in a fable too
+q48	layer	prop genie exists	no	real world
+q49	layer	prop genie exists --layer nights	yes	exception of the collection "One Thousand and One Nights"
+q50	layer	prop genie exists --layer aesop	no	an exception of another collection does not leak
+q51	layer	prop nixon pacifist	undetermined	Nixon diamond
+q52	part	haspart bird wing	yes	wing
+q53	part	haspart bird beak	yes	beak
+q54	part	haspart crow feather	yes	feathers — inherited from bird
+q55	part	haspart tree branch	yes	branch
+q56	part	partof beak bird	yes	inverse
+q57	part	memberof tree forest	yes	member
+q58	part	madeof bread flour	yes	substance
+q59	part	haspart fish wing	no	a fish has fins
+q60	part	haspart floob wing	unknown	unknown word
+q61	frame	frame buy	Commerce_buy	buying
+q62	frame	role buy Seller	yes	seller
+q63	frame	role buy Money	yes	money
+q64	frame	role buy Victim	no	there is no victim in buying
+q65	frame	frame sell	Commerce_sell	selling
+q66	frame	frame steal	Theft	theft
+q67	frame	role steal Victim	yes	victim of theft
+q68	frame	frame give	Giving	giving
+q69	frame	frame eat	Ingestion	eating
+q70	frame	inherits Commerce_buy Getting	yes	frame inheritance
+q71	frame	frame qwertz	unknown	unknown word
+q72	verb	entails snore sleep	yes	snore → sleep
+q73	verb	causes kill die	yes	kill → die
+q74	verb	entails buy pay	yes	buy → pay

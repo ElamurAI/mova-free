@@ -2,7 +2,7 @@
 
 ## Gist
 
-The `world` crate (`ai/world`) reads short stories into a temporary *story world* (who is where, who holds
+The `world` crate (`world`) reads short stories into a temporary *story world* (who is where, who holds
 what, which thing relates to which) and answers questions from that world. It does not train on the
 questions, and its code has no trigger words. When it cannot answer, it prints `?` and the reason. A gap
 like that tells you what knowledge to add next.
@@ -11,11 +11,11 @@ Three readers are covered here:
 
 | Command | Dataset | Reader | Knowledge it takes from the global level |
 |---|---|---|---|
-| `world babi` | bAbI tasks 1-20 | `ai/world/src/babi.rs`: a UD tree from `en`, then verb class / relation lookups | `global::verb_class` (```verbs blocks) and `global::relation` (```relation blocks) |
-| `world stepgame` | StepGame k=1..10 | `ai/world/src/stepgame.rs`: an averaged perceptron with integer weights reads each sentence into a vector, and the world adds vectors along a path | none. The nine direction vectors are a constant in the code (`LABELS`) |
-| `world spartqa` | SpartQA-human | `ai/world/src/spartqa.rs`: object mentions plus relation words between mentions, with three-valued inference | `global::concept_words` (```category blocks in `scene.md`) |
+| `world babi` | bAbI tasks 1-20 | `world/src/babi.rs`: a UD tree from `en`, then verb class / relation lookups | `global::verb_class` (```verbs blocks) and `global::relation` (```relation blocks) |
+| `world stepgame` | StepGame k=1..10 | `world/src/stepgame.rs`: an averaged perceptron with integer weights reads each sentence into a vector, and the world adds vectors along a path | none. The nine direction vectors are a constant in the code (`LABELS`) |
+| `world spartqa` | SpartQA-human | `world/src/spartqa.rs`: object mentions plus relation words between mentions, with three-valued inference | `global::concept_words` (```category blocks in `scene.md`) |
 
-Global knowledge lives in the seed files `ai/global/seeds/**/*.md`. At compile time, `ai/global/build.rs`
+Global knowledge lives in the seed files `global/seeds/**/*.md`. At compile time, `global/build.rs`
 turns their fenced blocks into Rust tables (`RELATIONS`, `verb_class()`, `CONCEPTS`, ...). The seed file
 is the source of the knowledge, and the compiled tables are what the readers query.
 
@@ -28,15 +28,15 @@ is the source of the knowledge, and the compiled tables are what the readers que
 
 ## Setup
 
-- **No workspace.** Each crate has its own `Cargo.toml` and `Cargo.lock`, and crates depend on each other
-  through relative paths (`ai/world` → `../global`, `../en`, `../prag`, `../math`). Always pass
-  `--manifest-path`.
+- **One workspace.** The crates share the root `Cargo.toml`, `Cargo.lock` and `target/`, and depend on
+  each other through relative paths (`world` → `../global`, `../en`, `../prag`, `../math`). Pick a crate
+  with `-p <crate>` or `--manifest-path`.
 - **Parser model.** bAbI needs the `en` tagger/parser model. It ships in
-  `ai/en/models/ud-ewt-eslspok.bin` and is used by default (`WORLD_EN_MODEL` overrides it). Without a model
+  `en/models/en.bin` and is used by default (`WORLD_EN_MODEL` overrides it). Without a model
   the reader fails with an error; it does not silently fall back to rules. To train your own from the UD
   English EWT and ESL-Spok treebanks (CC BY-SA 4.0):
   ```sh
-  cargo run --release --manifest-path ai/en/Cargo.toml -- train <en_ewt-ud-train.conllu> <en_eslspok-ud-train.conllu> -- models/ud-ewt-eslspok.bin
+  cargo run --release --manifest-path en/Cargo.toml -- train <en_ewt-ud-train.conllu> <en_eslspok-ud-train.conllu> -- models/en.bin
   ```
   StepGame and SpartQA do not use the model.
 - **Datasets** are not in the repo. Get them from their public sources:
@@ -52,13 +52,13 @@ is the source of the knowledge, and the compiled tables are what the readers que
 The commands below use these placeholder paths: `data/babi/en`, `data/stepgame`,
 `data/SpartQA_Human/human_test.json`.
 
-## Commands (verified against `ai/world/src/main.rs`)
+## Commands (verified against `world/src/main.rs`)
 
 All arguments are positional. The code has a home-directory fallback when the folder argument is missing,
 so always pass the folder explicitly.
 
 ```sh
-W="cargo run --release --manifest-path ai/world/Cargo.toml --"
+W="cargo run --release --manifest-path world/Cargo.toml --"
 
 $W babi <en-dir> [test|train] [N]   # all files *_<split>.txt in the folder; N = errors shown per task (default 0)
 $W babi-probe "<sentence>" ... "<question?>"   # any argument containing '?' is a question; the others are read into the story
@@ -83,7 +83,7 @@ The key output words are `total`, `solved (≥95%)`, `without doubtful`, and `ga
 
 ## Seed blocks the readers use
 
-**Verb classes** (```verbs, in `ai/global/seeds/shortcuts/possession.md`). Each line has three parts:
+**Verb classes** (```verbs, in `global/seeds/shortcuts/possession.md`). Each line has three parts:
 `<class> <effect> <lemma>...`. The effect is one of `=`, `+`, `-`, `±`, which mean no change, more, less,
 and transfer of quantity. Multi-word verbs are written with an underscore (`pick_up`), and the reader
 forms them from a verb plus its particle (`compound:prt`).
@@ -106,7 +106,7 @@ Bare `be` with `in` or `at` is also read as a location. Any other verb gives
 `verb "<lemma>" has no class at the global level`.
 
 **Relations** (```relation, one per line as `name: key=value ...`). From
-`ai/global/seeds/shortcuts/relations.md`:
+`global/seeds/shortcuts/relations.md`:
 
 ```relation
 north_of: inverse=south_of vec=0,1 step=n
@@ -115,7 +115,7 @@ fit_inside: same=smaller_than
 morning: order=1
 ```
 
-From `ai/global/seeds/shortcuts/motivations.md`:
+From `global/seeds/shortcuts/motivations.md`:
 
 ```relation
 hungry: go=kitchen
@@ -138,7 +138,7 @@ Keys that `babi.rs` actually reads:
 SpartQA relation words (`left`, `above`, `near`, `touching`, ...) are a `match` in `spartqa.rs`. SpartQA
 does read the `scene_color`, `scene_size`, `scene_shape` and `scene_any` categories from `scene.md`.
 
-**Build gate.** `ai/global/build.rs` panics, so the build fails, and the message names the seed file, if
+**Build gate.** `global/build.rs` panics, so the build fails, and the message names the seed file, if
 any of these hold:
 
 - a relation line has no `:`, or a field has no `=`;
@@ -164,15 +164,15 @@ Files are walked in sorted path order.
    Use `BABI_DEBUG=1` to make sure the parse is sane (here `sprinted` is lemmatised to `sprint` and is the
    VERB root). If the tree is wrong, the fix belongs in `en`, not in a seed.
 2. **Edit the seed.** Append the lemma to the right class line in
-   `ai/global/seeds/shortcuts/possession.md`, for example `move = move hurry ... sprint`. For a new relation,
+   `global/seeds/shortcuts/possession.md`, for example `move = move hurry ... sprint`. For a new relation,
    add a line to a ```relation block. Give it `inverse=` (or `same=`) so the reader recognises it. Add
    `step=` on both directions if path questions need it.
 3. **Rebuild and probe again.** `build.rs` re-runs when anything under `seeds/` changes, so the next
    `cargo run` recompiles `global` and `world`. Rerun the same probe. The sentence should now read as
    `None` (understood) and the question should be answered.
-4. **Check for regressions.** Run `cargo test --release --manifest-path ai/global/Cargo.toml`. It includes
+4. **Check for regressions.** Run `cargo test --release --manifest-path global/Cargo.toml`. It includes
    `verb_class` assertions, such as `eat` → `lose`. Then run the full evals below, on both the original
-   files and the contrast files. Verb classes are also used by `ai/math`, which reads quantity word
+   files and the contrast files. Verb classes are also used by `math`, which reads quantity word
    problems, so run its checks too.
 5. **Write down why** in the seed's prose (gist, conditions, examples, sources). The block is the data, and
    the prose is the explanation.
@@ -204,7 +204,7 @@ To turn it into a seed:
    `relation "...": "#" without "="`. Move the counts into the prose.
 3. **Check the names are new.** For example, `hungry` already exists in `motivations.md`. A second
    definition makes the build fail with `relation "hungry" is repeated`.
-4. **Write the seed** at `ai/global/seeds/shortcuts/<topic>.md`:
+4. **Write the seed** at `global/seeds/shortcuts/<topic>.md`:
 
    ````markdown
    # State → where people go
@@ -291,7 +291,7 @@ Runtime is seconds: about 14 s for the bAbI test, about 8 s for StepGame, and un
 - **A seed fix does not fix a parse.** If `BABI_DEBUG` shows a wrong tag or head (e.g. `attic` as ADJ, a
   name lemmatised to a common noun), adding words to seeds hides the problem. The contrast set exists to
   expose this.
-- **Global seeds are shared.** A word added to a verb class changes `ai/math` and `world`'s quantity reader
+- **Global seeds are shared.** A word added to a verb class changes `math` and `world`'s quantity reader
   as well. A word that already sits in an earlier class is silently ignored.
 - **A relation the reader cannot see.** It needs `inverse=` or `same=`. A path needs `step=` on both
   directions.

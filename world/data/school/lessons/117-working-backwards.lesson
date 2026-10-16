@@ -1,0 +1,47 @@
+lesson: 117
+title: Working backwards through two steps
+stars: 0
+explain: To find how many there were at the start, begin at the end and undo each step in the opposite order.
+explain: Undo «spent half» by doubling, undo «spent 4» by adding 4 back, undo «got 4 more» by taking 4 away.
+explain: She spent half her money, then 4 dollars more, and had 6 left: before the 4 she had 6 + 4 = 10, before the half 10 × 2 = 20.
+vars: a=name l=2..20 k=2..10
+let: s = 2 * (l + k)
+answer: s
+exercise: {a} spent half of {a.his} money on a game, then {k} dollars on a snack. {a.He} had {l} dollars left. How many dollars did {a.he} have at first?
+exercise: {a} gave half of {a.his} stickers to a friend and then {k} stickers to {a.his} brother. Now {a.he} has {l} stickers. How many stickers did {a.he} have at the start?
+exercise: {a} spent {k} dollars, then half of the money that was left. {a.He} has {(s-k)/2} dollars now. How much did {a.he} have to begin with?
+exercise: {a} ate {k} cookies and then gave away half of the rest. {a.He} has {(s-k)/2} cookies left. How many cookies were there at first?
+exercise: {a} got {k} more marbles, then gave half of all {a.his} marbles away. {a.He} has {(s+k)/2} marbles left. How many marbles did {a.he} have at first?
+exercise: Half of the apples in a box were sold, then {k} more were eaten. {l} apples are left. How many apples were in the box at first?
+test: {l} dollars are left in {a}'s purse after {a.he} paid for a book with half of {a.his} money and for a pen with {k} dollars. What did the purse hold before?
+test: At the start of the day a shop had some cakes. It sold {k} cakes in the morning and half of the remaining cakes in the afternoon. {(s-k)/2} cakes are left. How many were there at the start?
+test: Some children were on a bus. At the first stop half of them got off; at the second stop {k} more got off. Now {l} children are on the bus. How many were on it to begin with?
+test: {a} gave away {k} cards and then lost half of the cards that were left, ending with {(s-k)/2}. How many cards did {a.he} start with?
+exercise: {a} lives in Ohio. {a.He} spent half of {a.his} pocket money at the county fair and then {k} dollars on lemonade. {a.He} still has {l} dollars. How much money, in dollars, did {a.he} have at the start?
+exercise: How many stickers did {a} have at first, if {a.he} gave half of them to a friend, then {k} more to {a.his} sister, and has {l} remaining?
+exercise: {a} had some pounds in {a.his} money box in Leeds. {a.He} spent half of them on a book and {k} pounds on a comic, and {a.he} has {l.words} pounds left. How many pounds were in the money box at first?
+exercise: {a} gives half of {a.his} marbles away, then donates {k} more to the school fair. {l} marbles remain. How many marbles did {a.he} start with?
+exercise: {a} spent {k} dollars at a market in Toronto and then half of what was left. {a.He} has {(s-k)/2} dollars remaining. How many dollars did {a.he} have to begin with?
+exercise: A bakery in Sydney sold half of its pies before lunch and {k} more after lunch. {l} pies were still on the shelf. How many pies did the bakery have at first?
+exercise: {a} picked up {k} more shells on a beach in New Zealand and then gave half of all {a.his} shells to {a.his} cousin. {a.He} kept {(s+k)/2} shells. How many shells did {a.he} have before the beach?
+exercise: Halve a number, then subtract {k}, and you get {l}. What was the number?
+test: After paying half of {a.his} euros for a train ticket and {k} euros for lunch, {a} from Dublin had {l} euros left. How many euros did {a.he} have in the morning?
+test: A farm stand in Vermont had a crate of pumpkins. Half the pumpkins were sold on Saturday and {k} on Sunday, leaving {l}. How many pumpkins were in the crate?
+test: What number did {a} start with? {a.He} took away {k}, then halved what was left, and got {(s-k)/2}.
+test: {l} children were still on the school bus in Auckland after half got off at the first stop and {k} more at the second. How many children rode the bus from the school?
+test: {a} had a jar of jelly beans. {a.He} shared out half of them at a party in Cardiff, then ate {k.words}. Only {l} jelly beans were left. How many were in the jar at the start?
+test: A class library in Manitoba lent out {k} books on Monday and half of the books that were left on Tuesday. {(s-k)/2} books are still on its shelves. How many books did it have before Monday?
+exercise: {a} blew half {a.his} cash on a game then {k+1}, nah wait, {k} bucks on a snack. got {l} left. how much {a.he} have at first
+exercise: ok so half my stickers went to my mate, then {k} to my bro, and i got {l} left. how many i start with?
+exercise: my mate reckons it's just {l}+{k} = {l+k}. {a} gave half {a.his} marbles away then {k} more and has {l} left. nah that's not it, how many at first?
+exercise: {a} spent {k} quid then half of whats left, {a.he}'s got {(s-k)/2} now. oh and it was {l+3} degrees out lol. how much {a.he} have before
+test: mum spent half her money at the shops then {k} on parking, she's got {l} left. how much she take out?
+test: {a} had some cards, gave {k} away, then lost half the rest. {(s-k)/2+1} left, sorry, {(s-k)/2} left. how many {a.he} start with
+test: my sister says the answer's {l*2}. half the pies sold, then {k} more, {l} left. she's wrong innit, how many pies were there
+exam: It is given that {a} expended one half of the sum of money in {a.his} possession upon a game and subsequently expended a further {k} dollars upon a snack, whereupon a balance of {l} dollars remained. Determine the sum, in dollars, originally held.
+exam: Whereas one half of a consignment of apples was sold and {k.words} apples were thereafter consumed, leaving {l} apples, ascertain the number of apples comprised in the original consignment.
+exam: A quantity of {k} cards was surrendered by {a}, after which one half of the remaining cards was mislaid, the residue being {(s-k)/2} cards. State the number of cards held by {a} at the outset.
+exam: Ascertain the original number, given that the subtraction of {k} therefrom, followed by the halving of the difference, yields {(s-k)/2}.
+exercise: Great-aunt Mary passed away and left {a} some money. {a} put half of it in the bank, then spent {k} dollars on flowers for her grave, and had {l} dollars left. How many dollars did she leave {a}?
+exercise: {a}'s dad was made redundant. He spent half of his last pay on rent, then {k} dollars on food, and had {l} dollars left. How many dollars was his last pay?
+test: {a} was economical with the truth, said {a.he} lost the money. nah, {a.he} blew half on sweets then {k} on a game and got {l} left. how much did {a.he} start with, the little liar

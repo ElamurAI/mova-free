@@ -1,0 +1,8 @@
+# Effort of `annot` calibration runs when the directory name does not state it or states it wrongly. The rest — from the name
+# (-high, -medium, -low); absent both there and here — "unknown". Columns separated by TAB: directory, effort, how it is known.
+calib-2026-09-25	max	first measurement 25.09; default effort (ANNOT_EFFORT=max)
+calib-2026-09-25-high	max	intended as high, but before 25.09 settings.json (max) overrode effort: 170k output tokens for 20 sentences, as with max (158k); worklog 25.09: "high did not get cheaper"
+calib-ud-2026-09-25	max	real max via --settings: ~27k output tokens per sentence (annot/README.md)
+calib-ud-patch300-2026-09-26	high	annot/README.md: patch mode, "Opus high returns only the patches"
+calib-ud-patch-hints300-2026-09-26	high	annot/README.md: high patch mode with rule hints (ANNOT_HINTS=warn)
+calib-ud-patch-all300-2026-09-26	high	annot/README.md: "high patch mode + FEATS from Rust", sentences of any length

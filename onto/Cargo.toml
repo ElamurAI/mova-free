@@ -1,0 +1,23 @@
+[package]
+name = "onto"
+version.workspace = true
+edition = "2024"
+# license: Elamur Cosmic License (LICENSE.md at the repo root)
+publish = false
+description = "Mova world model (closed): abstractions apart from narrative (TBox vs ABox) — concepts from Open English WordNet and FrameNet, typed relations, default properties with exceptions on layers (real → genre → collection → tale), answers with proof chains."
+
+[dependencies]
+anyhow = "1.0.104"
+quick-xml = "0.42.0"
+flate2 = "1.1.10"
+bzip2 = "0.6.1"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = { version = "1.0.151", features = ["raw_value"] }
+sha2 = "0.10.9"
+# Wikidata: output TSVs are zstd-compressed (as in `kg`); field strings and numbers — without intermediate Strings
+zstd = "0.14"
+memchr = "2"
+itoa = "1"
+# hs (26.09): parsing HS descriptions with a UD tree (`en`), thresholds — exact numbers and units (`math`)
+en = { path = "../en" }
+math = { path = "../math" }

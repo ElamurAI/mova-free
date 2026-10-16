@@ -1,0 +1,11 @@
+[package]
+name = "coref"
+version.workspace = true
+edition = "2024"
+# license: Elamur Cosmic License (LICENSE.md at the repo root)
+publish = false
+description = "Mova coreference (closed): deterministic multi-pass sieve over UD trees with a reason (sieve id + evidence) for every link; CorefUD Entity= I/O; Rust scorer MUC, B3, CEAF-e, CoNLL F1 with head match."
+
+[dependencies]
+en = { path = "../en" }
+anyhow = "1.0.104"

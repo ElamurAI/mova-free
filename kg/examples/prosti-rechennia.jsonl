@@ -1,0 +1,45 @@
+{"id":"s:1","type":"sentence","lang":"uk","text":"Кіт спить.","source":"manual"}
+{"id":"s:2","type":"sentence","lang":"uk","text":"Мама читає книжку.","source":"manual"}
+{"id":"s:3","type":"sentence","lang":"uk","text":"Київ — столиця України.","source":"manual"}
+{"id":"s:4","type":"sentence","lang":"uk","text":"Діти граються в парку.","source":"manual"}
+{"id":"s:5","type":"sentence","lang":"en","text":"The cat sleeps.","source":"manual"}
+{"id":"w:uk:кіт","type":"word","lang":"uk","lemma":"кіт","pos":"noun"}
+{"id":"w:uk:спати","type":"word","lang":"uk","lemma":"спати","pos":"verb"}
+{"id":"w:uk:мама","type":"word","lang":"uk","lemma":"мама","pos":"noun"}
+{"id":"w:uk:читати","type":"word","lang":"uk","lemma":"читати","pos":"verb"}
+{"id":"w:uk:книжка","type":"word","lang":"uk","lemma":"книжка","pos":"noun"}
+{"id":"w:uk:Київ","type":"word","lang":"uk","lemma":"Київ","pos":"propn"}
+{"id":"w:uk:столиця","type":"word","lang":"uk","lemma":"столиця","pos":"noun"}
+{"id":"w:uk:Україна","type":"word","lang":"uk","lemma":"Україна","pos":"propn"}
+{"id":"w:uk:дитина","type":"word","lang":"uk","lemma":"дитина","pos":"noun"}
+{"id":"w:uk:гратися","type":"word","lang":"uk","lemma":"гратися","pos":"verb"}
+{"id":"w:uk:парк","type":"word","lang":"uk","lemma":"парк","pos":"noun"}
+{"id":"w:en:cat","type":"word","lang":"en","lemma":"cat","pos":"noun"}
+{"id":"w:en:sleep","type":"word","lang":"en","lemma":"sleep","pos":"verb"}
+{"id":"f:1","type":"fact","tense":"present","polarity":"+"}
+{"id":"f:2","type":"fact","tense":"present","polarity":"+"}
+{"id":"f:3","type":"fact","tense":"present","polarity":"+","copula":"zero"}
+{"id":"f:4","type":"fact","tense":"present","polarity":"+"}
+{"id":"f:5","type":"fact","tense":"present","polarity":"+"}
+{"src":"f:1","rel":"from_sentence","dst":"s:1"}
+{"src":"f:1","rel":"predicate","dst":"w:uk:спати","form":"спить"}
+{"src":"f:1","rel":"subject","dst":"w:uk:кіт","form":"кіт","case":"nom","num":"sg"}
+{"src":"f:2","rel":"from_sentence","dst":"s:2"}
+{"src":"f:2","rel":"predicate","dst":"w:uk:читати","form":"читає"}
+{"src":"f:2","rel":"subject","dst":"w:uk:мама","form":"мама","case":"nom","num":"sg"}
+{"src":"f:2","rel":"object","dst":"w:uk:книжка","form":"книжку","case":"acc","num":"sg"}
+{"src":"f:3","rel":"from_sentence","dst":"s:3"}
+{"src":"f:3","rel":"predicate","dst":"w:uk:столиця","form":"столиця","case":"nom","num":"sg"}
+{"src":"f:3","rel":"subject","dst":"w:uk:Київ","form":"Київ","case":"nom","num":"sg"}
+{"src":"w:uk:столиця","rel":"attribute","dst":"w:uk:Україна","form":"України","case":"gen","num":"sg","fact":"f:3"}
+{"src":"f:4","rel":"from_sentence","dst":"s:4"}
+{"src":"f:4","rel":"predicate","dst":"w:uk:гратися","form":"граються"}
+{"src":"f:4","rel":"subject","dst":"w:uk:дитина","form":"діти","case":"nom","num":"pl"}
+{"src":"f:4","rel":"adverbial:where","dst":"w:uk:парк","form":"в парку","case":"loc","num":"sg","prep":"в"}
+{"src":"f:5","rel":"from_sentence","dst":"s:5"}
+{"src":"f:5","rel":"predicate","dst":"w:en:sleep","form":"sleeps"}
+{"src":"f:5","rel":"subject","dst":"w:en:cat","form":"the cat","num":"sg"}
+{"src":"s:1","rel":"translation","dst":"s:5"}
+{"src":"w:uk:кіт","rel":"translation","dst":"w:en:cat"}
+{"src":"w:uk:спати","rel":"translation","dst":"w:en:sleep"}
+{"src":"f:1","rel":"same_fact","dst":"f:5"}

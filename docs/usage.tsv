@@ -1,0 +1,27 @@
+# Manual log of where papers and books are applied (design note: keep a parallel log of which research papers and books were applied and where; it eases writing documentation and back-citations).
+# This file holds what the repo text does not show as a reference: a work mentioned only by title or by author and year, a method without a reference, reading that influenced a decision.
+# References in the text (ACL ids, paths papers/… and books/…, aliases from tools/papers/aliases.tsv, "author and year" with a work in the library) are collected by `tools/papers usage` itself; they do not belong here.
+# TAB-separated columns:
+#   date — YYYY-MM-DD;
+#   work — ACL id (checked against the ACL bibliography), library folder (papers/…, books/… or a bare folder name) or "outside the library: author year title";
+#   where — repo file, optionally #section (start of the heading);
+#   how — rule source | knowledge source | bar or metric | method | data | format | precedent | review | mention;
+#   who — Mova or small model (with a qualifier);
+#   note — briefly.
+# A bad row (unknown id, folder, file or section; date, "how", "who") stops `papers usage` before the outputs are written.
+date	work	where	how	who	note
+2026-09-26	D08-1059	en/README.md#Layers and gates	method	Mova	parse.rs: beam search with early update (Zhang & Clark 2008); no id in the text, the paper is not in the library
+2026-09-26	A00-1031	en/README.md#Layers and gates	method	Mova	tag.rs: TnT (Brants 2000), a trigram Markov model with suffixes for unknown words; the text only says "TnT"
+2026-09-26	K18-2001	en/README.md#Full UD annotation	bar or metric	Mova	"Metrics: CoNLL 2018": LAS, MLAS, BLEX (Zeman et al. 2018); no id in the text
+2026-09-26	K18-2001	annot/README.md#Full UD	bar or metric	Mova	"Metrics: CoNLL 2018 (en::ud::Scores)"; no id in the text
+2026-09-26	2022.acl-long.34	docs/context.md#Five-year-old test	bar or metric	Mova	FairytaleQA (Xu et al., ACL 2022), the gold standard of the five-year-old test; the text has "(ACL 2022)" without an id, not in the library
+2026-09-26	N19-1220	docs/context.md#Story layer	data	Mova	LitBank (Bamman et al. 2019), gold standard and data of the story layer; the text only names the corpus
+2026-09-26	2022.lrec-1.520	docs/context.md#Standards and data	bar or metric	Mova	"Metrics as in CorefUD and CRAC" (Nedoluzhko et al. 2022)
+2026-09-26	M95-1005	docs/context.md#Standards and data	bar or metric	Mova	MUC (Vilain et al. 1995), a component of coreference CoNLL F1
+2026-09-26	outside the library: Amit Bagga, Breck Baldwin 1998. Algorithms for Scoring Coreference Chains. LREC 1998 Workshop on Linguistic Coreference	docs/context.md#Standards and data	bar or metric	Mova	B³, a component of coreference CoNLL F1; not in the ACL Anthology
+2026-09-26	H05-1004	docs/context.md#Standards and data	bar or metric	Mova	CEAF-e (Luo 2005), a component of coreference CoNLL F1
+2026-09-26	outside the library: Amit Bagga, Breck Baldwin 1998. Algorithms for Scoring Coreference Chains. LREC 1998 Workshop on Linguistic Coreference	coref/README.md#Scorer	bar or metric	small model (coref)	B³ in the coref/src/score.rs scorer; not in the ACL Anthology
+2026-09-26	outside the library: Jerry R. Hobbs 1978. Resolving Pronoun References. Lingua 44	coref/README.md#Sieves — from the most precise	method	small model (coref)	candidate order "in the spirit of Hobbs" (breadth-first, left to right), following the description in D10-1048 and J13-4004; the paper itself is not in the library
+2026-09-26	outside the library: Harold W. Kuhn 1955. The Hungarian Method for the Assignment Problem; James Munkres 1957. Algorithms for the Assignment and Transportation Problems	coref/README.md#Scorer	method	small model (coref)	optimal entity assignment in CEAF (coref/src/score.rs, assign_max)
+2026-09-26	outside the library: Noam Chomsky 1981. Lectures on Government and Binding	coref/README.md#Sieves — from the most precise	rule source	small model (coref)	binding theory principles A and B: the reflexive and pronoun sieves; i-within-i following J13-4004
+2026-09-26	banerjee-2003-extended-gloss-overlaps-as-measure	onto/README.md#Word sense selection by context	method	small model (onto3)	wsd.rs: extended Lesk, a sense signature from the glosses and lemmas of the synset and its neighbours; the text only says "Banerjee & Pedersen 2003"

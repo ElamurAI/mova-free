@@ -223,7 +223,58 @@ near-duplicate of the first idea and case → mark (no gain). EWT dev 79.39 thro
   passing review takes it off. Seeded with five known cases; live word `negative` lists them; members report how
   many known nonsense ideas they skipped. The case atom ignores the possessive 's (it is `case` in UD but does not
   make a noun oblique).
-- **First verified gain of the family (2026-10-03).** The developer's proposals (`propose`) `nsubj → obl` and `obj → obl IF the word has a
+- **First verified gain of the family (2026-10-03).** My proposals `nsubj → obl` and `obj → obl IF the word has a
   preposition` (child s894bcb40): gold guard EWT dev 78.80 → 78.83, tales 78.00 → 78.01; by hand 24 of 30 changed
   words right (errors were possessives — fixed in the atom); teacher 18 right vs 2; grammar violations −1,776 on a
   60k sample; tests: tales 77.32 → 77.38, EWT 79.84 → 79.86; bAbI, StepGame, SpartQA unchanged.
+- **Second verified gain (2026-10-03, after the 0.3 release).** Found by the family itself (Mova State s8384b543,
+  tales): `conj → parataxis IF a quote stands between word and head, the head is not a light verb, no comma/quote
+  after` — reported speech across a quote boundary is parataxis in UD, not coordination. Child sb2b9d611: tale
+  guard 78.02 → 78.08; by hand about 16 of 25 changed words right (errors: real coordinations next to a quote);
+  teacher 13 right vs 2 (5 neither); grammar ±0; tests: tales 77.38 → 77.45, EWT 79.86 unchanged; bAbI,
+  StepGame, SpartQA unchanged. Kept as the stable state; a candidate for the cold layer of the next release. Also
+  fixed: pooled ideas from before a negative entry existed are now checked against the negative list too.
+- **The family's pragmatics and memory (2026-10-03).** `world/src/talk.rs`. Before the story reader, every
+  sentence of a client message gets a speech act from the closed set of `prag::schema::Act`, by cues and form, in
+  the dimensions of ISO 24617-2 (Bunt et al. 2020: social obligations — greet, thank, apologize; feedback —
+  praise or blame of what a member did; the task — ask, request, assert) plus affection (a kiss, love, pride) as
+  `express`. Social acts are answered at once by the addressee — the member named at the start, or a state that is
+  no longer a member speaking for itself — one reply per act, and remembered; the rest of the message goes on as
+  before. Memory stream after Generative Agents (Park et al. 2023): `<hot>/family/memory.jsonl`, observations with
+  importance 1–10 (affection 9, praise/blame 8, a kept idea 8, a rolled-back idea 5); `… what do you remember?`
+  recalls by importance + recency (0.995 per hour) + word overlap; after importance 30 since the last reflection a
+  member reflects (what was kept, what rolled back, the kind and critical words heard) and says it aloud. Tests:
+  `tests03::dialogue_acts_of_the_family` (negative control: "Is this rule good?" is a question, not praise).
+- **The family tunes the domain modules too (2026-10-03).** A seventh data set in the rotation, `domains-a`: the
+  members move each knob of `domains::knobs()` (legal z and k, clash z, multiword content, single-word content
+  only, main sense only, idiom hidden, absurd humor minimum) to a neighbouring value from their own state's
+  `domains.cfg`, scored on domains-a (50 sentences, dev) and domains-b (50, held-out) of `runs/domains-set`;
+  pooled as `knob` ideas (p < 0.2, held ≥ 0, dev + held ≥ 2). A knob child writes the hot `domains.cfg` (the state
+  tree already versions it) and stays only with ≥ 2 more right domain decisions on domains-g (100 sentences); the
+  domains test set is never read. First round: nothing new — the knobs were tuned on this set before; negative
+  control (`knob_explorer_finds_the_way_back`, local): from a spoiled configuration the explorer proposes the way
+  back. `state::state_file(id, name)` reads one file of a state's hot layer.
+- **Mova on tables — Kaggle Titanic (2026-10-03).** `world tabular` (`world/src/tabular.rs`): Mova reads records into
+  its world (quartile bins it picks itself, short categories, a name column read with level-1 knowledge of English
+  honorifics — "Master" is a boy —, identifier-like columns linking records that travel together), turns what the
+  linked women and children did into a relation attribute, learns a decision list (CN2-style) and explains every
+  answer. 10-fold CV on train: **81.82%** (the gender baseline 78.68%); its first rules are group behaviour it found
+  itself ("embarked at S and none of my group's women and children survived → dies", "female and all of them
+  survived → lives"). With the developer's teacher (woman-child groups, CV 83.95%, `tools/kaggle`) as pseudo-labels
+  on the test records: CV 80.02% — worse, so the answer stays Mova's untaught one. Only Mova's answers are submitted.
+- **Design note: a layer of beliefs over the stable rules (2026-10-03).** "We think such a rule exists, but we
+  have no proof yet, or no resources to run the whole corpus every time." Every candidate rule (from the family, a
+  teacher, a hint, the negative list) carries its evidence as counts — right / wrong firings seen on samples, teacher
+  verdicts, guard results — and a confidence from them (a Beta posterior over its precision; the lower bound of a
+  credible interval decides). Evidence comes in small cheap batches (a fresh slice of the store, a few teacher
+  judgments) whenever there is budget, and accumulates across runs; a rule is promoted to the stable layer only when
+  the lower bound clears the bar on untouched data, demoted to the negative list when the upper bound falls below
+  it, and stays "believed" in between — usable where a guess is better than nothing (with its confidence said), never
+  shipped as stable. The pool, the negative list with its rare reviews and the guards are the first pieces of it.
+- **Brains steer where to look (2026-10-03).** A member remembers where each of its ideas was found ("found on
+  big-real: obl:agent → obl", marked when its brain chose the set); after every child it writes a section of its
+  state's brain, "Where my ideas work": per data set how many of its ideas were kept and rolled back, and "My
+  order: …" by Laplace (kept + 1) / (tried + 2). In two rounds of three the skeleton reads that line and lets the
+  member explore its best set; the third round keeps the rotation (exploration). `FAMILY_BRAINS=0` is the ablation
+  (rotation only); the "(my brain chose it)" marks let the kept rates of brain-chosen and rotated finds be compared.
+  `state::brain_read_of` / `brain_section_of` read and write any state's brain between stages.

@@ -1,0 +1,37 @@
+lesson: 246
+title: Best buys and offers
+level: primary-3
+stars: 0
+explain: A dozen is 12 things, and a dollar is worth 100 cents.
+explain: To see how much a box saves, find what a dozen loose things cost, then take away the box price, both in cents.
+explain: Eggs at 25 cents each: a dozen loose cost 12 × 25 = 300 cents; a dozen box for $2.50 is 250 cents, so the box saves 50 cents.
+vars: a=name b=name c=15..40 x=1..4 y=0..9 z=2..9
+let: box = x * 100 + y * 10
+need: 12 * c > box
+need: 12 * c - box <= 150
+need: 12 * c - box <= 3 * c
+answer: 12 * c - box
+exercise: Loose eggs cost {c} cents each, and a box of a dozen eggs costs ${x}.{y}0. How many cents does {a} save by buying the box instead of a dozen loose eggs?
+exercise: At the bakery a bagel costs {c} cents, or you can buy a dozen bagels for ${x}.{y}0. How many cents cheaper is the dozen than buying them one by one?
+exercise: Pencils are {c} cents each, or ${x}.{y}0 for a pack of a dozen. How many cents does the pack save on a dozen pencils?
+exercise: {a} needs a dozen cupcakes. One cupcake costs {c} cents; a box of a dozen costs ${x}.{y}0. How many cents does {a.he} save with the box?
+exercise: A farm stand sells peaches at {c} cents each or ${x}.{y}0 a dozen. How much less, in cents, is the dozen deal?
+exercise: donuts {c} cents each or a dozen for ${x}.{y}0. how many cents u save gettin the dozen
+exercise: {a} wants a dozen cookies, they're {c+5}, no wait {c} cents each, or ${x}.{y}0 for the box of a dozen. how much cheaper is the box in cents
+exercise: eggs {c}c each or ${x}.{y}0 a dozen, mom always gets the box lol. saves how many cents
+exercise: {b} says buying a dozen pens one at a time at {c} cents is cheaper than the ${x}.{y}0 dozen pack. nah. by how many cents is the pack cheaper
+exercise: muffins at the school sale {c} cents each, dozen for ${x}.{y}0. cents saved on a dozen?
+exercise: {a} at the market, limes {c} cents a pop or a dozen bag ${x}.{y}0. how many cents cheaper the bag
+test: How many cents cheaper is a ${x}.{y}0 box of a dozen rolls than a dozen rolls bought at {c} cents apiece?
+test: A dozen crayons in a pack cost ${x}.{y}0; single crayons cost {c} cents. {a} needs a dozen. How many cents does the pack save?
+test: {a} compares two deals for a dozen eggs: {c} cents an egg, or a box for ${x}.{y}0. A bag to carry them costs {z} cents. How many cents does the box save on the eggs?
+test: Buying a dozen apples one at a time at {c} cents each costs more than the ${x}.{y}0 dozen bag. By how many cents?
+test: dozen bagels ${x}.{y}0 or {c} cents each, whats the saving in cents
+test: grandma's buying a dozen tomatoes, {c} cents each or ${x}.{y}0 the dozen, how many cents she save on the deal
+exam: Determine, in cents, the saving afforded by the purchase of a dozen eggs at the boxed price of ${x}.{y}0 as compared with their purchase singly at {c} cents per egg.
+exam: It is given that a single bagel is priced at {c} cents, whereas a dozen bagels are offered at {x} dollars and {y*10} cents. Ascertain the difference in cost, expressed in cents.
+exam: A dozen pencils having been offered either singly at {c} cents apiece or collectively for ${x}.{y}0, state the economy in cents achieved by the latter option.
+exam: Whereas {a} proposes to acquire a dozen cupcakes, and the unit price is {c} cents while the price per dozen is ${x}.{y}0, compute the sum saved, in cents, by purchasing the dozen.
+exercise: Since Dad was let go, {a} hunts for best buys. Loose eggs cost {c} cents each, and a box of a dozen costs ${x}.{y}0. How many cents does {a} save by buying the box instead of a dozen loose eggs?
+exercise: {b}'s mum is careful with money, tight as anything, so she'll want to know: bagels at {c} cents each or a dozen for ${x}.{y}0. how many cents does the dozen save her?
+test: The shop calls its loose apples at {c} cents each great value, which is economical with the truth: a bag of twelve is ${x}.{y}0. By how many cents are twelve loose apples dearer than the bag?

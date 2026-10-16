@@ -1,0 +1,48 @@
+lesson: 177
+title: Adding all the rows
+level: primary-4
+stars: 1
+explain: When rows grow by the same number, pair the first row with the last, the second with the one before the last, and so on: every pair has the same sum.
+explain: The total is (first + last) × number of rows / 2, and the last row is first + (rows - 1) × step.
+explain: 6 rows: 5, 7, 9, 11, 13, 15 seats. First + last = 20, 20 × 6 / 2 = 60 seats.
+vars: a=name f=2..20 d=1..6 r=3..10
+let: last = f + (r - 1) * d
+answer: (f + last) * r / 2
+exercise: A small theatre has {r} rows. The first row has {f} seats, and each row has {d} seats more than the row in front of it. How many seats are there in all?
+exercise: {a} saves {f} dollars in the first week and each week {d} dollars more than the week before. How many dollars does {a.he} save in {r} weeks altogether?
+exercise: On the first day {a} reads {f} pages, and each day {d} pages more than the day before. How many pages does {a.he} read in {r} days?
+exercise: A stack of cans has {r} rows. The top row has {f} cans, and each row below has {d} cans more. How many cans are in the stack?
+exercise: Add up the first {r} numbers of the list {f}, {f+d}, {f+2*d}, … in which each number is {d} more than the one before. What is the sum?
+exercise: {a} does {f} push-ups on day 1 and every day {d} more than the day before. How many push-ups does {a.he} do in the first {r} days?
+test: A cinema has {r} rows of seats. The front row has {f} seats and the back row has {last}, and each row has the same number of seats more than the row in front. How many seats does the cinema have?
+test: In a garden there are {r} beds of carrots. The first bed has {f} carrots, the second {f+d}, the third {f+2*d}, and so on. How many carrots grow in all {r} beds?
+test: Over {r} days, {a} collected shells: {last} on the last day, {last-d} the day before, always {d} fewer the day before. How many shells did {a.he} collect in all?
+test: Building a pyramid of {r} layers, {a} uses {f} blocks for the top layer and {d} more blocks for each layer below it. What is the total number of blocks?
+exercise: How many seats are in a hall in Boston with {r} rows, if row 1 has {f} seats and each next row has {d} more?
+exercise: {a} in Manchester saves {f} pounds in week one, and in each week after that {d} more than the week before. How many pounds has {a.he} saved altogether after {r} weeks?
+exercise: A pile of logs in Ontario has {r} layers. The top layer has {f} logs, and every layer below has {d} logs more. How many logs are in the pile in total?
+exercise: {r} rows of chairs: the first has {f}, and each row has {d} more than the row before. How many chairs are there in all?
+exercise: {a} walks {f} km on the first day of a hike in New Zealand and {d} km more each day than the day before. How many kilometres does {a.he} walk in {r} days combined?
+exercise: Find the total of {r} numbers that start at {f} and go up by {d} each time.
+exercise: A tower of cups has {r} levels. The top level has {f} cups, and each level below has {d} more. How many cups are used together?
+exercise: {a} practises the piano in Dublin: {f} minutes on day 1, then every day {d} more than the day before. How many minutes does {a.he} practise in total over {r} days?
+test: What is the total number of apples in a pyramid of {r} rows in a shop in Vermont, if the top row has {f} apples and each row down has {d} more?
+test: Over {r} weeks, {a} ran {f} km in the first week and {d} km more every week than in the week before. How far did {a.he} run altogether, in kilometres?
+test: In a stadium in Melbourne the front row has {f} seats and the back row, row {r}, has {last}; the number of seats grows by {d} from row to row. How many seats are there?
+test: {a} lays coins in rows: {f} in the first row, {f+d} in the second, {f+2*d} in the third, and so on for {r} rows. How many coins are there combined?
+test: A wall in Yorkshire is built in {r} courses of stones. The top course has {f} stones, and every course beneath it {d} more. How many stones are in the wall?
+test: On each day of a {r}-day bake sale in Ireland, the stall sold {d} more than on the day before, starting with {f} cakes on the first day. How many cakes were sold during the whole sale?
+exercise: {r} rows, first one got {f} seats, each row {d} more. how many seats altogether
+exercise: {a} saves {f} bucks week 1, {d} more each week. how much after {r} weeks total
+exercise: {a} read {f} pages day one, then {d} more every day for {r+1} — no wait, {r} days. how many pages total
+exercise: stacking cans, top row {f}, each row down got {d} more, {r} rows (4 cans got dented but they still count). how many cans in the stack
+test: Sam says just {f} times {r}. nah. first row {f} seats, {d} more each row, {r} rows. how many seats in all
+test: {a} does {f} sit-ups on day 1 and {d} more each day after. {r} days. how many sit-ups all up
+test: garden's got {r} rows of flowers, front row {f}, every row behind has {d} more. how many flowers in the whole garden then
+exercise: Since Grandma passed on, {a} picks flowers for her grave: {f} flowers in the first week and {d} more each week than the week before. How many flowers does {a.he} pick in {r} weeks altogether?
+exercise: dad's "between jobs" so he's doing press-ups. {f} the first day, {d} more every day, for {r} days. how many altogether, and stop whingeing
+test: For the late headmaster's memorial, chairs are set out in {r} rows: {f} in the front row and {d} more in each row than in the row in front. How many chairs are set out?
+exam: A theatre comprises {r} rows of seats, the first row containing {f} seats and each subsequent row containing {d} seats in excess of the row preceding it. Determine the aggregate number of seats in the theatre.
+exam: It is given that {a} deposits {f} dollars in the first week and, in each week thereafter, {d} dollars more than in the week preceding. Ascertain the total sum, in dollars, deposited over a period of {r} weeks.
+exam: Compute the sum of the first {r} terms of a sequence whose first term is {f} and whose every subsequent term exceeds its predecessor by {d}.
+exam: Whereas a stack of cans is arranged in {r} layers, the uppermost layer containing {f} cans and each lower layer containing {d} cans more than the layer above it, state the total number of cans in the stack.

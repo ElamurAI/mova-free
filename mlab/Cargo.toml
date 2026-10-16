@@ -1,0 +1,19 @@
+[package]
+name = "mlab"
+version.workspace = true
+edition = "2024"
+# license: Elamur Cosmic License (LICENSE.md at the repo root)
+description = "mlab: a computing language in the spirit of MATLAB/Octave (a clean reimplementation from documentation) — lexer, parser, interpreter, f64/logical/char/complex matrices, linear algebra on faer, FFT on rustfft, numerical methods, result-checking gates."
+
+[[bin]]
+name = "mlab"
+path = "src/main.rs"
+
+[dependencies]
+# tests3 (26.09): gamma, erf, erfc — a port of musl/fdlibm (MIT), already in the tree via statrs; Boost.Math data showed
+# a loss of accuracy in our own formulas (erf for small x, erfc near 2, gamma for large and negative near integers)
+libm = "0.2.16"
+faer = { version = "0.24", default-features = false, features = ["std", "linalg"] }
+rustfft = "6.4"
+statrs = { version = "0.19.1", default-features = false }
+vfs = { path = "../vfs" }

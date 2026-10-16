@@ -8,7 +8,7 @@
 The paper defines the scoring metric used for the coreference task of MUC-6, now known as the MUC metric. Coreference chains are viewed as equivalence classes, and scoring counts links rather than individual pairwise decisions. Recall for a key chain is the number of links needed to connect it minus the number of pieces the response splits it into, normalized by the minimal number of links; precision is computed symmetrically with key and response swapped. This makes the score independent of which particular links a system outputs, as long as the resulting partition is the same. The metric is simple and intuitive, but it is known to ignore singleton entities and to reward over-merging, which later metrics (B³, CEAF) were designed to address.
 
 ## How Mova uses it
-- `ai/coref/src/score.rs`: the MUC metric is implemented in Rust as one of the coreference scores, alongside B³, CEAF-e/CEAF-m, and CoNLL F1 (the average of MUC, B³ and CEAF-e).
+- `coref/src/score.rs`: the MUC metric is implemented in Rust as one of the coreference scores, alongside B³, CEAF-e/CEAF-m, and CoNLL F1 (the average of MUC, B³ and CEAF-e).
 - Mentions are matched by head word (as in the CRAC shared tasks), with and without singletons.
 - The scorer is checked against the worked example of Pradhan et al. 2014 (MUC 0.40 / 0.40) and by negative controls: one giant cluster gives MUC recall 1 but CoNLL < 0.7; all-singletons gives MUC 0.
 

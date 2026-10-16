@@ -1,0 +1,49 @@
+lesson: 188
+title: The longest equal pieces
+level: primary-4
+stars: 3
+explain: To cut two lengths into equal pieces with nothing left, the piece must divide both lengths; the longest such piece is the greatest common divisor.
+explain: Ribbons of 24 cm and 36 cm: the numbers that divide both are 1, 2, 3, 4, 6, 12, so the longest piece is 12 cm.
+explain: Then 24 cm gives 2 pieces and 36 cm gives 3 pieces: 5 pieces in all.
+vars: a=name g=2..12 p=2..9 q=3..9
+need: p < q
+need: (p % 2 != 0 || q % 2 != 0) && (p % 3 != 0 || q % 3 != 0)
+let: x = g * p
+let: y = g * q
+answer: p + q
+exercise: {a} has two ribbons, {x} cm and {y} cm long. {a.He} cuts both into pieces of the same length, as long as possible, with nothing left over. How many pieces does {a.he} get?
+exercise: Two ropes are {x} m and {y} m long. They are cut into equal pieces, as long as possible, and no rope is wasted. How many pieces are there in all?
+exercise: {a} wants to cut a {x} cm strip and a {y} cm strip of paper into equal strips that are as long as possible, without any paper left. How many strips will {a.he} have?
+exercise: A {x} m board and a {y} m board are sawn into pieces of equal length, the longest possible, with no waste. How many pieces are there altogether?
+exercise: Two wires, {x} cm and {y} cm long, must be cut into equal parts as long as possible with nothing left. How many parts will there be?
+test: {a} cuts a {y} cm ribbon and a {x} cm ribbon so that every piece has the same length and nothing is thrown away. The pieces are as long as they can be. Count the pieces.
+test: Without wasting any cloth, a tailor cuts two strips of {x} cm and {y} cm into the fewest equal pieces. How many pieces does the tailor make?
+test: Two pipes of {x} m and {y} m are divided into pieces of one length with nothing left, and the pieces are as long as possible. What is the total number of pieces?
+exercise: Two pieces of ribbon measure {x} cm and {y} cm. {a} cuts them into pieces all of the same length, the longest length possible, with no ribbon left over. How many pieces are there altogether?
+exercise: How many pieces will there be in total if two ropes of {y} m and {x} m are both cut into equal pieces, as long as possible, with none wasted?
+exercise: In a workshop in Ontario, two planks {x} dm and {y} dm long are sawn into equal lengths, as long as they can be, with nothing left. How many pieces does that give?
+exercise: {a} has {x} cm of red tape and {y} cm of blue tape. {a.He} wants every piece the same length, as long as possible, and no tape left. How many pieces will {a.he} have in all?
+exercise: Ribbons of {x} cm and {y} cm; equal pieces, the longest possible, no waste. How many pieces combined?
+exercise: A gardener in Kent has two hoses, {x} m and {y} m long, and cuts them into equal lengths, the longest possible, so that nothing is left over. How many lengths does the gardener get in total?
+exercise: Two strips of fabric, {x.words} centimetres and {y.words} centimetres long, are cut into the longest equal pieces with no fabric left. How many pieces are made?
+exercise: {a} wants to cut two sticks, {y} cm and {x} cm long, into pieces of one length, as long as possible, leaving nothing. How many pieces is that together?
+test: What is the total number of pieces when two cables, {x} m and {y} m long, are cut into the longest pieces of equal length without any cable left?
+test: A baker in Melbourne rolls two strips of dough, {y} cm and {x} cm long, and cuts them into equal bits, each as long as it can be, with no dough left. How many bits are there altogether?
+test: {a} has to share two lengths of string, {x} cm and {y} cm, into equal pieces that are as long as possible and leave no string over. How many pieces of string will there be combined?
+test: Two logs of {x} dm and {y} dm are chopped into pieces that all match in length, the longest possible, and no wood is left. How many pieces are chopped in total?
+test: The longest equal pieces with nothing left over are cut from two ribbons of {x} cm and {y} cm. Altogether, how many pieces?
+test: In a school in Wellington, a teacher cuts two rolls of paper, {x} cm and {y} cm long, into equal sheets, each as long as possible, leaving no paper. How many sheets are there together?
+exercise: got 2 ribbons, {x} cm n {y} cm, gotta cut em into same length bits, longest poss, no bits left over. how many bits altogether
+exercise: {a}'s got ropes {x} m and {y+2} m — wait no, {y} m. cut both in equal pieces long as poss, nothing wasted. how many pieces in total?
+exercise: two planks {x} cm and {y} cm, dad's got like 3 saws lol, cut em into equal bits longest u can, no waste. how many bits
+exercise: {a} says {x+y} pieces, one cm each. nah they gotta be longest possible. ribbons {x} cm and {y} cm, equal pieces, no leftovers, how many pieces?
+test: cuttin {y} cm and {x} cm of tape into same-size strips, long as they can be, none wasted. how many strips we get
+test: two wires, {x+1} m — nah sorry, {x} m — and {y} m, chop into equal bits as long as poss, no waste, how many bits is that
+test: my bro says just 2 pieces, dont cut nothing lol. nah — {x} cm and {y} cm ribbons into equal pieces, longest poss, nothing left. how many pieces really
+exam: Two ribbons, of lengths {x} cm and {y} cm respectively, are to be divided into pieces of uniform length, such length being the greatest possible and no remnant remaining. Determine the total number of pieces obtained.
+exam: It is given that two ropes of {x} metres and {y} metres are to be cut entirely into equal pieces of the greatest admissible length. Ascertain the aggregate number of pieces so produced.
+exam: Whereas {a} is required to divide two planks, measuring {x} dm and {y} dm, into segments of identical length, the said length to be maximal and no material to be wasted, state the number of segments obtained in total.
+exam: Determine the number of pieces resulting from the division, without remainder, of two lengths of cable, of {x} metres and {y} metres, into pieces all of one length, that length being the greatest consistent with the said conditions.
+exercise: {a} has ribbons of {x} cm and {y} cm, and a third one, {x+y} cm, that 'fell off the back of a lorry' — Mum made {a.him} give it back. {a} cuts the ribbons that are left into equal pieces, as long as possible, with nothing left over. How many pieces does {a.he} get?
+exercise: {a.His} brother was economical with the truth: he said the two ropes were {x+1} m and {y} m. They are really {x} m and {y} m. {a} cuts them into equal pieces, as long as possible, with no rope wasted. How many pieces are there?
+test: sod it, the third ribbon carked it (dog chewed it), so just {x} cm n {y} cm. cut em into equal bits, longest poss, no waste. how many bits

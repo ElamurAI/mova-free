@@ -9,33 +9,33 @@ every target is produced *from* it. Quality on any treebank is measured by conve
 comparing with that treebank's own gold.
 
 Converters are **plain markdown**: fenced ```` ```convert ```` blocks inside `convert.md` files. A
-small deterministic engine in `ai/en/src/convert.rs` runs them. The engine reuses the matching
-language of the grammar-check seeds (`ai/en/src/expert.rs`) and adds `from`, `to` and `set`.
+small deterministic engine in `en/src/convert.rs` runs them. The engine reuses the matching
+language of the grammar-check seeds (`en/src/expert.rs`) and adds `from`, `to` and `set`.
 
 ## What `mova` is
 
 - **Base:** UD 2.18 with the conventions of English EWT. The machine-readable part is the registry
-  `ai/en/data/ud-registry-en.tsv` (UPOS x feature pairs, relations, auxiliaries).
+  `en/data/ud-registry-en.tsv` (UPOS x feature pairs, relations, auxiliaries).
 - **Layers on top:**
   - `ud-next`: guideline changes after 2.18 that are expected in the next release
-    (`ai/dialects/ud-next/`).
+    (`dialects/ud-next/`).
   - Borrowings from other dialects.
   - Own normalizations: `det:poss` -> `nmod:poss`; `:tmod`/`:npmod` -> `:unmarked`; verb Number and
     Person from the subject.
 - **Choice rule:** take what is more consistent and more informative *and* can be converted back to
   the standard without loss. A lossy convention can be an export target, never the base.
-- Each decision is a seed in `ai/dialects/mova/seeds/*.md`, summarized in
+- Each decision is a seed in `dialects/mova/seeds/*.md`, summarized in
   [dialect-mova.md](../docs/dialect-mova.md).
 
 ## Layout
 
 | path | holds |
 | --- | --- |
-| `ai/dialects/<name>/README.md` | what the dialect is and how it differs |
-| `ai/dialects/<name>/convert.md` | rules between `mova` and a version dialect (`ud-2.14`, `ud-next`) |
-| `ai/dialects/<name>/seeds/*.md` | one decision or difference per file, often with ```` ```rule ```` counters |
-| `ai/treebanks/en/<treebank>/convert.md` | rules between `mova` and one treebank's habits (`gum`, `atis`, `childes`, `ewt`, ...) |
-| `ai/en/src/convert.rs` | the engine: parser, application order, tree gate, unit tests |
+| `dialects/<name>/README.md` | what the dialect is and how it differs |
+| `dialects/<name>/convert.md` | rules between `mova` and a version dialect (`ud-2.14`, `ud-next`) |
+| `dialects/<name>/seeds/*.md` | one decision or difference per file, often with ```` ```rule ```` counters |
+| `treebanks/en/<treebank>/convert.md` | rules between `mova` and one treebank's habits (`gum`, `atis`, `childes`, `ewt`, ...) |
+| `en/src/convert.rs` | the engine: parser, application order, tree gate, unit tests |
 
 A dialect name is any string without whitespace. The name is just what rules put in `from:` and
 `to:`.
@@ -80,7 +80,7 @@ source: UD _en/dep/obl-unmarked.md (History)
 "one of"):
 
 - `upos=NOUN|PROPN`, `xpos=VBD` (PTB tags), `lemma=who|whom`, `form=you`, `lemma=_` (no lemma)
-- `rel=obl:tmod`: exact relation, which must be a known `Rel` in `ai/en/src/gram.rs`. `rel~nsubj`
+- `rel=obl:tmod`: exact relation, which must be a known `Rel` in `en/src/gram.rs`. `rel~nsubj`
   matches the base relation, any subtype.
 - `feats.Number=Sing|Plur`: the feature has one of the values. `feats.Case`: the feature is present.
   `!feats.Case`: the feature is absent. `feats.Number=@v`: same value as on node `v`.
@@ -134,16 +134,16 @@ Separate actions with `,` or `;` inside the brackets. A value may contain commas
 
 1. Find the difference with a counter: count it in the data before you change anything.
 2. Add a ```` ```convert ```` block to the right file:
-   - `ai/treebanks/en/<treebank>/convert.md` for one treebank's habit;
-   - `ai/dialects/<name>/convert.md` for a UD version.
+   - `treebanks/en/<treebank>/convert.md` for one treebank's habit;
+   - `dialects/<name>/convert.md` for a UD version.
    Write both directions when the change is reversible (`x -> mova` and `mova -> x`). Give the
    reverse rules `from: mova`.
 3. Run the forward conversion and read the summary on stderr: rule count, sentences, words, changed
    words.
 4. Run the round trip `x -> mova -> x` with `convert-check`. Every column should show 0 differences
    unless the reverse is knowingly lossy. Then explain the remainder in the `convert.md` prose.
-5. Run the engine's tests. `repo_rules_all_parse` loads every `convert.md` under `ai/dialects` and
-   `ai/treebanks` and fails on any parse error or duplicate id.
+5. Run the engine's tests. `repo_rules_all_parse` loads every `convert.md` under `dialects` and
+   `treebanks` and fails on any parse error or duplicate id.
 6. Retrain `en` on the converted data if the rule changes training input
    ([retrain-the-parser.md](retrain-the-parser.md)).
 
@@ -151,19 +151,19 @@ Separate actions with `,` or `;` inside the brackets. A value may contain commas
 
 ```sh
 # forward: ud-2.14 -> mova, CoNLL-U on stdout, summary on stderr
-cargo run --release --manifest-path ai/en/Cargo.toml -- \
-  convert ai/dialects/ud-2.14 ud-2.14 mova data/ud/en_eslspok-ud-train.conllu > eslspok-train.conllu
+cargo run --release --manifest-path en/Cargo.toml -- \
+  convert dialects/ud-2.14 ud-2.14 mova data/ud/en_eslspok-ud-train.conllu > eslspok-train.conllu
 
 # round trip report (markdown tables: forward changes, what did not come back, per-rule counts)
-cargo run --release --manifest-path ai/en/Cargo.toml -- \
-  convert-check ai/dialects/ud-2.14 ud-2.14 data/ud/en_eslspok-ud-train.conllu
+cargo run --release --manifest-path en/Cargo.toml -- \
+  convert-check dialects/ud-2.14 ud-2.14 data/ud/en_eslspok-ud-train.conllu
 
 # a treebank converter: point at its directory and use its dialect name
-cargo run --release --manifest-path ai/en/Cargo.toml -- \
-  convert ai/treebanks/en/gum gum mova data/ud/en_gum-ud-train.conllu > gum-train.conllu
+cargo run --release --manifest-path en/Cargo.toml -- \
+  convert treebanks/en/gum gum mova data/ud/en_gum-ud-train.conllu > gum-train.conllu
 
 # engine tests, including "every convert.md in the repo parses"
-cd ai/en && cargo test --release convert
+cd en && cargo test --release convert
 ```
 
 The first argument is a directory, searched recursively for files named `convert.md` (hidden

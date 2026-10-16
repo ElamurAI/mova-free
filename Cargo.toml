@@ -1,0 +1,57 @@
+# One workspace for every crate: `cargo build --release` at the root
+# builds everything into target/release/. `tera/`, where present, is internal tooling outside the workspace.
+[workspace]
+resolver = "2"
+members = [
+    "annot",
+    "coref",
+    "en",
+    "global",
+    "gparse",
+    "kg",
+    "latex",
+    "layers",
+    "math",
+    "math/bigbench",
+    "mlab",
+    "mlab/bench",
+    "onto",
+    "prag",
+    "qagen",
+    "tools/bench",
+    "tools/cycle",
+    "tools/db",
+    "tools/dict-lessons",
+    "tools/gutenberg",
+    "tools/jobs",
+    "tools/kaggle",
+    "tools/mathlib",
+    "tools/parsecmp",
+    "tools/school-sents",
+    "tools/sources",
+    "tools/treeagree",
+    "tools/treebanks",
+    "tools/value",
+    "tools/wikt-count",
+    "tools/wikt-idioms",
+    "tools/wikt-page",
+    "vfs",
+    "wasi-host",
+    "weather",
+    "world",
+]
+exclude = ["tera"]
+
+[workspace.package]
+version = "0.4.0"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+
+[profile.release.package.mlab]
+codegen-units = 4
+
+[profile.release.package.mlab-backend-bench]
+codegen-units = 4

@@ -1,0 +1,80 @@
+# Property seeds: defaults with exceptions, on layers. A seed is the grain of a rule; every row has its source.
+# Sources: "gloss" — the OEWN 2025 synset gloss (CC BY 4.0) says this directly; "manual" — common knowledge written down by hand;
+# papers and texts — by title. Strength: default — overridden by a more specific concept; strict — not (on the same layer).
+# id	layer	lemma	synset	prop	value	strength	source	note
+d01	real	organism	oewn-00004475-n	Living	yes	strict	gloss: «a living thing that has (or can develop) the ability to act or function independently»	
+d02	real	object	oewn-00002684-n	Living	no	default	manual: a physical object is non-living by default	organisms are the exception below
+d03	real	animal	oewn-00015568-n	Animate	yes	strict	gloss: «a living organism characterized by voluntary movement»	
+d04	real	person	oewn-00007846-n	Animate	yes	strict	gloss: «a human being»	
+d05	real	object	oewn-00002684-n	Animate	no	default	manual: an object does not move of its own will	
+d06	real	plant	oewn-00017402-n	Animate	no	default	gloss: «a living organism lacking the power of locomotion»	
+d07	real	person	oewn-00007846-n	Human	yes	strict	gloss: «a human being»	
+d08	real	animal	oewn-00015568-n	Human	no	default	manual: an animal is not a human	default: homo (man.3) is both animal and human
+d09	real	person	oewn-00007846-n	CanSpeak	yes	default	manual: a person speaks	muteness is an exception
+d10	real	animal	oewn-00015568-n	CanSpeak	no	default	manual: animals do not speak human language	
+d11	real	parrot	oewn-01819528-n	CanSpeak	yes	default	gloss: «the ability to mimic sounds»	imitation of speech
+d12	real	object	oewn-00002684-n	CanSpeak	no	default	manual: inanimate things do not speak	
+d13	real	bird	oewn-01505702-n	CanFly	yes	default	Reiter 1980 «A logic for default reasoning» — the classic example; gloss: «forelimbs modified as wings»	
+d14	real	penguin	oewn-02058457-n	CanFly	no	default	gloss: «short-legged flightless birds»	
+d15	real	ostrich	oewn-01521519-n	CanFly	no	default	gloss: «fast-running African flightless bird»	
+d16	real	emu	oewn-01522514-n	CanFly	no	default	gloss: «large Australian flightless bird»	
+d17	real	kiwi	oewn-01523217-n	CanFly	no	default	gloss: «nocturnal flightless bird of New Zealand»	
+d18	real	cassowary	oewn-01522204-n	CanFly	no	default	gloss: «large black flightless bird»	
+d19	real	rhea	oewn-01524397-n	CanFly	no	default	gloss: «fast-running flightless birds»	
+d20	real	rhea	oewn-01524040-n	CanFly	no	default	gloss: «fast-running flightless birds»	
+d21	real	dodo	oewn-01813884-n	CanFly	no	default	gloss: «extinct heavy flightless bird»	
+d22	real	mammal	oewn-01864419-n	CanFly	no	default	manual: mammals do not fly	the bat is an exception
+d23	real	bat	oewn-02141851-n	CanFly	yes	default	gloss: «forelimbs modified to form membranous wings»	
+d24	real	person	oewn-00007846-n	CanFly	no	default	manual: a person does not fly without a machine	
+d25	real	fish	oewn-02514684-n	CanFly	no	default	manual: fish do not fly	the flying fish glides
+d26	real	object	oewn-00002684-n	CanFly	no	default	manual: an object does not fly by itself	
+d27	real	aircraft	oewn-02689427-n	CanFly	yes	default	gloss: «a vehicle that can fly»	
+d28	real	fly	oewn-02192818-n	CanFly	yes	default	gloss: «two-winged insects characterized by active flight»	
+d29	real	bee	oewn-02209508-n	CanFly	yes	default	manual: a bee flies	
+d30	real	fish	oewn-02514684-n	CanSwim	yes	default	gloss: «mostly cold-blooded aquatic vertebrates»	
+d31	real	aquatic mammal	oewn-02064670-n	CanSwim	yes	default	gloss: «whales and dolphins, manatees and dugongs, walruses, seals»	
+d32	real	aquatic bird	oewn-01847558-n	CanSwim	yes	default	gloss: «wading and swimming and diving birds»	
+d33	real	jellyfish	oewn-01913388-n	CanSwim	yes	default	gloss: «usually marine and free-swimming coelenterates»	
+d34	real	mammal	oewn-01864419-n	CanWalk	yes	default	manual: mammals walk	cetaceans are an exception
+d35	real	cetacean	oewn-02065083-n	CanWalk	no	default	gloss: «fin-like forelimbs no hind limbs»	
+d36	real	bird	oewn-01505702-n	CanWalk	yes	default	manual: birds walk on two legs	
+d37	real	fish	oewn-02514684-n	CanWalk	no	default	manual: fish do not walk	
+d38	real	snake	oewn-01729333-n	CanWalk	no	default	gloss: «limbless scaly elongate reptile»	
+d39	real	person	oewn-00007846-n	CanWalk	yes	default	manual: a person walks	
+d40	real	coelenterate	oewn-01912063-n	CanWalk	no	default	gloss: «radially symmetrical animals having saclike bodies»	a jellyfish does not walk
+d41	real	plant	oewn-00017402-n	CanWalk	no	default	gloss: «lacking the power of locomotion»	
+d42	real	bird	oewn-01505702-n	LaysEggs	yes	strict	gloss: «warm-blooded egg-laying vertebrates»	
+d43	real	mammal	oewn-01864419-n	LaysEggs	no	default	gloss: «young are born alive except for the small subclass of monotremes»	
+d44	real	prototherian	oewn-01874184-n	LaysEggs	yes	default	gloss: «primitive oviparous mammals»	platypus, echidna
+d45	real	reptile	oewn-01663732-n	LaysEggs	yes	default	manual: most reptiles lay eggs	
+d46	real	fish	oewn-02514684-n	LaysEggs	yes	default	manual: most fish spawn	
+d47	real	insect	oewn-02162607-n	LaysEggs	yes	default	manual: insects lay eggs	
+d48	real	hare	oewn-02329084-n	Fast	yes	default	gloss: «swift timid long-eared mammal»	
+d49	real	tortoise	oewn-01672733-n	Fast	no	default	Aesop, «The Hare and the Tortoise» (Perry 226); manual: the tortoise is slow	
+d50	real	cheetah	oewn-02132960-n	Fast	yes	default	gloss: «the swiftest mammal»	
+d51	real	ostrich	oewn-01521519-n	Fast	yes	default	gloss: «fast-running African flightless bird»	
+d52	real	snail	oewn-01947031-n	Fast	no	default	manual: the snail is slow	
+d53	real	food	oewn-00021445-n	Edible	yes	default	gloss: «any substance that can be metabolized by an animal to give energy and build tissue»	
+d54	real	edible fruit	oewn-07721676-n	Edible	yes	default	gloss: «edible reproductive body of a seed plant»	
+d55	real	object	oewn-00002684-n	Edible	no	default	manual: an object is not food by default	food and edible fruits are exceptions
+d56	real	toadstool	oewn-13021966-n	Edible	no	default	gloss: «an inedible or poisonous agaric»	
+d57	real	physical entity	oewn-00001930-n	Exists	yes	default	gloss: «an entity that has physical existence»	
+d58	real	imaginary being	oewn-09506868-n	Exists	no	default	gloss: «a person that exists only in legends or myths or fiction»	
+d59	real	genie	oewn-09567562-n	Exists	no	default	manual: the real layer is the empirical world; a genie is a being of legend, never physically observed	not a judgment about belief
+d60	real	Quaker	oewn-09699104-n	Pacifist	yes	default	Reiter & Criscuolo 1981, the Nixon diamond: Quakers are pacifists	
+d61	real	Republican	oewn-10542226-n	Pacifist	no	default	Reiter & Criscuolo 1981, the Nixon diamond: Republicans are not pacifists	
+d62	fable	animal	oewn-00015568-n	CanSpeak	yes	default	fable genre: animals speak (Aesop; our worlds 2451, 2355, 2366)	layer exception
+d63	fairy	imaginary being	oewn-09506868-n	Exists	yes	default	fairy-tale genre: giants, witches, mermaids act as existing	layer exception
+d64	fairy	fairy	oewn-09563541-n	Exists	yes	default	fairy-tale genre: fairies act as existing	fairy.1 — spiritual being, not imaginary being
+d65	nights	genie	oewn-09567562-n	Exists	yes	default	«One Thousand and One Nights»: «The Story of the Merchant and the Genius» (world v3, cmds-arabian-nights)	collection exception
+d66	tale:jelly-fish-and-monkey	jellyfish	oewn-01913388-n	CanWalk	yes	default	FairytaleQA jelly-fish-and-monkey ^s65–66: «the jelly fish slowly walked», «in those ancient days the jelly fish had four legs»	tale exception
+d67	fable	fox	oewn-02120985-n	Cunning	yes	default	Aesop, Perry 124 «The Fox and the Crow»: the fox flatters the crow out of its cheese	character — only in fables (v2)
+d68	fable	crow	oewn-01581669-n	Vain	yes	default	Aesop, Perry 124 «The Fox and the Crow»: the crow is proud of its voice and drops the cheese	character — only in fables (v2)
+d69	fable	wolf	oewn-02116752-n	Greedy	yes	default	Aesop, Perry 156 «The Wolf and the Crane»: the wolf gobbles greedily, a bone sticks in its throat	character — only in fables (v2)
+d70	fable	ant	oewn-02222138-n	Industrious	yes	default	Aesop, Perry 373 «The Ant and the Grasshopper»: the ant stores grain in summer	character — only in fables (v2)
+d71	fable	grasshopper	oewn-02229081-n	Industrious	no	default	Aesop, Perry 373 «The Ant and the Grasshopper»: the grasshopper sang all summer	character — only in fables (v2)
+d72	fable	owl	oewn-01623768-n	Wise	yes	default	Aesop, Perry 437 «The Owl and the Birds»: the owl advises the birds, they do not listen	character — only in fables (v2)
+d73	fable	domestic ass	oewn-02392211-n	Wise	no	default	Aesop, Perry 188 «The Ass in the Lion's Skin»: the ass gives itself away by braying	character — only in fables (v2)
+d74	real	edible nut	oewn-07753057-n	Edible	yes	default	gloss: «a hard-shelled seed consisting of an edible kernel»	v3: the core gate showed a contradiction walnut (food) ↔ d55 object Edible=no
+d75	real	nut	oewn-13157333-n	Edible	yes	default	manual: a nut is edible by default (its kind is edible nut)	v3: core gate (nut, acorn)
+d76	real	acorn	oewn-12288194-n	Edible	yes	default	manual: acorns are eaten by animals (pigs, squirrels), by people after soaking	v3: core gate (acorn — food vs d55)
