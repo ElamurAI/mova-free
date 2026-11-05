@@ -1,0 +1,28 @@
+{
+  "id": "algorithm-convex-hull",
+  "source": "algorithms/src/convex_hull/mod.rs",
+  "children": [],
+  "description": "convex_hull mod.rs exact geometry implementation",
+  "state": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+  "cost": "O(n log n) comparisons, O(n) stack work and auxiliary memory; unmeasured wall-clock cost.",
+  "forward": [
+    "Sort and deduplicate points, construct lower/upper strict-left-turn chains, concatenate without repeated endpoints. Return canonical extreme vertices counterclockwise."
+  ],
+  "inverse": [
+    "behavior_complement: Exclude absent-source vertices, nonminimal first point, repeats, clockwise/non-strict polygon turns, or input strictly right of an edge. For a segment exclude off-line points or points beyond endpoints. Empty output requires empty input.",
+    "reverse_reconstruction: For canonical strict convex polygon H, compatible inputs are finite sequences containing every H vertex, with remaining points inside/on H, arbitrary order/multiplicity. Segment output admits points on its closed segment containing both ends. Singleton admits nonempty repetitions; empty admits only empty. Length and interior data are not recoverable.",
+    "metamorphic_relation: Permutation or duplication preserves output since sorted distinct support is unchanged.",
+    "metamorphic_relation: Positive uniform integer scaling k and translation t, with all images in i32, maps H to kH+t and preserves its canonical start. Reflection requires reversing orientation and recanonicalization.",
+    "fixed_point: H(H(P))=H(P); its extreme vertices have identical convex support, and collinear interior points cannot return.",
+    "support_relation: For every integer direction d, max dot(d,P)=max dot(d,H(P)) on nonempty input. Strict turns, source membership, supporting edges and minimal start certify polygons; degenerates require separate conditions.",
+    "state_invariant: Each processed sorted prefix has a lower-boundary stack with strict positive consecutive turns. Each point is pushed once and popped at most once per chain. Reversal builds the upper boundary; dropping terminal endpoints prevents repeated joins.",
+    "range_bound: Each coordinate difference magnitude <=2^32-1; product <=(2^32-1)^2; cross magnitude <=2(2^32-1)^2<2^65. Widening before subtraction gives exact i128 predicates. Allocation failure is not a Result."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline convex_hull::tests::",
+    "Debug/release twice; strict Clippy; compiled mutant; source-bound syntax twice."
+  ],
+  "limitations": [
+    "Finite observations are not universal verification; allocator exhaustion untested; syntax projection lacks semantic type resolution and macro expansion. Exact implementation has no approximate execution profile."
+  ]
+}

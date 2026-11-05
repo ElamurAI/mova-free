@@ -1,0 +1,30 @@
+{
+  "checks": [
+    "read::wave9_models::segmentation_threshold_and_service_filter",
+    "read::wave9_models::book_whitespace_fibers_and_markers",
+    "read::wave9_models::skeleton_boolean_projection_oracle",
+    "read::wave9_models::speech_fiber_and_coordinated_subject",
+    "read::wave9_models::question_priority_and_literal_boundaries",
+    "read::wave34_models::centered_heading_boundaries",
+    "read::wave34_models::phrase_direct_modifiers_and_original_forms",
+    "read::wave34_models::modal_negation_and_subject_reset"
+  ],
+  "children": [],
+  "cost": "L text bytes: O(L) segmentation storage/scans. n tree nodes, v selected clauses: O(n*v) membership checks plus phrase child sorting/output bytes. Summary dedup can be quadratic in distinct strings. Parser/teacher latency unknown; no throughput measurement.",
+  "description": "Reading segmentation, supplied-tree projection and orchestration Wave34 adds five scoped nested children and exact safe helper evidence; historical evidence retains its original epoch.",
+  "forward": [
+    "split_book selects marker-bounded text, recognizes headings, normalizes paragraph whitespace, admits stories at pre-filter byte total >=200, then removes service/short paragraphs and excluded titles. skeleton projects supplied Tree plus position-aligned original forms into ordered clauses. summarize obtains annotator, strips double-quoted spans, parses and deduplicates strings. read_book serializes paragraphs; check rates saved summaries separately. Detailed retrieval/training semantics in the remainder of this large source remain unmodeled.",
+    "split_book -> ordered paragraphs -> summarize -> JSONL. Original forms and Tree indices must share tokenization. CLI routes read_book/check separately; check consumes text/summary/title/par. Native checks exercise only pure supplied data, not parser or teacher."
+  ],
+  "id": "world-read",
+  "inverse": [
+    "Universe: pure supplied text/tree/output triples with valid indices and aligned originals. Inner absent relation excludes service paragraphs in split_book output and nonempty skeleton of an empty tree. SAY rendering excludes its direct object, but independently selected clauses may survive. Unmodeled paths are unknown, not absent.",
+    "Retain every input whose scoped projection equals the observation. Whitespace/header variants share book fibers; varying speech objects shares a skeleton fiber. Neither original text nor tree is uniquely recoverable. Finite fixtures enumerate whitespace layouts and three speech objects."
+  ],
+  "limitations": [
+    "Partial syntax and source models; finite synthetic evidence, no general proof.",
+    "Parser/teacher, persistence and full retrieval/training paths remain unexecuted. Supplied trees require valid indices and matching original token positions."
+  ],
+  "source": "world/src/read.rs",
+  "state": "Supplied text, valid finite dependency trees and index-aligned original forms; no parser acquisition."
+}

@@ -1,9 +1,10 @@
 # vfs — file system for the execution sandbox
 
-**Goal** (`docs/context.md`, "Execution sandbox"): guest programs, including untrusted and generated code, see only
+> **Prototype.** This is an experiment beside Mova, not part of its core yet: it works, but its interfaces and data may change at any time.
+
+**Goal** ([docs/context.md](../docs/context.md#execution-sandbox-the-slm-programs-bytecode-an-in-memory-file-system)): guest programs, including untrusted and generated code, see only
 virtual files in memory. Only an approved result goes outside. Every SLM (small language model) lesson starts from a
-clean snapshot in nanoseconds. Design note: the small model could write a virtual file system itself and embed it by
-rewriting code to WASM/WASI.
+clean snapshot restored in constant time. WASM/WASI guests reach the same file system through `wasi-host`.
 
 A crate without dependencies, std only. Three implementations of the `FileSystem` trait:
 
@@ -11,7 +12,7 @@ A crate without dependencies, std only. Three implementations of the `FileSystem
 |---|---|---|
 | `Vfs` | in-memory tree with snapshots, limits, a journal and a virtual clock | default: untrusted and generated code (`--fs mem`) |
 | `DirFs` | a real directory, the root is the boundary (like chroot) | working with operator data (`--fs dir:<dir>`) |
-| `RealFs` | unrestricted real FS | explicit only, for backward compatibility (`--fs real`) |
+| `RealFs` | unrestricted real FS | explicit only (`--fs real`) |
 
 Alongside it — `wasi-host`: runs `wasm32-wasip1` modules (like `mlab.wasm`), and their WASI calls go into the same `Vfs`
 (see "WASI host" below).
@@ -83,42 +84,21 @@ Alongside it — `wasi-host`: runs `wasm32-wasip1` modules (like `mlab.wasm`), a
 - **v1 caveat:** there is a window between check and access (TOCTOU). Another process may swap a directory for a link.
   The robust way is `openat2(RESOLVE_BENEATH)`, that is the next step. For untrusted code — `Vfs`.
 
-## Negative controls
+## Tests and negative controls
 
-A gate that cannot show red is not a gate. `Vfs::fault` and `DirFs::fault` deliberately break the implementation, and
-the test `gates_green_and_negative_controls_red` requires: without the fault — green, with the fault — red.
+`cargo test` covers root escape (`..`, `/../`, links pointing outside, loops, absolute host paths), limits with their
+error texts and unchanged state after a violation, snapshot → changes → byte-exact restore, isolation of copies and
+parallel sandboxes from one snapshot, POSIX semantics, the journal and its cap, import and export, and `DirFs` with
+outside and dangling links.
 
-| fault | gate | red |
-|---|---|---|
-| `ClampDotDot`: `..` above the root silently stays at the root | root escape (`Vfs`, `DirFs`) | yes |
-| `NoLimits`: limits are not checked | limits | yes |
-| `RestoreForgetsClock`: `restore` does not roll back the clock | snapshot → byte-exact restore | yes |
-| `NoConfine`: `DirFs` without the canonical path check | links pointing outside | yes |
+A gate that cannot show red is not a gate. `Vfs::fault` and `DirFs::fault` deliberately break the implementation
+(`ClampDotDot`: `..` above the root silently stays at the root; `NoLimits`; `RestoreForgetsClock`: `restore` does not
+roll back the clock; `NoConfine`: `DirFs` without the canonical path check), and the test
+`gates_green_and_negative_controls_red` requires green without the fault and red with it.
 
-## Snapshot speed (release, `nice`, one thread)
-
-`cargo run --release --example snapbench`: N files of 1 KiB in directories of 1000 plus a 64 MiB file.
-
-| files | size, MiB | snapshot | restore | lesson: restore + write 1 file | first appended byte to a shared 64 MiB file | full `dump()` |
-|---|---|---|---|---|---|---|
-| 1 000 | 65 | 19 ns | 20 ns | 34 µs | 16 ms | 10 ms |
-| 10 000 | 74 | 20 ns | 18 ns | 34 µs | 10 ms | 31 ms |
-| 100 000 | 162 | 20 ns | 20 ns | 37 µs | 9 ms | 62 ms |
-
-- Snapshot and restore do not depend on size: ~20 ns.
-- A lesson costs in proportion to the width of directories on the path: a root of 100 entries plus a directory of 1000.
-  Volume does not matter here. `Arc<str>` keys instead of `String` cut a lesson from 40 to 34 µs.
-- Appending a byte to a shared large file means copying its contents, once per snapshot. After that the file is edited
-  in place.
-
-## Tests
-
-`cargo test`: 16 tests.
-- Root escape — red tests: `..`, `/../`, links pointing outside, loops, absolute host paths.
-- Limits with error texts; state is unchanged after a violation.
-- Snapshot → changes → byte-exact restore, isolation of copies, parallel sandboxes from one snapshot.
-- POSIX semantics, the journal and its cap, import and export (links, limit, writing through a real link).
-- `DirFs` with links pointing outside and dangling ones; negative controls.
+`cargo run --release --example snapbench` times snapshot, restore, a lesson (restore + write one file), the first
+append to a shared large file and a full `dump()`. A lesson costs in proportion to the width of the directories on
+its path, not to the volume of the tree; appending to a shared large file copies its contents once per snapshot.
 
 ## WASI host (`wasi-host`)
 
@@ -126,12 +106,11 @@ Runs `wasm32-wasip1` modules in a sandbox. For the emulated code it looks like a
 reproducible.
 
 - **Engine — `wasmi` 2.0** (MIT/Apache-2.0), not `wasmtime`. Why it is lighter for us:
-  - 8 third-party crates in the tree (wasmi, wasmi_core, wasmi_ir, wasmi_collections, wasmparser, spin, libm,
-    bitflags — all MIT or Apache-2.0) versus ~106 packages in the `wasmtime` lock file with Cranelift;
+  - a small dependency tree (listed under Licence below), against `wasmtime` with Cranelift;
   - pure Rust: no JIT, executable memory or signal handlers;
   - builds fast and on its own — also for WASM and Mini;
   - fuel is a deterministic instruction cap;
-  - module compilation is lazy: the 2.5 MB `mlab.wasm` is ready in milliseconds.
+  - module compilation is lazy, so a large module such as `mlab.wasm` starts at once.
 
   The price: an interpreter is slower than a JIT. For the lesson sandbox this is acceptable. Heavy modules on the
   server — `wasmtime` as a next step, with the same WASI layer over `vfs`.
@@ -170,16 +149,14 @@ cargo run --release --example mlab_gate -- ../mlab/data/suite-fs.txt [--vm]    #
 `--fs real` in the guest means: the guest's `std::fs` → WASI calls → the host's `Vfs`. Without it, `mlab` in the guest
 uses its own `Vfs` inside the module, i.e. a double sandbox.
 
-### WASI gate (`cargo test` in `wasi-host`, 12 tests)
+### WASI gate (`cargo test` in `wasi-host`)
 
-- **File suite** `mlab/data/suite-fs.txt`: 25 scenarios × tree and VM — **50/50** identical output between native
-  mlab with `--fs mem` and `mlab.wasm` in the host, plus a match with the suite's expected output. Time: 25 scenarios —
-  0.03 s in the guest.
-- **Frozen suites** v1 + v2: **249/250** identical output (206 scenarios — 0.12 s in the guest, 0.01 s native).
-  The one difference is la-18, a suite erratum with a degenerate matrix: `norm` of `inv(A)*A` with Inf/NaN. Native faer
-  (AVX2/FMA) gives a number, the wasm32 build (simd128) gives "svd: failed to converge". The cause is in the faer build
-  for wasm, not in the host: V8 (Node 24, `node:wasi`) gives the same output, checked 26.09. The test requires exactly
-  this difference: if it disappears, it must be removed from the list.
+- **File suite** `mlab/data/suite-fs.txt`: every scenario, tree and VM, must give identical output between native
+  mlab with `--fs mem` and `mlab.wasm` in the host, and match the suite's expected output.
+- **Frozen suites** v1 + v2: identical output except one listed difference, la-18, a suite erratum with a degenerate
+  matrix (`norm` of `inv(A)*A` with Inf/NaN): native faer (AVX2/FMA) gives a number, the wasm32 build (simd128) gives
+  "svd: failed to converge". The cause is the faer build for wasm, not the host. The test requires exactly this
+  difference: if it disappears, it must be removed from the list.
 - **Guest bounds:**
   - root escape — an error, recorded in the journal;
   - `/etc/passwd` — "No such file or directory";
@@ -201,25 +178,21 @@ uses its own `Vfs` inside the module, i.e. a double sandbox.
 - `mlab.wasm` is built separately. If it is missing or older than `mlab/src`/`vfs/src`, the test fails with the build
   command — it is not silently skipped.
 
-## Licenses
+## Limits
 
-- Code — the Elamur Cosmic License (`LICENSE.md` at the repo root).
-- `vfs` — no dependencies.
-- `wasi-host` — `wasmi` 2.0.0, `wasmi_core`, `wasmi_ir`, `wasmi_collections` (MIT/Apache-2.0), `wasmparser` 0.228
-  (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT), `spin` 0.9 (MIT), `libm` 0.2 (MIT), `bitflags` 2 (MIT OR
-  Apache-2.0). Licenses checked against crates.io metadata (`cargo metadata`) 26.09.
-- For tests `wasi-host` also uses `mlab` (our own).
-
-## What next
-
-- `DirFs` on `openat2(RESOLVE_BENEATH)`, without the TOCTOU window.
-- Descriptors on inodes: an open file survives `rename` and `unlink`.
-- Hard links.
-- Users and groups — for Linux emulation, "Access ladder".
-- `wasmtime` as a second engine for heavy modules on the server, with the same WASI layer; compare speed.
-- Snapshot to disk: tree serialization with zstd compression on save (the "as if" rule).
-- Journal — in DuckDB next to the SLM training journal.
+- `DirFs` does not use `openat2(RESOLVE_BENEATH)`, so a TOCTOU window remains.
+- Descriptors are not bound to inodes: an open file does not survive `rename` and `unlink`.
+- No hard links.
+- No users and groups (needed for Linux emulation, "Access ladder").
+- One engine, `wasmi`; `wasmtime` for heavy server modules is not wired to the same WASI layer.
+- Snapshots stay in memory: no tree serialization to disk with zstd.
+- The journal is a TSV file, not a DuckDB table next to the SLM training journal.
 
 ## Licence
 
-Elamur Cosmic License ([LICENSE.md](../LICENSE.md)). Third-party data keeps its own terms, as noted where it is used.
+- Code — the Elamur Cosmic License ([LICENSE.md](../LICENSE.md)). Third-party data keeps its own terms, as noted where it is used.
+- `vfs` — no dependencies.
+- `wasi-host` — `wasmi` 2.0.0, `wasmi_core`, `wasmi_ir`, `wasmi_collections` (MIT/Apache-2.0), `wasmparser` 0.228
+  (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT), `spin` 0.9 (MIT), `libm` 0.2 (MIT), `bitflags` 2 (MIT OR
+  Apache-2.0). Licenses as given by crates.io metadata (`cargo metadata`).
+- For tests `wasi-host` also uses `mlab` (our own).

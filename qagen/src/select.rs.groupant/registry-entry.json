@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p qagen --lib select::",
+    "cargo test -p qagen --lib --release select::"
+  ],
+  "children": [],
+  "cost": "B=|size|, C=|cap|: initialization O(B log(B+1)+C), including n=0; rounds O(R B log(B+C+1)), R<=B+1. Selection adds O(P log(P+B+1)) comparisons and row/text scans. String comparison, cloning and hashing bytes are additional; no measured speed claim.",
+  "description": "Exact capped Hamilton quotas compose with deterministic paragraph pools and pure ordered-row normalization.",
+  "forward": [
+    "Normalize rows; allocate exact capped quotas; balance pools; rank per-document; sort indices."
+  ],
+  "id": "qagen-select",
+  "inverse": [
+    "Set-valued antecedents lose ignored row ord, rejected paragraphs and metadata; positive common weight scaling preserves quotas."
+  ],
+  "limitations": [
+    "Live database/query/loaders unexecuted.",
+    "Finite oracle evidence, not semantic proof.",
+    "Zero-weight cap may remain unused."
+  ],
+  "source": "qagen/src/select.rs",
+  "state": "Supplied Para/Pick, skip keys, size/cap maps and SQL-shaped synthetic rows."
+}

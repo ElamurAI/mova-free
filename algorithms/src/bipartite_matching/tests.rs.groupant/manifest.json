@@ -1,0 +1,115 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional mathematical relation with finite checks; no universal proof.",
+        "assumptions": "Standard Rust execution, sufficient allocation, independently checked oracle within stated bounds.",
+        "domain": "Finite exhaustive and named boundary fixtures paired with assertion outcomes.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "Bounded suite run.",
+        "operator": "Universe U consists of pairs (candidate implementation, claimed Boolean completion outcome) for this fixed bounded assertion suite, under terminating ordinary execution. R contains exactly pairs whose claim equals conjunction of the suite assertions. The behavior complement is U minus R, including false pass and false failure claims. Behavior on untested inputs is unconstrained; finite acceptance is not universal correctness.",
+        "path": "model.md",
+        "section": "explicit_test_universe",
+        "status": "partial_source_derived",
+        "subject_revision": "dda7039075888c3151ff369fe9260da0083d234cddc648f6c08482269f5b80db",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical relation with finite checks; no universal proof.",
+        "assumptions": "Standard Rust execution, sufficient allocation, independently checked oracle within stated bounds.",
+        "domain": "Finite exhaustive and named boundary fixtures paired with assertion outcomes.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_implementations",
+        "observation_scope": "Bounded suite run.",
+        "operator": "Given a passing test transcript, the compatible antecedents are every implementation agreeing on all enumerated assertions; behavior elsewhere remains unconstrained. A failed named assertion restricts the antecedent to implementations violating that concrete predicate, without unique bug localization.",
+        "path": "model.md",
+        "section": "compatible_implementations",
+        "status": "partial_source_derived",
+        "subject_revision": "dda7039075888c3151ff369fe9260da0083d234cddc648f6c08482269f5b80db",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical relation with finite checks; no universal proof.",
+        "assumptions": "Standard Rust execution, sufficient allocation, independently checked oracle within stated bounds.",
+        "domain": "Finite exhaustive and named boundary fixtures paired with assertion outcomes.",
+        "evidence": "model.md#evidence",
+        "id": "oracle_separation",
+        "observation_scope": "Bounded suite run.",
+        "operator": "The oracle enumerates edge subsets and checks pairwise endpoint uniqueness; it neither searches alternating paths nor reassigns mates. Shared endpoint representation and Rust runtime remain assumptions.",
+        "path": "model.md",
+        "section": "oracle_separation",
+        "status": "partial_source_derived",
+        "subject_revision": "dda7039075888c3151ff369fe9260da0083d234cddc648f6c08482269f5b80db",
+        "type": "oracle_independence"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation with bounded Rust correspondence; no universal verification.",
+        "assumptions": "Original deterministic Rust; graph endpoint validation; sufficient allocation. Specialized domains are stated in each relation.",
+        "domain": "Fixed finite fixtures and ordinary terminating implementations.",
+        "evidence": "model.md#evidence",
+        "id": "certificate_soundness",
+        "observation_scope": "Named bounded assertions and isolated compiled mutation.",
+        "operator": "For every one of 512 simple 3-by-3 graphs the returned matching is feasible, its residual search reaches no free right, and the derived vertex cover meets every edge with exactly the matching cardinality. These finite checks connect the duality formula to actual output, rather than assuming cardinality optimality from feasibility alone. Transpose and 4608 insertion observations constrain related calls.",
+        "path": "model.md",
+        "section": "certificate_soundness",
+        "status": "conditional_relation_bounded_checked",
+        "subject_revision": "dda7039075888c3151ff369fe9260da0083d234cddc648f6c08482269f5b80db",
+        "type": "finite_duality_observation"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation with bounded Rust correspondence; no universal verification.",
+        "assumptions": "Original deterministic Rust; graph endpoint validation; sufficient allocation. Specialized domains are stated in each relation.",
+        "domain": "Fixed finite fixtures and ordinary terminating implementations.",
+        "evidence": "model.md#evidence",
+        "id": "reconstruction_sensitivity",
+        "observation_scope": "Named bounded assertions and isolated compiled mutation.",
+        "operator": "Hold fixtures fixed and replace production free=left_mate[left] with free=None in an isolated compiled copy. residual_cover_certifies_maximal_cardinality must fail, demonstrating sensitivity to truncated reassignment. Exact-output reconstruction checks 512 graph outputs plus duplicate-edge antecedents, retains ambiguous fibers, and excludes duplicate right mates and an alternate maximum outside the deterministic fiber.",
+        "path": "model.md",
+        "section": "reconstruction_sensitivity",
+        "status": "conditional_relation_bounded_checked",
+        "subject_revision": "dda7039075888c3151ff369fe9260da0083d234cddc648f6c08482269f5b80db",
+        "type": "compiled_fault_observation"
+      }
+    ],
+    "tests": {
+      "epoch": "2026-10-30 deep graph correspondence",
+      "path": "model.md#evidence",
+      "sha256": "f91f3939b25a00fec893a2b6904a4ca3804f094a3974f5b01840c0c0b90f815f",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-bipartite-matching-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "dda7039075888c3151ff369fe9260da0083d234cddc648f6c08482269f5b80db"
+  },
+  "status": "partial_source_derived_instance"
+}

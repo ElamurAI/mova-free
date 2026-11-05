@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "gradient_dispatch",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "gradient_dispatch",
+        "status": "partial_source_derived_model",
+        "type": "gradient_dispatch"
+      },
+      {
+        "id": "mask_bias",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "mask_bias",
+        "status": "partial_source_derived_model",
+        "type": "mask_bias"
+      },
+      {
+        "id": "residual_state",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "residual_state",
+        "status": "partial_source_derived_model",
+        "type": "residual_state"
+      },
+      {
+        "id": "dimension_domain",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "dimension_domain",
+        "status": "partial_source_derived_model",
+        "type": "dimension_domain"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "partial_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 12658,
+      "start": 8855
+    },
+    "description": "Embedding sum and pre-LN transformer dispatch attention softmax by (fused,train), then biaffine masked arcs.",
+    "source_bytes_sha256": "86cc312198915a74b84ec99f2f07fdfb148a0e214de61af3b02146ad3aa82cbd"
+  },
+  "id": "gparse-model-attention",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../model.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "a380c81aa11433fd9e4efcfaad81abfd55fe79b896d628ee1368f8de8081c941"
+  },
+  "status": "partial_source_bound_model"
+}

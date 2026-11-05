@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "prag-eval-training-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "prag-eval-training-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "prag-eval-training-specialization",
+        "path": "model.md",
+        "section": "specialization",
+        "status": "partial_source_model",
+        "type": "observation_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 2588,
+      "start": 1612
+    },
+    "description": "train_rows clones rows in idx order, replacing previous-act with gold[prev[i]].act or start. fit_set dispatches six model::fit calls using ys[k], Field::ALL[k].classes(), the same x, keys, dictionary and seed."
+  },
+  "id": "prag-eval-training",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../eval.rs",
+    "sha256": "c6a0e3ae0e424ffd6e5883502ce7e55d38d61e53b1184b6160f4236371fecd2e"
+  },
+  "status": "partial_source_bound_model"
+}

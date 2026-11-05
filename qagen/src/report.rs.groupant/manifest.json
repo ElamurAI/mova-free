@@ -1,0 +1,120 @@
+{
+  "children": [
+    {
+      "id": "qagen-report-accounting",
+      "path": "accounting.groupant"
+    },
+    {
+      "id": "qagen-report-gather",
+      "path": "gather.groupant"
+    },
+    {
+      "id": "qagen-report-collection",
+      "path": "collection.groupant"
+    },
+    {
+      "id": "qagen-report-sampling",
+      "path": "sampling.groupant"
+    },
+    {
+      "id": "qagen-report-tests",
+      "path": "tests.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "qagen-report-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "qagen-report-reverse",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "qagen-report-validation-order",
+        "path": "model.md",
+        "section": "validation-order",
+        "status": "partial_source_model",
+        "type": "validation_order"
+      },
+      {
+        "id": "qagen-report-numeric-domain",
+        "path": "model.md",
+        "section": "numeric-domain",
+        "status": "partial_source_model",
+        "type": "numeric_domain"
+      },
+      {
+        "id": "qagen-report-publication",
+        "path": "model.md",
+        "section": "publication",
+        "status": "partial_source_model",
+        "type": "publication"
+      },
+      {
+        "id": "qagen-report-scope-boundary",
+        "path": "model.md",
+        "section": "scope-boundary",
+        "status": "partial_source_model",
+        "type": "scope_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 22773,
+      "start": 0
+    },
+    "description": "Gather gated pairs, compute calls/distributions, then materialize QA, rejection and parameter artifacts; sample renders a seeded subset."
+  },
+  "id": "qagen-report",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../report.rs",
+    "sha256": "4abf85ffbd32f22802a89ef625780b288d92e92616c247a4d591e37fe10977c2"
+  },
+  "status": "partial_source_bound_model"
+}

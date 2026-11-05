@@ -1,0 +1,25 @@
+{
+  "id": "algorithm-composition-wave7",
+  "source": "algorithms/tests/composition_wave7.rs",
+  "description": "Eight bounded public-API joins checking graph, string, discrete and interval adapters with independent certificates.",
+  "state": "Immutable finite fixture inputs, transformed adapter inputs, public outputs and assertion verdicts.",
+  "cost": "Sum of explicitly bounded child calls and certificate checks; individual join costs and enumeration sizes are in model.md.",
+  "forward": [
+    "Run the eight native public-API joins; require compatible element units, graph orientation, endpoint conventions and result certificates.",
+    "Retain distance versus path, cut value versus partition, membership versus maximality, and subset existence versus cardinality as distinct observations."
+  ],
+  "inverse": [
+    "behavior_complement excludes accepted inconsistent adapter transitions.",
+    "reverse_reconstruction gives compatible implementation/adapter antecedents for an observed transcript; no unique recovery."
+  ],
+  "checks": [
+    "cargo test --offline -p mova-algorithms --test composition_wave7",
+    "cargo test --offline --release -p mova-algorithms --test composition_wave7",
+    "Compiled knapsack adapter mutation must fail an assertion."
+  ],
+  "limitations": [
+    "Finite domains only; shared specifications can hide common bugs.",
+    "Partial syntax projection excludes macro expansion and semantic resolution.",
+    "No allocation failure, GPU or throughput claim."
+  ]
+}

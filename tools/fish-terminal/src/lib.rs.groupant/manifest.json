@@ -1,0 +1,102 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial_source_derived_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Source-bound partial Rust syntax projection; no macro expansion, name resolution or semantic AST proof",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial_source_derived_model"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "effect_partition",
+        "path": "model.md",
+        "section": "effect_partition",
+        "status": "partial_source_derived_model",
+        "type": "effect_partition"
+      },
+      {
+        "approximation_semantics": "Exact implemented string predicate; unknown future/modal layouts remain unsupported.",
+        "assumptions": "Cooperative local session metadata and the observed English TUI layout.",
+        "domain": "Bounded Codex0.165.0 inline capture with configured exact idle marker and expected pane command.",
+        "evidence": "Baseline padded-idle red; trim-only update-modal red; combined debug/release green.",
+        "id": "viewport_and_modal_partition",
+        "observation_scope": "Trailing blank padding versus visible action modal; not arbitrary UI semantics.",
+        "path": "model.md",
+        "section": "viewport_and_modal_partition",
+        "status": "source_derived_bounded_checked",
+        "type": "ui_observation_partition"
+      },
+      {
+        "approximation_semantics": "Exact implemented predicate; no numerical error bound.",
+        "assumptions": "Frozen trusted config and cooperative local state stability.",
+        "domain": "Declared cooperative local domain in the named section.",
+        "evidence": "Focused Rust core and native fake-subprocess debug/release controls.",
+        "id": "pre_effect_failure_partition",
+        "observation_scope": "Typed scheduler/session/filesystem partition; not semantic report truth.",
+        "path": "model.md",
+        "section": "pre_effect_failure_partition",
+        "status": "source_derived_bounded_checked",
+        "type": "scheduler_error_partition"
+      },
+      {
+        "approximation_semantics": "Exact implemented predicate; no numerical error bound.",
+        "assumptions": "Frozen trusted config and cooperative local state stability.",
+        "domain": "Declared cooperative local domain in the named section.",
+        "evidence": "Focused Rust core and native fake-subprocess debug/release controls.",
+        "id": "report_artifact_exclusion",
+        "observation_scope": "Typed scheduler/session/filesystem partition; not semantic report truth.",
+        "path": "model.md",
+        "section": "report_artifact_exclusion",
+        "status": "source_derived_bounded_checked",
+        "type": "filesystem_artifact_exclusion"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "Checks",
+      "status": "bounded_native_evidence"
+    }
+  },
+  "id": "private-fish-terminal-core",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../lib.rs",
+    "sha256": "2e586c5d65bd6820ce215bfc5fb81b666c155460a9590bf77b6823284893b780"
+  },
+  "status": "partial_source_derived_instance"
+}

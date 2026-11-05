@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-modular-power-tests",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "6803f8157b4f65123027d5a6c57122f5e07df0960f3c12b17abd844f2a861c3e"
+  },
+  "components": {
+    "ast": {
+      "path": "syntax.json",
+      "status": "partial",
+      "format": "rust_syntax_projection"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "6803f8157b4f65123027d5a6c57122f5e07df0960f3c12b17abd844f2a861c3e",
+        "domain": "10,200 small repeated-multiplication cases (25 bases x17 exponents x24 positive moduli), zero/one modulus and exponent-zero boundaries, full-width parity/products, and 1,024 fixed-seed reduction/addition cases.",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "U is candidate implementations paired with pass/fail on the finite fixture set F. R(P,pass) iff all assertions succeed; R(P,fail) iff a terminating call/assertion panics or a mismatch occurs. U minus R comprises false passes despite failure and false failures despite all assertions holding. Harness crashes/nontermination are excluded.",
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "failure_fibers",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "failure_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "6803f8157b4f65123027d5a6c57122f5e07df0960f3c12b17abd844f2a861c3e",
+        "domain": "10,200 small repeated-multiplication cases (25 bases x17 exponents x24 positive moduli), zero/one modulus and exponent-zero boundaries, full-width parity/products, and 1,024 fixed-seed reduction/addition cases.",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "A pass admits all implementations agreeing on F with arbitrary off-fixture behavior. A failure admits all faulty implementations or faulty oracles producing that mismatch/panic; no unique defect reconstruction.",
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "oracle",
+        "type": "oracle_correspondence",
+        "path": "model.md",
+        "section": "oracle",
+        "status": "partial_source_derived",
+        "subject_revision": "6803f8157b4f65123027d5a6c57122f5e07df0960f3c12b17abd844f2a861c3e",
+        "domain": "10,200 small repeated-multiplication cases (25 bases x17 exponents x24 positive moduli), zero/one modulus and exponent-zero boundaries, full-width parity/products, and 1,024 fixed-seed reduction/addition cases.",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "Small exponents use repeated multiplication, no binary exponent decomposition or repeated squaring. Parity, identity and exponent-addition laws add explicit algebraic constraints. Finite correspondence assumes the oracle; no universal proof.",
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "mutation",
+        "type": "counterfactual_boundary",
+        "path": "model.md",
+        "section": "mutation",
+        "status": "partial_source_derived",
+        "subject_revision": "6803f8157b4f65123027d5a6c57122f5e07df0960f3c12b17abd844f2a861c3e",
+        "domain": "10,200 small repeated-multiplication cases (25 bases x17 exponents x24 positive moduli), zero/one modulus and exponent-zero boundaries, full-width parity/products, and 1,024 fixed-seed reduction/addition cases.",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "Narrowing power squaring or accumulator multiplication to wrapping u64 compiled; each exactly filtered tests::zero_identity_and_full_width_products failed (exit 101; one failed, two filtered). Initial parity-only cases missed accumulator narrowing; the added (-2)^3 identity closed that observed gap. Intervention changes source operations with fixture inputs fixed.",
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "schedule",
+        "type": "resource_observation",
+        "path": "model.md",
+        "section": "schedule",
+        "status": "partial_source_derived",
+        "subject_revision": "6803f8157b4f65123027d5a6c57122f5e07df0960f3c12b17abd844f2a861c3e",
+        "domain": "10,200 small repeated-multiplication cases (25 bases x17 exponents x24 positive moduli), zero/one modulus and exponent-zero boundaries, full-width parity/products, and 1,024 fixed-seed reduction/addition cases.",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "10,200 small repeated-multiplication cases (25 bases x17 exponents x24 positive moduli), zero/one modulus and exponent-zero boundaries, full-width parity/products, and 1,024 fixed-seed reduction/addition cases. Fixed seed, wrapping generator and loop bounds determine observations; wall-clock time is not part of the deterministic output.",
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "evidence": "model.md#evidence"
+      }
+    ]
+  },
+  "children": []
+}

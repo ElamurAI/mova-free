@@ -249,3 +249,113 @@ pub fn manual_md(rows: &[&Row], v: &BTreeMap<(String, usize), (f64, f64, f64, St
     }
     o
 }
+
+#[cfg(test)]
+mod wave9_models {
+    use super::*;
+    fn row(n: usize, state: bool, score: f64) -> Row {
+        Row {
+            q: Qa { story: "t".into(), n, attr: "setting".into(), ex: "explicit".into(), ex2: "".into(),
+                local: true, secs: vec![1], question: "where?".into(), a1: "here".into(), a2: "".into() },
+            a: Answer { frame: "where actor".into(), src: if state { Src::State } else { Src::None },
+                text: "here".into(), note: "fixture".into(), anchor: Some((1, "there".into())) },
+            r_slm: score, r_anchor: 0.5, base: "there".into(), r_base: 1.0,
+        }
+    }
+    #[test]
+    fn aggregation_finite_independent_oracle() {
+        for mask in 0..8 {
+            for code in 0..27 {
+                let scores = [code % 3, code / 3 % 3, code / 9];
+                let rows: Vec<Row> = (0..3).map(|i| row(i, mask & (1 << i) != 0, scores[i] as f64 / 2.0)).collect();
+                let mut a = Agg::default();
+                for r in &rows { a.add(r); }
+                let total: usize = scores.iter().sum();
+                let answered: usize = (0..3).filter(|i| mask & (1 << i) != 0).count();
+                let selected: usize = (0..3).filter(|i| mask & (1 << i) != 0).map(|i| scores[i]).sum();
+                assert_eq!((a.n, a.answered), (3, answered));
+                assert_eq!(a.slm * 2.0, total as f64);
+                assert_eq!(a.slm_answered * 2.0, selected as f64);
+                assert_eq!((a.anchor, a.base), (1.5, 3.0));
+                let expected = format!("| x | 3 | {:.3} | {:.3} | 0.500 | 1.000 | {:.0}% |",
+                    total as f64 / 6.0, selected as f64 / (2 * answered.max(1)) as f64,
+                    100.0 * (3 - answered) as f64 / 3.0);
+                assert_eq!(a.line("x"), expected);
+            }
+        }
+        assert_eq!(Agg::default().line("empty"), "| empty | 0 | 0.000 | 0.000 | 0.000 | 0.000 | 0% |");
+    }
+    #[test]
+    fn aggregation_fibers_and_unknown_slice() {
+        let mut fibers: BTreeMap<String, Vec<(usize, usize)>> = BTreeMap::new();
+        for x in 0..=2 {
+            for y in 0..=2 {
+                let mut a = Agg::default();
+                a.add(&row(1, true, x as f64 / 2.0));
+                a.add(&row(2, true, y as f64 / 2.0));
+                fibers.entry(a.line("pair")).or_default().push((x, y));
+            }
+        }
+        let sizes: Vec<usize> = fibers.values().map(Vec::len).collect();
+        assert_eq!(sizes, [1, 2, 3, 2, 1]);
+        let mut r = row(1, false, 0.0);
+        r.q.attr = "unknown".into();
+        let out = report(&[r]);
+        assert!(out.contains("| **all** | 1 |"));
+        assert!(!out.contains("| ? |")); // Unknown type contributes to totals but lacks a displayed type row.
+        assert!(report(&[]).contains("| **all** | 0 |"));
+    }
+    #[test]
+    fn serialization_projection_and_format() {
+        assert_eq!(cell("a|b\nc\td"), "a\\|b c d");
+        assert_eq!(cell("a\nb"), cell("a\tb"));
+        let mut r = row(7, false, 0.0);
+        r.q.question = "a|b\nc\td".into();
+        let out = rows_tsv(&[r.clone()]);
+        let lines: Vec<_> = out.lines().collect();
+        assert_eq!(lines.len(), 2);
+        assert_eq!(lines[1].split('\t').count(), 16);
+        assert!(lines[1].contains("\tnone\there\t0.000\t^s1 there\t0.500\t"));
+        let md = tale_md("t", &[r]);
+        assert!(md.contains("not in state: fixture"));
+        assert!(md.contains("| 0.00 | ^s1 there | 0.50 |"));
+        assert_eq!(rows_tsv(&[]).lines().count(), 1);
+    }
+    #[test]
+    fn sample_identity_exclusion_and_permutation() {
+        let mut rows: Vec<Row> = (0..20).map(|i| row(i, true, 1.0)).collect();
+        for (i, r) in rows.iter_mut().enumerate() { r.q.attr = ATTRS[i % ATTRS.len()].into(); }
+        let mut exclude = std::collections::BTreeSet::new();
+        exclude.insert(("t".into(), 3));
+        for salt in ["fnv-plain", "fixture"] {
+            for k in 0..5 {
+                let ids = |rs: &[Row]| sample(rs, k, salt, &exclude).iter().map(|r| r.q.n).collect::<Vec<_>>();
+                let selected = ids(&rows);
+                let mut reversed = rows.clone(); reversed.reverse();
+                assert_eq!(selected, ids(&reversed));
+                assert!(!selected.contains(&3));
+                let expected: usize = ATTRS.iter().map(|a| rows.iter().filter(|r| r.q.attr == *a && r.q.n != 3).count().min(k)).sum();
+                assert_eq!(selected.len(), expected);
+            }
+        }
+    }
+    #[test]
+    fn verdict_decoder_loss_and_score_domain() {
+        let v = read_verdicts("# comment\nbad\nt\t1\t1\t0\t0.5\tfirst\tignored\nt\t1\t0.5\t1\t0\tlast\nt\tbad\t1\t1\t1\n");
+        assert_eq!(v.len(), 1);
+        assert_eq!(v[&("t".into(), 1)], (0.5, 1.0, 0.0, "last".into()));
+        let values = read_verdicts("t\t0\tNaN\t-1\t2\n");
+        let (a,b,s,_) = &values[&("t".into(),0)];
+        assert!(a.is_nan()); assert_eq!((*b,*s),(-1.0,2.0));
+    }
+    #[test]
+    fn manual_denominator_and_source_independence() {
+        let rows = [row(1, false, 0.0), row(2, true, 1.0), row(3, true, 1.0)];
+        let refs: Vec<&Row> = rows.iter().collect();
+        let v = read_verdicts("t\t1\t1\t0.5\t0\nt\t2\t0\t1\t1\n");
+        let text = manual_md(&refs, &v);
+        assert!(text.contains("| setting | 2 | 50% | 1 | 50% | 75% |"));
+        assert!(text.contains("| **all** | 2 | 50% | 1 | 50% | 75% |"));
+        assert!(!manual_md(&refs, &BTreeMap::new()).contains("**all**"));
+    }
+}

@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p mova-twin --locked",
+    "mova-modelcheck groupants with integrated registry"
+  ],
+  "children": [],
+  "cost": "At dimension d<=32, validation uses O(d^3) arithmetic and O(d^2) allocation. Predict adds O(d^2); observe calls predict and another validate, hence O(d^3), not merely the O(d^2) rank-one kernel. State memory O(d^2). No wall-clock estimate is calibrated.",
+  "description": "Mathematical twin library",
+  "forward": [
+    "For d=1..32, constructor initializes theta=prior, P=I/ridge, n=SSE=0 and zero box bounds. Prediction validates state then computes px=P*x, h=x^T px and seconds=x^T theta in f64. Observation of finite y>0 predicts first, clones state, applies the rank-one correction, validates the candidate and commits it."
+  ],
+  "id": "mathematical-twin-library",
+  "inverse": [
+    "Behavior complement targets U minus R on the explicitly scoped observations.",
+    "Reverse reconstruction is a compatible antecedent relation; hashes, summaries and rounded arithmetic do not uniquely recover history."
+  ],
+  "limitations": [
+    "Source-derived partial models; no semantic AST or full proof.",
+    "Validation requires finite vectors/SSE>=0 and approximate symmetry plus successful finite positive Cholesky pivots. It does not certify an exact symmetric matrix, box ordering, n/SSE consistency or observational reachability. Constructor does not call validate: subnormal positive ridge may yield infinite P. Predict may return negative seconds. n+1 overflow is not guarded: debug panic or release wrapping is outside the n<u64::MAX model."
+  ],
+  "source": "tools/twin/src/lib.rs",
+  "state": "(theta,P,n,SSE,min,max,x,y)"
+}

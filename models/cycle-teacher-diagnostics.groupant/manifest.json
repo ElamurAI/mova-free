@@ -1,0 +1,169 @@
+{
+  "children": [
+    "teacher-live-tests",
+    "bench-main",
+    "cycle-build",
+    "cycle-db",
+    "cycle-main",
+    "cycle-pipeline",
+    "enrich-lesson-smoke",
+    "jobs-main",
+    "twin-ledger-tests",
+    "cycle-reviewed"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "Ordinary allocation/UTF-8 resource bounds; caller serialization where required. No concurrent mutation in synthetic fixtures. Syntax is partial representation; no macro expansion or universal semantics. Lesson/teacher/build entry behavior is source-derived/compile representation.",
+        "domain": "Bounded synthetic strings/temp files, deterministic exact helper inputs and representable counts. CLI training/teacher/corpora/models excluded from execution. Legacy tier behavior source-derived only.",
+        "id": "behavior-complement",
+        "observation_scope": "Build MOVA_BIG_DEFAULT joins runtime nonempty MOVA_BIG precedence. Pipeline sends selected ids to main parser helpers, consumes db with_drafts and later updates DB before check/train/row. jobs wraps configured drafts. Teacher live test, bench main, lesson_smoke and twin ledger are explicitly independent paths; common diagnostics vocabulary is not a caller edge. Existing artifact markers may bypass stages, and failed collect can leave earlier DB commits.",
+        "operator": "Inner exclusions at actual boundaries: ignored teacher not launched by default harness; mismatched parser cardinality stops parser file writes; exhausted attempt budget stops ledger append; heldout ids excluded from training_file. These do not exclude earlier effects on later failure.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "Ordinary allocation/UTF-8 resource bounds; caller serialization where required. No concurrent mutation in synthetic fixtures. Syntax is partial representation; no macro expansion or universal semantics. Lesson/teacher/build entry behavior is source-derived/compile representation.",
+        "domain": "Bounded synthetic strings/temp files, deterministic exact helper inputs and representable counts. CLI training/teacher/corpora/models excluded from execution. Legacy tier behavior source-derived only.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Build MOVA_BIG_DEFAULT joins runtime nonempty MOVA_BIG precedence. Pipeline sends selected ids to main parser helpers, consumes db with_drafts and later updates DB before check/train/row. jobs wraps configured drafts. Teacher live test, bench main, lesson_smoke and twin ledger are explicitly independent paths; common diagnostics vocabulary is not a caller edge. Existing artifact markers may bypass stages, and failed collect can leave earlier DB commits.",
+        "operator": "Given cycle row/current DB/attempt ledger, compatible histories include multiple resumed stages, overwritten versions and unsuccessful teacher attempts. Reports lose bodies, timestamps/order and sampled-process information. No unique global predecessor; independent diagnostics reconstruct only their tagged path.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "Ordinary allocation/UTF-8 resource bounds; caller serialization where required. No concurrent mutation in synthetic fixtures. Syntax is partial representation; no macro expansion or universal semantics. Lesson/teacher/build entry behavior is source-derived/compile representation.",
+        "domain": "Bounded synthetic strings/temp files, deterministic exact helper inputs and representable counts. CLI training/teacher/corpora/models excluded from execution. Legacy tier behavior source-derived only.",
+        "id": "artifact-order",
+        "observation_scope": "Build MOVA_BIG_DEFAULT joins runtime nonempty MOVA_BIG precedence. Pipeline sends selected ids to main parser helpers, consumes db with_drafts and later updates DB before check/train/row. jobs wraps configured drafts. Teacher live test, bench main, lesson_smoke and twin ledger are explicitly independent paths; common diagnostics vocabulary is not a caller edge. Existing artifact markers may bypass stages, and failed collect can leave earlier DB commits.",
+        "operator": "Pipeline collect commits db before corpus append/check/enrich/train/row. A row is a terminal observation under untampered assumptions, but row absence does not imply no database effects. main model rename joins trainer availability only after subprocess success.",
+        "path": "model.md",
+        "required": false,
+        "section": "artifact-order",
+        "status": "partial_source_derived_model",
+        "type": "artifact_order"
+      },
+      {
+        "assumptions": "Ordinary allocation/UTF-8 resource bounds; caller serialization where required. No concurrent mutation in synthetic fixtures. Syntax is partial representation; no macro expansion or universal semantics. Lesson/teacher/build entry behavior is source-derived/compile representation.",
+        "domain": "Bounded synthetic strings/temp files, deterministic exact helper inputs and representable counts. CLI training/teacher/corpora/models excluded from execution. Legacy tier behavior source-derived only.",
+        "id": "heldout-identity",
+        "observation_scope": "Build MOVA_BIG_DEFAULT joins runtime nonempty MOVA_BIG precedence. Pipeline sends selected ids to main parser helpers, consumes db with_drafts and later updates DB before check/train/row. jobs wraps configured drafts. Teacher live test, bench main, lesson_smoke and twin ledger are explicitly independent paths; common diagnostics vocabulary is not a caller edge. Existing artifact markers may bypass stages, and failed collect can leave earlier DB commits.",
+        "operator": "exclude returns heldout set separately from heldout∪inflight ids. feed uses union; training_file uses heldout only. Matching uses sent_id, so equal text with different ids is not excluded by this relation.",
+        "path": "model.md",
+        "required": false,
+        "section": "heldout-identity",
+        "status": "partial_source_derived_model",
+        "type": "heldout_identity"
+      },
+      {
+        "assumptions": "Ordinary allocation/UTF-8 resource bounds; caller serialization where required. No concurrent mutation in synthetic fixtures. Syntax is partial representation; no macro expansion or universal semantics. Lesson/teacher/build entry behavior is source-derived/compile representation.",
+        "domain": "Bounded synthetic strings/temp files, deterministic exact helper inputs and representable counts. CLI training/teacher/corpora/models excluded from execution. Legacy tier behavior source-derived only.",
+        "id": "diagnostic-boundary",
+        "observation_scope": "Build MOVA_BIG_DEFAULT joins runtime nonempty MOVA_BIG precedence. Pipeline sends selected ids to main parser helpers, consumes db with_drafts and later updates DB before check/train/row. jobs wraps configured drafts. Teacher live test, bench main, lesson_smoke and twin ledger are explicitly independent paths; common diagnostics vocabulary is not a caller edge. Existing artifact markers may bypass stages, and failed collect can leave earlier DB commits.",
+        "operator": "Lesson smoke preparses assessment answers and learns exercises twice, bench reads frozen workload outputs, twin predicts synthetic costs. Neither reading correctness nor cost acceptance is an independent saved-state learning proof.",
+        "path": "model.md",
+        "required": false,
+        "section": "diagnostic-boundary",
+        "status": "partial_source_derived_model",
+        "type": "diagnostic_boundary"
+      },
+      {
+        "assumptions": "Ordinary allocation/UTF-8 resource bounds; caller serialization where required. No concurrent mutation in synthetic fixtures. Syntax is partial representation; no macro expansion or universal semantics. Lesson/teacher/build entry behavior is source-derived/compile representation.",
+        "domain": "Bounded synthetic strings/temp files, deterministic exact helper inputs and representable counts. CLI training/teacher/corpora/models excluded from execution. Legacy tier behavior source-derived only.",
+        "id": "budget-resource",
+        "observation_scope": "Build MOVA_BIG_DEFAULT joins runtime nonempty MOVA_BIG precedence. Pipeline sends selected ids to main parser helpers, consumes db with_drafts and later updates DB before check/train/row. jobs wraps configured drafts. Teacher live test, bench main, lesson_smoke and twin ledger are explicitly independent paths; common diagnostics vocabulary is not a caller edge. Existing artifact markers may bypass stages, and failed collect can leave earlier DB commits.",
+        "operator": "Enrichment line budget caps reservations under lock and single-caller premise, not successful calls or dollars. jobs sampled RSS/time limit and legacy budget_n share allocation represent distinct resources and cannot be substituted.",
+        "path": "model.md",
+        "required": false,
+        "section": "budget-resource",
+        "status": "partial_source_derived_model",
+        "type": "budget_resource"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "cycle-teacher-diagnostics",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "teacher/tests/live.rs",
+      "sha256": "4e7b2faef824448b23534bf455ab2a00bb3f6f1ee7a6870e1855bee5e7d3ccc7"
+    },
+    {
+      "path": "tools/bench/src/main.rs",
+      "sha256": "7a5aff2d66b34bbe237903eefacc2f794692b2b28ca50dfb0595422fd443326e"
+    },
+    {
+      "path": "tools/cycle/build.rs",
+      "sha256": "99e9e71ca1c1b36c622ad50abed37f5a6262989924a8f6b74b67f9964ef216af"
+    },
+    {
+      "path": "tools/cycle/src/db.rs",
+      "sha256": "46ace8ee692107b0fa7d933778036f4d884a3a081023f2c143236cdfdb0cb8c7"
+    },
+    {
+      "path": "tools/cycle/src/main.rs",
+      "sha256": "9677d345fdc68895d81ca8a04f680a91debd5f91eb765debd1509b42e1874f51"
+    },
+    {
+      "path": "tools/cycle/src/pipeline.rs",
+      "sha256": "7f2bf58dade3757acaa7ea71ee60c64c7ed4e36a88afc88cc66571c618727876"
+    },
+    {
+      "path": "tools/cycle/src/reviewed.rs",
+      "sha256": "021da8acb42f724b07246581acbcb4ad76837930cadc0ca88a70f848ab976055"
+    },
+    {
+      "path": "tools/enrich/examples/lesson_smoke.rs",
+      "sha256": "14a0b553a86f78d23e5e4d7883295357c4d49e58913f602131c3b852b0a08511"
+    },
+    {
+      "path": "tools/jobs/src/main.rs",
+      "sha256": "ddb2e9ecf8ef78a1d13ce00030932ef2703746e56c52f29c33fc428366f20a29"
+    },
+    {
+      "path": "tools/twin/tests/ledger.rs",
+      "sha256": "cdc737ccddf5645b0273733f6c6b9acda530a84d544917d1ba080628a8d14ac9"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

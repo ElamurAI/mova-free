@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "build::wave27::index_and_record_layout"
+  ],
+  "children": [],
+  "cost": "Hash insertion expected O(n) with hash assumptions, worst O(n²); paradigm merge linear scan can make O(records²). Storage O(input bytes+records+slots+blob). next_power_of_two, usize multiplication and u32 narrowing have no overflow certificate.",
+  "description": "Compile-time dictionary encoder: lemma heap, open-addressed indexes, analyses/paradigms and generated word constants. Empty/unreadable input files become empty text; outputs are three sequential files.",
+  "forward": [
+    "index(keys) allocates m=max(2,next_power_of_two(2n)), inserts i+1 at the first empty cyclic slot starting hash(key)&(m-1). main parses tag→lemma ID→count→source bits, builds analyses and UD-lowercase/AGID paradigms, then little-endian blob sections padded to four-byte boundaries. Word names first take punctuation, then first 5000 lowercase ASCII lemmas, then explicit constants; duplicate names retain the first assignment. Outputs lexicon.bin, lexicon_layout.rs, words.rs in that order."
+  ],
+  "id": "en-build",
+  "inverse": [
+    "R(slots)={ordered key lists K: index(K)=slots}; hash collisions and probing make R non-singleton. Blob plus layout recovers stored bytes and records within valid offsets, not skipped TSV columns, original source letter order or unknown source characters."
+  ],
+  "limitations": [
+    "Only helper semantics and isolated synthetic build execution; no real dictionary quality validation",
+    "Output writes are not atomic, allocation/cast/overflow failures untested",
+    "No useful approximate semantics for binary compatibility"
+  ],
+  "source": "en/build.rs",
+  "state": "Input TSV bytes, lemma/form IDs, source bits, hash slots, byte offsets, OUT_DIR and filesystem."
+}

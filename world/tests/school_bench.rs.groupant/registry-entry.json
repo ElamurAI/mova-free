@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "wave29_bench_command_isolation_and_cleanup_without_spawn"
+  ],
+  "children": [],
+  "cost": "Fixed command/temp operations only; actual planner/probe costs unmeasured; no benchmark timing.",
+  "description": "Scratch creates temp root; command sets cpu, hot/bench roots, missing model and removes state/prag flags. Legacy plan requests rounds1/5/20 and validates tiers/counts; failed-probe asserts preserved published sentinel and absent cadence/running markers plus round0 rejection. New helper test checks env, no args/no bench root and cleanup without any process.",
+  "forward": [
+    "Scratch creates temp root; command sets cpu, hot/bench roots, missing model and removes state/prag flags. Legacy plan requests rounds1/5/20 and validates tiers/counts; failed-probe asserts preserved published sentinel and absent cadence/running markers plus round0 rejection. New helper test checks env, no args/no bench root and cleanup without any process.",
+    "New test never creates bench root/loads school; temp sentinel removed at scope exit. Legacy expected313 tests/112 exams specific to course, not general schema."
+  ],
+  "id": "world-school-bench",
+  "inverse": [
+    "Exclude configured bench/hot paths differing from Scratch derivations or explicit retained state/prag flags. Legacy assertions exclude failed-probe publication/cadence changes but were not executed. Cleanup may fail silently.",
+    "Full plan tier/count does not recover course identities; preserved publication after failure admits many failure stages. Helper env reconstructs path derivations but not external command outcome."
+  ],
+  "limitations": [
+    "Only command/temp helper executed; no plan/cadence/publication runtime claim",
+    "No corpus/model/full-school; executable percent surrogate unsupported"
+  ],
+  "source": "world/tests/school_bench.rs",
+  "state": "Scratch Command configuration; excluded plans, publication sentinel and cadence markers."
+}

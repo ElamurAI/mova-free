@@ -1,0 +1,153 @@
+{
+  "children": [
+    "algorithm-chebyshev-clenshaw",
+    "algorithm-chebyshev-clenshaw-tests",
+    "algorithm-horner",
+    "algorithm-horner-tests",
+    "algorithm-compensated-sum",
+    "algorithm-compensated-sum-tests",
+    "algorithm-adaptive-simpson",
+    "algorithm-adaptive-simpson-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Finite intermediate overflow and cancellation are explicit. Simpson's local estimate can miss unsampled structure; callbacks may violate smoothness. Neither residual samples nor finite successful tests certify all functions or a shared <=10% error.",
+        "domain": "Finite coefficients and arguments accepted by leaves, Clenshaw x in [-1,1], supplied finite quadrature callbacks and explicit evaluation/depth budgets.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "numerical-evaluation-behavior-complement",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Exclude outputs outside each tagged native transition, successful nonfinite values, excess callback budgets and Simpson estimates promoted to universal guarantees. Distinct error/status observations are not numerical approximation loss.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Finite intermediate overflow and cancellation are explicit. Simpson's local estimate can miss unsampled structure; callbacks may violate smoothness. Neither residual samples nor finite successful tests certify all functions or a shared <=10% error.",
+        "domain": "Finite coefficients and arguments accepted by leaves, Clenshaw x in [-1,1], supplied finite quadrature callbacks and explicit evaluation/depth budgets.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "numerical-evaluation-reverse-reconstruction",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "At x=0 Horner retains c0,c1 and loses higher coefficients; Clenshaw retains an alternating even-coefficient sum and loses odd terms. Sum fibers include [1,2] and [3]. Quadrature samples permit arbitrary off-sample perturbations, so reports do not identify a unique integrand.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Finite intermediate overflow and cancellation are explicit. Simpson's local estimate can miss unsampled structure; callbacks may violate smoothness. Neither residual samples nor finite successful tests certify all functions or a shared <=10% error.",
+        "domain": "Finite coefficients and arguments accepted by leaves, Clenshaw x in [-1,1], supplied finite quadrature callbacks and explicit evaluation/depth budgets.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "numerical-evaluation-basis-conversion",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Chebyshev coefficients [a,b,c] represent power coefficients [a-c,b,2c]. Evaluations agree in real arithmetic. Floating tests require scale-aware additive tolerance; derivative comparison must use transformed coefficients.",
+        "path": "model.md",
+        "section": "basis-conversion",
+        "status": "partial_source_model",
+        "type": "polynomial_basis_transport"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Finite intermediate overflow and cancellation are explicit. Simpson's local estimate can miss unsampled structure; callbacks may violate smoothness. Neither residual samples nor finite successful tests certify all functions or a shared <=10% error.",
+        "domain": "Finite coefficients and arguments accepted by leaves, Clenshaw x in [-1,1], supplied finite quadrature callbacks and explicit evaluation/depth budgets.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "numerical-evaluation-analytic-integral",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "A power polynomial has exact real integral sum a_k*(b^(k+1)-a^(k+1))/(k+1). This supplies an independent finite quadrature oracle; general callback error remains heuristic.",
+        "path": "model.md",
+        "section": "analytic-integral",
+        "status": "partial_source_model",
+        "type": "antiderivative_certificate"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Finite intermediate overflow and cancellation are explicit. Simpson's local estimate can miss unsampled structure; callbacks may violate smoothness. Neither residual samples nor finite successful tests certify all functions or a shared <=10% error.",
+        "domain": "Finite coefficients and arguments accepted by leaves, Clenshaw x in [-1,1], supplied finite quadrature callbacks and explicit evaluation/depth budgets.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "numerical-evaluation-sample-blindness",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "A function vanishing at all sampled abscissae can have a nonzero integral between them. Equal sampled values and error estimates therefore admit different exact integrals; an explicit hidden-bump test witnesses this gap. The witness is in the leaf validation_and_unsampled_fiber test.",
+        "path": "model.md",
+        "section": "sample-blindness",
+        "status": "partial_source_model",
+        "type": "finite_observation_complement"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "numerical-evaluation",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/adaptive_simpson/mod.rs",
+      "sha256": "129ecf5f8b6bf008de76fe336e1fe4bb43094d37db71fc14b624b3cf94dd8a07"
+    },
+    {
+      "path": "algorithms/src/adaptive_simpson/tests.rs",
+      "sha256": "8b6425dd52a4584d39d48dedb16ca2787c023d28da258d01e8fa64ff281ba9a1"
+    },
+    {
+      "path": "algorithms/src/chebyshev_clenshaw/mod.rs",
+      "sha256": "7c97ac622fbe8a7eaf06c18d5ac3fc9fcf31a148b3b15bb2af43d384cfde7b8a"
+    },
+    {
+      "path": "algorithms/src/chebyshev_clenshaw/tests.rs",
+      "sha256": "b1f609f0e9f8494b959a6dfeff81e792ff150a6d436a84e4bfc51a07bcf67893"
+    },
+    {
+      "path": "algorithms/src/compensated_sum/mod.rs",
+      "sha256": "387ef988f6a3a0721cf685a60ba064da25b836c9e13493925e33142e2e3468dc"
+    },
+    {
+      "path": "algorithms/src/compensated_sum/tests.rs",
+      "sha256": "fe4c177fd5fab49d7977fdaca53da146782214857a0cc7f93117408694cae066"
+    },
+    {
+      "path": "algorithms/src/horner/mod.rs",
+      "sha256": "591283fb09317b37ebe6aadf1d0e6704737909a9aa91fda410abaa827cfd4de3"
+    },
+    {
+      "path": "algorithms/src/horner/tests.rs",
+      "sha256": "751f5de9220401aea97bd6d76e421eb99102a06168dd1bb848757d5b8d26f0a5"
+    }
+  ],
+  "status": "partial_source_bound_group"
+}

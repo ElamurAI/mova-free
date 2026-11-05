@@ -200,7 +200,7 @@ stops the build with "concept «burn_risk» not declared".
 ## Measure
 
 - Verb classes are features of the word-problem solver and the story readers. Widening a class can
-  lower accuracy. One extension of the verb classes did exactly that. Treat every level-1 change as
+  lower accuracy. Treat every level-1 change as
   an experiment. Measure the benchmark before and after, two identical runs each. If a class
   extension hurts, add the words as a plain `concept` for explanations instead.
 - Ablation without editing files: `GLOBAL_EXCLUDE=substr,substr` drops every seed whose path

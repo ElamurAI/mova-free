@@ -1,0 +1,520 @@
+{
+  "children": [
+    "annot-ann",
+    "annot-ann-bfs-checks",
+    "en-convert",
+    "en-convert-bfs-checks",
+    "annot-groupant-transfers",
+    "english-lexical",
+    "english-structure",
+    "annotation-orchestration",
+    "formula-syntax"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Claims concern the cycle phase after unchanged preflight. Annotation's walk/BFS policy and conversion's walk/color policy must match the merged sources. Arbitrary edit semantics, normalization, linguistic accuracy, I/O, panics and allocation failures remain outside normal-return guarantees. Current evidence is linked separately from the historical fd540 transfer epoch.",
+        "domain": "Finite typed annotation records and converter words; for cross-gate equality restrict to nonempty, exactly-one-root head vectors with in-range nonself heads and lawful per-gate forms, relation inventory and root labels. Boundary tests intentionally leave this intersection and observe tagged distinct errors. Normal returns with successful allocations and fixed registries are modeled.",
+        "evidence": "model.md",
+        "id": "syntax-validation-excluded-gate-results",
+        "observation_scope": "The production joins are parse/normalize -> annotation gate and selected conversion edits -> converter gate. There is no production call from one gate to the other. Independent harness joins share only a finite head vector with lawful token fields, matching root conventions and matching admitted local constraints; outputs are projected to acceptance or first root-unreachable token. Source-local baseline equality tests and this restricted cross-gate observation are different relations. Algorithm library ownership remains unchanged.",
+        "operator": "In U of tagged lawful calls and Result observations, the candidate inner complement excludes acceptance of a preflight-valid root-disconnected head component, reporting a later unrooted token when an earlier tail enters the same cycle, and a cycle diagnostic masking an earlier Count/Form/Head/Registry or converter root-label error. It also excludes claiming both APIs accept the empty vector: converter accepts it while annotation reports Roots(0). These exclusions describe the relation; negative fixtures only sample it.",
+        "path": "model.md",
+        "section": "excluded-gate-results",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Claims concern the cycle phase after unchanged preflight. Annotation's walk/BFS policy and conversion's walk/color policy must match the merged sources. Arbitrary edit semantics, normalization, linguistic accuracy, I/O, panics and allocation failures remain outside normal-return guarantees. Current evidence is linked separately from the historical fd540 transfer epoch.",
+        "domain": "Finite typed annotation records and converter words; for cross-gate equality restrict to nonempty, exactly-one-root head vectors with in-range nonself heads and lawful per-gate forms, relation inventory and root labels. Boundary tests intentionally leave this intersection and observe tagged distinct errors. Normal returns with successful allocations and fixed registries are modeled.",
+        "evidence": "model.md",
+        "id": "syntax-validation-compatible-records",
+        "observation_scope": "The production joins are parse/normalize -> annotation gate and selected conversion edits -> converter gate. There is no production call from one gate to the other. Independent harness joins share only a finite head vector with lawful token fields, matching root conventions and matching admitted local constraints; outputs are projected to acceptance or first root-unreachable token. Source-local baseline equality tests and this restricted cross-gate observation are different relations. Algorithm library ownership remains unchanged.",
+        "operator": "For tagged result y, retain every record sequence, root/head vector, registry state and conversion history satisfying that gate's ordered relation. Cycle(k) constrains earlier eligible tokens to terminate and k not to terminate after preflight; it does not identify the cycle vertices or discarded fields. Successful gate observations forget lexical values and edit history. Cross-gate projection further merges different error vocabularies; no unique reconstruction is claimed.",
+        "path": "model.md",
+        "section": "compatible-records",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Claims concern the cycle phase after unchanged preflight. Annotation's walk/BFS policy and conversion's walk/color policy must match the merged sources. Arbitrary edit semantics, normalization, linguistic accuracy, I/O, panics and allocation failures remain outside normal-return guarantees. Current evidence is linked separately from the historical fd540 transfer epoch.",
+        "domain": "Finite typed annotation records and converter words; for cross-gate equality restrict to nonempty, exactly-one-root head vectors with in-range nonself heads and lawful per-gate forms, relation inventory and root labels. Boundary tests intentionally leave this intersection and observe tagged distinct errors. Normal returns with successful allocations and fixed registries are modeled.",
+        "evidence": "model.md",
+        "id": "syntax-validation-minimum-unreachable",
+        "observation_scope": "The production joins are parse/normalize -> annotation gate and selected conversion edits -> converter gate. There is no production call from one gate to the other. Independent harness joins share only a finite head vector with lawful token fields, matching root conventions and matching admitted local constraints; outputs are projected to acceptance or first root-unreachable token. Source-local baseline equality tests and this restricted cross-gate observation are different relations. Algorithm library ownership remains unchanged.",
+        "operator": "The least root-unreachable token is the mathematical observation. Annotation may compute it from reversed-head BFS after its walk budget; conversion's ordered coloring reports the least nonterminating start directly. For heads [3,0,4,3], token 1 is the failed start although cycle members are 3 and 4. No queue order or cycle-member minimum substitutes for this observation.",
+        "path": "model.md",
+        "section": "minimum-unreachable",
+        "status": "partial_source_model",
+        "type": "first_error_projection"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Claims concern the cycle phase after unchanged preflight. Annotation's walk/BFS policy and conversion's walk/color policy must match the merged sources. Arbitrary edit semantics, normalization, linguistic accuracy, I/O, panics and allocation failures remain outside normal-return guarantees. Current evidence is linked separately from the historical fd540 transfer epoch.",
+        "domain": "Finite typed annotation records and converter words; for cross-gate equality restrict to nonempty, exactly-one-root head vectors with in-range nonself heads and lawful per-gate forms, relation inventory and root labels. Boundary tests intentionally leave this intersection and observe tagged distinct errors. Normal returns with successful allocations and fixed registries are modeled.",
+        "evidence": "model.md",
+        "id": "syntax-validation-intersection-only",
+        "observation_scope": "The production joins are parse/normalize -> annotation gate and selected conversion edits -> converter gate. There is no production call from one gate to the other. Independent harness joins share only a finite head vector with lawful token fields, matching root conventions and matching admitted local constraints; outputs are projected to acceptance or first root-unreachable token. Source-local baseline equality tests and this restricted cross-gate observation are different relations. Algorithm library ownership remains unchanged.",
+        "operator": "The mutual domain excludes empty input and self-heads: empty converter success differs from annotation Roots(0); a self-head is a converter cycle but annotation rejects Head first. Annotation count/form validation has no universal converter equivalent. The common-domain harness proves no replacement of one complete API by the other.",
+        "path": "model.md",
+        "section": "intersection-only",
+        "status": "partial_source_model",
+        "type": "boundary_non_equivalence"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Claims concern the cycle phase after unchanged preflight. Annotation's walk/BFS policy and conversion's walk/color policy must match the merged sources. Arbitrary edit semantics, normalization, linguistic accuracy, I/O, panics and allocation failures remain outside normal-return guarantees. Current evidence is linked separately from the historical fd540 transfer epoch.",
+        "domain": "Finite typed annotation records and converter words; for cross-gate equality restrict to nonempty, exactly-one-root head vectors with in-range nonself heads and lawful per-gate forms, relation inventory and root labels. Boundary tests intentionally leave this intersection and observe tagged distinct errors. Normal returns with successful allocations and fixed registries are modeled.",
+        "evidence": "model.md",
+        "id": "syntax-validation-walk-budget",
+        "observation_scope": "The production joins are parse/normalize -> annotation gate and selected conversion edits -> converter gate. There is no production call from one gate to the other. Independent harness joins share only a finite head vector with lawful token fields, matching root conventions and matching admitted local constraints; outputs are projected to acceptance or first root-unreachable token. Source-local baseline equality tests and this restricted cross-gate observation are different relations. Algorithm library ownership remains unchanged.",
+        "operator": "Both callers retain original walks for n<=64. Large annotation calls spend at most 4n walk steps before optional reverse BFS. Large conversion calls allocate n+1 colors and follow each head at most twice; there is no work-budget fallback or BFS allocation. These policies preserve tagged Result semantics but differ in allocation behavior. Failed allocation remains outside normal-return guarantees.",
+        "path": "model.md",
+        "section": "walk-budget",
+        "status": "partial_source_model",
+        "type": "resource_fallback"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Claims concern the cycle phase after unchanged preflight. Annotation's walk/BFS policy and conversion's walk/color policy must match the merged sources. Arbitrary edit semantics, normalization, linguistic accuracy, I/O, panics and allocation failures remain outside normal-return guarantees. Current evidence is linked separately from the historical fd540 transfer epoch.",
+        "domain": "Finite typed annotation records and converter words; for cross-gate equality restrict to nonempty, exactly-one-root head vectors with in-range nonself heads and lawful per-gate forms, relation inventory and root labels. Boundary tests intentionally leave this intersection and observe tagged distinct errors. Normal returns with successful allocations and fixed registries are modeled.",
+        "evidence": "model.md",
+        "id": "syntax-validation-local-oracle-join",
+        "observation_scope": "The production joins are parse/normalize -> annotation gate and selected conversion edits -> converter gate. There is no production call from one gate to the other. Independent harness joins share only a finite head vector with lawful token fields, matching root conventions and matching admitted local constraints; outputs are projected to acceptance or first root-unreachable token. Source-local baseline equality tests and this restricted cross-gate observation are different relations. Algorithm library ownership remains unchanged.",
+        "operator": "Each checks.rs calls its own real gate and retained baseline; the independent harness calls both real gates plus a root-reachability observation on compatible fixtures. Passing a finite oracle constrains exact outputs on those rows only. Tests sharing an included implementation are not independent evidence for all conversion and parsing semantics.",
+        "path": "model.md",
+        "section": "local-oracle-join",
+        "status": "partial_source_model",
+        "type": "test_observation"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Claims concern the cycle phase after unchanged preflight. Annotation's walk/BFS policy and conversion's walk/color policy must match the merged sources. Arbitrary edit semantics, normalization, linguistic accuracy, I/O, panics and allocation failures remain outside normal-return guarantees. Current evidence is linked separately from the historical fd540 transfer epoch.",
+        "domain": "Finite typed annotation records and converter words; for cross-gate equality restrict to nonempty, exactly-one-root head vectors with in-range nonself heads and lawful per-gate forms, relation inventory and root labels. Boundary tests intentionally leave this intersection and observe tagged distinct errors. Normal returns with successful allocations and fixed registries are modeled.",
+        "evidence": "model.md",
+        "id": "syntax-validation-phase-boundary",
+        "observation_scope": "The production joins are parse/normalize -> annotation gate and selected conversion edits -> converter gate. There is no production call from one gate to the other. Independent harness joins share only a finite head vector with lawful token fields, matching root conventions and matching admitted local constraints; outputs are projected to acceptance or first root-unreachable token. Source-local baseline equality tests and this restricted cross-gate observation are different relations. Algorithm library ownership remains unchanged.",
+        "operator": "Annotation normalization and converter edit application must deliver the same validated head indexing assumed by their gate. Gate correctness alone does not prove the producer's normalization or action semantics. Reused root reachability is applied only after these local obligations; acquisition and other legacy operations keep explicit coverage gaps.",
+        "path": "model.md",
+        "section": "phase-boundary",
+        "status": "partial_source_model",
+        "type": "pipeline_obligation"
+      },
+      {
+        "assumptions": "No corpus, network, teacher, GPU, held-out evaluation or model mutation. No assurance for malformed serialized models/blobs, huge counters, allocation/I/O fault injection, cyclic tree paths. Build-time dictionary generation not semantically revalidated by temp output fixture.",
+        "domain": "Bounded UTF-8 synthetic fixtures, frozen generated dictionary from repository build inputs; valid index domains and aligned arrays. Tagging nonempty sequences requires supported candidate paths; tree conjunction ancestry must terminate. Tiny in-memory training only; lexgen tempfile effects.",
+        "id": "wave27-english-lexical-dictionary-flags",
+        "operator": "lexgen UD rows precede AGID; a/ar/r/b flags become dict UD/AGID/REV/BASE bits via build.rs. Morph UD max-count uses later tie while AGID uses first main match; preserving rows and flags is required.",
+        "path": "model.md",
+        "section": "wave27-english-lexical-dictionary-flags",
+        "status": "partial_composition_model",
+        "type": "source_priority_transport"
+      },
+      {
+        "assumptions": "No corpus, network, teacher, GPU, held-out evaluation or model mutation. No assurance for malformed serialized models/blobs, huge counters, allocation/I/O fault injection, cyclic tree paths. Build-time dictionary generation not semantically revalidated by temp output fixture.",
+        "domain": "Bounded UTF-8 synthetic fixtures, frozen generated dictionary from repository build inputs; valid index domains and aligned arrays. Tagging nonempty sequences requires supported candidate paths; tree conjunction ancestry must terminate. Tiny in-memory training only; lexgen tempfile effects.",
+        "id": "wave27-english-lexical-coordinate-transport",
+        "operator": "gram Sym high bit distinguishes graph-local heap from frozen global dictionary. text detok and Morph tree heads use1-based token coordinates; dict record ids and arrays use0-based coordinates; blind interchange invalid.",
+        "path": "model.md",
+        "section": "wave27-english-lexical-coordinate-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No corpus, network, teacher, GPU, held-out evaluation or model mutation. No assurance for malformed serialized models/blobs, huge counters, allocation/I/O fault injection, cyclic tree paths. Build-time dictionary generation not semantically revalidated by temp output fixture.",
+        "domain": "Bounded UTF-8 synthetic fixtures, frozen generated dictionary from repository build inputs; valid index domains and aligned arrays. Tagging nonempty sequences requires supported candidate paths; tree conjunction ancestry must terminate. Tiny in-memory training only; lexgen tempfile effects.",
+        "id": "wave27-english-lexical-candidate-support",
+        "operator": "TnT emits only seen positive candidate classes, PTagger masks unseen unless forced or known shortcut. Empty training supports empty tagging but nonempty unconstrained inference is not total; parents cannot assume length-preserving success on unsupported models.",
+        "path": "model.md",
+        "section": "wave27-english-lexical-candidate-support",
+        "status": "partial_composition_model",
+        "type": "support_precondition"
+      },
+      {
+        "assumptions": "No corpus, network, teacher, GPU, held-out evaluation or model mutation. No assurance for malformed serialized models/blobs, huge counters, allocation/I/O fault injection, cyclic tree paths. Build-time dictionary generation not semantically revalidated by temp output fixture.",
+        "domain": "Bounded UTF-8 synthetic fixtures, frozen generated dictionary from repository build inputs; valid index domains and aligned arrays. Tagging nonempty sequences requires supported candidate paths; tree conjunction ancestry must terminate. Tiny in-memory training only; lexgen tempfile effects.",
+        "id": "wave27-english-lexical-annotation-projection",
+        "operator": "Feats parses known pairs to bits and counts unknowns separately; udreg sees only bits. Reconstructing original annotation or validating dropped pairs requires caller to preserve unknown count/raw source.",
+        "path": "model.md",
+        "section": "wave27-english-lexical-annotation-projection",
+        "status": "partial_composition_model",
+        "type": "lossy_gate_boundary"
+      },
+      {
+        "assumptions": "No allocator exhaustion, integer-overflow proof, fsync or concurrent save guarantee. Environment EN_AGR/EN_PX/EN_BEAM can change semantics; tests use explicit beam1 where available. Preflight discovered empty-trained PTagger panics on nonempty tagging; model/explain use nonempty synthetic training and preserve that gap.",
+        "domain": "Bounded synthetic sentences and same-build serializable types; parallel arrays aligned, graph symbols valid, valid tree indices, finite table scores and bounded counters. Tests exercise2 synthetic one-token training sentences only for model/explain, never corpus/held-out/API/GPU.",
+        "id": "wave27-english-structure-head-coordinate-transport",
+        "operator": "Parser tree index i is token i+1; annotation heads stay usize; GNode head=(parser head as u16); Ud children maps head h to slot h-1. Validity requires heads<=n and graph n<=65535 for lossless coordinate transport.",
+        "path": "model.md",
+        "section": "wave27-english-structure-head-coordinate-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No allocator exhaustion, integer-overflow proof, fsync or concurrent save guarantee. Environment EN_AGR/EN_PX/EN_BEAM can change semantics; tests use explicit beam1 where available. Preflight discovered empty-trained PTagger panics on nonempty tagging; model/explain use nonempty synthetic training and preserve that gap.",
+        "domain": "Bounded synthetic sentences and same-build serializable types; parallel arrays aligned, graph symbols valid, valid tree indices, finite table scores and bounded counters. Tests exercise2 synthetic one-token training sentences only for model/explain, never corpus/held-out/API/GPU.",
+        "id": "wave27-english-structure-annotation-branch-join",
+        "operator": "repair is between parse and child features only in annotate. complete and kbest recompute child-derived UPOS/FEATS without that transformation; equal raw parser candidates need not imply equal final annotations.",
+        "path": "model.md",
+        "section": "wave27-english-structure-annotation-branch-join",
+        "status": "partial_composition_model",
+        "type": "branch_composition"
+      },
+      {
+        "assumptions": "No allocator exhaustion, integer-overflow proof, fsync or concurrent save guarantee. Environment EN_AGR/EN_PX/EN_BEAM can change semantics; tests use explicit beam1 where available. Preflight discovered empty-trained PTagger panics on nonempty tagging; model/explain use nonempty synthetic training and preserve that gap.",
+        "domain": "Bounded synthetic sentences and same-build serializable types; parallel arrays aligned, graph symbols valid, valid tree indices, finite table scores and bounded counters. Tests exercise2 synthetic one-token training sentences only for model/explain, never corpus/held-out/API/GPU.",
+        "id": "wave27-english-structure-model-wire-boundary",
+        "operator": "Annotator save packs before directory/write/rename. Unpack gate order magic/size->version->enum sizes->dictionary->length->checksum->typed body. Accepted envelope does not certify caller-selected target type.",
+        "path": "model.md",
+        "section": "wave27-english-structure-model-wire-boundary",
+        "status": "partial_composition_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "No allocator exhaustion, integer-overflow proof, fsync or concurrent save guarantee. Environment EN_AGR/EN_PX/EN_BEAM can change semantics; tests use explicit beam1 where available. Preflight discovered empty-trained PTagger panics on nonempty tagging; model/explain use nonempty synthetic training and preserve that gap.",
+        "domain": "Bounded synthetic sentences and same-build serializable types; parallel arrays aligned, graph symbols valid, valid tree indices, finite table scores and bounded counters. Tests exercise2 synthetic one-token training sentences only for model/explain, never corpus/held-out/API/GPU.",
+        "id": "wave27-english-structure-observability-cost",
+        "operator": "Explain requests parser trace then independently Model.encode, so semantic presentation includes repeated inference and trace stack copies. Parent runtime is sum of real calls, not max child cost or assumed shared cache.",
+        "path": "model.md",
+        "section": "wave27-english-structure-observability-cost",
+        "status": "partial_composition_model",
+        "type": "cost_composition"
+      },
+      {
+        "assumptions": "No live teacher/API/corpus/model writes. No proof of crash durability, filesystem adversary or remote inference quality.",
+        "domain": "Bounded synthetic annotations, valid unique item ids and ordinary files; fake executable integration fixtures on Unix. Live effects remain modeled only.",
+        "id": "wave27-annotation-orchestration-representation-transport",
+        "operator": "Request chunks index State items and matching drafts; this unchecked alignment is needed before reply custom_id strings can map through main patch gates.",
+        "path": "model.md",
+        "section": "wave27-annotation-orchestration-representation-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No live teacher/API/corpus/model writes. No proof of crash durability, filesystem adversary or remote inference quality.",
+        "domain": "Bounded synthetic annotations, valid unique item ids and ordinary files; fake executable integration fixtures on Unix. Live effects remain modeled only.",
+        "id": "wave27-annotation-orchestration-gate-order",
+        "operator": "Model validation before queue effects, snapshot/partial validation before resume calls, and missing/broken/tree gates before accepted patch output. Later finish failures can leave earlier writes.",
+        "path": "model.md",
+        "section": "wave27-annotation-orchestration-gate-order",
+        "status": "partial_composition_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "No live teacher/API/corpus/model writes. No proof of crash durability, filesystem adversary or remote inference quality.",
+        "domain": "Bounded synthetic annotations, valid unique item ids and ordinary files; fake executable integration fixtures on Unix. Live effects remain modeled only.",
+        "id": "wave27-annotation-orchestration-effect-boundary",
+        "operator": "Fake tests exercise local subprocess/filesystem boundaries with temporary files, not live teachers. finish optional UDPipe/corpus/training paths are unexecuted.",
+        "path": "model.md",
+        "section": "wave27-annotation-orchestration-effect-boundary",
+        "status": "partial_composition_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "No live teacher/API/corpus/model writes. No proof of crash durability, filesystem adversary or remote inference quality.",
+        "domain": "Bounded synthetic annotations, valid unique item ids and ordinary files; fake executable integration fixtures on Unix. Live effects remain modeled only.",
+        "id": "wave27-annotation-orchestration-cost-join",
+        "operator": "Source byte and gate costs add to partial lookup P*R and external effects; compatibility USD zero for Codex is not subscription billing or zero compute.",
+        "path": "model.md",
+        "section": "wave27-annotation-orchestration-cost-join",
+        "status": "partial_composition_model",
+        "type": "resource_composition"
+      },
+      {
+        "assumptions": "Generated include matches command table. No semantic TeX engine, precedence inference or live effects. Build compile evidence does not inject write/read failures.",
+        "domain": "Finite valid UTF-8, representable u32 positions, available memory/filesystem. Roundtrip restricted to normalized supported parser trees, not arbitrary public AST.",
+        "id": "wave28-formula-syntax-table-transport",
+        "operator": "Ordered build rows induce discriminants/arrays and lookup Entry joins parser dispatch.",
+        "path": "model.md",
+        "section": "wave28-formula-syntax-table-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Generated include matches command table. No semantic TeX engine, precedence inference or live effects. Build compile evidence does not inject write/read failures.",
+        "domain": "Finite valid UTF-8, representable u32 positions, available memory/filesystem. Roundtrip restricted to normalized supported parser trees, not arbitrary public AST.",
+        "id": "wave28-formula-syntax-marker-discipline",
+        "operator": "End markers delimit parser substreams. Stream group_tokens/opt_tokens and macros collect_until explicitly restore End on their failure paths. Macro match_pattern literal matching consumes the next token before comparison and can consume End on mismatch; read_let can likewise consume an invalid End target. No universal scan-failure preservation law is claimed.",
+        "path": "model.md",
+        "section": "wave28-formula-syntax-marker-discipline",
+        "status": "partial_composition_model",
+        "type": "substream_boundary"
+      },
+      {
+        "assumptions": "Generated include matches command table. No semantic TeX engine, precedence inference or live effects. Build compile evidence does not inject write/read failures.",
+        "domain": "Finite valid UTF-8, representable u32 positions, available memory/filesystem. Roundtrip restricted to normalized supported parser trees, not arbitrary public AST.",
+        "id": "wave28-formula-syntax-canonical-adapters",
+        "operator": "relax, rbrack and row compensation preserve parsing boundaries.",
+        "path": "model.md",
+        "section": "wave28-formula-syntax-canonical-adapters",
+        "status": "partial_composition_model",
+        "type": "roundtrip_adapter"
+      },
+      {
+        "assumptions": "Generated include matches command table. No semantic TeX engine, precedence inference or live effects. Build compile evidence does not inject write/read failures.",
+        "domain": "Finite valid UTF-8, representable u32 positions, available memory/filesystem. Roundtrip restricted to normalized supported parser trees, not arbitrary public AST.",
+        "id": "wave28-formula-syntax-resource-guards",
+        "operator": "Depth and expansion thresholds are local; pre-expansion token check does not bound peak substituted vector.",
+        "path": "model.md",
+        "section": "wave28-formula-syntax-resource-guards",
+        "status": "partial_composition_model",
+        "type": "resource_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks (evidence)",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "syntax-validation",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "annot/src/ann.rs",
+      "sha256": "459a17bfd13ed4a6ba41719dac5dd97bac86bda51ad0b1ab2e176855c57aee2b"
+    },
+    {
+      "path": "annot/src/ann.rs.groupant/checks.rs",
+      "sha256": "9cd22a2863d0e448e24362a6fc0f64ca97f499663bac1efd4a22544c5f16113a"
+    },
+    {
+      "path": "annot/src/batch.rs",
+      "sha256": "511700bb12c59c2e29062a7f47db7148109c4e33084b12c5b9aa8a1f569a7f6e"
+    },
+    {
+      "path": "annot/src/codex_batch.rs",
+      "sha256": "04e68151e8633dea254f18144889427087ab03a159b7f4092b8c857e4c60d422"
+    },
+    {
+      "path": "annot/src/hints.rs",
+      "sha256": "73236507c19a700888abf3d724d219ccdfb865af9c1d9d806ae7fb34a3da6899"
+    },
+    {
+      "path": "annot/src/llm.rs",
+      "sha256": "b00293a926fe7a446a5b79197e73e4b164cee5165f053feb5497625be80c7984"
+    },
+    {
+      "path": "annot/src/main.rs",
+      "sha256": "38431df8a1b1d72a0b0ca9606fc0478e76a5dbedbad79a779b1d19ac1013a1c7"
+    },
+    {
+      "path": "annot/src/repair.rs",
+      "sha256": "023a26ef52067d26ff51c69bab65af326ba6147945aa218f12d7eb7afe228c84"
+    },
+    {
+      "path": "annot/tests/codex_batches.rs",
+      "sha256": "243929fbe42a3afeb294c966d8674fbd4a147a11e4138c7c4f888fb7f5aaf00c"
+    },
+    {
+      "path": "annot/tests/groupant_transfers.rs",
+      "sha256": "32ff56325244f951e4b5af7466f49093ad850f7e5f297d3234c1369eb8f41089"
+    },
+    {
+      "path": "en/src/annotate.rs",
+      "sha256": "4a126331234c7e07afb148d028ffbe6f82a26f283c3600aaa3fd61c2378e4983"
+    },
+    {
+      "path": "en/src/construct.rs",
+      "sha256": "1dd11904c2b1d624d1fa103df363a8a5160dabd9a1bdabc4244c0665007490e7"
+    },
+    {
+      "path": "en/src/convert.rs",
+      "sha256": "35c96fa09e1e228137708edb9a16940669e4faf5ce79f8759720f1ca25feae78"
+    },
+    {
+      "path": "en/src/convert.rs.groupant/checks.rs",
+      "sha256": "fd729d7b599b17b2ad7b054cd459865c0cd46c4a7de6e71ea9f6cbad5ee01e29"
+    },
+    {
+      "path": "en/src/derive.rs",
+      "sha256": "aae76e96e977ce5ac84565921775054438e4ec16e850c1b921b75a65fb454d87"
+    },
+    {
+      "path": "en/src/dict.rs",
+      "sha256": "a744609e10853e94c756ee5d49b2bae022d74275970772ecf5a059982c19ad0c"
+    },
+    {
+      "path": "en/src/expert.rs",
+      "sha256": "689926d4aba7abd837cd06ce824b1ed37e3003c4fa35a54f78c48539dc3954c4"
+    },
+    {
+      "path": "en/src/explain.rs",
+      "sha256": "ab866ac31b19110845322bb1d8447f8f0da1a84f016d668f08b5efc72a6322a9"
+    },
+    {
+      "path": "en/src/gram.rs",
+      "sha256": "32652c46ad141e158358b505bed103a143771a4f3aef9b045ff84795be514dc7"
+    },
+    {
+      "path": "en/src/hash.rs",
+      "sha256": "8a82b4ca25bfc75ea9bf640886a724689f63416a6fa8f42e9bf30bedbf8b3b70"
+    },
+    {
+      "path": "en/src/lexext.rs",
+      "sha256": "8aec85cdb04ec447fe8d57724345d7b72ec4b234803bce86ddb74054a165b781"
+    },
+    {
+      "path": "en/src/lexgen.rs",
+      "sha256": "8cdf42a3a08c5e62217708f2cbfe9518703fe004211471a4a8e0313831f414ec"
+    },
+    {
+      "path": "en/src/lexgrow.rs",
+      "sha256": "0c5313e9e1ff90c6a430e6386d5f7fbc67a2770254bb94fc7b081a10eb8d7b1d"
+    },
+    {
+      "path": "en/src/lin.rs",
+      "sha256": "ccdf9cfeac841bbc109458b20420aab3da372e86f3c25c2d4311825ef81c6b8e"
+    },
+    {
+      "path": "en/src/model.rs",
+      "sha256": "023594242516cb19fd415ee95f0c0552561aa2db663c798a1bc697168f3d9ae6"
+    },
+    {
+      "path": "en/src/morph.rs",
+      "sha256": "d67a5373f61b6c86761211c9370b3919ed855d15560961d4b90c3e96e39da5e1"
+    },
+    {
+      "path": "en/src/parse.rs",
+      "sha256": "d81fdc47528917de8434c9cb0d01ae36b49e4628a8a938fb946a8bb3e4017c29"
+    },
+    {
+      "path": "en/src/ptag.rs",
+      "sha256": "e57fcd6312bb18437676eec934f80498cba29af67b298c0bd394b8b50d978ed4"
+    },
+    {
+      "path": "en/src/store.rs",
+      "sha256": "4d2334d78a3ae22bd7c9da897ba94b29024bb1690a9bb3d3ac1d7139a4446810"
+    },
+    {
+      "path": "en/src/tag.rs",
+      "sha256": "4e58a3ac65d63ae7988a7bfce3c3f78cf58fefaf1a2e7ea202554dd8e9f407b6"
+    },
+    {
+      "path": "en/src/tagrule.rs",
+      "sha256": "dd15f5cd071cacdf845e9ceb81d022584f4d6a57e0b80c370d68652e8bb04f46"
+    },
+    {
+      "path": "en/src/text.rs",
+      "sha256": "982745e7578be07699a17ba9628d5866eb92d033968154d3607e7debe0b9d83e"
+    },
+    {
+      "path": "en/src/tok.rs",
+      "sha256": "c2eb1deea8b49057093095295581bd31002205421aa8061aeef1ddca88fa1f8c"
+    },
+    {
+      "path": "en/src/ud.rs",
+      "sha256": "19a766eb839a61ba264bce906003f711c41d81cb8cbdd36544de4267831072df"
+    },
+    {
+      "path": "en/src/udreg.rs",
+      "sha256": "fd63bb8c06475d26ac86f403636dee99672c817bf96a6160bb9b3b2ad4d49dcc"
+    },
+    {
+      "path": "latex/build.rs",
+      "sha256": "39a1feed1af329d1fb109ab5a2483512ad3e46419a0c2d0bd608921a78357808"
+    },
+    {
+      "path": "latex/src/ast.rs",
+      "sha256": "88786b90964d7ee3438883e97716def3e8076003e6739a53f1232bd9e4cf8599"
+    },
+    {
+      "path": "latex/src/lex.rs",
+      "sha256": "65c9e2c47772827ade022d41d5bf4ab4f54c0d3a7b9505ec137f0df8c4c4c922"
+    },
+    {
+      "path": "latex/src/macros.rs",
+      "sha256": "4253c16fd5f46f05dd9e527d4b097d906594f20e8fa54caa014288da5aa48c96"
+    },
+    {
+      "path": "latex/src/parse.rs",
+      "sha256": "f463a4a8e13c770287eeeb57c59e74732daac90bf64f57302870d1ea86cc5f47"
+    },
+    {
+      "path": "latex/src/print.rs",
+      "sha256": "a6cb2d3ea7b54e4ff73a7bd80b29109f46422add22741da603027e4e93fd6a95"
+    },
+    {
+      "path": "latex/src/table.rs",
+      "sha256": "37b46b94914c5c1561de4158af4f053c8eaf2b6eeb4411b55b3a3ffcf668bdc1"
+    },
+    {
+      "path": "latex/tests/gate.rs",
+      "sha256": "710172ffe064b1fe0f860e92867b863919b0b6188d2b31ed326c50a6f72ebca3"
+    },
+    {
+      "path": "tools/fish-batch/src/lib.rs",
+      "sha256": "f4736aaa632208b97e1bd28036cfd50b10a23043753a7c2c66a5059fd392f15d"
+    },
+    {
+      "path": "tools/fish-pages/src/lib.rs",
+      "sha256": "284d3d93e75b0b65c63e12817e90404c3f8afbebaa3f7f2e264f0929b19d2e8a"
+    },
+    {
+      "path": "tools/fish-pages/src/main.rs",
+      "sha256": "0e1e0174f6a0b784d30833d6b5696c5a48e0b87bfc51704e5c39752056bc424c"
+    },
+    {
+      "path": "tools/fish-swarm/src/lib.rs",
+      "sha256": "d21c64916c360776d0caa1292f309ee01f17fb5bc001f47c2afffdbe9af97dc6"
+    },
+    {
+      "path": "tools/fish-swarm/src/main.rs",
+      "sha256": "e6f6f5fc2cdadbcb90ea175a8abd3a9e319c4bf77ba507e9ef1550f0ad3f8fe0"
+    },
+    {
+      "path": "tools/fish/src/annotation.rs",
+      "sha256": "e561bf34b97072ad66e8705c78563a954d7e32b88b1080af052f6ffa74296bde"
+    },
+    {
+      "path": "tools/fish/src/controller.rs",
+      "sha256": "bb05a792108eb48c7beaa765814d7cbcec9d8a088752682dedad69e702e26dcd"
+    },
+    {
+      "path": "tools/fish/src/execute.rs",
+      "sha256": "c3027996c4a9693c4d28dcd3d01096ccc066697a15da667c067bb22ec672c5c3"
+    },
+    {
+      "path": "tools/fish/src/lib.rs",
+      "sha256": "44e53480343063f542c705564cf9b984b3c040a220aff50cf60bc2ecab1d227f"
+    },
+    {
+      "path": "tools/fish/src/main.rs",
+      "sha256": "6ce48c12fb96a041cea09ba0c80982c250b425321ee736207db0635e7eb637d4"
+    }
+  ],
+  "status": "partial_source_bound_model"
+}

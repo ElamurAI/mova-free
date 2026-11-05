@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "%% excludes consuming an atom. Width parse failure excludes an explicit width rather than erroring.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "One literal % admits %% input or unsupported trailing-percent syntax; discarded length modifiers yield many equivalent spec antecedents.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_invariant",
+        "path": "model.md",
+        "scope": "Literal spans are unescaped when flushed; supported conversions separate literal and spec segments.",
+        "section": "state_invariant",
+        "status": "partial_source_derived_model",
+        "type": "state_invariant"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Numeric width overflow yields None; empty precision yields zero; no Result failure channel.",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Offsets are character indices into a collected Vec<char>, not UTF-8 byte positions.",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "O(format characters) plus literal storage; later padding cost is outside this fragment.",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 5192,
+      "start": 3302
+    },
+    "description": "Scan Unicode chars; %% adds literal percent, flags/width/precision/length are collected before supported conversion membership; unsupported prefixes stay literal.",
+    "source_bytes_sha256": "56f3f8e8cb6020f642a3264b7886bb343715861375fa37f9f50cdd73a50102b8"
+  },
+  "id": "mlab-builtins-io-format-parser",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../io.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "474fbd7e9d27e2e2333b4e7324f348d79475aef977847e353b8c363a6f9f23ed"
+  },
+  "status": "partial_source_bound_model"
+}

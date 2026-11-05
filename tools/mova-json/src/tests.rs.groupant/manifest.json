@@ -1,0 +1,75 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "source_derived_partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "source_derived_partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "source_derived_partial"
+    },
+    "obernants": [
+      {
+        "assumptions": [
+          "Trusted local files without concurrent writers; git available for merge and rebind commands.",
+          "Finite native evidence does not establish universal correctness."
+        ],
+        "domain": "The explicit source-bound domain in model.md.",
+        "id": "mova-json-tests-behavior-complement",
+        "observation": "Return value, written file bytes, stdout report and exit status.",
+        "path": "model.md",
+        "revision": "7d2c28e38884fc01adc955c2dd9e070e08872a59c0fc0dc88227330d2e3c48d8",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "subject": "tools/mova-json/src/tests.rs",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": [
+          "Trusted local files without concurrent writers; git available for merge and rebind commands.",
+          "Finite native evidence does not establish universal correctness."
+        ],
+        "domain": "The explicit source-bound domain in model.md.",
+        "id": "mova-json-tests-reverse-reconstruction",
+        "observation": "Return value, written file bytes, stdout report and exit status.",
+        "path": "model.md",
+        "revision": "7d2c28e38884fc01adc955c2dd9e070e08872a59c0fc0dc88227330d2e3c48d8",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "subject": "tools/mova-json/src/tests.rs",
+        "type": "reverse_reconstruction"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_native_evidence"
+    }
+  },
+  "id": "mova-json-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "bbd3faa412c6a4d0753a430c5ee681bd8c291dabf3ed7b6001460f5561c428c5"
+  },
+  "status": "partial_source_bound_model"
+}

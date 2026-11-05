@@ -1,0 +1,57 @@
+use serde_json::{json,Value};
+use std::{fs,path::Path};
+fn main(){
+ let r=Path::new(env!("CARGO_MANIFEST_DIR"));
+ let src=fs::read_to_string(r.join("../store.rs")).unwrap();
+ let syn:Value=serde_json::from_str(&fs::read_to_string(r.join("syntax.json")).unwrap()).unwrap();
+ let hash=syn["source"]["sha256"].as_str().unwrap();
+ let defs=vec![
+ ("lookup","identity","world-store-record-identity",vec!["same_stored_tree","decode","decode_tag","words","update"],
+ "Resolve each stored lemma ID through the immutable parent lemma table. Compare token count and the sequence (UPOS, relation, head, tag, normalized lemma) against the new annotation. Word form and feats are outside the stored projection. Numeric lemma IDs are representation coordinates, not lexical identity.",
+ "Valid enum bytes, representable heads and lemma IDs, canonical parent lemmas, fixed parent table and successful record reads. A true identity result preserves all stored semantic fields; it does not preserve omitted Word fields.",
+ "Worst case O(T+B) for T tokens and B normalized lemma bytes inspected, versus the historical O(T) structural comparison. Short circuiting avoids later tokens; normalization allocates. The immutable parent lemma vector is retained and cloned into the mutable lexical map once, adding O(V+Btable) storage/work for V entries and their bytes. Updating the map and encoding changed trees has separate cost. No timing measurement.",
+ vec![
+ ("nonbehavior","behavior_complement","Universe: admitted parent records/table and candidate Word sequence paired with a Boolean identity result. Its complement contains true with any differing stored semantic component or token count, and false for identical normalized projections. This is exact for the declared projection relation, conditional for actual source."),
+ ("antecedents","reverse_reconstruction","For a fixed parent projection P, the true fiber contains all candidate Word sequences with projection P, arbitrary forms/feats and any lemma spelling whose Rust lowercase equals the parent lemma. False contains all remaining admitted candidates. Observing false does not identify which coordinate differs. Missing parent IDs are outside valid identity and conservatively produce false."),
+ ("representation-fiber","serialization_projection","Equivalent semantic records may use different numeric lemma IDs if their respective tables resolve to the same strings. Equal IDs in different tables may denote different strings. Canonical lowercasing loses case and is not an inverse; words reconstructs forms through a tokenizer and defaults feats, so stored records do not recover complete annotations."),
+ ("historical-loss","counterfactual","The historical (UPOS,relation,head)-only predicate merges distinct tag and lemma fibers. Rejecting a lemma-only or tag-only difference repairs this gate. It does not verify update annotation, read-error handling, publication ordering, same-hash early return or full codec capacity.")
+ ]),
+ ("lookup","lexical","world-store-lexical-projection",vec!["lemma_file","lemma_table_for","features","features_lex","index_full"],
+ "Structural features count UPOS/relation and selected predicates/subjects with u8 saturation. Lexical features add subj:lemma only for Nsubj/NsubjPass and alphabetic lemma strings resolved from the version table. index_full rebuilds these observations from effective records, including inherited records.",
+ "Inherited IDs must keep their parent meaning in the child lemma table. Valid dense unique canonical tables suffice; sparse/duplicate table construction and ID-width overflow remain separate risks. Csubj contributes structural subj but no lexical subj:lemma. Empty strings pass all(is_alphabetic) vacuously.",
+ "Per tree O(T+B) feature traversal plus ordered-map costs; full index rebuild visits all sentence IDs and materializes postings. Identity improvements do not eliminate rebuilding.",
+ vec![
+ ("nonbehavior","behavior_complement","Universe: valid decoded trees, fixed lemma table and feature-count maps. Inner complement excludes subj:alice from a tree with no Nsubj/NsubjPass token resolving to alice; excludes counts above 255; excludes tag-only changes changing this feature map. This projection ignores tags and heads, so record inequality need not change any index feature."),
+ ("antecedents","reverse_reconstruction","A feature map admits every token sequence whose structural and lexical counts saturate to those observations. Token order, heads and tags are generally free. Count 255 admits every unsaturated count at least 255. A missing lexical feature may mean no subject, nonalphabetic lemma, absent ID, or a different relation; no unique lexical tree follows."),
+ ("table-extension","dependency_preservation","If a child table agrees with the parent on every inherited ID, inherited records preserve lexical features. Agreement of numeric IDs alone is insufficient. Changed-ID completeness fails if a child reinterprets inherited IDs without listing those sentences; canonical dense table extension is an explicit condition, not a general file-format guarantee."),
+ ("feature-quotient","information_loss","The feature map is coarser than stored semantic identity: changing a tag, a head, a non-subject lemma or a saturated excess count may preserve all postings. Therefore the delta dictionary can be a strict superset of feature-changing sentences. Such extra IDs preserve carry correctness but increase work.")
+ ]),
+ ("selection","closure","world-store-delta-closure",vec!["same_stored_tree","update","index_full","select","set_load"],
+ "Let C be the union of changed sentence IDs along an ancestor chain. If unchanged records retain semantic identity and inherited lemma meanings, feature maps agree outside C. Every pointwise query with fixed metadata therefore has equal membership outside C. The carry algebra then returns fresh membership.",
+ "Fixed corpus/metadata, canonical coherent lemma extension, valid acyclic ancestry, complete delta writes, successful reads/indexing, immutable indexes and truthful saved stamps. For chains, each edge needs these conditions. Sample/prefix coupling is handled by reselection, not this pointwise law.",
+ "Identity inspects every successfully read sentence; index_full still rebuilds all features. Carry computes fresh selection over all IDs then merges only C, so this proof gives correctness conditions and no asymptotic query speedup.",
+ vec![
+ ("nonbehavior","behavior_complement","Universe: admitted pointwise-query transitions satisfying the listed conditions, paired with returned membership. Complement excludes a changed membership outside C and a carried set different from fresh selection. Without delta completeness or table preservation these exclusions are not established."),
+ ("antecedents","reverse_reconstruction","For fresh F, changed C and carried Y, compatible predecessors O satisfy O outside C = Y outside C and F inside C = Y inside C. Correctness Y=F further requires O outside C=F outside C. Prior membership within C is unconstrained; neither old tags nor old lemma values can be reconstructed from the ID set."),
+ ("closure-chain","dependency_closure","On each edge, identity outside its delta implies feature equality there. For an ID outside the union C, edge equality composes transitively, giving endpoint feature equality and pointwise membership equality. A tag-only delta may enlarge C while preserving features. A lemma-only subject change must enter C when normalized strings differ."),
+ ("failure-boundary","admission_constraint","update continues after text or parent-record read errors; index_full skips failed tree reads. Same-hash early return performs no comparison. Invalid/sparse tables, mutation under a fixed hash and a forged stable stamp can violate premises. The helper repair and synthetic index/carry tests do not verify whole update or remove these boundaries.")
+ ])];
+ for (parent,name,id,names,forward,invariant,cost,models) in defs{
+  let dir=r.join(format!("{parent}.groupant/{name}.groupant")); fs::create_dir_all(&dir).unwrap();
+  let nodes:Vec<_>=syn["nodes"].as_array().unwrap().iter().filter(|n|n["category"]=="item" && names.iter().any(|key|{
+   let s=&src[n["start"].as_u64().unwrap() as usize..n["end"].as_u64().unwrap() as usize];s.contains(&format!("fn {key}("))
+  })).collect();assert!(!nodes.is_empty());
+  for key in &names {assert!(nodes.iter().any(|n|src[n["start"].as_u64().unwrap() as usize..n["end"].as_u64().unwrap() as usize].contains(&format!("fn {key}("))),"missing {key}");}
+  let mut cat=format!("# {id}\n\nSource SHA-256 {hash}. Source-derived conditional models; finite algebra evidence is separate from actual source tests.\n");
+  let entries:Vec<_>=models.iter().map(|(mid,t,body)|{cat+=&format!("\n## {mid}\n\nType: {t}.\n\n{body}\n");json!({"id":mid,"type":t,"subject_revision":hash,"domain":"Finite valid records, tables and ID sets; specialized in operator","observation_scope":"One identity, feature or pointwise carry transition","operator":body,"approximation_semantics":"Conditional source relation; exact algebra only over explicitly admitted abstract domains","assumptions":invariant,"evidence":"../../tests.md","status":"partial_source_derived_model","path":"catalog.md","section":mid})}).collect();
+  fs::write(dir.join("catalog.md"),cat).unwrap();
+  fs::write(dir.join("descriptant.md"),format!("# {id}\n\n## Forward\n\n{forward}\n\n## Invariant\n\n{invariant}\n\n## Cost\n\n{cost}\n\n## Epoch memory\n\n2026-10-29: distinguish complete stored semantic identity from full Word equality and the coarser feature projection. The historical omission of lemma/tag comparison is retained as a rejected model. Source tests use real enum/decoder paths; the older extracted probe's scalar decoder cannot establish that correspondence. No live parser or store run.\n")).unwrap();
+  let m=json!({"schema":1,"kind":"groupant_fragment","id":id,"status":"partial_source_derived_instance","source":{"path":"../../../store.rs","sha256":hash},"coverage":{"description":id,"byte_range":{"start":nodes.iter().map(|n|n["start"].as_u64().unwrap()).min().unwrap(),"end":nodes.iter().map(|n|n["end"].as_u64().unwrap()).max().unwrap()},"syntax_nodes":{"path":"../../syntax.json","node_ids":nodes.iter().map(|n|n["id"].clone()).collect::<Vec<_>>()}},"components":{"ast":{"status":"partial","format":"rust_syntax_projection","path":"../../syntax.json"},"approximant":{"status":"partial","path":"descriptant.md","section":"Forward"},"invariant":{"status":"partial","path":"descriptant.md","section":"Invariant"},"cost":{"status":"symbolic_unmeasured","path":"descriptant.md","section":"Cost"},"descriptant":{"status":"present","path":"descriptant.md"},"tests":{"status":"bounded_evidence","path":"../../tests.md"},"obernants":entries}});
+  fs::write(dir.join("manifest.json"),serde_json::to_string_pretty(&m).unwrap()).unwrap();
+  let p=r.join(format!("{parent}.groupant/manifest.json"));let mut pm:Value=serde_json::from_str(&fs::read_to_string(&p).unwrap()).unwrap();
+  if !pm["children"].is_array(){pm["children"]=json!([]);}
+  let ch=pm["children"].as_array_mut().unwrap();ch.retain(|v|v["id"]!=id);ch.push(json!({"id":id,"path":format!("{name}.groupant")}));
+  pm["components"]["composition"]=json!({"status":"partial","path":"descriptant.md","section":"Composition"});
+  fs::write(p,serde_json::to_string_pretty(&pm).unwrap()).unwrap();
+ }
+}

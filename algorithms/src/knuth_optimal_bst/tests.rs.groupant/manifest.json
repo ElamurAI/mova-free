@@ -1,0 +1,88 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "source syntax only",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "description": "model.md#approximant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "concrete relation in linked section",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "concrete relation in linked section",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "oracle_separation",
+        "path": "model.md",
+        "scope": "concrete relation in linked section",
+        "section": "oracle_separation",
+        "status": "partial_relational_specification",
+        "type": "oracle_separation"
+      },
+      {
+        "id": "boundary_partition",
+        "path": "model.md",
+        "scope": "concrete relation in linked section",
+        "section": "boundary_partition",
+        "status": "partial_relational_specification",
+        "type": "boundary_partition"
+      },
+      {
+        "id": "compiled_fault",
+        "path": "model.md",
+        "scope": "concrete relation in linked section",
+        "section": "compiled_fault",
+        "status": "partial_relational_specification",
+        "type": "compiled_fault"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "extensions": {
+    "combiner": "model.md#combiner",
+    "epoch_memory": "model.md#descriptant",
+    "limits": "finite evidence and caller assumptions; executable surrogate gap explicit"
+  },
+  "id": "algorithm-knuth-optimal-bst-tests",
+  "kind": "groupant",
+  "registry": {
+    "node": "algorithm-knuth-optimal-bst-tests",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "f5b6e0812047232f4b91ddd5c2b491849ef59df3ad4a21769db67b8e19c2a6c7"
+  },
+  "status": "partial_descriptive_instance"
+}

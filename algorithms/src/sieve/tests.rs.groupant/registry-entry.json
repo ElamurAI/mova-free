@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline --lib sieve::tests:: (debug and release, twice each, six tests)",
+    "Compiled production mutation rejected by a new relation test; strict all-target Clippy passes; partial syntax regenerated twice."
+  ],
+  "children": [],
+  "cost": "Bounded fixture schedule. Divisor enumeration across all bounded fixtures has an O(B^3) upper bound for scalar limit B; full-width and prefix checks have the explicit loop sizes in tests.rs. No asymptotic implementation performance is inferred from test duration.",
+  "description": "sieve independent tests",
+  "forward": [
+    "Execute the finite assertions against the production module. Pass iff every fixture and relation assertion succeeds under terminating execution. 385 independent prime-prefix cases for limits 0..=384, explicit 2/3/49 boundaries, a 4,096 limit fixture with 564 primes, 12 prefix checks, and deterministic impossible-capacity rejection.",
+    "Three additional tests exercise eleven independent composite-factor witnesses at 1024 and their own inclusive limits plus every returned prime at 1024, five complete prime-gap fibers including both excluded endpoints and missing-prefix countermodels, and typed capacity rejection preserving preexisting vectors. Actual allocator exhaustion remains unforced."
+  ],
+  "id": "algorithm-sieve-tests",
+  "inverse": [
+    "Let F be the declared finite fixtures and U be terminating candidate implementations paired with pass/fail. R(P,pass) iff all assertions hold, and R(P,fail) iff some assertion fails or execution panics. U minus R consists of false pass/fail observations. Harness abort/nontermination is excluded.",
+    "A pass reconstructs every implementation satisfying all fixtures, with arbitrary off-fixture behavior. A failure reconstructs implementations or faulty oracle assumptions causing the observed mismatch; it does not uniquely identify the defect."
+  ],
+  "limitations": [
+    "Partial syntax omits macro expansion and semantics; bounded tests are not a proof.",
+    "No executable approximate profile attached; this algorithm is exact."
+  ],
+  "source": "algorithms/src/sieve/tests.rs",
+  "state": "385 independent prime-prefix cases for limits 0..=384, explicit 2/3/49 boundaries, a 4,096 limit fixture with 564 primes, 12 prefix checks, and deterministic impossible-capacity rejection. Three additional tests exercise eleven independent composite-factor witnesses at 1024 and their own inclusive limits plus every returned prime at 1024, five complete prime-gap fibers including both excluded endpoints and missing-prefix countermodels, and typed capacity rejection preserving preexisting vectors. Actual allocator exhaustion remains unforced."
+}

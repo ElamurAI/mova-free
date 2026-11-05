@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Representation only: full source inspection and two syntax projections. No teach/score/main execution, model loads or learning CLI. No independent accuracy or persistent-learning claim."
+  ],
+  "children": [],
+  "cost": "O(text bytes+answer choices) preparation plus delegated parser/learning/choose costs, three students and three control score paths; real model/lesson execution absent. BTreeSet key removal O(L log L).",
+  "description": "Require staged root status then parse staged lesson. Compute key-line indices from tests/exams, remove matching explain/fact rows in cut lesson. teach preparses all questions/answers/wrong choices, reads kinds and optionally lesson, learns exercises twice. score tests+exams with deterministic option seeds and optional next-question rotation. Write new diagnostic JSON with three red controls.",
+  "forward": [
+    "Require staged root status then parse staged lesson. Compute key-line indices from tests/exams, remove matching explain/fact rows in cut lesson. teach preparses all questions/answers/wrong choices, reads kinds and optionally lesson, learns exercises twice. score tests+exams with deterministic option seeds and optional next-question rotation. Write new diagnostic JSON with three red controls."
+  ],
+  "id": "enrich-lesson-smoke",
+  "inverse": [
+    "right/understood/control counts admit many lesson texts, distractors and student states. all_controls_red cannot reconstruct learned knowledge or prove heldout generalization.",
+    "Non-staged status excludes lesson parse/student work after status check. Failed write_new cannot overwrite an existing report by that helper contract; external helper semantics remain separate."
+  ],
+  "limitations": [
+    "Partial syntax, bounded synthetic helper coverage; no live teacher, corpus, model, lesson or benchmark CLI. No numerical approximation budget claimed."
+  ],
+  "source": "tools/enrich/examples/lesson_smoke.rs",
+  "state": "Training-source resubstitution only: assessment answers and distractors included in preparse. No lesson reading does not remove exercise learning. Cut keeps exercises/tests/exams unchanged; removed fact indices offset by original explain length."
+}

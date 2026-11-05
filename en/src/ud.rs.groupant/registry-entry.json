@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p en --lib ud::wave27::bounded_contract",
+    "Paired partial syntax; debug/release repeated outcomes; see receipt"
+  ],
+  "children": [],
+  "cost": "kids_of O(n^2) scans plus n bounded ancestor walks; agreement repeated per verb can be O(n^2). Scores functional child collection/sorting may cost O(n^2 log n) across content words. Training count u32 and metric usize arithmetic have no checked overflow guarantee.",
+  "description": "kids_of scans direct children then propagates subject/aux flags from first conjunction ancestor unless own flags exist. train retains tagged all-UPOS sentences, FEATS only when annotated. upos/feats choose first key with total>=2 and smallest enum/Feats on ties, else X/empty. feats_sentence first predicts all then revisits VERB/AUX left-to-right with agreement unless EN_AGR=0. Scores computes LAS by base relation and MLAS with matching sorted functional children.",
+  "forward": [
+    "kids_of scans direct children then propagates subject/aux flags from first conjunction ancestor unless own flags exist. train retains tagged all-UPOS sentences, FEATS only when annotated. upos/feats choose first key with total>=2 and smallest enum/Feats on ties, else X/empty. feats_sentence first predicts all then revisits VERB/AUX left-to-right with agreement unless EN_AGR=0. Scores computes LAS by base relation and MLAS with matching sorted functional children."
+  ],
+  "id": "en-ud",
+  "inverse": [
+    "Given predicted UPOS/FEATS, compatible antecedents include all Views and tables selecting those values via any sufficient backoff key; output alone cannot recover key level/counts. Scores admit many gold/pred sequences with identical counts; main4 percentages further collapse scale and zero denominators.",
+    "Missing UPOS gold cannot count as UPOS hit. No FEATS layer means no FEATS denominator increments and no MLAS hit. Out-of-range heads are ignored by children; malformed parallel arrays still may panic elsewhere. Unknown table keys cannot manufacture trained features."
+  ],
+  "limitations": [
+    "Partial source-bound model, not full proof. No useful executable percentage surrogate established for these categorical decisions/effects; budgets1/2/5/10% require a future observation metric. No corpus/API/GPU/teacher, allocation fault injection, adversarial size exhaustion or broad accuracy claim."
+  ],
+  "source": "en/src/ud.rs",
+  "state": "Ud maps hashed backoff keys to UPOS/FEATS counts. View carries form/tag/relation/child flags/agreement. Scores accumulates denominators and exact/base label/content counts."
+}

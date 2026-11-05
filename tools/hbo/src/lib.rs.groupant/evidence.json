@@ -1,0 +1,51 @@
+{
+  "logs": [
+    {
+      "exit": 0,
+      "receipt": "debug-1-04.log",
+      "sha256": "0e14bbe1a31aa22dbfe89bca7168cad7c83828f9d12f24c7d4da9ca212afa970"
+    },
+    {
+      "exit": 0,
+      "receipt": "debug-2-04.log",
+      "sha256": "0e14bbe1a31aa22dbfe89bca7168cad7c83828f9d12f24c7d4da9ca212afa970"
+    },
+    {
+      "exit": 0,
+      "receipt": "release-1-04.log",
+      "sha256": "9d7754f53e8450ce69c33b404c4418684635805efdc933aa13adf60b912097ad"
+    },
+    {
+      "exit": 0,
+      "receipt": "release-2-04.log",
+      "sha256": "7533834a6877b8d6ada2e84e876caf4e348482d0d9c8a94966b952d172e4e4d6"
+    },
+    {
+      "exit": 101,
+      "receipt": "mutant-lib.log",
+      "sha256": "a44a2aa5820db552ffb9992c000d65ae90c3cf267840e7d66ef8de187015b626"
+    },
+    {
+      "exit": 0,
+      "receipt": "restored-lib.log",
+      "sha256": "1165358920a8132943a077e0bd2ae6a21168d3ce9d31a2182fa5570b2508a45d"
+    }
+  ],
+  "mutation": {
+    "kind": "compiled_source_behavior",
+    "new": "for k in 3..=7 {",
+    "old": "for k in 2..=7 {",
+    "original_sha256": "660faca62417f9a1eb9807a014127f1b4b868caf5e3f488a8cd6a1e716572143",
+    "restoration_exact": true,
+    "restored_sha256": "660faca62417f9a1eb9807a014127f1b4b868caf5e3f488a8cd6a1e716572143",
+    "source": "tools/hbo/src/lib.rs",
+    "status": 101
+  },
+  "primary_test": "wave32::cuts_views_and_partial_merge_effects",
+  "production_prefix_preserved": true,
+  "schema": 1,
+  "scope": "Finite synthetic actual-code observations, no semantic correctness proof or percent surrogate",
+  "source": "tools/hbo/src/lib.rs",
+  "source_sha256": "660faca62417f9a1eb9807a014127f1b4b868caf5e3f488a8cd6a1e716572143",
+  "syntax_sha256": "039db32ce22fa530aabf96fb3ab1e909ebb294d042412b826b4b9835eb2ef95b"
+}

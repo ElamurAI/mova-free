@@ -1,0 +1,31 @@
+{
+  "assertion_control": {
+    "changed_assertion": "assert_eq!(lex(\"\").unwrap().len(), 2);",
+    "compile_success": true,
+    "exact_restoration": true,
+    "exit": 101,
+    "original_assertion": "assert_eq!(lex(\"\").unwrap().len(), 1);",
+    "restored_exit": 0,
+    "source": "mlab/src/lexer.rs",
+    "test": "lexer::wave30::context"
+  },
+  "covered": "matrix quote versus transpose, normalized imaginary suffix, continuation coordinates, emitted parenthesized newline, unterminated string, EOF",
+  "kind": "actual_code_semantics",
+  "positive_executions": 4,
+  "production_control": {
+    "compile_exit": 0,
+    "mutant_exit": 101,
+    "new": "let mut line = 2usize;",
+    "old": "let mut line = 1usize;",
+    "restored_exit": 0,
+    "restored_sha256": "ac652c6bc998f3fe37335b5f158ff8ca8228a08318ee977f2976131468100f3d",
+    "source": "mlab/src/lexer.rs",
+    "test": "lexer::wave30::context"
+  },
+  "source": "mlab/src/lexer.rs",
+  "source_sha256": "ac652c6bc998f3fe37335b5f158ff8ca8228a08318ee977f2976131468100f3d",
+  "tests": [
+    "lexer::wave30::context"
+  ],
+  "unexecuted": "No exhaustive Unicode, block-comment or numeric scan coverage"
+}

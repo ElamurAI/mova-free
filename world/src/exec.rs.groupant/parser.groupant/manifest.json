@@ -1,0 +1,86 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Explicit gap: no syntax projection or semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "scope": "U is build/environment/backend-shape to tagged outcome pairs. R applies mode selection and the selected pipeline. U minus R contains CPU-only GPU success and GPU success with mismatched sentence/token dimensions; accuracy is unrestricted.",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "scope": "Observed cached Cpu permits missing, invalid-Unicode or cpu first lookup and arbitrary later edits. Gpu requires feature plus initial gpu. Output alone cannot recover the environment history.",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "empty-scatter",
+        "path": "model.md",
+        "scope": "I is the ordered nonempty-token position list; gather x[I], complete predictions and scatter into n empty vectors. Empty outputs do not uniquely imply empty tokenization because completion may also be empty.",
+        "section": "empty-scatter",
+        "status": "partial_source_derived_model",
+        "type": "projection_fiber"
+      },
+      {
+        "id": "load-failure-memory",
+        "path": "model.md",
+        "scope": "OnceLock P stores first load Result; after successful annotator lookup, all later model-path edits preserve a cached load error. This failure fiber does not include attempts blocked earlier by annotator failure.",
+        "section": "load-failure-memory",
+        "status": "partial_source_derived_model",
+        "type": "sticky_failure"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "coverage_recorded"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 6328,
+      "start": 2029
+    },
+    "description": "Latch requested mode; acquire annotator and execute either CPU map or GPU cached load/gather/predict/check/complete/scatter."
+  },
+  "id": "execution-mode-parser",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../exec.rs",
+    "sha256": "180f88005a4cd3852f649059e420951c1fe9ad4a699c9d175358169f25e43b4d"
+  },
+  "status": "partial_source_derived_instance"
+}

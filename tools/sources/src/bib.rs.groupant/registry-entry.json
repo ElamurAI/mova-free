@@ -1,0 +1,30 @@
+{
+  "checks": [
+    "bib::tests::latex_accents_become_unicode",
+    "bib::tests::concatenated_month_keeps_following_fields",
+    "bib::tests::malformed_snippets_do_not_panic",
+    "bib::ids_tests::ids_to_manifest",
+    "bib::ids_tests::slug_words_keep_accented_capitals",
+    "bib::ids_tests::unknown_id_and_bad_topic_are_red",
+    "bib::wave33_tests::ids_missing_preserves_output_and_license_boundary",
+    "bib::wave33_host_tests::anthology_id_requires_exact_http_host",
+    "bib::wave33_topic_tests::foreign_matching_entry_stays_in_abstracts_not_manifest"
+  ],
+  "children": [],
+  "cost": "B bytes,E entries,R rules,P patterns,L field length: O(B) storage plus outputs, matching O(E R P L), ordered maps add log E; repeated suffix scanning/accents may be superlinear. No timing claim.",
+  "description": "parse scans entries and normalizes values; manifest_for_ids maps IDs to last bibliography entries, walks wanted order, returns JSONL and missing IDs. run_ids writes only when no IDs missing. run groups title/proceedings/abstract matches by topic and minimum priority, sharing first matching prefix and per-entry slug. Topic JSONL admission uses the same canonical ID helper after rendering the abstract listing.",
+  "forward": [
+    "parse scans entries and normalizes values; manifest_for_ids maps IDs to last bibliography entries, walks wanted order, returns JSONL and missing IDs. run_ids writes only when no IDs missing. run groups title/proceedings/abstract matches by topic and minimum priority, sharing first matching prefix and per-entry slug. Topic JSONL admission uses the same canonical ID helper after rendering the abstract listing."
+  ],
+  "id": "sources-bibliography",
+  "inverse": [
+    "Missing IDs exclude destination write in run_ids; foreign authority excludes nonempty anthology_id. No URLs are fetched. Inner exclusions derived from source, not universal malformed-input safety.",
+    "Rows admit all BibTeX and requested lists yielding same last-ID map and projection. Braces, whitespace, shadowed entries and duplicate requests are unrecoverable; output is many-to-one."
+  ],
+  "limitations": [
+    "Partial syntax and finite fixtures, not universal semantic proof.",
+    "Value full workflow, arbitrary manifests and external IO failures are not exercised."
+  ],
+  "source": "tools/sources/src/bib.rs",
+  "state": "Bounded UTF-8, representable depth/indices, available allocation. Missing fields read empty. read_ids limits priority to 1..3; row accepts any u8. Host identity requires HTTP(S) and exact case-insensitive aclanthology.org authority, then last query/fragment-free path segment; no port/userinfo support. Topic run requires nonempty anthology_id for JSONL admission, preserving all matched abstract listings. Writes are not transactional. Exact-host admission and id extraction do not normalize row URLs: row appends '.pdf' to the original URL text, so query/fragment-bearing official URLs need not produce usable canonical PDF paths. The actual plan/check join fixture uses a query-free canonical path."
+}

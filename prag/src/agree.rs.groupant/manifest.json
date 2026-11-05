@@ -1,0 +1,92 @@
+{
+  "children": [
+    {
+      "id": "prag-agree-labels",
+      "path": "labels.groupant"
+    },
+    {
+      "id": "prag-agree-tree-form",
+      "path": "tree-form.groupant"
+    },
+    {
+      "id": "prag-agree-report",
+      "path": "report.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "domain": "Tagged finite API inputs and matching output schema in model.md forward; exact source revision and fixed dependency premises.",
+        "id": "prag-agree-behavior-complement",
+        "operator": "C_inner={(x,y): not J(x,y)} over declared domain; concrete forward/invariant exclusions",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "domain": "Tagged finite API inputs and matching output schema in model.md forward; exact source revision and fixed dependency premises.",
+        "id": "prag-agree-reverse-reconstruction",
+        "operator": "Converse/preimage relation retaining all compatible tagged inputs, states and intermediates",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "domain": "Tagged finite API inputs and matching output schema in model.md forward; exact source revision and fixed dependency premises.",
+        "id": "prag-agree-intervention",
+        "operator": "Scoped intervention/coupling relation in referenced section",
+        "path": "model.md",
+        "section": "intervention",
+        "status": "partial_source_model",
+        "type": "counterfactual_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "domain": "Domain X is tagged Table(text), TreeForm(block), AgreeOne(id,L,W,tree,A) or Run(labels,witness,trees,A); A is whether PRAG_AGREE_ALL equals '1', fixed during the call. Table maps first-column IDs to header/value zip maps: last duplicate header and last duplicate ID win, empty lines omitted but an empty ID on a nonempty row is retained. Run forms L and W maps and a last-block-wins exact sent_id->tree_form map after CRLF normalization. It emits one row per key of L in lexical order. TreeForm applies question before imperative before exclamation before declarative. AgreeOne applies P0 only to recognized original forms with non-character voice, then P1 else P2 else optional P3, then optional P4 and P5; rule predicates and numeric thresholds are those in labels/tree-form children. Missing label fields default empty for changed fields. Report n=|keys(L)|, rule counts sum per-row rule indicators, and move counts sum only form/act changes.",
+  "id": "prag-agree",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../agree.rs",
+    "sha256": "b50e6b91851fb5a19e9d540b2668f6025524b634522a028614be6676e7b9be46"
+  },
+  "state": "Exact ID joins do not borrow witnesses/trees from another key. Witness-only/tree-only keys add no output rows. n counts retained label-map entries, including an empty ID if present, not raw lines. P0 cannot override character voice or an unrecognized original form; P1 consumes the form after P0 and prevents P2/P3. With A=false P3/P4/P5 cannot apply, so polarity/hedge stay supplied defaults. No move entry records polarity/hedge alone; rule totals may exceed n. Question marker takes tree-form precedence over imperative and exclamation.",
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test --offline --release --manifest-path tools/mova-json/Cargo.toml",
+    "2026-11-05: CLI runs on copies of crab.json and deputy.json, including replace-str there and back to identical bytes; jsonl tallies on a real Crab flow journal, two identical runs."
+  ],
+  "children": [],
+  "cost": "O(argument bytes) plus delegated library work.",
+  "description": "Command-line transport for mova-json subcommands with strict flags and exit-code partition.",
+  "forward": [
+    "Dispatches check/get/set/del/push/insert-before/remove-value/replace-str/rebind/merge3/rebind-groupant/jsonl-count/jsonl-filter; values are JSON unless --str; -- ends flags."
+  ],
+  "id": "mova-json-cli",
+  "inverse": [
+    "Typed behavior complement first and nonunique reverse reconstruction second; see model.md.",
+    "Excluded: unknown flags, values silently taken as strings, shell execution; exit 1 has several causes."
+  ],
+  "limitations": [
+    "No stdin or batch input."
+  ],
+  "source": "tools/mova-json/src/main.rs",
+  "state": "argv flags and positionals; stdout reports; exit codes 0/1/2/3/4."
+}

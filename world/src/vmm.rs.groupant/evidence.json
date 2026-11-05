@@ -1,0 +1,19 @@
+{
+  "control": "mutant-vmm: splice content",
+  "kind": "finite_actual_code_tests",
+  "limits": "No teacher or DB; done guard terminates before teacher configuration",
+  "named_outcomes_equal": true,
+  "paired_profiles": [
+    "debug1",
+    "debug2",
+    "release1",
+    "release2"
+  ],
+  "source": "world/src/vmm.rs",
+  "source_sha256": "15859077a1ce4104d22f48c24636a0c6767fb0374436028afd50c556b538aab1",
+  "tests": [
+    "vmm::wave28_dialogue::splice_coordinates_duplicates_and_invalid_rows",
+    "vmm::wave28_dialogue::parts_and_prompt_anchors",
+    "vmm::wave28_dialogue::done_guard_precedes_teacher_and_partition"
+  ]
+}

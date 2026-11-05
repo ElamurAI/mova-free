@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "strong::tests::strong_words_and_tokens",
+    "strong::wave32::window_and_numeric_boundaries"
+  ],
+  "children": [],
+  "cost": "Marker processing O(B) ordinary scans plus string allocation; token mapping O(B+40 sum token_chars) comparisons and O(B) character storage. Directory sorting O(F log F) and full input reads.",
+  "description": "number trims leading H and parses positive decimal prefix. words scans USFM markers, assigns Strong attribute to each marked word and retains plain chunks. read removes footnotes and groups sorted files by verse. on_tokens lowercases alnum characters, advances bounded lookahead cursor on first match.",
+  "forward": [
+    "number trims leading H and parses positive decimal prefix. words scans USFM markers, assigns Strong attribute to each marked word and retains plain chunks. read removes footnotes and groups sorted files by verse. on_tokens lowercases alnum characters, advances bounded lookahead cursor on first match."
+  ],
+  "id": "translation-meta-strong",
+  "inverse": [
+    "Zero/overflow/nondecimal number prefixes produce None. Failed token and punctuation cannot advance cursor. Match at offset40 is outside search window.",
+    "Numbers alias H prefixes/leading zeros/trailing nondigits. Token labels lose punctuation, spacing, case, unmatched text and per-character mixed ownership; first matched char label does not identify complete source word boundaries."
+  ],
+  "limitations": [
+    "No live corpus/model/teacher/GPU execution or language accuracy claim",
+    "Partial syntax and finite tests; full effectful paths unexecuted; no percentage surrogate"
+  ],
+  "source": "tools/translate/src/strong.rs",
+  "state": "Finite UTF-8 inputs, allocations and pos+40/start+len representable; Strong number u32>0. No real USFM directory or corpus accessed. Filesystem parser path remains source-model-only."
+}

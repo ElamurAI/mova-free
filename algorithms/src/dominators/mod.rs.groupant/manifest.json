@@ -1,0 +1,128 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Let R be the deterministic relation specified by Forward including validation precedence and tie rules, X the declared input type and Y its Result type. Behavior complement is (X times Y) minus R. Specifically outputs violating Unreachable rows remain empty; start remains singleton. Reachable rows shrink monotonically, remain supersets of true dominators, and satisfy predecessor intersection at termination. are excluded; a valid-input Err or a wrong successful witness is excluded. Resource, cycle and structural rejections are determined before algorithmic output.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "86ec8acb6ff360b7264aed23b0c9925626f994bcca5515f63ff5703035c4e733",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_inputs",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Given D, antecedents are graphs whose start-to-v paths all contain exactly D[v] as universal vertices; unreachable v have empty rows. A chain and the chain plus self-loops have identical D, so original edges cannot be recovered.",
+        "path": "model.md",
+        "section": "compatible_inputs",
+        "status": "partial_source_derived",
+        "subject_revision": "86ec8acb6ff360b7264aed23b0c9925626f994bcca5515f63ff5703035c4e733",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "deletion_certificate",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "For reachable v, d belongs to D[v] iff removing d makes v unreachable from start, counting removed start as reaching nothing.",
+        "path": "model.md",
+        "section": "deletion_certificate",
+        "status": "partial_source_derived",
+        "subject_revision": "86ec8acb6ff360b7264aed23b0c9925626f994bcca5515f63ff5703035c4e733",
+        "type": "path_obstruction"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "row_permutation",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Permuting rows internally or duplicating edges preserves all dominator sets.",
+        "path": "model.md",
+        "section": "row_permutation",
+        "status": "partial_source_derived",
+        "subject_revision": "86ec8acb6ff360b7264aed23b0c9925626f994bcca5515f63ff5703035c4e733",
+        "type": "representation_invariance"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "edge_extension",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Adding edges can only remove dominators from vertices already reachable; new reachability must be treated separately.",
+        "path": "model.md",
+        "section": "edge_extension",
+        "status": "partial_source_derived",
+        "subject_revision": "86ec8acb6ff360b7264aed23b0c9925626f994bcca5515f63ff5703035c4e733",
+        "type": "antitone_extension"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "self_and_start",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "For every reachable v, both start and v belong to D[v]; D[start]={start}. A disconnected component contributes no dominators regardless of its cycles.",
+        "path": "model.md",
+        "section": "self_and_start",
+        "status": "partial_source_derived",
+        "subject_revision": "86ec8acb6ff360b7264aed23b0c9925626f994bcca5515f63ff5703035c4e733",
+        "type": "endpoint_law"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "sha256": "d1adf0e1b6dd5803520bcf6c34405d1d7ceb38fe652cbb64e6094ef8ea5d5ec3",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-dominators",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "86ec8acb6ff360b7264aed23b0c9925626f994bcca5515f63ff5703035c4e733"
+  },
+  "status": "partial_source_derived_instance"
+}

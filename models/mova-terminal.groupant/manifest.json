@@ -1,0 +1,76 @@
+{
+  "children": [
+    "mova-terminal-lib",
+    "mova-terminal-main",
+    "mova-terminal-live-tmux"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial_source_derived"
+    },
+    "ast": {
+      "scope": "Composed child syntax only; no semantic composed AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial_source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Descriptant",
+      "status": "partial_source_derived"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial_source_derived"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_finite_checks",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_finite_checks",
+        "type": "reverse_reconstruction"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "finite_evidence"
+    }
+  },
+  "id": "mova-terminal",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "tools/terminal/src/lib.rs",
+      "sha256": "59d4bd0a93672d4306a8199a07db1953a5d44cd01b21a6fd409f925477c81e85"
+    },
+    {
+      "path": "tools/terminal/src/main.rs",
+      "sha256": "f9418eb01a8db6d2233e89547e5e2e11606f323ab53bdd22dcd93e666af348ec"
+    },
+    {
+      "path": "tools/terminal/tests/live_tmux.rs",
+      "sha256": "5fc09980e1d3c5ecce7d0b4108afccf642e578dde1d15f2287428f198526e54e"
+    }
+  ],
+  "status": "partial_source_composition"
+}

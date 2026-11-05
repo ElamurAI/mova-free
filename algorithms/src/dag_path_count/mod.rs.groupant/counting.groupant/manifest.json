@@ -1,0 +1,100 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "empty-path",
+        "path": "model.md",
+        "required": false,
+        "section": "empty-path",
+        "status": "partial_source_derived_model",
+        "type": "initial_condition"
+      },
+      {
+        "id": "multiplicity",
+        "path": "model.md",
+        "required": false,
+        "section": "multiplicity",
+        "status": "partial_source_derived_model",
+        "type": "distinct_arc_choices"
+      },
+      {
+        "id": "zero-flow",
+        "path": "model.md",
+        "required": false,
+        "section": "zero-flow",
+        "status": "partial_source_derived_model",
+        "type": "unreachable_zero"
+      },
+      {
+        "id": "boundary",
+        "path": "model.md",
+        "required": false,
+        "section": "boundary",
+        "status": "partial_source_derived_model",
+        "type": "monotone_overflow"
+      }
+    ],
+    "tests": {
+      "path": "../model.md#evidence",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 1459,
+      "start": 1180
+    },
+    "description": "Given a valid full topological order and source, checked propagation accumulates one contribution per arc identity. Partial sums are nonnegative, so overflow cannot later disappear. Counts before each vertex equal all predecessor contributions; the recurrence does not recover unique edges."
+  },
+  "id": "algorithm-dag-path-count-counting",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../mod.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "b373088f752be5d16a5de4fc5189b923fe7c65f240ac462598221fd38919856e"
+  },
+  "status": "partial_source_bound_model"
+}

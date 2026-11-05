@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "A later duplicate key excludes overriding the first value. Missing booleans exclude logical-class column and yield numeric NaN instead.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Every output column admits absent or explicit null antecedents; sanitized names and mixed-value text further erase original keys/types.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_invariant",
+        "path": "model.md",
+        "scope": "Output column order follows first key encounter; all output columns have one element per input object.",
+        "section": "state_invariant",
+        "status": "partial_source_derived_model",
+        "type": "state_invariant"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Wrong root or nonobject member fails before column building. Nested objects/arrays fall back to JSON text in heterogeneous columns.",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "All-null column is numeric by vacuous all; dates require all present strings parse_iso. Numeric nonfinite values remain until writer null projection.",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "Key discovery linear search and per-column per-row lookup give O(rows*keys^2) worst-case work plus rendered nested text.",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 18915,
+      "start": 16361
+    },
+    "description": "Require array of objects, collect keys in first-encounter order, sanitize/dedupe names; each column uses first matching member per row or Null and ordered type tests.",
+    "source_bytes_sha256": "503ec48be573627d95cd16d71105bc7ded5fc78b06e6b9ebc5f8bd41ef2da78f"
+  },
+  "id": "mlab-fileio-json-table",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../fileio.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "547a25932643243689a8ee9f5b0cc0d2cc85923d37edeff35c2d7833d8f488dd"
+  },
+  "status": "partial_source_bound_model"
+}

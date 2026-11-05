@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "wave30_parse_runtime_and_output_state"
+  ],
+  "children": [],
+  "cost": "No runtime body; compilation/module dependency costs are toolchain-dependent and not measured.",
+  "description": "Public module surface and aliases for interpreter, errors, capture helper and matrix/value types.",
+  "forward": [
+    "Compile-time name resolution exposes ast/builtins/display/fileio/index/interp/lexer/mcgate/ops/parser/rng/suite/table/value/vm and reexports Interp,MError,run_capture,Class,Mat,Value."
+  ],
+  "id": "mlab-lib",
+  "inverse": [
+    "A resolved Interp name may be reached through mlab::Interp or mlab::interp::Interp; alias paths do not uniquely recover caller spelling."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no macro expansion or semantic resolution. Finite synthetic CPU checks are not a proof. Frozen suites, corpus, teacher, GPU, allocation exhaustion and host IO failure injection were not run. No useful executable percent surrogate for categorical control/effects; unsupported gap, no 1/2/5/10% claim."
+  ],
+  "source": "mlab/src/lib.rs",
+  "state": "Aliases refer to original item identity; no wrapper, state transition or automatic evaluation is introduced."
+}

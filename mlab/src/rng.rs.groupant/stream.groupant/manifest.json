@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Shared parent lexical projection; fragment byte scope above",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source byte range [386,1433); lexical, not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source byte range [386,1433); lexical, not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "uniform_grid",
+        "path": "model.md",
+        "scope": "Source byte range [386,1433); lexical, not proof",
+        "section": "uniform_grid",
+        "status": "partial_source_derived_model",
+        "type": "uniform_grid"
+      },
+      {
+        "id": "seed_reset",
+        "path": "model.md",
+        "scope": "Source byte range [386,1433); lexical, not proof",
+        "section": "seed_reset",
+        "status": "partial_source_derived_model",
+        "type": "seed_reset"
+      },
+      {
+        "id": "branch_relation",
+        "path": "model.md",
+        "scope": "Source byte range [386,1433); lexical, not proof",
+        "section": "branch_relation",
+        "status": "partial_source_derived_model",
+        "type": "branch_relation"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "Source byte range [386,1433); lexical, not proof",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "partial_bounded_parent_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 1433,
+      "start": 386
+    },
+    "description": "Seed expansion applies four wrapping splitmix rounds; next_u64 returns rotl(s1*5,7)*9 then XOR/shift/rotl45 transition. Uniform=(result>>11)/2^53.",
+    "source_bytes_sha256": "01a1f0249276e835c8d6a1b298f303177830438074b1063b1c9743b864ecc419"
+  },
+  "id": "mlab-rng-stream",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../rng.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "dccb613f518f32218a910c4eca3ad31df44347dd38b90d431833558e995a2046"
+  },
+  "status": "partial_source_bound_model"
+}

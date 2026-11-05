@@ -100,3 +100,46 @@ fn main() -> Result<()> {
     println!("{header}\n{row}");
     Ok(())
 }
+#[cfg(test)]
+mod wave33_tests {
+    use super::*;
+    #[test]
+    fn synthetic_extraction_preserves_current_lossiness() {
+        let root = std::env::temp_dir().join(format!("wave33-bench-{}", std::process::id()));
+        std::fs::create_dir(&root).unwrap();
+        unsafe {
+            std::env::set_var("MOVA_ROOT", &root);
+        }
+        let rows = run(
+            "synthetic",
+            "/bin/sh",
+            &[
+                "-c",
+                "printf 'metric: -3.5 2e4\n'; printf 'metric: 99\n' >&2; exit 7",
+            ],
+            &[],
+            &[
+                ("first", "metric:", 0),
+                ("exponent", "metric:", 2),
+                ("absent", "missing:", 0),
+                ("bounds", "metric:", 9),
+            ],
+        )
+        .unwrap();
+        assert_eq!(
+            &rows[..4],
+            &[
+                ("first".into(), "3.5".into()),
+                ("exponent".into(), "4".into()),
+                ("absent".into(), "?".into()),
+                ("bounds".into(), "?".into())
+            ]
+        );
+        assert_eq!(rows[4].0, "synthetic_s");
+        assert!(rows[4].1.parse::<u64>().is_ok());
+        unsafe {
+            std::env::remove_var("MOVA_ROOT");
+        }
+        std::fs::remove_dir_all(root).unwrap();
+    }
+}

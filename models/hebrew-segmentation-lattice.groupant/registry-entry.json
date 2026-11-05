@@ -1,0 +1,33 @@
+{
+  "checks": [
+    "14 exact named tests twice debug and twice release, matching sorted actual outcomes",
+    "6 compiled production-behavior mutants rejected with assertion failures and exact source restoration plus positive reruns",
+    "6 source syntax projections generated twice and byte-compared",
+    "All original production prefixes checked against base cf00be5540a78c47038bcc8b72b6fcd8c22b355f"
+  ],
+  "children": [
+    "hbo-conllu",
+    "hbo-lattice",
+    "hbo-library",
+    "hbo-cli",
+    "hbo-seg",
+    "hbo-text"
+  ],
+  "cost": "Let B bytes,U units,E model entries,P prefix alternatives,C prefix×suffix candidates,R parsed readings. For K=min(max_k,U), candidate context construction copies O(K²+sum_p K_p²) units: suffix contexts are rebuilt per prefix lacking accepted rest suffixes, K_p=min(max_k,remaining units). This is at most O((P+1)K²), weighted by unit byte lengths, plus O(PB) rest concatenation; lookup comparisons O(log E), sorting O(C log C), cuts/normalization remain additional. Lattice emits V=1+sum(C_i-1) readings per sentence and calls cut on every nonpunctuation token of every reading: V*N_np callbacks, each lib::cut_with callback recomputing candidates. Add initial contextual candidates and output/comment copying. choose costs O(T_R+B_R+R log S+R log N), where T_R sums reading token counts and B_R is scanned/parsed comment bytes; gains has the same scan terms and O(R log S) maps, with two n_words scans per retained alternative. CoNLL, projection and merge copy input/output text; external parser time/resources unknown.",
+  "description": "Raw text -> text::tokenize -> Model::keys/candidates_in -> cut_as -> CoNLL Token/Word. Optional lattice::variants uses contextual candidate labels; supplied scored readings join by sentence integer; choose takes g=score_alt-score_base+lambda*log_share+mu*(words_alt-words_base)>0 maxima per token; apply cuts the chosen labels. parser_view normalizes only word forms and resets UPOS; merge copies columns2..7 by flat position. Main score is an independent diagnostic consumer of matching token-position forms.",
+  "forward": [
+    "Raw text -> text::tokenize -> Model::keys/candidates_in -> cut_as -> CoNLL Token/Word. Optional lattice::variants uses contextual candidate labels; supplied scored readings join by sentence integer; choose takes g=score_alt-score_base+lambda*log_share+mu*(words_alt-words_base)>0 maxima per token; apply cuts the chosen labels. parser_view normalizes only word forms and resets UPOS; merge copies columns2..7 by flat position. Main score is an independent diagnostic consumer of matching token-position forms.",
+    "Real joins: text::norm/units -> seg key and Piece semantics; conllu Token/Word -> gold and segmenter evaluation; lib::cut_with passed as callback by main lattice_cmd/choose_cmd; lib::segment_line calls split_in and cut_as; main score uses conllu heads and text normalization. Tagged independent paths: main split/prepare/Part partitioning, main score diagnostics, model TSV codec and annotate filesystem/subprocess adapter. Independent per-token lattice choices do not imply jointly optimal tree; positional merge count equality is not parser identity verification."
+  ],
+  "id": "hebrew-segmentation-lattice",
+  "inverse": [
+    "On admitted valid cuts consonant-checked results cannot alter unpointed written letters after removing H; finite nonpositive gains cannot leave lattice base; merge cannot copy FORM/MISC from parser. Empty-form fallback Cut(0) is explicitly outside the spelling guarantee.",
+    "Final trees admit compatible raw texts, normalized forms, count tables, contextual score states and parser annotations under successive preimages. Whitespace/marks, old annotations, overwritten IDs and omitted TSV fallback are not recoverable uniquely; shared token and unit coordinates constrain composition fibers."
+  ],
+  "limitations": [
+    "Finite fixtures do not establish semantic understanding, learning retention, corpus accuracy, throughput or universal proofs.",
+    "No executable approximate surrogate or numeric error budget claimed; malformed arbitrary models, overflow and allocation failure retain explicit gaps.",
+    "CLI IO, annotation process, real model fallback loading and dataset workflows unexecuted."
+  ],
+  "state": "Piece offsets count text::units, not UTF-8 bytes or scalar counts. Valid nonzero cuts sum to written units; H consumes zero, leading cuts relocate vowels. Finite nonnegative smoothing with positive denominators and representable integer counts supports score interpretation. Merge preserves base forms/token structure/MISC but may partially mutate before late count failure."
+}

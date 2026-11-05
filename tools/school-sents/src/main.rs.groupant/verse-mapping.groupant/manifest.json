@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "school-sents-text-command-verse-mapping-behavior_complement",
+        "path": "model.md",
+        "scope": "Valid UTF-8 text and u32 verse coordinates, markers whitespace-delimited; book strings exact EXO/DEU.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "school-sents-text-command-verse-mapping-reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Valid UTF-8 text and u32 verse coordinates, markers whitespace-delimited; book strings exact EXO/DEU.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "school-sents-text-command-verse-mapping-flag_text_invariance",
+        "path": "model.md",
+        "scope": "Valid UTF-8 text and u32 verse coordinates, markers whitespace-delimited; book strings exact EXO/DEU.",
+        "section": "flag_text_invariance",
+        "status": "partial_source_derived_model",
+        "type": "flag_text_invariance"
+      },
+      {
+        "id": "school-sents-text-command-verse-mapping-marker_predecessor",
+        "path": "model.md",
+        "scope": "Valid UTF-8 text and u32 verse coordinates, markers whitespace-delimited; book strings exact EXO/DEU.",
+        "section": "marker_predecessor",
+        "status": "partial_source_derived_model",
+        "type": "marker_predecessor"
+      },
+      {
+        "id": "school-sents-text-command-verse-mapping-short_fallback",
+        "path": "model.md",
+        "scope": "Valid UTF-8 text and u32 verse coordinates, markers whitespace-delimited; book strings exact EXO/DEU.",
+        "section": "short_fallback",
+        "status": "partial_source_derived_model",
+        "type": "short_fallback"
+      },
+      {
+        "id": "school-sents-text-command-verse-mapping-parse_domain",
+        "path": "model.md",
+        "scope": "Valid UTF-8 text and u32 verse coordinates, markers whitespace-delimited; book strings exact EXO/DEU.",
+        "section": "parse_domain",
+        "status": "partial_source_derived_model",
+        "type": "parse_domain"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 17783,
+      "start": 15634
+    },
+    "description": "hebrew_mark parses parenthesized u32 chapter-verse. verse_sentences removes recognized marks, normalizes whitespace, runs prose cut with fallback only if all cuts empty; search cleaned sentence start monotonically and assign last prior eligible mark."
+  },
+  "id": "school-sents-text-command-verse-mapping",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../main.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "c181de82933278ce4fe7521ccdc4603e6ea8dec527dfd53a0dd018bfe01e4117"
+  },
+  "status": "partial_source_bound_model"
+}

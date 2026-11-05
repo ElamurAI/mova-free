@@ -1,0 +1,177 @@
+{
+  "children": [
+    {
+      "id": "fact-index-construction",
+      "path": "construction.groupant"
+    },
+    {
+      "id": "fact-index-query",
+      "path": "query.groupant"
+    },
+    {
+      "id": "fact-index-evidence",
+      "path": "evidence.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Explicit gap: no syntax projection or semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "scope": "Let U be valid World/query/filter to fact-and-score observations with sent>=1 and finite totals. R builds, scores and sorts. U minus R includes a kept result violating deterministic score ordering or equal-score n ordering, and built n values unequal to positions. Semantic truth and public malformed facts remain outside this projection.",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "scope": "For an observed ranked projection y, R^-1(y) includes all worlds, queries and filters producing y. Dropped fields, unmatched query alternatives and omitted facts create ambiguity; rank or score never uniquely recovers world history.",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "fact-order",
+        "path": "model.md",
+        "scope": "Build first appends facts in category iteration order, then sorts by (line,old n) and resets n. Equal-line ties preserve insertion order; final n is not entity ID or sentence number.",
+        "section": "fact-order",
+        "status": "partial_source_derived_model",
+        "type": "stable_order_constraint"
+      },
+      {
+        "id": "anchor-split",
+        "path": "model.md",
+        "scope": "B::push sets sent=first anchor or 1; event construction overwrites sent with e.pos.sent. Thus anchors can be empty or differ from scored sentence; labels display all anchors without guaranteeing support.",
+        "section": "anchor-split",
+        "status": "partial_source_derived_model",
+        "type": "provenance_projection"
+      },
+      {
+        "id": "field-lexicon",
+        "path": "model.md",
+        "scope": "Field lemma set is lemset(text) union lemset(ent_text(id)) over IDs. Repeated lemma occurrences collapse in HashSet, while fields and their ID vectors retain their separate multiplicity.",
+        "section": "field-lexicon",
+        "status": "partial_source_derived_model",
+        "type": "set_projection"
+      },
+      {
+        "id": "predicate-score",
+        "path": "model.md",
+        "scope": "Predicate contributes exactly 3 iff any query predicate alternative matches the first Pred field's lemma set. Further matching predicates do not add points.",
+        "section": "predicate-score",
+        "status": "partial_source_derived_model",
+        "type": "boolean_saturation"
+      },
+      {
+        "id": "subject-score",
+        "path": "model.md",
+        "scope": "For nonempty q.who, in-role membership yields +3 and who=true; only-any-field membership yields +1 and who=true; absence yields -2 and who=false. Empty q.who contributes zero. Agent tests f.who across all current Kind variants.",
+        "section": "subject-score",
+        "status": "partial_source_derived_model",
+        "type": "role_partition"
+      },
+      {
+        "id": "other-multiplicity",
+        "path": "model.md",
+        "scope": "Each occurrence in q.others contributes 1.5 if f.has_id, so duplicate IDs repeat the bonus. This list is not set-normalized by score.",
+        "section": "other-multiplicity",
+        "status": "partial_source_derived_model",
+        "type": "multiset_effect"
+      },
+      {
+        "id": "word-maximum",
+        "path": "model.md",
+        "scope": "For each q.words alternative group, add the maximum weight among matching fields, or zero. Sum across groups; repeating a group repeats its contribution. Pred=1.5, When/About=0.5, other slots=1.",
+        "section": "word-maximum",
+        "status": "partial_source_derived_model",
+        "type": "weighted_projection"
+      },
+      {
+        "id": "rank-ties",
+        "path": "model.md",
+        "scope": "Search applies keep before scoring and sorts descending finite score, then ascending n. Every permutation sharing tied scores and n compares equal; unique build n gives a total order.",
+        "section": "rank-ties",
+        "status": "partial_source_derived_model",
+        "type": "ordering_fiber"
+      },
+      {
+        "id": "temporal-state",
+        "path": "model.md",
+        "scope": "Plans/beliefs use current values but first-state line/anchor; attributes use deltas per state. Feeling emits added tags, or an end only when empty after nonempty; partial removals have no standalone removal fact.",
+        "section": "temporal-state",
+        "status": "partial_source_derived_model",
+        "type": "history_projection"
+      },
+      {
+        "id": "label-loss",
+        "path": "model.md",
+        "scope": "Label keeps src/key, Value only for Attr/Have/Part, all anchors and cause; it omits line, sent, neg, end, by and most fields. Distinct contradictory or ended facts can share a label.",
+        "section": "label-loss",
+        "status": "partial_source_derived_model",
+        "type": "evidence_fiber"
+      },
+      {
+        "id": "half-unit-observation",
+        "path": "model.md",
+        "scope": "Let P be first-predicate hit, H in {0,6,2,-4} the subject half-points, O the matching other-ID occurrence count, W the sum of per-word maximum weights in half-units, and T in {0,6,5,1,-3} the ordered section half-bonus. For bounded counts 2*score=6P+H+3O+W+T. Diagnostic words=W/2. This is an exact real-valued specification only while binary half-unit accumulation is representable; tests use small counts. Independent integer coefficients avoid using Slot::weight as their oracle.",
+        "section": "half-unit-observation",
+        "status": "partial_source_derived_model",
+        "type": "integer_feature_projection"
+      }
+    ],
+    "probe": {
+      "path": "probe.rs.txt",
+      "scope": "432 scores, three rankings and eight members of one label fiber; false expected formula rejected.",
+      "status": "executed_bounded_cpu_probe"
+    },
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_checks_executed"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 30859,
+      "start": 0
+    },
+    "description": "Complete file including bounded native test module."
+  },
+  "id": "fact-index",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../index.rs",
+    "sha256": "c182d747ecc69b9e86a34ae5a49caa3841477c53719b2b8bb77b39e0ba4120d1"
+  },
+  "status": "partial_source_derived_instance",
+  "subject_revision": "sha256:c182d747ecc69b9e86a34ae5a49caa3841477c53719b2b8bb77b39e0ba4120d1"
+}

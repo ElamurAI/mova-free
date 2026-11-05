@@ -1039,3 +1039,65 @@ impl Pratt {
         }
     }
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    fn toks(s: &str) -> Vec<String> {
+        s.split_whitespace().map(str::to_string).collect()
+    }
+    fn read(s: &str) -> R<Parsed> {
+        Interp::new(vec![Sent {
+            items: chunk(&toks(s)),
+        }])
+        .run()
+    }
+    fn value(s: &str) -> String {
+        crate::eval::fmt_q(&crate::eval::answer(&read(s).unwrap().expr).unwrap().q)
+    }
+    #[test]
+    fn chunk_units_and_placeholder_transport() {
+        assert_eq!(
+            read_number(&toks("two dozen"), 0),
+            Some((Rat::int(24), false, 2))
+        );
+        assert_eq!(
+            read_number(&toks("a third"), 0),
+            Some((Rat::new(1, 3).unwrap(), true, 2))
+        );
+        assert!(read_unit(&toks("m"), 0, false).is_none());
+        assert!(matches!(
+            read_unit(&toks("miles per hour"), 0, true),
+            Some((URef::Mono(_), 3))
+        ));
+        let items = chunk(&toks("- 8 miles"));
+        let (forms, owners) = standins(&items);
+        assert_eq!(forms, vec!["8", "units"]);
+        assert_eq!(owners, vec![0, 0]);
+        assert!(matches!(items[0].kind, Kind::Qty { val, .. } if val == Rat::int(-8)));
+    }
+    #[test]
+    fn pratt_precedence_and_percent_rewrite() {
+        assert_eq!(value("3 + 4 * 2"), "11");
+        assert_eq!(value("( 3 + 4 ) * 2"), "14");
+        assert_eq!(value("2 ^ 3 ^ 2"), "512");
+        assert_eq!(value("100 minus 20 percent"), "80");
+        assert_eq!(value("3/4 of 100"), "75");
+        assert!(read("( 2 + 3").is_err());
+        assert!(read("half 8").is_err());
+    }
+    #[test]
+    fn rejection_precedence_and_scale_ambiguity() {
+        let err = read("banana").unwrap_err().to_string();
+        assert!(err.contains("unknown word"));
+        assert!(read("").unwrap_err().to_string().contains("no numbers"));
+        assert!(
+            read("20 degrees")
+                .unwrap_err()
+                .to_string()
+                .contains("without a scale")
+        );
+        let items = chunk(&toks("20 degrees to Fahrenheit"));
+        assert_eq!(Interp::new(vec![Sent { items }]).default_scale, None);
+    }
+}

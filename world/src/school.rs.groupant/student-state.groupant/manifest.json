@@ -1,0 +1,102 @@
+{
+  "children": [
+    {
+      "id": "world-school-student-state-selection",
+      "path": "selection.groupant"
+    },
+    {
+      "id": "world-school-student-state-updates",
+      "path": "updates.groupant"
+    },
+    {
+      "id": "world-school-student-state-retained-codec",
+      "path": "retained-codec.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#wave34-composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-school-student-state-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-school-student-state-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-school-student-state-coupling",
+        "path": "model.md",
+        "section": "coupling",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      },
+      {
+        "id": "world-school-student-state-observation-fiber",
+        "path": "model.md",
+        "section": "observation-fiber",
+        "status": "partial_source_model",
+        "type": "information_loss"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 22400,
+      "start": 14464
+    },
+    "description": "Normalize tokens, remove stop words, names and counted things, create every ordered within-sentence pair, sort/deduplicate. TSV decode ignores comments/short rows, defaults malformed numbers to zero, and lets later rows replace current weights; a five-field duplicate leaves any earlier accumulator unchanged. Encode unions w/acc keys, retains all explicit accumulators including zeros, omits current-only zero rows, and fills orphan accumulator keys with zero current rows."
+  },
+  "historical_composition": {
+    "path": "model.md",
+    "section": "composition",
+    "status": "partial_source_model"
+  },
+  "id": "world-school-student-state",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../school.rs",
+    "sha256": "3b29edc9021b45510e68eb1e49ac894f6ab55b2b859694302db2076cc6db451d"
+  },
+  "status": "partial_source_bound_model"
+}

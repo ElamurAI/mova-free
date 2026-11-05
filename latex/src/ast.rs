@@ -190,3 +190,55 @@ impl Node {
         k
     }
 }
+
+#[cfg(test)]
+mod wave28_tests {
+    use super::*;
+
+    #[test]
+    fn normalization_and_span_quotient() {
+        assert!(norm(vec![]).is_empty_row());
+        assert_eq!(norm(vec![Node::Char('x')]), Node::Char('x'));
+        assert_eq!(
+            norm(vec![Node::Char('x'), Node::Char('y')]).items().len(),
+            2
+        );
+        assert_eq!(Span { start: 1, end: 2 }, Span { start: 9, end: 40 });
+        let a = Node::Unknown(Box::new(Unknown {
+            name: "foo".into(),
+            args: vec![],
+            span: Span { start: 2, end: 6 },
+        }));
+        let mut b = a.clone();
+        if let Node::Unknown(u) = &mut b {
+            u.span.start = 100;
+        }
+        assert_eq!(a, b);
+        assert_eq!(a.unknowns()[0].1.start, 2);
+        assert_eq!(b.unknowns()[0].1.start, 100);
+    }
+
+    #[test]
+    fn traversal_preserves_script_and_unknown_order() {
+        let n = Node::Scripts(Box::new(Scripts {
+            base: Node::Char('b'),
+            sub: Some(Node::Char('s')),
+            sup: Some(Node::Unknown(Box::new(Unknown {
+                name: "u".into(),
+                args: vec![Node::Char('a')],
+                span: Span::default(),
+            }))),
+            primes: 2,
+        }));
+        let mut seen = Vec::new();
+        n.walk(&mut |x| {
+            if let Node::Char(c) = x {
+                seen.push(*c);
+            }
+        });
+        assert_eq!(seen, vec!['b', 's', 'a']);
+        assert_eq!(n.size(), 5);
+        assert!(n.has_unknown());
+        assert_eq!(n.unknowns()[0].0, "\\u");
+    }
+}

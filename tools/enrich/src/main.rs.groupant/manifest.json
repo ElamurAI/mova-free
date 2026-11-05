@@ -1,0 +1,228 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "enrichment-cli",
+  "source": {
+    "path": "../main.rs",
+    "sha256": "961224ee8d476aac3309d5e8a34919b79cf10c0e793548a79507d48d5da44c45",
+    "raw_code_location": "outside_this_sidecar"
+  },
+  "status": "partial_descriptive_instance",
+  "components": {
+    "ast": {
+      "status": "partial",
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "selected source syntax; macros opaque, no expansion/resolution/type inference"
+    },
+    "approximant": {
+      "status": "partial",
+      "path": "model.md#approximant"
+    },
+    "complementer": {
+      "type": "reverse_reconstruction",
+      "role": "legacy_pointer",
+      "status": "partial_relational_specification",
+      "path": "model.md#reconstruction"
+    },
+    "invariant": {
+      "status": "partial",
+      "description": "model.md#approximant"
+    },
+    "descriptant": {
+      "status": "present",
+      "path": "model.md#descriptant"
+    },
+    "tests": {
+      "status": "existing_checks_referenced",
+      "path": "model.md#tests"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "required": true,
+        "status": "partial_projection_specification",
+        "path": "model.md#nonbehavior",
+        "scope": "UTF-8 command/arity/limit-parse dispatch"
+      },
+      {
+        "id": "antecedents",
+        "type": "reverse_reconstruction",
+        "required": true,
+        "status": "partial_relational_specification",
+        "path": "model.md#reconstruction",
+        "scope": "argv fibers of dispatch output labels"
+      },
+      {
+        "id": "run-failure-prefix",
+        "type": "failure_prefix",
+        "required": false,
+        "status": "partial_relational_specification",
+        "path": "model.md#failure-prefix",
+        "scope": "normal run preparation/review/stage traces"
+      },
+      {
+        "id": "arity-fiber",
+        "type": "arity_preimage",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "arity-fiber",
+        "scope": "For each command c, B(route_c) restricts argument count n to the forward table; B(usage) contains excluded pairs. Payload strings stay unconstrained."
+      },
+      {
+        "id": "unknown-name",
+        "type": "unknown_command_complement",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "unknown-name",
+        "scope": "For c outside the recognized-name set, every delegate result is in the absent-behavior set. Case variants are separate names."
+      },
+      {
+        "id": "limit-fiber",
+        "type": "numeric_parse_preimage",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "limit-fiber",
+        "scope": "B(k)={s | parse::<usize>(s)=Ok(k)} for correctly shaped prepare/run. The error fiber is the failing parse domain."
+      },
+      {
+        "id": "optional-base",
+        "type": "optional_argument_preimage",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "optional-base",
+        "scope": "For study/improve, B(None) has n=3; B(Some(p)) has n=4 and argv[3]=p. Empty text is Some(empty), not absence."
+      },
+      {
+        "id": "path-loss",
+        "type": "path_observation_loss",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "path-loss",
+        "scope": "An observed Path constrains its argument slot but cannot reconstruct file bytes, symlink targets, permissions or later filesystem state."
+      },
+      {
+        "id": "parse-effects",
+        "type": "parse_failure_effect_complement",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "parse-effects",
+        "scope": "For prepare/run, n=6 and invalid limit, tuples that invoke prepare/review/stage from the dispatcher are excluded: parse occurs first."
+      },
+      {
+        "id": "stage-preimage",
+        "type": "stage_reachability_precondition",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "stage-preimage",
+        "scope": "Observed stage invocation from run requires valid shape, parsed limit, prepare success and review success."
+      },
+      {
+        "id": "error-fiber",
+        "type": "error_observation_preimage",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "error-fiber",
+        "scope": "A nonzero normal exit can arise from usage, numeric parsing or a propagated child error; the exit alone has many antecedents."
+      },
+      {
+        "id": "stdout-fiber",
+        "type": "stdout_projection",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "stdout-fiber",
+        "scope": "Wrapper-owned JSON printing occurs for profile/status on success; identical returned Values can leave the originating route ambiguous."
+      },
+      {
+        "id": "time-fiber",
+        "type": "timing_observation_preimage",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "time-fiber",
+        "scope": "B(t) contains executions whose rounded elapsed duration prints t; timing does not identify inputs or a unique stage decomposition."
+      },
+      {
+        "id": "path-permutation",
+        "type": "argument_permutation_counterfactual",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "path-permutation",
+        "scope": "Permuting path slots while preserving command/count leaves branch selection equal but permutes the ordered callee arguments."
+      },
+      {
+        "id": "budget-fiber",
+        "type": "resource_budget_preimage",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "budget-fiber",
+        "scope": "A successful serial run fits budget B only if p+r+s<=B; a prepare-failing prefix reveals no completed suffix costs."
+      },
+      {
+        "id": "write-prestate",
+        "type": "write_once_precondition",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "write-prestate",
+        "scope": "A successful simulate write requires destination absence at create_new time plus permitted writes; an unchanged existing file excludes success."
+      },
+      {
+        "id": "json-fiber",
+        "type": "serialization_observation",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "json-fiber",
+        "scope": "Parsing wrapper JSON constrains the returned Value but not the source artifacts; different whitespace can encode the same Value."
+      },
+      {
+        "id": "diagnostic-trace",
+        "type": "normal_return_trace",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "diagnostic-trace",
+        "scope": "After run returns, main attempts the elapsed diagnostic before returning its Result. Missing observed text can reflect termination or stderr delivery."
+      },
+      {
+        "id": "program-name",
+        "type": "argv0_quotient",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "program-name",
+        "scope": "With the same executable and remaining arguments, changing argv[0] leaves D unchanged because skip(1) removes it."
+      },
+      {
+        "id": "environment-fiber",
+        "type": "dispatch_environment_projection",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "environment-fiber",
+        "scope": "Fixed argv selects the same route across environment/filesystem states; full child results can still differ."
+      }
+    ]
+  },
+  "registry": {
+    "path": "../../../../models/contracts.json",
+    "node": "enrichment-cli"
+  },
+  "extensions": {
+    "epoch_memory": "model.md#descriptant",
+    "notes": "Open container: additional files, fields and artifact types are permitted."
+  }
+}

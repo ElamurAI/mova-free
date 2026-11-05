@@ -162,3 +162,79 @@ fn limits_reach_the_guest_as_errno() {
     assert_eq!(c.fd_write(&mut m, w, 40, 1, None, 48), Err(vfs::Errno::FBig.wasi()));
     assert_eq!(c.vfs.journal.limited(), 1);
 }
+
+#[test]
+fn wave31_late_faults_keep_prior_effects() {
+    let mut c = ctx();
+    let mut m = vec![0u8; 4096];
+    let before = c.vfs.now();
+    assert_eq!(c.clock_time_get(&mut m, 0, 4095), Err(FAULT));
+    assert_eq!(c.vfs.now(), before + c.clock_step);
+    put_u32(&mut m, 0, 100).unwrap();
+    put_u32(&mut m, 4, 2).unwrap();
+    put(&mut m, 100, b"XY").unwrap();
+    assert_eq!(c.fd_write(&mut m, 1, 0, 1, None, 4095), Err(FAULT));
+    assert_eq!(c.stdout, b"XY");
+    let (p, l) = put_str(&mut m, 1000, "d/created");
+    assert_eq!(c.path_open(&mut m, 3, 1, p, l, 1, RIGHT_FD_WRITE, 0, 0, 4095), Err(FAULT));
+    assert!(c.vfs.peek("/d/created", true).is_some());
+    assert_eq!(c.fds.len(), 5);
+}
+
+#[test]
+fn wave31_memory_poll_and_descriptor_boundaries() {
+    let mut c = ctx();
+    let mut m = vec![0u8; 256];
+    assert_eq!(range(&m, 256, 0), Ok(256..256));
+    assert_eq!(off(u32::MAX, 1), Err(FAULT));
+    assert_eq!(iovs(&m, u32::MAX, 1025), Err(INVAL));
+    assert_eq!(get_str(&[255], 0, 1), Err(ILSEQ));
+    assert_eq!(c.poll_oneoff(&mut m, 0, 128, 0, 240), Err(INVAL));
+    for b in [0, 48] {
+        put_u64(&mut m, b, b as u64 + 7).unwrap();
+        put_u64(&mut m, b + 24, 9).unwrap();
+    }
+    let before = c.vfs.now();
+    c.poll_oneoff(&mut m, 0, 128, 2, 240).unwrap();
+    assert_eq!(c.vfs.now(), before + 9);
+    assert_eq!(get_u32(&m, 240), Ok(2));
+    assert_eq!(get_u64(&m, 128), Ok(7));
+    assert_eq!(get_u64(&m, 160), Ok(55));
+    m[56] = 1;
+    let before = c.vfs.now();
+    c.poll_oneoff(&mut m, 0, 128, 2, 240).unwrap();
+    assert_eq!(c.vfs.now(), before);
+    assert_eq!(get_u32(&m, 240), Ok(1));
+    c.max_fds = 4;
+    let f = c.fds[3].clone().unwrap();
+    assert_eq!(c.alloc_fd(f.clone()), Err(MFILE));
+    c.fds[3] = None;
+    assert_eq!(c.alloc_fd(f), Ok(3));
+}
+
+#[test]
+fn wave31_tiny_engine_outcomes() {
+    // One empty () -> () function exported as _start. No imported code or data.
+    let wasm = b"\0asm\x01\0\0\0\x01\x04\x01\x60\0\0\x03\x02\x01\0\x07\x0a\x01\x06_start\0\0\x0a\x04\x01\x02\0\x0b";
+    assert!(Host::new(b"bad", None).is_err());
+    let h = Host::new(wasm, Some(100)).unwrap();
+    assert!(h.missing_imports().is_empty());
+    assert!(h.wasi_imports().is_empty());
+    for _ in 0..2 {
+        let o = h.run(Ctx::new(Vfs::new(), vec![]));
+        assert_eq!(o.exit_code, 0);
+        assert!(o.trap.is_none());
+        assert!(o.fuel_used.is_some_and(|f| f <= 100));
+        assert!(o.ctx.calls.is_empty());
+    }
+    let mut trap = wasm.to_vec();
+    let n = trap.len();
+    trap[n - 4] = 1;
+    trap[n - 3] = 3;
+    trap.insert(n - 1, 0); // unreachable before end; adjust code section size
+    trap[n - 5] = 5;
+    let h = Host::new(&trap, None).unwrap();
+    let o = h.run(Ctx::new(Vfs::new(), vec![]));
+    assert_eq!(o.exit_code, 134);
+    assert!(o.trap.is_some());
+}

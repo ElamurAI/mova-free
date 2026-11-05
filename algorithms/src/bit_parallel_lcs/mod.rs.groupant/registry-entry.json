@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "Independent matrix oracle, boundary fixtures, compiled mutants, repeated suites; see model.md#tests"
+  ],
+  "children": [],
+  "cost": "O(256+n+m) time and 256 u64 masks plus constant state, no heap allocation. Shorter input is at most 64; longer side has no arbitrary cap.",
+  "description": "Select shorter s and longer l, choosing first on ties. If |s|>64 return ShortSideTooLong{|s|}; otherwise return the exact maximum length of any shared byte subsequence. Empty slices return zero.",
+  "forward": [
+    "Select shorter s and longer l, choosing first on ties. If |s|>64 return ShortSideTooLong{|s|}; otherwise return the exact maximum length of any shared byte subsequence. Empty slices return zero."
+  ],
+  "id": "algorithm-bit-parallel-lcs",
+  "inverse": [
+    "Ok(q) retains every pair with min length<=64 and LCS=q. ab/ac and xy/xz both map to one. Zero admits empty slices and disjoint nonempty alphabets. Error r retains every pair with min length=r>64. Neither bytes, matching positions, lengths nor the choice of an optimal subsequence is uniquely recoverable."
+  ],
+  "limitations": [
+    "Finite evidence not proof; partial syntax; allocator failure outside model; no speed claim"
+  ],
+  "source": "algorithms/src/bit_parallel_lcs/mod.rs",
+  "state": "Byte slices, threshold/bitset, or assertion outcomes"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "algorithm-subset-convolution",
+  "source": "algorithms/src/subset_convolution/mod.rs",
+  "children": [],
+  "description": "Original bounded algebra algorithm with independent finite checks",
+  "state": "Deterministic values and explicit validation",
+  "cost": "Ranked zeta transforms F[k,S]=sum_{T subset S,|T|=k}a[T]; H[k,S]=sum_i F[i,S]G[k-i,S]; Mobius invert then return H[|S|,S]. Equal power2 lengths<=4096; modulus998244353. O(d²2^d) time O(d2^d) memory. Bjorklund et al., Fourier meets Mobius, STOC 2007.",
+  "forward": [
+    "Ranked zeta transforms F[k,S]=sum_{T subset S,|T|=k}a[T]; H[k,S]=sum_i F[i,S]G[k-i,S]; Mobius invert then return H[|S|,S]. Equal power2 lengths<=4096; modulus998244353. O(d²2^d) time O(d2^d) memory. Bjorklund et al., Fourier meets Mobius, STOC 2007."
+  ],
+  "inverse": [
+    "At validated a,b, any candidate y with y[S] unequal to sum_{T subset S}a[T]b[S xor T] modulo p, or residue>=p, is excluded. Shape-invalid input paired with Ok is excluded.",
+    "For observed y retain pairs satisfying every subset convolution equation. Zero a with any b maps to zero; for fixed a with a[0] nonzero the triangular equations uniquely recover b. Raw residue representatives remain ambiguous."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms subset_convolution::tests"
+  ],
+  "limitations": [
+    "Partial syntax; finite tests do not prove universal correctness; no allocator failure injection; no executable surrogate"
+  ]
+}

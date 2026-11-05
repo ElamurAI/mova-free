@@ -1,0 +1,112 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "For terminating finite harness executions, reports that disagree with the conjunction of assertions are excluded. Passing a candidate with any fixture mismatch is absent from the specified relation. Abort/nontermination are outside the observation universe; this relation is not a universal production correctness proof.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "d5bdf7651a00bb79c1961466d9bbcee17b6034732f4d75c3d07138cfacfc1ce3",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "A pass admits every implementation agreeing on these finite observations, including implementations differing arbitrarily outside the fixtures. A failure admits production defects or oracle defects; the report alone does not uniquely reconstruct the cause.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "d5bdf7651a00bb79c1961466d9bbcee17b6034732f4d75c3d07138cfacfc1ce3",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "oracle_independence",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "31 binary byte words of lengths0..4, all31 cyclic insertion orders plus duplicate empty word, all31 queries and radii0,1,2,4,usize::MAX. Independent full2D dynamic programming oracle does not reuse production rolling-row kernel. Explicit255/NUL cases,256-byte and4096-entry boundaries.",
+        "path": "model.md",
+        "section": "oracle_independence",
+        "status": "partial_relational_specification",
+        "subject_revision": "d5bdf7651a00bb79c1961466d9bbcee17b6034732f4d75c3d07138cfacfc1ce3",
+        "type": "oracle_independence"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "mutation_sensitivity",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "Change emission comparison d<=radius to d<radius; exhaustive_metric_oracle must fail. Source bytes are restored before the successful positive rerun. These controls establish sensitivity only to the chosen defects.",
+        "path": "model.md",
+        "section": "mutation_sensitivity",
+        "status": "partial_relational_specification",
+        "subject_revision": "d5bdf7651a00bb79c1961466d9bbcee17b6034732f4d75c3d07138cfacfc1ce3",
+        "type": "mutation_sensitivity"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "finite_schedule",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "Two tests: exhaustive_metric_oracle and byte_semantics_and_boundaries. Counts and repeat receipts are retained externally; neither repeatability nor test count guarantees unseen behavior.",
+        "path": "model.md",
+        "section": "finite_schedule",
+        "status": "partial_relational_specification",
+        "subject_revision": "d5bdf7651a00bb79c1961466d9bbcee17b6034732f4d75c3d07138cfacfc1ce3",
+        "type": "finite_schedule"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-bk-tree-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "d5bdf7651a00bb79c1961466d9bbcee17b6034732f4d75c3d07138cfacfc1ce3"
+  },
+  "status": "partial_source_derived_instance"
+}

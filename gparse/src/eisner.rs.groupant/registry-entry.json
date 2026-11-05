@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "eisner::tests::best_tree_with_one_root; eisner::wave30::empty_singleton_and_first_root_tie; decoder_accepts_no_words"
+  ],
+  "children": [],
+  "cost": "O(n³) arithmetic and O(n²) score/backpointer storage plus O(n) output/stack; unchecked (n+1)² allocation arithmetic.",
+  "description": "For square sc[h][d] with finite f32 intermediates, n=rows-1, complete/incomplete word spans combine smaller spans by f32 max-plus; root r maximizes sc[0][r]+C_right(1,r)+C_left(r,n). Explicit stack recovers n heads. len<=1 returns [], n=1 returns [0] before scores are read.",
+  "forward": [
+    "For square sc[h][d] with finite f32 intermediates, n=rows-1, complete/incomplete word spans combine smaller spans by f32 max-plus; root r maximizes sc[0][r]+C_right(1,r)+C_left(r,n). Explicit stack recovers n heads. len<=1 returns [], n=1 returns [0] before scores are read."
+  ],
+  "id": "gparse-eisner",
+  "inverse": [
+    "Admitted finite-intermediate-domain output cannot contain two roots or an arc outside 0..n; scores into dependent zero do not affect output. Singleton ignores even missing inner rows; no score validation occurs on that branch.",
+    "For exact arithmetic (or an explicit order-preservation assumption for every candidate comparison), tree h defines score matrices whose tree sum dominates every projective single-root competitor, with implementation tie ordering on equality. For actual f32, the compatible set is defined by the rounded recurrence/backpointer decisions, not guaranteed identical to those real-score cones. Common per-dependent shifts preserve exact-real argmax; f32 equivalence additionally needs no rounding-order change. Singleton accepts every two-row matrix."
+  ],
+  "limitations": [
+    "Partial lexical syntax; no semantic proof",
+    "Finite synthetic checks only; external corpus/model experiments excluded",
+    "No executable Rust percent surrogate or throughput claim",
+    "Fault injection and exhaustive nonfinite/dimension cases absent"
+  ],
+  "source": "gparse/src/eisner.rs",
+  "state": "On admitted square scores with finite intermediate arithmetic, one root child, valid head coordinates, no self-head and projective tree. Real max-sum optimality is the mathematical recurrence model; f32 rounding/association is not certified equivalent to a real-valued global optimum. Strict > retains first ascending split/root under computed equal values. No NaN/infinite/ragged matrix guarantee."
+}

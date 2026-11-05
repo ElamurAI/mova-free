@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --lib bron_kerbosch --offline"
+  ],
+  "children": [],
+  "cost": "Exact exponential worst case; conservative O(n^2 2^n) time and O(n^2) auxiliary space including recursion and candidate vectors. n<=64 bounds representation only; no polynomial-time or practical-runtime promise at the cap. Validation O(n+E), E<=n(n-1)/2.",
+  "description": "Validate a simple undirected graph of at most 64 vertices. Pivoted Bron-Kerbosch maintains clique R, possible P and excluded X; pick the ascending-first pivot maximizing |P intersect N(u)|, branch on P minus N(pivot), recurse with neighbor intersections, then transfer v from P to X. At P=X=empty compare sorted R by cardinality then lexicographic order. Prune only when |R|+|P| is strictly smaller than incumbent.",
+  "forward": [
+    "Validate a simple undirected graph of at most 64 vertices. Pivoted Bron-Kerbosch maintains clique R, possible P and excluded X; pick the ascending-first pivot maximizing |P intersect N(u)|, branch on P minus N(pivot), recurse with neighbor intersections, then transfer v from P to X. At P=X=empty compare sorted R by cardinality then lexicographic order. Prune only when |R|+|P| is strictly smaller than incumbent."
+  ],
+  "id": "algorithm-bron-kerbosch",
+  "inverse": [
+    "Fix sorted output C. Its fiber is every valid graph on the fixed vertex universe in which C is a maximum clique and no lexicographically smaller equal-cardinality clique exists. Missing edges outside C are not recoverable; many distinct graphs share C. Empty C is reachable only for n=0."
+  ],
+  "limitations": [
+    "Finite oracle coverage is not proof.",
+    "Partial syntax leaves macros opaque; no performance claim."
+  ],
+  "source": "algorithms/src/bron_kerbosch/mod.rs",
+  "state": "R is a clique and every P/X vertex neighbors all of R; P and X are disjoint. Each maximal clique is considered unless too small to improve cardinality. Equal bounds are retained so lexicographically smaller ties survive. u64 masks represent exactly vertices 0..n; n=64 uses u64::MAX without shifting by 64."
+}

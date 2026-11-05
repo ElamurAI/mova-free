@@ -79,3 +79,25 @@ pub fn child(dir: &str, name: &str) -> String {
 pub fn base_name(path: &str) -> &str {
     path.trim_end_matches('/').rsplit('/').next().unwrap_or("")
 }
+
+#[cfg(test)]
+mod wave31 {
+    use super::*;
+    #[test]
+    fn lexical_boundaries_and_fibers() {
+        let cwd = vec!["a".to_string()];
+        assert_eq!(normalize(&cwd, "../b/./c").unwrap(), ["b", "c"]);
+        assert_eq!(normalize(&cwd, "/b//c").unwrap(), ["b", "c"]);
+        assert_eq!(normalize(&[], "..").unwrap_err().errno, Errno::NotCapable);
+        assert_eq!(normalize_with(&[], "..", true).unwrap(), Vec::<String>::new());
+        assert_eq!(check("").unwrap_err().errno, Errno::NoEnt);
+        assert_eq!(check(&format!("{}\0", "x".repeat(PATH_MAX))).unwrap_err().errno, Errno::Inval);
+        assert!(check(&"/".repeat(PATH_MAX)).is_ok());
+        assert_eq!(check(&"/".repeat(PATH_MAX + 1)).unwrap_err().errno, Errno::NameTooLong);
+        assert!(check_name(&"x".repeat(NAME_MAX)).is_ok());
+        assert!(check_name(&"é".repeat(128)).is_err());
+        assert_eq!(join(&[]), "/");
+        assert_eq!(child("/", "a"), "/a");
+        assert_eq!(base_name("/a/b///"), "b");
+    }
+}

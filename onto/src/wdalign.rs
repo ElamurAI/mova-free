@@ -666,3 +666,26 @@ mod t {
         assert_eq!(src_names(S_LEX | S_LABEL), "lex+label");
     }
 }
+
+#[cfg(test)]
+mod wave29_ontowiki {
+    use super::*;
+    #[test]
+    fn source_masks_and_p31_join() {
+        for mask in 0..16 {
+            assert_eq!(
+                n_sources(mask),
+                crate::wdwalk::n_sources_str(&src_names(mask))
+            );
+        }
+        let g = IsaGraph::from_edges(vec![(20, 30, P279), (30, 40, P171)]);
+        let wd = Wd {
+            rk: vec![crate::wdwalk::RankKind::Low; g.n()],
+            g,
+            p31: HashMap::from([(10, vec![20])]),
+            folk: true,
+        };
+        assert_eq!(wd.ancestors(10), HashMap::from([(20, 1), (30, 2), (40, 3)]));
+        assert!(!wd.ancestors(20).contains_key(&20));
+    }
+}

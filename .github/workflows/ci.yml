@@ -18,22 +18,31 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
+      CARGO_BUILD_JOBS: 2
       MOVA_DATA: ${{ github.workspace }}/../mova-data
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
-      - name: Cache the model
+      - name: Cache the model and Open English WordNet
         uses: actions/cache@v4
         with:
-          path: ${{ env.MOVA_DATA }}/en/models
-          key: en-model-${{ hashFiles('install.sh') }}
-      - name: Fetch the model (en.bin, SHA-256 checked)
+          path: |
+            ${{ env.MOVA_DATA }}/en/models
+            ${{ env.MOVA_DATA }}/raw/en-oewn
+          key: en-model-oewn-${{ hashFiles('install.sh') }}
+      - name: Fetch the model (en.bin) and Open English WordNet, SHA-256 checked
         run: ./install.sh
+      - name: Fetch the school (courses and school dictionaries, school-0.5.tar.gz), SHA-256 checked
+        run: target/release/mova fetch 0.5 school
       - name: Build the workspace (CPU only)
         run: cargo build --release --locked
-      - name: Unit tests
+      - name: Core unit tests (eleven-crate suite)
         run: tests/run.sh
+      - name: Algorithms, mathematical tools and teacher transport unit tests
+        run: tests/run.sh algorithms tools/modelcheck tools/correspondence teacher
+      - name: Release fetch and Open English WordNet install tests (policy rows, tampered archive and cache, interrupted extraction)
+        run: cargo test --release --locked -p mova-modules
       - name: Deterministic (the same story read twice gives the same bytes)
         run: |
           W=target/release/world
@@ -41,3 +50,60 @@ jobs:
           $W babi-probe "Mary went to the kitchen." "Mary picked up the apple." "Mary went to the garden." "Where is the apple?" > b.txt
           cmp a.txt b.txt
           grep -F '("garden", "apple in mary")' a.txt
+
+
+  # Every standalone workspace under tools/ (own [workspace] and Cargo.lock, not built by the root
+  # `cargo build`). They run on local fixtures only: no model, no teacher, no network beyond crates.io.
+  # octopus and agent-mova link the world crate; without data they run on an empty WordNet on purpose.
+  standalone-workers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        workspace:
+          - tools/agent-mova
+          - tools/agent-runner
+          - tools/crab
+          - tools/eel
+          - tools/fish
+          - tools/fish-batch
+          - tools/fish-pages
+          - tools/fish-priority
+          - tools/fish-swarm
+          - tools/fish-terminal
+          - tools/hard-case-list
+          - tools/hard-cases
+          - tools/module-overlay
+          - tools/mova-json
+          - tools/nautilus
+          - tools/octopus
+          - tools/seaspider
+          - tools/terminal
+          - tools/topic-corpus
+          - tools/turtle
+          - tools/whale
+          - tools/whale-world
+    env:
+      CARGO_BUILD_JOBS: 2
+      MOVA_OEWN: optional
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ${{ matrix.workspace }} -> target
+      - name: tmux for the workers whose tests drive a real tmux server on a private socket
+        if: matrix.workspace == 'tools/crab' || matrix.workspace == 'tools/terminal'
+        run: command -v tmux || (sudo apt-get update && sudo apt-get install -y tmux)
+      - name: Public worker checks (local fixtures, no model or teacher calls)
+        run: cargo test --manifest-path ${{ matrix.workspace }}/Cargo.toml --release --locked -j2 -- --test-threads=2
+
+  # A standalone workspace that CI does not list is a gap: this job is red when tools/ gains one.
+  standalone-list:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Every standalone workspace under tools/ is in the standalone-workers matrix
+        run: tests/ci-standalone-list.sh

@@ -268,3 +268,28 @@ pub fn world_files(repo: &Path, runs: &Path) -> Vec<PathBuf> {
     }
     v
 }
+
+#[cfg(test)]
+mod wave29_tests {
+    use super::*;
+    #[test]
+    fn mapping_tiers_and_content_dedup() {
+        let g = crate::wave29_tests::graph();
+        assert_eq!(
+            map_class(&g, "chief-crow", Some("noun.animal")),
+            (Tier::Head, Some(1), true)
+        );
+        assert_eq!(map_class(&g, "absent", None), (Tier::Missing, None, false));
+        let dir = crate::wave29_tests::temp("bridge");
+        let a = dir.join("cmds-a.txt");
+        let b = dir.join("cmds-b.txt");
+        let t = "char C1 type=animal class=crow name=\"A Crow\"\nobj O1 class=stone\n";
+        std::fs::write(&a, t).unwrap();
+        std::fs::write(&b, t).unwrap();
+        let (ents, used) = read_world(&[a, b]).unwrap();
+        assert_eq!((ents.len(), used.len()), (1, 1));
+        assert_eq!(ents[0].tale, "a");
+        assert_eq!(ents[0].name.as_deref(), Some("A Crow"));
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+}

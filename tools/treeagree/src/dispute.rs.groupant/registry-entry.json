@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named synthetic native tests; paired syntax projection"
+  ],
+  "children": [],
+  "cost": "For n words, w witnesses and d disputes, option generation O(n*w²) worst-case uniqueness scans; apply O(p*d+n²+registry) for p picks; prompt copies token text per group and formatting bytes. Domain requires per>0, aligned sentence arrays, valid dispute positions/heads and <=4 prompt options; allocation may fail.",
+  "description": "disputes starts option A at draft head/relation, then appends unique different heads from witnesses, excluding punctuation and unknown relations; head zero forces Root. parse_answers accepts exactly three whitespace fields and leading S in sentence index; trailing punctuation around letter is stripped. apply accumulates selected non-A alternatives, computes no_worse against draft, then commits whole sentence or returns zero. Repeated picks increase return count even if same word repeats. groups uses chunks(per); by_id overwrites repeated sentence ids.",
+  "forward": [
+    "disputes starts option A at draft head/relation, then appends unique different heads from witnesses, excluding punctuation and unknown relations; head zero forces Root. parse_answers accepts exactly three whitespace fields and leading S in sentence index; trailing punctuation around letter is stripped. apply accumulates selected non-A alternatives, computes no_worse against draft, then commits whole sentence or returns zero. Repeated picks increase return count even if same word repeats. groups uses chunks(per); by_id overwrites repeated sentence ids."
+  ],
+  "id": "treeagree-dispute",
+  "inverse": [
+    "A committed tree admits every draft/pick history whose last effective picks yield those heads and pass no_worse. Silent or rejected picks and repeated identical options are indistinguishable from final state; return count constrains attempts, not unique changed words.",
+    "Under admitted aligned valid indices, punctuation tokens never create disputes and A/unknown picks cannot alone commit edits. A newly introduced full Bad value prevents all candidate writes. This inner exclusion does not validate arbitrary public Dispute objects."
+  ],
+  "limitations": [
+    "Partial source models and finite fixtures only. No corpus/model/network/site/release execution or universal proof."
+  ],
+  "source": "tools/treeagree/src/dispute.rs",
+  "state": "Bounded helper inputs and source-derived CLI state/effects; see catalog."
+}

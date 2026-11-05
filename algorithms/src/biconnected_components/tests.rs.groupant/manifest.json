@@ -1,0 +1,90 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Finite fixtures in this test module, a trusted Rust compiler and standard library, and successful allocation; oracle enumerates edge subsets for multigraphs on at most three vertices and simple graphs on five vertices.",
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "Finite fixtures in this test module, a trusted Rust compiler and standard library, and successful allocation; oracle enumerates edge subsets for multigraphs on at most three vertices and simple graphs on five vertices.",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "oracle",
+        "path": "model.md",
+        "required": false,
+        "scope": "Finite fixtures in this test module, a trusted Rust compiler and standard library, and successful allocation; oracle enumerates edge subsets for multigraphs on at most three vertices and simple graphs on five vertices.",
+        "section": "oracle",
+        "status": "partial_source_derived_model",
+        "type": "independent_cycle_oracle"
+      },
+      {
+        "id": "metamorphic",
+        "path": "model.md",
+        "required": false,
+        "scope": "Finite fixtures in this test module, a trusted Rust compiler and standard library, and successful allocation; oracle enumerates edge subsets for multigraphs on at most three vertices and simple graphs on five vertices.",
+        "section": "metamorphic",
+        "status": "partial_source_derived_model",
+        "type": "orientation_isolate_transport"
+      },
+      {
+        "id": "resource",
+        "path": "model.md",
+        "required": false,
+        "scope": "Finite fixtures in this test module, a trusted Rust compiler and standard library, and successful allocation; oracle enumerates edge subsets for multigraphs on at most three vertices and simple graphs on five vertices.",
+        "section": "resource",
+        "status": "partial_source_derived_model",
+        "type": "bounded_depth_witness"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "algorithm-biconnected-components-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "6fe9895acb1ed86fb0eb7bf32cb5dea3d2e7276497fcc1e24354e9ec287239c6"
+  },
+  "status": "partial_source_bound_model"
+}

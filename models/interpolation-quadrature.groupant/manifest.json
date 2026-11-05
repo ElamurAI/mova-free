@@ -1,0 +1,202 @@
+{
+  "children": [
+    "algorithm-neville-interpolation",
+    "algorithm-neville-interpolation-tests",
+    "algorithm-newton-divided-differences",
+    "algorithm-newton-divided-differences-tests",
+    "algorithm-natural-cubic-spline",
+    "algorithm-natural-cubic-spline-tests",
+    "algorithm-adaptive-trapezoid",
+    "algorithm-adaptive-trapezoid-tests",
+    "algorithm-tanh-sinh-quadrature",
+    "algorithm-tanh-sinh-quadrature-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Polynomial and spline identities concern real arithmetic, not bitwise f64 agreement. Conditioning, cancellation and unsampled behavior remain unbounded. Deterministic callback is required to interpret repeated samples as one function; callback panic/resource cost and allocator failure are outside Result contracts. Tanh-sinh window [-3,3] omits tails.",
+        "domain": "Finite matched strictly increasing nodes, nonempty for Neville/Newton and at least2 for spline. Neville/Newton allow finite extrapolation; spline rejects queries outside its closed interval. Quadrature finite a<b and finite span, positive finite tolerance, budget>=2 trapezoid or>=7 tanh-sinh. Callback values and checked intermediate arithmetic must remain finite.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "interpolation-quadrature-behavior-complement",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Exclude invalid node/order success, wrong rounded divided-difference or triangular recurrence, nonfinite successful results, spline extrapolation success and wrong knot value. For quadrature exclude calls on invalid input, calls beyond budget, partial-level estimates presented as complete, or an EstimatedTolerance status inconsistent with the computed consecutive-level criterion. Real polynomial reproduction does not require bitwise equality across distinct f64 algorithms.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Polynomial and spline identities concern real arithmetic, not bitwise f64 agreement. Conditioning, cancellation and unsampled behavior remain unbounded. Deterministic callback is required to interpret repeated samples as one function; callback panic/resource cost and allocator failure are outside Result contracts. Tanh-sinh window [-3,3] omits tails.",
+        "domain": "Finite matched strictly increasing nodes, nonempty for Neville/Newton and at least2 for spline. Neville/Newton allow finite extrapolation; spline rejects queries outside its closed interval. Quadrature finite a<b and finite span, positive finite tolerance, budget>=2 trapezoid or>=7 tanh-sinh. Callback values and checked intermediate arithmetic must remain finite.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "interpolation-quadrature-reverse-reconstruction",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "At fixed distinct nodes, complete real Newton coefficients identify the nodal polynomial; one query value leaves a large affine ordinate fiber. At q=0, functions x and0 both yield0. Natural curvature data alone loses the affine component. For quadrature a callback perturbation vanishing on every visited point gives the same execution while potentially changing the integral; rounded observations may merge additional inputs.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Polynomial and spline identities concern real arithmetic, not bitwise f64 agreement. Conditioning, cancellation and unsampled behavior remain unbounded. Deterministic callback is required to interpret repeated samples as one function; callback panic/resource cost and allocator failure are outside Result contracts. Tanh-sinh window [-3,3] omits tails.",
+        "domain": "Finite matched strictly increasing nodes, nonempty for Neville/Newton and at least2 for spline. Neville/Newton allow finite extrapolation; spline rejects queries outside its closed interval. Quadrature finite a<b and finite span, positive finite tolerance, budget>=2 trapezoid or>=7 tanh-sinh. Callback values and checked intermediate arithmetic must remain finite.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "interpolation-quadrature-polynomial-basis-join",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Neville and Newton represent the same unique real polynomial of degree<n from common samples. Their traversal differs: Neville updates ascending rolling widths; Newton builds descending divided-difference columns and evaluates by nested products. Comparisons require finite scale-aware tolerance, not exact equality; extrapolation is admitted but may amplify error.",
+        "path": "model.md",
+        "section": "polynomial-basis-join",
+        "status": "partial_source_model",
+        "type": "conditional_basis_equivalence"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Polynomial and spline identities concern real arithmetic, not bitwise f64 agreement. Conditioning, cancellation and unsampled behavior remain unbounded. Deterministic callback is required to interpret repeated samples as one function; callback panic/resource cost and allocator failure are outside Result contracts. Tanh-sinh window [-3,3] omits tails.",
+        "domain": "Finite matched strictly increasing nodes, nonempty for Neville/Newton and at least2 for spline. Neville/Newton allow finite extrapolation; spline rejects queries outside its closed interval. Quadrature finite a<b and finite span, positive finite tolerance, budget>=2 trapezoid or>=7 tanh-sinh. Callback values and checked intermediate arithmetic must remain finite.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "interpolation-quadrature-spline-join-boundary",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Affine samples yield the same real affine function for polynomial interpolation and natural spline; generic polynomial data do not. Natural endpoint curvature0 usually differs from the interpolating polynomial's second derivative, so agreement at all knots alone cannot justify substituting one callback for the other between knots.",
+        "path": "model.md",
+        "section": "spline-join-boundary",
+        "status": "partial_source_model",
+        "type": "rejected_interpolant_equivalence"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Polynomial and spline identities concern real arithmetic, not bitwise f64 agreement. Conditioning, cancellation and unsampled behavior remain unbounded. Deterministic callback is required to interpret repeated samples as one function; callback panic/resource cost and allocator failure are outside Result contracts. Tanh-sinh window [-3,3] omits tails.",
+        "domain": "Finite matched strictly increasing nodes, nonempty for Neville/Newton and at least2 for spline. Neville/Newton allow finite extrapolation; spline rejects queries outside its closed interval. Quadrature finite a<b and finite span, positive finite tolerance, budget>=2 trapezoid or>=7 tanh-sinh. Callback values and checked intermediate arithmetic must remain finite.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "interpolation-quadrature-callback-adapter",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "To integrate a stored spline, [a,b] must lie in its closed knot interval; Newton only requires finite query but may fail arithmetic. An adapter must preserve failure through an explicit error/side channel; unwrap panic or mapping an error to0 changes semantics. Quadrature itself only recognizes nonfinite callback values and does not know the interpolator error type.",
+        "path": "model.md",
+        "section": "callback-adapter",
+        "status": "partial_source_model",
+        "type": "typed_error_transport"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Polynomial and spline identities concern real arithmetic, not bitwise f64 agreement. Conditioning, cancellation and unsampled behavior remain unbounded. Deterministic callback is required to interpret repeated samples as one function; callback panic/resource cost and allocator failure are outside Result contracts. Tanh-sinh window [-3,3] omits tails.",
+        "domain": "Finite matched strictly increasing nodes, nonempty for Neville/Newton and at least2 for spline. Neville/Newton allow finite extrapolation; spline rejects queries outside its closed interval. Quadrature finite a<b and finite span, positive finite tolerance, budget>=2 trapezoid or>=7 tanh-sinh. Callback values and checked intermediate arithmetic must remain finite.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "interpolation-quadrature-trapezoid-trace",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Trapezoid calls a then b, followed by each new midpoint left-to-right exactly once. A full next level must fit budget before geometry/callbacks. Initial budget2 returns estimated_error=None; a five-call trace can comprise2+1+2 samples. Geometry collision returns Stagnation before that level calls.",
+        "path": "model.md",
+        "section": "trapezoid-trace",
+        "status": "partial_source_model",
+        "type": "sample_reuse_relation"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Polynomial and spline identities concern real arithmetic, not bitwise f64 agreement. Conditioning, cancellation and unsampled behavior remain unbounded. Deterministic callback is required to interpret repeated samples as one function; callback panic/resource cost and allocator failure are outside Result contracts. Tanh-sinh window [-3,3] omits tails.",
+        "domain": "Finite matched strictly increasing nodes, nonempty for Neville/Newton and at least2 for spline. Neville/Newton allow finite extrapolation; spline rejects queries outside its closed interval. Quadrature finite a<b and finite span, positive finite tolerance, budget>=2 trapezoid or>=7 tanh-sinh. Callback values and checked intermediate arithmetic must remain finite.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "interpolation-quadrature-tanh-sinh-trace",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "x(t)=mid+half*tanh(pi/2*sinh(t)), t in[-3,3]; transformed endpoints are interior x, half weighted, with7,13,25,... calls per level and no sample reuse. Strictly increasing interior geometry is checked first. Before any complete level, a Stagnation report's value0/None is a sentinel, not a computed integral.",
+        "path": "model.md",
+        "section": "tanh-sinh-trace",
+        "status": "partial_source_model",
+        "type": "truncated_transform_relation"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Polynomial and spline identities concern real arithmetic, not bitwise f64 agreement. Conditioning, cancellation and unsampled behavior remain unbounded. Deterministic callback is required to interpret repeated samples as one function; callback panic/resource cost and allocator failure are outside Result contracts. Tanh-sinh window [-3,3] omits tails.",
+        "domain": "Finite matched strictly increasing nodes, nonempty for Neville/Newton and at least2 for spline. Neville/Newton allow finite extrapolation; spline rejects queries outside its closed interval. Quadrature finite a<b and finite span, positive finite tolerance, budget>=2 trapezoid or>=7 tanh-sinh. Callback values and checked intermediate arithmetic must remain finite.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "interpolation-quadrature-estimator-rejection",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Trapezoid |Tnew-Told|/3 is a smooth asymptotic heuristic; tanh-sinh |Qnew-Qold| excludes truncation tails. A zero callback and a bump outside finite sampled points can have identical zero estimators but different integrals. Neither estimator composes into a generic1/2/5/10% accuracy bound or certifies interpolation error against an unknown function.",
+        "path": "model.md",
+        "section": "estimator-rejection",
+        "status": "partial_source_model",
+        "type": "unsampled_information_loss"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks (wave25-evidence)",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "interpolation-quadrature",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/adaptive_trapezoid/mod.rs",
+      "sha256": "a6544a1a540569bd4e4403c8503861cf8f18e225cff577309907e05aca6d4cb6"
+    },
+    {
+      "path": "algorithms/src/adaptive_trapezoid/tests.rs",
+      "sha256": "32a03cfd87d6aaecea4d3767441e20d0c397ce41bcad6491ed0d056c7fc5788e"
+    },
+    {
+      "path": "algorithms/src/natural_cubic_spline/mod.rs",
+      "sha256": "60625181f8e41c7bee36109e8e51b0329bd9e15b7ee3e2a1687d974aeda81634"
+    },
+    {
+      "path": "algorithms/src/natural_cubic_spline/tests.rs",
+      "sha256": "b7c754301cb64f4658b461fce77138ce0d6335d599618be0b1c858ee0f3d597d"
+    },
+    {
+      "path": "algorithms/src/neville_interpolation/mod.rs",
+      "sha256": "3de938e8c070d844bca6051ee92e2facb55a9c188798e6461c8b6a5bfa70beae"
+    },
+    {
+      "path": "algorithms/src/neville_interpolation/tests.rs",
+      "sha256": "25044ad8fe42b6c0fce425017cd9a0c330f3fb97fec7a4232a6cfb1e5f89e46a"
+    },
+    {
+      "path": "algorithms/src/newton_divided_differences/mod.rs",
+      "sha256": "74a121a10074b427637c057f0cc4819af6cc4b4a6aca8235f1431630abe15f73"
+    },
+    {
+      "path": "algorithms/src/newton_divided_differences/tests.rs",
+      "sha256": "8e7817407a4bc0760555ff5beab53f2616df49234f3f69c2d216a530488ecf07"
+    },
+    {
+      "path": "algorithms/src/tanh_sinh_quadrature/mod.rs",
+      "sha256": "38fe1375293f745583d0de0adb1b74347a7e501333f69995058fea4fb9e3ac16"
+    },
+    {
+      "path": "algorithms/src/tanh_sinh_quadrature/tests.rs",
+      "sha256": "5efce23efc25d2d9725291e2484059f06d86321d3da959be72cc845cd3834ec2"
+    }
+  ],
+  "status": "partial_source_bound_group"
+}

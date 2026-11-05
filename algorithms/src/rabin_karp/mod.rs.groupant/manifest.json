@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-rabin-karp",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "1118db3f3c038d290e9e97755ff37503cdf83702003c8bf8011fafe22420686c",
+    "raw_code_location": "outside_this_sidecar"
+  },
+  "status": "partial_descriptive_instance",
+  "components": {
+    "ast": {
+      "status": "partial",
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "source syntax only; no expansion or semantic resolution"
+    },
+    "approximant": {
+      "status": "partial",
+      "path": "model.md#approximant"
+    },
+    "invariant": {
+      "status": "partial",
+      "description": "model.md#approximant"
+    },
+    "descriptant": {
+      "status": "present",
+      "path": "model.md#descriptant"
+    },
+    "tests": {
+      "status": "existing_checks_referenced",
+      "path": "model.md#tests"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "type": "behavior_complement",
+        "required": true,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "type": "reverse_reconstruction",
+        "required": true,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "empty_boundary",
+        "type": "empty_boundary",
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "empty_boundary",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "overlap_period",
+        "type": "overlap_period",
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "overlap_period",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "alphabet_bijection",
+        "type": "alphabet_bijection",
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "alphabet_bijection",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "prefix_extension",
+        "type": "prefix_extension",
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "prefix_extension",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "hash_collision",
+        "type": "hash_collision",
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "hash_collision",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "rolling_state",
+        "type": "rolling_state",
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "rolling_state",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      }
+    ]
+  },
+  "registry": {
+    "path": "../../../../models/contracts.json",
+    "node": "algorithm-rabin-karp"
+  },
+  "extensions": {
+    "limits": "No universal proof or executable fast approximant; allocation and Eq costs retain explicit premises."
+  }
+}

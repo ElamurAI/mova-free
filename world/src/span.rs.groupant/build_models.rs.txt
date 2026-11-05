@@ -1,0 +1,104 @@
+//! Regenerate declarations from the existing source-bound syntax projection; run from repository root.
+use serde_json::{json,Value};
+use std::{fs,path::Path};
+const ROOT:&str="world/src/span.rs.groupant";
+type Model=(&'static str,&'static str,&'static str);
+fn main(){
+ let src=fs::read_to_string("world/src/span.rs").unwrap();
+ let ast:Value=serde_json::from_str(&fs::read_to_string(format!("{ROOT}/syntax.json")).unwrap()).unwrap();
+ let roots:Vec<Model>=vec![
+ ("behavior-complement","behavior_complement","U=terminating extract calls on valid acyclic trees paired with arbitrary optional (text,rule); R=actual return graph. Inner U minus R excludes Some on empty trees, a Num rule other than nummod, and non-Num success with no content or majority echoed content. Num bypasses cleaning; extending the latter exclusion to Num is false."),
+ ("reverse-reconstruction","reverse_reconstruction","Observed (text,rule) retains every compatible Want, tree, anchor and candidate index list reaching that label and output. None retains empty trees, absent anchors, rejected candidates and exhausted scans. This necessary-constraint outer preimage preserves repeated words, deleted edges and distinct syntax; there is no unique semantic inverse."),
+ ("routing-fiber","reverse_reconstruction","Fixed other frame fields: Say/Think map to Say; Want/Obj/WhoObj to Obj; WhoSubj/WhatSubj/WhoIs to Subj; Happen/HappenTo to After iff sub is Some, else Clause; Generic to Clause. Fibers retain all matching kinds and all payloads of the required sub presence."),
+ ("predicate-priority","priority_relation","For each preds entry in caller order, rank matching tokens VERB=0, ADJ/AUX=1, NOUN=2, other=3, preserving earliest rank tie. Accept rank<3 then stop. Earlier predicate noun beats later predicate verb. PROPN alone is rejected, even though downstream branches mention PROPN."),
+ ("cleaning-fiber","reverse_reconstruction","Fixed tree/qlem and observed indices J: retain every input list whose sort/dedup and asymmetric edge trim yields J and whose content passes 2*echo<=content, content>0. Duplicates, permutations and removable edges are lost; text-only observations additionally merge repeated forms."),
+ ("early-return-shadow","behavior_complement","Inner U minus R on a fixed dispatch path excludes later candidate outputs once an earlier matched branch executes return out, including when clean returns None. Obj final oblique loop retries after failure, and Do/Clause After if-let falls through after None; these exceptions prevent a global no-retry claim."),
+ ("numeric-bypass","information_loss","Want::Num returns raw form of first global base=Nummod OR UPOS=NUM token, label nummod. Predicate and qlem do not constrain it. All changes preserving this first qualifying token preserve observation, regardless of relevance to the question."),
+ ("location-time","constraint_relation","Where local scan accepts selected locative Obl excluding TIME_N or LOC_ADV Advmod; global fallback scans Obl only. When searches verb_kids if p exists, all indices otherwise; first time-marked Advcl precedes temporal Obl. These lexical heuristics do not prove temporal/spatial semantics."),
+ ("reason-horizon","resource_boundary","Why scans p and at most two permitted head steps before lexical fallbacks. An ancestor beyond three chain nodes is outside the structural scan, but lexical because/for/since can still recover words there. Complement exclusion requires holding fallback triggers absent."),
+ ("feeling-envelope","information_loss","Feel scans all tokens irrespective of p for first eligible emotional predicate, then emits contiguous envelope of selected adjective/intensifier/conjunction indices. Intermediate unselected words may enter; rejected first candidate ends branch. Emotion noun fallback occurs only when no adjective candidate exists."),
+ ("fallback-objective","counterfactual","minus_question chooses maximal CONTENT-count run split by echoed content tokens, earliest tie, count>=2, then cleans once. Maximizing token length or trying a runner-up after cleanup failure defines a different system; equal-content unequal-length runs distinguish them."),
+ ("rule-fiber","reverse_reconstruction","Rule labels retain branch ambiguity: conj-after has child and sibling paths; obj/ccomp/xcomp occur in Obj and Say. A rule is an operational diagnostic, not a proof of causal or answer truth; different Wants and trees remain compatible.")
+ ];
+ emit("", "answer-span",None,&roots,
+ "want_of routes metadata; extract finds predicate then dispatches ordered rules, usually cleaning and joining selected indices. Num bypasses clean. minus_question is separately called by external code.",
+ "Non-Num success contains ordered unique indices, positive content and echo<=half. Inputs unchanged. Acyclic consistent Tree is a termination assumption, not checked here.",
+ "find_pred O(p*n*L) with morphology cost L. Conservative O(n^3+n^2 log n+p*n*L) for repeated subtree/sort/clean operations under constant-cost memberships; clean's front removals cost O(m^2). String bytes, hash worst cases and dependency internals remain gaps.",
+ &["routing","predicate","normalization","extraction"],&src,&ast);
+ let specs:Vec<(&str,&str,&str,&str,Vec<Model>,&str,&str,&str,Vec<&str>)>=vec![
+ ("routing","answer-span-routing","pub enum Want","const LOC_CASE",vec![
+ ("behavior-complement","behavior_complement","U=QFrame x Want; R=want_of graph. Exact source-derived U minus R excludes every alternative to kind/sub-presence table result. Happen with absent sub cannot produce After."),
+ ("reverse-reconstruction","reverse_reconstruction","Recover all kind/sub-presence pairs mapping to observed Want; other fields arbitrary. Say/Think and object/subject groups preserve ambiguity; Clause admits Generic and Happen/HappenTo with absent sub."),
+ ("sub-presence","counterfactual","Switch only sub None to Some(any Clause): Happen/HappenTo changes Clause to After; every other kind is unchanged. Sub payload content is unobserved."),
+ ("name-code","encoding_relation","name maps the 13 Want variants injectively to their lowercase names. Inversion is defined only on those names, not extract rule labels or arbitrary text.")
+ ],"Pure kind routing with sub-presence branch for Happen/HappenTo.","Routing never reads sub contents or tree.","O(1), no name allocation.",vec![]),
+ ("predicate","answer-span-predicate","pub fn find_pred","fn is_pron",vec![
+ ("behavior-complement","behavior_complement","U=(Tree,preds) x Option<index>; R=find_pred. Inner U minus R excludes out-of-range outputs, rank-3 outputs and later equal-rank hits when earlier hits exist for first admissible predicate."),
+ ("reverse-reconstruction","reverse_reconstruction","For Some(i), retain all lists with a first admissible predicate whose minimum (rank,index) hit is i; preceding entries may match only rank 3. None includes empty lists, no hits and rank-3-only hits. Morphology ambiguity remains."),
+ ("lexical-rank","priority_relation","Fixed predicate and hit set: choose minimum (rank,index), requiring rank<3. Hit means equal lemma, equal form or ans::lemmas(form) membership. Changing POS can change winner without changing spelling."),
+ ("suffix-equivalence","information_loss","Any preds suffix after first accepted predicate is unobserved. Inserting predicates having no admissible matches before it preserves output. This is a sufficient equivalence family, not exhaustive.")
+ ],"Scan caller predicates then token ranks; return first admissible minimum.","Tie keeps earliest token; PROPN has rank 3.","O(p*n*L) with opaque morphology allocations.",vec![]),
+ ("normalization","answer-span-normalization","fn is_pron","fn case_of",vec![
+ ("behavior-complement","behavior_complement","U=(Tree,valid indices,qlem) x optional indices; R=clean. Inner U minus R excludes success unsorted/duplicate, content-free, majority-echo, leading EDGE/Cc/Punct/Mark or trailing EDGE/Cc/Punct. Non-EDGE trailing Mark is not excluded."),
+ ("reverse-reconstruction","reverse_reconstruction","For J retain all index lists whose sorting/dedup and edge trim gives J and echo gate passes. Duplicates/permutations/trimmed edges arbitrary within that constraint. None fibers include no-content and majority-echo candidates."),
+ ("echo-threshold","threshold_relation","For c>0 content and e echoed content, success iff 2e<=c; equality c=2,e=1 passes. c=0 separately fails. Adding qlem membership can cross threshold; echo==c test is redundant when c>0."),
+ ("pronoun-vacuity","constraint_relation","is_pron is universal PRON/DET/PUNCT membership, true for empty indices. It is separate from clean: mixed PRON+NOUN is not pronoun-only but may fail echo. Selected subject/object/speech gates use it before cleanup.")
+ ],"Sort/dedup, asymmetric edge trim, then content/echo gate; is_pron is a separate predicate.","Interior EDGE tokens remain; valid indices required.","O(m log m+m^2) time, O(m) auxiliary content.",vec![]),
+ ("extraction","answer-span-extraction","pub fn extract","/// Fallback span",vec![
+ ("behavior-complement","behavior_complement","U=full valid extract calls x optional (text,rule); R=extract. Inner U minus R contains Some on empty input and branch-impossible labels. After immediate return out, later branch outputs are excluded even if returned value is None."),
+ ("reverse-reconstruction","reverse_reconstruction","Union compatible Wants, anchors, candidates and cleaning fibers; retain intermediate p and index lists existentially. None combines absent candidates and rejected candidates; shared rule labels do not identify unique branches."),
+ ("child-order","priority_relation","verb_kids concatenates direct children then children of each direct Xcomp, no Conj expansion or shared-subject test despite comment. Obj tries Obj,Ccomp,Xcomp,Iobj; skips pronoun-only matches but stops on non-pronoun cleanup failure."),
+ ("global-selection","constraint_relation","Num/Feel scan globally. Where has global fallback; When global scan only without predicate. Say needs p but selects first quote pair globally, not speech attached to p. Anchor association is a heuristic gap.")
+ ],"Ordered dispatch, shared clean/text closure, numeric exception; Why and clauses are refined children.","Borrowed inputs unchanged; no semantic truth claimed.","Repeated helper work; overlapping child scopes are not additive costs.",vec!["why","clauses"]),
+ ("extraction.groupant/why","answer-span-why","        Want::Why => {","        Want::How => {",vec![
+ ("behavior-complement","behavior_complement","U=valid Want::Why calls x optional output; R=Why branch. Inner U minus R excludes Some when p absent and later-rule outputs after earlier matched return. No nearby Advcl is insufficient exclusion because other patterns/fallbacks exist."),
+ ("reverse-reconstruction","reverse_reconstruction","advcl:because admits all chains with first qualifying outside-chain Advcl, stripped direct Mark/Cc then clean. words: because Y admits every earlier p, first qualifying post-p because/for/since with UPOS!=ADP and punctuation-bounded suffix. Deleted markers/context ambiguous."),
+ ("chain-bound","resource_boundary","p plus two head attempts through Xcomp/Ccomp/Obj/Conj/Advcl/Nsubj/Obl yields at most three chain nodes. No further structural ancestor scan; changing distant words may still affect lexical fallback."),
+ ("reason-order","priority_relation","Per near-to-far node: WHY_MARK Advcl, later for/because Conj, later to-purpose, selected oblique cases, so-result head-minus-x, that-result head-minus-x. Then lexical X,so and because-Y. Ordered syntax heuristics are not causal entailment.")
+ ],"Bounded ancestor scan, ordered structural reason patterns, then token fallbacks.","WHY_MARK matches any mark word; When uses first mark word.","At most three chain scans, subtree/clean plus O(n) lexical scan.",vec![]),
+ ("extraction.groupant/clauses","answer-span-clauses","        Want::Do | Want::Clause => {","        Want::Say => {",vec![
+ ("behavior-complement","behavior_complement","U=valid Do/Clause/After calls x optional output; R=scoped branch. Inner U minus R excludes After success without sub_preds anchor. Do ordinary path removes direct subject subtree; identical words elsewhere can still appear."),
+ ("reverse-reconstruction","reverse_reconstruction","clause-subj retains every p/root and generated cut-set producing cleaned output. conj-after retains both later anchor children and later siblings under a Conj anchor; output does not distinguish those antecedents."),
+ ("delegation-failure","composition_relation","Do/Clause delegates to After when sub_preds anchor exists. After None falls through. Successful After may be replaced in Do by main-minus-anchor/subject; if replacement clean fails, None is returned instead of restoring successful After."),
+ ("after-order","priority_relation","After chooses Advcl main-minus-anchor/parataxis, then first later that-marked Ccomp/Advcl, then later Conj VERB/ADJ children, then later Conj siblings for Conj anchor. These are selected continuations, not verified temporal consequences.")
+ ],"After continuation selection composes with Do/Clause subject/cut rules and fallback.","Recursion depth bounded: Do/Clause invokes After which never recurses.","At most one recursive extraction; repeated predicate scans charged.",vec![])
+ ];
+ for(path,id,start,end,models,f,i,c,ch)in specs{
+ let lo=src.find(start).unwrap();let hi=lo+src[lo..].find(end).unwrap();
+ emit(path,id,Some((lo,hi)),&models,f,i,c,&ch,&src,&ast);
+ }
+ let desc=json!({"id":"answer-span","source":"world/src/span.rs","description":"Heuristic syntactic answer span selection, not semantic truth.","state":"Tree, Want, ordered predicates, subordinate predicates, QFrame, qlem","forward":["Find predicate; dispatch; normalize selected indices; numeric bypass."],"inverse":["Retain compatible inputs and discarded material; labels overlap."],"invariants":["Non-Num success content-positive and at most half echoed."],"cost":"See adjacent catalog.","checks":["mova-modelcheck groupants"],"limitations":["Opaque dependencies; no semantic accuracy proof."]});
+ fs::write(format!("{ROOT}/registry-node.json"),serde_json::to_string_pretty(&desc).unwrap()+"\n").unwrap();
+ println!("7 nodes, 36 models, 6 fragments");
+}
+
+fn emit(path:&str,id:&str,bounds:Option<(usize,usize)>,models:&[Model],forward:&str,inv:&str,cost:&str,children:&[&str],src:&str,ast:&Value){
+ let rel=if path.is_empty(){String::new()}else{format!("{path}.groupant")};
+ let dir=Path::new(ROOT).join(&rel);fs::create_dir_all(&dir).unwrap();
+ let depth=if path.is_empty(){0}else{path.matches('/').count()+1};let up="../".repeat(depth);
+ let mut text=format!("# {id}\n\nSubject: world/src/span.rs, whole-file SHA-256 in manifest, baseline 4279da541. Domain: finite acyclic valid trees with consistent child lists, valid indices and terminating dependencies. Observation: a single call return, not semantic truth or reachability. Hold Tree, ans::lemmas and types::FEELING dependencies fixed; parser/model loading and external caller wiring are gaps. All entries are source-derived partial models. Exact-target definitions are not executable inverses; finite tests cannot establish universal correspondence.\n\n## forward\n\n{forward}\n\n## invariant\n\n{inv}\n\n## cost\n\n{cost}\n\n## epoch-memory\n\n2026-10-29: initial source-bound epoch. Preserve Num bypass, global Feel selection, early-return cleanup suppression, and verb_kids comment mismatch: code expands Xcomp only and checks no shared subject. No source changes or task-accuracy claim. Partial syntax has no semantic analysis or macro expansion.\n\n## checks\n\nStructural inventory checks hashes, references, types and node bounds only. Proposed oracle: enumerate small annotated acyclic trees and compare literal expected returns, including None and labels; mutate priority or echo inequality to obtain a red control. Any executed bounded evidence is recorded separately in root evidence.md; catalog examples remain proposed until recorded there.\n\n## composition\n\n");
+ text.push_str(if children.is_empty(){"Leaf scope shares immutable tree/question/helper contracts. Overlap with parent is not extra runtime work. Dependencies outside range remain opaque.\n"}else{"Children share immutable Tree and question state. Routing yields Want, predicate selection yields p, dispatch yields candidate indices, normalization yields text; Num bypasses normalization. Guarded branches compose as a union, sequential stages via existential intermediates. Reverse keeps all compatible intermediates; complement is this node's U minus composed R, not union of child complements. Why/clauses overlap extraction. minus_question is separate API and caller wiring is outside file. Do/Clause delegation falls through after After None but most direct branch returns stop on clean None.\n"});
+ let entries:Vec<Value>=models.iter().map(|(name,ty,body)|{
+ text.push_str(&format!("\n## {name}\n\n{body}\n\nAssumptions/evidence/status: common domain above; source-derived partial relation at bound revision. Approximation and held-fixed inputs are stated in the relation. Oracle: finite literal fixtures exercising both membership and nonmembership against the actual function, preserving ambiguous preimages. No linguistic correctness or universal proof inferred.\n"));
+ json!({"id":format!("{id}-{name}"),"type":ty,"path":"model.md","section":name,"status":"partial_source_model"})
+ }).collect();
+ fs::write(dir.join("model.md"),text).unwrap();
+ let mut c=json!({"ast":{"status":"partial","format":"rust_syntax_projection","path":format!("{up}syntax.json")},"obernants":entries});
+ for(key,section)in[("approximant","forward"),("invariant","invariant"),("cost","cost"),("descriptant","epoch-memory"),("tests","checks")]{
+ c[key]=json!({"path":"model.md","section":section,"status":"partial_source_model"});
+ }
+ if !children.is_empty(){c["composition"]=json!({"path":"model.md","section":"composition","status":"partial_source_model"});}
+ let mut m=json!({"schema":1,"kind":if depth==0{"groupant"}else{"groupant_fragment"},"id":id,"status":"partial_source_bound_model","source":{"path":format!("{up}../span.rs"),"sha256":ast["source"]["sha256"]},"components":c});
+ if let Some((lo,hi))=bounds{
+ let nodes:Vec<&Value>=ast["nodes"].as_array().unwrap().iter().filter(|n|{
+ let a=n["start"].as_u64().unwrap()as usize;let b=n["end"].as_u64().unwrap()as usize;
+ a>=lo&&b<=hi&&b>a&&(n["category"]=="item"||n["category"]=="expression")
+ }).collect();
+ let a=nodes.iter().map(|n|n["start"].as_u64().unwrap()).min().unwrap();
+ let b=nodes.iter().map(|n|n["end"].as_u64().unwrap()).max().unwrap();
+ let ids:Vec<_>=nodes.iter().filter(|n|n["start"].as_u64()==Some(a)||n["end"].as_u64()==Some(b)).map(|n|n["id"].clone()).collect();
+ m["coverage"]=json!({"description":format!("Source scope beginning {}; selected node envelope, partial semantic coverage.",src[lo..hi].lines().next().unwrap()),"byte_range":{"start":a,"end":b},"syntax_nodes":{"path":format!("{up}syntax.json"),"node_ids":ids}});
+ }
+ if !children.is_empty(){m["children"]=json!(children.iter().map(|name|json!({"id":format!("answer-span-{name}"),"path":format!("{name}.groupant")})).collect::<Vec<_>>());}
+ fs::write(dir.join("manifest.json"),serde_json::to_string_pretty(&m).unwrap()+"\n").unwrap();
+}

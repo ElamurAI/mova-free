@@ -1,0 +1,31 @@
+{
+  "checks": [
+    "sliding_window_minimum::tests: seven tests in debug and release, repeated outcomes",
+    "Three added source-level correspondence tests and explicit missing-premise counterexamples",
+    "Compiled production mutation rejected by a new test",
+    "Strict crate Clippy with all targets; formatting; repeated source-bound syntax"
+  ],
+  "cost": "Valid widths: O(n) comparisons, O(w) auxiliary indices, O(n-w+1) output indices. Invalid widths O(1). No clones; comparison costs are user-defined; allocation failure outside model.",
+  "description": "For input A length n and width w, return [] if w=0 or w>n. Otherwise output n-w+1 indices; output[s] is the smallest index minimizing A on [s,s+w). Input is borrowed and unchanged. Deep relation epoch adds scoped decomposition, transport/state and reconstruction constraints with explicit tie premises.",
+  "forward": [
+    "For input A length n and width w, return [] if w=0 or w>n. Otherwise output n-w+1 indices; output[s] is the smallest index minimizing A on [s,s+w). Input is borrowed and unchanged."
+  ],
+  "id": "algorithm-sliding-window-minimum",
+  "inverse": [
+    "In the universe of (A,w,index vector), exclude nonempty outputs for zero/oversized widths, wrong output lengths for valid widths, out-of-window indices, nonminimal values and rightward tie choices. Input mutation is excluded.",
+    "An output vector J admits widths and arrays satisfying n=|J|+w-1 and, for each s, s<=J[s]<s+w, A[J[s]]<=A[k] throughout that window and strict inequality for k<J[s]. Empty output admits w=0 or w>n. Many arrays satisfy these constraints; unique reconstruction is not claimed.",
+    "For any valid window R partitioned into adjacent subranges, its witness is the lexicographic minimum (A[i],i) of the subrange witnesses. None is the identity for an empty subrange. Equal values require minimum source index, not arbitrary deque insertion position.",
+    "For fixed positive w and 0<=k<=n-w, let J=minimum_indices(A,w), L=minimum_indices(A[k..],w). For every local start s, L[s]+k=J[s+k]. Local indices must be shifted before comparison; raw equality is not a correct sliced-window contract.",
+    "If j is the leftmost argmin of R and j belongs to nonempty subwindow S contained in R, j is also the leftmost argmin of S. Containment alone is insufficient when S drops j: [0,2,1] has global witness 0, while suffix [2,1] has local witness 1.",
+    "An order embedding f preserves the entire output vector for every width, including invalid widths. Equalities and strict order on observed values must survive. A nondecreasing collapse of [1,0] to [0,0] changes the leftmost witness, disproving the weaker premise.",
+    "Fix n,w with 1<=w<=n and candidate J of length n-w+1. Its preimage is the intersection over starts s of constraints s<=J[s]<s+w, A[J[s]]<=A[k] throughout the window and strict inequality for k<J[s]. All constraints concern one shared A; independent per-window witnesses cannot be pasted without consistency. This relation retains every compatible A and does not reconstruct unique magnitudes.",
+    "For w=1 and fixed n, J=[0,...,n-1] for every value vector. Thus the index observation has the entire lawful value-vector domain as preimage; no value recovery is possible. For n=0 width one is invalid and the output is empty. Minimum values supplied separately would permit reconstruction."
+  ],
+  "limitations": [
+    "Finite evidence is not all-input proof.",
+    "Partial syntax projection omits macro expansion and semantic resolution.",
+    "No lossy approximant profile."
+  ],
+  "source": "algorithms/src/sliding_window_minimum/mod.rs",
+  "state": "Deque indices strictly increase, are unexpired, and their values are nondecreasing. A removed suffix index has a strictly smaller, later dominator that expires no sooner. Equal values remain, so the front is always the leftmost minimum. Each input index is pushed once and removed at most once."
+}

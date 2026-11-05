@@ -125,3 +125,50 @@ pub fn say(line: &str) -> Result<String> {
     BufReader::new(&c).read_line(&mut r)?;
     Ok(r.trim().to_string())
 }
+
+#[cfg(test)]
+mod wave12_models {
+    use super::*;
+
+    #[test]
+    fn line_projection_finite_oracle() {
+        let rows = [
+            ("", vec![]),
+            ("  # hidden", vec![]),
+            ("- Alpha.", vec!["Alpha."]),
+            ("A. B! C?", vec!["A.", "B!", "C?"]),
+            ("A. lower", vec!["A. lower"]),
+            ("é. É!", vec!["é.", "É!"]),
+            ("- - A.", vec!["A."]),
+        ];
+        for (a, expected_a) in &rows {
+            for (b, expected_b) in &rows {
+                let expected: Vec<_> = expected_a.iter().chain(expected_b).copied().collect();
+                assert_eq!(sentences(&format!("{a}\n{b}")), expected, "{a:?}, {b:?}");
+            }
+        }
+    }
+
+    #[test]
+    fn blank_tell_reply_preserve_story() {
+        let mut st = Story::default();
+        assert!(st.set_me("Ada"));
+        let before = st.state_lines();
+        for input in ["", "   ", "# Heading\n\n"] {
+            assert_eq!(tell(&mut st, input), (0, vec![]));
+            assert_eq!(reply(&mut st, input), "Understood (0 sentences).");
+            assert_eq!(st.state_lines(), before);
+            assert!(st.set_me("ADA"));
+            assert!(!st.set_me("Other"));
+        }
+    }
+
+    #[test]
+    fn heading_filter_precedes_bullet_removal() {
+        assert_eq!(
+            sentences("# omit\n- # keep\n## omit too\n  Text  "),
+            ["# keep", "Text"]
+        );
+        assert_eq!(sentences("A.\nB?\nC!"), ["A.", "B?", "C!"]);
+    }
+}

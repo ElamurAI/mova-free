@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test --release -p mova-modules torrent",
+    "rqbit 9.1.0 seeded the 0.5 torrents and fetched each from a bare magnet link (2026-11-05)"
+  ],
+  "cost": "B bytes: SHA-1 pass O(B); module folders: SHA-256 verification O(B), all files in memory; single files streamed, one piece in memory.",
+  "description": "BitTorrent v1 metainfo: of a verified module folder (multi-file) or of one release archive (single-file, streamed): canonical bencode with byte-ordered keys, SHA-1 pieces, info hash, trackers, BEP 19 web seeds, magnet links with xl, ws and xs; reading single-file metainfo, parsing magnet links (hex or base32 btih) and verifying a file piece by piece.",
+  "forward": [
+    "make verifies the folder, orders files by path, hashes pieces of a power-of-two length (256 KiB..16 MiB, about 2 000 pieces at most), builds info {files, name <name>-<version>, piece length, pieces}, and writes deterministic bytes with comment, announce-list and url-list."
+  ],
+  "id": "mova-modules-torrent",
+  "inverse": [
+    "Behavior complement: no transfers, trackers, DHT, BEP 9 metadata exchange, multi-file reading, v2 torrents, private flag or web-seed reachability check.",
+    "Reverse reconstruction: names, lengths and order exactly from info; contents only up to SHA-1 piece search; licence only from the comment outside the info hash."
+  ],
+  "limitations": [
+    "Partial source model; finite tests; an external client (rqbit 9.1.0) loaded and seeded the single-file output on 2026-11-05."
+  ],
+  "source": "tools/modules/src/torrent.rs",
+  "state": "Stateless; output bytes depend only on the folder and options."
+}

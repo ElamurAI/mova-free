@@ -1,34 +1,64 @@
 //! Small helpers: sha1, time without third-party crates, paths with "~" and a simple glob with "*".
 
+use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
-use anyhow::{Context, Result};
+use anyhow::{Context, Result, bail};
 use sha1::{Digest, Sha1};
 
-/// Treebank cards (`treebanks/<language>/<code>/README.md`): the generator (`tools/treebanks`) writes English
-/// labels, older committed cards still have Ukrainian ones (written here with `\u{…}` escapes: "Size", "total",
-/// "UD name", "License", "Genres", "Authors", "Treebank code"). Both are accepted; values go to the database
-/// under the English keys.
-pub const CARD_SIZE_HEADINGS: [&str; 2] = ["## Size", "## \u{41e}\u{431}\u{441}\u{44f}\u{433}"];
-/// Row labels of the size table meaning the whole treebank → part name "total".
-pub const CARD_TOTALS: [&str; 2] = ["total", "\u{440}\u{430}\u{437}\u{43e}\u{43c}"];
-/// Card field label → key in `runs.params.fields`.
-pub const CARD_FIELDS: [(&str, &str); 10] = [
-    ("UD name", "ud_name"),
-    ("License", "license"),
-    ("Genres", "genres"),
-    ("Authors", "authors"),
-    ("Treebank code", "code"),
-    ("\u{41d}\u{430}\u{437}\u{432}\u{430} UD", "ud_name"),
-    ("\u{41b}\u{456}\u{446}\u{435}\u{43d}\u{437}\u{456}\u{44f}", "license"),
-    ("\u{416}\u{430}\u{43d}\u{440}\u{438}", "genres"),
-    ("\u{410}\u{432}\u{442}\u{43e}\u{440}\u{438}", "authors"),
-    ("\u{41a}\u{43e}\u{434} \u{442}\u{440}\u{438}\u{431}\u{430}\u{43d}\u{43a}\u{443}", "code"),
-];
+/// Size columns of a treebank fact row: part → five numbers (sentences, tokens, words, multiword, empty).
+pub const CARD_PARTS: [&str; 4] = ["train", "dev", "test", "total"];
 
-/// Part name of a size-table row: "total" for either total label, otherwise as written.
-pub fn card_part(label: &str) -> &str {
-    if CARD_TOTALS.contains(&label) { "total" } else { label }
+/// Treebank facts `treebanks/cards.tsv` (written by `tools/treebanks`): a header of column names, one row per
+/// treebank. Returns the first row satisfying `pred`, column → value.
+pub fn card_row(tsv: &Path, pred: impl Fn(&BTreeMap<String, String>) -> bool) -> Result<BTreeMap<String, String>> {
+    let text = std::fs::read_to_string(tsv).with_context(|| tsv.display().to_string())?;
+    let mut lines = text.lines();
+    let head: Vec<&str> = lines.next().unwrap_or("").split('\t').collect();
+    if !head.contains(&"ud_name") || CARD_PARTS.iter().any(|p| !head.contains(p)) {
+        bail!("{}: not a treebank cards table (no ud_name or size columns)", tsv.display());
+    }
+    for l in lines {
+        let row: BTreeMap<String, String> = head.iter().zip(l.split('\t')).map(|(k, v)| (k.to_string(), v.to_string())).collect();
+        if pred(&row) {
+            return Ok(row);
+        }
+    }
+    bail!("{}: no matching treebank row", tsv.display())
+}
+
+/// Sizes of a fact row: part → [sentences, tokens, words, multiword, empty]. An absent split is empty and left
+/// out; a value that is not five numbers is an error, so a broken table cannot pass a size check.
+pub fn card_volume(row: &BTreeMap<String, String>) -> Result<serde_json::Map<String, serde_json::Value>> {
+    let mut out = serde_json::Map::new();
+    for p in CARD_PARTS {
+        let v = row.get(p).map_or("", String::as_str);
+        if v.is_empty() {
+            continue;
+        }
+        let nums: Vec<i64> = v.split_whitespace().map(str::parse).collect::<std::result::Result<_, _>>().with_context(|| format!("size {p} = {v:?}"))?;
+        if nums.len() != 5 {
+            bail!("size {p} = {v:?}: expected five numbers");
+        }
+        out.insert(p.to_string(), serde_json::json!(nums));
+    }
+    Ok(out)
+}
+
+/// A card reference stored in the database: `<path to cards.tsv>#<UD name>`. A reference to a per-treebank
+/// `treebanks/<lang>/<code>/README.md` is looked up in the `cards.tsv` of that treebanks folder by language and code.
+pub fn card_lookup(card: &str) -> Result<BTreeMap<String, String>> {
+    if let Some((tsv, dir)) = card.rsplit_once('#') {
+        return card_row(Path::new(tsv), |r| r.get("ud_name").is_some_and(|x| x == dir)).with_context(|| format!("treebank {dir}"));
+    }
+    let p = Path::new(card);
+    let code = p.parent().and_then(Path::file_name).map(|x| x.to_string_lossy().into_owned()).unwrap_or_default();
+    let lang_dir = p.parent().and_then(Path::parent);
+    let lang = lang_dir.and_then(Path::file_name).map(|x| x.to_string_lossy().into_owned()).unwrap_or_default();
+    let Some(root) = lang_dir.and_then(Path::parent).filter(|_| p.file_name().is_some_and(|n| n == "README.md")) else {
+        bail!("{card}: not a treebank card reference");
+    };
+    card_row(&root.join("cards.tsv"), |r| r.get("lang") == Some(&lang) && r.get("treebank") == Some(&code))
 }
 
 pub fn sha1_hex(bytes: &[u8]) -> String {

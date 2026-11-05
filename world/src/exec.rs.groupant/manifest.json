@@ -1,0 +1,193 @@
+{
+  "children": [
+    {
+      "id": "execution-ordered-workers",
+      "path": "workers.groupant"
+    },
+    {
+      "id": "execution-mode-parser",
+      "path": "parser.groupant"
+    },
+    {
+      "id": "execution-native-correspondence",
+      "path": "correspondence.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "scope": "U consists of (build, environment history, texts, tagged Ok/Error/Exit outcome). R selects the latched mode and executes its pipeline. U minus R includes successful truncated returns after worker panic, successful GPU dispatch in a CPU-only build, and switching mode after a valid latch. Resource aborts and parser quality are outside this bound.",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "scope": "For Ok word batches y, R^-1(y) contains all texts and parser states mapping to y, with input count equal to output count. Casing, ambiguity and approximate GPU outputs prevent unique text recovery.",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "ordered-map",
+        "path": "model.md",
+        "scope": "For pure f, positive cap and completed jobs, y[i]=f(x[i]); joining and flattening follow source slice order regardless of completion order.",
+        "section": "ordered-map",
+        "status": "partial_source_derived_model",
+        "type": "order_preservation"
+      },
+      {
+        "id": "join-barrier",
+        "path": "model.md",
+        "scope": "All spawned handles are joined before Result collection; any join panic produces Err. Already completed side effects survive. Public par_map converts Err into a panic.",
+        "section": "join-barrier",
+        "status": "partial_source_derived_model",
+        "type": "failure_partition"
+      },
+      {
+        "id": "thread-cap",
+        "path": "model.md",
+        "scope": "Let t=min(available_parallelism or 4,cap)>0 and c=max(ceil(n/t),1). Worker count is ceil(n/c) for n>0 and zero otherwise. cap=0 is outside the helper model.",
+        "section": "thread-cap",
+        "status": "partial_source_derived_model",
+        "type": "resource_bound"
+      },
+      {
+        "id": "mode-latch",
+        "path": "model.md",
+        "scope": "Empty OnceLock takes the first accepted environment mode; later environment edits cannot change that stored mode. GPU requires a feature-enabled build.",
+        "section": "mode-latch",
+        "status": "partial_source_derived_model",
+        "type": "state_transition"
+      },
+      {
+        "id": "mode-failure",
+        "path": "model.md",
+        "scope": "Before a mode latch, exit(2) corresponds to a Unicode value other than cpu/gpu or gpu without feature. Missing or non-Unicode environment lookup errors choose CPU.",
+        "section": "mode-failure",
+        "status": "partial_source_derived_model",
+        "type": "failure_preimage"
+      },
+      {
+        "id": "cpu-exact",
+        "path": "model.md",
+        "scope": "With the same annotator and no worker panic, CPU result is the sequence Tree::parse_cased(a,text).w. This says nothing about parse correctness or GPU agreement.",
+        "section": "cpu-exact",
+        "status": "partial_source_derived_model",
+        "type": "dependency_equivalence"
+      },
+      {
+        "id": "gpu-shape",
+        "path": "model.md",
+        "scope": "GPU success requires predicted sentence count equal to nonempty-token inputs and per-sentence token count equality; scatter preserves original empty sentence positions.",
+        "section": "gpu-shape",
+        "status": "partial_source_derived_model",
+        "type": "cardinality_constraint"
+      },
+      {
+        "id": "gpu-labels",
+        "path": "model.md",
+        "scope": "Unknown tags fall back to NN; relations try full label, then pre-colon base, then Dep. Distinct raw labels may therefore yield identical completed outputs.",
+        "section": "gpu-labels",
+        "status": "partial_source_derived_model",
+        "type": "information_loss"
+      },
+      {
+        "id": "gpu-cache",
+        "path": "model.md",
+        "scope": "GPU OnceLock stores the first Result of model load; failed initialization remains failure even after changing model path. Annotator acquisition precedes cache lookup.",
+        "section": "gpu-cache",
+        "status": "partial_source_derived_model",
+        "type": "state_fiber"
+      },
+      {
+        "id": "repair-normalize",
+        "path": "model.md",
+        "scope": "GPU finish repairs when WORLD_NO_REPAIR lookup errors, then lowercases form and lemma. Compatible input fibers include alternative case and pre-repair structures; switch is read per finish.",
+        "section": "repair-normalize",
+        "status": "partial_source_derived_model",
+        "type": "normalization_fiber"
+      },
+      {
+        "id": "product-fibers",
+        "path": "model.md",
+        "scope": "Native finite closure tests; explicit domains, preimages, resource and unwind assumptions in linked section.",
+        "section": "product-fibers",
+        "status": "bounded_source_correspondence",
+        "subject_revision": "180f88005a4cd3852f649059e420951c1fe9ad4a699c9d175358169f25e43b4d",
+        "type": "pointwise_preimage_product"
+      },
+      {
+        "id": "callback-frontiers",
+        "path": "model.md",
+        "scope": "Native finite closure tests; explicit domains, preimages, resource and unwind assumptions in linked section.",
+        "section": "callback-frontiers",
+        "status": "bounded_source_correspondence",
+        "subject_revision": "180f88005a4cd3852f649059e420951c1fe9ad4a699c9d175358169f25e43b4d",
+        "type": "per_worker_effect_prefix"
+      },
+      {
+        "id": "discarded-output-accounting",
+        "path": "model.md",
+        "scope": "Native finite closure tests; explicit domains, preimages, resource and unwind assumptions in linked section.",
+        "section": "discarded-output-accounting",
+        "status": "bounded_source_correspondence",
+        "subject_revision": "180f88005a4cd3852f649059e420951c1fe9ad4a699c9d175358169f25e43b4d",
+        "type": "owned_output_failure_frame"
+      },
+      {
+        "id": "stateful-observation-boundary",
+        "path": "model.md",
+        "scope": "Native finite closure tests; explicit domains, preimages, resource and unwind assumptions in linked section.",
+        "section": "stateful-observation-boundary",
+        "status": "bounded_source_correspondence",
+        "subject_revision": "180f88005a4cd3852f649059e420951c1fe9ad4a699c9d175358169f25e43b4d",
+        "type": "callback_state_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "coverage_recorded"
+    }
+  },
+  "id": "execution-dispatch",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../exec.rs",
+    "sha256": "180f88005a4cd3852f649059e420951c1fe9ad4a699c9d175358169f25e43b4d"
+  },
+  "status": "partial_source_derived_instance"
+}

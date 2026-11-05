@@ -87,3 +87,21 @@ fn main() -> Result<()> {
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn first_option() {
+        let a = vec![
+            "--par".into(),
+            "1".into(),
+            "--par".into(),
+            "2".into(),
+            "--cap".into(),
+        ];
+        assert_eq!(opt(&a, "--par"), Some("1"));
+        assert_eq!(opt(&a, "--cap"), None);
+        assert_eq!(opt(&a, "--missing"), None);
+    }
+}

@@ -297,3 +297,23 @@ fn filip_backslash_warns() {
     let out = it.take_output();
     assert!(out.contains("warning: rank deficient"), "expected a warning, got: {out}");
 }
+
+#[test]
+fn wave30_synthetic_helpers() {
+    let text = "Data (lines 3 to 4)\nunused\n1 2\n3 4\nignored 5\n";
+    let rows = data_rows(text);
+    assert_eq!(rows, vec![vec![1.0, 2.0], vec![3.0, 4.0]]);
+    assert_eq!(num(" 1.25D+2 "), 125.0);
+    assert_eq!(after("mean text\nmean 3D+0\nmean 4\n", "mean"), 3.0);
+    assert_eq!(lre(0.0, 0.0), 15.0);
+    assert_eq!(lre(f64::INFINITY, 1.0), 0.0);
+    assert!((lre(0.001, 0.0) - 3.0).abs() < 1e-12);
+    assert_eq!(
+        run(&format!(
+            "x = {}; printf('%.17g\\n', x);",
+            mat_literal(&rows)
+        )),
+        vec![1.0, 3.0, 2.0, 4.0]
+    );
+    assert_eq!(min_lre(&[], "absent"), 15.0);
+}

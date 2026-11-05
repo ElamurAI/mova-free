@@ -314,16 +314,32 @@ fn absurdity(w: &mut String) {
     writeln!(w, "];").unwrap();
 }
 
-/// A CC BY-SA table (Wiktionary): kept in the closed part of the repo (`tera/global/data/`), never in the free
-/// release. The crate builds without it — an absent file reads as empty.
+/// A CC BY-SA table (Wiktionary): private data outside the repository, `$MOVA_PETA_DATA/global/<name>`; the
+/// directory's machine default is the line `MOVA_PETA_DATA=<dir>` of the private `peta/paths.env`. Never in the free
+/// release. The crate builds without it — an absent file reads as empty. Only files that exist are watched: cargo
+/// treats a watched absent path as always changed and would rebuild the crate on every build of a public checkout.
 fn closed_data(name: &str) -> PathBuf {
-    PathBuf::from(std::env::var("CARGO_MANIFEST_DIR").unwrap()).join("../tera/global/data").join(name)
+    println!("cargo:rerun-if-env-changed=MOVA_PETA_DATA");
+    let env = PathBuf::from(std::env::var("CARGO_MANIFEST_DIR").unwrap()).join("../peta/paths.env");
+    if env.is_file() {
+        println!("cargo:rerun-if-changed={}", env.display());
+    }
+    let dir = std::env::var("MOVA_PETA_DATA").ok().filter(|v| !v.is_empty()).or_else(|| {
+        std::fs::read_to_string(&env).ok()?.lines().find_map(|l| l.trim().strip_prefix("MOVA_PETA_DATA=").map(|v| v.trim().to_string()))
+    });
+    let path = match dir {
+        Some(d) => PathBuf::from(d).join("global").join(name),
+        None => PathBuf::from(std::env::var("OUT_DIR").unwrap()).join("no-private-data").join(name),
+    };
+    if path.is_file() {
+        println!("cargo:rerun-if-changed={}", path.display());
+    }
+    path
 }
 
-/// The expression base (`expressions.tsv`, CC BY-SA, Wiktionary), from the closed part; empty without it.
+/// The expression base (`expressions.tsv`, CC BY-SA, Wiktionary), private data (`closed_data`); empty without it.
 fn expressions() {
     let path = closed_data("expressions.tsv");
-    println!("cargo:rerun-if-changed={}", path.display());
     let out = PathBuf::from(std::env::var("OUT_DIR").unwrap()).join("expressions.tsv");
     std::fs::write(&out, std::fs::read_to_string(&path).unwrap_or_default()).unwrap();
 }
@@ -332,7 +348,6 @@ fn expressions() {
 /// for binary search. Build gate: known kinds, no duplicate pairs.
 fn idioms(w: &mut String) {
     let path = closed_data("idioms.tsv");
-    println!("cargo:rerun-if-changed={}", path.display());
     let mut rows: BTreeMap<(String, String), String> = BTreeMap::new();
     for (i, l) in std::fs::read_to_string(&path).unwrap_or_default().lines().enumerate().filter(|(_, l)| !l.starts_with('#') && !l.trim().is_empty()) {
         let c: Vec<&str> = l.split('\t').collect();
@@ -348,4 +363,78 @@ fn idioms(w: &mut String) {
         writeln!(w, "    ({}, {}, {}),", q(v), q(o), q(k)).unwrap();
     }
     writeln!(w, "];").unwrap();
+}
+
+#[cfg(test)]
+mod wave29 {
+    use super::*;
+    #[test]
+    fn block_and_code_boundaries() {
+        assert!(blocks("```\nignored\n```\n").is_empty());
+        assert_eq!(
+            blocks("outside\n\x60\x60\x60concept\n a: a\n\n\x60\x60\x60other\n"),
+            vec![("concept".into(), vec!["a: a".into()])]
+        );
+        assert!(blocks("\x60\x60\x60concept\na: a").is_empty());
+        for s in ["", "EN:a", "e:a", "en:a:", "en:a:b:c", "a-b"] {
+            assert!(code_error(s).is_some(), "{s}");
+        }
+        for s in ["a", "en:a", "ukr:a:sense"] {
+            assert!(code_error(s).is_none(), "{s}");
+        }
+        assert_eq!(code_parts("a"), ("en".into(), "a".into(), "".into()));
+    }
+    #[test]
+    fn build_child() {
+        if std::env::var_os("MOVA_WAVE29_BUILD_CHILD").is_some() {
+            super::main();
+        }
+    }
+    #[test]
+    fn isolated_seed_compile_and_duplicate_gate() {
+        let root = std::env::temp_dir().join(format!("global-wave29-{}", std::process::id()));
+        let manifest = root.join("global");
+        let out = root.join("out");
+        std::fs::create_dir_all(manifest.join("seeds")).unwrap();
+        std::fs::create_dir_all(&out).unwrap();
+        let seed = manifest.join("seeds/synthetic.md");
+        std::fs::write(&seed, "\x60\x60\x60concept\nb: beta\na: alpha\n\x60\x60\x60\n\x60\x60\x60link\na -> b : synthetic\n\x60\x60\x60\n\x60\x60\x60measure\nnone = 0\n\x60\x60\x60\n").unwrap();
+        let run = || {
+            std::process::Command::new(std::env::current_exe().unwrap())
+                .args(["--exact", "wave29::build_child", "--nocapture"])
+                .env("MOVA_WAVE29_BUILD_CHILD", "1")
+                .env("CARGO_MANIFEST_DIR", &manifest)
+                .env("OUT_DIR", &out)
+                .env_remove("GLOBAL_EXCLUDE")
+                .output()
+                .unwrap()
+        };
+        let good = run();
+        assert!(
+            good.status.success(),
+            "{}",
+            String::from_utf8_lossy(&good.stdout)
+        );
+        let generated = std::fs::read_to_string(out.join("global.rs")).unwrap();
+        assert!(generated.contains("LinkDef { from: 0, to: 1,"));
+        assert!(generated.contains("(0, \"\")"));
+        assert_eq!(
+            std::fs::read(out.join("expressions.tsv")).unwrap(),
+            Vec::<u8>::new()
+        );
+        std::fs::write(
+            &seed,
+            "\x60\x60\x60concept\na: alpha\nen:a: alias\n\x60\x60\x60\n",
+        )
+        .unwrap();
+        let bad = run();
+        assert!(!bad.status.success());
+        let combined = format!(
+            "{}{}",
+            String::from_utf8_lossy(&bad.stdout),
+            String::from_utf8_lossy(&bad.stderr)
+        );
+        assert!(combined.contains("already declared"), "{combined}");
+        std::fs::remove_dir_all(root).unwrap();
+    }
 }

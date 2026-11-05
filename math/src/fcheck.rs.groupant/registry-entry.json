@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p math --lib -- fcheck::wave28",
+    "18 selected tests twice debug/twice release; seven compiled mutants and restored positives"
+  ],
+  "children": [],
+  "cost": "O(N) visited nodes/unit factors plus per-call buffers; median clones/sorts k floats O(k log k)/O(k). Option collect stops at first None; otherwise even ignored extra args evaluate. No recursion cap or numerical error certificate.",
+  "description": "eval_f64 projects legacy Expr to SI Option<f64>. Qty multiplies scale powers, Temp converts to kelvin, Convert ignores target. Var=None; arithmetic may return Some(NaN/inf). Calls evaluate arguments first, fixed-arity branches index positions; median sorts, aggregates fold. Independent-event groups compute products p^k and(1-p)^k. Empty Add/Sum0, Mul1, probability all/none1 and at-least0; mean empty NaN, min/max infinities, median empty panics.",
+  "forward": [
+    "eval_f64 projects legacy Expr to SI Option<f64>. Qty multiplies scale powers, Temp converts to kelvin, Convert ignores target. Var=None; arithmetic may return Some(NaN/inf). Calls evaluate arguments first, fixed-arity branches index positions; median sorts, aggregates fold. Independent-event groups compute products p^k and(1-p)^k. Empty Add/Sum0, Mul1, probability all/none1 and at-least0; mean empty NaN, min/max infinities, median empty panics."
+  ],
+  "id": "math-fcheck",
+  "inverse": [
+    "SI y admits all supported expression trees/units/conversion wrappers with that magnitude. Known temperature scale restricts affine inverse but machine rounding still merges values. None admits any reached variable without identifying tree or location. Nonfinite output does not identify a unique invalid operation; source representation is lost."
+  ],
+  "limitations": [
+    "Partial lexical syntax/source-derived model, no proof",
+    "No executable percentage surrogate; float diagnostics have no global certificate",
+    "No dimension, arity, probability range or finite-result validation. Missing positional args panic; extras evaluate then may be ignored. Median partial_cmp.unwrap can panic on NaN. Rat conversion rounds. Temperature values are absolute kelvin points. Caller validation can restrict domain but is not done here. No external effects."
+  ],
+  "source": "math/src/fcheck.rs",
+  "state": "No dimension, arity, probability range or finite-result validation. Missing positional args panic; extras evaluate then may be ignored. Median partial_cmp.unwrap can panic on NaN. Rat conversion rounds. Temperature values are absolute kelvin points. Caller validation can restrict domain but is not done here. No external effects."
+}

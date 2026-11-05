@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "wave29::synthetic_reader_parse_and_sub_precedence"
+  ],
+  "children": [],
+  "cost": "All sentences/vocab/morph/kept Facts/edges retained; sum parser costs+E log E sort+compression+bounded DP. parse_lines retains rows; stats O(E)+R log R relation sorting. No cap.",
+  "description": "CLI dispatch, compressed sentence reader, ingestion orchestration, graph displays/subgraphs, arbitrary TSV parsing.",
+  "forward": [
+    "Exact argument-shape dispatch. Strict read_tatoeba requires numeric id+3 fields but ignores language. Ingestion computes vocab/Morph/names, parses/checks Facts, allocates Registry IDs/Edges, sorts/writes, then sid%10 train/evaluate generation. parse_lines skips malformed rows, loads names/Morph before output creation; sub parses mask before reading/filtering/writing."
+  ],
+  "id": "kg-main",
+  "inverse": [
+    "Registry+edges recover lemma/relation/grammar but not word coordinates/member order without absent reconstruction adapter. sid keys constrain provenance. parse output loses malformed rows/read-error tail/alternatives. No kg-global index adapter."
+  ],
+  "limitations": [
+    "tatoeba_uk/show/stats/full CLI process/live graph/held-out loops unexecuted; synthetic helper composition only.",
+    "Partial lexical AST; no semantic proof or useful executable percentage surrogate."
+  ],
+  "source": "kg/src/main.rs",
+  "state": "Edges retain lemma/relation IDs and predicate/member grammar/flags but lose member word index. CHECKED only means render completeness. sub writes columns without registry. Actual ingestion/held-out path unexecuted."
+}

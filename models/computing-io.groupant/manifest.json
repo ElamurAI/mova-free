@@ -1,0 +1,164 @@
+{
+  "children": [
+    "mlab-builtins-files",
+    "mlab-builtins-io",
+    "mlab-builtins-mod",
+    "mlab-display",
+    "mlab-fileio",
+    "mlab-main",
+    "mlab-tests-fs",
+    "mlab-tests-octave-ext",
+    "mlab-tests-vmm-suites"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "Delegated VFS and interpreter contracts are required; allocation and host fault injection absent. No external Octave corpus, VMM400 evaluation, benchmark or Monte Carlo run.",
+        "domain": "Valid Value/Mat/Table storage, UTF-8 input, synthetic in-memory or owned temporary filesystem fixtures, bounded output widths and available resources. CPU only.",
+        "id": "behavior-complement",
+        "observation_scope": "builtins/mod registers files/io; io calls display::format_disp and exp_str; fileio uses table inference/date/name adapters and column-major Mat; main creates Interp with selected fs and selected tests/fs CLI helper observes exit/stdout/stderr/journal/files. sprintf column-major traversal and display row layout are different adapters; JSON orientation/nonfinite loss prevents identity roundtrip. Octave calls lexical filter is not parser validation, and VMM digest helper evidence is not scenario correctness.",
+        "operator": "Interp failure excludes CLI export_dir but permits journal and previous imports; VFS error with requested status excludes throw for mkdir/rmdir/move/copy. J::Num/numeric-class nonfinite conversion excludes the original numeric literal; logical NaN instead converts to true under the nonzero predicate. No runtime scenario guarantee follows from helper checks.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "Delegated VFS and interpreter contracts are required; allocation and host fault injection absent. No external Octave corpus, VMM400 evaluation, benchmark or Monte Carlo run.",
+        "domain": "Valid Value/Mat/Table storage, UTF-8 input, synthetic in-memory or owned temporary filesystem fixtures, bounded output widths and available resources. CPU only.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "builtins/mod registers files/io; io calls display::format_disp and exp_str; fileio uses table inference/date/name adapters and column-major Mat; main creates Interp with selected fs and selected tests/fs CLI helper observes exit/stdout/stderr/journal/files. sprintf column-major traversal and display row layout are different adapters; JSON orientation/nonfinite loss prevents identity roundtrip. Octave calls lexical filter is not parser validation, and VMM digest helper evidence is not scenario correctness.",
+        "operator": "Printed output maps to sets of Value/format antecedents, serialization admits missing/null and shape ambiguities, exit codes admit multiple failure stages. Joint journal and filesystem observations narrow compatible histories but do not reconstruct all interpreter steps.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "Delegated VFS and interpreter contracts are required; allocation and host fault injection absent. No external Octave corpus, VMM400 evaluation, benchmark or Monte Carlo run.",
+        "domain": "Valid Value/Mat/Table storage, UTF-8 input, synthetic in-memory or owned temporary filesystem fixtures, bounded output widths and available resources. CPU only.",
+        "id": "value-transport",
+        "observation_scope": "builtins/mod registers files/io; io calls display::format_disp and exp_str; fileio uses table inference/date/name adapters and column-major Mat; main creates Interp with selected fs and selected tests/fs CLI helper observes exit/stdout/stderr/journal/files. sprintf column-major traversal and display row layout are different adapters; JSON orientation/nonfinite loss prevents identity roundtrip. Octave calls lexical filter is not parser validation, and VMM digest helper evidence is not scenario correctness.",
+        "operator": "sprintf flattens m.re column-major, display accesses j*rows+i into row strings, JSON vectors collapse orientation. Matching scalar numbers is insufficient to prove shape-preserving adapters.",
+        "path": "model.md",
+        "required": false,
+        "section": "value-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Delegated VFS and interpreter contracts are required; allocation and host fault injection absent. No external Octave corpus, VMM400 evaluation, benchmark or Monte Carlo run.",
+        "domain": "Valid Value/Mat/Table storage, UTF-8 input, synthetic in-memory or owned temporary filesystem fixtures, bounded output widths and available resources. CPU only.",
+        "id": "effect-order",
+        "observation_scope": "builtins/mod registers files/io; io calls display::format_disp and exp_str; fileio uses table inference/date/name adapters and column-major Mat; main creates Interp with selected fs and selected tests/fs CLI helper observes exit/stdout/stderr/journal/files. sprintf column-major traversal and display row layout are different adapters; JSON orientation/nonfinite loss prevents identity roundtrip. Octave calls lexical filter is not parser validation, and VMM digest helper evidence is not scenario correctness.",
+        "operator": "parse FS flags -> open/import -> run -> conditional export -> journal. Export failure can suppress journal; failed script skips each export but still attempts journal. Delete loops preserve earlier removals on later error.",
+        "path": "model.md",
+        "required": false,
+        "section": "effect-order",
+        "status": "partial_source_derived_model",
+        "type": "effect_order"
+      },
+      {
+        "assumptions": "Delegated VFS and interpreter contracts are required; allocation and host fault injection absent. No external Octave corpus, VMM400 evaluation, benchmark or Monte Carlo run.",
+        "domain": "Valid Value/Mat/Table storage, UTF-8 input, synthetic in-memory or owned temporary filesystem fixtures, bounded output widths and available resources. CPU only.",
+        "id": "failure-precedence",
+        "observation_scope": "builtins/mod registers files/io; io calls display::format_disp and exp_str; fileio uses table inference/date/name adapters and column-major Mat; main creates Interp with selected fs and selected tests/fs CLI helper observes exit/stdout/stderr/journal/files. sprintf column-major traversal and display row layout are different adapters; JSON orientation/nonfinite loss prevents identity roundtrip. Octave calls lexical filter is not parser validation, and VMM digest helper evidence is not scenario correctness.",
+        "operator": "CLI limit parsing precedes mem/import compatibility; atom validation precedes output; CSV syntax precedes table-width validation. These branches must be preserved across caller wiring.",
+        "path": "model.md",
+        "required": false,
+        "section": "failure-precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "Delegated VFS and interpreter contracts are required; allocation and host fault injection absent. No external Octave corpus, VMM400 evaluation, benchmark or Monte Carlo run.",
+        "domain": "Valid Value/Mat/Table storage, UTF-8 input, synthetic in-memory or owned temporary filesystem fixtures, bounded output widths and available resources. CPU only.",
+        "id": "resource-composition",
+        "observation_scope": "builtins/mod registers files/io; io calls display::format_disp and exp_str; fileio uses table inference/date/name adapters and column-major Mat; main creates Interp with selected fs and selected tests/fs CLI helper observes exit/stdout/stderr/journal/files. sprintf column-major traversal and display row layout are different adapters; JSON orientation/nonfinite loss prevents identity roundtrip. Octave calls lexical filter is not parser validation, and VMM digest helper evidence is not scenario correctness.",
+        "operator": "Captured strings plus serialized buffers plus VFS memory add rather than cancel; repeated format/flag scans, requested precision/width, JSON subtree copying and key lookup amplify input cost. No measured latency or global cap is supplied.",
+        "path": "model.md",
+        "required": false,
+        "section": "resource-composition",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "computing-io",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "mlab/src/builtins/files.rs",
+      "sha256": "c66336a9d4bf2e948158e64f1b02e1f9b80bfc42949cb019fd11d3f70c66cfd4"
+    },
+    {
+      "path": "mlab/src/builtins/io.rs",
+      "sha256": "474fbd7e9d27e2e2333b4e7324f348d79475aef977847e353b8c363a6f9f23ed"
+    },
+    {
+      "path": "mlab/src/builtins/mod.rs",
+      "sha256": "5e593db042fb0f9c24284b0dfff423735d458b3b3f9a4d5fe269c2ea32af1770"
+    },
+    {
+      "path": "mlab/src/display.rs",
+      "sha256": "7c29a46772ca4d47ff5e01fc4b3ed1bf38fab6a6b3bce0a41c99332ece8926b5"
+    },
+    {
+      "path": "mlab/src/fileio.rs",
+      "sha256": "547a25932643243689a8ee9f5b0cc0d2cc85923d37edeff35c2d7833d8f488dd"
+    },
+    {
+      "path": "mlab/src/main.rs",
+      "sha256": "b378db9adacc941133989b5ae41704694f01a38870bc24b36a637f251c6ea03f"
+    },
+    {
+      "path": "mlab/tests/fs.rs",
+      "sha256": "97102d6c4f35ec52fad226eb7a21dc0f2577e63693f5981b91fff6dc7a964203"
+    },
+    {
+      "path": "mlab/tests/octave_ext.rs",
+      "sha256": "083430129fcb3a8656178a4c528228635665bacc2c3946a93327966b0947bcee"
+    },
+    {
+      "path": "mlab/tests/vmm_suites.rs",
+      "sha256": "4d19f5e104903cb517a2ecf919fb7bfefe82a7577e33b30acf962c0c35fd44ec"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

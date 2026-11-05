@@ -1,0 +1,229 @@
+{
+  "children": [
+    {
+      "id": "number-correction",
+      "path": "correction.groupant"
+    },
+    {
+      "id": "number-reading",
+      "path": "reading.groupant"
+    },
+    {
+      "id": "number-rendering",
+      "path": "rendering.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; values hash traversal retained",
+        "domain": "U=bounded strings x (normalized text,Found vector); R=token/correct/read/render with fixed dictionary. Candidate inner bound of U minus R includes zero-token recognized spans, noncanonical ordinal suffixes in normalized output, or correction words outside vocabulary.",
+        "evidence": "Existing tests and probe literal cases.",
+        "id": "nonbehavior",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "U=bounded strings x (normalized text,Found vector); R=token/correct/read/render with fixed dictionary. Candidate inner bound of U minus R includes zero-token recognized spans, noncanonical ordinal suffixes in normalized output, or correction words outside vocabulary.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "41e5c848b76cd85ba99f84746d76099707d968957fb1b8774e8a35def2b23ec6",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; values hash traversal retained",
+        "domain": "F^-1(y) retains all texts with normalize(x)=y; observing text alone admits fifty five and fifty-five for 55. Found narrows fibers but loses internal separators, so no unique reconstruction.",
+        "evidence": "Probe finite alias fiber.",
+        "id": "antecedents",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "F^-1(y) retains all texts with normalize(x)=y; observing text alone admits fifty five and fifty-five for 55. Found narrows fibers but loses internal separators, so no unique reconstruction.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "41e5c848b76cd85ba99f84746d76099707d968957fb1b8774e8a35def2b23ec6",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; values hash traversal retained",
+        "domain": "Digits remove all commas in initial digit/comma prefix; edge commas, overflow and suffix outside empty/st/nd/rd/th reject. Grouping and suffix agreement are unchecked: 1,2 and 12st canonicalize.",
+        "evidence": "Probe literal cases.",
+        "id": "digit-spellings",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "Digits remove all commas in initial digit/comma prefix; edge commas, overflow and suffix outside empty/st/nd/rd/th reject. Grouping and suffix agreement are unchecked: 1,2 and 12st canonicalize.",
+        "path": "model.md",
+        "section": "digit-spellings",
+        "status": "partial_source_derived_model",
+        "subject_revision": "41e5c848b76cd85ba99f84746d76099707d968957fb1b8774e8a35def2b23ec6",
+        "type": "normalization_fiber"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; values hash traversal retained",
+        "domain": "Candidates minimize (half-edit distance,negative integer Dice,vocabulary position); threshold uses candidate byte length >=7 for 4, otherwise 2. Winning inputs satisfy all comparisons plus admission.",
+        "evidence": "Probe swaps/exact-word rejection; exhaustive rank check proposed.",
+        "id": "correction-rank",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "Candidates minimize (half-edit distance,negative integer Dice,vocabulary position); threshold uses candidate byte length >=7 for 4, otherwise 2. Winning inputs satisfy all comparisons plus admission.",
+        "path": "model.md",
+        "section": "correction-rank",
+        "status": "partial_source_derived_model",
+        "subject_revision": "41e5c848b76cd85ba99f84746d76099707d968957fb1b8774e8a35def2b23ec6",
+        "type": "argmin_preimage"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; values hash traversal retained",
+        "domain": "Correction blocks uppercase names outside sentence starts (token zero or immediately after a separator containing period, question mark or exclamation mark) and plural number inflections. Unknown dictionary forms otherwise pass; real forms need original-neighbor kind fit and punctuation boundary gate.",
+        "evidence": "Existing contextual test.",
+        "id": "context-admission",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "Correction blocks uppercase names outside sentence starts (token zero or immediately after a separator containing period, question mark or exclamation mark) and plural number inflections. Unknown dictionary forms otherwise pass; real forms need original-neighbor kind fit and punctuation boundary gate.",
+        "path": "model.md",
+        "section": "context-admission",
+        "status": "partial_source_derived_model",
+        "subject_revision": "41e5c848b76cd85ba99f84746d76099707d968957fb1b8774e8a35def2b23ec6",
+        "type": "predicate_partition"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; values hash traversal retained",
+        "domain": "read_words stops after ordinal and blocks non-scale ordinal after unit/teen as fractional continuation; normalize additionally guards previous a/unit/teen/digit.",
+        "evidence": "Existing fractions test.",
+        "id": "ordinal-barrier",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "read_words stops after ordinal and blocks non-scale ordinal after unit/teen as fractional continuation; normalize additionally guards previous a/unit/teen/digit.",
+        "path": "model.md",
+        "section": "ordinal-barrier",
+        "status": "partial_source_derived_model",
+        "subject_revision": "41e5c848b76cd85ba99f84746d76099707d968957fb1b8774e8a35def2b23ec6",
+        "type": "state_transition"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; values hash traversal retained",
+        "domain": "quantity never corrects, returns first cardinal or once/twice/thrice, skips ordinal word spans and lacks normalize fraction guard. API outputs need not agree.",
+        "evidence": "Probe quantity literals.",
+        "id": "quantity-observation",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "quantity never corrects, returns first cardinal or once/twice/thrice, skips ordinal word spans and lacks normalize fraction guard. API outputs need not agree.",
+        "path": "model.md",
+        "section": "quantity-observation",
+        "status": "partial_source_derived_model",
+        "subject_revision": "41e5c848b76cd85ba99f84746d76099707d968957fb1b8774e8a35def2b23ec6",
+        "type": "projection_difference"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; values hash traversal retained",
+        "domain": "Roundtrip is claimed only for 0<=n<3000 covered by existing tests. to_words uses thousand quotient with below1000 helper; full i64 rendering is outside model.",
+        "evidence": "Probe million boundary and existing loop.",
+        "id": "renderer-domain",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "Roundtrip is claimed only for 0<=n<3000 covered by existing tests. to_words uses thousand quotient with below1000 helper; full i64 rendering is outside model.",
+        "path": "model.md",
+        "section": "renderer-domain",
+        "status": "partial_source_derived_model",
+        "subject_revision": "41e5c848b76cd85ba99f84746d76099707d968957fb1b8774e8a35def2b23ec6",
+        "type": "bounded_roundtrip"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; values hash traversal retained",
+        "domain": "For nonnegative n, st iff last digit 1 except residue11; nd and rd analogously except12/13; th remaining residues. Negative signed remainders excluded.",
+        "evidence": "Probe 0..1999.",
+        "id": "suffix-fiber",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "For nonnegative n, st iff last digit 1 except residue11; nd and rd analogously except12/13; th remaining residues. Negative signed remainders excluded.",
+        "path": "model.md",
+        "section": "suffix-fiber",
+        "status": "partial_source_derived_model",
+        "subject_revision": "41e5c848b76cd85ba99f84746d76099707d968957fb1b8774e8a35def2b23ec6",
+        "type": "residue_preimage"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; values hash traversal retained",
+        "domain": "Word parsing ignores separators; fifty. five can combine to55. Found.said joins tokens by spaces and output retains only final separator.",
+        "evidence": "Probe punctuation fixture.",
+        "id": "separator-loss",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "Word parsing ignores separators; fifty. five can combine to55. Found.said joins tokens by spaces and output retains only final separator.",
+        "path": "model.md",
+        "section": "separator-loss",
+        "status": "partial_source_derived_model",
+        "subject_revision": "41e5c848b76cd85ba99f84746d76099707d968957fb1b8774e8a35def2b23ec6",
+        "type": "information_loss"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; values hash traversal retained",
+        "domain": "correct memoizes Option by exact string in Mutex BTreeMap; same result admits hit and miss states. Poison/allocation failures excluded; cache size has no global bound.",
+        "evidence": "Probe repeated calls.",
+        "id": "cache-observation",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "correct memoizes Option by exact string in Mutex BTreeMap; same result admits hit and miss states. Poison/allocation failures excluded; cache size has no global bound.",
+        "path": "model.md",
+        "section": "cache-observation",
+        "status": "partial_source_derived_model",
+        "subject_revision": "41e5c848b76cd85ba99f84746d76099707d968957fb1b8774e8a35def2b23ec6",
+        "type": "state_fiber"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; values hash traversal retained",
+        "domain": "typo_check generates deletion, duplication and adjacent swaps, per-word deduplicates, filters exact/dictionary words; despite doc wording no alphabet-neighbor substitution generator exists.",
+        "evidence": "Source inspection; independent enumeration proposed.",
+        "id": "typo-domain",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "typo_check generates deletion, duplication and adjacent swaps, per-word deduplicates, filters exact/dictionary words; despite doc wording no alphabet-neighbor substitution generator exists.",
+        "path": "model.md",
+        "section": "typo-domain",
+        "status": "partial_source_derived_model",
+        "subject_revision": "41e5c848b76cd85ba99f84746d76099707d968957fb1b8774e8a35def2b23ec6",
+        "type": "enumeration_scope"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "id": "number-normalization",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../numbers.rs",
+    "sha256": "41e5c848b76cd85ba99f84746d76099707d968957fb1b8774e8a35def2b23ec6"
+  },
+  "status": "partial_source_derived_instance"
+}

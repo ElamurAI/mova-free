@@ -1,0 +1,101 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "scope": "U=finite tag vector times optional V. R=V::tags. U minus R forbids Some on empty, None on nonempty and duplicate or unsorted output. Direct V::Tags construction is outside this normalization graph.",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "scope": "Canonical output support S admits all finite sequences containing each member of S at least once and nothing else; None admits empty only. Display recovery additionally retains variant and segmentation ambiguity.",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "idempotence",
+        "path": "model.md",
+        "scope": "For canonical nonempty y, V::tags(y.tag_list())=Some(y). Direct Tags([]) and Tags([one]) are not fixed points; this law cannot extend to every V.",
+        "section": "idempotence",
+        "status": "partial_source_derived_model",
+        "type": "projection_law"
+      },
+      {
+        "id": "unknown-collision",
+        "path": "model.md",
+        "scope": "Val default is Unknown displayed ?. Known(Words([?])) has identical display. Text wrappers do not escape payload. Display cannot recover variant identity.",
+        "section": "unknown-collision",
+        "status": "partial_source_derived_model",
+        "type": "observation_collision"
+      },
+      {
+        "id": "word-language",
+        "path": "model.md",
+        "scope": "Empty, digit-leading, uppercase, non-ASCII and 33-byte strings fail is_word. Lowercase-leading strings with lowercase/digit/_/- remainder pass through length 32. The 25-word text bound is not enforced here.",
+        "section": "word-language",
+        "status": "partial_source_derived_model",
+        "type": "boundary_predicate"
+      }
+    ],
+    "tests": {
+      "path": "../model.md#tests",
+      "status": "coverage_recorded"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 17010,
+      "start": 15005
+    },
+    "description": "values declarations and operation implementations; gaps between selected items allowed",
+    "syntax_nodes": {
+      "node_ids": [
+        845,
+        853,
+        908,
+        958,
+        960,
+        981,
+        1026
+      ],
+      "path": "../syntax.json"
+    }
+  },
+  "id": "world-types-values",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../types.rs",
+    "sha256": "ac2d47f390463744e9b5d2e7b0a005352b62368e4e5d68bb1348a173a5c90037"
+  },
+  "status": "partial_source_derived_instance"
+}

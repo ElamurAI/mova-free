@@ -1764,3 +1764,72 @@ mod tests {
         assert!(!independent(&e, &vars, &wrong).unwrap().ok);
     }
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn lazy_empty_and_error_state() {
+        let mut env = Env::new(Limits::default());
+        for (s, v) in [
+            ("if(true,7,1/0)", V::Q(q(7))),
+            ("false and missing", V::B(false)),
+            ("sum(k,k,2,1)", V::Q(q(0))),
+            ("prod(k,k,2,1)", V::Q(q(1))),
+        ] {
+            assert_eq!(eval(&parse(s).unwrap(), &mut env).unwrap(), v);
+        }
+        env.vars.insert("k".into(), V::Q(q(99)));
+        assert!(eval(&parse("sum(1/0,k,1,2)").unwrap(), &mut env).is_err());
+        assert_eq!(env.vars.get("k"), Some(&V::Q(q(1))));
+        assert!(parse("").is_err());
+        assert_eq!(
+            eval(&parse("round(-5/2)").unwrap(), &mut env).unwrap(),
+            V::Q(q(-3))
+        );
+    }
+}
+#[cfg(test)]
+mod wave34 {
+    use super::*;
+    #[test]
+    fn syntax_zero_and_binding_boundaries() {
+        for s in ["2×3", "2·3", "2*3"] {
+            assert_eq!(parse(s).unwrap(), E::bin(Op::Mul, E::num(2), E::num(3)));
+        }
+        assert!(parse("1..2").is_err());
+        assert!(parse("1<2<3<4").is_err());
+        assert_eq!(
+            parse("2^3^2").unwrap(),
+            E::bin(Op::Pow, E::num(2), E::bin(Op::Pow, E::num(3), E::num(2)))
+        );
+        let mut env = Env::new(Limits::default());
+        assert_eq!(
+            arith(&Op::Mul, V::Q(q(0)), V::R(2.5), &mut env).unwrap(),
+            V::Q(q(0))
+        );
+        assert_eq!(env.steps, 0);
+        assert!(arith(&Op::Div, V::Q(q(0)), V::R(0.0), &mut env).is_err());
+        env.vars.insert("k".into(), V::Q(q(99)));
+        assert_eq!(
+            eval(&parse("first(k>2,k,1,4)").unwrap(), &mut env).unwrap(),
+            V::Q(q(3))
+        );
+        assert_eq!(env.vars["k"], V::Q(q(99)));
+        assert!(eval(&parse("sum(1/0,k,1,2)").unwrap(), &mut env).is_err());
+        assert_eq!(env.vars["k"], V::Q(q(1)));
+    }
+    #[test]
+    fn fingerprint_congruence_and_unavailable_domains() {
+        let vars = HashMap::new();
+        for (s, r) in [("-2+5", 3), ("7-9", P61 - 2), ("3^5", 243), ("5!", 120)] {
+            assert_eq!(fingerprint(&parse(s).unwrap(), &vars), Some(r));
+        }
+        assert_eq!(fingerprint(&parse("1/2").unwrap(), &vars), None);
+        assert_eq!(fingerprint(&parse("2^-1").unwrap(), &vars), None);
+        let e = E::num(7);
+        let collision = V::Q(qz(IBig::from(P61) + IBig::from(7)));
+        assert!(independent(&e, &vars, &collision).unwrap().ok);
+        assert!(!independent(&e, &vars, &V::Q(q(8))).unwrap().ok);
+    }
+}

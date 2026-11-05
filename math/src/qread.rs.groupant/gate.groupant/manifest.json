@@ -1,0 +1,92 @@
+{
+  "children": [
+    {
+      "id": "math-qread-gate-occurrence-partitions",
+      "path": "occurrence-partitions.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical projection only; fragment bound by byte range; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "partitioned_reuse",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "partitioned_reuse",
+        "status": "partial_source_derived_model",
+        "type": "partitioned_reuse"
+      },
+      {
+        "id": "required_occurrences",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "required_occurrences",
+        "status": "partial_source_derived_model",
+        "type": "required_occurrences"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 72126,
+      "start": 70008
+    },
+    "description": "abstain returns the first reason in this order: absent value, absent expression, unread values, v<=1e-9, noninteger distance>1e-6, coefficient magnitude not near1, insufficient source occurrences/nonzero constant, duplicate source occurrences, unused question numbers, unused all_used numbers.",
+    "source_bytes_sha256": "797bb0bececf6c16d1e59c61121435f7b2305c17f15fa6b37b67341cb586243f"
+  },
+  "id": "math-qread-gate",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../qread.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "8389b8d58f68121743d6346e638601297c3725483f4b9fcd2eb8cd47ef2d028a"
+  },
+  "status": "partial_source_bound_model"
+}

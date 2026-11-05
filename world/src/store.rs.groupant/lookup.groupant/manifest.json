@@ -1,0 +1,137 @@
+{
+  "children": [
+    {
+      "id": "world-store-record-identity",
+      "path": "identity.groupant"
+    },
+    {
+      "id": "world-store-lexical-projection",
+      "path": "lexical.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: tests.md distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "../model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "U is finite sorted well-formed acyclic version stores x lookup outcomes. U minus R includes returning a later ancestor's payload bytes different from the nearer matching payload and latest ignoring a captured nonempty main. Candidate inner bound; payload equality cannot reveal lookup provenance. Probe builds conflicting records.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: tests.md distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "../model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "For observed records r at (h,i), all chains with nearest matching dictionary entry pointing to r and every earlier dictionary omitting i are compatible. Arbitrary farther ancestors and unrelated IDs remain free. Empty records can be a genuine zero-length entry, not absence. Probe tests zero-length and inherited records.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: tests.md distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "../model.md#tests",
+        "id": "termination",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "Miss traversal terminates on absent parent or '-' in a finite acyclic chain. A parent cycle with no match loops; no visited set/depth cap exists. Invalid dictionaries can return wrong misses because sorted IDs are assumed. Probe tests finite miss only; cycles intentionally not run.",
+        "path": "model.md",
+        "section": "termination",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "reachability_precondition"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: tests.md distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "../model.md#tests",
+        "id": "cache-cost",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "For V visited versions, cold bytes D and returned L bytes, records costs O(D + sum(log n_v) + V*m + L), m=versions row count due to linear parent search; warm calls avoid D. Cache retains all loaded dictionaries/handles without eviction. Oracle proposed: instrument file opens; no timing claim.",
+        "path": "model.md",
+        "section": "cache-cost",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "resource_preimage"
+      }
+    ],
+    "tests": {
+      "path": "../model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 38758,
+      "start": 12859
+    },
+    "description": "Version-chain binary lookup and metadata",
+    "syntax_nodes": {
+      "node_ids": [
+        1172,
+        1223,
+        1241,
+        1263,
+        1853,
+        1917,
+        1988,
+        2059,
+        3634,
+        3734,
+        3815,
+        4333
+      ],
+      "path": "../syntax.json"
+    }
+  },
+  "id": "world-store-lookup",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../store.rs",
+    "sha256": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9"
+  },
+  "status": "partial_source_derived_instance"
+}

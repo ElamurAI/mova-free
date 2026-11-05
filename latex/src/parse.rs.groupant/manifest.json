@@ -1,0 +1,97 @@
+{
+  "children": [
+    {
+      "id": "latex-parse-stage0",
+      "path": "stage0.groupant"
+    },
+    {
+      "id": "latex-parse-stage1",
+      "path": "stage1.groupant"
+    },
+    {
+      "id": "latex-parse-stage2",
+      "path": "stage2.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "macro_resources",
+        "path": "model.md",
+        "section": "macro_resources",
+        "status": "partial_source_derived_model",
+        "type": "macro_resources"
+      },
+      {
+        "id": "row_normalization",
+        "path": "model.md",
+        "section": "row_normalization",
+        "status": "partial_source_derived_model",
+        "type": "row_normalization"
+      },
+      {
+        "id": "unknown_fallback",
+        "path": "model.md",
+        "section": "unknown_fallback",
+        "status": "partial_source_derived_model",
+        "type": "unknown_fallback"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "latex-parse",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../parse.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "f463a4a8e13c770287eeeb57c59e74732daac90bf64f57302870d1ea86cc5f47"
+  },
+  "status": "partial_source_bound_model"
+}

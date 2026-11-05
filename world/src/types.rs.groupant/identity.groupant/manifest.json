@@ -1,0 +1,104 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "scope": "U=(parse string,optional Id) union (Id,display string) union (TextPos,short string). R is these function graphs. U minus R forbids accepting C0/c1/C1000000 or including chapter in short display. Normal returns only.",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "scope": "Successful Id parse has one canonical string antecedent; None has every rejected string. Short position ^sN has all u16 chapter/para choices with sent=N, retaining 2^32 antecedents.",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "constructor-gap",
+        "path": "model.md",
+        "scope": "Id::new admits Reg times u32; parse(display(id)) fails for n=0 and n>=1000000. This is a restricted roundtrip, not universal recovery.",
+        "section": "constructor-gap",
+        "status": "partial_source_derived_model",
+        "type": "domain_mismatch"
+      },
+      {
+        "id": "registry-order",
+        "path": "model.md",
+        "scope": "Derived Reg Ord follows L,O,C,R,E,P,B,F,K declaration order, not ASCII. Id orders first by Reg then n. SRef equality includes ver but no Ord is derived.",
+        "section": "registry-order",
+        "status": "partial_source_derived_model",
+        "type": "ordering_projection"
+      },
+      {
+        "id": "long-position",
+        "path": "model.md",
+        "scope": "long prints fixed labels and all three u16 decimal coordinates, giving an injective encoding. Default is (0,0,0); one-based position validity is not enforced.",
+        "section": "long-position",
+        "status": "partial_source_derived_model",
+        "type": "injective_encoding"
+      }
+    ],
+    "tests": {
+      "path": "../model.md#tests",
+      "status": "coverage_recorded"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 3384,
+      "start": 196
+    },
+    "description": "identity declarations and operation implementations; gaps between selected items allowed",
+    "syntax_nodes": {
+      "node_ids": [
+        2,
+        3,
+        56,
+        59,
+        149,
+        162,
+        165,
+        178,
+        182,
+        192
+      ],
+      "path": "../syntax.json"
+    }
+  },
+  "id": "world-types-identity",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../types.rs",
+    "sha256": "ac2d47f390463744e9b5d2e7b0a005352b62368e4e5d68bb1348a173a5c90037"
+  },
+  "status": "partial_source_derived_instance"
+}

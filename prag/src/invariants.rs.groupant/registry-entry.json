@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p prag --lib invariants:: -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "Sentence: O(F) direct checks plus sum over frames of O(U*D*R) unsaid child scans/membership, lexical lookup and text bytes; O(R) temporary used indices plus output. Spread add: O(F(log G+log C)) map work and copied strings; O(K) retained accepted occurrences. counts scans class-map cardinalities; hits scans classes and losing occurrences with repeated detail formatting. No corpus/parser/teacher/persistence cost is measured.",
+  "description": "Domain X is tagged Sentence(Tree,ordered frames,aligned anchors), or finite Spread action trace starting at default state. Sentence requires valid cached Tree child indices and in-range predicate anchors, with anchors[i] belonging to frames[i]. For frame i, row=i+1; append copula-no-who iff Fact Is/IsA or non-Bare verb be lacks agent, time-in-where iff time_word(place.id,place.named), and who-is-what iff equal nonempty ASCII-case-insensitive agent/patient IDs survive reflexive and both-bare exclusions. Then each unsaid slot uses its aligned predicate's first unused qualifying child; Agent accepts passive OblAgent or nonpassive Nsubj, Patient NsubjPass or non-time Obj, Recipient Iobj; other slots abstain. Spread appends only VerbNet/nonempty-signature frames to key (verb,signature), class, ordered (id,i+1) occurrences. counts=(number of keys,number of keys with >1 class). Winner per key is lexicographically smallest class among maximal occurrence counts; hits emits every losing occurrence in key/class order and within-class insertion order.",
+  "forward": [
+    "Domain X is tagged Sentence(Tree,ordered frames,aligned anchors), or finite Spread action trace starting at default state. Sentence requires valid cached Tree child indices and in-range predicate anchors, with anchors[i] belonging to frames[i]. For frame i, row=i+1; append copula-no-who iff Fact Is/IsA or non-Bare verb be lacks agent, time-in-where iff time_word(place.id,place.named), and who-is-what iff equal nonempty ASCII-case-insensitive agent/patient IDs survive reflexive and both-bare exclusions. Then each unsaid slot uses its aligned predicate's first unused qualifying child; Agent accepts passive OblAgent or nonpassive Nsubj, Patient NsubjPass or non-time Obj, Recipient Iobj; other slots abstain. Spread appends only VerbNet/nonempty-signature frames to key (verb,signature), class, ordered (id,i+1) occurrences. counts=(number of keys,number of keys with >1 class). Winner per key is lexicographically smallest class among maximal occurrence counts; hits emits every losing occurrence in key/class order and within-class insertion order."
+  ],
+  "id": "prag-invariants",
+  "inverse": [
+    "B(tag,y) retains all well-formed trees, ordered frames, aligned anchors and sentence-hit traces satisfying the predicates, or all initial-default Spread add histories and class occurrence maps yielding the selected counts/hits observation. Sentence absence can arise from valid roles, reflexive/bare exclusions, missing anchors, used children or absent matching dependents; retain these distinct causes. Spread counts lose proportions and IDs; losing hits omit winner occurrence IDs and ignored frames. Occurrence duplicates and class insertion order remain latent state. Neither diagnostic hits nor their absence reconstruct actual referents or semantic truth."
+  ],
+  "limitations": [
+    "Finite supplied-input checks, not full parser/corpus/teacher/DB or live course evidence.",
+    "Partial syntax leaves macro bodies opaque; no semantic AST or universal proof.",
+    "Environment optional rules and malformed anchor/cache states remain explicit unexecuted boundaries."
+  ],
+  "source": "prag/src/invariants.rs",
+  "state": "Sentence hits preserve 1-based frame row association; anchors and token indices stay zero-based and are never substituted for frame row numbers. Missing anchor/predicate suppresses only unsaid-own. Any anchored-role use excludes that token for all unsaid slots; reflexives and both-bare unresolved identities exclude who-is-what. Multiple hits per row and repeated unsaid slots are possible. Spread counts occurrences, including repeated add calls/IDs; no deduplication or absolute majority is required. Single-class groups have no losers, ties choose smaller class and different verb/signature keys never share a winner."
+}

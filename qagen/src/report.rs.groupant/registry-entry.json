@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p qagen --lib -- --skip lemma::tests::doubt_with_en_model --test-threads=1"
+  ],
+  "children": [],
+  "cost": "O(raw bytes + gate/model costs + JSONL bytes + pair/anchor/render costs); BTreeMaps add log-key factors; sample O(N log N). Memory includes raw, calls and rendered strings.",
+  "description": "Gather gated pairs, compute calls/distributions, then materialize QA, rejection and parameter artifacts; sample renders a seeded subset.",
+  "forward": [
+    "Gather gated pairs, compute calls/distributions, then materialize QA, rejection and parameter artifacts; sample renders a seeded subset."
+  ],
+  "id": "qagen-report",
+  "inverse": [
+    "Reports/distributions admit many raw replies, paragraphs and histories. Accepted QA cannot recover rejected text or omitted metadata."
+  ],
+  "limitations": [
+    "Partial syntax and finite local fixtures.",
+    "No live teacher/model/corpus/database; no transaction or complete scheduler proof."
+  ],
+  "source": "qagen/src/report.rs",
+  "state": "All fallible preparation finishes before collect artifact replacement. Successful accounting fits u64/f64; rounding preserves finite totals."
+}

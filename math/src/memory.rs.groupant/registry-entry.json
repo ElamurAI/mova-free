@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p math --lib memory::",
+    "two identical syntax projections"
+  ],
+  "children": [],
+  "cost": "Text scans+big rational work; training O(epochs*memos*classes*features), LCS O(a*b) time/space capped400; template scans plus numeric matching.",
+  "description": "numbers scans unsigned digits/listed words (half=>2). Features stems words plus number/magnitude/markers. train sorts ids/classes, averaged perceptron; guess lexical tie wins. Template excludes0/1, replaces matching literal with FIRST index, requires every index used; instantiate parenthesizes values. Similarity2LCS/(a+b), zero on empty or>400 length.",
+  "forward": [
+    "numbers scans unsigned digits/listed words (half=>2). Features stems words plus number/magnitude/markers. train sorts ids/classes, averaged perceptron; guess lexical tie wins. Template excludes0/1, replaces matching literal with FIRST index, requires every index used; instantiate parenthesizes values. Similarity2LCS/(a+b), zero on empty or>400 length."
+  ],
+  "id": "math-solution-memory",
+  "inverse": [
+    "Templates cannot recover removed values/id/option or numeric JSON type; repeated equal question numbers map first slot and fail completeness. Features and winning class admit many texts/weights."
+  ],
+  "limitations": [
+    "No external memory load/generalization. load drops malformed lines and read errors; learned accuracy unmeasured.",
+    "Partial lexical AST; no semantic proof or executable percentage surrogate",
+    "No-panic perceptron comparisons require comparable non-NaN accumulated scores and weights; finite weights alone do not prevent score overflow/NaN."
+  ],
+  "source": "math/src/memory.rs",
+  "state": "Text features, Memo/template, averaged weights, slots"
+}

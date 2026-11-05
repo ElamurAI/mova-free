@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "id": "algorithm-karatsuba-polynomial",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "bfadb014e58b57f91b962c0ba179be27c93859db44c95ad0eceae9bf24458234"
+  },
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "bfadb014e58b57f91b962c0ba179be27c93859db44c95ad0eceae9bf24458234",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Accepted nonempty pair excludes outputs with length other than len(a)+len(b)-1 or coefficient not congruent to sum a[i]b[k-i]. Zero trailing coefficients must remain. Over-cap lengths exclude Ok even with empty partner.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "bfadb014e58b57f91b962c0ba179be27c93859db44c95ad0eceae9bf24458234",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Observed product admits all factor pairs over the fixed field matching coefficient length. Scaling a by nonzero c and b by c^-1 preserves product; zero products and empty outputs are particularly nonunique. Inputs are also ambiguous modulo p.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "cross_identity",
+        "type": "cross_identity",
+        "path": "model.md",
+        "section": "cross_identity",
+        "status": "partial_relational_specification",
+        "subject_revision": "bfadb014e58b57f91b962c0ba179be27c93859db44c95ad0eceae9bf24458234",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "(a0+a1)(b0+b1)-a0b0-a1b1=a0b1+a1b0 supplies middle coefficients; recursion splits padded equal power2 vectors and uses schoolbook at n<=16.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "padding_trim",
+        "type": "padding_trim",
+        "path": "model.md",
+        "section": "padding_trim",
+        "status": "partial_relational_specification",
+        "subject_revision": "bfadb014e58b57f91b962c0ba179be27c93859db44c95ad0eceae9bf24458234",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Padding by zeros preserves polynomial value; truncation removes only padding beyond exact output length, never original trailing zeros.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "arithmetic_bound",
+        "type": "arithmetic_bound",
+        "path": "model.md",
+        "section": "arithmetic_bound",
+        "status": "partial_relational_specification",
+        "subject_revision": "bfadb014e58b57f91b962c0ba179be27c93859db44c95ad0eceae9bf24458234",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Normalized products fit u64; combined middle update plus2p subtracts lo and hi without underflow and stays below4p.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "validation_order",
+        "type": "validation_order",
+        "path": "model.md",
+        "section": "validation_order",
+        "status": "partial_relational_specification",
+        "subject_revision": "bfadb014e58b57f91b962c0ba179be27c93859db44c95ad0eceae9bf24458234",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Either length>4096 returns TooLarge first; then either empty returns empty; else allocations and recursion. O(n^log2 3) work and O(n) simultaneously live storage; std allocator policy.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  }
+}

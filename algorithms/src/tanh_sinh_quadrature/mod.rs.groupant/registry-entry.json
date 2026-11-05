@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "analytic_oracle compares powers 0..4 and sine to exact integrals; budget_and_order checks 7+13 counts, ascending interior abscissae, repeated samples, midpoint and budget=7 estimator None; failure_and_alias checks invalid/no calls, first-call abort, adjacent floats and hidden bump.",
+    "Multiply transformed sum by 0.5; analytic_oracle assertion fails."
+  ],
+  "children": [],
+  "cost": "O(evaluations) transcendental work and O(1) storage; each level has geometry and sampling pass. Budget checked for whole panels+1 calls; checked doubling. Callback costs/panics outside model.",
+  "description": "Finite a<b and finite span, positive finite tolerance, budget>=7. Set mid=a+(b-a)/2, half=(b-a)/2; x(t)=mid+half*tanh(pi/2*sinh t), w(t)=half*pi/2*cosh(t)/cosh(pi/2*sinh t)^2. Composite trapezoid on fixed t window [-3,3] with 6,12,24,... panels, endpoint half weights, ascending t. Recompute all samples each level. Consecutive estimate difference excludes truncation tails and is not an accuracy guarantee.",
+  "forward": [
+    "Finite a<b and finite span, positive finite tolerance, budget>=7. Set mid=a+(b-a)/2, half=(b-a)/2; x(t)=mid+half*tanh(pi/2*sinh t), w(t)=half*pi/2*cosh(t)/cosh(pi/2*sinh t)^2. Composite trapezoid on fixed t window [-3,3] with 6,12,24,... panels, endpoint half weights, ascending t. Recompute all samples each level. Consecutive estimate difference excludes truncation tails and is not an accuracy guarantee."
+  ],
+  "id": "algorithm-tanh-sinh-quadrature",
+  "inverse": [
+    "Zero function and indicator in (0.3,0.31) agree on the first 7+13 samples and yield identical zero report although integrals differ by .01. Sampled values and report cannot recover unvisited function values, tail contributions or smoothness."
+  ],
+  "limitations": [
+    "Partial source projection, no semantic proof",
+    "Finite fixtures do not guarantee accuracy",
+    "No executable approximation profile or speed claim",
+    "Rust allocation failures and callback panics are not caught"
+  ],
+  "source": "algorithms/src/tanh_sinh_quadrature/mod.rs",
+  "state": "Validated finite arrays, rolling recurrence state or bounded quadrature level; tests observe result tags and traces"
+}

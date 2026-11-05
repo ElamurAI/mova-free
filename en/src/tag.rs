@@ -232,10 +232,31 @@ impl Tagger {
             }
         }
         if self.dict != DictHint::Off {
-            if let Some(f) = dict::form(&w.to_lowercase()) {
+            let low = w.to_lowercase();
+            // a capitalised word is more likely a name than a derived word
+            // a form of the lexicon extension: its tags as written (`lexext::hint`); else a derivation's
+            let derived = if dict::form(&low).is_none() {
+                let ext = crate::lexext::hint(w, cap(w));
+                if !ext.is_empty() {
+                    ext
+                } else if !cap(w) {
+                    crate::derive::hint(&low)
+                } else {
+                    vec![]
+                }
+            } else {
+                vec![]
+            };
+            if dict::form(&low).is_some() || !derived.is_empty() {
                 let mut allowed = [false; NT];
-                for r in dict::analyses(f) {
-                    allowed[code(r.tag)] = true;
+                if let Some(f) = dict::form(&low) {
+                    for r in dict::analyses(f) {
+                        allowed[code(r.tag)] = true;
+                    }
+                }
+                // a derived word: the tags of its derivation (`crate::derive::hint`)
+                for t in derived {
+                    allowed[code(t)] = true;
                 }
                 if cap(w) {
                     allowed[code(Tag::NNP)] = true;
@@ -314,5 +335,42 @@ impl Tagger {
             idx[i - 2] = back[i][idx[i - 1] * nc + idx[i]] as usize;
         }
         (0..n).map(|i| tag_of(em[i][idx[i]].0)).collect()
+    }
+}
+
+#[cfg(test)]
+mod wave27_tests {
+    use super::*;
+    #[test]
+    fn tiny_known_emissions_and_empty_boundary() {
+        use crate::conllu::{Sentence, Token};
+        use crate::gram::Rel;
+        let sent = Sentence {
+            id: String::new(),
+            text: String::new(),
+            tokens: vec![Token {
+                form: "wave27noun".into(),
+                lemma: "wave27noun".into(),
+                tag: Some(Tag::NN),
+                upos: None,
+                feats: Default::default(),
+                head: 0,
+                rel: Rel::Root,
+                space_after: false,
+            }],
+            has_feats: false,
+            has_lemmas: true,
+            has_forms: true,
+        };
+        let mut t = Tagger::train(&[sent.clone(), sent]);
+        t.dict = DictHint::Off;
+        assert_eq!(t.known_tags(), 1);
+        assert_eq!(t.word_classes("WAVE27NOUN"), (true, vec![(Tag::NN, 1.0)]));
+        assert_eq!(t.tag(&["wave27noun"]), vec![Tag::NN]);
+        assert!(t.tag(&[]).is_empty());
+        let empty = Tagger::train(&[]);
+        assert_eq!(empty.known_tags(), 0);
+        assert!(empty.tag(&[]).is_empty());
+        assert!(empty.trans.iter().all(|x| x.is_nan()));
     }
 }

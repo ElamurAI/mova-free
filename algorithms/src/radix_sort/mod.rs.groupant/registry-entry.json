@@ -1,0 +1,29 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline radix_sort::tests::",
+    "Strict Clippy; debug/release; compiled negative control",
+    "2026-10-30: three new production-linked relation tests, explicit false-relation countermodels, separate compiled mutants, debug/release twice and strict Clippy."
+  ],
+  "children": [],
+  "cost": "O(8(n+256)) time and O(n+256) auxiliary elements; eight copies of n values. Trivial inputs O(1). No timing measurements.",
+  "description": "radix_sort exact implementation",
+  "forward": [
+    "For length below two return Ok unchanged. Otherwise reserve n scratch values before writes; reserve failure returns TryReserveError with unchanged input. Eight stable byte passes in increasing significance yield the unique ascending permutation, preserving all multiplicities."
+  ],
+  "id": "algorithm-radix-sort",
+  "inverse": [
+    "For observations (input, allocator outcome, Result, output), exclude nonascending success, changed length or multiset, mutation on reserve error, or failure after any byte pass. Internal pass observations exclude decreasing digit order or reversal within equal-digit source subsequences.",
+    "Given successful sorted output y, compatible original inputs are all permutations of its multiset; allocation must succeed unless len<2. Err admits the unchanged input and failed reserve. For an internal digit-pass result, predecessors are shuffles of digit subsequences preserving order within each digit. Sorting is not injective; no unique original ordering is claimed.",
+    "S(S(x))=S(x). Each byte pass preserves every digit subsequence. Tests use distinct scalar values sharing selected byte keys to observe internal pass stability; scalar full-sort equality cannot demonstrate attached payload stability.",
+    "For fixed byte b and digit-sorted y, P_b(x)=y iff for every digit d the subsequence of x with digit d equals that of y in order. Thus predecessors are interleavings of fixed digit subsequences, not arbitrary multiset permutations. Distinct values [0x300,0x100,0x201,0x001] give six accepted shuffles at byte zero; reversing a same-digit pair is rejected.",
+    "After k stable passes in increasing byte significance, output is the stable ordering of original input by its low 8k bits. At k=8 this is full unsigned order; using a full-width mask avoids shifting by 64. Reversing pass order or reversing equal-digit source subsequences invalidates the inductive step. All eight stages are compared against an independent stable key sort.",
+    "S(f(x))=f(S(x)) for f strictly increasing on the finite support with representable u64 images and successful allocations. The checked affine map 257v+19 is observed; wrapping addition on [0,MAX] is a countermodel when representability is dropped. This is a full-sort law, not a law that byte partitions commute with arbitrary relabeling.",
+    "Lengths zero and one succeed without reservation. For n>=2 the sole fallible reservation precedes every pass and copy; Err therefore has unchanged input and a failed reservation as compatible antecedent. Scratch length and requested capacity are n u64 elements (the allocator may reserve more) and counts use 256 usize slots per pass. No public budget parameter or allocator failure injection exists; exact allocator feasibility cannot be inferred from n alone.",
+    "Counts sum to n and prefix starts partition destination into digit intervals [sum_{e<d}H[e],sum_{e<=d}H[e]). Left-to-right source traversal advances each cursor once per occurrence, preserving its subsequence. Disjoint intervals imply no dropped or duplicated values. Whole-sort scalar equality cannot establish stability of attached records absent from this API."
+  ],
+  "limitations": [
+    "Partial syntax has opaque macros and no semantic type resolution. Finite evidence is not proof. Exact algorithms have no approximate execution profiles; supported approximant caps remain 1%, 2%, 5%, 10%."
+  ],
+  "source": "algorithms/src/radix_sort/mod.rs",
+  "state": "Finite integer slices and ordinary terminating execution including allocator outcomes."
+}

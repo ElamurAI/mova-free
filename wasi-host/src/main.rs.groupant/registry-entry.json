@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "wave31_cli_tiny_guest_isolated_effects"
+  ],
+  "children": [],
+  "cost": "O(args bytes+module bytes+import/export bytes)+Vfs and engine costs; host IO unbounded by guest fuel.",
+  "description": "CLI parses leading options, reads and validates module, rejects unknown imports, imports host directories to bounded Vfs, runs with echo, conditionally exports, optionally journals/stats, then clamps exit to0..255.",
+  "forward": [
+    "CLI parses leading options, reads and validates module, rejects unknown imports, imports host directories to bounded Vfs, runs with echo, conditionally exports, optionally journals/stats, then clamps exit to0..255."
+  ],
+  "id": "wasi-cli",
+  "inverse": [
+    "Exit2 admits usage/module/import/export failures. Final exit cannot reconstruct options or filesystem history; journal error can coexist with successful guest exit."
+  ],
+  "limitations": [
+    "Partial source syntax and finite tests; no full WASI compliance or mlab suite claim",
+    "No executable percentage surrogate or whole-system proof"
+  ],
+  "source": "wasi-host/src/main.rs",
+  "state": "Guest bytes/descriptors/Vfs/virtual clock/RNG, or scoped CLI/test state as described"
+}

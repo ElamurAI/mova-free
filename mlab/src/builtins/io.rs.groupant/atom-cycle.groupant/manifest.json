@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "A queue exhausted mid-cycle excludes later literal segments after the next unfilled spec. String precision truncates %s only, not %c.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Output prefix corresponds to any atom queue whose consumption ends at the same spec boundary; literal-only output permits any convertible atoms because none are consumed.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_invariant",
+        "path": "model.md",
+        "scope": "Every productive numeric/string conversion removes an atom or expands a finite string to code atoms; iteration ends when queue empties.",
+        "section": "state_invariant",
+        "status": "partial_source_derived_model",
+        "type": "state_invariant"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "atoms rejects tables/string arrays before any output is returned; format allocation panic remains outside MError model.",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "%s/%c numeric atoms produce valid Unicode scalar or shortest fallback; numeric spec strings expand by Unicode characters.",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "O(format scan + repeated segment traversal and per-atom flag scans + atom expansion + output bytes); format/flag work can multiply by expanded atom count, and long padding can dominate.",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 12846,
+      "start": 9921
+    },
+    "description": "Compute segments and atom queue; zero specs returns literals, otherwise cycle. Initially empty queue pads each spec once; exhausted noninitial queue returns immediately at the next spec.",
+    "source_bytes_sha256": "feaf2371c872c526fa4ef5c2b1a2e1c76fe573e2f2ee26bee955087fe714a5b8"
+  },
+  "id": "mlab-builtins-io-atom-cycle",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../io.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "474fbd7e9d27e2e2333b4e7324f348d79475aef977847e353b8c363a6f9f23ed"
+  },
+  "status": "partial_source_bound_model"
+}

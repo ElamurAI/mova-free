@@ -1,0 +1,124 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "No macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "descriptant",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Inner excluded relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-space-saving-tests-behavior-complement",
+        "observation_scope": "Finite fixture verdicts",
+        "operator": "Relation in model.md behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/space_saving/tests.rs sha256:c71708674a0151bb07677de0846c78c113b9cea99a7e89e2bc0349c0eb25f451",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Set-valued compatible antecedents",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-space-saving-tests-reverse-reconstruction",
+        "observation_scope": "Finite fixture verdicts",
+        "operator": "Relation in model.md reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/space_saving/tests.rs sha256:c71708674a0151bb07677de0846c78c113b9cea99a7e89e2bc0349c0eb25f451",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped conditional relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-space-saving-tests-independent-oracle",
+        "observation_scope": "Finite fixture verdicts",
+        "operator": "Relation in model.md independent-oracle",
+        "path": "model.md",
+        "required": false,
+        "section": "independent-oracle",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/space_saving/tests.rs sha256:c71708674a0151bb07677de0846c78c113b9cea99a7e89e2bc0349c0eb25f451",
+        "type": "reference_correspondence"
+      },
+      {
+        "approximation_semantics": "Scoped conditional relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-space-saving-tests-boundary-coverage",
+        "observation_scope": "Finite fixture verdicts",
+        "operator": "Relation in model.md boundary-coverage",
+        "path": "model.md",
+        "required": false,
+        "section": "boundary-coverage",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/space_saving/tests.rs sha256:c71708674a0151bb07677de0846c78c113b9cea99a7e89e2bc0349c0eb25f451",
+        "type": "domain_partition"
+      },
+      {
+        "approximation_semantics": "Scoped conditional relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-space-saving-tests-discrimination",
+        "observation_scope": "Finite fixture verdicts",
+        "operator": "Relation in model.md discrimination",
+        "path": "model.md",
+        "required": false,
+        "section": "discrimination",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/space_saving/tests.rs sha256:c71708674a0151bb07677de0846c78c113b9cea99a7e89e2bc0349c0eb25f451",
+        "type": "mutation_sensitivity"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "tests",
+      "status": "partial"
+    }
+  },
+  "id": "algorithm-space-saving-tests",
+  "kind": "groupant",
+  "registry": {
+    "node": "algorithm-space-saving-tests",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "c71708674a0151bb07677de0846c78c113b9cea99a7e89e2bc0349c0eb25f451"
+  },
+  "status": "partial"
+}

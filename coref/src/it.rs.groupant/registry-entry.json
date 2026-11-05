@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "tests::it_readings_keep_it_from_nouns",
+    "tests::wave27_event_antecedent_and_empty_evaluation"
+  ],
+  "children": [],
+  "cost": "reading O(n) child scans plus lowercase bytes; antecedent O(n²) conservative for n candidate ancestor walks, O(n) trimming; O(1) auxiliary besides temporary strings. Public invalid indexes panic.",
+  "description": "Classify it/this/that as pleonastic, event or anaphoric and select a preceding clause for event reference.",
+  "forward": [
+    "Other forms and missing parents return Anaphoric. For it, enabled weather, time/copula, extraposition and small-clause rules return Pleonastic first. it-event off returns Anaphoric next; event verb/copula/because and bare demonstrative rules follow. antecedent computes disjoint left predicates ranked (depth,-position), but returns root-left preceding-conj slice first, then ranked candidate, then previous sentence's first predicate root; trim edge punctuation and trailing cc."
+  ],
+  "id": "coref-it",
+  "inverse": [
+    "For reading r, preimage includes all valid sentence/index/environment triples satisfying the first enabled applicable branch. Event result alone cannot recover its predicate, antecedent or lexical form. For antecedent tuple a, all forests preserving winning candidate and exclusion/rank relations are compatible."
+  ],
+  "limitations": [
+    "No exhaustive lexical/ablation coverage or arbitrary invalid public Sent tests; percentage surrogate unsupported.",
+    "Partial lexical syntax; no executable percentage surrogate; no corpus or universal proof."
+  ],
+  "source": "coref/src/it.rs",
+  "state": "Valid Sent forest, word index, sentence vector and PRAG_OFF environment snapshot."
+}

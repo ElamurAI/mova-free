@@ -633,3 +633,56 @@ mod tests {
         assert!(render_check("Кіт спить.", &neg, &m).is_err(), "extra «не»");
     }
 }
+
+#[cfg(test)]
+mod wave29 {
+    use super::*;
+    #[test]
+    fn failure_precedence_and_real_parse() {
+        let mut m = Morph::default();
+        let names = HashSet::new();
+        assert!(matches!(parse("1?", &m, &names), Err(Reject::Question)));
+        assert!(matches!(parse("1,?", &m, &names), Err(Reject::Punct(_))));
+        assert!(matches!(parse("", &m, &names), Err(Reject::NoParse)));
+        assert!(matches!(
+            parse("1 2 3 4 5 6 7 8 9", &m, &names),
+            Err(Reject::TooLong)
+        ));
+        assert!(matches!(parse("1 і", &m, &names), Err(Reject::Digit)));
+        assert!(matches!(
+            parse("невідоме і", &m, &names),
+            Err(Reject::Conj(_))
+        ));
+        assert!(matches!(
+            parse("невідоме", &m, &names),
+            Err(Reject::Unknown(_))
+        ));
+        for (word, lemma, tags) in [
+            ("кіт", "кіт|noun", "noun:anim:m:v_naz"),
+            ("спить", "спати|verb", "verb:imperf:pres:s:3"),
+        ] {
+            let g = Gram::from_vesum(tags);
+            m.forms.insert(
+                word.into(),
+                vec![Analysis {
+                    lemma: lemma.into(),
+                    gram: g,
+                    gov: 0,
+                }],
+            );
+            m.synth.insert((lemma.into(), g), vec![word.into()]);
+        }
+        let f = parse("Кіт спить.", &m, &names).unwrap();
+        assert_eq!(
+            f.members.iter().find(|m| m.rel == "subject").unwrap().word,
+            Some(0)
+        );
+        assert!(render_check("Кіт спить.", &f, &m).is_ok());
+        assert!(matches!(
+            parse("Кіт — спить.", &m, &names),
+            Err(Reject::Punct(_))
+        ));
+        assert!(governs(1 << ZNA, ROD, true));
+        assert!(!governs(1 << ZNA, ROD, false));
+    }
+}

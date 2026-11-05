@@ -6,7 +6,7 @@ ParTUT is NC, so for `mova` it is test and research. The main direction is `mova
 
 ## partut → mova
 
-### 1. Compound nouns (`seeds/nmod-compound.md`)
+### 1. Compound nouns (`seeds.md#nmod-compound`)
 
 ```convert
 rule: partut.nn-compound
@@ -20,7 +20,7 @@ source: UD en compound
 ```
 
 
-### 2. Modals and agreement (`seeds/feats.md`)
+### 2. Modals and agreement (`seeds.md#feats`)
 
 Modals first: otherwise their `Person=3` would pass as agreement.
 
@@ -100,7 +100,7 @@ source: en/README.md («for a relative pronoun — the antecedent»)
 ```
 
 
-### 3. Case, voice, numbers (`seeds/feats.md`)
+### 3. Case, voice, numbers (`seeds.md#feats`)
 
 
 ```convert
@@ -195,7 +195,7 @@ source: EWT 2.18 (PROPN with Number — 16 087 of 16 562)
 ```
 
 
-### 4. Possessives, lemmas, structures (`seeds/structures.md`, `seeds/errors.md`)
+### 4. Possessives, lemmas, structures (`seeds.md#structures`, `seeds.md#errors`)
 
 
 ```convert
@@ -350,7 +350,7 @@ Matches on ParTUT (on the source data, before the effect of previous rules):
 - lemmas: `lemma-me` 200, `lemma-us` 28, `lemma-them` 46, `lemma-self` 12;
 - `wh-advmod` 70, `flat-foreign` 88.
 
-**Not converted:** TUT XPOS (`seeds/xpos-tut.md`) — the engine neither reads nor writes tags outside PTB. `VerbForm=Ger`. Errors from `seeds/errors.md`, except the systematic pronoun lemmas.
+**Not converted:** TUT XPOS (`seeds.md#xpos-tut`) — the engine neither reads nor writes tags outside PTB. `VerbForm=Ger`. Errors from `seeds.md#errors`, except the systematic pronoun lemmas.
 
 ## mova → partut
 
@@ -362,7 +362,7 @@ from: mova
 to: partut
 match: h[upos=NOUN|PROPN]; n[upos=NOUN, rel=compound, head=h]
 set: n[rel=nmod]
-source: seeds/nmod-compound.md
+source: seeds.md#nmod-compound
 ```
 
 ```convert
@@ -372,7 +372,7 @@ from: mova
 to: partut
 match: t[]
 set: t[feats-=Case]; t[feats-=Voice]; t[feats-=NumForm]
-source: seeds/feats.md
+source: seeds.md#feats
 ```
 
 ```convert
@@ -382,7 +382,7 @@ from: mova
 to: partut
 match: n[upos=PROPN]
 set: n[feats-=Number]
-source: seeds/feats.md
+source: seeds.md#feats
 ```
 
 ```convert
@@ -392,7 +392,7 @@ from: mova
 to: partut
 match: m[upos=AUX, lemma=will|can|shall|may|must]
 set: m[feats+=Mood=Ind]; m[feats+=Person=3]; m[feats+=Tense=Pres]
-source: seeds/feats.md
+source: seeds.md#feats
 ```
 
 ```convert
@@ -402,7 +402,7 @@ from: mova
 to: partut
 match: m[upos=AUX, lemma=would|could|should|might]
 set: m[feats+=Mood=Ind]; m[feats+=Person=3]; m[feats+=Tense=Past]
-source: seeds/feats.md
+source: seeds.md#feats
 ```
 
 ```convert
@@ -412,7 +412,7 @@ from: mova
 to: partut
 match: v[feats.VerbForm=Fin, feats.Tense=Pres, suffix!=s, form!=am|'m]
 set: v[feats+=Number=Plur]; v[feats-=Person]
-source: seeds/feats.md (are, have — Number=Plur)
+source: seeds.md#feats (are, have — Number=Plur)
 ```
 
 ```convert
@@ -422,7 +422,7 @@ from: mova
 to: partut
 match: v[feats.VerbForm=Fin, feats.Tense=Past, lemma!=be]
 set: v[feats-=Number]; v[feats-=Person]
-source: seeds/feats.md
+source: seeds.md#feats
 ```
 
 ```convert
@@ -432,7 +432,7 @@ from: mova
 to: partut
 match: p[upos=PRON, rel=nmod:poss, form=my|your|his|her|its|our|their]
 set: p[upos=DET]; p[feats-=Case]; p[feats-=Person]; p[feats-=Number]
-source: seeds/structures.md
+source: seeds.md#structures
 ```
 
 ```convert
@@ -442,7 +442,7 @@ from: mova
 to: partut
 match: p[form=our, rel=nmod:poss]
 set: p[lemma=us]
-source: seeds/structures.md
+source: seeds.md#structures
 ```
 
 ```convert
@@ -452,7 +452,7 @@ from: mova
 to: partut
 match: p[form=your, rel=nmod:poss]
 set: p[lemma=you]
-source: seeds/structures.md
+source: seeds.md#structures
 ```
 
 ```convert
@@ -462,7 +462,7 @@ from: mova
 to: partut
 match: o[rel=obl:agent]
 set: o[rel=obl]
-source: seeds/structures.md
+source: seeds.md#structures
 ```
 
 ```convert
@@ -472,7 +472,7 @@ from: mova
 to: partut
 match: v[rel=advcl]; w[form=when, rel=advmod, head=v, before=v]
 set: w[upos=SCONJ]; w[rel=mark]
-source: seeds/structures.md
+source: seeds.md#structures
 ```
 
 ```convert
@@ -482,7 +482,7 @@ from: mova
 to: partut
 match: f[rel=flat, feats.Foreign=Yes]
 set: f[rel=flat:foreign]; f[feats-=Foreign]
-source: seeds/structures.md
+source: seeds.md#structures
 ```
 
 ```convert-todo
@@ -492,7 +492,7 @@ from: mova
 to: partut
 match: n[upos=NOUN]
 set: n[xpos=S]
-source: seeds/xpos-tut.md
+source: seeds.md#xpos-tut
 ```
 
 Needs string XPOS. The table UPOS (+ `PronType`, `Definite`) → TUT tag is unambiguous for most classes: NOUN → `S`, ADJ → `A`, ADP → `E`, CCONJ → `CC`, SCONJ → `CS`, PROPN → `SP`, NUM → `N`, DET+Art+Def → `RD`, DET+Art+Ind → `RI`, possessive → `AP`, copula → `V`, other AUX → `VA`/`VM`.

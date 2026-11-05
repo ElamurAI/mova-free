@@ -75,21 +75,7 @@ pub fn sample() -> Result<Vec<Item>> {
             }
         }
         all.sort();
-        let mut taken: BTreeSet<usize> = BTreeSet::new();
-        let mut picks: Vec<usize> = Vec::new();
-        let mut cat = 0;
-        let mut stuck = 0;
-        while picks.len() < PER_COURSE && stuck < 6 {
-            match all.iter().enumerate().find(|(i, x)| !taken.contains(i) && cats(&x.3)[cat]) {
-                Some((i, _)) => {
-                    taken.insert(i);
-                    picks.push(i);
-                    stuck = 0;
-                }
-                None => stuck += 1,
-            }
-            cat = (cat + 1) % 6;
-        }
+        let picks = pick_indices(&all);
         for (k, &i) in picks.iter().enumerate() {
             let (_, n, li, t) = &all[i];
             out.push(Item { id: out.len(), split: if k % 4 == 3 { "held".into() } else { "dev".into() }, course: c.into(), lesson: *n, line: *li, text: t.clone() });
@@ -98,25 +84,67 @@ pub fn sample() -> Result<Vec<Item>> {
     Ok(out)
 }
 
+fn pick_indices(all: &[(u64, usize, usize, String)]) -> Vec<usize> {
+    let mut taken: BTreeSet<usize> = BTreeSet::new();
+    let mut picks: Vec<usize> = Vec::new();
+    let mut cat = 0;
+    let mut stuck = 0;
+    while picks.len() < PER_COURSE && stuck < 6 {
+        match all
+            .iter()
+            .enumerate()
+            .find(|(i, x)| !taken.contains(i) && cats(&x.3)[cat])
+        {
+            Some((i, _)) => {
+                taken.insert(i);
+                picks.push(i);
+                stuck = 0;
+            }
+            None => stuck += 1,
+        }
+        cat = (cat + 1) % 6;
+    }
+    picks
+}
+
 pub fn load_items() -> Result<Vec<Item>> {
     let t = std::fs::read_to_string(dir().join("lines.tsv")).context("lines.tsv: run `world frames bench-make` first")?;
-    t.lines().skip(1).filter(|l| !l.is_empty()).map(|l| {
-        let c: Vec<&str> = l.splitn(6, '\t').collect();
-        if c.len() < 6 {
-            bail!("lines.tsv: «{l}»");
-        }
-        Ok(Item { id: c[0].parse()?, split: c[1].into(), course: c[2].into(), lesson: c[3].parse()?, line: c[4].parse()?, text: c[5].into() })
-    }).collect()
+    parse_items(&t)
+}
+
+fn parse_items(t: &str) -> Result<Vec<Item>> {
+    t.lines()
+        .skip(1)
+        .filter(|l| !l.is_empty())
+        .map(|l| {
+            let c: Vec<&str> = l.splitn(6, '\t').collect();
+            if c.len() < 6 {
+                bail!("lines.tsv: «{l}»");
+            }
+            Ok(Item {
+                id: c[0].parse()?,
+                split: c[1].into(),
+                course: c[2].into(),
+                lesson: c[3].parse()?,
+                line: c[4].parse()?,
+                text: c[5].into(),
+            })
+        })
+        .collect()
 }
 
 /// The gold: id → frames in order.
 pub fn load_gold() -> Result<BTreeMap<usize, Vec<GFrame>>> {
-    let mut g: BTreeMap<usize, Vec<(usize, GFrame)>> = BTreeMap::new();
     let p = dir().join("gold.tsv");
     if !p.exists() {
         return Ok(BTreeMap::new());
     }
-    for l in std::fs::read_to_string(p)?.lines().skip(1) {
+    parse_gold(&std::fs::read_to_string(p)?)
+}
+
+fn parse_gold(text: &str) -> Result<BTreeMap<usize, Vec<GFrame>>> {
+    let mut g: BTreeMap<usize, Vec<(usize, GFrame)>> = BTreeMap::new();
+    for l in text.lines().skip(1) {
         let c: Vec<&str> = l.splitn(3, '\t').collect();
         if c.len() < 3 {
             continue;
@@ -128,10 +156,12 @@ pub fn load_gold() -> Result<BTreeMap<usize, Vec<GFrame>>> {
             e.push((k, f));
         }
     }
-    Ok(g.into_iter().map(|(id, mut v)| {
-        v.sort_by_key(|x| x.0);
-        (id, v.into_iter().map(|x| x.1).collect())
-    }).collect())
+    Ok(g.into_iter()
+        .map(|(id, mut v)| {
+            v.sort_by_key(|x| x.0);
+            (id, v.into_iter().map(|x| x.1).collect())
+        })
+        .collect())
 }
 
 const PROMPT: &str = r#"You write the gold standard for a small transparent reader that turns English sentences into frames (their pragmatic structure: who did what to whom, where, why, what next, who said what). For each numbered TARGET line write the frames of that line only. The context lines before it (from the same lesson) are given only so that you can resolve pronouns; write no frames for them.
@@ -321,6 +351,17 @@ fn baseline(text: &str) -> Vec<String> {
     vec![format!("Event {a} {}{p}", w[v].lemma)]
 }
 
+fn select_items<'a>(
+    items: &'a [Item],
+    gold: &BTreeMap<usize, Vec<GFrame>>,
+    split: &str,
+) -> Vec<&'a Item> {
+    items
+        .iter()
+        .filter(|x| (split == "all" || x.split == split) && gold.contains_key(&x.id))
+        .collect()
+}
+
 /// `world frames bench [dev|held|all] [baseline] [worst N]`.
 pub fn bench(args: &[String]) -> Result<String> {
     let split = args.iter().find(|a| matches!(a.as_str(), "dev" | "held" | "all")).cloned().unwrap_or_else(|| "dev".into());
@@ -328,7 +369,7 @@ pub fn bench(args: &[String]) -> Result<String> {
     let worst: usize = args.iter().position(|a| a == "worst").and_then(|i| args.get(i + 1)).and_then(|x| x.parse().ok()).unwrap_or(8);
     let items = load_items()?;
     let gold = load_gold()?;
-    let sel: Vec<&Item> = items.iter().filter(|x| (split == "all" || x.split == split) && gold.contains_key(&x.id)).collect();
+    let sel = select_items(&items, &gold, &split);
     if sel.is_empty() {
         bail!("no gold for the split «{split}»");
     }
@@ -441,7 +482,13 @@ fn show_g(f: &GFrame) -> String {
     for (p, x) in &f.obls {
         s += &format!(" {p}={}", e(&Some(x.clone())));
     }
+    if !f.attrs.is_empty() {
+        s += &format!(" attrs={}", f.attrs.join(","));
+    }
     let mut l = Vec::new();
+    if f.cond {
+        l.push("if".into());
+    }
     if !f.says.is_empty() {
         l.push(format!("says→{}", f.says.iter().map(|x| format!("#{x}")).collect::<Vec<_>>().join(",")));
     }
@@ -458,4 +505,148 @@ fn show_g(f: &GFrame) -> String {
         s += &format!(" | {}", l.join(" "));
     }
     s
+}
+
+#[cfg(test)]
+mod wave11_models {
+    use super::*;
+
+    #[test]
+    fn frame_serialization_preserves_observation() {
+        for neg in ["", "NOT "] {
+            for links in [
+                "",
+                " | if",
+                " | quoted",
+                " | says→#0,#2 cause→#1 next→#3 quoted if",
+            ] {
+                for attrs in ["", " attrs=red,quick"] {
+                    let text = format!(
+                        "Event ann(«she») {neg}carry patient=box to=bob place=room with=cart{attrs}{links}"
+                    );
+                    let frame = parse_frame(&text).unwrap();
+                    assert_eq!(parse_frame(&show_g(&frame)), Some(frame), "{text}");
+                }
+            }
+        }
+    }
+    #[test]
+    fn sampling_matches_finite_rotation_oracle() {
+        let long = vec!["word"; 31].join(" ");
+        let fixtures = [
+            (
+                "\"hello\"".to_string(),
+                [true, false, false, false, true, true],
+            ),
+            (
+                "because rain falls".into(),
+                [false, true, false, false, true, true],
+            ),
+            (
+                "she carries stones".into(),
+                [false, false, true, false, true, true],
+            ),
+            (long, [false, false, false, true, false, true]),
+            (
+                vec!["word"; 14].join(" "),
+                [false, false, false, false, false, true],
+            ),
+        ];
+        for code in 0..625usize {
+            let mut n = code;
+            let mut classes = Vec::new();
+            for _ in 0..4 {
+                classes.push(n % 5);
+                n /= 5;
+            }
+            let all: Vec<_> = classes
+                .iter()
+                .enumerate()
+                .map(|(i, &k)| (i as u64, 1, i, fixtures[k].0.clone()))
+                .collect();
+            let mut expected = Vec::new();
+            for turn in 0..30 {
+                if let Some(i) =
+                    (0..4).find(|i| !expected.contains(i) && fixtures[classes[*i]].1[turn % 6])
+                {
+                    expected.push(i);
+                }
+            }
+            assert_eq!(pick_indices(&all), expected, "case {code}");
+        }
+        let all: Vec<_> = (0..55)
+            .map(|i| (i as u64, 1, i, "plain words".into()))
+            .collect();
+        assert_eq!(pick_indices(&all), (0..40).collect::<Vec<_>>());
+        assert!(pick_indices(&[]).is_empty());
+    }
+
+    #[test]
+    fn item_loading_preserves_ids_and_text_boundary() {
+        let items = parse_items("id\tsplit\tcourse\tlesson\tline\ttext\n7\tdev\tfixture\t4\t2\talpha\tbeta\n\n3\theld\tfixture\t4\t5\tgamma\n").unwrap();
+        assert_eq!(
+            items
+                .iter()
+                .map(|x| (x.id, x.split.as_str(), x.lesson, x.line, x.text.as_str()))
+                .collect::<Vec<_>>(),
+            [(7, "dev", 4, 2, "alpha\tbeta"), (3, "held", 4, 5, "gamma")]
+        );
+        for malformed in [
+            "1\tdev",
+            "bad\tdev\tc\t1\t2\tx",
+            "1\tdev\tc\tbad\t2\tx",
+            "1\tdev\tc\t1\t-2\tx",
+        ] {
+            assert!(parse_items(&format!("header\n{malformed}\n")).is_err());
+        }
+        // Legacy boundary: the first row is unconditionally a header, and repeated IDs survive.
+        assert!(parse_items("7\tdev\tc\t4\t2\tx").unwrap().is_empty());
+        assert_eq!(
+            parse_items("header\n7\tdev\tc\t4\t2\tx\n7\tdev\tc\t4\t2\ty")
+                .unwrap()
+                .len(),
+            2
+        );
+    }
+
+    #[test]
+    fn gold_order_and_split_selection_are_explicit() {
+        let gold = parse_gold(
+            "id\tk\tframe\n7\t#2\tEvent ann walk\n7\t#0\tEvent ann run\n3\t#0\tunreadable\nshort\n",
+        )
+        .unwrap();
+        assert_eq!(
+            gold[&7].iter().map(|f| f.verb.as_str()).collect::<Vec<_>>(),
+            ["run", "walk"]
+        );
+        assert!(gold[&3].is_empty()); // Existing empty-entry behavior is not a successful annotation guarantee.
+        assert!(parse_gold("header\nbad\t#0\tEvent ann walk").is_err());
+        let items =
+            parse_items("header\n7\tdev\tc\t1\t0\tx\n3\theld\tc\t1\t1\ty\n9\tdev\tc\t1\t2\tz")
+                .unwrap();
+        for (split, ids) in [
+            ("dev", vec![7]),
+            ("held", vec![3]),
+            ("all", vec![7, 3]),
+            ("unknown", vec![]),
+        ] {
+            assert_eq!(
+                select_items(&items, &gold, split)
+                    .iter()
+                    .map(|x| x.id)
+                    .collect::<Vec<_>>(),
+                ids
+            );
+        }
+    }
+
+    #[test]
+    fn scoring_join_uses_loaded_record_identity() {
+        let gold = parse_gold("header\n7\t#0\tEvent ann carry patient=box\n").unwrap();
+        let predicted = parse_frame("Event ann carry patient=box").unwrap();
+        let p = overall(&score_line(&gold[&7], &[predicted]));
+        assert_eq!((p.tp, p.sys, p.gold), (3, 3, 3));
+        let p = overall(&score_line(&gold[&7], &[]));
+        assert_eq!((p.tp, p.sys, p.gold), (0, 0, 3));
+    }
 }

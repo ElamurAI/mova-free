@@ -1,0 +1,64 @@
+{
+  "nodes": [
+    {
+      "checks": [
+        "Direct source comparison through sidecar tests and common approximation runner."
+      ],
+      "cost": "O(UW) with exact rational reductions.",
+      "description": "Partial exact production RSA L0 and bounded S1 model; other RSA functions remain gaps.",
+      "forward": [
+        "Normalize truth-restricted prior rows; empty support yields zero.",
+        "Reference bounded L0 does not overflow; dimensions follow truth."
+      ],
+      "id": "rsa-literal-listener",
+      "inverse": [
+        "Compatible priors are common-scale families constrained jointly by truth rows; no unique inverse."
+      ],
+      "limitations": [
+        "Only L0/S1 modeled; production defaults unchanged; no semantic AST or downstream guarantee."
+      ],
+      "source": "prag/src/rsa.rs",
+      "state": "truth matrix and positive integer priors"
+    },
+    {
+      "checks": [
+        "10 tests including actual production source and two intentional corruptions for every budget."
+      ],
+      "cost": "O(UW), one reciprocal per supported row; includes domain validation and allocation.",
+      "description": "Executable floating RSA L0 approximation with checked domain.",
+      "forward": [
+        "Active caps 1%, 2%, 5%, 10% share exact integer row sums then binary64 reciprocal/multiply; conditional relative error <=1e-12. Classification: probability_relative / floating_normalization / analytical.",
+        "False cells zero, supported rows normalized within numerical tolerance, finite nonnegative output."
+      ],
+      "id": "rsa-l0-rust-approximant",
+      "inverse": [
+        "Compatible bounded integer priors satisfy row probability intervals; scale is ambiguous."
+      ],
+      "limitations": [
+        "No S1/L1, gradients, end-task guarantee or full AST."
+      ],
+      "source": "prag/src/rsa.rs.groupant/rust_approximant.rs",
+      "state": "bounded truth,priors,ErrorBudget"
+    },
+    {
+      "checks": [
+        "11 tests including actual production tests, exhaustive 3x3 truth tables, bounded shapes, extremes, typed invalid-domain and corrupted-result controls."
+      ],
+      "cost": "O(UW) time and output, O(U) auxiliary support sums; validation and allocation included.",
+      "description": "Executable bounded floating S1 surrogate of actual Game::s1.",
+      "forward": [
+        "Normalize truth-restricted priors; power by alpha and binary cost scaling; normalize over utterances for each world.",
+        "probability_relative / floating_normalization / analytical; positive-cell cap 1e-12 and exact zeros for all four profiles."
+      ],
+      "id": "rsa-s1-rust-approximant",
+      "inverse": [
+        "Compatible bounded priors and costs satisfy subset-sum denominator probability-ratio constraints across worlds; preimages need not be unique."
+      ],
+      "limitations": [
+        "Only the declared S1 domain; no L1/best_world/explain, training, end-task or universal speed guarantee."
+      ],
+      "source": "prag/src/rsa.rs.groupant/s1_approximant.rs",
+      "state": "truth [utterance][world], priors, costs, alpha, ErrorBudget"
+    }
+  ]
+}

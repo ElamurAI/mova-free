@@ -1,0 +1,29 @@
+{
+  "run_root": "/ABSOLUTE/PATH/whale-english/run",
+  "executable": {
+    "path": "/ABSOLUTE/PATH/whale-english/bin/mova-whale",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "codex": "/ABSOLUTE/PATH/codex",
+  "survey": {
+    "spec": {"path": "/ABSOLUTE/PATH/spec.json", "sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+    "teacher": {"model": "gpt-CONFIGURED-MODEL", "effort": "medium"},
+    "store": "/ABSOLUTE/PATH/bundles",
+    "metadata_export": {"path": "/ABSOLUTE/PATH/catalog.jsonl", "sha256": "0000000000000000000000000000000000000000000000000000000000000000"}
+  },
+  "catalog": {
+    "path": "/ABSOLUTE/PATH/catalog.jsonl",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "kind": "paper",
+    "id_field": "id",
+    "path_field": "text_path",
+    "title_field": "title",
+    "licence_field": "licence",
+    "formats": {".md": "markdown", ".epub": "epub"},
+    "url_fields": ["url"],
+    "url_prefixes": [{"prefix": "https://doi.org/", "field": "doi"}]
+  },
+  "workers": 1,
+  "max_waiting": 64,
+  "noun": "source"
+}

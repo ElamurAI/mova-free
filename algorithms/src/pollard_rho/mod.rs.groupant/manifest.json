@@ -1,0 +1,127 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "All u64 n and budgets, with zero invalid and maximum allowed budget 10000000. Result<Vec<u64>,FactorError> on normal execution.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One normal terminating call.",
+        "operator": "Excluded successes are unsorted lists, composite factors, missing multiplicity, or product unequal to n. Success on zero/excessive budget, unbounded rho execution, and partial factor vectors labeled successful are excluded.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "aa991534784f3474e089c09e7e75292922c5aa7472503158577b6c3f57f5ac28",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "All u64 n and budgets, with zero invalid and maximum allowed budget 10000000. Result<Vec<u64>,FactorError> on normal execution.",
+        "evidence": "model.md#evidence",
+        "id": "factor_fibers",
+        "observation_scope": "One normal terminating call.",
+        "operator": "A successful prime multiset reconstructs n uniquely by its product (empty reconstructs one), but does not reconstruct the budget: any accepted larger budget than a successful one follows the same deterministic path and succeeds. BudgetExhausted covers many composite n and budgets and reveals no unique factor.",
+        "path": "model.md",
+        "section": "factor_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "aa991534784f3474e089c09e7e75292922c5aa7472503158577b6c3f57f5ac28",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "All u64 n and budgets, with zero invalid and maximum allowed budget 10000000. Result<Vec<u64>,FactorError> on normal execution.",
+        "evidence": "model.md#evidence",
+        "id": "product_certificate",
+        "observation_scope": "One normal terminating call.",
+        "operator": "Sorted primes with u128 product equal to input certify complete factorization by unique factorization. Checking factors with the production primality routine is only an invariant, so small fixtures additionally use independent trial factorization.",
+        "path": "model.md",
+        "section": "product_certificate",
+        "status": "partial_source_derived",
+        "subject_revision": "aa991534784f3474e089c09e7e75292922c5aa7472503158577b6c3f57f5ac28",
+        "type": "certificate_relation"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "All u64 n and budgets, with zero invalid and maximum allowed budget 10000000. Result<Vec<u64>,FactorError> on normal execution.",
+        "evidence": "model.md#evidence",
+        "id": "budget_extension",
+        "observation_scope": "One normal terminating call.",
+        "operator": "If budget b succeeds and b<=b'<=MAX_STEPS, b' returns identical factors. Budget affects only stopping, never seeds or arithmetic. Failure at b makes no claim about success at b'.",
+        "path": "model.md",
+        "section": "budget_extension",
+        "status": "partial_source_derived",
+        "subject_revision": "aa991534784f3474e089c09e7e75292922c5aa7472503158577b6c3f57f5ac28",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "All u64 n and budgets, with zero invalid and maximum allowed budget 10000000. Result<Vec<u64>,FactorError> on normal execution.",
+        "evidence": "model.md#evidence",
+        "id": "prime_power",
+        "observation_scope": "One normal terminating call.",
+        "operator": "For n=p^k within u64 with prime p, successful output contains exactly k copies of p. Powers of two need no rho budget; odd powers may exhaust it. Prime inputs use no rho budget.",
+        "path": "model.md",
+        "section": "prime_power",
+        "status": "partial_source_derived",
+        "subject_revision": "aa991534784f3474e089c09e7e75292922c5aa7472503158577b6c3f57f5ac28",
+        "type": "algebraic_relation"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "All u64 n and budgets, with zero invalid and maximum allowed budget 10000000. Result<Vec<u64>,FactorError> on normal execution.",
+        "evidence": "model.md#evidence",
+        "id": "collision_restart",
+        "observation_scope": "One normal terminating call.",
+        "operator": "gcd=1 continues, gcd=value restarts with c+1, and 1<gcd<value splits. Every path through a collision or continuation consumes an iteration; all restarts share one decreasing counter, ensuring deterministic termination. No randomized success probability is claimed.",
+        "path": "model.md",
+        "section": "collision_restart",
+        "status": "partial_source_derived",
+        "subject_revision": "aa991534784f3474e089c09e7e75292922c5aa7472503158577b6c3f57f5ac28",
+        "type": "resource_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-pollard-rho",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "aa991534784f3474e089c09e7e75292922c5aa7472503158577b6c3f57f5ac28"
+  },
+  "status": "partial_source_derived_instance"
+}

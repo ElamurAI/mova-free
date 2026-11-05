@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "mova-modelcheck groupants; bounded probe in model.md#evidence"
+  ],
+  "children": [],
+  "cost": "For F facts,T tokens,N frames,V distinct verbs/classes: sum parser/reader dependency costs dominates. Aggregation O((T+N) log V), sorting O(V log V), storage O(V+current discourse/read). vnfreq output O(rows+bytes). No parser complexity or speedup claim.",
+  "description": "Adapter re-exports prag frames, acquires world annotator, supplies parse_cased words to read_with, and implements CLI diagnostics/lexical reports. Reading mutates discourse; course traversals use one context per lesson. Parser, pragmatic reader and lexicons remain dependency boundaries.",
+  "forward": [
+    "Adapter re-exports prag frames, acquires world annotator, supplies parse_cased words to read_with, and implements CLI diagnostics/lexical reports. Reading mutates discourse; course traversals use one context per lesson. Parser, pragmatic reader and lexicons remain dependency boundaries."
+  ],
+  "id": "frame-adapter",
+  "inverse": [
+    "U=(entrypoint,input,initial discourse/dependencies,return,effects) over terminating adapter calls; R delegates parsing/reading/reporting. Inner U minus R contains read success after initial annotator Err, parse_words surfacing Err as Result, and filtered be/Bare/nominal frames increasing verb counts.",
+    "Observed Read/final Ctx admits all (text,initial Ctx,question,parser/dependency states) satisfying read_with after successful acquisition. Parsing/context aggregation are lossy; no unique inverse parser."
+  ],
+  "limitations": [
+    "Partial syntax only; semantic AST absent.",
+    "Source-derived catalogs are not general verification; external dependency gaps remain."
+  ],
+  "source": "world/src/frames.rs",
+  "state": "Inputs, dependency state, observations and effects; adjacent groupant defines scope."
+}

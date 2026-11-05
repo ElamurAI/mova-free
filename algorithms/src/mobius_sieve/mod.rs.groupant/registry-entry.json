@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms mobius_sieve::tests"
+  ],
+  "children": [],
+  "cost": "O(n) sieve time and storage. Independent trial factorization through10000 has O(N sqrt N) upper bound. Allocation failure follows Vec policy.",
+  "description": "Return inclusive mu table with mu(0)=0,mu(1)=1. Positive square-divisible k maps0; otherwise (-1)^r for r distinct prime factors. Linear sieve assigns each composite by least prime: p divides i => mu(ip)=0 and stop; else mu(ip)=-mu(i). Reject n>1000000 before allocation. Reference: Hardy and Wright, An Introduction to the Theory of Numbers, chapter XVI, arithmetical functions.",
+  "forward": [
+    "Return inclusive mu table with mu(0)=0,mu(1)=1. Positive square-divisible k maps0; otherwise (-1)^r for r distinct prime factors. Linear sieve assigns each composite by least prime: p divides i => mu(ip)=0 and stop; else mu(ip)=-mu(i). Reject n>1000000 before allocation. Reference: Hardy and Wright, An Introduction to the Theory of Numbers, chapter XVI, arithmetical functions."
+  ],
+  "id": "algorithm-mobius-sieve",
+  "inverse": [
+    "Concrete complement and ambiguous output fibers in adjacent model.md"
+  ],
+  "limitations": [
+    "Finite oracle coverage; no semantic AST or formal proof; allocator failure follows Vec policy"
+  ],
+  "source": "algorithms/src/mobius_sieve/mod.rs",
+  "state": "Primes ascend; each composite assigned once by least prime. Values in {-1,0,1}; p<=n/i checked before product. Divisible branch stops duplicate generation."
+}

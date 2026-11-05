@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Shared parent lexical projection; fragment byte scope above",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source byte range [7891,15577); lexical, not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source byte range [7891,15577); lexical, not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "quantile_coordinates",
+        "path": "model.md",
+        "scope": "Source byte range [7891,15577); lexical, not proof",
+        "section": "quantile_coordinates",
+        "status": "partial_source_derived_model",
+        "type": "quantile_coordinates"
+      },
+      {
+        "id": "covariance_policy",
+        "path": "model.md",
+        "scope": "Source byte range [7891,15577); lexical, not proof",
+        "section": "covariance_policy",
+        "status": "partial_source_derived_model",
+        "type": "covariance_policy"
+      },
+      {
+        "id": "branch_relation",
+        "path": "model.md",
+        "scope": "Source byte range [7891,15577); lexical, not proof",
+        "section": "branch_relation",
+        "status": "partial_source_derived_model",
+        "type": "branch_relation"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "Source byte range [7891,15577); lexical, not proof",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "partial_bounded_parent_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 15577,
+      "start": 7891
+    },
+    "description": "quantile cleans NaNs, sorts then interpolates pos=np+.5 with endpoints clamped; mode delegates table agg. moments drops NaN, covariance does not. cov scalar0/1 second arg treated normalization when first numel>1. histogram final edge included in last bin.",
+    "source_bytes_sha256": "f7cbb4cefc5595c709b397ce4b3f7f68ca1586526fef09706b5e8b341483abc2"
+  },
+  "id": "mlab-builtins-stats-descriptive",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../stats.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "bdc3772b09d9113e108afa29e391fee97a5372caf9052bb1689996c41c94116f"
+  },
+  "status": "partial_source_bound_model"
+}

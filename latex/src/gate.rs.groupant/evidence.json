@@ -1,0 +1,61 @@
+{
+  "command": "cargo test -p latex --features math --lib gate::tests",
+  "control": {
+    "compiler_exit": 0,
+    "kind": "compiled_assertion_inversion",
+    "log_prefix": "control-gate",
+    "negative_exit": 101,
+    "restoration": "exact bytes",
+    "restored_exit": 0,
+    "shared_with_dependency": false
+  },
+  "date": "2026-10-31",
+  "expected_test_names": [
+    "gate::tests::green_on_good_printer_red_on_faulty"
+  ],
+  "limitations": [
+    "Finite synthetic actual-code checks, not proof",
+    "Frozen DATA and sha256 subprocess unexecuted",
+    "Strict Clippy blocked by 14 pre-existing lints in unchanged library code"
+  ],
+  "receipts": [
+    {
+      "exit": 0,
+      "log": "debug-1-gate.log",
+      "log_sha256": "acaae681bdad0cddc7b90f91cc4788fdee758d2a088ffea994416c2d601f7caa",
+      "named_outcomes": "debug-1-gate.names",
+      "outcomes_sha256": "8049ec5d5dc365ed05aa0f5338e27c979d79e19d92d6ab2f4f413350a2933d0c",
+      "profile": "debug",
+      "repetition": 1
+    },
+    {
+      "exit": 0,
+      "log": "debug-2-gate.log",
+      "log_sha256": "acaae681bdad0cddc7b90f91cc4788fdee758d2a088ffea994416c2d601f7caa",
+      "named_outcomes": "debug-2-gate.names",
+      "outcomes_sha256": "8049ec5d5dc365ed05aa0f5338e27c979d79e19d92d6ab2f4f413350a2933d0c",
+      "profile": "debug",
+      "repetition": 2
+    },
+    {
+      "exit": 0,
+      "log": "release-1-gate.log",
+      "log_sha256": "92271ef37f8667588c05cc2f2d9dd84298341516bdc694d3aa5295382348436f",
+      "named_outcomes": "release-1-gate.names",
+      "outcomes_sha256": "8049ec5d5dc365ed05aa0f5338e27c979d79e19d92d6ab2f4f413350a2933d0c",
+      "profile": "release",
+      "repetition": 1
+    },
+    {
+      "exit": 0,
+      "log": "release-2-gate.log",
+      "log_sha256": "92271ef37f8667588c05cc2f2d9dd84298341516bdc694d3aa5295382348436f",
+      "named_outcomes": "release-2-gate.names",
+      "outcomes_sha256": "8049ec5d5dc365ed05aa0f5338e27c979d79e19d92d6ab2f4f413350a2933d0c",
+      "profile": "release",
+      "repetition": 2
+    }
+  ],
+  "source": "latex/src/gate.rs",
+  "source_sha256": "b82aa2f9a602c9367ef2b897c5e0ad3de1fa18cf64730ab36ce5cd99d044edb3"
+}

@@ -1,16 +1,18 @@
 # Elamur Cosmic License
 
-Version 3.33 (draft, 2026-10-15) · **not yet reviewed by a lawyer**
+Version 3.33 (draft, 2026-10-22) · *not going to be reviewed by the lawyers of Earth; the upper level has approved it*
 
 *Everything is allowed. Except Big Brother.*
 
+**Scope: code only.** This license covers Mova's code (its source and the documentation that comes with it). Mova's data and models (the in-code dictionary, the school's lessons and dictionaries, the corpora, the trained models and tables) are not under this license: each data module sits in its own folder with a `LICENSE.md` naming its licence (CC BY-SA 4.0, or its sources' stricter terms) and citing its sources. The index is `licence/DATA.md`.
+
 ## 1. Freedom
 
-Anyone may do anything with this work — software, models, data we have the right to license, documentation: use, study, copy, change, merge, share, sell, build products and services on it, for any purpose, commercial or not, without asking, without paying, and without having to credit anyone.
+Anyone may do anything with this work — the software, its source code and documentation: use, study, copy, change, merge, share, sell, build products and services on it, for any purpose, commercial or not, without asking, without paying, and without having to credit anyone.
 
 Anyone means anyone: individuals, students, researchers, startups, corporations of any size, non-profits, public bodies — everyone, as long as they are not being Big Brother.
 
-There are no other conditions than the two below.
+There are no other conditions than the two below; third-party parts keep their own terms (sections 7 and 8).
 
 ## 2. Not for Big Brother
 
@@ -46,7 +48,11 @@ The work comes as it is. Nobody who made it promises that it works, fits any pur
 
 ## 7. Third-party files
 
-Third-party files kept verbatim in this work (for example reference test data) stay under their own terms, which are listed with them. Everything the authors train, build or derive is part of this work.
+Third-party files kept verbatim in this work (for example reference test data) stay under their own terms, which are listed with them. Code the authors build or derive is part of this work; data and models they make go under the data licences of `licence/DATA.md`, not under this license.
+
+## 8. Data made with third-party models
+
+Some data distributed with this work was made with the help of third-party AI models: drafts patched by a model as teacher, lessons and ratings written with one. These parts are listed in `licence/DATA.md`; they are under their data licences, and the following applies to them as well. The terms of those models' providers may forbid using their outputs to develop models that compete with them. This license grants all we can grant, and never more than those terms allow. Whoever uses these parts to train or improve such a competing model must first make sure the provider's terms permit it.
 
 ---
 

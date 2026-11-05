@@ -1,0 +1,22 @@
+{
+  "id": "algorithm-suffix_automaton-tests",
+  "source": "algorithms/src/suffix_automaton/tests.rs",
+  "description": "suffix_automaton independent checks",
+  "state": "Deterministic successful Rust test runs on named bounded fixtures; no claims for unexecuted cases.",
+  "forward": [
+    "Run two test functions for suffix_automaton: independent exhaustive oracle and explicit boundary/relational fixtures. Pass iff all assertions hold."
+  ],
+  "inverse": [
+    "Within deterministic terminating test executions, a pass is excluded when any executed assertion is false; failure is excluded when all assertions hold. Untested inputs are outside this observation.",
+    "A pass admits every implementation agreeing with all tested observations; many disagree elsewhere. A failure trace restricts compatible executions to those violating its named assertion and cannot identify a unique source bug."
+  ],
+  "cost": "Exhaustive finite verification; exponential oracle work deliberately bounded by fixture lengths. No production throughput conclusions.",
+  "checks": [
+    "cargo test -p mova-algorithms --offline suffix_automaton::tests::",
+    "Compiled semantic mutant rejected by a real assertion; syntax generated twice."
+  ],
+  "limitations": [
+    "Partial syntax, finite evidence, no timing or downstream gain claimed."
+  ],
+  "children": []
+}

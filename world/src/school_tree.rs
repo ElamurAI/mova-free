@@ -723,3 +723,102 @@ pub(super) fn read_tree(text: &str) -> Reading {
     }
     r
 }
+
+#[cfg(test)]
+mod wave9_models {
+    use super::*;
+    use en::gram::Tag;
+
+    fn word(head: usize, rel: Rel, upos: UPos, form: &str) -> Word {
+        Word { head, rel, upos, form: form.into(), lemma: form.into(), tag: Tag::NN, feats: Default::default() }
+    }
+    fn sent(w: Vec<Word>) -> TSent {
+        TSent { low: w.iter().map(|w| w.form.to_lowercase()).collect(), w }
+    }
+
+    // Independent graph oracle: visited vertices, not the production iteration budget.
+    fn graph_oracle(t: &TSent) -> Vec<(usize, Vec<usize>)> {
+        let pred: BTreeSet<usize> = t.w.iter().enumerate().filter(|(i, w)| {
+            w.head == 0 || (matches!(w.rel.base(), Rel::Conj | Rel::Advcl | Rel::Parataxis)
+                && (w.upos == UPos::VERB || t.w.iter().any(|c| c.head == i + 1 && matches!(c.rel.base(), Rel::Nsubj | Rel::Cop | Rel::Expl))))
+        }).map(|(i, _)| i).collect();
+        let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
+        for (i, w) in t.w.iter().enumerate() {
+            if w.upos == UPos::PUNCT { continue; }
+            let mut seen = BTreeSet::new();
+            let mut v = i;
+            while seen.insert(v) {
+                if pred.contains(&v) {
+                    if w.rel.base() != Rel::Cc || v == i { groups.entry(v).or_default().push(i); }
+                    break;
+                }
+                let h = t.w[v].head;
+                if h == 0 || h > t.w.len() { break; }
+                v = h - 1;
+            }
+        }
+        let mut out: Vec<_> = groups.into_iter().collect();
+        out.sort_by_key(|x| x.1[0]);
+        out
+    }
+
+    #[test]
+    fn clauses_all_four_token_head_graphs() {
+        for code in 0usize..6usize.pow(4) {
+            let mut q = code;
+            let mut w = Vec::new();
+            for (rel, pos) in [(Rel::Nsubj, UPos::NOUN), (Rel::Conj, UPos::VERB), (Rel::Cc, UPos::CCONJ), (Rel::Advcl, UPos::PUNCT)] {
+                w.push(word(q % 6, rel, pos, "x")); q /= 6;
+            }
+            let t = sent(w);
+            assert_eq!(t.clauses(), graph_oracle(&t), "heads code={code}");
+            for (_, indexes) in t.clauses() { assert!(indexes.windows(2).all(|p| p[0] < p[1])); }
+        }
+        assert!(sent(Vec::new()).clauses().is_empty());
+    }
+
+    #[test]
+    fn subject_depth_boundary_and_passive_features() {
+        for depth in 0..=5 {
+            let mut w = vec![word(0, Rel::Root, UPos::VERB, "hold"), word(1, Rel::Nsubj, UPos::NOUN, "sam")];
+            let mut p = 0;
+            for _ in 0..depth { w.push(word(p + 1, Rel::Conj, UPos::VERB, "give")); p = w.len() - 1; }
+            let t = sent(w);
+            assert_eq!(t.subject(p), (depth < 4).then_some(1));
+            assert!(!t.passive(p));
+        }
+        for rel in [Rel::Aux, Rel::AuxPass, Rel::Nsubj, Rel::NsubjPass] {
+            let t = sent(vec![word(0, Rel::Root, UPos::VERB, "give"), word(1, rel, UPos::NOUN, "x")]);
+            assert_eq!(t.passive(0), matches!(rel, Rel::AuxPass | Rel::NsubjPass));
+        }
+    }
+
+    #[test]
+    fn counted_measure_redirect_and_refusal() {
+        for pos in [UPos::NOUN, UPos::PROPN, UPos::VERB] {
+            for rel in [Rel::Nummod, Rel::Obj] {
+                for noun in ["apple", "more", "cups"] {
+                    let t = sent(vec![word(2, rel, UPos::NUM, "2"), word(0, Rel::Root, pos, noun), word(2, Rel::Nmod, UPos::NOUN, "flour"), word(3, Rel::Case, UPos::ADP, "of")]);
+                    let expected = if rel != Rel::Nummod || pos == UPos::VERB || noun == "more" { None }
+                        else if noun == "cups" { Some(2) } else { Some(1) };
+                    assert_eq!(t.counted(0), expected, "{pos:?} {rel:?} {noun}");
+                    assert_eq!(t.case_of(2).as_deref(), Some("of"));
+                }
+            }
+        }
+        for head in [0, 2, usize::MAX] {
+            let t = sent(vec![word(head, Rel::Nummod, UPos::NUM, "2")]);
+            assert_eq!(t.counted(0), None);
+        }
+    }
+
+    #[test]
+    fn clause_observation_has_ambiguous_word_fibers() {
+        let a = sent(vec![word(2, Rel::Nsubj, UPos::NOUN, "sam"), word(0, Rel::Root, UPos::VERB, "holds")]);
+        let b = sent(vec![word(2, Rel::Nsubj, UPos::NOUN, "lee"), word(0, Rel::Root, UPos::VERB, "gives")]);
+        assert_ne!(a.low, b.low);
+        assert_eq!(a.clauses(), vec![(1, vec![0, 1])]);
+        assert_eq!(a.clauses(), b.clauses());
+        assert_eq!(a.subject(1), b.subject(1));
+    }
+}

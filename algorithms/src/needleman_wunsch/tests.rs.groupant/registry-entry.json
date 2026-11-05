@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline needleman_wunsch::tests::; twice debug and twice release",
+    "15 binary words through length 3 per side, 64 scoring triples: 14,400 independent complete-path oracle comparisons. Every returned alignment is reconstructed and rescored. Budget equality, empty input, signed overflow and tie ordering covered. Mutation changes deletion > to >=; deterministic_ties fails."
+  ],
+  "children": [],
+  "cost": "Finite exponential small-input oracle enumeration is intentional; production cost is modeled separately. Test allocation is ordinary and unbudgeted.",
+  "description": "needleman_wunsch independent checks",
+  "forward": [
+    "Run bounded independent oracle fixtures, edge witnesses, and executable reconstruction invariants; assertions certify only the exercised inputs.",
+    "All oracle cases are generated deterministically; comparison or reconstruction must assert, not merely execute."
+  ],
+  "id": "algorithm-needleman-wunsch-tests",
+  "inverse": [
+    "Passing fixtures do not establish universal correctness, asymptotic complexity, allocator exhaustion behavior or Unicode semantics. A compiler failure does not count as a killed mutation.",
+    "A named assertion failure identifies a violated fixture relation but may have many implementation causes. Passing observations retain all implementations agreeing on the enumerated finite domain.",
+    "15 binary words through length 3 per side, 64 scoring triples: 14,400 independent complete-path oracle comparisons. Every returned alignment is reconstructed and rescored. Budget equality, empty input, signed overflow and tie ordering covered. Mutation changes deletion > to >=; deterministic_ties fails.",
+    "The compiled intentional production mutation must reach its named assertion and fail; exact production bytes are restored and the positive suite reruns.",
+    "Two serial debug runs and two serial optimized runs must have identical normalized test identities and outcomes. Timing fields are excluded; no speed claim follows."
+  ],
+  "limitations": [
+    "Partial Rust syntax projection excludes macro expansion and semantic resolution. Finite tests do not prove general correctness or linear cost. No executable approximation profile: outputs are discrete exact objects and no useful certified surrogate metric is proposed."
+  ],
+  "source": "algorithms/src/needleman_wunsch/tests.rs",
+  "state": "Finite byte inputs with explicitly documented limits and allocation outcomes."
+}

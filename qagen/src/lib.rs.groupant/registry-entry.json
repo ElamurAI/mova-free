@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p qagen --lib --bins -- --skip lemma::tests::doubt_with_en_model --test-threads=1"
+  ],
+  "children": [],
+  "cost": "No runtime operations in this source; compilation resolves module tree and downstream dependencies.",
+  "description": "Expose eight qagen modules and document candidate training generation through configured Codex CLI via mova-teacher.",
+  "forward": [
+    "Expose eight qagen modules and document candidate training generation through configured Codex CLI via mova-teacher."
+  ],
+  "id": "qagen-lib",
+  "inverse": [
+    "The export list permits many child implementations; identical library module syntax cannot recover runtime behavior or teacher configuration."
+  ],
+  "limitations": [
+    "Finite synthetic fixtures, partial syntax projection.",
+    "No numerical surrogate or live teacher/model/database/corpus tests; multi-file writes remain nontransactional."
+  ],
+  "source": "qagen/src/lib.rs",
+  "state": "Public module names fix, gate, lemma, prompt, report, run, schema, select remain stable; documentation identifies the actual teacher transport."
+}

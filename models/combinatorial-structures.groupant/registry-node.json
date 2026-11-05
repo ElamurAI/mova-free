@@ -1,0 +1,38 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms blossom_matching::tests",
+    "cargo test -p mova-algorithms exact_cover::tests",
+    "cargo test -p mova-algorithms functional_graph_decomposition::tests",
+    "cargo test -p mova-algorithms maximum_weight_closure::tests",
+    "cargo test -p mova-algorithms minimum_arborescence::tests",
+    "13 local tests; 877 integrated checks twice debug/release; source-bound compiled controls; see model.md#wave26-evidence."
+  ],
+  "children": [
+    "algorithm-blossom-matching",
+    "algorithm-blossom-matching-tests",
+    "algorithm-exact-cover",
+    "algorithm-exact-cover-tests",
+    "algorithm-functional-graph-decomposition",
+    "algorithm-functional-graph-decomposition-tests",
+    "algorithm-maximum-weight-closure",
+    "algorithm-maximum-weight-closure-tests",
+    "algorithm-minimum-arborescence",
+    "algorithm-minimum-arborescence-tests"
+  ],
+  "cost": "Functional decomposition O(n) time/space. Exact cover may be exponential; matching and closure use concrete leaf bounds. Arborescence scans each nonroot parent once per contraction and labels disjoint cycles: O(V+E) per round, at most V rounds, O(VE+V²) total. The nested-contraction witness at V=257 reduced primary parent advances from 1065024 to 24640 with the same optimum; this is an operation count, not timing. Adapter construction and allocation add cost.",
+  "description": "Tagged exact combinatorial relations: general-graph maximum-cardinality matching, exact cover, functional-graph decomposition, maximum-weight closure and rooted minimum arborescence. Each retains its own feasible witness and objective. Matching maximizes |M| over disjoint edges; exact cover enforces sum_selected_rows 1[column in row]=1. Closure maximizes sum_{v in C}w_v under implications. Arborescence returns min_T sum_e w_e. Functional output satisfies f^distance(v)(v)=entry(v) on canonical cycle cycle_id(v).",
+  "forward": [
+    "Tagged exact combinatorial relations: general-graph maximum-cardinality matching, exact cover, functional-graph decomposition, maximum-weight closure and rooted minimum arborescence. Each retains its own feasible witness and objective. Matching maximizes |M| over disjoint edges; exact cover enforces sum_selected_rows 1[column in row]=1. Closure maximizes sum_{v in C}w_v under implications. Arborescence returns min_T sum_e w_e. Functional output satisfies f^distance(v)(v)=entry(v) on canonical cycle cycle_id(v).",
+    "Closure uses exact reduction capacities and implication edges. Arborescence exposes Result<Option<i128>,Error> objective only, no edge witness. For heads define successor[0]=0 and successor[i]=head[i] after validation: token i reaches root iff cycle_id[i]=cycle_id[0]. Caller empty/root-label/first-error policy remains separate. Matching-to-cover needs explicit columns and objective handling."
+  ],
+  "id": "combinatorial-structures",
+  "inverse": [
+    "Exclude overlapping matched edges, nonexact coverage, closure implication violations, wrong cycle/entry/distance, or nonminimum arborescence cost. None means infeasible, not cost zero; a returned arborescence edge witness is outside the API.",
+    "Arborescence cost c admits all rooted graphs with optimum c; selected edges are unrecoverable. Matching/cover/closure witnesses admit different unused edges/rows/weights. Cycle/entry/distance summaries admit distinct successor forests between adjacent distance layers."
+  ],
+  "limitations": [
+    "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+    "Finite observations and partial syntax do not establish universal proof."
+  ],
+  "state": "Witness indexes refer to the original graph/row universe. Matching disjointness, exact column coverage, functional successor components, closure implications and rooted directed reachability are separate invariants. Infeasible, invalid and successful-empty outcomes remain distinct."
+}

@@ -1,0 +1,119 @@
+{
+  "children": [
+    {
+      "id": "world-read-segmentation",
+      "path": "segmentation.groupant"
+    },
+    {
+      "id": "world-read-projection",
+      "path": "projection.groupant"
+    },
+    {
+      "id": "world-read-orchestration",
+      "path": "orchestration.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-read-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-read-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-read-admission-order",
+        "path": "model.md",
+        "section": "admission-order",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      },
+      {
+        "id": "world-read-speech-loss",
+        "path": "model.md",
+        "section": "speech-loss",
+        "status": "partial_source_model",
+        "type": "information_loss"
+      },
+      {
+        "id": "world-read-subject-carry",
+        "path": "model.md",
+        "section": "subject-carry",
+        "status": "partial_source_model",
+        "type": "state_transition"
+      },
+      {
+        "id": "world-read-question-priority",
+        "path": "model.md",
+        "section": "question-priority",
+        "status": "partial_source_model",
+        "type": "priority_relation"
+      },
+      {
+        "id": "world-read-check-boundary",
+        "path": "model.md",
+        "section": "check-boundary",
+        "status": "partial_source_model",
+        "type": "resource_boundary"
+      },
+      {
+        "id": "world-read-summary-coupling",
+        "path": "model.md",
+        "section": "summary-coupling",
+        "status": "partial_source_model",
+        "type": "composition_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "id": "world-read",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../read.rs",
+    "sha256": "80ef1f69d776dcb5cd03bf925cc5c01e827d7919495ccda17d785eb3de459857"
+  },
+  "status": "partial_source_bound_model"
+}

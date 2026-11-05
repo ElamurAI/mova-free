@@ -1,0 +1,140 @@
+{
+  "children": [
+    {
+      "id": "hbo-library-merge",
+      "path": "merge.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "cut_as requires nonempty cut result; sentence ID addition representable. merge equal sentence counts checked globally, word counts incrementally; earlier sentences can mutate before late error. Parser alignment is positional only; equal count does not establish same form or sentence identity.",
+        "evidence": "model.md#tests",
+        "id": "behavior_complement",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "merge never copies ID, FORM, DEPS or MISC; a sentence-count error cannot mutate base, but a later word-count error can leave earlier annotations. parser_view cannot preserve UPOS. No parser execution follows from supplied helper tests.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "subject_revision": "660faca62417f9a1eb9807a014127f1b4b868caf5e3f488a8cd6a1e716572143",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "cut_as requires nonempty cut result; sentence ID addition representable. merge equal sentence counts checked globally, word counts incrementally; earlier sentences can mutate before late error. Parser alignment is positional only; equal count does not establish same form or sentence identity.",
+        "evidence": "model.md#tests",
+        "id": "reverse_reconstruction",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Merged result fixes preserved base columns and parsed2..7 but admits arbitrary old annotations, parsed IDs/forms/MISC and equal-count wrong alignments. Seg metadata is explanatory output, not enough to reconstruct original whitespace or segmenter state.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "subject_revision": "660faca62417f9a1eb9807a014127f1b4b868caf5e3f488a8cd6a1e716572143",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "cut_as requires nonempty cut result; sentence ID addition representable. merge equal sentence counts checked globally, word counts incrementally; earlier sentences can mutate before late error. Parser alignment is positional only; equal count does not establish same form or sentence identity.",
+        "evidence": "model.md#tests",
+        "id": "spacing_transport",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "SpaceAfter=No goes on token wrapper for multiword tokens and word MISC for single words. H anywhere adds Swallowed; why spaces become commas. Empty pieces panic at first-word access.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "spacing_transport",
+        "status": "partial_source_derived_model",
+        "subject_revision": "660faca62417f9a1eb9807a014127f1b4b868caf5e3f488a8cd6a1e716572143",
+        "type": "spacing_transport"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "cut_as requires nonempty cut result; sentence ID addition representable. merge equal sentence counts checked globally, word counts incrementally; earlier sentences can mutate before late error. Parser alignment is positional only; equal count does not establish same form or sentence identity.",
+        "evidence": "model.md#tests",
+        "id": "parser_projection",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "ASCII : . ? ! -> ׃; other noncanonical PUNCT -> ׀; else norm at parser level. Every UPOS resets '_', while token written form and comments remain base values.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "parser_projection",
+        "status": "partial_source_derived_model",
+        "subject_revision": "660faca62417f9a1eb9807a014127f1b4b868caf5e3f488a8cd6a1e716572143",
+        "type": "parser_projection"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "cut_as requires nonempty cut result; sentence ID addition representable. merge equal sentence counts checked globally, word counts incrementally; earlier sentences can mutate before late error. Parser alignment is positional only; equal count does not establish same form or sentence identity.",
+        "evidence": "model.md#tests",
+        "id": "merge_partial_effect",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "After global S equality, each successful sentence mutates columns2..7 before next size check. Transactional rollback is absent; filesystem wrapper avoids writing output on merge Err but in-memory base may already change.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "merge_partial_effect",
+        "status": "partial_source_derived_model",
+        "subject_revision": "660faca62417f9a1eb9807a014127f1b4b868caf5e3f488a8cd6a1e716572143",
+        "type": "merge_partial_effect"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "cut_as requires nonempty cut result; sentence ID addition representable. merge equal sentence counts checked globally, word counts incrementally; earlier sentences can mutate before late error. Parser alignment is positional only; equal count does not establish same form or sentence identity.",
+        "evidence": "model.md#tests",
+        "id": "annotate_effect_order",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "write input precedes subprocess spawn/status, output read and merge. Failed spawn/status/read/merge leaves input and possibly output; cleanup is best-effort only after success. Real process/model paths remain unexecuted.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "annotate_effect_order",
+        "status": "partial_source_derived_model",
+        "subject_revision": "660faca62417f9a1eb9807a014127f1b4b868caf5e3f488a8cd6a1e716572143",
+        "type": "annotate_effect_order"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "hbo-library",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../lib.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "660faca62417f9a1eb9807a014127f1b4b868caf5e3f488a8cd6a1e716572143"
+  },
+  "status": "partial_source_bound_model"
+}

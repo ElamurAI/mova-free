@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p world --lib opchoice::wave8_models -- --test-threads=1"
+  ],
+  "cost": "One-step count <=3*n*(n-1), multiplied by <=1+4*(n-2) only at n=3..5. C candidates, F features, W weights: score/choose O(C*F*log W), excluding external lookup cost. Training stores O(sum C*F), scans O(epochs*sum C*F); top sorts O(C log C). No throughput claim.",
+  "description": "Integer candidate grammar, environment-dependent features, first-max selection, averaged learner and weight publication.",
+  "forward": [
+    "Enumerate distinct ordered mention pairs, canonicalize Add/Mul ordering, and retain representable results. At 3..5 mentions append valid second operations using distinct third indices. Score feature occurrences and choose first strict maximum. Learner retains gold-reachable examples and averages gold-minus-predicted updates."
+  ],
+  "id": "world-opchoice",
+  "inverse": [
+    "Universe: mention arrays, fixed feature context, bounded weights and candidate/choice results. Invalid/reused indices, invalid division, unrepresentable arithmetic and later tied choice winners are absent. This inner absence relation does not exclude scoring overflow outside bounds.",
+    "For fixed ordered candidates and features, winner j admits weight vectors with score(j)>score(i) for earlier i and >= for later i. Answer-only observation unions these regions over candidates of that value. Different expressions and training histories remain compatible."
+  ],
+  "limitations": [
+    "Partial syntax and source models; finite synthetic evidence.",
+    "Text extraction, dictionaries, persistence and teacher effects remain external."
+  ],
+  "source": "world/src/opchoice.rs",
+  "state": "Valid distinct candidate indices; no second steps outside n=3..5. Op rejects unrepresentable arithmetic, negative-result subtraction and nonintegral division. Score, margin and learner require no i64 overflow. Fixed external flags/dictionaries are required for text determinism."
+}

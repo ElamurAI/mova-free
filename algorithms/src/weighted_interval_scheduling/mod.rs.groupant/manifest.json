@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-weighted-interval-scheduling",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "ca01bd4d8e369a3ca3d25e2aa9945259e132ae4fec92887c9e0db52d8aba797b"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "operator": "Exclude invalid-interval success, nonfirst invalid-index errors, duplicate/out-of-range output indices, overlapping chosen intervals, wrong sum, suboptimal score or tie behavior inconsistent with strict improvements. Allocation aborts are outside returned Result.",
+        "domain": "Finite lawful inputs and ordinary Rust execution.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One call or explicitly described internal recurrence.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "ca01bd4d8e369a3ca3d25e2aa9945259e132ae4fec92887c9e0db52d8aba797b",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "preimages",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "operator": "A successful (indices,total) admits all valid item arrays whose deterministic recurrence chooses those indices with that sum. Endpoints can shift while preserving compatibility. Weights of excluded items may vary while remaining dominated. Neither input nor unique optimum follows from output.",
+        "domain": "Finite lawful inputs and ordinary Rust execution.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One call or explicitly described internal recurrence.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "ca01bd4d8e369a3ca3d25e2aa9945259e132ae4fec92887c9e0db52d8aba797b",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "touching",
+        "type": "compatibility_relation",
+        "path": "model.md",
+        "section": "touching",
+        "status": "partial_source_derived",
+        "operator": "Half-open positive-duration intervals are compatible exactly when one end<=the other's start. Positive duration ensures sorted predecessor candidates precede the current item; replacing <= by < loses adjacency.",
+        "domain": "Finite lawful inputs and ordinary Rust execution.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One call or explicitly described internal recurrence.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "ca01bd4d8e369a3ca3d25e2aa9945259e132ae4fec92887c9e0db52d8aba797b",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "tie",
+        "type": "choice_relation",
+        "path": "model.md",
+        "section": "tie",
+        "status": "partial_source_derived",
+        "operator": "At equal candidate and previous score, skip current sorted item. Duplicate intervals select earliest original index if positive. Zero weights never create a strict gain. This witness rule does not promise lexicographically minimal original-index vectors.",
+        "domain": "Finite lawful inputs and ordinary Rust execution.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One call or explicitly described internal recurrence.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "ca01bd4d8e369a3ca3d25e2aa9945259e132ae4fec92887c9e0db52d8aba797b",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "affine",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "affine",
+        "status": "partial_source_derived",
+        "operator": "Uniform endpoint translation preserving i64 bounds preserves order, compatibility and exact Schedule. Multiplying all weights by positive integer preserving u64/u128 bounds preserves chosen indices and scales score; zero multiplier does not preserve witness.",
+        "domain": "Finite lawful inputs and ordinary Rust execution.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One call or explicitly described internal recurrence.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "ca01bd4d8e369a3ca3d25e2aa9945259e132ae4fec92887c9e0db52d8aba797b",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "permutation",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "permutation",
+        "status": "partial_source_derived",
+        "operator": "Input permutation preserves optimum weight, but indices transform and equal-key ties may pick a different original item. Thus only score invariance is unconditional.",
+        "domain": "Finite lawful inputs and ordinary Rust execution.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One call or explicitly described internal recurrence.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "ca01bd4d8e369a3ca3d25e2aa9945259e132ae4fec92887c9e0db52d8aba797b",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "error-fiber",
+        "type": "failure_partition",
+        "path": "model.md",
+        "section": "error-fiber",
+        "status": "partial_source_derived",
+        "operator": "Err InvalidInterval{i} admits arrays with all earlier start<end and item i start>=end; later items unconstrained. After validation, DimensionOverflow precedes allocations; checked WeightOverflow occurs during DP. On usual 32/64-bit targets the latter two are unreachable for valid allocated non-ZST Item slices; allocator exhaustion is not caught.",
+        "domain": "Finite lawful inputs and ordinary Rust execution.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One call or explicitly described internal recurrence.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "ca01bd4d8e369a3ca3d25e2aa9945259e132ae4fec92887c9e0db52d8aba797b",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "trace",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "trace",
+        "status": "partial_source_derived",
+        "operator": "Given sorted order and all take/predecessor arrays, reconstruct by decreasing prefixes; chosen transitions jump to predecessor, skips decrement. Final score alone cannot recover these arrays: one weight-seven interval and adjacent weight-three/four intervals share score seven.",
+        "domain": "Finite lawful inputs and ordinary Rust execution.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One call or explicitly described internal recurrence.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "ca01bd4d8e369a3ca3d25e2aa9945259e132ae4fec92887c9e0db52d8aba797b",
+        "evidence": "model.md#evidence"
+      }
+    ]
+  }
+}

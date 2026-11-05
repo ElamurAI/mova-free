@@ -601,3 +601,37 @@ pub fn truthy(v: &Value) -> Result<bool, MError> {
         other => Err(MError::new(format!("wrong type argument '{}' in condition", other.class_name()))),
     }
 }
+
+#[cfg(test)]
+mod wave30 {
+    use super::*;
+    #[test]
+    fn arithmetic() {
+        let z = elementwise(
+            BinOp::Add,
+            &Mat::col(vec![1., 2.]),
+            &Mat::row(vec![10., 20., 30.]),
+        )
+        .unwrap();
+        assert_eq!((z.rows, z.cols), (2, 3));
+        assert_eq!(z.re, vec![11., 12., 21., 22., 31., 32.]);
+        assert!(!truthy(&Value::Mat(Mat::empty())).unwrap());
+        let z = matmul(
+            &Mat::complex(1, 2, vec![1., 2.], vec![1., 0.]),
+            &Mat::col(vec![3., 4.]),
+        )
+        .unwrap();
+        assert_eq!(z.re, vec![11.]);
+        assert_eq!(z.im, Some(vec![3.]));
+        assert_eq!(range_values(3., -1., 1.), vec![3., 2., 1.]);
+        assert!(range_values(1., 0., 3.).is_empty());
+        assert_eq!(range_values(0., 0.1, 0.3).last(), Some(&0.3));
+        assert!(hcat(vec![Mat::zeros(2, 1), Mat::zeros(3, 1)]).is_err());
+        assert_eq!(
+            matmul(&Mat::new(1, 2, vec![f64::NAN, 1.]), &Mat::col(vec![0., 2.]))
+                .unwrap()
+                .re,
+            vec![2.]
+        );
+    }
+}

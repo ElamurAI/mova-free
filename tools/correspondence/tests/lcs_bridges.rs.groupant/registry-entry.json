@@ -1,0 +1,24 @@
+{
+  "id": "correspondence-lcs-bridges",
+  "source": "tools/correspondence/tests/lcs_bridges.rs",
+  "description": "Actual en::text::lcs against actual algorithm LCS APIs, a brute-force oracle, the shared catalogue rows and the histogram exclusion.",
+  "state": "Enumerated byte fixtures, logging PartialEq probe, catalogue labels, library compare and assertions.",
+  "forward": [
+    "Call actual public en and algorithm LCS APIs and compare lengths with an exhaustive subsequence oracle.",
+    "Bind the three shared-contract catalogue rows to declared inputs and actual output labels; check library finite equality."
+  ],
+  "inverse": [
+    "Success retains all implementations satisfying these finite probes and the a-major comparison trace.",
+    "Failure may have source, catalogue, adapter or fixture explanations."
+  ],
+  "cost": "Fixed enumeration: 3969 pairs with three library calls (en, classical, bit-parallel) and 14641 pairs with two (en, classical), each with an O(2^|a|) oracle, plus seven fixtures; catalogue reparsed per helper call.",
+  "checks": [
+    "cargo test --offline --locked -p mova-correspondence --test lcs_bridges",
+    "cargo test --offline --locked --release -p mova-correspondence --test lcs_bridges"
+  ],
+  "limitations": [
+    "Finite byte and small-char evidence; no universal source proof, timing claim or Unicode normalization coverage.",
+    "Allocation failure excluded; the histogram relation is a partial exclusion, not a catalogue complement."
+  ],
+  "children": []
+}

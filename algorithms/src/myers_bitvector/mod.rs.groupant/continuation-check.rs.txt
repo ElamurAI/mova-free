@@ -1,0 +1,62 @@
+#[path="../mod.rs"] mod myers;
+#[path="../../levenshtein/mod.rs"] mod exact;
+fn matrix(a:&[u8],b:&[u8])->usize {
+    let mut grid=vec![vec![0usize;b.len()+1];a.len()+1];
+    for(i,row)in grid.iter_mut().enumerate(){row[0]=i;}
+    for(j,cell)in grid[0].iter_mut().enumerate(){*cell=j;}
+    for i in 1..=a.len(){for j in 1..=b.len(){
+        grid[i][j]=(grid[i-1][j]+1).min(grid[i][j-1]+1)
+            .min(grid[i-1][j-1]+usize::from(a[i-1]!=b[j-1]));
+    }} grid[a.len()][b.len()]
+}
+fn words()->Vec<Vec<u8>>{(0..=3).flat_map(|n|(0..1usize<<n).map(move|bits|(0..n).map(|i|b'a'+((bits>>i)&1)as u8).collect())).collect()}
+fn checked(p:&[u8],t:&[u8])->usize{let d=matrix(p,t);assert_eq!(myers::distance(p,t),Ok(d));assert_eq!(exact::distance(p,t),d);d}
+fn continuation()->(usize,usize){
+    let ws=words();let(mut collisions,mut separations,mut reflexive)=(0,0,0);
+    for p in &ws {for a in &ws {for b in &ws {
+        if a.len()!=b.len(){continue}
+        let da=checked(p,a);let db=checked(p,b);if da!=db{continue}
+        for c in [b'a',b'b']{
+            collisions+=1;if a==b{reflexive+=1;}let(mut ac,mut bc)=(a.clone(),b.clone());ac.push(c);bc.push(c);
+            let x=checked(p,&ac);let y=checked(p,&bc);
+            assert!(x.abs_diff(da)<=1&&y.abs_diff(db)<=1);
+            if x!=y{separations+=1;}
+        }
+    }}}
+    assert_eq!((collisions,separations,reflexive),(1278,176,450));
+    assert_eq!((checked(b"ab",b"a"),checked(b"ab",b"b")),(1,1));
+    assert_eq!((checked(b"ab",b"ab"),checked(b"ab",b"bb")),(0,1));
+    // The false factorization would assert equality here; see the external negative control.
+    assert_ne!(checked(b"ab",b"ab"),checked(b"ab",b"bb"));
+    println!("continuation: {collisions} same-score/length/context comparisons; {separations} separated output pairs");
+    (collisions,separations)
+}
+fn admission()->usize{
+    let lengths=[0,1,63,64,65,65535,65536,65537];let mut calls=0;
+    for m in lengths{for n in lengths{
+        let p=vec![b'a';m];let t=vec![b'a';n];
+        let want=if m>64{Err(myers::Error::PatternTooLong)}else if n>65536{Err(myers::Error::TextTooLong)}else{Ok(m.abs_diff(n))};
+        let got=myers::distance(&p,&t);assert_eq!(got,want);calls+=1;
+        let other=myers::distance(&t,&p);calls+=1;
+        assert_eq!(got.is_ok()||other.is_ok(),m.min(n)<=64&&m.max(n)<=65536);
+        if let(Ok(x),Ok(y))=(got,other){assert_eq!(x,y);}
+    }}
+    assert_eq!(myers::distance(&[0;65],&[]),Err(myers::Error::PatternTooLong));
+    assert_eq!(myers::distance(&[],&[0;65]),Ok(65));
+    assert_eq!(myers::distance(&[],&vec![0;65537]),Err(myers::Error::TextTooLong));
+    assert_eq!(myers::distance(&vec![0;65537],&[]),Err(myers::Error::PatternTooLong));
+    println!("admission: {calls} ordered calls, exact cap/precedence fibers and orientation-repair predicate checked");
+    calls
+}
+fn positive_boundaries(){
+    let mut small=0;for p in [b"".as_slice(),b"a",b"b"]{for t in words(){let d=checked(p,&t);for c in [b'a',b'b']{
+        let predicted=if p.is_empty(){d+1}else{let seen=!t.is_empty()&&d<t.len();t.len()+1-usize::from(seen||c==p[0])};
+        let mut next=t.clone();next.push(c);assert_eq!(checked(p,&next),predicted);small+=1;
+    }}}
+    let mut unary=0;for m in 0usize..=3{for n in 0usize..=3{let p=vec![();m];let t=vec![();n];let mut next=t.clone();next.push(());
+        assert_eq!(exact::distance(&p,&t),m.abs_diff(n));
+        assert_eq!(exact::distance(&p,&next),m.abs_diff(n+1));unary+=1;
+    }}assert_eq!((small,unary),(90,16));
+    println!("positive boundary: {small} empty/single-byte pattern continuations and {unary} one-Eq-class cases passed; 450 of1278 kernel comparisons are reflexive");
+}
+fn main(){admission();continuation();positive_boundaries();println!("fixed witness: pattern=ab; prefixes=a,b both(score,length)=(1,1); append=b yields0,1; scalar continuation rejected");}

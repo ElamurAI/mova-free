@@ -1,0 +1,10 @@
+{
+ "id":"algorithm-lyndon-factorization-tests","source":"algorithms/src/lyndon_factorization/tests.rs","children":[],
+ "description":"Independent finite oracles and boundary assertions for byte algorithms.",
+ "state":"Immutable byte input; deterministic local algorithm state or finite oracle fixtures.",
+ "cost":"Bounded exhaustive fixture generation; edit-graph, substring or partition enumeration costs exceed production costs.",
+ "forward":["Enumerate the stated finite oracle domain, compare complete production observations and fail on disagreement."],
+ "inverse":["behavior_complement first and ambiguous reverse_reconstruction second; see adjacent model.md"],
+ "checks":["cargo test --offline -p mova-algorithms --lib lyndon_factorization::tests","Compiled implementation and oracle controls; repeated source syntax"],
+ "limitations":["Finite correspondence only; allocation failures not injected; no semantic AST or universal proof."]
+}

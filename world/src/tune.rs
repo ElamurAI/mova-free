@@ -27,6 +27,47 @@ fn show(cfg: &BTreeMap<String, f64>) -> String {
     cfg.iter().map(|(k, v)| format!("{k}={v}")).collect::<Vec<_>>().join(" ")
 }
 
+/// Enumerate one-knob neighbors in declaration order.
+/// Every knob name must exist in base. Candidate values are kept verbatim, including duplicates;
+/// the first value within absolute distance 1e-9 selects its adjacent entries.
+pub fn neighboring_configs(
+    knobs: &[(&'static str, f64, Vec<f64>)],
+    base: &BTreeMap<String, f64>,
+) -> Vec<(String, BTreeMap<String, f64>)> {
+    let mut deltas: Vec<(String, BTreeMap<String, f64>)> = Vec::new();
+    for (k, _, vals) in knobs {
+        let cur = base[*k];
+        let pos = vals.iter().position(|v| (*v - cur).abs() < 1e-9);
+        let neigh: Vec<f64> = match pos {
+            Some(p) => [p.checked_sub(1), Some(p + 1)]
+                .into_iter()
+                .flatten()
+                .filter_map(|i| vals.get(i).copied())
+                .collect(),
+            None => vals.clone(),
+        };
+        for v in neigh {
+            let mut cfg = base.clone();
+            cfg.insert(k.to_string(), v);
+            deltas.push((format!("{k}: {cur} → {v}"), cfg));
+        }
+    }
+    deltas
+}
+
+/// Select the greatest dev gain among candidates with positive dev gain,
+/// nonnegative validation gain and p < 0.05; ties use the lower candidate index.
+/// This is a pure selection rule, not evidence of an untouched final test set.
+pub fn select_candidate(
+    results: &[(usize, i64, i64, f64, bool)],
+) -> Option<(usize, i64, i64, f64, bool)> {
+    results
+        .iter()
+        .filter(|x| x.1 > 0 && x.2 >= 0 && x.3 < 0.05)
+        .min_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(&b.0)))
+        .copied()
+}
+
 /// Run the loop on a component.
 pub fn tune(c: &Component, gens: usize, threads: usize, adopt: bool, data_key: &str) -> Result<BTreeMap<String, f64>> {
     let mut base: BTreeMap<String, f64> = c.knobs.iter().map(|(k, v, _)| (k.to_string(), *v)).collect();
@@ -37,20 +78,7 @@ pub fn tune(c: &Component, gens: usize, threads: usize, adopt: bool, data_key: &
         let bh = (c.score_held)(&base);
         println!("{} generation {}: base {}  dev {} held {}", c.name, g + 1, show(&base), bd.iter().sum::<i64>(), bh.iter().sum::<i64>());
         // deltas: each knob to its neighbouring values
-        let mut deltas: Vec<(String, BTreeMap<String, f64>)> = Vec::new();
-        for (k, _, vals) in &c.knobs {
-            let cur = base[*k];
-            let pos = vals.iter().position(|v| (*v - cur).abs() < 1e-9);
-            let neigh: Vec<f64> = match pos {
-                Some(p) => [p.checked_sub(1), Some(p + 1)].into_iter().flatten().filter_map(|i| vals.get(i).copied()).collect(),
-                None => vals.clone(),
-            };
-            for v in neigh {
-                let mut cfg = base.clone();
-                cfg.insert(k.to_string(), v);
-                deltas.push((format!("{k}: {cur} → {v}"), cfg));
-            }
-        }
+        let mut deltas = neighboring_configs(&c.knobs, &base);
         // order by the journal: knobs whose changes helped before come first
         let helped = |d: &str| journal.seen.values().filter(|v| v["component"] == c.name && v["knob"].as_str() == d.split(':').next() && v["verdict"] == "positive").count();
         deltas.sort_by(|a, b| helped(&b.0).cmp(&helped(&a.0)).then(a.0.cmp(&b.0)));
@@ -92,7 +120,7 @@ pub fn tune(c: &Component, gens: usize, threads: usize, adopt: bool, data_key: &
         if !adopt {
             break;
         }
-        let Some((i, gd, gh, p, _)) = res.iter().find(|x| x.1 > 0 && x.2 >= 0 && x.3 < 0.05).cloned() else {
+        let Some((i, gd, gh, p, _)) = select_candidate(&res) else {
             println!("  no delta significant on dev and safe on held-out — stop");
             break;
         };
@@ -145,5 +173,108 @@ pub fn run(component: &str, dev: &Path, held: &Path, gens: usize, threads: usize
             Ok(())
         }
         _ => bail!("unknown component {component}; known: domains, expressions"),
+    }
+}
+
+#[cfg(test)]
+mod wave14_models {
+    use super::*;
+
+    #[test]
+    fn neighbors_follow_first_match_and_preserve_other_fields() {
+        for len in 0..=5 {
+            let values: Vec<_> = (0..len).map(|v| v as f64).collect();
+            for current in -1..=len {
+                let base = BTreeMap::from([("x".into(), current as f64), ("y".into(), 17.0)]);
+                let got = neighboring_configs(&[("x", 99.0, values.clone())], &base);
+                let expected: Vec<_> = values
+                    .iter()
+                    .copied()
+                    .filter(|&v| current < 0 || current >= len || (v - current as f64).abs() == 1.0)
+                    .collect();
+                assert_eq!(
+                    got.iter().map(|(_, c)| c["x"]).collect::<Vec<_>>(),
+                    expected,
+                    "adjacency at len={len}, current={current}"
+                );
+                for (label, c) in got {
+                    assert_eq!(c["y"], 17.0);
+                    assert_eq!(c.len(), 2);
+                    assert_eq!(label, format!("x: {current} → {}", c["x"]));
+                }
+                assert_eq!(base["x"], current as f64);
+            }
+        }
+    }
+
+    #[test]
+    fn tolerance_duplicates_empty_and_nonfinite_domain_are_explicit() {
+        let base = BTreeMap::from([("x".into(), 1.0)]);
+        let got = neighboring_configs(&[("x", 0.0, vec![1.0 + 0.5e-9, 1.0, 4.0])], &base);
+        assert_eq!(got.len(), 1, "first tolerance match wins");
+        assert_eq!(got[0].1["x"], 1.0, "duplicate/no-op neighbor is retained");
+        assert!(neighboring_configs(&[], &base).is_empty());
+        let got = neighboring_configs(&[("x", 0.0, vec![f64::NAN, f64::INFINITY])], &base);
+        assert_eq!(got.len(), 2);
+        assert!(got[0].1["x"].is_nan());
+        assert!(got[1].1["x"].is_infinite());
+    }
+
+    #[test]
+    fn selection_matches_independent_sorted_finite_oracle() {
+        for gd in -1..=2 {
+            for gh in -1..=1 {
+                for p in [0.0, 0.049, 0.05, 1.0, f64::NAN] {
+                    let rows = [
+                        (3, gd, gh, p, false),
+                        (1, 1, 0, 0.01, true),
+                        (0, 9, -1, 0.0, false),
+                        (2, 1, 0, 0.01, false),
+                    ];
+                    let mut expected = None;
+                    for gain in (1..=9).rev() {
+                        for id in 0..=3 {
+                            if let Some(r) = rows
+                                .iter()
+                                .find(|r| r.0 == id && r.1 == gain && r.2 >= 0 && r.3 < 0.05)
+                            {
+                                expected = Some(*r);
+                                break;
+                            }
+                        }
+                        if expected.is_some() {
+                            break;
+                        }
+                    }
+                    assert_eq!(
+                        select_candidate(&rows),
+                        expected,
+                        "safe maximum with index tie"
+                    );
+                    let reversed: Vec<_> = rows.into_iter().rev().collect();
+                    assert_eq!(select_candidate(&reversed), expected);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn rejection_thresholds_and_configuration_order() {
+        for r in [
+            (0, 0, 0, 0.0, false),
+            (0, 1, -1, 0.0, false),
+            (0, 1, 0, 0.05, false),
+            (0, 1, 0, f64::NAN, false),
+        ] {
+            assert!(
+                select_candidate(&[r]).is_none(),
+                "ineligible result must not be adopted"
+            );
+        }
+        assert!(select_candidate(&[]).is_none());
+        assert_eq!(
+            show(&BTreeMap::from([("z".into(), 2.0), ("a".into(), 1.0)])),
+            "a=1 z=2"
+        );
     }
 }

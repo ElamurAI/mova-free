@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "rustc --edition 2024 --test --crate-name mova_algorithm_dijkstra algorithms/src/dijkstra/mod.rs",
+    "independent oracle, two normalized runs, rejected source mutation"
+  ],
+  "cost": "O(V+E log(E+1)) time and O(V+E) auxiliary space for lazy heap entries",
+  "description": "Original deterministic dijkstra, global validation and bounded independent oracle.",
+  "forward": [
+    "For valid G,s with u64 nonnegative weights, d[v] is the exact minimum u128 path sum or None when unreachable. Source validation precedes global edge validation. Checked candidate addition yields DistanceOverflow if not representable; on supported <=64-bit usize platforms every simple path plus one edge fits u128."
+  ],
+  "id": "algorithm-dijkstra",
+  "inverse": [
+    "In U=domain inputs crossed with all declared return values for one call, C=U minus R where R is the forward specification. This excludes every wrong successful vector/order, incorrect error and wrong first-failure precedence. Exact for the specification; partial source-derived absent-behavior approximant for Rust. Allocation failure, panic and elapsed time are outside U.",
+    "For every return y, Pre(y)={x in domain | R(x,y)} retains ALL compatible graphs and sources. Success fibers include arbitrary unreachable structure and alternatives consistent with the equations. Error fibers include every input satisfying the precise first-failure rule; no unique recovery is assumed. This is a relational specification, not an implemented inverse executor."
+  ],
+  "limitations": [
+    "Bounded tests are not unrestricted proof.",
+    "Syntax projection excludes expansion and semantic resolution."
+  ],
+  "source": "algorithms/src/dijkstra/mod.rs",
+  "state": "all finite weighted directed adjacency lists with u64 weights and usize source on <=64-bit usize targets; outputs are tagged errors or optional u128 distance vectors"
+}

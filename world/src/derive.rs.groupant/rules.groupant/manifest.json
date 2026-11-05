@@ -1,0 +1,160 @@
+{
+  "schema": 1,
+  "kind": "groupant_fragment",
+  "id": "rule-derivation-rules",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../../derive.rs",
+    "sha256": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842"
+  },
+  "components": {
+    "ast": {
+      "path": "../syntax.json",
+      "status": "partial",
+      "format": "rust_syntax_projection"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "tests": {
+      "path": "../model.md#tests",
+      "status": "bounded_evidence"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule state; specialization in operator",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "In admitted helper U, candidate inner absent behaviors: nth returning its source, returning a target with fewer than k matching POS words in that direction, cond_sets emitting empty or class-free sets. Loops establish the conditional model; literal directional probes and independent mask families provide finite evidence.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous preimage, or specialized conditional source relation",
+        "assumptions": "Aligned vectors, valid heads, dir in {-1,1}, k in {1,2,3}; cond_sets needs a class atom. nth excludes its source. pending excludes a target whose head lies strictly inside the span except a head equal to the dependent. These are preconditions, not validated input checks.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "antecedents",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule state; specialization in operator",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "For nth returning j, all compatible POS sequences label j with u in direction d, with exactly k-1 u labels strictly between i,j; all other labels/lemmas remain free. None means fewer than k matches before the boundary. cond_sets preserves class and ordered subset members; duplicate atoms can prevent unique recovery. Probe checks directions and mask families.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous preimage, or specialized conditional source relation",
+        "assumptions": "Aligned vectors, valid heads, dir in {-1,1}, k in {1,2,3}; cond_sets needs a class atom. nth excludes its source. pending excludes a target whose head lies strictly inside the span except a head equal to the dependent. These are preconditions, not validated input checks.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "ranking",
+        "type": "decision_order",
+        "path": "model.md",
+        "section": "ranking",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule state; specialization in operator",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "lists admits applies>=min, hits>0 and not hidden; descending f64 precision precedes descending applies then ascending Rule. Stat::rel picks greatest count then smallest Rel order, or Dep. Ratios alone cannot recover list order. Proposed literal tie oracle is not executed.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous preimage, or specialized conditional source relation",
+        "assumptions": "Aligned vectors, valid heads, dir in {-1,1}, k in {1,2,3}; cond_sets needs a class atom. nth excludes its source. pending excludes a target whose head lies strictly inside the span except a head equal to the dependent. These are preconditions, not validated input checks.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "conditions",
+        "type": "finite_combinatorics",
+        "path": "model.md",
+        "section": "conditions",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule state; specialization in operator",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "For distinct ordered atoms c0..cm, cond_sets emits all subsets containing c0 with up to two tail atoms, preserving their input order. Count=1+m+m*(m-1)/2, not 2^m. Duplicates are positional and may repeat vectors. Probe checks prefix lengths 1..6 against independent bit-mask enumeration and literal counts.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous preimage, or specialized conditional source relation",
+        "assumptions": "Aligned vectors, valid heads, dir in {-1,1}, k in {1,2,3}; cond_sets needs a class atom. nth excludes its source. pending excludes a target whose head lies strictly inside the span except a head equal to the dependent. These are preconditions, not validated input checks.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "cycle-snapshot",
+        "type": "transition_order",
+        "path": "model.md",
+        "section": "cycle-snapshot",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule state; specialization in operator",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "apply_tr computes all matching non-root moves from initial heads/labels, then mutates ascending word indexes and checks cycles on evolving heads. Matches are not recomputed. Same-head moves can overwrite relations. makes_cycle also returns true on an unrelated existing cycle after its traversal guard expires. Reverse retains overwritten fields and all prestates with compatible snapshotted moves. Cycle helpers executed; full apply_tr is not.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous preimage, or specialized conditional source relation",
+        "assumptions": "Aligned vectors, valid heads, dir in {-1,1}, k in {1,2,3}; cond_sets needs a class atom. nth excludes its source. pending excludes a target whose head lies strictly inside the span except a head equal to the dependent. These are preconditions, not validated input checks.",
+        "evidence": "../model.md#tests"
+      }
+    ]
+  },
+  "coverage": {
+    "description": "rule-derivation-rules",
+    "byte_range": {
+      "start": 1269,
+      "end": 23271
+    },
+    "syntax_nodes": {
+      "path": "../syntax.json",
+      "node_ids": [
+        6,
+        14,
+        37,
+        65,
+        104,
+        109,
+        115,
+        166,
+        191,
+        204,
+        324,
+        401,
+        412,
+        460,
+        571,
+        585,
+        783,
+        888,
+        893,
+        1366,
+        1752,
+        1858,
+        2045,
+        2052,
+        2086,
+        2093,
+        2115,
+        2243,
+        2286,
+        2333,
+        2870
+      ]
+    }
+  }
+}

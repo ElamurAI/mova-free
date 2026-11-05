@@ -1,0 +1,159 @@
+{
+  "children": [
+    "roundtrip-block-hebrew",
+    "roundtrip-block-layout",
+    "roundtrip-block-reporting",
+    "roundtrip-derived-piece-codec",
+    "roundtrip-hebrew-row-codec",
+    "roundtrip-site-dictionary-codec",
+    "roundtrip-markdown-layout",
+    "roundtrip-volume-residual"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "Original production bytes preserved; six files append inline tests. No new repository Rust sources. Model declarations source-derived and finite tests falsify selected boundaries. Private-effect and annotator paths retain explicit inspection-only gaps. No percentage surrogate without useful metric; only future caps1/2/5/10%.",
+        "domain": "Finite synthetic UTF-8 strings, valid Piece references/ordered byte-boundary marks, ten-field rows with unique canonical pair keys and '_' empty convention; delimiter-free nonempty core lexicon records, valid indices, representable unsigned counters and signed offset additions, finite bit costs. CPU/offline selected exact test names only. All external models, corpus/lesson reads, persistent learning, deployed sites and full pipelines excluded.",
+        "id": "behavior-complement",
+        "observation_scope": "Real joins: blocks::concat→Volume; site_md::inline→vol::with_marks via Block::written; site_md::repeat→Copier and vol::residual_with mirrors copy decisions; site_code::encode_heb/decode_conllu→site_heb::predict_with/diff/apply; site_md::listed and run_blocks→heb::par_each. Independent tagged paths: site_learn CLI adaptation and heb::run/model parsing are not invoked by pure codec tests; numeric report helpers are projections, not part of reconstruction inverse. R1 is only a block-text residual: substituting it for full Volume layout loses literals. Site-code Chain requires same ordered canonical readings and resource state; leaf identities alone do not prove this full wiring.",
+        "operator": "On valid synthetic codec transitions, concat introduces no separators; group/blocks keep each run within one group; script application never reorders retained lines; ordered scheduler results cannot swap job indices. Residual tallies exclude Given/derived literals at token layer; these exclusions are source-derived inner bounds, not universal pipeline proof.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "Original production bytes preserved; six files append inline tests. No new repository Rust sources. Model declarations source-derived and finite tests falsify selected boundaries. Private-effect and annotator paths retain explicit inspection-only gaps. No percentage surrogate without useful metric; only future caps1/2/5/10%.",
+        "domain": "Finite synthetic UTF-8 strings, valid Piece references/ordered byte-boundary marks, ten-field rows with unique canonical pair keys and '_' empty convention; delimiter-free nonempty core lexicon records, valid indices, representable unsigned counters and signed offset additions, finite bit costs. CPU/offline selected exact test names only. All external models, corpus/lesson reads, persistent learning, deployed sites and full pipelines excluded.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Real joins: blocks::concat→Volume; site_md::inline→vol::with_marks via Block::written; site_md::repeat→Copier and vol::residual_with mirrors copy decisions; site_code::encode_heb/decode_conllu→site_heb::predict_with/diff/apply; site_md::listed and run_blocks→heb::par_each. Independent tagged paths: site_learn CLI adaptation and heb::run/model parsing are not invoked by pure codec tests; numeric report helpers are projections, not part of reconstruction inverse. R1 is only a block-text residual: substituting it for full Volume layout loses literals. Site-code Chain requires same ordered canonical readings and resource state; leaf identities alone do not prove this full wiring.",
+        "operator": "For fixed canonical tokens/rows and resource state, compatible antecedents retain all strings reconstructible through R1/marks/patches/scripts. Text-only, summed bit counts, natural keys, lowercased lemmas and learned majority lexicons admit many preimages. Reverse composition must retain shared Volume coordinates, history and Chain state; no unique original training or document origin follows.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "Original production bytes preserved; six files append inline tests. No new repository Rust sources. Model declarations source-derived and finite tests falsify selected boundaries. Private-effect and annotator paths retain explicit inspection-only gaps. No percentage surrogate without useful metric; only future caps1/2/5/10%.",
+        "domain": "Finite synthetic UTF-8 strings, valid Piece references/ordered byte-boundary marks, ten-field rows with unique canonical pair keys and '_' empty convention; delimiter-free nonempty core lexicon records, valid indices, representable unsigned counters and signed offset additions, finite bit costs. CPU/offline selected exact test names only. All external models, corpus/lesson reads, persistent learning, deployed sites and full pipelines excluded.",
+        "id": "markup-coordinate-join",
+        "observation_scope": "Real joins: blocks::concat→Volume; site_md::inline→vol::with_marks via Block::written; site_md::repeat→Copier and vol::residual_with mirrors copy decisions; site_code::encode_heb/decode_conllu→site_heb::predict_with/diff/apply; site_md::listed and run_blocks→heb::par_each. Independent tagged paths: site_learn CLI adaptation and heb::run/model parsing are not invoked by pure codec tests; numeric report helpers are projections, not part of reconstruction inverse. R1 is only a block-text residual: substituting it for full Volume layout loses literals. Site-code Chain requires same ordered canonical readings and resource state; leaf identities alone do not prove this full wiring.",
+        "operator": "site_md::inline emits marks at current emitted UTF-8 byte length; vol::with_marks restores them. concat changes Text indices by block offset but does not change each block's local mark offsets. Swapping these coordinate spaces is invalid.",
+        "path": "model.md",
+        "required": false,
+        "section": "markup-coordinate-join",
+        "status": "partial_source_derived_model",
+        "type": "byte_coordinate_transport"
+      },
+      {
+        "assumptions": "Original production bytes preserved; six files append inline tests. No new repository Rust sources. Model declarations source-derived and finite tests falsify selected boundaries. Private-effect and annotator paths retain explicit inspection-only gaps. No percentage surrogate without useful metric; only future caps1/2/5/10%.",
+        "domain": "Finite synthetic UTF-8 strings, valid Piece references/ordered byte-boundary marks, ten-field rows with unique canonical pair keys and '_' empty convention; delimiter-free nonempty core lexicon records, valid indices, representable unsigned counters and signed offset additions, finite bit costs. CPU/offline selected exact test names only. All external models, corpus/lesson reads, persistent learning, deployed sites and full pipelines excluded.",
+        "id": "hebrew-patch-join",
+        "observation_scope": "Real joins: blocks::concat→Volume; site_md::inline→vol::with_marks via Block::written; site_md::repeat→Copier and vol::residual_with mirrors copy decisions; site_code::encode_heb/decode_conllu→site_heb::predict_with/diff/apply; site_md::listed and run_blocks→heb::par_each. Independent tagged paths: site_learn CLI adaptation and heb::run/model parsing are not invoked by pure codec tests; numeric report helpers are projections, not part of reconstruction inverse. R1 is only a block-text residual: substituting it for full Volume layout loses literals. Site-code Chain requires same ordered canonical readings and resource state; leaf identities alone do not prove this full wiring.",
+        "operator": "site_code predicts Hebrew rows using lexicon/text/verse/given then site_heb::diff/apply. apply(diff(pred,lit))=lit requires ten fields and unique normalized pair keys; duplicate FEATS and empty string versus '_' are explicit gaps, not universal exactness.",
+        "path": "model.md",
+        "required": false,
+        "section": "hebrew-patch-join",
+        "status": "partial_source_derived_model",
+        "type": "canonical_patch_transport"
+      },
+      {
+        "assumptions": "Original production bytes preserved; six files append inline tests. No new repository Rust sources. Model declarations source-derived and finite tests falsify selected boundaries. Private-effect and annotator paths retain explicit inspection-only gaps. No percentage surrogate without useful metric; only future caps1/2/5/10%.",
+        "domain": "Finite synthetic UTF-8 strings, valid Piece references/ordered byte-boundary marks, ten-field rows with unique canonical pair keys and '_' empty convention; delimiter-free nonempty core lexicon records, valid indices, representable unsigned counters and signed offset additions, finite bit costs. CPU/offline selected exact test names only. All external models, corpus/lesson reads, persistent learning, deployed sites and full pipelines excluded.",
+        "id": "copy-history-join",
+        "observation_scope": "Real joins: blocks::concat→Volume; site_md::inline→vol::with_marks via Block::written; site_md::repeat→Copier and vol::residual_with mirrors copy decisions; site_code::encode_heb/decode_conllu→site_heb::predict_with/diff/apply; site_md::listed and run_blocks→heb::par_each. Independent tagged paths: site_learn CLI adaptation and heb::run/model parsing are not invoked by pure codec tests; numeric report helpers are projections, not part of reconstruction inverse. R1 is only a block-text residual: substituting it for full Volume layout loses literals. Site-code Chain requires same ordered canonical readings and resource state; leaf identities alone do not prove this full wiring.",
+        "operator": "repeat trials clone Copier and accept when len>=24 and cost<=0.25 literal_bits; residual_with reconstructs same previous prose order using remember/code. Different prior prose or disabled-repeat environment changes classification and cost; all history must agree.",
+        "path": "model.md",
+        "required": false,
+        "section": "copy-history-join",
+        "status": "partial_source_derived_model",
+        "type": "stateful_history_alignment"
+      },
+      {
+        "assumptions": "Original production bytes preserved; six files append inline tests. No new repository Rust sources. Model declarations source-derived and finite tests falsify selected boundaries. Private-effect and annotator paths retain explicit inspection-only gaps. No percentage surrogate without useful metric; only future caps1/2/5/10%.",
+        "domain": "Finite synthetic UTF-8 strings, valid Piece references/ordered byte-boundary marks, ten-field rows with unique canonical pair keys and '_' empty convention; delimiter-free nonempty core lexicon records, valid indices, representable unsigned counters and signed offset additions, finite bit costs. CPU/offline selected exact test names only. All external models, corpus/lesson reads, persistent learning, deployed sites and full pipelines excluded.",
+        "id": "scheduler-report-join",
+        "observation_scope": "Real joins: blocks::concat→Volume; site_md::inline→vol::with_marks via Block::written; site_md::repeat→Copier and vol::residual_with mirrors copy decisions; site_code::encode_heb/decode_conllu→site_heb::predict_with/diff/apply; site_md::listed and run_blocks→heb::par_each. Independent tagged paths: site_learn CLI adaptation and heb::run/model parsing are not invoked by pure codec tests; numeric report helpers are projections, not part of reconstruction inverse. R1 is only a block-text residual: substituting it for full Volume layout loses literals. Site-code Chain requires same ordered canonical readings and resource state; leaf identities alone do not prove this full wiring.",
+        "operator": "par_each executes all indexed jobs and catches closure panics. run_blocks folds Results in input order, turns errors into one-volume red tally; row exact=exact_ok==1. Aggregation loses scheduling/error provenance and cannot reconstruct jobs from totals.",
+        "path": "model.md",
+        "required": false,
+        "section": "scheduler-report-join",
+        "status": "partial_source_derived_model",
+        "type": "ordered_error_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "roundtrip-document-codecs",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "tools/roundtrip/src/blocks/heb.rs",
+      "sha256": "5f4eb0e21c8dfbfef387d2faa75aaa9ebfd2cf748d94cef3bbc2d526572b6d44"
+    },
+    {
+      "path": "tools/roundtrip/src/blocks/mod.rs",
+      "sha256": "81113918aaba6d470fc065e16dc9b076d79303c254971f72e6530cbbfea755f5"
+    },
+    {
+      "path": "tools/roundtrip/src/blocks/run.rs",
+      "sha256": "c0cf4e6ab9c16a7dd305a632dd49b7bcf7d53824032cf46e44cf7ebd80c7d0d4"
+    },
+    {
+      "path": "tools/roundtrip/src/blocks/site_code.rs",
+      "sha256": "8b7af5b786bf922124d3c1e99243cdd058f60ca3e1c9b828f4bb51918bc038c3"
+    },
+    {
+      "path": "tools/roundtrip/src/blocks/site_heb.rs",
+      "sha256": "5ba678eb77695e001029e2e896df29afa8a17070cc5d77562524d4c4cb84e4cd"
+    },
+    {
+      "path": "tools/roundtrip/src/blocks/site_learn.rs",
+      "sha256": "fa50120b76cfd51fb7649ebda3bd52571c516ae45aa209a3e1b81437b64573de"
+    },
+    {
+      "path": "tools/roundtrip/src/blocks/site_md.rs",
+      "sha256": "ced26c9c453717c6472e4b11b282c0490a386e7399f5b899524f72d998d12eb3"
+    },
+    {
+      "path": "tools/roundtrip/src/vol.rs",
+      "sha256": "0e6fc39eafffdb765f32f972847334f79853e300c31411225a581b181adb5165"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

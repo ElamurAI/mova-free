@@ -1,0 +1,40 @@
+{
+  "checks": [
+    "16 exact target/name cases twice debug and twice release; sorted actual outcomes identical per profile",
+    "6 compiled production-behavior mutants assertion-red, exact restoration, positive green",
+    "12 source projections generated twice identically; 9 narrow fragments share parent projections",
+    "Added blocks formatted separately; original production prefixes checked against base"
+  ],
+  "children": [
+    "db-src-duck",
+    "db-src-export",
+    "db-src-load",
+    "db-src-main",
+    "db-src-prag",
+    "db-src-qa",
+    "db-src-tales",
+    "db-src-tsv",
+    "db-src-util",
+    "db-tests-prag",
+    "db-tests-qa",
+    "db-tests-roundtrip"
+  ],
+  "cost": "Rust helper work is mostly linear in materialized bytes/rows with hash-map expected lookups, BTreeSet O(u log u) wanted identities, duplicate key suffix probing and ordered heading scans. Materialized Docs/TSV results occupy proportional memory. CLI startup, SQL execution, filesystem effects and annotation training/inference are separate costs; no throughput measurement or speedup claim.",
+  "description": "CLI chooses one tagged command. load: CoNLL Doc -> identity match against prior state -> six TSV tables -> Duck exec -> post-count reconciliation. export: SQL TSV materialization -> raw Doc -> text. prag/qa: schema-specific TSV parser -> wanted identities -> state validation -> staged records -> exec -> postcounts. tales text segmentation is a separately tagged preprocessing path; production train/load path is not executed. Tests join supplied fixtures with actual Doc parsing, not a fake DuckDB interpreter.",
+  "forward": [
+    "CLI chooses one tagged command. load: CoNLL Doc -> identity match against prior state -> six TSV tables -> Duck exec -> post-count reconciliation. export: SQL TSV materialization -> raw Doc -> text. prag/qa: schema-specific TSV parser -> wanted identities -> state validation -> staged records -> exec -> postcounts. tales text segmentation is a separately tagged preprocessing path; production train/load path is not executed. Tests join supplied fixtures with actual Doc parsing, not a fake DuckDB interpreter.",
+    "Real joins: main->load/export/prag/qa/tales; load/export/prag/qa->Duck+Stage+Tsv; load/export/tales->en::conllu or tokenizer/annotator; util supplies SHA1/path/time. TSV write includes header while read expects COPY output without header: direct write/read is not identity unless header separated. Prag eight/nine-column input and QA eight-column input are distinct tagged schemas. Integration test fixtures exercise real CoNLL representation but SQL branches remain unexecuted. SQL include_str files are external dependencies, not selected Rust sources."
+  ],
+  "id": "annotation-store-adapters",
+  "inverse": [
+    "In the admitted helper trace universe, invalid TSV width/sentinel, invalid parser headers/k/anchors and invalid pre-dispatch CLI flags exclude successful adapter results. Database post-check failure does not exclude committed effects; helper exclusions cannot establish SQL rollback.",
+    "Output text/table rows induce compatible-input/state relations across each join, preserving unknown IDs/provenance/unused records. NULL and empty are distinguishable in staged TSV, but bool spellings, stripped anchor whitespace, paragraph whitespace and overwritten CLI duplicates form many-to-one fibers. Exact database recovery requires ordered raw rows/comments/blank flags and external SQL assumptions."
+  ],
+  "limitations": [
+    "No real DuckDB integration, SQL COPY/DDL/transaction/rollback/replacement/view semantics verified in this wave",
+    "No production loader/tales run/corpus, no training/live teacher/GPU, no allocation/IO-fault/ID-overflow/race tests",
+    "Finite source-derived models, not full behavior proof; stage IO effects and selected pure helper branches only",
+    "No useful approximate categorical adapter metric; executable approximants unsupported, future allowed caps 1/2/5/10% only"
+  ],
+  "state": "TSV NULL/empty encoding remains distinct within admitted cells; row/table identity references agree only under state snapshot and SQL/schema assumptions. Loader sentence identity is id AND text, QA identity is doc/para/k plus anchor doc/para. Exact export additionally needs file-only filter, one file row, preserved ordering/comments/blanks/newline. A post-commit error must not be interpreted as rollback."
+}

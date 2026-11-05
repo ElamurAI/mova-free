@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p prag --lib wave14_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "Hash linear in UTF-8 bytes. make_items linear in emitted records and copied text/context. Selection includes sorting and repeated passes, and DB acquisition has external unbounded cost; no measured throughput claim.",
+  "description": "Source tags and Item records feed deterministic seeded selection and make_items batching, with JSON-lines persistence and external DuckDB acquisition. This epoch checks pure hash, source/serde and batching observations; database process execution, external input selection and file persistence remain unexecuted.",
+  "forward": [
+    "Source tags and Item records feed deterministic seeded selection and make_items batching, with JSON-lines persistence and external DuckDB acquisition. This epoch checks pure hash, source/serde and batching observations; database process execution, external input selection and file persistence remain unexecuted."
+  ],
+  "id": "prag-data",
+  "inverse": [
+    "Items identify selected text and source but omit unused input rows and most selection history. Batch numbers alone admit many window partitions; a seeded hash cannot uniquely recover its input string. Reverse composition retains matching source tags and copied keys."
+  ],
+  "limitations": [
+    "Supplied inputs only; external IO and parser unexecuted.",
+    "Partial syntax; no semantic AST, proof or speed claim."
+  ],
+  "source": "prag/src/data.rs",
+  "state": "Commercial source provenance must survive record construction. Valid tale windows refer to existing indices and nonempty paragraphs; windows should be selected in document order. Batch maximum is soft for an indivisible oversized window."
+}

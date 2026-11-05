@@ -1,0 +1,12 @@
+[package]
+name = "langseg"
+version.workspace = true
+edition = "2021"
+# license: Elamur Cosmic License (LICENSE.md at the repo root)
+publish = false
+description = "Language segmenter: splits a text into runs by script, then tells English, transliteration and the Hebrew-script varieties (Biblical, Mishnaic and Modern Hebrew; Biblical, Targumic, Babylonian, Palestinian and Zoharic Aramaic) apart with explainable per-feature log-odds."
+
+[dependencies]
+quick-xml = "0.42.0"
+serde_json = "1.0.151"
+unicode-normalization = "0.1.25"

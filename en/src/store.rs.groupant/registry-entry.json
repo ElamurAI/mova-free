@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p en --lib store::wave27::bounded_contract",
+    "Paired partial syntax; debug/release repeated outcomes; see receipt"
+  ],
+  "children": [],
+  "cost": "O(serialized bytes plus typed element work), output allocation proportional to body; pack copies body into header buffer. Deserialization borrows primitive strings/bytes where visitor permits but vectors allocate advertised lengths. No size cap or allocation-failure Result guarantee.",
+  "description": "Primitive integers/floats fixed-width little endian; lengths/variants/char LEB128; fields concatenate without names; options/bools use0/1. from_bytes deserializes known type then rejects trailing bytes. unpack checks short/magic, version, enum shape, fingerprint, body length, checksum, then typed body. Chunk arrays require byte length divisible by element width.",
+  "forward": [
+    "Primitive integers/floats fixed-width little endian; lengths/variants/char LEB128; fields concatenate without names; options/bools use0/1. from_bytes deserializes known type then rejects trailing bytes. unpack checks short/magic, version, enum shape, fingerprint, body length, checksum, then typed body. Chunk arrays require byte length divisible by element width."
+  ],
+  "id": "en-store",
+  "inverse": [
+    "For fixed type T and compatible dictionary/format, unpack(pack(x)) recovers serializable state under serde contracts; accepted bytes can be noncanonical and map pair iteration can differ on rewrite. Output value's compatible byte set includes equivalent map orders and varints; therefore unique original byte reconstruction is unsupported.",
+    "Invalid bool/Option tags cannot deserialize. Trailing bytes cannot be silently accepted by from_bytes. Wrong checksum prevents body parsing. Format is not self-describing and cannot skip arbitrary values. Checksum is not authentication, and varint parser does not enforce canonical encodings or reject all tenth-byte overflow patterns."
+  ],
+  "limitations": [
+    "Partial source-bound model, not full proof. No useful executable percentage surrogate established for these categorical decisions/effects; budgets1/2/5/10% require a future observation metric. No corpus/API/GPU/teacher, allocation fault injection, adversarial size exhaustion or broad accuracy claim."
+  ],
+  "source": "en/src/store.rs",
+  "state": "Ser grows output bytes; De retains borrowed bytes and cursor; Items tracks remaining typed elements. Header44 bytes binds magic/version/enum sizes/dictionary fingerprint/body length/checksum."
+}

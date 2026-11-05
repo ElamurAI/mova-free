@@ -94,3 +94,26 @@ impl Drop for Stage {
 pub fn quote(s: &str) -> String {
     format!("'{}'", s.replace('\'', "''"))
 }
+
+#[cfg(test)]
+mod wave31 {
+    use super::*;
+
+    #[test]
+    fn quote_and_stage_boundary() {
+        assert_eq!(quote(""), "''");
+        assert_eq!(quote("O'Brien's"), "'O''Brien''s'");
+        let stage = Stage::new("wave31").unwrap();
+        assert!(stage.dir.is_dir());
+        let path = stage.path("sample.tsv");
+        assert_eq!(path.parent(), Some(stage.dir.as_path()));
+        assert_eq!(
+            stage.sql("{q}/{q}/{other}", "q").unwrap(),
+            format!("{0}/{0}/{{other}}", stage.dir.display())
+        );
+        let bad = Stage {
+            dir: stage.dir.join("quote'"),
+        };
+        assert!(bad.sql("{q}", "q").is_err());
+    }
+}

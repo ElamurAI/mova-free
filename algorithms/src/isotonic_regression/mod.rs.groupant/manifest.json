@@ -1,0 +1,126 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Within valid inputs and real candidate outputs, complement contains infeasible or KKT-incompatible pairs and incorrect error outcomes. This is a relational complement of the unique real solution graph, not just a list of negative examples. For the concrete implementation the complement additionally excludes outputs differing from rounded evaluation and includes arithmetic/resource error partitions; real KKT alone is not a full f64 acceptance predicate.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "7396eea35ccf248b4e2c944b10bf857e728c733af8a883faaade2fc54cf59116",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "For fixed monotone y, the real fiber is y+N_C(y): residual prefix sums nonnegative, total zero, complementary slackness at strict rises. [2,0] and [1,1] both map to [1,1]. Rounded arithmetic fibers can be larger or differ near rounding boundaries.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "7396eea35ccf248b4e2c944b10bf857e728c733af8a883faaade2fc54cf59116",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "block_conservation",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "For exact arithmetic, every block sum/count equals its input block average. Merging preserves total sum and count. The concrete sum is rounded and can overflow; no claim of exact sum preservation in f64.",
+        "path": "model.md",
+        "section": "block_conservation",
+        "status": "partial_relational_specification",
+        "subject_revision": "7396eea35ccf248b4e2c944b10bf857e728c733af8a883faaade2fc54cf59116",
+        "type": "block_conservation"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "kkt_prefix",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "The polar cone is represented by nonnegative residual prefixes with total zero; a positive prefix multiplier may occur only across an equal fitted pair. Enumerated contiguous partitions independently select the minimum squared loss.",
+        "path": "model.md",
+        "section": "kkt_prefix",
+        "status": "partial_relational_specification",
+        "subject_revision": "7396eea35ccf248b4e2c944b10bf857e728c733af8a883faaade2fc54cf59116",
+        "type": "kkt_prefix"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "ties_and_idempotence",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Already nondecreasing finite vectors pass through singleton blocks, including ties. They are fixed points in both real and concrete models. Equal adjacent means need not merge, but give the same real output.",
+        "path": "model.md",
+        "section": "ties_and_idempotence",
+        "status": "partial_relational_specification",
+        "subject_revision": "7396eea35ccf248b4e2c944b10bf857e728c733af8a883faaade2fc54cf59116",
+        "type": "ties_and_idempotence"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "arithmetic_resource_partition",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Validate length and finiteness before two fallible reservations. Nonfinite merged sums return Arithmetic even for a representable real mean. Counts <=1e6 are exact in f64. Subnormal mean division can underflow; finite success is not a universal objective certificate.",
+        "path": "model.md",
+        "section": "arithmetic_resource_partition",
+        "status": "partial_relational_specification",
+        "subject_revision": "7396eea35ccf248b4e2c944b10bf857e728c733af8a883faaade2fc54cf59116",
+        "type": "arithmetic_resource_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-isotonic-regression",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "7396eea35ccf248b4e2c944b10bf857e728c733af8a883faaade2fc54cf59116"
+  },
+  "status": "partial_source_derived_instance"
+}

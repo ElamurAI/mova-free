@@ -54,3 +54,37 @@ pub fn means(l: &Lens) -> String {
     let ms: Vec<String> = l.readings.iter().filter(|r| r.phrase.contains(' ')).map(|r| format!("{} = {}", r.text, r.meaning.trim_end_matches('.'))).collect();
     if ms.is_empty() { "-".into() } else { ms.join("; ") }
 }
+
+#[cfg(test)]
+mod wave12_models {
+    use super::*;
+    use en::gram::{Feats, Rel, Tag, UPos};
+
+    #[test]
+    fn supplied_lexical_observation() {
+        let words: Vec<_> = [("KICKED", "kick"), ("the", "the"), ("bucket", "bucket")].into_iter().map(|(form, lemma)| Word {
+            form: form.into(), lemma: lemma.into(), upos: UPos::NOUN,
+            tag: Tag::NN, feats: Feats::default(), head: 0, rel: Rel::Root,
+        }).collect();
+        // This check requires the compiled expression snapshot; it never silently skips.
+        let l = lens(&words);
+        let r = l.readings.iter().find(|r| r.phrase == "kick the bucket").expect("compiled expression");
+        assert_eq!((&*r.text, r.kind, r.meaning), ("KICKED the bucket", "idiom", "To die."));
+        assert_eq!(means(&l), "KICKED the bucket = To die");
+        assert!(l.domains.contains(&"hidden-meaning") && l.domains.contains(&"humor"));
+        assert!(l.domains.windows(2).all(|w| w[0] < w[1]));
+        assert_eq!(means(&lens(&[])), "-");
+    }
+
+    #[test]
+    fn meaning_projection_fibers() {
+        for (meaning, expected) in [("To die.", "X = To die"), ("To die...", "X = To die"), ("", "X = ")] {
+            let mut l = Lens { readings: vec![Reading { text: "X".into(), phrase: "two words", kind: "idiom", meaning, register: "" }], domains: vec![] };
+            assert_eq!(means(&l), expected);
+            l.readings.push(Reading { text: "omitted".into(), phrase: "single", kind: "word", meaning: "ignored", register: "formal" });
+            assert_eq!(means(&l), expected);
+            l.readings.push(l.readings[0].clone());
+            assert_eq!(means(&l), format!("{expected}; {expected}"));
+        }
+    }
+}

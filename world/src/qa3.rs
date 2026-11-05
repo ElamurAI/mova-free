@@ -268,7 +268,11 @@ fn order_str(w: &World, a: Id, b: Id) -> Result<String, String> {
             let _ = write!(s, ". Why: {ex}");
         }
     }
-    let told = if (ma.sent, ma.line) < (mb.sent, mb.line) { format!("{a} told earlier (^s{} vs ^s{})", ma.sent, mb.sent) } else { format!("{b} told earlier (^s{} vs ^s{})", mb.sent, ma.sent) };
+    let told = match (ma.sent, ma.line).cmp(&(mb.sent, mb.line)) {
+        std::cmp::Ordering::Less => format!("{a} told earlier (^s{} vs ^s{})", ma.sent, mb.sent),
+        std::cmp::Ordering::Greater => format!("{b} told earlier (^s{} vs ^s{})", mb.sent, ma.sent),
+        std::cmp::Ordering::Equal => format!("{a} and {b} told at the same text position (^s{}, line {})", ma.sent, ma.line),
+    };
     let _ = write!(s, ". {told}");
     if o == Order::Unknown {
         return Err(format!("order of {a} and {b} on the story axis is unknown. {told}"));
@@ -554,6 +558,9 @@ fn run1(w: &World, q: &str) -> R {
         }
         "sort" => {
             let ids: Vec<Id> = toks[1..].iter().map(|d| one_ev(w, d)).collect::<Result<_, _>>()?;
+            if ids.is_empty() {
+                return Err("sort: events missing".into());
+            }
             let cl = st.time.closure();
             let node = |x: Id, e: bool| st.time.get(if e { Pt::E(x) } else { Pt::S(x) }).unwrap();
             let before = |a: Id, b: Id| cl.lt(node(a, true), node(b, false));
@@ -673,4 +680,104 @@ pub fn answers_md(w: &World, qs: &[Q3]) -> (String, Vec<(String, crate::qa::Verd
 /// Role name for a role label (for tests and md).
 pub fn role_name(r: Role) -> &'static str {
     r.name()
+}
+
+#[cfg(test)]
+mod wave12_models {
+    use super::*;
+    use crate::lang::{Cmd, Ev2, Line};
+    use crate::world::Text;
+
+    fn fixture() -> World {
+        let mut w = World::new_v3(Text {
+            doc: 7,
+            title: "fixture".into(),
+            sents: (1..=3).map(|_| (1, "fixture".into())).collect(),
+        });
+        for n in 1..=2 {
+            let cmd = Cmd::Event {
+                id: Id::new(Reg::E, n),
+                verb: "wait".into(),
+                roles: vec![],
+                why: None,
+                how: None,
+                x: Ev2::default(),
+            };
+            w.apply(&Line {
+                no: n as usize,
+                raw: String::new(),
+                cmd,
+                anchors: vec![n as u16],
+            })
+            .unwrap();
+        }
+        w
+    }
+
+    #[test]
+    fn empty_sort_is_unknown_and_can_fall_back() {
+        let w = fixture();
+        assert!(!answer(&w, "sort").from_state);
+        assert!(answer(&w, "sort || frames").from_state);
+    }
+
+    #[test]
+    fn same_telling_coordinate_does_not_invent_an_earlier_event() {
+        let mut w = fixture();
+        let st = w.story.as_mut().unwrap();
+        let first = st.ev[&Id::new(Reg::E, 1)].clone();
+        let second = st.ev.get_mut(&Id::new(Reg::E, 2)).unwrap();
+        second.sent = first.sent;
+        second.line = first.line;
+        let a = answer(&w, "order E1 E2");
+        assert!(a.from_state);
+        assert!(a.text.contains("same text position"), "{}", a.text);
+        assert!(!a.text.contains("told earlier"), "{}", a.text);
+    }
+
+    #[test]
+    fn anchor_ranges_match_independent_membership_oracle() {
+        for a in 1..=5 {
+            for b in 1..=5 {
+                let text = format!("é ^s{a} then ^s{b}");
+                for lo in 1..=5 {
+                    for hi in lo..=5 {
+                        let hit = [a, b].iter().any(|x| (lo..=hi).contains(x));
+                        let ans = Answer {
+                            text: text.clone(),
+                            from_state: true,
+                        };
+                        assert_eq!(
+                            verdict(&ans, &format!("@s{lo}-{hi}")) == crate::qa::Verdict::Hit,
+                            hit
+                        );
+                    }
+                }
+            }
+        }
+        let a = Answer {
+            text: "^s12".into(),
+            from_state: true,
+        };
+        assert_eq!(verdict(&a, "@s1-2"), crate::qa::Verdict::Miss);
+    }
+
+    #[test]
+    fn public_question_report_preserves_abstention_and_anchor_scores() {
+        let w = fixture();
+        let qs = read_questions("fixture\t1\ttime\tfirst\tabs E1\tnone\nfixture\t2\ttime\torder\torder E1 E2\t@s1-1>@s2-2\n").unwrap();
+        let (md, v) = answers_md(&w, &qs);
+        assert_eq!(v, vec![("time".into(), crate::qa::Verdict::Hit); 2]);
+        assert!(md.contains("no absolute time"));
+        assert_eq!(
+            verdict(
+                &Answer {
+                    text: String::new(),
+                    from_state: false
+                },
+                "none"
+            ),
+            crate::qa::Verdict::Hit
+        );
+    }
 }

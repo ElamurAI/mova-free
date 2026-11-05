@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "rustc --test math/build.rs: wave28::fraction_syntax",
+    "two identical syntax projections"
+  ],
+  "children": [],
+  "cost": "O(bytes) plus expected form hash work, O(bytes) storage. Integer parsing rejects out-of-range; filesystem/allocation panics.",
+  "description": "Read lexicon.tsv; skip column-zero comments/blank lines; require3 columns then unique form then known class. Emit match arms in input order and fallback None. frac parses signed i64; zero denominator accepted, mult/times discard denominator. Output written only after all rows processed.",
+  "forward": [
+    "Read lexicon.tsv; skip column-zero comments/blank lines; require3 columns then unique form then known class. Emit match arms in input order and fallback None. frac parses signed i64; zero denominator accepted, mult/times discard denominator. Output written only after all rows processed."
+  ],
+  "id": "math-lexicon-build",
+  "inverse": [
+    "Generated Num(n,d) admits alternate integer spellings. mult/times collapse denominators. Comments and blank lines lost; TSV not uniquely recoverable."
+  ],
+  "limitations": [
+    "Fraction helper and ordinary Cargo build exercised; malformed TSV generation pipeline not injected.",
+    "Partial lexical AST; no semantic proof or executable percentage surrogate"
+  ],
+  "source": "math/build.rs",
+  "state": "TSV lines, unique forms and generated Rust buffer"
+}

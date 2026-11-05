@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "tests::scans_close_pages_and_hyphens",
+    "tests::english_filter_and_hebrew_count",
+    "tests::quoted_stops",
+    "tests::hebrew_verses",
+    "wave33::normalization_and_verse_identity"
+  ],
+  "children": [],
+  "cost": "Text char vectors O(B) memory; repeated boundary suffix/formats/searches conservative O(B^2); DP absent. Book scanning buffers text/output; exclusion matching O(sentences*heldout*text length); sorted file order O(F log F).",
+  "description": "CLI routes independently to lessons/books/corpus/notes/usfm/addressed/scans. Text cleaners feed cut(prose,quotes), then mode-specific filtering and ids. USFM verse mark removal precedes sentence split and optional numbering; books/scans increment ids before exclusions. Pools and side maps written sequentially.",
+  "forward": [
+    "CLI routes independently to lessons/books/corpus/notes/usfm/addressed/scans. Text cleaners feed cut(prose,quotes), then mode-specific filtering and ids. USFM verse mark removal precedes sentence split and optional numbering; books/scans increment ids before exclusions. Pools and side maps written sequentially."
+  ],
+  "id": "school-sents-text-command",
+  "inverse": [
+    "A two-word cut fragment cannot survive cut alone; books rejects >200 words and normalized heldout containment; corpus math only set suffix -train.",
+    "Pool sentences admit infinitely many markup/spacing/header sources; filtered sentences and original verse marks cannot be uniquely recovered. Id gaps constrain prior cut count but not dropped content."
+  ],
+  "limitations": [
+    "UTF-8 inputs, expected lesson/USFM conventions, bounded counters; synthetic lexicon only. Corpus, en forms file, and command outputs not executed.",
+    "Partial syntax and bounded synthetic helper checks; no command/corpus/model/download effects, universal proof or percentage surrogate."
+  ],
+  "source": "tools/school-sents/src/main.rs",
+  "state": "Quotes mode is only addressed; other routes preserve historical cut. Sentence filter >=3 words except explicit whole-short fallback. Hebrew numbering flag changes verse mapping but not cleaned sentence identity. Output files are not atomic as a set."
+}

@@ -1,0 +1,153 @@
+{
+  "children": [
+    "algorithm-isotonic-regression",
+    "algorithm-isotonic-regression-tests",
+    "algorithm-simplex-projection",
+    "algorithm-simplex-projection-tests",
+    "algorithm-l1-ball-projection",
+    "algorithm-l1-ball-projection-tests",
+    "algorithm-soft-threshold",
+    "algorithm-soft-threshold-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Real normal-cone and KKT laws do not by themselves prove floating-point outputs. Simplex relative mass residual acceptance is <=64*n*EPSILON, not objective error. L1 may exceed radius within tolerance. Overflow/cancellation can reject mathematically solvable inputs.",
+        "domain": "Validated finite vectors and finite nonnegative radii/thresholds; empty simplex permitted only at radius zero. Native conservative arithmetic failure and mass tolerances remain in force.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "convex-projections-behavior-complement",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "At the real-model level exclude KKT-incompatible outputs for the tagged convex set/proximal problem. At the native level exclude different rounded transitions and invalid accepted results; arithmetic/allocation errors are retained, and tolerance-sized feasibility deviations are not silently discarded.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Real normal-cone and KKT laws do not by themselves prove floating-point outputs. Simplex relative mass residual acceptance is <=64*n*EPSILON, not objective error. L1 may exceed radius within tolerance. Overflow/cancellation can reject mathematically solvable inputs.",
+        "domain": "Validated finite vectors and finite nonnegative radii/thresholds; empty simplex permitted only at radius zero. Native conservative arithmetic failure and mass tolerances remain in force.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "convex-projections-reverse-reconstruction",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For fixed convex set C and output y in C, compatible real inputs are y+N_C(y). Soft-threshold zero coordinate has input fiber [-lambda,lambda]; nonzero coordinate reconstructs x_i=y_i+lambda*sign(y_i). This many-to-one model does not uniquely invert rounded implementations.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Real normal-cone and KKT laws do not by themselves prove floating-point outputs. Simplex relative mass residual acceptance is <=64*n*EPSILON, not objective error. L1 may exceed radius within tolerance. Overflow/cancellation can reject mathematically solvable inputs.",
+        "domain": "Validated finite vectors and finite nonnegative radii/thresholds; empty simplex permitted only at radius zero. Native conservative arithmetic failure and mass tolerances remain in force.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "convex-projections-signed-simplex",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "When ||x||1>r, projection onto the L1 ball is sign(x)*P_simplex(abs(x),r) in real arithmetic. On the interior the identity branch applies instead. Floating mass residual is bounded only by the leaf acceptance condition.",
+        "path": "model.md",
+        "section": "signed-simplex",
+        "status": "partial_source_model",
+        "type": "projection_transport"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Real normal-cone and KKT laws do not by themselves prove floating-point outputs. Simplex relative mass residual acceptance is <=64*n*EPSILON, not objective error. L1 may exceed radius within tolerance. Overflow/cancellation can reject mathematically solvable inputs.",
+        "domain": "Validated finite vectors and finite nonnegative radii/thresholds; empty simplex permitted only at radius zero. Native conservative arithmetic failure and mass tolerances remain in force.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "convex-projections-threshold-kkt",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "A shared nonnegative threshold lambda satisfies y_i=sign(x_i)*max(abs(x_i)-lambda,0), with sum(abs(y))=r on an active L1 boundary. A common threshold witness links simplex and soft-threshold fixtures, with explicit additive numerical tolerance.",
+        "path": "model.md",
+        "section": "threshold-kkt",
+        "status": "partial_source_model",
+        "type": "proximal_kkt_relation"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Real normal-cone and KKT laws do not by themselves prove floating-point outputs. Simplex relative mass residual acceptance is <=64*n*EPSILON, not objective error. L1 may exceed radius within tolerance. Overflow/cancellation can reject mathematically solvable inputs.",
+        "domain": "Validated finite vectors and finite nonnegative radii/thresholds; empty simplex permitted only at radius zero. Native conservative arithmetic failure and mass tolerances remain in force.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "convex-projections-isotonic-residual",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For real unit-weight isotonic regression, residual prefix sums sum(x-y) are nonnegative, total residual is zero, output is nondecreasing, and active block sums agree. These KKT observations are checked independently on bounded fixtures.",
+        "path": "model.md",
+        "section": "isotonic-residual",
+        "status": "partial_source_model",
+        "type": "order_cone_certificate"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "convex-projections",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/isotonic_regression/mod.rs",
+      "sha256": "7396eea35ccf248b4e2c944b10bf857e728c733af8a883faaade2fc54cf59116"
+    },
+    {
+      "path": "algorithms/src/isotonic_regression/tests.rs",
+      "sha256": "b5e9fe99507292b158b37c15aaa109b4b709c5826677be891d2ff1aed0af7f93"
+    },
+    {
+      "path": "algorithms/src/l1_ball_projection/mod.rs",
+      "sha256": "1c839d1d16d63a0336ef255a783d3141c5e070844b8f2607fbb230214f4fa650"
+    },
+    {
+      "path": "algorithms/src/l1_ball_projection/tests.rs",
+      "sha256": "065b25e760add259f3da2de77a2107a4343be847ba01c264a219e9686fe96eee"
+    },
+    {
+      "path": "algorithms/src/simplex_projection/mod.rs",
+      "sha256": "410b6027ffb061a2eb575eb877918ccf9f878f93abafa31d03dc1151c62fdf73"
+    },
+    {
+      "path": "algorithms/src/simplex_projection/tests.rs",
+      "sha256": "a5e5ef4fc8e343208076f4beb4938a1b74a4f932388a86b72f42e36ea03a5ff6"
+    },
+    {
+      "path": "algorithms/src/soft_threshold/mod.rs",
+      "sha256": "44bfa53a12c010db3f574857fc5a4a28491c7d5f8f34d4c5dec9849477892bc3"
+    },
+    {
+      "path": "algorithms/src/soft_threshold/tests.rs",
+      "sha256": "ec9b288bd79834f2cbe68e5ca09f6d9193cd8ee9fc84c74decff51fb583a53ce"
+    }
+  ],
+  "status": "partial_source_bound_group"
+}

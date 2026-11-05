@@ -1,0 +1,140 @@
+{
+  "children": [
+    {
+      "id": "hbo-conllu-reader",
+      "path": "reader.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "UTF-8 strings; representable b+1 and ID/count sums. Rows may carry arbitrary IDs/HEAD; this codec does not validate trees. Empty MWT tokens survive read but emit no row. Comment-only sentences disappear.",
+        "evidence": "model.md#tests",
+        "id": "behavior_complement",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Within the stated domain, decimal-ID and wrong-column rows cannot create words; write cannot repair HEAD to match changed IDs or preserve empty-token rows. Filesystem reads cannot commit a partial returned vector after Err.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "UTF-8 strings; representable b+1 and ID/count sums. Rows may carry arbitrary IDs/HEAD; this codec does not validate trees. Empty MWT tokens survive read but emit no row. Comment-only sentences disappear.",
+        "evidence": "model.md#tests",
+        "id": "reverse_reconstruction",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "A decoded sentence admits any source differing only by skipped malformed/decimal rows or discarded comment-only sentences. A written result admits prior word IDs independently of preserved HEAD; unique original text recovery is impossible.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "UTF-8 strings; representable b+1 and ID/count sums. Rows may carry arbitrary IDs/HEAD; this codec does not validate trees. Empty MWT tokens survive read but emit no row. Comment-only sentences disappear.",
+        "evidence": "model.md#tests",
+        "id": "owed_word_state",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Range a-b sets owed=b+1-min(a,b+1); each accepted ordinary row consumes one regardless of its ID. A new range replaces owed; blank clears it. Overflow is excluded, not normalized.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "owed_word_state",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7",
+        "type": "owed_word_state"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "UTF-8 strings; representable b+1 and ID/count sums. Rows may carry arbitrary IDs/HEAD; this codec does not validate trees. Empty MWT tokens survive read but emit no row. Comment-only sentences disappear.",
+        "evidence": "model.md#tests",
+        "id": "id_head_transport",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "write maps word-position j to ID=j+1 but HEAD remains stored text. A noncanonical input ID8/HEAD9 may become ID1/HEAD9: serialization is not dependency repair.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "id_head_transport",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7",
+        "type": "id_head_transport"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "UTF-8 strings; representable b+1 and ID/count sums. Rows may carry arbitrary IDs/HEAD; this codec does not validate trees. Empty MWT tokens survive read but emit no row. Comment-only sentences disappear.",
+        "evidence": "model.md#tests",
+        "id": "empty_token_projection",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "A token with zero words contributes no row and one-word tokens lose their separate form/misc wrapper. Equality read(write(s))=s requires canonical IDs, nonempty compatible tokens and retained comments.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "empty_token_projection",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7",
+        "type": "empty_token_projection"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "UTF-8 strings; representable b+1 and ID/count sums. Rows may carry arbitrary IDs/HEAD; this codec does not validate trees. Empty MWT tokens survive read but emit no row. Comment-only sentences disappear.",
+        "evidence": "model.md#tests",
+        "id": "misc_key_boundary",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "misc(k) matches k followed immediately by '=' and returns first pipe field; Key cannot match KeyLong. head parse failure becomes0, conflating malformed values with roots.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "misc_key_boundary",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7",
+        "type": "misc_key_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "hbo-conllu",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../conllu.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7"
+  },
+  "status": "partial_source_bound_model"
+}

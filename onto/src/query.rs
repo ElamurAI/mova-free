@@ -658,3 +658,35 @@ pub fn ask(kb: &Kb, q: &str) -> anyhow::Result<Answer> {
         other => anyhow::bail!("unknown query «{other}»"),
     })
 }
+
+#[cfg(test)]
+mod wave29_tests {
+    use super::*;
+    #[test]
+    fn lookup_query_and_open_world_parts() {
+        let k = Kb::new(crate::wave29_tests::graph());
+        assert_eq!(lookup(&k.g, "CROWS", Pos::Noun).unwrap().senses, vec![1]);
+        assert_eq!(isa(&k, "crow", "animal").verdict, Verdict::Yes);
+        assert_eq!(
+            has_part(&k, "crow", "wing", Rel::PartOf).verdict,
+            Verdict::Yes
+        );
+        assert_eq!(
+            has_part(&k, "crow", "stone", Rel::PartOf).verdict,
+            Verdict::Unknown
+        );
+        assert_eq!(isa(&k, "missing", "animal").verdict, Verdict::Unknown);
+        assert!(
+            ask(&k, "garbage --layer absent")
+                .unwrap_err()
+                .to_string()
+                .contains("unknown layer")
+        );
+        assert!(
+            ask(&k, "")
+                .unwrap_err()
+                .to_string()
+                .contains("missing argument")
+        );
+    }
+}

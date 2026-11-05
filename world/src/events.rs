@@ -291,3 +291,77 @@ pub fn show(book: &Path, ns: &[usize]) -> Result<()> {
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod corpus_models {
+    use super::*;
+    use en::gram::{Feats, Tag};
+    fn word(lemma: &str, upos: UPos, head: usize, rel: Rel) -> Word {
+        Word { form: lemma.into(), lemma: lemma.into(), upos, tag: Tag::NN,
+            feats: Feats::default(), head, rel }
+    }
+    #[test]
+    fn marker_slices_and_reversed_markers() {
+        for (input, expected) in [
+            ("plain α text", "plain α text"),
+            ("prefix\n*** START OF X\nα body\n*** END OF X\nsuffix", "α body\n"),
+            ("*** START OF X", "*** START OF X"),
+            ("body*** END OF X", "body"),
+            ("*** END OF X\n*** START OF X\nbody", ""),
+        ] { assert_eq!(book_body(input), expected); }
+    }
+    #[test]
+    fn paragraph_normalization_length_and_heading_boundaries() {
+        let text = "The little fox ran home.\n\nTHE BIG HEADING IS HERE.\n\nThe quiet crow stayed.";
+        assert_eq!(sentences(text), vec!["The little fox ran home.", "The quiet crow stayed."]);
+        assert_eq!(sentences(text), sentences(&text.replace('\n', "\r\n")));
+        assert!(sentences("Two elongatedwords.").is_empty());
+        for n in [3, 60, 61] {
+            let text = vec!["longword"; n].join(" ");
+            assert_eq!(sentences(&text).len(), usize::from(n <= 60));
+        }
+        assert!(sentences("one two three").is_empty());
+    }
+    #[test]
+    fn passive_negation_particle_and_recipient_priority() {
+        let s = vec![
+            word("GIVE", UPos::VERB, 0, Rel::Root),
+            word("was", UPos::AUX, 1, Rel::AuxPass),
+            word("Cheese", UPos::NOUN, 1, Rel::NsubjPass),
+            word("Fox", UPos::NOUN, 1, Rel::OblAgent),
+            word("NEVER", UPos::ADV, 1, Rel::Advmod),
+            word("UP", UPos::PART, 1, Rel::CompoundPrt),
+            word("Crow", UPos::NOUN, 1, Rel::Iobj),
+            word("Mouse", UPos::NOUN, 1, Rel::Obl),
+            word("TO", UPos::ADP, 8, Rel::Case),
+        ];
+        assert_eq!(events(&s), vec![Event { agent: "fox".into(), verb: "not give up".into(),
+            patient: "cheese".into(), recipient: "crow".into() }]);
+    }
+    #[test]
+    fn first_role_match_masks_later_noun_and_recipient_alone_is_insufficient() {
+        let mut s = vec![
+            word("say", UPos::VERB, 0, Rel::Root),
+            word("she", UPos::PRON, 1, Rel::Nsubj),
+            word("fox", UPos::NOUN, 1, Rel::Nsubj),
+            word("crow", UPos::NOUN, 1, Rel::Iobj),
+        ];
+        assert!(events(&s).is_empty());
+        s.push(word("food", UPos::NOUN, 1, Rel::Obj));
+        assert_eq!(events(&s)[0].show(), "_ say food →crow");
+        assert_eq!(noun(&word("É-lan", UPos::PROPN, 0, Rel::Root)), Some("é-lan".into()));
+        assert_eq!(noun(&word("a2", UPos::NOUN, 0, Rel::Root)), None);
+        assert_eq!(noun(&word("", UPos::NOUN, 0, Rel::Root)), Some("".into()));
+    }
+    #[test]
+    fn aggregate_role_multiplicity_and_canonical_interactions() {
+        let e = Event { agent: "fox".into(), verb: "give".into(), patient: "crow".into(), recipient: "crow".into() };
+        let st = BookStats { sentences: 7, events: BTreeMap::from([(e, 3)]), postings: vec![] };
+        let j = book_json("fixture", &st);
+        assert_eq!(j["events_total"], 3);
+        assert_eq!(j["sentences"], 7);
+        assert_eq!(j["actors"], json!([["crow", 6], ["fox", 3]]));
+        assert_eq!(j["interactions"], json!([["crow ~ fox", 6]]));
+        assert_eq!(top(&BTreeMap::from([("z", 1), ("a", 1), ("b", 2)]), 2), vec![("b", 2), ("a", 1)]);
+    }
+}

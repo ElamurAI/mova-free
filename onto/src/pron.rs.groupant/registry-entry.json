@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "Selected onto wave29_tests / hs::t:: actual-code tests; repeated debug/release and compiled controls"
+  ],
+  "children": [],
+  "cost": "Cue O(chars) fixed lexicons; info up to3 ancestry first edges plus3 Kb properties and optional IDF/WSD; wrappers recompute.",
+  "description": "gender_cue first female/male words independently; one class only returns cue, both/neither None. sense noun lookup→optional sentence WSD→core→first. info three property resolutions; persona=speak Yes && human!=Yes; own text then3 first ancestors for cue. pronouns ordered policy.",
+  "forward": [
+    "persona=(speak=Yes)∧(human≠Yes); cue=Fem if F≠∅∧M=∅, Masc if M≠∅∧F=∅, otherwise None. AllowedPronouns=ordered decision table on(human,persona,gender)."
+  ],
+  "id": "onto-pron",
+  "inverse": [
+    "Mixed male/female words exclude direct cue; missing noun excludes info; no seed cannot infer No. Nonhuman/nonpersona Neut excludes he/she.",
+    "[it] compatible with Neut or Unknown absent human/persona; [he] requires Masc and human Yes/persona. Cue inputs erase case/punctuation and unconstrained noncue words."
+  ],
+  "limitations": [
+    "Partial lexical AST, no semantic proof",
+    "No live teacher/corpus/model/DB execution",
+    "No validated executable percentage surrogate",
+    "Synthetic finite tests do not cover all public malformed states"
+  ],
+  "source": "onto/src/pron.rs",
+  "state": "Unknown/Undetermined map Tri Unknown with different reasons. No antecedent selection/plural agreement. Sentence WSD uses default prior."
+}

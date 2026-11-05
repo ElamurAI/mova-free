@@ -173,3 +173,18 @@ mod tests {
         assert_eq!(UnitW::Mph.mono().to_string(), "mph");
     }
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn exact_lookup_and_speed_dimensions() {
+        assert_eq!(lookup("miles"), Some(Lex::Unit(UnitW::Mi)));
+        assert_eq!(lookup("MILES"), None);
+        assert_eq!(lookup(""), None);
+        assert_eq!(UnitW::Kmh.mono(), Mono::per(Unit::Km, Unit::H));
+        assert_eq!(UnitW::Mph.mono(), Mono::per(Unit::Mi, Unit::H));
+        assert_eq!(UnitW::Ms.mono(), Mono::per(Unit::M, Unit::S));
+        assert_eq!(UnitW::HPa.mono(), Mono::of(Unit::HPa));
+    }
+}

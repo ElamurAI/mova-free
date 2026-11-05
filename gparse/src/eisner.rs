@@ -2,6 +2,9 @@
 //! `sc[h][d]` — score of head h for dependent d, 0 = root, words 1..=n.
 
 pub fn decode(sc: &[Vec<f32>]) -> Vec<usize> {
+    if sc.len() <= 1 {
+        return Vec::new();
+    }
     let n = sc.len() - 1;
     if n == 1 {
         return vec![0];
@@ -118,5 +121,16 @@ mod tests {
         }
         let h = decode(&sc);
         assert_eq!(h.iter().filter(|&&x| x == 0).count(), 1);
+    }
+}
+
+#[cfg(test)]
+mod wave30 {
+    use super::*;
+    #[test]
+    fn empty_singleton_and_first_root_tie() {
+        assert!(decode(&[]).is_empty());
+        assert_eq!(decode(&[vec![], vec![]]), vec![0]);
+        assert_eq!(decode(&vec![vec![0.; 3]; 3]), vec![0, 1]);
     }
 }

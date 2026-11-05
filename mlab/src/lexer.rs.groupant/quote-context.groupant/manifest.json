@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Quoted literal versus transpose",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Quoted literal versus transpose",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Quoted literal versus transpose",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Quoted literal versus transpose",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "resource_domain",
+        "path": "model.md",
+        "scope": "Quoted literal versus transpose",
+        "section": "resource_domain",
+        "status": "partial_source_derived_model",
+        "type": "resource_domain"
+      },
+      {
+        "id": "interaction_relation",
+        "path": "model.md",
+        "scope": "Quoted literal versus transpose",
+        "section": "interaction_relation",
+        "status": "partial_source_derived_model",
+        "type": "interaction_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 11830,
+      "start": 8667
+    },
+    "description": "At apostrophe compute prev_value from last token and in_matrix from top delimiter. Quote iff prev_value && !(space_before && in_matrix); otherwise decode single quote string, doubling apostrophes. Double quote decodes known backslash escapes and doubled quotes.",
+    "source_bytes_sha256": "ece8a604404173d0b1ab59587959800fd3d3b524479c98ff7d6c8732d530a1bb"
+  },
+  "id": "mlab-lexer-quote-context",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../lexer.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "ac652c6bc998f3fe37335b5f158ff8ca8228a08318ee977f2976131468100f3d"
+  },
+  "status": "partial_source_bound_model"
+}

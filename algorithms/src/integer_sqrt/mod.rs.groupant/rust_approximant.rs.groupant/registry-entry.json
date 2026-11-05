@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Standalone embedded tests with mova_approx contract"
+  ],
+  "children": [],
+  "cost": "Constant space; one floating square root seed on integer <=65535 then integer certification. Prospective expectation: faster than unchanged binary search. Integration measured about 33x versus that reference and 3.36-3.38x versus std on the fixed batch; see docs/mathematical-modeling.md#executable-rust-approximants.",
+  "description": "Executable bounded integer_sqrt approximation",
+  "forward": [
+    "Let t=floor(log2(n)/2), k=7,6,5,4 for the four profiles, s=max(0,t-k), q=floor(sqrt(n >> 2s)), a=q*2^s. Integer checks certify q. Reduced n <=65535, so certification products fit u64. For R=floor(sqrt(n)), a<=R<(q+1)*2^s. If s=0, a=R. Otherwise q>=2^k and (R-a)/R<1/q<=2^-k, hence <=0.78125%,1.5625%,3.125%,6.25%. Zero returns zero. No minimum error is required."
+  ],
+  "id": "algorithm-integer-sqrt-rust-approximant",
+  "inverse": [
+    "For fixed b, exclude all (n,a) with a != F_b(n), where F is the deterministic certified-root expression above. In particular a>floor(sqrt(n)) and error exceeding b are impossible.",
+    "For a,b, compatible inputs are the union over s in 0..31 with a divisible by 2^s, q=a/2^s, of [q^2*2^(2s),(q+1)^2*2^(2s)-1] intersect u64 and the shift-choice region s=max(0,floor(log2(n)/2)-k). Include n=0 when a=0. Set-valued preimage, not unique recovery."
+  ],
+  "limitations": [
+    "Experimental opt-in API; no universal speedup; partial source model without expanded semantic AST."
+  ],
+  "source": "algorithms/src/integer_sqrt/mod.rs.groupant/rust_approximant.rs",
+  "state": "All u64 inputs; zero is exact"
+}

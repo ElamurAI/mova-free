@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "ctx::wave27::absence_modes_and_unmatched_entities",
+    "ctx::tests::entities_nested_and_single",
+    "ctx::tests::gold_context_from_comments_and_shuffle_control"
+  ],
+  "children": [],
+  "cost": "Mention closes O(stack depth); total O(bytes+mentions*depth). stype_rule O(n²) through nested xcomp/mark scan; derived O(tokens) expected hash work plus rule cost. shuffled donor scans O(sentences²), rejection loop has no fixed worst bound. O(tokens+context) storage.",
+  "description": "Document-context projections, feature codes, rule-derived type/entities, seeded cross-document shuffling and environment configuration.",
+  "forward": [
+    "Gold scans comments before dropping tokenless sentences; newdoc resets prev/speaker but does not reset genre. Entity openings are pushed before observing deepest mention, closings remove the last matching ID after observation. Derived resets seen nouns at document change, returns error on annotation count mismatch, leaves empty contexts empty. stype_rule chooses first head-zero root, then question→interjection→fragment→modal/sub→inf/ger/imp→decl. No root returns Other before question check."
+  ],
+  "id": "en-ctx",
+  "inverse": [
+    "R(code,mode) includes all contexts with that code under the process-cached ablation. Full code >=2 recovers type/status, span mode merges every mention, type/info each erase one coordinate. Gold context cannot recover raw comments or entity identifiers; R(shuffle) includes multiple donor indices with equal values."
+  ],
+  "limitations": [
+    "GUM corpus tests gum_entities_balanced and stype_rule_on_gum_dev explicitly not run",
+    "Environment Setup branch combinations and OnceLock alternate modes source-derived only",
+    "Invalid docs/lens lengths can panic; no adversarial allocation tests"
+  ],
+  "source": "en/src/ctx.rs",
+  "state": "Optional context layers, sentence annotations, document IDs, open-mention stack, previous speaker/type, process OnceLocks and RNG u64."
+}

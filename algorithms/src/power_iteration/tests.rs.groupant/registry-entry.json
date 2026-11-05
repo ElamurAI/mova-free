@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms power_iteration::tests"
+  ],
+  "children": [],
+  "cost": "algorithms/src/power_iteration/tests.rs.groupant/model.md#approximant",
+  "description": "Bounded power iteration with Rayleigh and true eigenpair residual checks",
+  "forward": [
+    "algorithms/src/power_iteration/tests.rs.groupant/model.md#approximant"
+  ],
+  "id": "algorithm-power-iteration-tests",
+  "inverse": [
+    "algorithms/src/power_iteration/tests.rs.groupant/model.md: behavior_complement then reverse_reconstruction"
+  ],
+  "limitations": [
+    "Partial syntax, finite observations; no universal solution-error or allocator-failure proof",
+    "Unsupported generic accuracy profiles remain gaps"
+  ],
+  "source": "algorithms/src/power_iteration/tests.rs",
+  "state": "Deterministic bounded f64; allocation failures environmental"
+}

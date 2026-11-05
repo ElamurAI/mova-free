@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "wikt-extract-command",
+  "status": "partial_source_bound_model",
+  "source": {
+    "path": "../main.rs",
+    "sha256": "ebdf56c9a01a9b36c48afdf40fa5c62a21cabc5d89fd3c12204aff57b88d34a8",
+    "raw_code_location": "outside_this_sidecar"
+  },
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "wikt-extract-command-behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "wikt-extract-command-reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "wikt-extract-command-determinism",
+        "path": "model.md",
+        "section": "determinism",
+        "status": "partial_source_derived_model",
+        "type": "determinism"
+      },
+      {
+        "id": "wikt-extract-command-fail_fast",
+        "path": "model.md",
+        "section": "fail_fast",
+        "status": "partial_source_derived_model",
+        "type": "fail_fast"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  }
+}

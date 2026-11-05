@@ -1,0 +1,47 @@
+// Compile with rustc --edition=2024 --crate-name span_probe and existing world/en dependency rlibs.
+// Kept as .txt: standalone evidence harness, not a production crate source.
+pub use world::{ans,qframe,tree,types};
+#[path="../span.rs"] mod actual;
+use en::annotate::Word;
+use tree::{Tree,UPos,PTag,Rel};
+use qframe::{QFrame,QKind,Wh,Focus,Clause};
+use std::collections::HashSet;
+fn w(s:&str,u:UPos,h:usize,r:Rel)->Word{Word{form:s.into(),lemma:s.into(),upos:u,tag:PTag::NN,feats:Default::default(),head:h,rel:r}}
+fn fr()->QFrame{QFrame{q:String::new(),wh:Wh::What,kind:QKind::Generic,focus:Focus::Subj,main:Clause::default(),mark:None,sub:None,fut:false,passive:false,prep:None,about:vec![],target:vec![],whnp:vec![]}}
+fn main(){
+ let mut count=0;
+ let empty=HashSet::new();
+ let t=Tree::of_words(vec![w("ruby",UPos::NOUN,0,Rel::Root),w("run",UPos::VERB,1,Rel::Conj)]);
+ assert_eq!(actual::find_pred(&t,&["ruby".into(),"run".into()]),Some(0));count+=1;
+ assert_eq!(actual::find_pred(&t,&["run".into(),"ruby".into()]),Some(1));count+=1;
+ let t=Tree::of_words(vec![w("zelda",UPos::PROPN,0,Rel::Root)]);
+ assert_eq!(actual::find_pred(&t,&["zelda".into()]),None);count+=1;
+ let numeric=Tree::of_words(vec![w("seven",UPos::NUM,0,Rel::Root)]);
+ let echo=HashSet::from(["seven".to_string()]);
+ assert_eq!(actual::extract(&numeric,actual::Want::Num,&[],&[],&fr(),&echo),Some(("seven".into(),"nummod".into())));count+=1;
+ for mask in 0..16{
+  let forms=["ruby","jade","opal","pearl"];
+  let t=Tree::of_words(forms.iter().map(|s|w(s,UPos::NOUN,0,Rel::Root)).collect());
+  let q:HashSet<_>=forms.iter().enumerate().filter(|(i,_)|mask&(1<<i)!=0).map(|(_,s)|s.to_string()).collect();
+  let mut runs=vec![];let mut run=vec![];
+  for (i,s)in forms.iter().enumerate(){if mask&(1<<i)==0{run.push(*s)}else{runs.push(run);run=vec![];}}
+  runs.push(run);
+  let max=runs.iter().map(|r|r.len()).max().unwrap();
+  let expected=if max<2{None}else{Some(runs.iter().find(|r|r.len()==max).unwrap().join(" "))};
+  assert_eq!(actual::minus_question(&t,&q),expected);count+=1;
+ }
+ let kinds=[QKind::Happen,QKind::HappenTo,QKind::Generic,QKind::Say,QKind::Think];
+ for kind in kinds{for present in [false,true]{
+  let mut f=fr();f.kind=kind;f.sub=present.then(Clause::default);
+  let want=match kind{QKind::Happen|QKind::HappenTo if present=>actual::Want::After,QKind::Say|QKind::Think=>actual::Want::Say,_=>actual::Want::Clause};
+  assert_eq!(actual::want_of(&f),want);count+=1;
+ }}
+ let t=Tree::of_words(vec![w("take",UPos::VERB,0,Rel::Root),w("ruby",UPos::NOUN,1,Rel::Obj),w("jade",UPos::NOUN,1,Rel::Iobj)]);
+ let q=HashSet::from(["ruby".to_string()]);
+ assert_eq!(actual::extract(&t,actual::Want::Obj,&["take".into()],&[],&fr(),&q),None);count+=1;
+ let got=actual::extract(&t,actual::Want::Obj,&["take".into()],&[],&fr(),&empty);
+ assert_eq!(got,Some(("ruby".into(),"obj".into())));count+=1;
+ // Deliberately wrong retry-after-rejection model predicts jade. It must be rejected.
+ assert_ne!(actual::extract(&t,actual::Want::Obj,&["take".into()],&[],&fr(),&q),Some(("jade".into(),"iobj".into())));
+ println!("literal fixtures={count}; wrong retry model rejected=true");
+}

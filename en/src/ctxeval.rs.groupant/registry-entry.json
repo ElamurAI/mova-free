@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "ctxeval::wave27::statistics_and_bootstrap",
+    "ctxeval::wave27::synthetic_load_report_and_alignment"
+  ],
+  "children": [],
+  "cost": "For S systems, R seeds, T tokens, N sentences and B resamples: O(SRT+SRBN), plus O(SB log B) sorting and group/example sorting. Retains O(SRN+SRT+B+report bytes). Reads full gold twice, no streaming guarantee.",
+  "description": "Paired synthetic/system report orchestration with sentence metrics, seed means, bootstrap intervals, token grouping and examples.",
+  "forward": [
+    "System::load reads files in order and checks sentence count, then id/token-count for each pair; no files fails after loop. report reads gold twice via permissive and raw views, checks context count, aggregates seed-level metrics, resamples identical sentence indices for baseline/system, renders focused breakdown only if 0<focus<systems.len()."
+  ],
+  "id": "en-ctxeval",
+  "inverse": [
+    "R(report) includes all run/gold families producing rounded aggregate tables, grouped counts and selected examples; means erase seed identity, two-decimal rounding merges values, omitted examples prevent unique sentence reconstruction."
+  ],
+  "limitations": [
+    "Public System can bypass load invariants and cause panic/truncating zip",
+    "Empty systems panics, zero bootstrap panics when comparison requested, empty seed mean can be NaN",
+    "No corpus, trained systems or statistical confidence calibration"
+  ],
+  "source": "en/src/ctxeval.rs",
+  "state": "Gold sentences, systems each containing ordered runs, RNG state, score accumulators and output string."
+}

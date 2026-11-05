@@ -1,0 +1,114 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite named test fixtures and terminating candidate implementations.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "Bounded suite assertion outcomes.",
+        "operator": "For fixed finite fixtures, U consists of candidate terminating implementations paired with claimed pass/fail outcomes. R pairs each with conjunction of actual assertions. U minus R contains false pass and false failure claims. Unexercised inputs are unconstrained; a passing suite is not universal correctness.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "22863a2c1bc913e98c90006442942399115eaf92d26788bf313eacc8177526fd",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite named test fixtures and terminating candidate implementations.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_implementations",
+        "observation_scope": "Bounded suite assertion outcomes.",
+        "operator": "A passing transcript admits every implementation satisfying the finite assertions, including implementations wrong outside the observed domain. A failing assertion restricts antecedents to implementations violating that exact predicate, without uniquely locating the defect.",
+        "path": "model.md",
+        "section": "compatible_implementations",
+        "status": "partial_source_derived",
+        "subject_revision": "22863a2c1bc913e98c90006442942399115eaf92d26788bf313eacc8177526fd",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite named test fixtures and terminating candidate implementations.",
+        "evidence": "model.md#evidence",
+        "id": "oracle_independence",
+        "observation_scope": "Bounded suite assertion outcomes.",
+        "operator": "The value oracle enumerates all separating vertex cuts; it does not augment paths. Certificate checks use capacity bounds, incoming/outgoing sums and cut equality. Shared endpoint representation and Rust arithmetic remain assumptions.",
+        "path": "model.md",
+        "section": "oracle_independence",
+        "status": "partial_source_derived",
+        "subject_revision": "22863a2c1bc913e98c90006442942399115eaf92d26788bf313eacc8177526fd",
+        "type": "oracle_independence"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite named test fixtures and terminating candidate implementations.",
+        "evidence": "model.md#evidence",
+        "id": "finite_domain",
+        "observation_scope": "Bounded suite assertion outcomes.",
+        "operator": "4096 directed unit-capacity graphs on four vertices, 25 two-edge capacity combinations, 10 direct preimages, numeric maximum and malformed inputs constrain production outputs. They do not exhaust weighted multigraphs; the explicit cancellation and parallel fixtures cover selected additional behavior.",
+        "path": "model.md",
+        "section": "finite_domain",
+        "status": "partial_source_derived",
+        "subject_revision": "22863a2c1bc913e98c90006442942399115eaf92d26788bf313eacc8177526fd",
+        "type": "bounded_correspondence"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite named test fixtures and terminating candidate implementations.",
+        "evidence": "model.md#evidence",
+        "id": "fault_sensitivity",
+        "observation_scope": "Bounded suite assertion outcomes.",
+        "operator": "Compile an isolated production mutation that replaces checked total accumulation with value=0. The exact residual_cancellation_and_preimage test must fail at its value-two assertion; successful compilation followed by assertion failure establishes executable sensitivity, not broad mutation coverage.",
+        "path": "model.md",
+        "section": "fault_sensitivity",
+        "status": "partial_source_derived",
+        "subject_revision": "22863a2c1bc913e98c90006442942399115eaf92d26788bf313eacc8177526fd",
+        "type": "compiled_fault_observation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "sha256": "583be36f73d72a5c748ba792ed950d02e8ce5e123b153711077c3bb3a732173b",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-max-flow-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "22863a2c1bc913e98c90006442942399115eaf92d26788bf313eacc8177526fd"
+  },
+  "status": "partial_source_derived_instance"
+}

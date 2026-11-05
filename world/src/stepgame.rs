@@ -567,3 +567,46 @@ pub fn contrast(dir: &Path, per_k: usize, test: bool) -> Result<()> {
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod wave29_tests {
+    use super::*;
+
+    #[test]
+    fn lexical_ground_and_tie_boundaries() {
+        let r = Reader::default();
+        assert_eq!(r.score(&feats("", 'A', 'B')), 0);
+        assert_eq!(lexical("B has A on its left.", 'B', 'A'), Some((1, 0)));
+        assert_eq!(lexical("A is right under B.", 'A', 'B'), Some((0, -1)));
+        assert_eq!(lexical("A is left and right of B.", 'A', 'B'), None);
+        assert_eq!(lexical("A is at 3 o'clock from B.", 'A', 'B'), None);
+        assert_eq!(agents("A A AA B."), ['A', 'B']);
+        assert_eq!(phrasing("K is above N."), phrasing("B is above C."));
+    }
+
+    #[test]
+    fn graph_first_path_and_text_reset() {
+        let mut r = Reader::default();
+        let story = vec!["A near B.".to_string(), "B near C.".to_string()];
+        r.seen.extend(story.iter().map(|s| phrasing(s)));
+        let mut it = Item {
+            id: 0,
+            story,
+            question: "A C".into(),
+            label: String::new(),
+        };
+        // Seen templates force the zero-weight perceptron: class 0 is left.
+        let a = answer(&r, &it).unwrap();
+        assert_eq!(a.0, "left");
+        assert!(a.1.contains("offset (-2, 0)"));
+        it.question = "A Z".into();
+        assert!(answer(&r, &it).is_none());
+        it.question = "A A".into();
+        assert!(answer(&r, &it).is_none());
+        let v = load_txt("bad\n1 A near B.\n2 A B?\tleft\t1\n1 C near D.\n2 C D?\tright\t1\n");
+        assert_eq!(v.len(), 2);
+        assert_eq!(v[1].id, 1);
+        assert_eq!(v[1].story, ["C near D."]);
+        assert!(load_txt("").is_empty());
+    }
+}

@@ -2,7 +2,7 @@
 
 The rule language is `docs/dialect.md`. Conventions beyond the specification are in `../seeds-overview.md`. Matches were counted by `en expert-check`: `littleprince → mova` on LittlePrince, `mova → littleprince` on EWT.
 
-LittlePrince is test only, and it mixes two norms (`seeds/stanza-legacy.md`). On the way there the converter reduces everything to EWT. On the way back it reproduces the majority, so divergences are inevitable. We count them rather than hide them.
+LittlePrince is test only, and it mixes two norms (`seeds.md#stanza-legacy`). On the way there the converter reduces everything to EWT. On the way back it reproduces the majority, so divergences are inevitable. We count them rather than hide them.
 
 ## littleprince → mova
 
@@ -173,7 +173,7 @@ from: mova
 to: littleprince
 match: v[feats.VerbForm=Fin, feats.Tense=Pres, suffix!=s, form!=am|'m]
 set: v[feats-=Number]; v[feats-=Person]
-source: seeds/stanza-legacy.md
+source: seeds.md#stanza-legacy
 ```
 
 ```convert
@@ -183,7 +183,7 @@ from: mova
 to: littleprince
 match: v[feats.VerbForm=Fin, feats.Tense=Past, lemma!=be]
 set: v[feats-=Number]; v[feats-=Person]
-source: seeds/stanza-legacy.md
+source: seeds.md#stanza-legacy
 ```
 
 ```convert
@@ -193,7 +193,7 @@ from: mova
 to: littleprince
 match: p[upos=PRON, rel=nmod:poss, feats.Case=Gen]
 set: p[feats-=Case]
-source: seeds/stanza-legacy.md
+source: seeds.md#stanza-legacy
 ```
 
 ```convert
@@ -203,7 +203,7 @@ from: mova
 to: littleprince
 match: p[form=his, upos=PRON, rel=nmod:poss]
 set: p[lemma=he]
-source: seeds/stanza-legacy.md
+source: seeds.md#stanza-legacy
 ```
 
 ```convert
@@ -213,7 +213,7 @@ from: mova
 to: littleprince
 match: p[form=your, upos=PRON, rel=nmod:poss]
 set: p[lemma=you]
-source: seeds/stanza-legacy.md
+source: seeds.md#stanza-legacy
 ```
 
 ```convert
@@ -223,7 +223,7 @@ from: mova
 to: littleprince
 match: p[form=their, upos=PRON, rel=nmod:poss]
 set: p[lemma=they]
-source: seeds/stanza-legacy.md
+source: seeds.md#stanza-legacy
 ```
 
 ```convert
@@ -233,7 +233,7 @@ from: mova
 to: littleprince
 match: p[form=our, upos=PRON, rel=nmod:poss]
 set: p[lemma=we]
-source: seeds/stanza-legacy.md
+source: seeds.md#stanza-legacy
 ```
 
 ```convert
@@ -243,7 +243,7 @@ from: mova
 to: littleprince
 match: p[form=her, upos=PRON, rel=nmod:poss]
 set: p[lemma=she]
-source: seeds/stanza-legacy.md
+source: seeds.md#stanza-legacy
 ```
 
 ```convert
@@ -253,7 +253,7 @@ from: mova
 to: littleprince
 match: t[form=there, rel=expl]
 set: t[feats-=PronType]
-source: seeds/stanza-legacy.md
+source: seeds.md#stanza-legacy
 ```
 
 ```convert
@@ -263,7 +263,7 @@ from: mova
 to: littleprince
 match: n[form=not|n't, upos=PART]
 set: n[feats-=Polarity]
-source: seeds/stanza-legacy.md
+source: seeds.md#stanza-legacy
 ```
 
 ```convert
@@ -273,7 +273,7 @@ from: mova
 to: littleprince
 match: v[rel=advcl]; w[form=when, rel=advmod, head=v, before=v]
 set: w[upos=SCONJ]; w[rel=mark]
-source: seeds/stanza-legacy.md
+source: seeds.md#stanza-legacy
 ```
 
 
@@ -284,7 +284,7 @@ from: mova
 to: littleprince
 match: n[feats.NumForm]
 set: n[misc+=NumForm=@feats.NumForm]; n[feats-=NumForm]
-source: seeds/data.md
+source: seeds.md#data
 ```
 
 Needs a "copy a feature value into MISC" action (`misc+=K=@feats.X`). For now it can be done with two rules with constant values — `feats.NumForm=Digit` → `misc+=NumForm=Digit` and likewise `Word`. Kept as a marker that the general action is missing.

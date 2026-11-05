@@ -1,0 +1,117 @@
+{
+  "children": [
+    {
+      "id": "algorithm-biconnected-components-traversal",
+      "path": "traversal.groupant"
+    },
+    {
+      "id": "algorithm-biconnected-components-canonicalization",
+      "path": "canonicalization.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Finite materialized ordered graphs and machine-sized indices, fixed input, successful allocation. Observations are returned Result values; allocator failure and wall-clock timing are outside the relation.",
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "Finite materialized ordered graphs and machine-sized indices, fixed input, successful allocation. Observations are returned Result values; allocator failure and wall-clock timing are outside the relation.",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "orientation",
+        "path": "model.md",
+        "required": false,
+        "scope": "Finite materialized ordered graphs and machine-sized indices, fixed input, successful allocation. Observations are returned Result values; allocator failure and wall-clock timing are outside the relation.",
+        "section": "orientation",
+        "status": "partial_source_derived_model",
+        "type": "undirected_representation_equivalence"
+      },
+      {
+        "id": "parallel",
+        "path": "model.md",
+        "required": false,
+        "scope": "Finite materialized ordered graphs and machine-sized indices, fixed input, successful allocation. Observations are returned Result values; allocator failure and wall-clock timing are outside the relation.",
+        "section": "parallel",
+        "status": "partial_source_derived_model",
+        "type": "cycle_membership"
+      },
+      {
+        "id": "loops",
+        "path": "model.md",
+        "required": false,
+        "scope": "Finite materialized ordered graphs and machine-sized indices, fixed input, successful allocation. Observations are returned Result values; allocator failure and wall-clock timing are outside the relation.",
+        "section": "loops",
+        "status": "partial_source_derived_model",
+        "type": "loop_convention"
+      },
+      {
+        "id": "isolates",
+        "path": "model.md",
+        "required": false,
+        "scope": "Finite materialized ordered graphs and machine-sized indices, fixed input, successful allocation. Observations are returned Result values; allocator failure and wall-clock timing are outside the relation.",
+        "section": "isolates",
+        "status": "partial_source_derived_model",
+        "type": "isolated_extension"
+      },
+      {
+        "id": "canonical",
+        "path": "model.md",
+        "required": false,
+        "scope": "Finite materialized ordered graphs and machine-sized indices, fixed input, successful allocation. Observations are returned Result values; allocator failure and wall-clock timing are outside the relation.",
+        "section": "canonical",
+        "status": "partial_source_derived_model",
+        "type": "identity_transport"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "algorithm-biconnected-components",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "6b1ce98504a60075c4d2d5eefba280a9efecb295eed946c1a4a7628578e09f45"
+  },
+  "status": "partial_source_bound_model"
+}

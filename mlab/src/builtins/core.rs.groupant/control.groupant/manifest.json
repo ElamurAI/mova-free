@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Messages, warnings and assertion control",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Messages, warnings and assertion control",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Messages, warnings and assertion control",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Messages, warnings and assertion control",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "resource_domain",
+        "path": "model.md",
+        "scope": "Messages, warnings and assertion control",
+        "section": "resource_domain",
+        "status": "partial_source_derived_model",
+        "type": "resource_domain"
+      },
+      {
+        "id": "interaction_relation",
+        "path": "model.md",
+        "scope": "Messages, warnings and assertion control",
+        "section": "interaction_relation",
+        "status": "partial_source_derived_model",
+        "type": "interaction_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 34670,
+      "start": 30742
+    },
+    "description": "format_message treats first string as identifier only if colon-shaped and another argument exists; sprintf invoked for extra args or percent/backslash. error returns MError with id. warning toggles on/off (optionally all), query/error are no-op; otherwise emits via Interp.warn. assert checks truthiness or real numeric elements with exact/absolute/relative tolerance.",
+    "source_bytes_sha256": "184c0c4fca41938a28593d6c0deeea2b410a49c30dfb92c2f6a35e2c8d36bb6b"
+  },
+  "id": "mlab-builtins-core-control",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../core.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "8d26d9c57654af7591dfa87298cce7f55541f4d17d513f5e2ddf31f71a8caf15"
+  },
+  "status": "partial_source_bound_model"
+}

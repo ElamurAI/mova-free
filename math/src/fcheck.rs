@@ -78,3 +78,33 @@ fn kelvin(x: f64, s: Scale) -> f64 {
         Scale::K => x,
     }
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    use crate::expr::{Target, Var};
+    use crate::rat::Rat;
+    fn num(n: i64) -> Expr {
+        Expr::Num(Rat::int(n as i128))
+    }
+    #[test]
+    fn si_temperature_empty_and_nonfinite() {
+        let freezing = Expr::Temp(Box::new(num(32)), Scale::F);
+        assert!((eval_f64(&freezing).unwrap() - 273.15).abs() < 1e-12);
+        let converted = Expr::Convert(Box::new(freezing), Target::Scale(Scale::C));
+        assert!((eval_f64(&converted).unwrap() - 273.15).abs() < 1e-12);
+        assert_eq!(eval_f64(&Expr::Add(vec![])), Some(0.0));
+        assert_eq!(eval_f64(&Expr::Mul(vec![])), Some(1.0));
+        assert_eq!(eval_f64(&Expr::Var(Var(0))), None);
+        assert!(
+            eval_f64(&Expr::Div(Box::new(num(1)), Box::new(num(0))))
+                .unwrap()
+                .is_infinite()
+        );
+        assert_eq!(
+            eval_f64(&Expr::Prob(ProbOp::AtLeastOnce, vec![])),
+            Some(0.0)
+        );
+        assert!(eval_f64(&Expr::Call(Func::Mean, vec![])).unwrap().is_nan());
+    }
+}

@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p world --lib qa3::wave12_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "Sum query, scorer and rendering costs; avoid counting shared world storage twice. No timing, speedup, approximation error or general proof claimed.",
+  "description": "Pure supplied-world query projection, ordered fallback, expectation scoring and report accounting. Scope combines child constraints through shared Answer text/from_state, IDs and immutable World.",
+  "forward": [
+    "Pure supplied-world query projection, ordered fallback, expectation scoring and report accounting. Scope combines child constraints through shared Answer text/from_state, IDs and immutable World.",
+    "Public joins: World::apply on constructed Cmd/Line values -> answer -> verdict; read_questions -> answers_md on supplied frozen expectations. No neural parser, teacher, corpus, CLI persistence or courses executed."
+  ],
+  "id": "world-qa3",
+  "inverse": [
+    "All compatible worlds, queries and expectation rows satisfying child constraints remain antecedents. Projection and aggregated scores lose identity and provenance; no unique inverse."
+  ],
+  "limitations": [
+    "Finite pure API fixtures; macro bodies opaque; no semantic AST or general proof.",
+    "No parser, teacher, corpus, courses, persistence or retained-learning evaluation.",
+    "Caller filters document/poly IDs. Historical explanations may include future knowledge; mutable malformed metadata remains outside coverage."
+  ],
+  "source": "world/src/qa3.rs",
+  "state": "Query output is heuristic projection from supplied state, not independently established truth. Report assessment does not train, mutate or demonstrate retained knowledge. Preserve unavailable-state and explicit control semantics."
+}

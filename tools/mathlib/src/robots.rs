@@ -249,3 +249,43 @@ mod tests {
         assert!(!github_host("notgithub.com.example.invalid"));
     }
 }
+
+#[cfg(test)]
+mod wave33 {
+    use super::*;
+    #[test]
+    fn tie_specificity_and_literal_pattern() {
+        let r = Robots::parse(
+            "User-agent: *\nDisallow: /same\nAllow: /same\nDisallow: /a.b$\n",
+            "MovaLibrary",
+        );
+        assert!(r.allowed("/same"));
+        assert!(!r.allowed("/a.b"));
+        assert!(r.allowed("/axb"));
+        assert!(r.allowed("/a.b?x"));
+        let r = Robots::parse(
+            "User-agent: *\nDisallow: /\nUser-agent: Mova\nAllow: /x\nDisallow: /\n",
+            "MovaLibrary",
+        );
+        assert!(r.allowed("/x"));
+        assert!(!r.allowed("/z"));
+        assert!(Robots::allow_all().allowed("/"));
+        assert!(!Robots::deny_all().allowed("/"));
+    }
+    #[test]
+    fn delay_and_url_without_dns() {
+        let r = Robots::parse(
+            "User-agent: *\nCrawl-delay: 2\nCrawl-delay: 5\n",
+            "MovaLibrary",
+        );
+        assert_eq!(r.crawl_delay, Some(5.0));
+        let mut gate = Gate::new(Duration::from_secs(3));
+        gate.robots.insert("h".into(), r);
+        assert_eq!(gate.delay("h"), Duration::from_secs(5));
+        assert_eq!(gate.delay("missing"), Duration::from_secs(3));
+        assert_eq!(
+            split_url("example.invalid"),
+            ("https".into(), "example.invalid".into(), "/".into())
+        );
+    }
+}

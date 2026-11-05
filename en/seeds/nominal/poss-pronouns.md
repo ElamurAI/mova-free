@@ -21,5 +21,5 @@ what: PRP$ and WP$ attach as nmod:poss (or gerund subject, or conjunct); det:pos
 match: p[xpos=PRP$|WP$]
 require: p[rel=nmod:poss|nsubj|nsubj:pass|conj]
 severity: warn
-source: Poutsma GLME IV Ch. XXXIII §7; UD en nmod:poss; UD _en/dep/nmod-poss.md; annot/README.md (det:poss in Opus output)
+source: Poutsma GLME IV Ch. XXXIII §7; UD en nmod:poss; UD _en/dep/nmod-poss.md; annot/README.md (det:poss in teacher output)
 ```

@@ -1,0 +1,211 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-longest-common-subsequence",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "fec6e6aeea147e5954f49bcc927484c2ba68465f1495a01ad1bbb507e5f72f51"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "operator": "For lawful Eq and successful termination exclude results above min lengths, results below any common subsequence, results without an attaining subsequence, mutated inputs or an emitted witness. Eq panics and allocation aborts are not ordinary returned lengths.",
+        "domain": "Finite lawful inputs and ordinary Rust execution.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One call or explicitly described internal recurrence.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "fec6e6aeea147e5954f49bcc927484c2ba68465f1495a01ad1bbb507e5f72f51",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "preimages",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "operator": "A result k admits exactly pairs having a common subsequence of length k and none of length k+1. Many unrelated pairs map to k; symbol values, lengths and witness cannot be uniquely recovered.",
+        "domain": "Finite lawful inputs and ordinary Rust execution.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One call or explicitly described internal recurrence.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "fec6e6aeea147e5954f49bcc927484c2ba68465f1495a01ad1bbb507e5f72f51",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "swap",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "swap",
+        "status": "partial_source_derived",
+        "operator": "L(a,b)=L(b,a) under symmetric lawful Eq. Transposing inputs also selects the same smaller dimension, not a full matrix.",
+        "domain": "Finite lawful inputs and ordinary Rust execution.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One call or explicitly described internal recurrence.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "fec6e6aeea147e5954f49bcc927484c2ba68465f1495a01ad1bbb507e5f72f51",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "reverse",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "reverse",
+        "status": "partial_source_derived",
+        "operator": "Reversing both inputs reverses every common subsequence bijectively and preserves length; reversing just one need not preserve it (ab versus ba).",
+        "domain": "Finite lawful inputs and ordinary Rust execution.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One call or explicitly described internal recurrence.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "fec6e6aeea147e5954f49bcc927484c2ba68465f1495a01ad1bbb507e5f72f51",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "append",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "append",
+        "status": "partial_source_derived",
+        "operator": "Appending the same symbol to both gives L(a+[x],b+[x])=L(a,b)+1. Appending only to one changes length by zero or one. Identity L(a,a)=len(a).",
+        "domain": "Finite lawful inputs and ordinary Rust execution.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One call or explicitly described internal recurrence.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "fec6e6aeea147e5954f49bcc927484c2ba68465f1495a01ad1bbb507e5f72f51",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "diagonal",
+        "type": "state_relation",
+        "path": "model.md",
+        "section": "diagonal",
+        "status": "partial_source_derived",
+        "operator": "Updating a row is lossy: previous above must be saved before overwrite. Given new row alone, old diagonal is generally ambiguous. Equal-symbol recurrence consumes the old diagonal, not the newly updated left cell.",
+        "domain": "Finite lawful inputs and ordinary Rust execution.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One call or explicitly described internal recurrence.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "fec6e6aeea147e5954f49bcc927484c2ba68465f1495a01ad1bbb507e5f72f51",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "order-fiber",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "order-fiber",
+        "status": "partial_source_derived",
+        "operator": "Length zero admits all pairs with disjoint equality-class support, including empty inputs. For k>0, multiplicity intersection alone is insufficient: ab/ab yields two, ab/ba one, despite equal histograms.",
+        "domain": "Finite lawful inputs and ordinary Rust execution.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One call or explicitly described internal recurrence.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "fec6e6aeea147e5954f49bcc927484c2ba68465f1495a01ad1bbb507e5f72f51",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "resources",
+        "type": "failure_partition",
+        "path": "model.md",
+        "section": "resources",
+        "status": "partial_source_derived",
+        "operator": "Empty shorter slice returns zero without allocation. Otherwise checked length+1 may panic, Vec byte-capacity/allocation failure may panic or abort, Eq may panic, or ordinary recurrence returns. These are not typed returned errors; impossible extreme allocations are not tested.",
+        "domain": "Finite lawful inputs and ordinary Rust execution.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One call or explicitly described internal recurrence.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "fec6e6aeea147e5954f49bcc927484c2ba68465f1495a01ad1bbb507e5f72f51",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "extremal-score-empty-trace-fibers",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "Extremal score and empty trace fibers",
+        "status": "source_reviewed_partial_correspondence",
+        "subject_revision": "fec6e6aeea147e5954f49bcc927484c2ba68465f1495a01ad1bbb507e5f72f51",
+        "operator": "At fixed lengths characterize zero and maximal scalar fibers; refine zero by the empty row-construction/comparison trace.",
+        "domain": "Finite Eq slices with fixed lengths n,m.",
+        "observation_scope": "Returned scalar or explicitly declared source trace.",
+        "approximation_semantics": "Exact symbolic fibers under premises; finite scalar witnesses; trace counts are source-reviewed.",
+        "assumptions": "Stable lawful Eq, representable row width, successful allocation and completed execution; scalar correspondence does not identify callback effects.",
+        "evidence": "../tests.rs: boundaries_and_generic_eq, symmetry_identity_reversal_and_extension, preimage_ambiguity_and_false_multiset_model, exhaustive_subsequence_oracle"
+      },
+      {
+        "id": "alphabet-equality-transport",
+        "type": "equality_transport",
+        "path": "model.md",
+        "section": "Equality transport through alphabet renaming",
+        "status": "source_reviewed_partial_correspondence",
+        "subject_revision": "fec6e6aeea147e5954f49bcc927484c2ba68465f1495a01ad1bbb507e5f72f51",
+        "operator": "A one-element map preserving and reflecting equality preserves every DP cell and scalar; equality-preserving coarsening gives only a monotone bound.",
+        "domain": "Pairs of finite slices and a one-element map on their occurring elements.",
+        "observation_scope": "Mathematical DP table and returned scalar; excludes callback effects/costs.",
+        "approximation_semantics": "Exact conditional transport derivation with finite renaming witnesses, not an executed all-map check.",
+        "assumptions": "Stable lawful Eq, representable row width, successful allocation and completed execution; scalar correspondence does not identify callback effects.",
+        "evidence": "../tests.rs: preimage_ambiguity_and_false_multiset_model, exhaustive_subsequence_oracle"
+      },
+      {
+        "id": "histogram-partial-exclusion",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "Histogram exclusion and order loss",
+        "status": "source_reviewed_partial_correspondence",
+        "subject_revision": "fec6e6aeea147e5954f49bcc927484c2ba68465f1495a01ad1bbb507e5f72f51",
+        "operator": "Exclude candidate scalar q above multiset-intersection H; retain ambiguity below H and reject treating H as the LCS value.",
+        "domain": "Completed-call triples (a,b,q: usize) over finite lawful Eq slices.",
+        "observation_scope": "Only returned scalar compared to multiplicity bound H.",
+        "approximation_semantics": "Inner bound on absent behavior; not full complement or percentage surrogate.",
+        "assumptions": "Stable lawful Eq, representable row width, successful allocation and completed execution; scalar correspondence does not identify callback effects.",
+        "evidence": "../tests.rs: preimage_ambiguity_and_false_multiset_model; tools/correspondence/tests/lcs_bridges.rs: histogram_bound_is_a_partial_excluded_relation_not_the_value"
+      },
+      {
+        "id": "representation-trait-bridge-domain",
+        "type": "observation_domain",
+        "path": "model.md",
+        "section": "Representation and trait admission for API correspondence",
+        "status": "source_reviewed_partial_correspondence",
+        "subject_revision": "fec6e6aeea147e5954f49bcc927484c2ba68465f1495a01ad1bbb507e5f72f51",
+        "operator": "Relate actual LCS APIs only on shared element interpretations, lawful equality and accepted byte lengths; separate Eq admission from PartialEq-only scheduling.",
+        "domain": "Same lawful Eq token inputs for English/generic; identical u8 inputs with shorter length <=64 for all three APIs.",
+        "observation_scope": "Successful returned scalar; excludes comparison traces, allocation equivalence and differing byte/token interpretations.",
+        "approximation_semantics": "Conditional source-derived correspondence with finite integration witnesses; no unrestricted substitution.",
+        "assumptions": "Stable lawful Eq, representable row width, successful allocation and completed execution; scalar correspondence does not identify callback effects.",
+        "evidence": "tools/correspondence/tests/lcs_bridges.rs: actual_en_algorithm_bitparallel_and_oracle_agree_on_small_byte_domain, unicode_characters_are_not_bytes_and_bitparallel_boundary, comparison_order_is_a_major_with_left_receiver"
+      }
+    ]
+  }
+}

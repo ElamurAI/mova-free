@@ -1027,3 +1027,219 @@ pub fn parse_all(text: &str) -> (Vec<Line>, Vec<FormatErr>) {
     }
     (lines, errs)
 }
+
+
+#[cfg(test)]
+mod bounded_models {
+    use super::*;
+    use std::collections::{BTreeMap, BTreeSet};
+
+    fn parsed(s: &str) -> Line {
+        parse_line(7, s).unwrap_or_else(|e| panic!("{s:?}: {}", e.msg)).unwrap()
+    }
+    fn rejected(s: &str, expected: &str) {
+        let e = parse_line(7, s).unwrap_err();
+        assert!(e.msg.contains(expected), "{s:?}: {} (expected {expected:?})", e.msg);
+        assert_eq!(e.no, 7);
+        assert_eq!(e.raw, s);
+    }
+
+    #[test]
+    fn complete_bounded_relation_fibers() {
+        // Complete inverse fibers over this finite syntax universe, independently
+        // specified by the first two table entries being character identities.
+        let endpoints = ["C1", "C2", "O1", "L1", "R1", "E1", "P1", "B1",
+            "F1", "K1", "C1@1", "C01", "C0", "C1000000"];
+        let mut actual: BTreeMap<(u32,u32), BTreeSet<String>> = BTreeMap::new();
+        let mut expected: BTreeMap<(u32,u32), BTreeSet<String>> = BTreeMap::new();
+        let mut rejected_count = 0;
+        for (ai, a) in endpoints.iter().enumerate() {
+            for (bi, b) in endpoints.iter().enumerate() {
+                for reverse in [false, true] {
+                    for sep in [" ", "\t"] {
+                        let fields = if reverse { format!("b={b}{sep}a={a}") } else { format!("a={a}{sep}b={b}") };
+                        let input = format!("rel{sep}R1{sep}{fields}{sep}^s1");
+                        if ai < 2 && bi < 2 {
+                            expected.entry((ai as u32 + 1,bi as u32 + 1)).or_default().insert(input.clone());
+                        }
+                        match parse_line(1,&input) {
+                            Ok(Some(line)) => {
+                                let Cmd::Rel { id, kind, a: Some(a), b: Some(b), cause, fact } = line.cmd else { panic!("wrong command"); };
+                                assert_eq!(id,Id::new(Reg::R,1));
+                                assert_eq!((a.reg,b.reg),(Reg::C,Reg::C));
+                                assert!(kind.is_none() && cause.is_none() && fact.is_none());
+                                assert_eq!(line.anchors,vec![1]);
+                                actual.entry((a.n,b.n)).or_default().insert(input);
+                            }
+                            Err(_) => rejected_count += 1,
+                            Ok(None) => panic!("nonempty command skipped"),
+                        }
+                    }
+                }
+            }
+        }
+        assert_eq!(actual,expected);
+        assert_eq!(actual.values().map(BTreeSet::len).sum::<usize>(),16);
+        assert_eq!(rejected_count,768);
+        for s in ["rel R1 a=\"C1\" ^s1","rel R1 b=\"C2\" ^s1"] {
+            rejected(s,"id without quotes");
+        }
+    }
+
+    #[test]
+    fn role_registry_and_joint_identity_matrix() {
+        let regs = ["C1","O1","L1","R1","E1","P1","B1","F1","K1"];
+        let roles = [
+            ("agent",Role::Agent,[true,false,false,false,false,false,false,false,false]),
+            ("patient",Role::Patient,[true,true,true,false,false,false,false,false,false]),
+            ("to",Role::To,[true,false,true,false,false,false,false,false,false]),
+            ("at",Role::At,[false,false,true,false,false,false,false,false,false]),
+            ("instr",Role::Instr,[false,true,false,false,false,false,false,false,false]),
+        ];
+        for (name,role,allowed) in roles {
+            for (i,reg) in regs.iter().enumerate() {
+                let s = format!("event E1 verb=see {name}={reg} ^s1");
+                let result = parse_line(1,&s);
+                assert_eq!(result.is_ok(),allowed[i],"{s}");
+                if allowed[i] {
+                    let Cmd::Event { roles, .. } = result.unwrap().unwrap().cmd else { panic!() };
+                    assert_eq!(roles.len(),1);
+                    assert_eq!(roles[0].0,role);
+                    assert_eq!(roles[0].1.to_string(),*reg);
+                }
+            }
+        }
+        parsed("event E1 verb=see agent=C1+C2+C3+C4+C5+C6 ^s1");
+        rejected("event E1 verb=see agent=C1+C2+C3+C4+C5+C6+C7 ^s1","more than 6");
+        rejected("event E1 verb=see agent=C1+C1 ^s1","twice");
+        rejected("event E1 verb=see agent=C1@2 ^s1","not an id");
+        rejected("event E1 verb=see at=L1+L2 ^s1","not an id");
+        rejected("event E1 verb=see agent=C1+ ^s1","not an id");
+    }
+
+    #[test]
+    fn quote_duplicate_and_error_precedence_oracle() {
+        assert_eq!(tokens("loc L1 name=\"the Fox\"").unwrap(),
+            vec!["loc","L1","name=\"the Fox\""]);
+        assert_eq!(tokens("a\u{2003}b").unwrap(),vec!["a","b"]);
+        let l = parsed("  loc L1 type=forest name=\" the Fox \" ^s2  ");
+        assert_eq!(l.raw,"loc L1 type=forest name=\" the Fox \" ^s2");
+        let Cmd::Loc { name, .. } = l.cmd else { panic!() };
+        assert_eq!(name,Some("the Fox".into()));
+        for (s,e) in [
+            ("unknown x=\" ^sbad","unclosed quotes"),
+            ("unknown x=1 x=2","key x twice"),
+            ("unknown x=1 later ^s1","positional argument"),
+            ("rel R1 a=C1 a=C2 ^s1","key a twice"),
+            ("loc L1 type=forest name=\"a\"\"b\" ^s1","name: quotes"),
+            ("loc L1 type=forest name=a\"b\" ^s1","quotes in the middle"),
+            ("loc L1 Type=forest ^s1","key \"Type\""),
+            ("move C1 to=L1 unknown=x","unknown key unknown"),
+            ("move bad to=L1","not an id"),
+            ("unknown ^s1 x=2","anchor not at the end"),
+            ("^s1","no command"),
+            ("move C1 to=L1","no ^sN anchor"),
+        ] { rejected(s,e); }
+        // Distinct spelling aliases remain distinct keys in the current grammar.
+        let Cmd::Set { attrs, .. } = parsed("set C1 at=L1 to=L2 ^s1").cmd else { panic!() };
+        assert_eq!(attrs,vec![(Field::At,V::Id(Id::new(Reg::L,1))),(Field::At,V::Id(Id::new(Reg::L,2)))]);
+    }
+
+    #[test]
+    fn command_inventory_and_defaults_oracle() {
+        let fixtures = [
+            ("cursor sent=3","cursor",false),
+            ("loc L1 type=forest ^s1","loc",false),
+            ("obj O1 type=food ^s1","obj",false),
+            ("char C1 type=human ^s1","char",false),
+            ("move C1 to=L1 ^s1","move",false),
+            ("have C1 O1 ^s1","have",false),
+            ("give C1 O1 to=C2 ^s1","give",false),
+            ("set C1 goal=\"find food\" ^s1","set",false),
+            ("rel R1 kind=friend a=C1 b=C2 ^s1","rel",false),
+            ("event E1 verb=run ^s1","event",false),
+            ("say narrator act=assert ^s1","say",false),
+            ("plan P1 kind=plan who=C1 what=leave ^s1","plan",false),
+            ("believe B1 who=C1 claim=safe ^s1","believe",false),
+            ("done C1 ^s1","done",false),
+            ("unset C1 goal ^s1","unset",false),
+            ("feel C1 +happy -sad ^s1","feel",false),
+            ("detach O1 to=L1 ^s1","detach",false),
+            ("attach O1 to=C1 ^s1","attach",false),
+            ("mention C1 O1 ^s1","mention",false),
+            ("frame open F1 narrator=C1 level=0 ^s1","frame",true),
+            ("claim K1 who=reader about=E1 status=believes interp=safe ^s1","claim",true),
+            ("time E1 BEFORE E2 ^s1","time",true),
+            ("branch E1 dream ^s1","branch",true),
+            ("know who=reader fact=E1 from=^s1 ^s1","know",true),
+            ("reveal E1 to=reader interp=safe ^s1","reveal",true),
+        ];
+        for (s,name,v3) in fixtures {
+            let line=parsed(s);
+            assert_eq!(line.cmd.name(),name);
+            assert_eq!(line.cmd.is_v3(),v3);
+        }
+        let Cmd::Loc { here, .. }=parsed(fixtures[1].0).cmd else {panic!()};
+        assert!(here);
+        let Cmd::Event { x,roles,.. }=parsed(fixtures[9].0).cmd else {panic!()};
+        assert_eq!(x,Ev2::default());
+        assert!(roles.is_empty());
+        assert_eq!(parsed("cursor sent=3").anchors,vec![3]);
+        assert_eq!(parsed("cursor sent=3 ^s9 ^s9").anchors,vec![9,9]);
+    }
+
+    #[test]
+    fn cross_field_and_placement_validation_oracle() {
+        for (s,e) in [
+            ("obj O1 type=food at=L1 part=C1 ^s1","at= and part="),
+            ("obj O1 type=food part=O1 ^s1","part of itself"),
+            ("attach O1 to=O1 ^s1","attach O1 to=O1"),
+            ("set C1 ^s1","without an attribute"),
+            ("plan P1 kind=plan status=kept ^s1","either kind="),
+            ("believe B1 who=C1 ^s1","both who="),
+            ("feel C1 +happy -happy ^s1","twice"),
+            ("mention C1 C1 ^s1","twice"),
+            ("frame open F1 narrator=reader level=1 ^s1","reader does not narrate"),
+            ("frame open F1 narrator=C1 level=1 world=new time=past ^s1","own time axis"),
+            ("frame close F1 level=1 ^s1","no keys"),
+            ("time E1 BEFORE E1 ^s1","with itself"),
+            ("time E1 BEFORE E2 at=morning ^s1","either a relation"),
+            ("know who=narrator fact=E1 from=^s1 ^s1","narrator knows"),
+            ("know who=reader fact=E1 from=^s0 ^s1","expected ^sN"),
+            ("reveal E1 wrong=K1 right=K1 ^s1","both wrong and right"),
+            ("reveal E1 cause=E1 ^s1","reference to itself"),
+            ("reveal E1 ^s1","what was revealed"),
+        ] {rejected(s,e);}
+        for a in ["before","after","during","same"] {
+            let Cmd::Event { x,.. }=parsed(&format!("event E1 verb=run {a}=E2 ^s1")).cmd else {panic!()};
+            assert_eq!(x.placement().unwrap().1,Id::new(Reg::E,2));
+            for b in ["before","after","during","same"] {
+                if a!=b {
+                    rejected(&format!("event E1 verb=run {a}=E2 {b}=E3 ^s1"),"only one placement");
+                    rejected(&format!("reveal E1 {a}=E2 {b}=E3 ^s1"),"only one placement");
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn value_limits_and_line_partition_oracle() {
+        for v in ["0","1","100000","999999","some","pair"] { assert!(num("num",v).is_ok(),"{v}"); }
+        for v in ["","00","01","1000000","-1","1.5"] { assert!(num("num",v).is_err(),"{v}"); }
+        let words25=vec!["word";25].join(" ");
+        let words26=vec!["word";26].join(" ");
+        assert_eq!(text("goal",&words25).unwrap(),words25);
+        assert!(text("goal",&words26).is_err());
+        assert!(text("goal"," \t ").is_err());
+        assert!(value("feeling","happy,happy",Dom::TagSet(&FEELING)).is_err());
+        assert_eq!(value("trait","wise, kind",Dom::Words).unwrap(),V::Words(vec!["wise".into(),"kind".into()]));
+        let input="\n cursor sent=0\nmove C1 to=L1\n\t\nmention C1 ^s0 ^s65535\nmention C1 ^s65536\n";
+        let (lines,errors)=parse_all(input);
+        assert_eq!(lines.iter().map(|l|l.no).collect::<Vec<_>>(),vec![2,5]);
+        assert_eq!(errors.iter().map(|l|l.no).collect::<Vec<_>>(),vec![3,6]);
+        assert_eq!(lines[0].anchors,vec![0]);
+        assert_eq!(lines[1].anchors,vec![0,65535]);
+        assert_eq!(errors[0].msg,"no ^sN anchor");
+        assert!(errors[1].msg.starts_with("anchor "));
+    }
+}

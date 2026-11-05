@@ -1,0 +1,24 @@
+{
+  "id": "agent-runner-library",
+  "source": "tools/agent-runner/src/lib.rs",
+  "children": [],
+  "description": "Role-neutral immutable native queue execution with process lease, reservations, pinned recall, lossless collection and no uncertain replay.",
+  "state": "Queue/config hashes, stable file lease, per-job reservations/terminal receipts and artifact bindings; no role-specific model or shell.",
+  "cost": "Input/output hashing plus bounded native calls; at most4 new jobs per pass; no measured speedup.",
+  "forward": [
+    "Pinned queue/config admission precedes bounded typed native job execution.",
+    "Read-only policy refuses trace before initialization; per-job errors preserve unrelated work."
+  ],
+  "inverse": [
+    "See adjacent behavior-complement and reverse-reconstruction sections; unique histories are not asserted."
+  ],
+  "checks": [
+    "Eleven focused native temporary-fixture tests in debug/release.",
+    "Twice native output equality, unresolved restart, lease/STOP, disabled trace, changed inputs, FIFO/symlink and per-job failure controls."
+  ],
+  "limitations": [
+    "Partial source-derived models and bounded native fixture evidence, not formal or whole-system verification.",
+    "Trusted local filesystem/cooperating lease users; no universal exactly-once, real-world truth or learned general planner claim.",
+    "No operational trace/training pilot, teacher/API, GPU, full corpus or held-out assessment in this cycle."
+  ]
+}

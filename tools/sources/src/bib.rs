@@ -47,11 +47,20 @@ impl Entry {
     /// Anthology id from the `url` field (`https://aclanthology.org/2020.lrec-1.497/` → `2020.lrec-1.497`);
     /// empty if the URL is not from aclanthology.org.
     pub fn anthology_id(&self) -> &str {
-        let url = self.get("url").trim_end_matches('/');
-        if !url.contains("aclanthology.org") {
+        let Some((scheme, rest)) = self.get("url").split_once("://") else {
+            return "";
+        };
+        if !scheme.eq_ignore_ascii_case("http") && !scheme.eq_ignore_ascii_case("https") {
             return "";
         }
-        url.rsplit('/').next().unwrap_or("")
+        let Some((authority, path)) = rest.split_once('/') else {
+            return "";
+        };
+        if !authority.eq_ignore_ascii_case("aclanthology.org") {
+            return "";
+        }
+        let path = path.split(['?', '#']).next().unwrap_or("").trim_end_matches('/');
+        path.rsplit('/').next().unwrap_or("")
     }
 
     /// First author's surname, as in BibTeX before the comma (`Nivre, Joakim and …` → `Nivre`).
@@ -563,7 +572,7 @@ pub fn run(bib: &Path, rules_path: &Path, out: &Path) -> Result<()> {
                 if !abs.is_empty() {
                     let _ = writeln!(md, "  {abs}");
                 }
-                if url.is_empty() || !url.contains("aclanthology.org") {
+                if e.anthology_id().is_empty() {
                     no_url += 1;
                     continue;
                 }
@@ -579,4 +588,89 @@ pub fn run(bib: &Path, rules_path: &Path, out: &Path) -> Result<()> {
     }
     println!("bibliography entries: {}", entries.len());
     Ok(())
+}
+#[cfg(test)]
+mod wave33_tests {
+    use super::*;
+    #[test]
+    fn ids_missing_preserves_output_and_license_boundary() {
+        let root = std::env::temp_dir().join(format!("mova-wave33-bib-{}", std::process::id()));
+        fs::create_dir_all(&root).unwrap();
+        let bib = root.join("input.bib");
+        let ids = root.join("ids");
+        let out = root.join("topic.jsonl");
+        fs::write(
+            &bib,
+            "@misc{k,title={A},year={2015},url={https://aclanthology.org/id/}}",
+        )
+        .unwrap();
+        fs::write(&ids, "missing\n").unwrap();
+        fs::write(&out, "sentinel").unwrap();
+        assert!(run_ids(&bib, &ids, &out).is_err());
+        assert_eq!(fs::read_to_string(&out).unwrap(), "sentinel");
+        fs::write(&ids, "id\n").unwrap();
+        run_ids(&bib, &ids, &out).unwrap();
+        let v: Value = serde_json::from_str(fs::read_to_string(&out).unwrap().trim()).unwrap();
+        assert_eq!(v["status"], "open-nc");
+        let e = parse("@misc{k,year={2016}}");
+        assert_eq!(row(&e[0], "s", "t", 1)["status"], "open");
+        fs::remove_dir_all(root).unwrap();
+    }
+}
+
+#[cfg(test)]
+mod wave33_host_tests {
+    use super::*;
+    #[test]
+    fn anthology_id_requires_exact_http_host() {
+        for (url, want) in [
+            ("https://aclanthology.org/2020.test-1.1/", "2020.test-1.1"),
+            ("https://notaclanthology.org/2020.fake/", ""),
+            ("http://ACLAntHOLOGY.org/2020.test-1.1", "2020.test-1.1"),
+            ("https://example.org/aclanthology.org/2020.fake/", ""),
+            ("https://aclanthology.org.example.org/2020.fake/", ""),
+            ("https://aclanthology.org@evil.example/2020.fake/", ""),
+            ("https://aclanthology.org/", ""),
+            ("https://aclanthology.org/id/?x=1#part", "id"),
+            ("", ""),
+        ] {
+            let e = Entry {
+                kind: "misc".into(),
+                key: "k".into(),
+                fields: BTreeMap::from([("url".into(), url.into())]),
+            };
+            assert_eq!(e.anthology_id(), want, "{url}");
+        }
+    }
+}
+
+#[cfg(test)]
+mod wave33_topic_tests {
+    use super::*;
+
+    #[test]
+    fn foreign_matching_entry_stays_in_abstracts_not_manifest() {
+        let root = std::env::temp_dir().join(format!("mova-wave33-topic-{}", std::process::id()));
+        fs::create_dir_all(&root).unwrap();
+        let bib = root.join("input.bib");
+        let rules = root.join("rules.tsv");
+        let out = root.join("out");
+        fs::write(&bib, concat!(
+            "@misc{good,title={Matching official},year={2020},url={https://aclanthology.org/good/},abstract={Official abstract}}\n",
+            "@misc{bad,title={Matching foreign},year={2020},url={https://notaclanthology.org/bad/},abstract={Foreign abstract}}\n"
+        )).unwrap();
+        fs::write(&rules, "topic\ttopic\ttitle\tmatching\n").unwrap();
+        run(&bib, &rules, &out).unwrap();
+        let rows: Vec<Value> = fs::read_to_string(out.join("topic.jsonl"))
+            .unwrap()
+            .lines()
+            .map(|line| serde_json::from_str(line).unwrap())
+            .collect();
+        assert_eq!(rows.len(), 1, "foreign host must not enter ACL manifest");
+        assert_eq!(rows[0]["anthology_id"], "good");
+        let abstracts = fs::read_to_string(out.join("topic-abstracts.md")).unwrap();
+        assert!(abstracts.contains("Official abstract"));
+        assert!(abstracts.contains("Foreign abstract"));
+        fs::remove_dir_all(root).unwrap();
+    }
 }

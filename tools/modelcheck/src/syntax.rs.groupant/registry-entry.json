@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "mova-modelcheck syntax tests",
+    "actual CLI projection repeatability and source-bound artifact negative controls"
+  ],
+  "children": [],
+  "cost": "Git discovery/sorting plus log P membership comparisons, parsing/Unicode boundary table/selected traversal and artifact validation; recursion/allocation and repeated reads remain explicit.",
+  "description": "Parse Git-visible Rust source into a deterministic source-bound partial AST projection. Wave34 deepens five scoped validation models and exact-byte decode memo composition; evidence remains finite.",
+  "forward": [
+    "Parse one Rust file into selected typed syntax nodes with preorder parents and UTF-8 byte ranges.",
+    "A source-bound artifact records explicit limits and supports opt-in identity/range validation."
+  ],
+  "id": "modelcheck-syntax",
+  "inverse": [
+    "Invalid syntax, nonowned or escaping sources cannot produce an admitted projection.",
+    "Rebinding a manifest source hash cannot make an old AST artifact current."
+  ],
+  "limitations": [
+    "No macro expansion, name resolution, inferred types, cfg evaluation or external module loading.",
+    "Partial syntax projection is not lossless syntax or a mathematical model; structural validation is not semantic proof."
+  ],
+  "source": "tools/modelcheck/src/syntax.rs",
+  "state": "(confined source path/bytes/hash, syn syntax, preorder typed nodes and byte ranges)"
+}

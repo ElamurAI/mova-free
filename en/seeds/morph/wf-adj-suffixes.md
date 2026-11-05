@@ -25,3 +25,25 @@ require: w[upos=ADJ|PROPN|X]
 severity: warn
 source: Jespersen MEG VI 19.7; Sweet NEG I §1719–1755; Whitney §193
 ```
+
+```derive
+# Derivation data for `en::derive`. One suffix per line:
+# suffix <affix> <classes of the stem> <tags of the result> [after=<endings of the stem>] | <gloss>
+# The stem is a base form (NN, VB, JJ, RB), at least four letters (five when only AGID, not UD, knows it); `after=`
+# lists the endings it must have, `block=` rival suffixes (readable blocks *readible*).
+# The stem may have lost a final -e (use → usable), turned -y into -i (beauty → beautiful), doubled its last consonant
+# (forget → forgettable), end in -able/-ible written -abil/-ibil before -ity, or lost a final -y before -ic, -ist, -ism,
+# -ize, -ify (morphology → morphologic-al, economy → economist); `en::derive` tries these spellings.
+suffix able   V,N  JJ    | that one can <stem>
+suffix ible   V    JJ    block=able | that one can <stem>
+suffix ful    N,V  JJ    | full of <stem>
+suffix less   N,V  JJ    | without <stem>
+suffix al     N    JJ    after=ion,ment,ure,ary,ory,ic,or,our,ent | relating to <stem>
+suffix ic     N    JJ    | relating to <stem>
+suffix ical   N    JJ    | relating to <stem>
+suffix ive    V    JJ    | tending to <stem>
+suffix ative  V    JJ    | tending to <stem>
+suffix ous    N    JJ    | having <stem>
+suffix like   N    JJ    | like a <stem>
+suffix wise   N    RB,JJ | by <stem>, in terms of <stem>
+```

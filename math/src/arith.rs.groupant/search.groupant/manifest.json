@@ -1,0 +1,88 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "beam_boundary",
+        "path": "model.md",
+        "section": "beam_boundary",
+        "status": "partial_source_derived_model",
+        "type": "beam_boundary"
+      },
+      {
+        "id": "tie_policy",
+        "path": "model.md",
+        "section": "tie_policy",
+        "status": "partial_source_derived_model",
+        "type": "tie_policy"
+      },
+      {
+        "id": "quantity_coordinates",
+        "path": "model.md",
+        "section": "quantity_coordinates",
+        "status": "partial_source_derived_model",
+        "type": "quantity_coordinates"
+      },
+      {
+        "id": "learning_state",
+        "path": "model.md",
+        "section": "learning_state",
+        "status": "partial_source_derived_model",
+        "type": "learning_state"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 22775,
+      "start": 13770
+    },
+    "description": "quantities -> prepare -> subset search -> predict/gold -> Tree::exact. Float pruning and rounded keys can lose exact solutions; replay certifies selected arithmetic, not completeness. Relevance added after search changes cross-mask choice.",
+    "source_bytes_sha256": "8ab646e6764bf9431d9415d97fb31dc9df394dbf3c436373f866c6c369b9b1fe"
+  },
+  "id": "math-arith-search",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../arith.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "5d4c9c6eef03f4cf38d3e5d93665dab4aabb6f9a03063cb6691eff4958493437"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,29 @@
+{
+  "id": "algorithm-zero-one-bfs",
+  "source": "algorithms/src/zero_one_bfs/mod.rs",
+  "children": [],
+  "description": "zero_one_bfs exact std-only implementation",
+  "state": "Finite materialized directed adjacency lists of (usize,u8), a usize source, and Result<Vec<Option<usize>>,Error> observations. Allocation succeeds; immutable inputs. Binary valid graphs allow loops, parallel edges and cycles.",
+  "cost": "Validation O(V+E), search O(V+E) time; O(V+E) auxiliary space conservatively counts stale snapshots, each charged to a strict edge relaxation. Symbolic bounds; no measured runtime improvement claimed.",
+  "forward": [
+    "F(G,s) checks s<n first; then scans rows and edges in stored order, checking endpoint before weight on each edge. Return the first InvalidSource/InvalidEdge/InvalidWeight. On valid graphs return D[v]=min of binary weight sums over s-to-v paths, None if no path. Empty path gives D[s]=0. Deque entries carry distance snapshots; stale entries are skipped; strict improvements push front for zero, back for one. Checked addition retains a defensive DistanceOverflow branch."
+  ],
+  "inverse": [
+    "In universe U of declared input/output pairs, the complement U\\\\graph(F) contains accepted invalid rows, wrong first errors, finite labels for unreachable vertices, nonminimal reachable labels, nonzero source labels, and length-mismatched vectors. This defines semantic nonbehavior, not merely the negative test list.",
+    "For an Ok vector d of length n, compatible inputs are all valid binary G and s<n whose reachability equals the Some support and whose shortest-path lengths equal d. A sufficient and necessary certificate is d[s]=0, no edge from finite to None, d[v]<=d[u]+w on every finite-source edge, and for each finite v a witnessed s-to-v path of sum d[v]. Tight edges alone are insufficient because disconnected zero cycles could receive fake finite labels. Invalid-error preimages are inputs whose first failing check has exactly the reported payload. Recovery is generally many-to-one.",
+    "For any vertex permutation p of [0,n), replacing every endpoint u by p(u), moving rows likewise, and source by p(s) gives D'[p(v)]=D[v] on valid graphs. Stored edge order can alter validation error priority for invalid inputs, so the relation is restricted to valid graphs.",
+    "Adding an edge (u,v,w) with finite D[u], finite D[v] and D[v]<=D[u]+w preserves all shortest distances: substitute the old distance inequality through any new-edge path. A duplicate edge always preserves distances. An edge from an unreachable vertex also preserves distances unless some other edit makes that vertex reachable.",
+    "Every finite-source edge satisfies finite D[v] and D[v]<=D[u]+w; every finite target has a realizing path. Combined with d[s]=0 these witness both upper and lower bounds by telescoping along arbitrary paths.",
+    "If every weight is one, output equals directed BFS hop distance. If every weight is zero, every reachable vertex has zero distance and others None. Isolated source has only its zero label; self loops cannot improve a nonnegative shortest path.",
+    "Source errors dominate all edge faults. For a valid source the earliest row-position edge fault wins, with endpoint checked before weight within that edge. Unreachable invalid edges are still faults. DistanceOverflow is defensive and not expected on materialized graphs by the n-bound; tests do not claim branch coverage.",
+    "For a fixed graph topology and source, increasing any subset of weights from zero to one preserves reachability and cannot decrease any finite shortest distance. Compare only valid binary weights; topology changes are outside this relation."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline --lib (debug and release, twice each)",
+    "Strict all-target Clippy, rustfmt check, two identical syntax projections, compiled production mutant assertion rejection."
+  ],
+  "limitations": [
+    "Finite observations are not a universal proof; syntax projection is partial.",
+    "Defensive arithmetic overflow branch is not exercised; no executable approximate profile attached."
+  ]
+}

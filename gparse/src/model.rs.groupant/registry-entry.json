@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "model::tests::embeddings_get_gradients; model::fused::which_ops_backprop; activation_configuration_roundtrips; CUDA gradient/GELU/synthetic optimizer checks; CPU prediction",
+    "2026-11-04: model::subword::subword_input_learns_and_is_required (ngram config round trip, n-gram table gradient, missing n-grams rejected)."
+  ],
+  "children": [],
+  "cost": "Let B,T,d,L,H,f,a,r,N,X,U,K denote batch, padded length, encoder width, layers, heads, FF width, arc width, relation width, real rows and XPOS/UPOS/relation class counts. Forward encoder costs O(B*T*d + L*(B*T*d*d+B*T*T*d+B*T*d*f)); arc projection/scoring O(B*T*d*a+B*T*a*a+B*T*T*a); relation gather/projections/classifier O(N*d*r+N*r*r*K+N*r*K), tags O(N*d*(X+U)). Memory includes B*H*T*T attention cells, BTd encoder states and retained training graphs plus parameters/optimizer state. Embedding/final-LN BTd remains when L=0; two AFFIX*d tables remain parameter allocations. Dimension products and backend costs are not measured timing claims.",
+  "description": "Cfg loads defaults, valid numeric replacements and strict erf/tanh GELU; Net::new applies GP_GELU then initializes embedding/transformer/head parameters. forward_impl sums word/pre/suf/shape/position/prag embeddings; pre-LN blocks use softmax(QKᵀ/sqrt(dh)+keybias)V and residual feedforward. Arc scores dep_i W head_j+head_j u+keybias+role pull. rels gathers flat word/head states and sums bilinear and concatenated-linear logits; tags gather word states.",
+  "forward": [
+    "Cfg loads defaults, valid numeric replacements and strict erf/tanh GELU; Net::new applies GP_GELU then initializes embedding/transformer/head parameters. forward_impl sums word/pre/suf/shape/position/prag embeddings; pre-LN blocks use softmax(QKᵀ/sqrt(dh)+keybias)V and residual feedforward. Arc scores dep_i W head_j+head_j u+keybias+role pull. rels gathers flat word/head states and sums bilinear and concatenated-linear logits; tags gather word states."
+  ],
+  "id": "gparse-model",
+  "inverse": [
+    "Training never selects the upstream no-backward softmax via public forward; train=false ignores GP_TRAIN_FUSED_SOFTMAX. Unknown GP_GELU fails before parameter allocation. Invalid numeric cfg strings preserve previous values rather than report error.",
+    "Cfg::save identifies fields but input text is many-to-one due unknown keys, invalid numeric values and repeats. Network outputs admit parameter symmetries and many input feature collisions; invertible reconstruction is not claimed."
+  ],
+  "limitations": [
+    "Partial lexical syntax; no semantic proof",
+    "Finite synthetic checks only; external corpus/model experiments excluded",
+    "No executable Rust percent surrogate or throughput claim",
+    "Fault injection and exhaustive nonfinite/dimension cases absent"
+  ],
+  "source": "gparse/src/model.rs",
+  "state": "LayerNorm uses mean, variance and epsilon 1e-5 through differentiable ops. Training fused route calls custom differentiable softmax; fused inference uses upstream no-backward operation. heads>0, d divisible heads, valid batch dimensions and embedding indices are assumed, not cfg-validated. Padding uses finite -1e9 bias, not mathematical -infinity."
+}

@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "Five tests per algorithm, debug/release twice with normalized equality; compiled control and restored rerun; Clippy, formatting, syntax twice."
+  ],
+  "children": [],
+  "cost": "Finite fixture harness only; oracle loops are explicitly bounded by the source fixtures. Production cost: Fresh base sieve costs O(sqrt(high) loglog(high)+sqrt(high)), interval marking O(width loglog(high)+sqrt(high)), enumeration O(width). Storage O(sqrt(high)+width+output), all bounded by endpoint/width caps. Use loglog(max(high,3)) for small endpoints.",
+  "description": "segmented_sieve tests.rs exact std-only bounded implementation and checks",
+  "forward": [
+    "Execute five tests, requiring every assertion to hold. Trial division tries every integer divisor through n/d; it uses neither base sieving nor production primality. Bounded intervals, singleton endpoints and the known million-prime count supplement it."
+  ],
+  "id": "algorithm-segmented-sieve-tests",
+  "inverse": [
+    "Over terminating candidate implementations and pass/fail observations, exclude pass when any assertion fails and failure when all assertions hold. Nontermination and abort are outside this binary observation domain.",
+    "Pass reconstructs the set of implementations agreeing on every observed fixture; off-fixture behavior is unconstrained. Failure reconstructs implementations or incorrect oracle premises that cause a mismatch, not a unique defect.",
+    "Trial division tries every integer divisor through n/d; it uses neither base sieving nor production primality. Bounded intervals, singleton endpoints and the known million-prime count supplement it.",
+    "Change output threshold >=2 to >=3; boundaries_and_limits must fail for singleton prime two.",
+    "Single-thread runs twice each in debug and release must have identical ordered normalized test records. Build output and timing are excluded. Finite agreement is not universal equivalence."
+  ],
+  "limitations": [
+    "Finite observations are not a universal proof.",
+    "Partial syntax excludes macro expansion and semantic AST analysis.",
+    "Allocation abort is outside normal-return relations."
+  ],
+  "source": "algorithms/src/segmented_sieve/tests.rs",
+  "state": "Five tests: every low=0..79 and high=low..99; exact width cap and prime count 78498 below one million; prime squares through 997^2; trial division on the last 101 values below 10^12; six interval concatenations; empty and nonempty output fibers."
+}

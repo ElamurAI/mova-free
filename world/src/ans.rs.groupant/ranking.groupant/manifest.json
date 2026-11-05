@@ -1,0 +1,94 @@
+{
+  "children": [
+    {
+      "id": "world-ans-ranking-score-priority",
+      "path": "score-priority.groupant"
+    },
+    {
+      "id": "world-ans-ranking-eligibility",
+      "path": "eligibility.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "wave34-composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "wave34-invariant-correction",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-ans-ranking-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-ans-ranking-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-ans-ranking-ties",
+        "path": "model.md",
+        "section": "ties",
+        "status": "partial_source_model",
+        "type": "priority_relation"
+      },
+      {
+        "id": "world-ans-ranking-lexicon-boundary",
+        "path": "model.md",
+        "section": "lexicon-boundary",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 27283,
+      "start": 21292
+    },
+    "description": "Supplied lemma-class score sums first match per query token: verb 3, who 1.5, text 1. Eligibility is (!need_verb || vhit) && (content>=min || (!who.empty && total>=4)). Role adds 3 for requested role, 1 other role, -2 absent, zero if who empty. Section adds 3/0.5/-1.5. Sort descending score then ascending sentence; relaxed retry follows strict emptiness only."
+  },
+  "id": "world-ans-ranking",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../ans.rs",
+    "sha256": "d8d94c891e347d2b640744b20c4662dc35064368e7d4d9253c4954b4297e1e09"
+  },
+  "status": "partial_source_bound_model"
+}

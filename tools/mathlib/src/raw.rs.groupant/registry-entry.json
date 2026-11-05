@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "raw::tests::licenses_sizes_dates",
+    "raw::tests::parses_record"
+  ],
+  "children": [],
+  "cost": "XML decode O(B) per page; storage O(unique record payload plus page bytes). Hash merge expected O(records), sorted ids O(U log U). Size sums require nonoverflowing u64; output O(serialized bytes).",
+  "description": "parse_page folds XML events into Rec fields and versions; run reads sorted page files per supplied dir, discards deleted/id-empty records, merges by id taking strictly newer lexical datestamp, then writes sorted-id TSV with normalized category/license/date/size fields.",
+  "forward": [
+    "parse_page folds XML events into Rec fields and versions; run reads sorted page files per supplied dir, discards deleted/id-empty records, merges by id taking strictly newer lexical datestamp, then writes sorted-id TSV with normalized category/license/date/size fields."
+  ],
+  "id": "mathlib-raw",
+  "inverse": [
+    "Unknown license host cannot become Open through URL suffix resemblance. Deleted or empty-id records never enter best. A later deletion does not remove an existing id; no tombstone semantics is claimed.",
+    "TSV row antecedents include XML namespace/whitespace variants and older duplicate records hidden by latest merge. One output id does not recover version chronology beyond recorded encounter order, discarded fields or harvest page layout."
+  ],
+  "limitations": [
+    "No network/DNS/download, real catalog/corpus/model/teacher or database execution. Effect paths are source-derived; finite helper tests are not universal verification. No executable percentage surrogate or speed claim; future caps require metric/domain/reference and remain 1/2/5/10%."
+  ],
+  "source": "tools/mathlib/src/raw.rs",
+  "state": "Equal datestamps retain earlier record while adding distinct harvest tags. Deleted records are discarded rather than deleting earlier stored versions. Version order is encounter order, not version-number sort. Whitespace-cleared textual fields have no embedded tabs."
+}

@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "mixed::link::wave32_tests::greedy_links_and_inverse"
+  ],
+  "children": [],
+  "cost": "Pair enumeration O(H*E) with entity scans and gloss/map logarithmic lookup; normalization/string costs explicit; output memory O(accepted links+examples capped at1000).",
+  "description": "Lex normalizes Hebrew letters and English collapsed whitespace. link processes verse candidates then names, accepting first eligible pair only if Hebrew key and English value unused; None returns empty. rename touches entity IDs and coordinated IDs in roles/obliques; inverse reverses the map.",
+  "forward": [
+    "Lex normalizes Hebrew letters and English collapsed whitespace. link processes verse candidates then names, accepting first eligible pair only if Hebrew key and English value unused; None returns empty. rename touches entity IDs and coordinated IDs in roles/obliques; inverse reverses the map."
+  ],
+  "id": "rt-mixed-link",
+  "inverse": [
+    "Excluded: None produces links; accepted link relation duplicates an English value. Names need not share verses and unverified links do not establish correctness.",
+    "Returned map admits many gloss dictionaries, verses and duplicate candidate histories. Injective map inverse recovers mapped IDs under no-collision premise, not lost dictionary text."
+  ],
+  "limitations": [
+    "Finite synthetic helper evidence only; live corpora, parser/model loading, full orchestration and filesystem failure races excluded.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/roundtrip/src/mixed/link.rs",
+  "state": "Stable piece/frame order; valid frames; finite counters without overflow. Arbitrary inverse maps may collide; roundtrip rename additionally requires original renamed IDs not to collide with untouched target-domain IDs."
+}

@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "roundtrip::wave31_fixture_representation_without_database"
+  ],
+  "children": [],
+  "cost": "O(GOLD+OVERLAY bytes) for executed parse/text checks; legacy path many small SQL processes, read/write temp files and digest scans.",
+  "description": "Lossless store integration fixture",
+  "forward": [
+    "GOLD embeds leading blank lines, multiword/empty rows, raw DEPS/MISC, quotes/backslash, Unicode and absent final LF. OVERLAY shares second sentence identity with changed annotation. Legacy test loads/exports/verifies, overlays, corrupts DB then disk, restores and tests missing-file hash fallback. Executed new check parses the two fixture strings and compares exact text and overlay identities."
+  ],
+  "id": "db-tests-roundtrip",
+  "inverse": [
+    "Executed fixture check excludes losing leading blanks/final-newline flag or changing parsed raw rows. It does not exclude DB transport corruption, since no DB was used.",
+    "Exact GOLD text determines parsed raw rows/comments/blank metadata under parser assumptions, but not DB IDs, provenance or keys. Overlay identity output admits many annotation alternatives, explicitly including unequal raw row vectors.",
+    "GOLD requires blank_before=2 and final_newline=false; equal sentence contents with normalized blank layout fail exact text assertion.",
+    "OVERLAY sent_id and text equal second GOLD sentence, while row annotation differs. Matching by annotation bytes would be incompatible with intended existing-sentence reuse.",
+    "Legacy modifies a token form then demands verify fail and restoring it return green; disk corruption independently fails. These are behavioral DB controls, not executed source mutants in this wave.",
+    "Legacy removed file still exports and verifies with NOTE when load-time SHA1 matches. Compatible state includes absent disk and intact stored raw representation; the source fixture check cannot establish that path."
+  ],
+  "limitations": [
+    "Finite helper/fixture evidence only; no DuckDB integration or SQL semantics",
+    "Partial syntax projection; no macro expansion or full semantic proof",
+    "No executable approximate profile or speedup claim"
+  ],
+  "source": "tools/db/tests/roundtrip.rs",
+  "state": "Pure Doc roundtrip binds raw representation only; SQL COPY, export ordering and rollback remain unverified without CLI. Overlay changes annotation while sent_id/text remain equal."
+}

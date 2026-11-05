@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p math --lib arith::",
+    "paired syntax and compiled controls; external receipts"
+  ],
+  "children": [],
+  "cost": "O(n²F) feature work, conservative O(3^n B² n²) search plus tree cloning and O(2^n B) retained candidates. Requires n<32 for masks; no enforced general resource cap.",
+  "description": "Quantity extraction, hashed features, subset beam and exact replay",
+  "forward": [
+    "prepare truncates extracted quantities then builds ordered pair/relevance features. search enumerates disjoint masks by population count and scores child trees plus crossing pairs. predict adds relevance; learn ticks before prediction and updates mismatches. Exact replay uses big Q and can reject rational zero division."
+  ],
+  "id": "math-arith",
+  "inverse": [
+    "For value y, antecedents are all texts, environments, weight states and retained trees whose exact replay equals y. Gold acceptance instead uses floating tolerance. Repeated values, skipped quantities and commutative operations prevent unique recovery."
+  ],
+  "limitations": [
+    "Partial lexical projection; no semantic proof",
+    "No useful executable percentage surrogate",
+    "Bounded synthetic fixtures; resource/malformed-state gaps in models"
+  ],
+  "source": "math/src/arith.rs",
+  "state": "prepare truncates extracted quantities then builds ordered pair/relevance features. search enumerates disjoint masks by population count and scores child trees plus crossing pairs. predict adds relevance; learn ticks before prediction and updates mismatches. Exact replay uses big Q and can reject rational zero division."
+}

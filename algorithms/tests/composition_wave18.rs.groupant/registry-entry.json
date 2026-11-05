@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "block_forest_join_path_counts",
+    "run_decode_join_byte_search_and_edit_alignment",
+    "segmented_primes_join_factorization_and_literal_divisibility",
+    "floor_sum_join_wavelet_threshold_counts",
+    "persistent_versions_join_wavelet_order_statistics"
+  ],
+  "children": [],
+  "cost": "Five bounded test families: graph traversal/set construction plus topological ordering; 36 byte-pair comparisons with lengths <=7 and <=64 alignment DP cells; sieve and factorization n=1..160 at budget 10000 plus literal divisibility; 2275 threshold tuples with O(64n+64*floor(60/m)) wavelet work and Euclidean floor_sum; five length-five versions with all 21 ranges each, sorted-slice oracles, O(64) wavelet queries and logarithmic tree operations. Allocations, retained versions, output vectors and oracle work are included. No measured speed claim or asymptotic correctness proof.",
+  "description": "5 bounded native joins and 7 typed source-bound views.",
+  "forward": [
+    "Wave18 adds ten public algorithm modules and five separate tagged integration relations: canonical multigraph blocks to bridges and source counts, decoded bytes to matching/alignment, sieve primes to checked bounded factor products, floor sums to threshold counts, and persistent versions to wavelet order statistics. Each join preserves original vertex/edge identity, byte offset, exact integer domain, half-open range and immutable version coordinates. Domains are the literal six-vertex/seven-edge graph, 36 byte pairs, n=1..160 factors, 2275 bounded progression tuples and five length-five versions. Composition costs are sums of the reached API/adapter/oracle costs, including allocation and output, not a speedup claim. Distinct harness tests do not form one end-to-end algorithm."
+  ],
+  "id": "algorithm-composition-wave18",
+  "inverse": [
+    "For the tagged finite input domains of the five tests, let R contain exactly the adapter outputs satisfying the stated literal or independent oracle relations. The complement (D x O) minus R includes dropped or duplicated edge IDs, treating loops as singleton bridges, incorrect incidence-to-DAG coordinates, lost parallel arc choices, shifted byte offsets, incorrect alignment reconstruction or score, composite sieve entries, wrong factor products, incorrect threshold inequalities, and reading the wrong immutable version or half-open range. Invalid large-resource domains, signed-to-unsigned casts of negative snapshots and unrestricted algorithm behavior are outside D. A red adapter control is evidence about this complement, not its definition.",
+    "Given observed passing outputs retain all compatible tagged antecedents: edge partitions and path counts leave many endpoint graphs possible; alignment columns recover the two supplied byte sequences by deleting gaps, while an optimal score alone does not recover sequences or a unique traceback. Canonical encoded runs decode to the original bytes, but arbitrary noncanonical run streams need not have unique encodings. Factors recover n by product within the supplied range, whereas aggregate floor sums do not recover progression parameters. Wavelet multisets and persistent range sums generally leave permutations and update histories ambiguous. The fixture fixes coordinates and version identities externally; a finite pass constrains only these tested antecedents."
+  ],
+  "limitations": [
+    "Bounded native evidence and repeated partial syntax are recorded; no general proof is inferred.",
+    "Finite checks do not establish general proof or unique antecedents.",
+    "No live parser, corpus, teacher, GPU, adoption or throughput experiment."
+  ],
+  "source": "algorithms/tests/composition_wave18.rs",
+  "state": "Each named fixture uses identical leaf coordinates and lawful domains. Edge IDs partition exactly once; loop exclusion is explicit. Byte offsets and traceback projections refer to original bytes. Arithmetic products/counts fit the stated finite domains. Threshold crossings require 0<=v<=48 and m>0. Persistent snapshot casts require nonnegative values, and all queries retain the exact version and half-open range. Independent literal oracles supplement cross-implementation equality."
+}

@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named tests in native-commands.json; paired source syntax"
+  ],
+  "children": [],
+  "cost": "of_word O(B) lowercase plus fixed-list comparisons. lit_bits O(B); perm_bits O(k), O(1) extra state. pos_bits requires n<usize::MAX; floating conversion/log rounding is retained. Dictionary and OnceLock state affect lemma_bits.",
+  "description": "of_word selects first true predicate: punctuation, lowercased NEG membership, numeric/QUANT, modal/auxiliary, function tag/relation, else Dropped. of_tag_change uses verb pair then same-properness noun pair then coarse equality. Literal bits sum 8 times UTF-8 widths except Hebrew scalars count one.",
+  "forward": [
+    "of_word selects first true predicate: punctuation, lowercased NEG membership, numeric/QUANT, modal/auxiliary, function tag/relation, else Dropped. of_tag_change uses verb pair then same-properness noun pair then coarse equality. Literal bits sum 8 times UTF-8 widths except Hebrew scalars count one."
+  ],
+  "id": "roundtrip-class",
+  "inverse": [
+    "For observed class c, compatible (tag,rel,lemma) are the predicate c intersected with failures of all earlier predicates. Countless lemmas share a class; costs also identify fibers, not unique strings.",
+    "On admitted inputs, punctuation cannot yield Neg even for lemma not; no output class is sampled randomly. Costs do not compress or persist text."
+  ],
+  "limitations": [
+    "No annotator/model loading, live corpus, full suite, teacher, GPU or persistent-learning evidence. No executable percentage surrogate: categorical codecs/effects need a useful metric before future caps 1/2/5/10%."
+  ],
+  "source": "tools/roundtrip/src/class.rs",
+  "state": "Layer representations, diagnostic residuals and fixed environment state; see scoped catalog."
+}

@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "prag-vnconv-xml-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "prag-vnconv-xml-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "prag-vnconv-xml-specialization",
+        "path": "model.md",
+        "section": "specialization",
+        "status": "partial_source_model",
+        "type": "encoding_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 6547,
+      "start": 1827
+    },
+    "description": "Scan UTF-8 text at ASCII tag/quote boundaries. Emit Open(name, ordered attributes,selfclosing), Close(trimmed name), Text(trimmed unescape(text)); skip comments, declarations and processing instructions. Attribute lookup returns the first matching key. Replace lt,gt,quot,apos,amp once in that order. cell collapses Unicode whitespace and replaces '|'; lemma_of lowercases, changes underscores to spaces, and splits a final recognized particle. Sum folds bytes with wrapping FNV-1a."
+  },
+  "id": "prag-vnconv-xml",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../vnconv.rs",
+    "sha256": "b5e9e5a2a3fc9359403585f2a0b1ffacc4ecb71a563d252d1ea334a76695ae52"
+  },
+  "status": "partial_source_bound_model"
+}

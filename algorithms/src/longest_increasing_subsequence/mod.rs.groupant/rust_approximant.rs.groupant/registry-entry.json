@@ -1,0 +1,11 @@
+{
+  "id": "algorithm-longest-increasing-subsequence-rust-approximant",
+  "source": "algorithms/src/longest_increasing_subsequence/mod.rs.groupant/rust_approximant.rs",
+  "description": "Certified greedy strict LIS witness with production exact fallback",
+  "state": "Input slice, budget, greedy witness, n upper bound and fallback state",
+  "forward": ["Scan a strict increasing witness; certify its length against n or reconstruct production indices."],
+  "inverse": ["Behavior complement precedes compatible-input reconstruction in adjacent model.md."],
+  "cost": "O(n) accepted scan and O(L) output storage; O(n log n) exact fallback plus scan overhead.",
+  "checks": ["Five tests twice; independent mask oracle; nonexact witnesses all budgets; compiled missing-gate mutant rejected."],
+  "limitations": ["No accepted tie equality, resource equivalence, semantic AST proof or composition-wide bound."]
+}

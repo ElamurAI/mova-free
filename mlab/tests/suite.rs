@@ -236,3 +236,40 @@ disp(class(R.code))
     let (out, _) = run_with_fault(code, None);
     assert_eq!(out, "1 1 1\n1 1 1\n1 1 1\n1\nstring\n", "{out}");
 }
+
+#[test]
+fn wave30_synthetic_suite_boundaries() {
+    use suite::Expect::{Exact, Prefix};
+    let sc = suite::parse(
+        "ignored\n### a | cat | title | ignored\nx=3; disp(x)\n \n---\n>* 3\n### b\ndisp(exist('x'))\n---\n> 0\n",
+    );
+    assert_eq!(sc.len(), 2);
+    assert_eq!(sc[0].code, "x=3; disp(x)\n");
+    assert_eq!(sc[0].title, "title");
+    assert_eq!(sc[1].category, "");
+    let calls = std::cell::Cell::new(0);
+    for vm in [false, true] {
+        let result = suite::run_fs(&sc, None, vm, &|| {
+            calls.set(calls.get() + 1);
+            Box::new(vfs::Vfs::new())
+        });
+        assert!(result.iter().all(|r| r.pass));
+    }
+    assert_eq!(calls.get(), 4);
+    assert!(suite::parse("preamble only").is_empty());
+    assert_eq!(suite::check(&[], ""), None);
+    assert_eq!(suite::check(&[Exact("".into())], "\n"), None);
+    assert_eq!(suite::check(&[Prefix("ab".into())], "abc\n"), None);
+    assert_eq!(
+        suite::check(&[Exact("a".into())], "a\n\n"),
+        Some((2, "<end>".into(), "".into()))
+    );
+    assert_eq!(
+        suite::check(&[Exact("a".into())], ""),
+        Some((1, "a".into(), "<end>".into()))
+    );
+    assert_eq!(
+        suite::check(&[Exact("a".into()), Exact("b".into())], "z\nx\n"),
+        Some((1, "a".into(), "z".into()))
+    );
+}

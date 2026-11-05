@@ -1,0 +1,97 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical projection only; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "self_loop",
+        "path": "model.md",
+        "section": "self_loop",
+        "status": "partial_source_derived_model",
+        "type": "self_loop"
+      },
+      {
+        "id": "index_rebuild",
+        "path": "model.md",
+        "section": "index_rebuild",
+        "status": "partial_source_derived_model",
+        "type": "index_rebuild"
+      },
+      {
+        "id": "audit_order",
+        "path": "model.md",
+        "section": "audit_order",
+        "status": "partial_source_derived_model",
+        "type": "audit_order"
+      },
+      {
+        "id": "gate_cost",
+        "path": "model.md",
+        "section": "gate_cost",
+        "status": "partial_source_derived_model",
+        "type": "gate_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 8449,
+      "start": 6353
+    },
+    "description": "Remove R={(s,o,p)∈E:comp(s)=comp(o)∧(size(comp)>1∨s=o)}; keep E\\R, sort audit records and rebuild CSR. Kahn returns None iff all n vertices eliminated via indegree-zero queue.",
+    "source_bytes_sha256": "164aa9cbaacdfcdffd3a5c9d58df7998479f87cafc09bbbda15fa43145ea58f9"
+  },
+  "id": "onto-wdgraph-cycle-removal",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../wdgraph.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "8c08bdded398bc138e66786f33caebe172acb83939607541a619d46676923e7e"
+  },
+  "status": "partial_source_bound_model"
+}

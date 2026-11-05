@@ -300,6 +300,10 @@ impl Tale<'_> {
     }
 }
 
+fn anchor_tree(trees: &[Tree], sent: u16) -> Option<&Tree> {
+    sent.checked_sub(1).and_then(|i| trees.get(i as usize))
+}
+
 /// Answer a question: state when confident, otherwise the baseline sentence.
 pub fn read(t: &Tale, q: &Qa) -> RAnswer {
     let (conf_min, cover_min) = (CONF, COVER);
@@ -322,7 +326,7 @@ pub fn read(t: &Tale, q: &Qa) -> RAnswer {
     let Some(c) = cand else {
         return sentence("sentence: state is silent (no fact for the question)".into(), None, 0.0, String::new());
     };
-    let tree = t.tr.get(c.sent as usize - 1).filter(|_| c.sent >= 1);
+    let tree = anchor_tree(t.tr, c.sent);
     let span = tree.and_then(|tr| span::extract(tr, c.want, &c.preds, &sub_preds, &fr, &qlem));
     let cov = tree.map(|tr| cover(&fr, tr)).unwrap_or(0.0);
     if c.conf < conf_min {
@@ -773,4 +777,76 @@ fn state_answer(t: &Tale, q: &Qa, fr: &QFrame) -> Option<Cand> {
 pub fn read_all(fw: &World, ix: &Index, own: &World, tr: &[Tree], qs: &[Qa]) -> Vec<RAnswer> {
     let t = Tale { fw, ix, own, tr };
     qs.iter().map(|q| read(&t, q)).collect()
+}
+
+#[cfg(test)]
+mod wave8_models {
+    use super::*;
+    use en::annotate::Word;
+    use en::gram::{Rel, UPos};
+    use en::gram::Tag;
+    fn frame(words: &[&str]) -> QFrame {
+        QFrame { q: String::new(), wh: qframe::Wh::What, kind: QKind::Generic,
+            focus: qframe::Focus::None, main: qframe::Clause { content: words.iter().map(|s| s.to_string()).collect(), ..Default::default() },
+            mark: None, sub: None, fut: false, passive: false, prep: None, about: vec![], target: vec![], whnp: vec![] }
+    }
+    fn tree(words: &[&str]) -> Tree {
+        Tree::of_words(words.iter().map(|s| Word { form: s.to_string(), lemma: s.to_string(), upos: UPos::NOUN,
+            tag: Tag::NN, feats: Default::default(), head: 0, rel: Rel::Root }).collect())
+    }
+    #[test]
+    fn confidence_partition_and_fibers() {
+        let mut fiber = Vec::new();
+        for score in [0.0, 5.0, 5.5, 6.0, 9.0] { for pred in [false,true] { for words in [0.0,1.0,2.0,3.0] {
+            let h = Scored { n: 0, score, pred, who: false, words, insec: false, why: String::new() };
+            let expected = if !pred && words < 2.0 && score > 5.5 { 5.5 } else { score };
+            let got = Tale::sconf(&h);
+            assert_eq!(got, expected);
+            assert_eq!(got >= CONF, score >= 6.0 && (pred || words >= 2.0));
+            if got == 5.5 { fiber.push((score,pred,words)); }
+        }}}
+        assert_eq!(fiber.len(), 12);
+    }
+    #[test]
+    fn coverage_occurrences_and_set_loss() {
+        let t = tree(&["apple"]);
+        for apples in 0..=5 { for pears in 0..=5 {
+            let mut words = vec!["apple"; apples]; words.extend(vec!["pear"; pears]);
+            let fr = frame(&words);
+            let expected = if apples + pears == 0 {0.0} else { apples as f64 / (apples+pears) as f64 };
+            assert_eq!(cover(&fr,&t),expected);
+            assert_eq!(qlemmas(&fr).contains("apple"), apples>0);
+        }}
+        assert_eq!(qlemmas(&frame(&["apple"])),qlemmas(&frame(&["apple","apple"])));
+        assert_eq!(cover(&frame(&["a","the"]),&t),0.0);
+        let mut fr = frame(&["apple"]); fr.main.subj=vec!["pear".into()];
+        fr.sub=Some(qframe::Clause { content: vec!["apple".into()], ..Default::default() });
+        assert_eq!(cover(&fr,&t),2.0/3.0);
+    }
+    #[test]
+    fn section_envelope_is_not_membership() {
+        let w=World::new(Text {doc:1,title:String::new(),sents:vec![(2,"a".into()),(9,"b".into()),(2,"c".into()),(4,"d".into())]});
+        for (secs,expected) in [(vec![2],(1,3)),(vec![4],(4,4)),(vec![9],(2,2)),(vec![8],(1,4)),(vec![],(1,4)),(vec![4,9],(2,4))] {
+            assert_eq!(sec_span(&w,&secs),expected);
+        }
+        assert_eq!(sec_span(&World::new(Text{doc:0,title:String::new(),sents:vec![]}),&[]),(1,0));
+    }
+    #[test]
+    fn anchor_zero_and_range_are_absent() {
+        let ts=vec![tree(&["apple"]),tree(&["pear"])];
+        assert!(anchor_tree(&ts,0).is_none());
+        assert_eq!(anchor_tree(&ts,1).unwrap().form(0),"apple");
+        assert_eq!(anchor_tree(&ts,2).unwrap().form(0),"pear");
+        assert!(anchor_tree(&ts,3).is_none());
+        assert!(anchor_tree(&ts,u16::MAX).is_none());
+    }
+    #[test]
+    fn lemma_skip_removes_forms_and_aliases() {
+        let words=vec!["apple".into(),"pear".into(),"apple".into(),"the".into(),"x".into()];
+        assert_eq!(lem_words(&words,&["apple".into()]),vec![lemmas("pear")]);
+        assert_eq!(lem_words(&words,&[]).len(),3);
+        assert_eq!(RSrc::Slot.name(),"state:field");
+        assert_eq!(RSrc::Span.name(),"state:span");
+        assert_eq!(RSrc::Sentence.name(),"sentence");
+    }
 }

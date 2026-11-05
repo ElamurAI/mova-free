@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "gutenberg-text-command-csv-dates-behavior_complement",
+        "path": "model.md",
+        "scope": "UTF-8 strings and dates fitting u32; malformed quotes accepted.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "gutenberg-text-command-csv-dates-reverse_reconstruction",
+        "path": "model.md",
+        "scope": "UTF-8 strings and dates fitting u32; malformed quotes accepted.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "gutenberg-text-command-csv-dates-quote_escape_transition",
+        "path": "model.md",
+        "scope": "UTF-8 strings and dates fitting u32; malformed quotes accepted.",
+        "section": "quote_escape_transition",
+        "status": "partial_source_derived_model",
+        "type": "quote_escape_transition"
+      },
+      {
+        "id": "gutenberg-text-command-csv-dates-empty_eof_partition",
+        "path": "model.md",
+        "scope": "UTF-8 strings and dates fitting u32; malformed quotes accepted.",
+        "section": "empty_eof_partition",
+        "status": "partial_source_derived_model",
+        "type": "empty_eof_partition"
+      },
+      {
+        "id": "gutenberg-text-command-csv-dates-last_hyphen_date",
+        "path": "model.md",
+        "scope": "UTF-8 strings and dates fitting u32; malformed quotes accepted.",
+        "section": "last_hyphen_date",
+        "status": "partial_source_derived_model",
+        "type": "last_hyphen_date"
+      },
+      {
+        "id": "gutenberg-text-command-csv-dates-bce_short_circuit",
+        "path": "model.md",
+        "scope": "UTF-8 strings and dates fitting u32; malformed quotes accepted.",
+        "section": "bce_short_circuit",
+        "status": "partial_source_derived_model",
+        "type": "bce_short_circuit"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 5228,
+      "start": 1937
+    },
+    "description": "Quoted char scanner handles doubled quote, comma/newline only outside quotes, ignores outside CR. EOF emits iff field or row nonempty. death_years splits semicolons; BCE->0; last hyphen numeric prefix>0, otherwise whole None."
+  },
+  "id": "gutenberg-text-command-csv-dates",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../main.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "cc6e3c082c5ad468c3a1894250cdc0c8e5dbb97e91fd56f1db678683de8d65b2"
+  },
+  "status": "partial_source_bound_model"
+}

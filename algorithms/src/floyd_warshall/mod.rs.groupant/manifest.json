@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-floyd-warshall",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "715eaefa9d4eec73ed9dcd2a2f2d1ced2ef7032f7f6a3670285557cf214049e0",
+    "raw_code_location": "outside_this_sidecar"
+  },
+  "status": "partial_descriptive_instance",
+  "components": {
+    "ast": {
+      "status": "partial",
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "partial source syntax; no macro expansion or semantic resolution"
+    },
+    "approximant": {
+      "status": "partial",
+      "path": "model.md#approximant"
+    },
+    "invariant": {
+      "status": "partial",
+      "path": "model.md#invariant"
+    },
+    "descriptant": {
+      "status": "present",
+      "path": "model.md#descriptant"
+    },
+    "tests": {
+      "status": "executed_bounded_checks",
+      "path": "model.md#tests"
+    },
+    "obernants": [
+      {
+        "id": "behavior-complement",
+        "type": "behavior_complement",
+        "required": true,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "scope": "finite directed adjacency lists with usize endpoints and nonnegative u64 weights on <=64-bit usize targets"
+      },
+      {
+        "id": "reverse-reconstruction",
+        "type": "reverse_reconstruction",
+        "required": true,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "scope": "finite directed adjacency lists with usize endpoints and nonnegative u64 weights on <=64-bit usize targets"
+      },
+      {
+        "id": "transpose",
+        "type": "distance_matrix_transpose",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "transpose",
+        "scope": "finite directed adjacency lists with usize endpoints and nonnegative u64 weights on <=64-bit usize targets"
+      },
+      {
+        "id": "scaling",
+        "type": "positive_weight_scaling",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "scaling",
+        "scope": "finite directed adjacency lists with usize endpoints and nonnegative u64 weights on <=64-bit usize targets"
+      },
+      {
+        "id": "edge-insertion",
+        "type": "min_plus_update",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "edge-insertion",
+        "scope": "finite directed adjacency lists with usize endpoints and nonnegative u64 weights on <=64-bit usize targets"
+      }
+    ]
+  }
+}

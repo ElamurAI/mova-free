@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Compilation in repeated cargo test -p coref tests:: -- --skip score::"
+  ],
+  "children": [],
+  "cost": "No runtime work from declarations; compilation/transitive codegen costs depend on reachable modules and build profile.",
+  "description": "Public Rust module surface joining documents, mention detection, resolution, CorefUD I/O and scoring.",
+  "forward": [
+    "Exports corefud,doc,eval,it,mention,score,sieve; includes tests only under cfg(test). Successful coref build resolves these declarations to actual sibling implementations."
+  ],
+  "id": "coref-lib",
+  "inverse": [
+    "Given this public module surface, compatible implementations include many sibling bodies with matching export names; compilation does not reconstruct semantic implementations. Cfg(test) inclusion only constrains availability in test builds."
+  ],
+  "limitations": [
+    "Compilation/representation evidence only, not a separate semantic test or compiled runtime mutant.",
+    "Partial lexical syntax; no executable percentage surrogate; no corpus or universal proof."
+  ],
+  "source": "coref/src/lib.rs",
+  "state": "Rust module declarations and cfg(test) inclusion; no independent runtime state."
+}

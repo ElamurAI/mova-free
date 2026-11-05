@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms subset_sum_fptas::tests",
+    "Repeated debug/release, compiled production mutant and restored hashes; see model.md#tests"
+  ],
+  "children": [],
+  "cost": "O(n L log L) time with sort_unstable, L=O(n log(max(2,target))/epsilon); O(L) live storage. Charged B=input length+sum 2*old-list-length bounds generated candidates and total sort cost O(B log B), not sort comparisons exactly. Fallible reservations, subtraction-based feasible addition, checked budget accumulation.",
+  "description": "Unsigned values,target and tiers1/2/5/10. Starting with{0}, form sorted feasible union L union(L+x), then retain zero and the next y only when100*n*y>(100*n+percent)*last. All arithmetic is checked integer arithmetic. Return greatest retained feasible sum.",
+  "forward": [
+    "Unsigned values,target and tiers1/2/5/10. Starting with{0}, form sorted feasible union L union(L+x), then retain zero and the next y only when100*n*y>(100*n+percent)*last. All arithmetic is checked integer arithmetic. Return greatest retained feasible sum."
+  ],
+  "id": "algorithm-subset-sum-fptas",
+  "inverse": [
+    "Returned sum0 admits no items, all zeros or every item above target. Sum100 can arise from[100],[40,60] or trimmed[100,101] at target101 and10%. Same reported sum does not imply equal optima or identical subsets. Metadata work further partitions but never generally identifies input."
+  ],
+  "limitations": [
+    "Partial syntax, not semantic proof",
+    "Finite oracles do not establish universal accuracy",
+    "No performance measurement or automatic substitution",
+    "Allocator failure not experimentally injected"
+  ],
+  "source": "algorithms/src/subset_sum_fptas/mod.rs",
+  "state": "Validated integer inputs and checked exact arithmetic states"
+}

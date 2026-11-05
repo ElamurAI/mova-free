@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "wave29::block_and_code_boundaries",
+    "wave29::isolated_seed_compile_and_duplicate_gate",
+    "wave29::build_child"
+  ],
+  "children": [],
+  "cost": "B input bytes,C concepts,L links,R auxiliary rows: O(B+C log C+LC+R log R), plus linear duplicate scans of selections/measures/relations; retained tables/generated text. Recursive directory walk has no symlink-cycle/resource cap.",
+  "description": "Independent build-time seed compiler: sorted markdown traversal, fenced blocks, declaration/link validation and Rust tables plus optional TSV compilation.",
+  "forward": [
+    "F(root,exclude,out) walks sorted *.md paths, excludes path substrings, extracts closed blocks, inserts declarations and verb-class concepts, validates canonical code uniqueness, link endpoints/pairs, *_cats and principle ids, then emits lexical concept indices. First encountered verb lemma wins. absurdity/idioms append tables; expressions writes before global.rs."
+  ],
+  "id": "global-build",
+  "inverse": [
+    "Generated tables admit seeds differing in whitespace/comments, ignored/excluded blocks, absent/unreadable optional files. Lexical indices do not reconstruct seed traversal; some provenance survives file fields. No preimage in kg Registry Id space is established."
+  ],
+  "limitations": [
+    "Nonempty optional-table paths and tale ordering remain source-derived; no generated-Rust compilation, symlink/resource faults.",
+    "build_child is a no-op during ordinary enumeration; parent fixture invokes actual main in isolated subprocess.",
+    "Partial lexical AST; no semantic proof or useful executable percentage surrogate."
+  ],
+  "source": "global/build.rs",
+  "state": "Declared link endpoints index lexical concept names. No atomic output transaction or general generated-Rust validity proof. This path has no kg dependency/adapter."
+}

@@ -1,0 +1,100 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "source-first",
+        "path": "model.md",
+        "required": false,
+        "section": "source-first",
+        "status": "partial_source_derived_model",
+        "type": "source_error_priority"
+      },
+      {
+        "id": "endpoints-first",
+        "path": "model.md",
+        "required": false,
+        "section": "endpoints-first",
+        "status": "partial_source_derived_model",
+        "type": "endpoint_error_priority"
+      },
+      {
+        "id": "global-domain",
+        "path": "model.md",
+        "required": false,
+        "section": "global-domain",
+        "status": "partial_source_derived_model",
+        "type": "whole_graph_validation"
+      },
+      {
+        "id": "tie-order",
+        "path": "model.md",
+        "required": false,
+        "section": "tie-order",
+        "status": "partial_source_derived_model",
+        "type": "deterministic_order"
+      }
+    ],
+    "tests": {
+      "path": "../model.md#evidence",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 1180,
+      "start": 970
+    },
+    "description": "Validate the source first, then delegate full endpoint and cycle checks to topological_sort. No DP state exists before this succeeds. Output is a full permutation with all arcs forward; a successful order cannot uniquely recover adjacency."
+  },
+  "id": "algorithm-dag-path-count-validation",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../mod.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "b373088f752be5d16a5de4fc5189b923fe7c65f240ac462598221fd38919856e"
+  },
+  "status": "partial_source_bound_model"
+}

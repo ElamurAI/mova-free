@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "id": "algorithm-a-star-tests",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "16cb696512e77d992bbd92f59830a6349c35625bb6e645cd98ff3a8dc4e648cf"
+  },
+  "children": [
+    
+  ],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "16cb696512e77d992bbd92f59830a6349c35625bb6e645cd98ff3a8dc4e648cf",
+        "domain": "Fixed finite Rust fixtures and the production algorithm, observed as per-test pass or assertion failure. The compiler, Rust test runner and successful allocations are trusted. Test acceptance is not unrestricted implementation equivalence.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "In the universe of fixture/reference/output triples, acceptance excludes any tested objective mismatch, invalid returned witness or mismatched explicit error payload. Behavior outside the named fixture set is not excluded. This acceptance relation is a finite predicate defined by assertions, not a claim that passing forbids all production bugs.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "failure_preimages",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "failure_preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "16cb696512e77d992bbd92f59830a6349c35625bb6e645cd98ff3a8dc4e648cf",
+        "domain": "Fixed finite Rust fixtures and the production algorithm, observed as per-test pass or assertion failure. The compiler, Rust test runner and successful allocations are trusted. Test acceptance is not unrestricted implementation equivalence.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "A failed equality assertion reconstructs the candidate implementation/reference/fixture triples producing unequal compared projections at that location. A pass reconstructs the equivalence class of implementations agreeing on all observed projections, which can include faulty implementations outside the tested domain. No unique source bug or causal diagnosis follows from the failure text.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "independent_oracle",
+        "type": "oracle_relation",
+        "path": "model.md",
+        "section": "independent_oracle",
+        "status": "partial_source_derived",
+        "subject_revision": "16cb696512e77d992bbd92f59830a6349c35625bb6e645cd98ff3a8dc4e648cf",
+        "domain": "Fixed finite Rust fixtures and the production algorithm, observed as per-test pass or assertion failure. The compiler, Rust test runner and successful allocations are trusted. Test acceptance is not unrestricted implementation equivalence.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "The simple-path DFS enumerates 729 three-vertex directed graphs, six non-loop arcs independently absent/zero/two. Nine endpoint pairs and two admitted heuristics give 13,122 calls, checking objective and path witness. Other fixtures cover rejection order, invalid disconnected components, two u64::MAX edges, stale snapshots, zero cycles, ties and loop fibers.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "production_mutant",
+        "type": "counterfactual_relation",
+        "path": "model.md",
+        "section": "production_mutant",
+        "status": "partial_source_derived",
+        "subject_revision": "16cb696512e77d992bbd92f59830a6349c35625bb6e645cd98ff3a8dc4e648cf",
+        "domain": "Fixed finite Rust fixtures and the production algorithm, observed as per-test pass or assertion failure. The compiler, Rust test runner and successful allocations are trusted. Test acceptance is not unrestricted implementation equivalence.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "Replace candidate cost increment u128::from(weight) by zero; the wide_costs_and_heuristic_addition assertion must fail after successful compilation.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "finite_extension",
+        "type": "coverage_relation",
+        "path": "model.md",
+        "section": "finite_extension",
+        "status": "partial_source_derived",
+        "subject_revision": "16cb696512e77d992bbd92f59830a6349c35625bb6e645cd98ff3a8dc4e648cf",
+        "domain": "Fixed finite Rust fixtures and the production algorithm, observed as per-test pass or assertion failure. The compiler, Rust test runner and successful allocations are trusted. Test acceptance is not unrestricted implementation equivalence.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "Extending the fixture set intersects the set of passing implementations with additional assertion constraints. An implementation can pass the current finite set and fail an extension. Repeating unchanged tests in debug and release constrains profile-dependent behavior but does not expand the graph/formula domain or prove total correctness.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  }
+}

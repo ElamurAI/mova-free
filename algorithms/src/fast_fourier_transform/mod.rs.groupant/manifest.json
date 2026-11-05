@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "id": "algorithm-fast-fourier-transform",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "9a778d5feaaa125dfa8466fa6542ed4e2880ed76c57440d2a7b36bfbc05cd87b"
+  },
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "9a778d5feaaa125dfa8466fa6542ed4e2880ed76c57440d2a7b36bfbc05cd87b",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "For validated input, output length differs from n or contains nonfinite components is excluded. The real DFT equation identifies an ideal target, but equality to it is not asserted for rounded f64 outputs; negative-phase and inverse normalization are required by the actual butterfly program.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "9a778d5feaaa125dfa8466fa6542ed4e2880ed76c57440d2a7b36bfbc05cd87b",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Ideal fixed-size DFT is invertible via inverse DFT. Rounded program fibers retain all finite bounded input bit patterns yielding the observed output; rounding may merge distinct inputs. Error InvalidValue admits any length-valid vector containing NaN, infinity or a component above1e100.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "roundoff_scope",
+        "type": "roundoff_scope",
+        "path": "model.md",
+        "section": "roundoff_scope",
+        "status": "partial_relational_specification",
+        "subject_revision": "9a778d5feaaa125dfa8466fa6542ed4e2880ed76c57440d2a7b36bfbc05cd87b",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Each input component<=1e100 and n<=65536 bounds intermediates far below f64 overflow. Tests measure absolute error only on small fixtures; zero or cancellation makes a relative percentage guarantee unjustified.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "permutation_schedule",
+        "type": "permutation_schedule",
+        "path": "model.md",
+        "section": "permutation_schedule",
+        "status": "partial_relational_specification",
+        "subject_revision": "9a778d5feaaa125dfa8466fa6542ed4e2880ed76c57440d2a7b36bfbc05cd87b",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Bit reversal is an involution; butterflies combine blocks of length2,4,...n. Every index is written once per stage, so n log2 n/2 butterflies execute.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "inverse_scaling",
+        "type": "inverse_scaling",
+        "path": "model.md",
+        "section": "inverse_scaling",
+        "status": "partial_relational_specification",
+        "subject_revision": "9a778d5feaaa125dfa8466fa6542ed4e2880ed76c57440d2a7b36bfbc05cd87b",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Forward uses negative phase; inverse uses positive phase then divides each coordinate by n. For n1 this is identity. Real identities do not certify f64 round-trip accuracy.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "validation_order",
+        "type": "validation_order",
+        "path": "model.md",
+        "section": "validation_order",
+        "status": "partial_relational_specification",
+        "subject_revision": "9a778d5feaaa125dfa8466fa6542ed4e2880ed76c57440d2a7b36bfbc05cd87b",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Length>65536 precedes non-power-two, which precedes finite/magnitude validation. Input is borrowed and unchanged; fresh output allocates O(n); allocator failure follows std policy.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  }
+}

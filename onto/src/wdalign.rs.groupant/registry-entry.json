@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "wdalign::t::rng_and_shuffle",
+    "wdalign::wave29_ontowiki::source_masks_and_p31_join"
+  ],
+  "children": [],
+  "cost": "O(C log C) candidate sorts plus cached OEWN BFS, folk walk per distinct Q and support cross-products. Shard scans retain graph/candidate/text state. u16 depth sums bounded by intended search depths; float share cast follows Rust saturation.",
+  "description": "Oewn indexes keys/ILI/noun lemmas, descendant count through depth64, generic_limit=(noun_count*share) as u32. gather ORs source masks. Wd unions Q graph start and first P31 steps, folk depth20, min depths, removes self. decide seeks proper OEWN depth10 supports below generic limit; then count>=min_src and per-synset lexicographic rank direct,gloss>=2,depth,wiki desc,Q asc.",
+  "forward": [
+    "Oewn indexes keys/ILI/noun lemmas, descendant count through depth64, generic_limit=(noun_count*share) as u32. gather ORs source masks. Wd unions Q graph start and first P31 steps, folk depth20, min depths, removes self. decide seeks proper OEWN depth10 supports below generic limit; then count>=min_src and per-synset lexicographic rank direct,gloss>=2,depth,wiki desc,Q asc.",
+    "A(s,q)={(sa,qa,ds,dq):sa proper OEWN ancestor ds<=10,desc(sa)<=limit,qa proper WD ancestor dq<=20,(sa,qa) candidate}. Pick first minimum ds+dq. If A empty Unsupported; else n(mask)<min_src Single; else per-s rank K=(no_direct,no_gloss,ds+dq,Reverse(wiki),q); first Accepted, rest Also."
+  ],
+  "id": "onto-wdalign",
+  "inverse": [
+    "Exclude Accepted/Also without support or sufficient source count. Exclude ILI+WN counting twice. Unsupported candidate may serve as support. HashSet-rendered report lists lack universal deterministic order.",
+    "Accepted(s,q) admits candidate pools with a valid ancestor pair and no better eligible Q for s. OR-masks lose duplicate/provenance history; ancestor depth does not recover path or CSR indices."
+  ],
+  "limitations": [
+    "All16 source masks join to wdwalk strings, P31 hierarchy join and seeded shuffle executed. Full gather/decide/run/gold/database/report paths unexecuted.",
+    "Executable approximant gap: no useful percentage metric established for these categorical/effectful observations. No surrogate or production substitution. Future caps 1/2/5/10% require a metric/domain and evidence; no numerical error bound follows here.",
+    "Partial lexical AST, no macro expansion/semantic proof; no live teacher/dump/corpus/database execution"
+  ],
+  "source": "onto/src/wdalign.rs",
+  "state": "n_sources=label+lex+(ili∨wn). Candidate anchor need not itself be accepted. Support equal-depth ties retain first traversal candidate. Direct sources bypass label eligibility. Unsupported=no support; Single=support but too few categories."
+}

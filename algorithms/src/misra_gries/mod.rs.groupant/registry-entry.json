@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "Repeated debug and release normalized outcomes",
+    "Independent finite references and compiled mutant control",
+    "Two identical syntax projections"
+  ],
+  "children": [],
+  "cost": "O(k) worst-case update, O(log k) query, O(k) memory; k=100/p",
+  "description": "Misra–Gries bounded heavy-hitter counters",
+  "forward": [
+    "See model.md forward and invariant"
+  ],
+  "id": "algorithm-misra-gries",
+  "inverse": [
+    "Distinct complement and reconstruction relations in model.md"
+  ],
+  "limitations": [
+    "Finite evidence not universal proof",
+    "Partial syntax not semantic AST",
+    "No standalone executable surrogate",
+    "No whole-pipeline composed error bound"
+  ],
+  "source": "algorithms/src/misra_gries/mod.rs",
+  "state": "BTreeMap<u64,u64>, accepted count N, cancellations D"
+}

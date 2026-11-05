@@ -4,7 +4,7 @@ The rule language is `docs/dialect.md`. Conventions beyond the specification are
 
 ## lines → mova
 
-### 1. Relative pronouns and *when* (`seeds/nominal-feats.md`, `seeds/old-structures.md`)
+### 1. Relative pronouns and *when* (`seeds.md#nominal-feats`, `seeds.md#old-structures`)
 
 Relatives first: the agreement of the relative-clause predicate depends on them.
 
@@ -29,7 +29,7 @@ source: EWT README v2.11 (#88)
 ```
 
 
-### 2. Agreement (`seeds/verb-feats.md`)
+### 2. Agreement (`seeds.md#verb-feats`)
 
 The same rules as in `../atis/convert.md`, with `from: lines`.
 
@@ -106,7 +106,7 @@ source: UD en pos/AUX (MD: VerbForm=Fin)
 ```
 
 
-### 3. Pronouns, numbers, negation (`seeds/nominal-feats.md`)
+### 3. Pronouns, numbers, negation (`seeds.md#nominal-feats`)
 
 
 ```convert
@@ -190,7 +190,7 @@ source: UD en pos/DET
 ```
 
 
-### 4. Structures (`seeds/old-structures.md`)
+### 4. Structures (`seeds.md#old-structures`)
 
 
 ```convert
@@ -244,9 +244,9 @@ Matches on LinES:
 - structures: `obl-agent` 152, `preconj` 33, `predet` 66, `predet-such` 19.
 
 **Not converted:**
-- **XPOS.** LinES tags are not PTB (`seeds/xpos-lines.md`). The rule language cannot read a condition on them: `xpos=` knows only PTB tags. In `mova` LinES stays without PTB XPOS, as now: the PTB tagger does not learn on it. A PTB tag from UPOS + FEATS would need a table of ≈ 25 rules (NOUN+Sing → NN, VERB+Past+Fin → VBD…). But for ADV, ADP, PART (RB/RP/IN/TO/WRB) it would be guessing, so it is better to retag with the `en` tagger than with rules.
+- **XPOS.** LinES tags are not PTB (`seeds.md#xpos-lines`). The rule language cannot read a condition on them: `xpos=` knows only PTB tags. In `mova` LinES stays without PTB XPOS, as now: the PTB tagger does not learn on it. A PTB tag from UPOS + FEATS would need a table of ≈ 25 rules (NOUN+Sing → NN, VERB+Past+Fin → VBD…). But for ADV, ADP, PART (RB/RP/IN/TO/WRB) it would be guessing, so it is better to retag with the `en` tagger than with rules.
 - **`VerbForm=Ger`**: cannot be distinguished from the form.
-- **Errors** from `seeds/errors.md`, except the systematic `her`/`its` (fixed by `poss-case`).
+- **Errors** from `seeds.md#errors`, except the systematic `her`/`its` (fixed by `poss-case`).
 
 ## mova → lines
 
@@ -258,7 +258,7 @@ from: mova
 to: lines
 match: v[feats.VerbForm=Fin, feats.Tense=Pres, suffix!=s, form!=am|'m]
 set: v[feats-=Number]; v[feats-=Person]
-source: seeds/verb-feats.md
+source: seeds.md#verb-feats
 ```
 
 ```convert
@@ -268,7 +268,7 @@ from: mova
 to: lines
 match: v[feats.VerbForm=Fin, feats.Tense=Past, lemma!=be]
 set: v[feats-=Number]; v[feats-=Person]
-source: seeds/verb-feats.md
+source: seeds.md#verb-feats
 ```
 
 ```convert
@@ -278,7 +278,7 @@ from: mova
 to: lines
 match: m[upos=AUX, lemma=will|would|can|could|may|might|shall|should|must]
 set: m[feats+=Mood=Ind]
-source: seeds/verb-feats.md
+source: seeds.md#verb-feats
 ```
 
 ```convert
@@ -288,7 +288,7 @@ from: mova
 to: lines
 match: v[feats.VerbForm=Ger]
 set: v[feats+=VerbForm=Part]; v[feats+=Tense=Pres]
-source: seeds/verb-feats.md
+source: seeds.md#verb-feats
 ```
 
 ```convert
@@ -298,7 +298,7 @@ from: mova
 to: lines
 match: p[form=you, upos=PRON]
 set: p[feats-=Case]
-source: seeds/nominal-feats.md
+source: seeds.md#nominal-feats
 ```
 
 ```convert
@@ -308,7 +308,7 @@ from: mova
 to: lines
 match: n[feats.NumForm]
 set: n[feats-=NumForm]
-source: seeds/nominal-feats.md
+source: seeds.md#nominal-feats
 ```
 
 ```convert
@@ -318,7 +318,7 @@ from: mova
 to: lines
 match: v[rel=advcl]; w[form=when, rel=advmod, head=v, before=v]
 set: w[upos=SCONJ]; w[rel=mark]
-source: seeds/old-structures.md (when SCONJ mark — 252)
+source: seeds.md#old-structures (when SCONJ mark — 252)
 ```
 
 ```convert
@@ -328,7 +328,7 @@ from: mova
 to: lines
 match: o[rel=obl:agent]
 set: o[rel=obl]
-source: seeds/old-structures.md
+source: seeds.md#old-structures
 ```
 
 ```convert
@@ -338,7 +338,7 @@ from: mova
 to: lines
 match: p[rel=cc:preconj]
 set: p[rel=cc]
-source: seeds/old-structures.md
+source: seeds.md#old-structures
 ```
 
 ```convert
@@ -348,7 +348,7 @@ from: mova
 to: lines
 match: p[rel=det:predet, form=all|both]
 set: p[rel=det]
-source: seeds/old-structures.md
+source: seeds.md#old-structures
 ```
 
 ```convert
@@ -358,7 +358,7 @@ from: mova
 to: lines
 match: p[rel=det:predet, form=such|half]
 set: p[rel=amod]; p[upos=ADJ]
-source: seeds/old-structures.md
+source: seeds.md#old-structures
 ```
 
 ```convert
@@ -368,7 +368,7 @@ from: mova
 to: lines
 match: t[rel=advcl:relcl]
 set: t[rel=advcl]
-source: seeds/old-structures.md
+source: seeds.md#old-structures
 ```
 
 
@@ -379,7 +379,7 @@ from: mova
 to: lines
 match: n[upos=NOUN|PROPN, feats.Number=Sing]
 set: n[xpos=SG-NOM]
-source: seeds/xpos-lines.md
+source: seeds.md#xpos-lines
 ```
 
 Needs string XPOS: `SG-NOM` is not a PTB tag. The whole "UPOS + FEATS → LinES tag" table is ≈ 40 lines: `PL-NOM`, `DEF`, `IND-SG`, `PAST`, `INF`, `ING`, `PRES`, `PASS`, `PERF`, `PAST-AUX`, `PRES-AUX`, `PERS-P3SG-NOM`… For function-word ADP, ADV, CCONJ, SCONJ, PART — `_`.

@@ -1,0 +1,131 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "rule-derivation",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../derive.rs",
+    "sha256": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842"
+  },
+  "components": {
+    "ast": {
+      "path": "syntax.json",
+      "status": "partial",
+      "format": "rust_syntax_projection"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule states; exact specialization in operator and descriptant",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "U is admitted finite calls plus fixed dependency/schedule states paired with returns/effects. Candidate inner U minus R contains successful plain derivation preferring a later finite verb over an earlier one, open-class class() retaining a lexical lemma, and scan_store invoking the annotator. Class exclusion tested; root/call-graph exclusions source-inspected.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous compatible antecedents, or specialized conditional source relation",
+        "assumptions": "Aligned nonempty sentence vectors and in-range heads are admission assumptions. Plain derive picks first finite VERB, else first VERB, else first NOUN/PROPN/ADJ, else index zero, and checks cycles. Empty derive/derive_easy inputs panic. The final plain cycle repair does not regenerate explanation steps. Helper evidence is not a proof of all file behavior.",
+        "evidence": "model.md#tests"
+      },
+      {
+        "id": "antecedents",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule states; exact specialization in operator and descriptant",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "For fixed entrypoint, y admits every source tree, list, initial dependency state and schedule x satisfying R(x,y). Equal heads or scores do not uniquely determine lemmas, gold labels, candidate counts or lists. Executed class/unpack collision witnesses demonstrate bounded information loss; full derivation fibers remain prospective.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous compatible antecedents, or specialized conditional source relation",
+        "assumptions": "Aligned nonempty sentence vectors and in-range heads are admission assumptions. Plain derive picks first finite VERB, else first VERB, else first NOUN/PROPN/ADJ, else index zero, and checks cycles. Empty derive/derive_easy inputs panic. The final plain cycle repair does not regenerate explanation steps. Helper evidence is not a proof of all file behavior.",
+        "evidence": "model.md#tests"
+      },
+      {
+        "id": "wiring",
+        "type": "relational_composition",
+        "path": "model.md",
+        "section": "wiring",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule states; exact specialization in operator and descriptant",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "Store path: exists ids,records,P,C,S,L,Tr such that select(v,q)=ids, ordered raw_tree(v,ids)=records, pack(records,lemmas,tags)=(P,C), unpack(P,C)=S, lists(induce(S[::20]),30,[])=L and replay(L,Tr,S)=observation. Records and lexical tables must share compatible identity. scan_store captures latest then lemma_table(dir) independently reopens latest: concurrent ref advance can mix snapshots. Require fixed refs/table or explicit compatible append-only identity. No end-to-end scan executed.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous compatible antecedents, or specialized conditional source relation",
+        "assumptions": "Aligned nonempty sentence vectors and in-range heads are admission assumptions. Plain derive picks first finite VERB, else first VERB, else first NOUN/PROPN/ADJ, else index zero, and checks cycles. Empty derive/derive_easy inputs panic. The final plain cycle repair does not regenerate explanation steps. Helper evidence is not a proof of all file behavior.",
+        "evidence": "model.md#tests"
+      },
+      {
+        "id": "entrypoints",
+        "type": "dependency_boundary",
+        "path": "model.md",
+        "section": "entrypoints",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule states; exact specialization in operator and descriptant",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "load reads CoNLL-U; from_books/gold_with_tags acquire annotator; scan parses books; scan_store reads raw trees. run_learn selects incremental unless DERIVE_FULL_RESCORE is present. Incremental HashSet traversal and candidate/tie search differ from full learn; equivalence is not established. Proposed oracle: tiny tagged trees through both learners with ties/cycles; not executed.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous compatible antecedents, or specialized conditional source relation",
+        "assumptions": "Aligned nonempty sentence vectors and in-range heads are admission assumptions. Plain derive picks first finite VERB, else first VERB, else first NOUN/PROPN/ADJ, else index zero, and checks cycles. Empty derive/derive_easy inputs panic. The final plain cycle repair does not regenerate explanation steps. Helper evidence is not a proof of all file behavior.",
+        "evidence": "model.md#tests"
+      },
+      {
+        "id": "agreement",
+        "type": "observation_projection",
+        "path": "model.md",
+        "section": "agreement",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule states; exact specialization in operator and descriptant",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "score/agree count labeled hits only for correct heads and divide by max(words,1); empty aggregate gives zero. scan reports parser-head agreement, not held-out gold accuracy. Its fix search skips correct heads, so relation-only errors are not candidate fixes. Equal numerators/denominators share score fibers. Proposed literal head/label oracle remains unexecuted.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous compatible antecedents, or specialized conditional source relation",
+        "assumptions": "Aligned nonempty sentence vectors and in-range heads are admission assumptions. Plain derive picks first finite VERB, else first VERB, else first NOUN/PROPN/ADJ, else index zero, and checks cycles. Empty derive/derive_easy inputs panic. The final plain cycle repair does not regenerate explanation steps. Helper evidence is not a proof of all file behavior.",
+        "evidence": "model.md#tests"
+      }
+    ]
+  },
+  "children": [
+    {
+      "id": "rule-derivation-rules",
+      "path": "rules.groupant"
+    },
+    {
+      "id": "rule-derivation-packing",
+      "path": "packing.groupant"
+    },
+    {
+      "id": "rule-derivation-scan",
+      "path": "scan.groupant"
+    }
+  ]
+}

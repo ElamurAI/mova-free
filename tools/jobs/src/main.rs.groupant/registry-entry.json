@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "wave33_tests::flag_first_occurrence_and_nonfinite exercises actual pure flag. Monitor, signals, CLI workload and logging remain source-derived; no real heavy job launched."
+  ],
+  "children": [],
+  "cost": "Each sample reads task-child/status/stat files across enumerated process tree, O(processes+proc bytes); one-second polling, five-second kill delay, unbounded workload cost. No universal resource guarantee.",
+  "description": "CLI log reads default-empty log; run splits options at first --, selects name/defaults, spawns command and samples process tree until exit or limit. RSS overflow takes precedence over elapsed time; reverse-tree TERM then 5s wait and KILL ends overrun. Append estimate/actual record then exit child code.",
+  "forward": [
+    "CLI log reads default-empty log; run splits options at first --, selects name/defaults, spawns command and samples process tree until exit or limit. RSS overflow takes precedence over elapsed time; reverse-tree TERM then 5s wait and KILL ends overrun. Append estimate/actual record then exit child code."
+  ],
+  "id": "jobs-main",
+  "inverse": [
+    "Log record admits many process trees between samples, rounded CPU/wall values and missed peaks; original command argument boundaries are lost in cmd.join(space). Cannot reconstruct exact workload or enforce peak from report.",
+    "Invalid first numeric flag does not fall through to later duplicate. RSS excess selects memory reason even if time also exceeds; already-exited child is handled before next sample."
+  ],
+  "limitations": [
+    "Partial syntax, bounded synthetic helper coverage; no live teacher, corpus, model, lesson or benchmark CLI. No numerical approximation budget claimed."
+  ],
+  "source": "tools/jobs/src/main.rs",
+  "state": "flag parses first occurrence only, admits nonfinite/negative f64. Empty command after -- indexes cmd[0] and can panic. /proc sampling is best effort, not complete accounting; assumed 100 ticks/second. Log parent directory is not created."
+}

@@ -1,4 +1,4 @@
-//! What a text implies beyond what it says, deterministic and explained (docs/pragmatics-algorithms.md).
+//! What a text implies beyond what it says, deterministic and explained (docs/pragmatics.md#algorithms-from-the-literature).
 //!
 //! - **Scalar implicatures** (the Quantity axiom of Tatu & Moldovan 2012; Horn scales): a weaker item of a scale
 //!   implicates that the stronger ones do not hold — "some of the guests left" → not all of them. Not under
@@ -106,7 +106,7 @@ pub fn presuppositions(words: &[Word], earlier: &[Vec<Word>]) -> Vec<Inference> 
     let mut out = Vec::new();
     for (i, w) in words.iter().enumerate() {
         let l = w.lemma.to_lowercase();
-        let head = if w.head > 0 { Some(&words[w.head - 1]) } else { None };
+        let head = w.head.checked_sub(1).filter(|&h| h != i).and_then(|h| words.get(h));
         let pred = head.map(|h| h.lemma.to_lowercase()).unwrap_or_default();
         let (content, key): (String, String) = match l.as_str() {
             "again" if !pred.is_empty() => (format!("«{pred}» happened before"), pred.clone()),
@@ -128,9 +128,9 @@ pub fn presuppositions(words: &[Word], earlier: &[Vec<Word>]) -> Vec<Inference> 
                         if x == j {
                             return true;
                         }
-                        match words[x].head {
-                            0 => return false,
-                            h => x = h - 1,
+                        match words.get(x).map(|w| w.head) {
+                            Some(h) if h > 0 && h <= words.len() => x = h - 1,
+                            _ => return false,
                         }
                     }
                     false
@@ -192,7 +192,7 @@ pub fn maxims(words: &[Word], sentence: &str) -> Vec<Inference> {
     // Manner: "e1 and e2" — e1 happened before e2
     let lemmas: Vec<String> = words.iter().map(|w| w.lemma.to_lowercase()).collect();
     for (i, w) in words.iter().enumerate() {
-        if w.rel != Rel::Conj || w.upos != en::gram::UPos::VERB || w.head == 0 {
+        if w.rel != Rel::Conj || w.upos != en::gram::UPos::VERB || w.head == 0 || w.head > words.len() || w.head == i + 1 {
             continue;
         }
         let h = w.head - 1;
@@ -316,5 +316,117 @@ mod tests {
         let mut or = opened_and_walked("walked", None);
         or[4] = w("or", "or", UPos::CCONJ, 6, Rel::Cc);
         assert!(maxims(&or, "").is_empty());
+    }
+}
+
+
+#[cfg(test)]
+mod wave13_models {
+    use super::*;
+    use en::gram::{Feats, Tag, UPos};
+
+    fn word(form: &str, lemma: &str, upos: UPos, head: usize, rel: Rel) -> Word {
+        Word { form: form.into(), lemma: lemma.into(), upos, tag: Tag::NN, feats: Feats::default(), head, rel }
+    }
+
+    #[test]
+    fn invalid_presupposition_heads_are_absent() {
+        for head in [0, 1, 2, usize::MAX] {
+            let words = vec![word("again", "again", UPos::ADV, head, Rel::Advmod)];
+            assert!(presuppositions(&words, &[]).is_empty(), "invalid/self predicate head {head}");
+        }
+    }
+
+    #[test]
+    fn clause_membership_ignores_invalid_ancestry_and_cycles() {
+        let words = vec![
+            word("knows", "know", UPos::VERB, 0, Rel::Root),
+            word("that", "that", UPos::SCONJ, 4, Rel::Mark),
+            word("she", "she", UPos::PRON, 4, Rel::Nsubj),
+            word("ran", "run", UPos::VERB, 1, Rel::Ccomp),
+            word("stray", "stray", UPos::NOUN, usize::MAX, Rel::Obj),
+            word("loop", "loop", UPos::NOUN, 7, Rel::Obj),
+            word("cycle", "cycle", UPos::NOUN, 6, Rel::Obj),
+        ];
+        let out = presuppositions(&words, &[]);
+        assert_eq!(out.len(), 1);
+        assert_eq!(out[0].content, "it is true that «she ran»");
+        assert!(!out[0].licensed);
+    }
+
+    #[test]
+    fn manner_rejects_invalid_and_reflexive_edges() {
+        for head in [0, 1, 3, usize::MAX] {
+            let words = vec![
+                word("ran", "run", UPos::VERB, head, Rel::Conj),
+                word("and", "and", UPos::CCONJ, 1, Rel::Cc),
+            ];
+            assert!(maxims(&words, "").is_empty(), "invalid/reflexive event head {head}");
+        }
+        let words = vec![
+            word("opened", "open", UPos::VERB, 0, Rel::Root),
+            word("and", "and", UPos::CCONJ, 3, Rel::Cc),
+            word("walked", "walk", UPos::VERB, 1, Rel::Conj),
+        ];
+        let out = maxims(&words, "");
+        assert_eq!(out.len(), 1);
+        assert_eq!(out[0].content, "«opened» happened before «walked»");
+    }
+
+    #[test]
+    fn history_cutoff_is_fifty_tokens_not_sentences() {
+        let words = vec![word("ran", "run", UPos::VERB, 0, Rel::Root), word("again", "again", UPos::ADV, 1, Rel::Advmod)];
+        for padding in [0, 49, 50, 51] {
+            let history = vec![
+                vec![word("RAN", "RUN", UPos::VERB, 0, Rel::Root)],
+                (0..padding).map(|_| word("x", "x", UPos::NOUN, 0, Rel::Root)).collect(),
+            ];
+            let out = presuppositions(&words, &history);
+            assert_eq!(out.len(), 1);
+            assert_eq!(out[0].licensed, padding < 50, "history boundary padding={padding}");
+            assert_eq!(out[0].content, "«run» happened before");
+        }
+    }
+
+    #[test]
+    fn scalar_literal_oracle_and_block_partition() {
+        for (lemma, expected) in [("some", Some("not «all» (nor «many», «most»)")), ("warm", Some("not «hot»")), ("all", None), ("hot", None)] {
+            let words = vec![word(lemma, lemma, UPos::ADJ, 0, Rel::Root)];
+            let out = implicatures(&words);
+            assert_eq!(out.len(), usize::from(expected.is_some()));
+            if let Some(text) = expected { assert_eq!(out[0].content, text); assert!(out[0].licensed); }
+        }
+        for blocker in ["all", "not", "if not all"] {
+            let words = vec![word("some", "some", UPos::DET, 0, Rel::Root), word(blocker, blocker, UPos::PART, 1, Rel::Advmod)];
+            assert!(implicatures(&words).is_empty(), "{blocker}");
+        }
+        // Separate supplied tokens exercise phrase cancellation without a stronger
+        // warm-scale item or dependency/adjacency negation on the trigger.
+        let cancellation = vec![
+            word("warm", "warm", UPos::ADJ, 0, Rel::Root),
+            word("if", "if", UPos::SCONJ, 4, Rel::Mark),
+            word("not", "not", UPos::PART, 4, Rel::Advmod),
+            word("all", "all", UPos::PRON, 0, Rel::Root),
+        ];
+        assert!(!negated(&cancellation, 0));
+        assert!(implicatures(&cancellation).is_empty());
+        let duplicate = vec![word("some", "some", UPos::DET, 0, Rel::Root); 2];
+        assert_eq!(implicatures(&duplicate).len(), 1);
+        let non_cc = vec![word("or", "or", UPos::NOUN, 0, Rel::Root)];
+        assert!(implicatures(&non_cc).is_empty());
+    }
+
+    #[test]
+    fn public_chain_preserves_family_and_punctuation_order() {
+        let words = vec![word("Some", "some", UPos::DET, 2, Rel::Det), word("ran", "run", UPos::VERB, 0, Rel::Root), word("again", "again", UPos::ADV, 2, Rel::Advmod)];
+        let snapshot = format!("{words:?}");
+        for tail in ["?!", "!?"] {
+            let out: Vec<_> = implicatures(&words).into_iter()
+                .chain(presuppositions(&words, &[])).chain(maxims(&words, tail)).collect();
+            assert_eq!(out.iter().map(|x| x.kind).collect::<Vec<_>>(), ["scalar implicature", "presupposition", "quality implicature", "quality implicature"]);
+            assert_eq!(out.iter().map(|x| x.trigger.as_str()).collect::<Vec<_>>(), ["Some", "again", "?", "!"]);
+            assert_eq!(out.iter().map(|x| x.licensed).collect::<Vec<_>>(), [true, false, true, true]);
+        }
+        assert_eq!(format!("{words:?}"), snapshot);
     }
 }

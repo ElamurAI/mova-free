@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline z_algorithm::tests::",
+    "Compiled source mutant rejected by exact boundary test",
+    "Current typed relations and corresponding focused Rust tests are listed in adjacent model.md and model.md#evidence."
+  ],
+  "children": [],
+  "cost": "Bounded exhaustive oracle work O(sum(n^2*3^n), n=0..8), O(n) temporary space; long fixture O(100000).",
+  "description": "z_algorithm independent bounded checks",
+  "forward": [
+    "Execute 9,841 ternary sequences of lengths 0 through 8 against an independent naive oracle, plus explicit empty/singleton/repetition/UTF-8 and 100,000-byte constant-input fixtures; succeed only when all assertions hold.",
+    "Three additional tests check bounded constructive preimages, derived observations and countermodels; six tests total."
+  ],
+  "id": "algorithm-z-algorithm-tests",
+  "inverse": [
+    "Within the universe of these test runs paired with pass/fail observations, pass is excluded if any specified assertion is false. Fail is excluded when every assertion completes true in the ordinary execution model. Untested inputs and compiler/runtime defects remain outside the observation.",
+    "A passing observation admits every candidate implementation agreeing with all checked fixture observations; it cannot identify the source or constrain all untested inputs. A failing observation admits executions with at least one violated assertion; the assertion trace narrows the compatible implementations."
+  ],
+  "limitations": [
+    "Partial syntax; finite tests do not prove all inputs; byte rather than Unicode character semantics."
+  ],
+  "source": "algorithms/src/z_algorithm/tests.rs",
+  "state": "Deterministic test executions over the explicitly enumerated finite byte fixtures."
+}

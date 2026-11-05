@@ -1,0 +1,34 @@
+{
+  "checks": [
+    "builtins::stats::wave30::cores_and_failure_order",
+    "Paired lexical syntax generation; bounded debug/release and compiled assertion controls in receipt"
+  ],
+  "children": [],
+  "cost": "Descriptive sorts O(n log n); pairwise covariance O(np²); t/ANOVA O(n); chi2 O(rc); OLS Householder O(np²+p³), memory O(np+p²). Discrete inverse linear in returned quantile, without fixed small cap.",
+  "description": "distributions: Registry installs scalar-broadcast distributions. bcast checks arity/types then identical nonscalar shape, defaults scalar parameters. phi=erfc(-z/sqrt2)/2 with infinities explicit. phi_inv uses statrs seed plus2 Newton steps. dinv linearly returns least k with CDF(k)>=p, p=1 returns kmax.\n\ndescriptive: quantile cleans NaNs, sorts then interpolates pos=np+.5 with endpoints clamped; mode delegates table agg. moments drops NaN, covariance does not. cov scalar0/1 second arg treated normalization when first numel>1. histogram final edge included in last bin.\n\nttests: test_opts checks Alpha before Tail; t_one removes NaNs, computes unbiased SD and SE, t=(mean-m0)/SE. t_two uses pooled or Welch variance. t_p guards NaN/nonpositive df then uses survival tail. Wrappers extract arguments first; ttest rejects incompatible paired lengths before options. Both wrappers parse options before checking the minimum cleaned sample count; verdict uses strict p<alpha.\n\ncontingency: chi2_ind takes rectangular nonempty counts, computes marginals and rejects <=0 totals; Eij=ri*cj/N, statistic sum(O-E)^2/E, df=(r-1)(c-1)+fault. crosstab categorizes using table groups, counting missing category as group.\n\nanova-corr: ANOVA shifts by first observation, corrected second-pass means, SSB=sum ni(mi-gm)^2, SSW=sum residual², F=(SSB/(k-1))/(SSW/(N-k)). corr uses covariance normalization then t with n-2 df.\n\nols: ols rejects n<=p, then Householder QR with rank threshold1e-12*max running norm; solves upper triangle and inverse for SE, residual metrics. fitlm drops rows with any NaN, prepends ones optionally, compares beta against mldivide relative norm with floor1e-300 and warns above1e-8.",
+  "forward": [
+    "distributions: Registry installs scalar-broadcast distributions. bcast checks arity/types then identical nonscalar shape, defaults scalar parameters. phi=erfc(-z/sqrt2)/2 with infinities explicit. phi_inv uses statrs seed plus2 Newton steps. dinv linearly returns least k with CDF(k)>=p, p=1 returns kmax.",
+    "descriptive: quantile cleans NaNs, sorts then interpolates pos=np+.5 with endpoints clamped; mode delegates table agg. moments drops NaN, covariance does not. cov scalar0/1 second arg treated normalization when first numel>1. histogram final edge included in last bin.",
+    "ttests: test_opts checks Alpha before Tail; t_one removes NaNs, computes unbiased SD and SE, t=(mean-m0)/SE. t_two uses pooled or Welch variance. t_p guards NaN/nonpositive df then uses survival tail. Wrappers extract arguments first; ttest rejects incompatible paired lengths before options. Both wrappers parse options before checking the minimum cleaned sample count; verdict uses strict p<alpha.",
+    "contingency: chi2_ind takes rectangular nonempty counts, computes marginals and rejects <=0 totals; Eij=ri*cj/N, statistic sum(O-E)^2/E, df=(r-1)(c-1)+fault. crosstab categorizes using table groups, counting missing category as group.",
+    "anova-corr: ANOVA shifts by first observation, corrected second-pass means, SSB=sum ni(mi-gm)^2, SSW=sum residual², F=(SSB/(k-1))/(SSW/(N-k)). corr uses covariance normalization then t with n-2 df.",
+    "ols: ols rejects n<=p, then Householder QR with rank threshold1e-12*max running norm; solves upper triangle and inverse for SE, residual metrics. fitlm drops rows with any NaN, prepends ones optionally, compares beta against mldivide relative norm with floor1e-300 and warns above1e-8."
+  ],
+  "id": "mlab-builtins-stats",
+  "inverse": [
+    "distributions: CDF observation admits parameters and x satisfying F_theta(x)=p; discrete quantile admits interval F(k-1)<p<=F(k), endpoint conventions special.",
+    "descriptive: Quantiles admit sorted arrays sharing interpolated positions and arbitrary source permutations/NaNs. Covariance admits translated observation sets and rotational symmetries.",
+    "ttests: Given t,df,p, compatible samples include all location/scale transforms preserving standardized effect; t alone loses raw observations. Paired differences admit common offsets to x,y.",
+    "contingency: Expected table admits many observed tables with same marginals; chi2 scalar further collapses dimensional arrangement. Category indices admit all value relabelings preserving sort order.",
+    "anova-corr: SSB/SSW admit many group permutations/within-group permutations and common shifts; correlation admits positive independent affine scales and offsets.",
+    "ols: beta compatible with every (X,y) whose finite QR solve yields beta, including y=Xbeta+residual orthogonal to design; original dropped NaN rows unidentifiable."
+  ],
+  "limitations": [
+    "Finite, well-shaped bounded observations unless branch explicitly describes NaN/Inf. Direct public chi2/OLS helpers assume dimensions not checked at every index; wrappers add validation.",
+    "Partial lexical AST, no macro expansion or semantic proof",
+    "No executable numerical surrogate or global error bound",
+    "External frozen dataset/effect paths unexecuted"
+  ],
+  "source": "mlab/src/builtins/stats.rs",
+  "state": "Numeric matrices, pure test result records, interpreter display/fault flags and result tables."
+}

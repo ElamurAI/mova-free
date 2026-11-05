@@ -1,0 +1,100 @@
+{
+  "children": [
+    {
+      "id": "onto-build-assembly",
+      "path": "assembly.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical source projection, no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-derived relation under documented representation/effect assumptions",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-derived relation under documented representation/effect assumptions",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "csr_transpose",
+        "path": "model.md",
+        "scope": "Source-derived relation under documented representation/effect assumptions",
+        "section": "csr_transpose",
+        "status": "partial_source_derived_model",
+        "type": "csr_transpose"
+      },
+      {
+        "id": "sense_stability",
+        "path": "model.md",
+        "scope": "Source-derived relation under documented representation/effect assumptions",
+        "section": "sense_stability",
+        "status": "partial_source_derived_model",
+        "type": "sense_stability"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Source-derived relation under documented representation/effect assumptions",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "lu_priority",
+        "path": "model.md",
+        "scope": "Source-derived relation under documented representation/effect assumptions",
+        "section": "lu_priority",
+        "status": "partial_source_derived_model",
+        "type": "lu_priority"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "onto-build",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../build.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "8970f801835615c8e0257e138060c2b0abed1cd4c20ff5630e50c3f99a2f50e3"
+  },
+  "status": "partial_source_bound_model"
+}

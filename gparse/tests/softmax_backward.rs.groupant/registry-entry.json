@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cpu_f64_uses_reference; fused_softmax_matches_reference_gradients_and_finite_differences"
+  ],
+  "children": [],
+  "cost": "O(sum widths) tensor work and O(sum widths) for each selected finite-difference objective; tiny bounded GPU allocation.",
+  "description": "CUDA checks deterministic values/weights at widths 1,3,17,33,257, compares fused/reference forward and weighted VJP<2e-6 abs; independent f64 central differences at four coordinates each width use epsilon1e-4 and tolerance2e-6. Offset slices and transposes checked, large ±1000 rows remain finite and -1e9 columns zero; upstream fusion is no-gradient control. CPU F64 equality checks fallback.",
+  "forward": [
+    "CUDA checks deterministic values/weights at widths 1,3,17,33,257, compares fused/reference forward and weighted VJP<2e-6 abs; independent f64 central differences at four coordinates each width use epsilon1e-4 and tolerance2e-6. Offset slices and transposes checked, large ±1000 rows remain finite and -1e9 columns zero; upstream fusion is no-gradient control. CPU F64 equality checks fallback."
+  ],
+  "id": "gparse-test-softmax-backward",
+  "inverse": [
+    "Passing selected assertions excludes their stated counterexamples within the fixtures. No corpus/model-file mutation occurs in selected synthetic checks.",
+    "A passing finite-difference inequality allows any derivative in the tolerance interval, not exact unique gradient; softmax input compatible logits differ by row shifts."
+  ],
+  "limitations": [
+    "Partial lexical syntax; no semantic proof",
+    "Finite synthetic checks only; external corpus/model experiments excluded",
+    "No executable Rust percent surrogate or throughput claim",
+    "Fault injection and exhaustive nonfinite/dimension cases absent"
+  ],
+  "source": "gparse/tests/softmax_backward.rs",
+  "state": "All thresholds are absolute finite-fixture measurements; no universal gradient error certificate. CPU dtype stays F64."
+}

@@ -1,0 +1,22 @@
+{
+  "compiled_negative_control": "one source-bound mutation; compile exit0, focused test exit101, restored positive exit0",
+  "epoch": "2026-10-31",
+  "limitations": [
+    "No gold/corpus/held-out accuracy run; modal/nominal/proper/attachment branches partially source-derived.",
+    "No exact parse/generate inverse or percentage surrogate.",
+    "Partial lexical AST; no semantic proof or useful executable percentage surrogate."
+  ],
+  "named_outcomes_equal": true,
+  "partial": true,
+  "profiles": [
+    "debug",
+    "release"
+  ],
+  "runs_per_profile": 2,
+  "source_sha256": "f2c9f7b2877f239aa2971b1b96cf8dc94d6d30e8304201c9bf37630a6ae877f9",
+  "tests": [
+    "uk::tests::tokens_strip_stress_and_keep_apostrophes",
+    "uk::tests::render_check_catches_damage",
+    "uk::wave29::failure_precedence_and_real_parse"
+  ]
+}

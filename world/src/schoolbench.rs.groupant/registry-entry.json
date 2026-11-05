@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p world --lib schoolbench:: -- --test-threads=1"
+  ],
+  "cost": "N lessons: hashing total identity bytes plus O(sum_s n_s log n_s) comparisons and O(N) storage; sorting selected indices O(K log K). Trace score O(trace bytes), width 15 per accepted row. Course execution and external parser/cache costs remain unknown.",
+  "description": "Options choose a validated course identifier, seed, explicit tier/round or automatic cursor+1. Selection groups by stars, ranks (SHA256(seed NUL course NUL lesson-number), original index), keeps ceil(group-size/divisor) and restores chronological indices. A plan returns before run creation or course execution. A real run writes plan, invokes run_course_lessons with the selected Lesson clones, validates and scores trace, writes report/result, then advances cursor only in automatic mode.",
+  "forward": [
+    "Options choose a validated course identifier, seed, explicit tier/round or automatic cursor+1. Selection groups by stars, ranks (SHA256(seed NUL course NUL lesson-number), original index), keeps ceil(group-size/divisor) and restores chronological indices. A plan returns before run creation or course execution. A real run writes plan, invokes run_course_lessons with the selected Lesson clones, validates and scores trace, writes report/result, then advances cursor only in automatic mode."
+  ],
+  "id": "world-schoolbench",
+  "inverse": [
+    "Universe is normal-return argument/lesson/trace/artifact transitions with fixed dependencies. Inner absence constraints exclude unsupported tier strings, zero explicit round, simultaneous round and tier, out-of-range selection indices, and successful trace scoring with wrong width/count. This is not a full complement of external course execution or failed I/O traces.",
+    "For fixed lesson list and seed, observations of selected indices admit every tier yielding that subset; singleton strata make all tiers indistinguishable. Result totals admit many traces/questions and learning histories. Cursor alone cannot reconstruct manual runs, failures or previous artifacts."
+  ],
+  "limitations": [
+    "Partial source models and finite native evidence; no live lesson edits, parser, teacher, run-course, GPU or held-out benchmarks.",
+    "External filesystem errors can preserve earlier effects; syntax is partial, macro bodies opaque."
+  ],
+  "source": "world/src/schoolbench.rs",
+  "state": "Selection indices are unique and ordered; quick is contained in medium contained in full for identical lessons and seed. Scores observe recorded rows, not lesson semantics. Automatic cursor advances only after result write succeeds; previous effects are not rolled back on failure."
+}

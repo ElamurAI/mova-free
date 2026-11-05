@@ -1,0 +1,77 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "scope": "Whole-source partial syntax artifact; coverage.syntax_nodes selects this fragment's nodes. No expanded or semantic AST.",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "excluded-traces",
+        "path": "model.md",
+        "required": true,
+        "scope": "Explicit inner approximation of U \\ R; see model universe and assumptions.",
+        "section": "Behavior complement",
+        "status": "partial_source_derived",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "compatible-antecedents",
+        "path": "model.md",
+        "required": true,
+        "scope": "B(Inert) includes all answers satisfying at least one eligibility disjunct, without selecting which disjunct held. B(valid=true) includes Inert and matching Scored states. A boolean cannot reconstruct the answer, world or weight history.",
+        "section": "Reverse reconstruction",
+        "status": "partial_source_derived",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "weight-subspace-quotient",
+        "path": "model.md",
+        "required": false,
+        "scope": "For a fixed ask, w~v iff their VIAS.len()*NF selected blocks agree. Scored validity is constant on these classes; answer equivalence additionally requires evaluator dependence only on that block and fixed world/options.",
+        "section": "Specialized relation",
+        "status": "partial_source_derived",
+        "type": "weight_subspace_quotient"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "references_only"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 1702,
+      "start": 886
+    },
+    "description": "Memo enum and remember/valid implementation.",
+    "syntax_nodes": {
+      "node_ids": [
+        63,
+        67
+      ],
+      "path": "../../syntax.json"
+    }
+  },
+  "id": "learning-memo-execution-memo-policy",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../learning.rs",
+    "sha256": "27a2ad1ec4a2548c007ea360fb817b65843a89a8424910de9ba2b54534459c05"
+  },
+  "status": "partial_source_derived"
+}

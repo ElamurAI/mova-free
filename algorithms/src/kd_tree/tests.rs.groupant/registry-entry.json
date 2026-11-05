@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms kd_tree::tests"
+  ],
+  "children": [],
+  "cost": "Bounded finite enumeration plus production/oracle work; exhaustive here means the documented small fixture universe only. Runs use ordinary allocator behavior; resource failure is not injected.",
+  "description": "Exact bounded 2D KD nearest neighbor finite independent oracle tests",
+  "forward": [
+    "Execute deterministic fixtures, compare exact API values and state against independent finite oracles, then report success iff all assertions hold. Enumerate all512 subsets of a3x3 grid and25 query locations per subset; linear i128-distance minimization is independent of KD partition/pruning. Separate duplicates, equidistant points, query i32 extrema and constructor limits."
+  ],
+  "id": "algorithm-kd-tree-tests",
+  "inverse": [
+    "Typed behavior complement, ambiguous reverse reconstruction and specializations in model.md"
+  ],
+  "limitations": [
+    "Exact bounded APIs only. No generic 1/2/5/10% accuracy surrogate is supported. Finite tests do not prove universal correctness or runtime gains. Standard Vec/Box/BTreeMap allocation failure may abort or panic; allocator refusal is not injected. No callbacks, I/O or concurrency effects.",
+    "Partial syntax only; no semantic proof"
+  ],
+  "source": "algorithms/src/kd_tree/tests.rs",
+  "state": "Bounded deterministic exact data structure; explicit validation and standard allocation behavior"
+}

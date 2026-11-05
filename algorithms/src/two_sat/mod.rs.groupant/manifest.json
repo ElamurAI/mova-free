@@ -1,0 +1,157 @@
+{
+  "schema": 1,
+  "id": "algorithm-two-sat",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "d74209db33fe4542c35b288194dfb98cbdfaa641eaede823b8c245ee150cf802"
+  },
+  "children": [
+    
+  ],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "d74209db33fe4542c35b288194dfb98cbdfaa641eaede823b8c245ee150cf802",
+        "domain": "A usize variable count and finite list of disjunction pairs Literal{variable,positive}; literals must address the declared variables. Observations are ordered validation errors, None, or a complete Boolean assignment. Allocations succeed; input immutable.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "In the declared input/result universe exclude accepted invalid literals, wrapped node count, incomplete assignments, any returned assignment falsifying a clause, and None for a formula with a satisfying assignment. Deterministic tie-rule violations are also excluded even if the returned assignment satisfies the formula; this source-derived relation is not inferred merely from negative tests.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "assignment_preimages",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "assignment_preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "d74209db33fe4542c35b288194dfb98cbdfaa641eaede823b8c245ee150cf802",
+        "domain": "A usize variable count and finite list of disjunction pairs Literal{variable,positive}; literals must address the declared variables. Observations are ordered validation errors, None, or a complete Boolean assignment. Allocations succeed; input immutable.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "For output Some(a), compatible formulas on |a| variables satisfy every clause under a and have the canonical SCC/condensation rank inequalities selecting exactly a. The satisfaction condition alone is an outer preimage approximation, since some satisfying assignments are not selected. None corresponds to formulas with a variable and its negation mutually reachable. Error preimages recover count overflow or the first invalid literal position and payload. Duplicate clauses supply distinct full-output antecedents.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "unsat_certificate",
+        "type": "certificate_relation",
+        "path": "model.md",
+        "section": "unsat_certificate",
+        "status": "partial_source_derived",
+        "subject_revision": "d74209db33fe4542c35b288194dfb98cbdfaa641eaede823b8c245ee150cf802",
+        "domain": "A usize variable count and finite list of disjunction pairs Literal{variable,positive}; literals must address the declared variables. Observations are ordered validation errors, None, or a complete Boolean assignment. Allocations succeed; input immutable.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "If a variable and its negation lie in one SCC there are implication paths in both directions. Each satisfying valuation must preserve truth along implications, so either truth choice contradicts the opposite endpoint. This is a mathematical certificate relation; the API returns None without exposing the actual paths.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "condensation_join",
+        "type": "composition_relation",
+        "path": "model.md",
+        "section": "condensation_join",
+        "status": "partial_source_derived",
+        "subject_revision": "d74209db33fe4542c35b288194dfb98cbdfaa641eaede823b8c245ee150cf802",
+        "domain": "A usize variable count and finite list of disjunction pairs Literal{variable,positive}; literals must address the declared variables. Observations are ordered validation errors, None, or a complete Boolean assignment. Allocations succeed; input immutable.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "The SCC helper sorts components by minimum vertex, not topological order. Map every implication through its component owner, omit self arcs, preserve duplicates, and obtain topological ranks through the existing DAG helper. Assignment correctness depends on this wiring; SCC child correctness alone does not establish the solver.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "clause_order",
+        "type": "permutation_relation",
+        "path": "model.md",
+        "section": "clause_order",
+        "status": "partial_source_derived",
+        "subject_revision": "d74209db33fe4542c35b288194dfb98cbdfaa641eaede823b8c245ee150cf802",
+        "domain": "A usize variable count and finite list of disjunction pairs Literal{variable,positive}; literals must address the declared variables. Observations are ordered validation errors, None, or a complete Boolean assignment. Allocations succeed; input immutable.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "Permuting or duplicating clauses preserves the implication reachability and canonical SCCs. Condensation arc multiplicity/order cannot alter smallest-ready-vertex topological choice, hence the exact assignment is unchanged. Validation errors are excluded from this relation because clause indices and first-fault ordering can change.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "literal_negation",
+        "type": "equivariance_relation",
+        "path": "model.md",
+        "section": "literal_negation",
+        "status": "partial_source_derived",
+        "subject_revision": "d74209db33fe4542c35b288194dfb98cbdfaa641eaede823b8c245ee150cf802",
+        "domain": "A usize variable count and finite list of disjunction pairs Literal{variable,positive}; literals must address the declared variables. Observations are ordered validation errors, None, or a complete Boolean assignment. Allocations succeed; input immutable.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "Complementing any chosen subset of variable polarities maps satisfying assignments bijectively by flipping the same bits. Satisfiability is invariant. The solver's selected assignment need not transform identically, because numeric component tie breaking is not equivariant; only the transformed witness's feasibility is asserted.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "clause_strengthening",
+        "type": "order_relation",
+        "path": "model.md",
+        "section": "clause_strengthening",
+        "status": "partial_source_derived",
+        "subject_revision": "d74209db33fe4542c35b288194dfb98cbdfaa641eaede823b8c245ee150cf802",
+        "domain": "A usize variable count and finite list of disjunction pairs Literal{variable,positive}; literals must address the declared variables. Observations are ordered validation errors, None, or a complete Boolean assignment. Allocations succeed; input immutable.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "Adding clauses can only remove satisfying valuations. Unsatisfiability is upward closed under valid clause additions. A newly returned assignment, if any, satisfies the old formula; assignment identity is not preserved in general.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "boundary_formulas",
+        "type": "boundary_specialization",
+        "path": "model.md",
+        "section": "boundary_formulas",
+        "status": "partial_source_derived",
+        "subject_revision": "d74209db33fe4542c35b288194dfb98cbdfaa641eaede823b8c245ee150cf802",
+        "domain": "A usize variable count and finite list of disjunction pairs Literal{variable,positive}; literals must address the declared variables. Observations are ordered validation errors, None, or a complete Boolean assignment. Allocations succeed; input immutable.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "Zero variables with no clauses yields the empty assignment; variables with no clauses are all true under the canonical numeric rank tie rule. A repeated literal is a unit clause. Opposite unit clauses force None. Tautologies impose no truth constraint, though a deterministic selected witness remains governed by ranks.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  }
+}

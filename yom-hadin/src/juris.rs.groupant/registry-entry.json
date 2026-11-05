@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "19 exact native tests twice debug/release; repeated syntax; three compiled source mutants"
+  ],
+  "children": [],
+  "cost": "Whole-file reads O(B) space/time plus parsing; term BTree inserts O(T log T), penalty override O(Pcommon*Pown), own-rule snapshot clones all rules. Cover O(total term-list bytes), severity/authority substring scan O(patterns*text length).",
+  "description": "Jurisdiction TSV loading, vocabulary covers and ordered lookup policies.",
+  "forward": [
+    "Load metadata/id/principles, merge common+own terms by head preserving first insertion order, remove overridden common penalties, read optional rules/authorities/flags/devices. load_all snapshots own rules then prepends direct inherited lists. cover selects Sure equality/narrow before Broad; severity max rank, authority first matching pattern."
+  ],
+  "id": "court-jurisdiction",
+  "inverse": [
+    "Excluded successful loads include absent jurisdiction id and unknown inheritance target. Cover cannot return No for equal words. Authority cannot select a later matching pattern over an earlier one; this does not validate external law tables.",
+    "Loaded state has all TSV antecedents with same trimmed rows, overwrite winners and direct inherited snapshots. Comments, whitespace and overridden rows are unrecoverable; equal severity observations allow many matching penalties and texts.",
+    "Cover is max of No/Broad/Sure membership evidence, with equality Sure. Opposite is directional: narrow(rule) and opposite(case); reversing words need not preserve truth.",
+    "Replacing common term by same head changes definition without moving its first-seen order; term_of returns first broad-containing term even when another term supplies Sure cover. Plain reading can therefore depend on order.",
+    "severity lowercases penalty and selects maximal rank, last equal rank wins; authority lowercases name then first substring wins regardless of rank. Empty pattern matches any string.",
+    "load_all takes own map before extension. A inherits B and B inherits C does not imply A receives C; repeated inherits rows duplicate rules, and duplicate IDs overwrite own map entries. No transitive closure or dedup."
+  ],
+  "limitations": [
+    "Partial source-derived models and finite correspondence only",
+    "No live parser/corpus/frozen gold or protocol filesystem effects; no percentage surrogate"
+  ],
+  "source": "yom-hadin/src/juris.rs",
+  "state": "Finite synthetic rule/case states; valid indices, bounded paths, successful allocations. No legal authority claim."
+}

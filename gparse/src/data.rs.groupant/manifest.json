@@ -1,0 +1,112 @@
+{
+  "children": [
+    {
+      "id": "gparse-data-projection",
+      "path": "projection.groupant"
+    },
+    {
+      "id": "gparse-data-batching",
+      "path": "batching.groupant"
+    },
+    {
+      "id": "gparse-data-lexical",
+      "path": "lexical.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "evidence": {
+      "path": "model.md#evidence",
+      "status": "executed_finite_checks"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "coordinate_transport",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "coordinate_transport",
+        "status": "partial_source_derived_model",
+        "type": "coordinate_transport"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "tie_policy",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "tie_policy",
+        "status": "partial_source_derived_model",
+        "type": "tie_policy"
+      },
+      {
+        "id": "stochastic_state",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "stochastic_state",
+        "status": "partial_source_derived_model",
+        "type": "stochastic_state"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "gparse-data",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../data.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "f115aeb0613b1ac5c59ff58216cbdc2bb795bf30eb4ace96d9ac2cf0ae29a942"
+  },
+  "status": "partial_source_bound_model"
+}

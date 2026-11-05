@@ -1,0 +1,90 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "check-order",
+        "path": "model.md",
+        "section": "check-order",
+        "status": "partial_source_derived_model",
+        "type": "first_error"
+      },
+      {
+        "id": "roundtrip",
+        "path": "model.md",
+        "section": "roundtrip",
+        "status": "partial_source_derived_model",
+        "type": "conditional_identity"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_execution"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 7254,
+      "start": 6590
+    },
+    "description": "Write schema/key/checksum/tree envelope. Decode deserializes, checks schema and key, then canonical-tree checksum and returns trees.",
+    "syntax_nodes": {
+      "node_ids": [
+        620,
+        657
+      ],
+      "path": "../syntax.json"
+    }
+  },
+  "id": "parse-cache-envelope",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../parsecache.rs",
+    "sha256": "6545414761854d33b7b41f8a864a7f4c59eebeaee721eef68772bb4a7a652479"
+  },
+  "status": "partial_source_derived_instance"
+}

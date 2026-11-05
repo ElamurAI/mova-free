@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms simplex_projection::tests"
+  ],
+  "children": [],
+  "cost": "O(n) validation and shifting, O(n log n) unstable in-place sorting comparisons, O(n) threshold scan and writes; O(n) vector storage, n<=1,000,000.",
+  "description": "Finite f64 convex projection/proximal kernel",
+  "forward": [
+    "Project x onto {y>=0,sum y=r}. Shift x by max(x), sort offsets descending, scan prefix thresholds (prefix_sum-r)/k and retain the last whose kth offset is greater. Restore original order by thresholding each original offset. Real arithmetic solves KKT uniquely; rounded implementation additionally checks relative mass."
+  ],
+  "id": "algorithm-simplex-projection",
+  "inverse": [
+    "Typed complement, normal-cone or subgradient fibers and specialized views in model.md"
+  ],
+  "limitations": [
+    "Finite observations do not certify universal f64 accuracy",
+    "Allocation refusal unforced",
+    "Partial source syntax; executable surrogate absent"
+  ],
+  "source": "algorithms/src/simplex_projection/mod.rs",
+  "state": "Deterministic, finite validation and explicit resource/arithmetic limits"
+}

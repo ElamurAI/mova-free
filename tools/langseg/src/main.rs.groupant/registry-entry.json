@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "wave31::argument_first_match_and_missing_value"
+  ],
+  "children": [],
+  "cost": "Load O(E log E); cleaning each round classifies/recounts E examples. Mix1000 docs of2..4 pieces and1/8 sweeps. Output memory and nontransactional I/O proportional to bytes. No command execution benchmark.",
+  "description": "Args first-match scan drives dispatcher. train loads sorted/capped examples, optionally relabels Tmr/Jpa to Mishnah and recounts. eval guard precedes train/load; audit loads before guard. seg loads model before stdin. talmud loads model/both inputs, writes original and English then optionally reads mapping and writes index.",
+  "forward": [
+    "Args first-match scan drives dispatcher. train loads sorted/capped examples, optionally relabels Tmr/Jpa to Mishnah and recounts. eval guard precedes train/load; audit loads before guard. seg loads model before stdin. talmud loads model/both inputs, writes original and English then optionally reads mapping and writes index."
+  ],
+  "id": "langseg-command",
+  "inverse": [
+    "Unknown command errors before workload. Later duplicate option cannot win. shuffle prevents cleaning. Optional map failure cannot roll back prior talmud outputs.",
+    "Option value fixes earliest matching position/follower but allows later duplicates. Models admit pools sharing counts. Talmud index permits absent original/English antecedents with empty fields; reports do not reconstruct input."
+  ],
+  "limitations": [
+    "Only pure Args helper executed; live command paths excluded.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/langseg/src/main.rs",
+  "state": "Defaults PCAMW,alpha.5,min_count2,switch16. Shuffle disables cleaning. Guard is duplicate append log, not lock; audit pre-read limitation retained. Mix requires>=2 nonempty languages; zero metrics may NaN. Talmud part resets each halakhah."
+}

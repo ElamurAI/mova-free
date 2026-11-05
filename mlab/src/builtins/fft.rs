@@ -56,3 +56,27 @@ fn transform(a: &[Value], name: &str, inverse: bool) -> Result<Vec<Value>, MErro
     }
     one(Mat::complex(out_r, out_c, re, imv))
 }
+
+#[cfg(test)]
+mod wave30_tests {
+    use super::*;
+    #[test]
+    fn padding_inverse_and_validation() {
+        let out = transform(
+            &[Value::Mat(Mat::row(vec![1.0, 0.0])), Value::num(4.0)],
+            "fft",
+            false,
+        )
+        .unwrap();
+        let Value::Mat(f) = &out[0] else { panic!() };
+        assert_eq!((f.rows, f.cols), (1, 4));
+        assert_eq!(f.re, vec![1.0; 4]);
+        let back = transform(&out, "ifft", true).unwrap();
+        let Value::Mat(b) = &back[0] else { panic!() };
+        assert_eq!(b.re, vec![1.0, 0.0, 0.0, 0.0]);
+        assert!(transform(&[Value::Mat(Mat::empty()), Value::num(0.0)], "fft", false).is_err());
+        let empty = transform(&[Value::Mat(Mat::empty())], "fft", false).unwrap();
+        let Value::Mat(e) = &empty[0] else { panic!() };
+        assert_eq!((e.rows, e.cols), (0, 0));
+    }
+}

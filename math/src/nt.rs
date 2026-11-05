@@ -48,7 +48,11 @@ impl Limits {
 
 // ---------- GCD, LCM, Bézout ----------
 
+/// Nonnegative gcd, with gcd(0, 0) = 0 as in ext_gcd and check_gcd.
 pub fn gcd(a: &Z, b: &Z) -> Z {
+    if a.is_zero() && b.is_zero() {
+        return IBig::ZERO;
+    }
     zu(a.gcd(b))
 }
 
@@ -812,5 +816,63 @@ mod tests {
         assert_eq!(sigma(&z(12), 1).unwrap(), z(28));
         assert_eq!(divisors(&z(12), 100).unwrap(), vec![z(1), z(2), z(3), z(4), z(6), z(12)]);
         assert_eq!(mobius(&z(30)).unwrap(), z(-1));
+    }
+}
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn signed_moduli_and_digit_fibers() {
+        assert_eq!(mod_floor(&z(-8), &z(-3)), z(1));
+        assert_eq!(modpow(&z(3), &z(-1), &z(-11)), Some(z(4)));
+        assert_eq!(modpow(&z(0), &z(-1), &z(1)), Some(z(0)));
+        assert!(modpow(&z(3), &z(2), &z(0)).is_none());
+        assert!(crt(&[], &[]).is_none());
+        assert!(crt(&[z(1)], &[]).is_none());
+        assert!(check_gcd(&z(0), &z(0), &z(0)).ok);
+        assert_eq!(digits(&z(-13), 2).unwrap(), vec![1, 1, 0, 1]);
+        assert_eq!(digits(&z(0), 2).unwrap(), vec![0]);
+        assert!(digits(&z(0), 1).is_err());
+        assert_eq!(from_digits(&[], &z(10)), z(0));
+        assert_eq!(divisors(&z(1), 1).unwrap(), vec![z(1)]);
+    }
+}
+
+#[cfg(test)]
+mod wave36_gcd {
+    use super::*;
+
+    #[test]
+    fn zero_pair_agrees_with_independent_certificate() {
+        let zero = z(0);
+        assert_eq!(gcd(&zero, &zero), zero);
+        assert_eq!(ext_gcd(&zero, &zero).0, zero);
+        assert!(check_gcd(&zero, &zero, &zero).ok);
+        assert!(!check_gcd(&zero, &zero, &z(1)).ok);
+        assert_eq!(lcm(&zero, &zero), zero);
+    }
+
+    #[test]
+    fn signed_grid_and_large_operands_preserve_euclid() {
+        for a in -16..=16 {
+            for b in -16..=16 {
+                if a == 0 && b == 0 {
+                    continue;
+                }
+                let (a, b) = (z(a), z(b));
+                let g = gcd(&a, &b);
+                assert_eq!(g, ext_gcd(&a, &b).0);
+                assert!(g >= z(0));
+                assert!(check_gcd(&a, &b, &g).ok);
+            }
+        }
+        let scale: Z = "12345678901234567890123456789012345678901234567890".parse().unwrap();
+        for (a, b) in [(-z(6) * &scale, z(15) * &scale), (z(0), -scale.clone()), (-scale.clone(), z(0))] {
+            let g = gcd(&a, &b);
+            assert_eq!(g, ext_gcd(&a, &b).0);
+            assert!(check_gcd(&a, &b, &g).ok);
+        }
+        assert_eq!(gcd(&(-z(6) * &scale), &(z(15) * &scale)), z(3) * scale);
     }
 }

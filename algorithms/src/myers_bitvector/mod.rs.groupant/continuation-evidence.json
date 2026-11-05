@@ -1,0 +1,61 @@
+{
+  "benchmark": false,
+  "date": "2026-11-01",
+  "domain": "binary patterns/prefixes length0..3, next bytes a,b; ordered cap-grid lengths0,1,63,64,65,65535,65536,65537;16generic unit-Eq length cases0..3",
+  "equal_projection_context_comparisons": 1278,
+  "fixed_collision": {
+    "next_byte": "b",
+    "next_scores": [
+      0,
+      1
+    ],
+    "pattern": "ab",
+    "prefix_length": 1,
+    "prefix_score": 1,
+    "prefixes": [
+      "a",
+      "b"
+    ]
+  },
+  "harness": "continuation-check.rs.txt",
+  "harness_sha256": "30740e1591b29fc050d735ada4016ec880923968750f42ce3bac9f6f7459ce5e",
+  "independent_oracle": "full two-dimensional unit-cost edit matrix",
+  "kind": "bounded_source_check",
+  "negative_control": {
+    "assertion": "equal next scores rejected:0!=1",
+    "exit_code": 101,
+    "kind": "compiled_false_scalar_factorization",
+    "location_kind": "External run artifacts, not included in repository; identifiers and hashes retained as provenance",
+    "log_sha256": "873dfb65ade95ea72af4519c387eeb1e0eb670e7c1cc4018f7d562e8b33c2c07",
+    "mutant_source_sha256": "7e118727ed242f957a217d8cf0fa3fd64856954f16a06d7c642e400e36ec8441",
+    "scope": "Rejects a false mathematical factorization claim, not a mutated production implementation"
+  },
+  "nonreflexive_ordered_comparisons": 828,
+  "ordered_admission_calls": 128,
+  "output": "continuation-output.txt",
+  "output_sha256": "d31e130a5f046e5bb896689cb0afad4aea3090984239fac94ef2a20570acff45",
+  "outputs_identical": true,
+  "positive_boundaries": {
+    "empty_or_singleton_pattern_contexts": 90,
+    "one_class_eq_cases": 16,
+    "scope": "Obstruction exists for pattern ab with two inequivalent values; not universal over patterns or Eq types"
+  },
+  "production_substitution": false,
+  "public_harness_reproduced_output": true,
+  "reflexive_comparisons": 450,
+  "runs": 2,
+  "schema": 1,
+  "separating_pairs": 176,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/myers_bitvector/mod.rs",
+      "sha256": "87e0f9b83fd865e10488d4785ecb6f2312ea191abc38e864b3d87f2c71987617"
+    },
+    {
+      "path": "algorithms/src/levenshtein/mod.rs",
+      "sha256": "f762f7d12b5ee35141cf679db6723099c10e39b7a009c08e6b0337b743ccb724"
+    }
+  ],
+  "universal_source_proof": false,
+  "unordered_separating_pairs": 88
+}

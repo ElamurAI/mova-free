@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "wikt-page-text-command-xml-page-behavior_complement",
+        "path": "model.md",
+        "scope": "UTF-8 rootless XML fragments, quick_xml configured check_end_names=false; tests exercise entities/ids/empty element only.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "wikt-page-text-command-xml-page-reverse_reconstruction",
+        "path": "model.md",
+        "scope": "UTF-8 rootless XML fragments, quick_xml configured check_end_names=false; tests exercise entities/ids/empty element only.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "wikt-page-text-command-xml-page-page_reset",
+        "path": "model.md",
+        "scope": "UTF-8 rootless XML fragments, quick_xml configured check_end_names=false; tests exercise entities/ids/empty element only.",
+        "section": "page_reset",
+        "status": "partial_source_derived_model",
+        "type": "page_reset"
+      },
+      {
+        "id": "wikt-page-text-command-xml-page-id_first_write",
+        "path": "model.md",
+        "scope": "UTF-8 rootless XML fragments, quick_xml configured check_end_names=false; tests exercise entities/ids/empty element only.",
+        "section": "id_first_write",
+        "status": "partial_source_derived_model",
+        "type": "id_first_write"
+      },
+      {
+        "id": "wikt-page-text-command-xml-page-empty_text_return",
+        "path": "model.md",
+        "scope": "UTF-8 rootless XML fragments, quick_xml configured check_end_names=false; tests exercise entities/ids/empty element only.",
+        "section": "empty_text_return",
+        "status": "partial_source_derived_model",
+        "type": "empty_text_return"
+      },
+      {
+        "id": "wikt-page-text-command-xml-page-early_return_scope",
+        "path": "model.md",
+        "scope": "UTF-8 rootless XML fragments, quick_xml configured check_end_names=false; tests exercise entities/ids/empty element only.",
+        "section": "early_return_scope",
+        "status": "partial_source_derived_model",
+        "type": "early_return_scope"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 6390,
+      "start": 4705
+    },
+    "description": "Event reader resets state on page start, marks revision start, reads title/ns/first ids, returns matching text or matching empty text. EOF returns None; XML/read_text/entity errors propagate."
+  },
+  "id": "wikt-page-text-command-xml-page",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../main.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "49d0a8b4e3c68dd205f36dff233d3c1dbeb0dd40a4644f1331287a07ef6f329d"
+  },
+  "status": "partial_source_bound_model"
+}

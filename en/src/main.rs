@@ -6,10 +6,15 @@
 //!                                                        full UD annotator → model file ($MOVA_DATA/en/models/);
 //!                                                        with check files: load it back and get identical annotation down to the token
 //!   en annotate <model> <in.conllu|in.txt>...            CoNLL-U from a model file: .conllu on gold tokens, anything else as text
+//!                                                        (a line «id TAB text» keeps its id)
+//!   en compare <ref.conllu> <pred.conllu>                UD scores and UPOS/lemma/UFeats agreement by class (modern, EModE)
 //!   en tok-eval <train.conllu>... -- <test.conllu>...   tokenizer vs UD tokens
 //!   en tag-eval <train.conllu>... -- <test.conllu>...   PTB tagger vs UD tags (on gold tokens)
 //!   en morph-eval <train.conllu>... -- <test.conllu>... lemmas and lossless token encoding (lemma + case / escape)
 //!   en parse-eval <train.conllu>... -- <test.conllu>... tree parser: UAS/LAS on gold and our tags
+//!   en construct-eval <train.conllu>...|<model.bin> -- <constructions.tsv> [<floor.tsv>]
+//!                                                        construction gate: recall of hard constructions on our own sentences
+//!   en parse-diag <train.conllu>... -- <test.conllu>... parser error profile: depth, projectivity, beam oracle, cascades
 //!   en lin-eval <train.conllu>... -- <test.conllu>...   word-order generator from gold trees vs the original
 //!   en rt-eval <train.conllu>... -- <test.conllu>...    full compressor round trip: text → graph → text
 //!   en rt-text <train.conllu>... -- <dom-train.txt> <dom-test.txt> [weight]
@@ -18,6 +23,9 @@
 //!   en explain-json <train.conllu>... -- "sentence"...  the same as JSON: data for the explanation page
 //!   en graph <train.conllu>... -- <file.txt>...         line graphs: lemma/tag/head/relation (version comparison)
 //!   en lexicon <infl.txt> <train>... [-- <data-dir>]      dictionary into code: data/lemmas.tsv (frozen ids) + data/forms.tsv
+//!   en derive <word>...                                  derivation of words the dictionary does not know, with the reason
+//!   en lexicon-cover <text>...                           unknown words before and after derivation (EN_COVER_LIST=N lists them)
+//!   en lexicon-redact [<data-dir>]                        drop e-mail addresses, links and handles from the dictionary, ids kept
 //!   en convert <rules dir> <from> <to> <in.conllu>...    UD dialect converter (convert.md rules) → CoNLL-U to stdout
 //!   en convert-check <rules dir> <dialect> <in.conllu>... run X → mova → X: what forward changed, what did not come back
 //!   en ctx-report <gold.conllu> <base>=<f1>,<f2>… <system>=<…>… [--focus <name>] [--boot N]
@@ -39,6 +47,68 @@ use en::parse::Parser;
 use en::tag::{DictHint, Tagger};
 use en::text::{bigram_precision, chrf, lcs};
 use en::tok;
+
+/// `en lexicon-cover <text>...`: how many words of a text Mova does not know, before and after derivation. A word is
+/// a whitespace token with its outer punctuation cut off, all letters, at least three of them, and not a citation name
+/// (a capitalised word before «et», «and», «&» or a year) — the readers' criterion (`tools/whale` reader). Per file and in
+/// total: words, unknown to the dictionary, unknown after derivation; `EN_COVER_LIST=N` lists the N most frequent
+/// words derivation recovered (with the reason) and the N most frequent still unknown.
+fn lexicon_cover(files: &[PathBuf]) -> Result<()> {
+    use std::collections::BTreeMap;
+    let list: usize = std::env::var("EN_COVER_LIST").ok().and_then(|x| x.parse().ok()).unwrap_or(0);
+    let (mut tw, mut td, mut tk) = (0usize, 0usize, 0usize);
+    let mut rescued: BTreeMap<String, usize> = BTreeMap::new();
+    let mut still: BTreeMap<String, usize> = BTreeMap::new();
+    println!("| file | words | unknown to the dictionary | unknown after derivation |");
+    println!("|---|---:|---:|---:|");
+    for p in files {
+        let text = std::fs::read_to_string(p).with_context(|| format!("reading {}", p.display()))?;
+        let toks: Vec<&str> = text.split_whitespace().map(|t| t.trim_matches(|c: char| !c.is_alphanumeric())).collect();
+        let year = |x: Option<&&str>| x.is_some_and(|y| y.len() == 4 && y.chars().all(|c| c.is_ascii_digit()) && (y.starts_with("19") || y.starts_with("20")));
+        let (mut w, mut d, mut k) = (0usize, 0usize, 0usize);
+        for (i, f) in toks.iter().enumerate() {
+            if f.chars().count() < 3 || !f.chars().all(char::is_alphabetic) {
+                continue;
+            }
+            let citation = f.chars().next().is_some_and(char::is_uppercase) && (toks.get(i + 1).is_some_and(|x| matches!(*x, "et" | "and" | "")) || year(toks.get(i + 1)));
+            if citation {
+                continue;
+            }
+            w += 1;
+            let low = f.to_lowercase();
+            if !en::derive::in_dictionary(&low) {
+                d += 1;
+                if en::morph::known_form(&low) {
+                    *rescued.entry(low).or_default() += 1;
+                } else {
+                    k += 1;
+                    *still.entry(low).or_default() += 1;
+                }
+            }
+        }
+        let pc = |x: usize| 100.0 * x as f64 / w.max(1) as f64;
+        println!("| {} | {w} | {d} ({:.2}%) | {k} ({:.2}%) |", name(p), pc(d), pc(k));
+        (tw, td, tk) = (tw + w, td + d, tk + k);
+    }
+    let pc = |x: usize| 100.0 * x as f64 / tw.max(1) as f64;
+    println!("| **total** | {tw} | {td} ({:.2}%) | {tk} ({:.2}%) |", pc(td), pc(tk));
+    let top = |m: &BTreeMap<String, usize>| {
+        let mut v: Vec<(&String, &usize)> = m.iter().collect();
+        v.sort_by(|a, b| b.1.cmp(a.1).then(a.0.cmp(b.0)));
+        v.into_iter().take(list).map(|(a, b)| (a.clone(), *b)).collect::<Vec<_>>()
+    };
+    if list > 0 {
+        println!("\n## Recovered by derivation ({} types)\n", rescued.len());
+        for (wd, n) in top(&rescued) {
+            println!("{n}\t{}", en::derive::analyze(&wd).map(|d| d.why()).unwrap_or_default());
+        }
+        println!("\n## Still unknown ({} types)\n", still.len());
+        for (wd, n) in top(&still) {
+            println!("{n}\t{wd}");
+        }
+    }
+    Ok(())
+}
 
 /// Arguments of the form `<before>... -- <after>...`.
 fn split(args: &[String], from: usize) -> (Vec<PathBuf>, Vec<String>) {
@@ -205,6 +275,40 @@ perc: {}
             }
             Ok(())
         }
+        Some("derive") => {
+            // en derive <word>...: the derivation of each word the dictionary does not know, with its reason
+            for w in &args[1..] {
+                let low = w.to_lowercase();
+                for (e, src) in en::lexext::expansions(w) {
+                    println!("{w}\tacronym: {e} [{src}]");
+                }
+                if en::derive::in_dictionary(&low) {
+                    println!("{w}\tdictionary");
+                    continue;
+                }
+                let ext = en::lexext::analyses(&low);
+                if !ext.is_empty() {
+                    let src = |b: u8| ["OEWN", "SPECIALIST", "Census", "Mova", "Names Corpus"].iter().enumerate().filter(|(i, _)| b & (1 << i) != 0).map(|(_, n)| *n).collect::<Vec<_>>().join("+");
+                    let rows: Vec<String> = ext.iter().map(|(t, s, l)| format!("{} {l} ({})", t.name(), src(*s))).collect();
+                    println!("{w}\tlexicon extension: {}", rows.join("; "));
+                }
+                let ds = en::derive::derivations(&low);
+                if !ext.is_empty() {
+                    for d in ds.iter().take(4) {
+                        println!("{w}\t{}", d.why());
+                    }
+                    continue;
+                }
+                if ds.is_empty() {
+                    println!("{w}\tunknown");
+                }
+                for d in ds.iter().take(4) {
+                    println!("{w}\t{}", d.why());
+                }
+            }
+            Ok(())
+        }
+        Some("lexicon-cover") => lexicon_cover(&paths(&args[1..])),
         Some("ud-check") => {
             // UD 2.18 registry violations (en::udreg) in CoNLL-U files: positive control of the gate is the gold
             let reg = en::udreg::Registry::load();
@@ -279,6 +383,14 @@ perc: {}
             let (train, test) = split(&args, 1);
             parse_eval(&train, &paths(&test))
         }
+        Some("construct-eval") => {
+            let (train, rest) = split(&args, 1);
+            construct_eval(&train, &paths(&rest))
+        }
+        Some("parse-diag") => {
+            let (train, test) = split(&args, 1);
+            parse_diag(&train, &paths(&test))
+        }
         Some("lin-eval") => {
             let (train, test) = split(&args, 1);
             lin_eval(&train, &paths(&test))
@@ -295,11 +407,46 @@ perc: {}
             let weight = rest.get(2).and_then(|w| w.parse().ok()).unwrap_or(5);
             rt_text(&train, Path::new(&rest[0]), Path::new(&rest[1]), weight)
         }
+        Some("licence" | "license") => {
+            print!("{}", en::dict::LICENCE);
+            Ok(())
+        }
         Some("lexicon") if args.len() > 2 => {
             let (train, out) = split(&args, 2);
             let out = out.first().map(PathBuf::from).unwrap_or_else(|| PathBuf::from("data"));
             let st = en::lexgen::generate(Path::new(&args[1]), &read_all(&train, false)?, &out)?;
             println!("dictionary: lemmas {} (new {}), forms {}, rows {} → {}", st.lemmas, st.new_lemmas, st.forms, st.rows, out.display());
+            Ok(())
+        }
+        Some("lexgrow") => {
+            // en lexgrow [--oewn DIR] [--specialist LEXICON LRAGR] [--census CSV] [--names DIR] [--dontuse FILE] [--out DIR]
+            let mut s = en::lexgrow::Sources { oewn: None, specialist: None, census: None, first_names: None, dontuse: None };
+            let mut out = PathBuf::from("data");
+            let mut i = 1;
+            let need = |i: usize| args.get(i).map(PathBuf::from).ok_or_else(|| anyhow::anyhow!("en lexgrow: {} needs a path", args[i - 1]));
+            while i < args.len() {
+                match args[i].as_str() {
+                    "--oewn" => s.oewn = Some(need(i + 1)?),
+                    "--census" => s.census = Some(need(i + 1)?),
+                    "--names" => s.first_names = Some(need(i + 1)?),
+                    "--dontuse" => s.dontuse = Some(need(i + 1)?),
+                    "--out" => out = need(i + 1)?,
+                    "--specialist" => {
+                        s.specialist = Some((need(i + 1)?, need(i + 2)?));
+                        i += 1;
+                    }
+                    x => anyhow::bail!("en lexgrow: unknown option {x}"),
+                }
+                i += 2;
+            }
+            let st = en::lexgrow::generate(&s, &out)?;
+            println!("lexicon extension: {} rows, {} forms ({} new to the dictionary), {} lemmas, {} acronyms; rows by source {:?} → {}", st.rows, st.forms, st.new_forms, st.lemmas, st.acronyms, st.by_source, out.display());
+            Ok(())
+        }
+        Some("lexicon-redact") => {
+            let dir = args.get(1).map(PathBuf::from).unwrap_or_else(|| PathBuf::from("data"));
+            let r = en::lexgen::redact(&dir)?;
+            println!("dictionary: {} lemmas redacted, {} form rows dropped in {}", r.lemmas, r.rows, dir.display());
             Ok(())
         }
         Some("graph") => {
@@ -320,11 +467,79 @@ perc: {}
             train_model(&train, &rest)
         }
         Some("annotate") if args.len() > 2 => annotate_files(Path::new(&args[1]), &paths(&args[2..])),
+        Some("compare") if args.len() == 3 => compare(Path::new(&args[1]), Path::new(&args[2])),
+        Some("xpos-fill") if args.len() == 3 => xpos_fill(Path::new(&args[1]), Path::new(&args[2])),
         Some("convert") if args.len() > 4 => convert(Path::new(&args[1]), &args[2], &args[3], &paths(&args[4..])),
         Some("convert-check") if args.len() > 3 => convert_check(Path::new(&args[1]), &args[2], &paths(&args[3..])),
         _ => bail!(
-            "usage: en train <train.conllu>... -- <model> [<check.conllu>...] | annotate <model> <in.conllu|in.txt>... | tok-eval|tag-eval|parse-eval|lin-eval|morph-eval|rt-eval <train.conllu>... -- <test.conllu>... | rt-text <train>... -- <dom-train> <dom-test> [weight] | explain <train>... -- \"sentence\"... | graph <train>... -- <file>... | lexicon <agid infl.txt> <train>... [-- <data-dir>] | convert <rules dir> <from> <to> <in.conllu>... | convert-check <rules dir> <dialect> <in.conllu>... | ctx-report <gold> <base>=<files> <system>=<files>... [--focus <name>] [--boot N]"
+            "usage: en train <train.conllu>... -- <model> [<check.conllu>...] | annotate <model> <in.conllu|in.txt>... | tok-eval|tag-eval|parse-eval|lin-eval|morph-eval|rt-eval <train.conllu>... -- <test.conllu>... | rt-text <train>... -- <dom-train> <dom-test> [weight] | explain <train>... -- \"sentence\"... | graph <train>... -- <file>... | lexicon <agid infl.txt> <train>... [-- <data-dir>] | lexicon-redact [<data-dir>] | licence | convert <rules dir> <from> <to> <in.conllu>... | convert-check <rules dir> <dialect> <in.conllu>... | ctx-report <gold> <base>=<files> <system>=<files>... [--focus <name>] [--boot N]"
         ),
+    }
+}
+
+/// A treebank without PTB tags (XPOS «_», as the French ones) made usable for `en`'s tagger and parser (the PTB tag
+/// set: marcus-1993; UPOS and FEATS: demarneffe-2021, nivre-2020; French GSD: guillaume-2019): each word's
+/// XPOS derived from its UPOS and FEATS (a noun with Number=Plur → NNS, a past participle → VBN, …), the rest as it
+/// is. For measuring `en` on another language; the output keeps the treebank's licence.
+fn xpos_fill(input: &Path, out: &Path) -> Result<()> {
+    let text = std::fs::read_to_string(input)?;
+    let mut o = String::with_capacity(text.len());
+    let (mut filled, mut kept) = (0usize, 0usize);
+    for l in text.lines() {
+        let mut c: Vec<&str> = l.split('\t').collect();
+        let tag;
+        // «_», or a tag set of the treebank's own (LLCT's, PROIEL's): not a PTB tag
+        if c.len() == 10 && c[0].parse::<usize>().is_ok() && (c[4] == "_" || en::gram::Tag::parse(c[4]).is_none()) {
+            tag = xpos_of(c[1], c[3], c[5]);
+            c[4] = tag;
+            filled += 1;
+        } else if c.len() == 10 && c[0].parse::<usize>().is_ok() {
+            kept += 1;
+        }
+        o.push_str(&c.join("\t"));
+        o.push('\n');
+    }
+    std::fs::write(out, o)?;
+    println!("{filled} XPOS filled, {kept} kept → {}", out.display());
+    Ok(())
+}
+
+/// A PTB tag for a word from its UPOS and FEATS.
+fn xpos_of(form: &str, upos: &str, feats: &str) -> &'static str {
+    let has = |k: &str| feats.split('|').any(|f| f == k);
+    match upos {
+        "NOUN" => if has("Number=Plur") { "NNS" } else { "NN" },
+        "PROPN" => if has("Number=Plur") { "NNPS" } else { "NNP" },
+        "VERB" | "AUX" => {
+            if has("VerbForm=Inf") { "VB" }
+            else if has("VerbForm=Part") && has("Tense=Pres") { "VBG" }
+            else if has("VerbForm=Part") { "VBN" }
+            else if has("VerbForm=Ger") { "VBG" }
+            else if has("Tense=Past") || has("Tense=Imp") { "VBD" }
+            else if has("Person=3") && has("Number=Sing") { "VBZ" }
+            else { "VBP" }
+        }
+        "ADJ" => "JJ",
+        "ADV" => if has("PronType=Int") || has("PronType=Rel") { "WRB" } else { "RB" },
+        "ADP" | "SCONJ" => "IN",
+        "DET" => if has("Poss=Yes") { "PRP$" } else if has("PronType=Int") || has("PronType=Rel") { "WDT" } else { "DT" },
+        "PRON" => if has("Poss=Yes") { "PRP$" } else if has("PronType=Rel") || has("PronType=Int") { "WP" } else { "PRP" },
+        "CCONJ" => "CC",
+        "NUM" => "CD",
+        "PART" => "RB",
+        "INTJ" => "UH",
+        "SYM" => "SYM",
+        "PUNCT" => match form {
+            "," => ",",
+            "." | "?" | "!" | "..." | "…" => ".",
+            "(" | "[" => "-LRB-",
+            ")" | "]" => "-RRB-",
+            "«" | "\"" | "“" => "``",
+            "»" | "”" => "''",
+            "-" | "–" | "—" => "HYPH",
+            _ => ":",
+        },
+        _ => "FW",
     }
 }
 
@@ -580,6 +795,7 @@ fn ud_eval(train: &[PathBuf], test: &[PathBuf]) -> Result<()> {
             let mut sc = Scores::default();
             let debug = std::env::var("EN_UD_DEBUG").is_ok();
             let mut lemma_miss: FastMap<String, usize> = FastMap::default();
+            let mut lemma_split = [[0usize; 2]; 2];
             let mut dump = String::new();
             for (k, s) in ts.iter().enumerate() {
                 let words: Vec<&str> = s.tokens.iter().map(|t| t.form.as_str()).collect();
@@ -611,6 +827,19 @@ fn ud_eval(train: &[PathBuf], test: &[PathBuf]) -> Result<()> {
                     .collect();
                 sc.add(&gold, &pred, s.has_feats, s.has_lemmas);
                 if debug && s.has_lemmas {
+                    // lemma accuracy on forms the dictionary gives more than one lemma, and on the rest
+                    for (k, (g, pr)) in gold.iter().zip(&pred).enumerate() {
+                        let amb = en::dict::form(&words[k].to_lowercase()).is_some_and(|f| {
+                            let mut ls: Vec<_> = en::dict::analyses(f).map(|r| r.lemma()).collect();
+                            ls.sort_unstable();
+                            ls.dedup();
+                            ls.len() > 1
+                        });
+                        lemma_split[amb as usize][0] += 1;
+                        lemma_split[amb as usize][1] += (g.lemma == pr.lemma) as usize;
+                    }
+                }
+                if debug && s.has_lemmas {
                     for (g, pr) in gold.iter().zip(&pred) {
                         if g.lemma != pr.lemma {
                             *lemma_miss.entry(format!("{}→{} ({}/{})", g.lemma, pr.lemma, g.tag.map_or("?", |t| t.name()), pr.tag.map_or("?", |t| t.name()))).or_default() += 1;
@@ -633,6 +862,13 @@ fn ud_eval(train: &[PathBuf], test: &[PathBuf]) -> Result<()> {
             if debug {
                 let mut v: Vec<_> = std::mem::take(&mut lemma_miss).into_iter().collect();
                 v.sort_by(|a, b| b.1.cmp(&a.1));
+                println!(
+                    "  lemmas: forms with several dictionary lemmas {} ({:.2}% right), the rest {} ({:.2}% right)",
+                    lemma_split[1][0],
+                    100.0 * lemma_split[1][1] as f64 / lemma_split[1][0].max(1) as f64,
+                    lemma_split[0][0],
+                    100.0 * lemma_split[0][1] as f64 / lemma_split[0][0].max(1) as f64
+                );
                 println!("  lemmas, gold→ours: {}", v.iter().take(25).map(|(k, c)| format!("{k} {c}")).collect::<Vec<_>>().join(", "));
             }
             let label = name(p).trim_end_matches("-ud-test.conllu").to_string();
@@ -866,35 +1102,118 @@ fn parse_eval(train: &[PathBuf], test: &[PathBuf]) -> Result<()> {
     let beam: usize = std::env::var("EN_BEAM").ok().and_then(|x| x.parse().ok()).unwrap_or(8);
     let epochs: usize = std::env::var("EN_PEPOCHS").ok().and_then(|x| x.parse().ok()).unwrap_or(if beam > 1 { 12 } else { 10 });
     let data = if folds > 1 { en::ptag::jackknife(&sents, folds, 6) } else { sents.clone() };
-    let parser = if beam > 1 { Parser::train_beam(&data, epochs, beam) } else { Parser::train(&data, epochs) };
+    let mut parser = if beam > 1 { Parser::train_beam(&data, epochs, beam) } else { Parser::train(&data, epochs) };
     let labels: FastSet<Rel> = sents.iter().flat_map(|s| s.tokens.iter().map(|t| t.rel)).collect();
     println!("parser: {} sentences, {} labels, training {:.1} s", sents.len(), labels.len(), t0.elapsed().as_secs_f64());
+    // EN_BEAM_CURVE=1: the same model parsed at beam widths 1, 2, 4, 8, 16 (Zhang & Clark 2008), one line each
+    let widths: Vec<usize> = if std::env::var("EN_BEAM_CURVE").is_ok_and(|v| v == "1") { vec![1, 2, 4, 8, 16] } else { vec![parser.beam] };
     for p in test {
         let ts = read_all(std::slice::from_ref(p), true)?;
-        for (label, pred_tags) in [("gold tags", false), ("our tags", true)] {
-            let (mut n, mut uas, mut las) = (0usize, 0usize, 0usize);
-            let t1 = std::time::Instant::now();
-            for s in &ts {
-                let words: Vec<&str> = s.tokens.iter().map(|t| t.form.as_str()).collect();
-                let tags: Vec<Tag> = if pred_tags { tagger.tag(&words) } else { s.tokens.iter().map(|t| t.tag.expect("tagged")).collect() };
-                let out = parser.parse(&words, &tags);
-                for (&(h, l), g) in out.iter().zip(&s.tokens) {
-                    n += 1;
-                    if h == g.head {
-                        uas += 1;
-                        if l == g.rel {
-                            las += 1;
+        let our: Vec<Vec<Tag>> = ts.iter().map(|s| tagger.tag(&s.tokens.iter().map(|t| t.form.as_str()).collect::<Vec<_>>())).collect();
+        for &w in &widths {
+            parser.beam = w;
+            let width = if widths.len() > 1 { format!(", beam {w}") } else { String::new() };
+            for (label, pred_tags) in [("gold tags", false), ("our tags", true)] {
+                let (mut n, mut uas, mut las, mut exact) = (0usize, 0usize, 0usize, 0usize);
+                let t1 = std::time::Instant::now();
+                for (s, ot) in ts.iter().zip(&our) {
+                    let words: Vec<&str> = s.tokens.iter().map(|t| t.form.as_str()).collect();
+                    let tags: Vec<Tag> = if pred_tags { ot.clone() } else { s.tokens.iter().map(|t| t.tag.expect("tagged")).collect() };
+                    let out = parser.parse(&words, &tags);
+                    let mut all = true;
+                    for (&(h, l), g) in out.iter().zip(&s.tokens) {
+                        n += 1;
+                        all &= h == g.head && l == g.rel;
+                        if h == g.head {
+                            uas += 1;
+                            if l == g.rel {
+                                las += 1;
+                            }
                         }
                     }
+                    exact += all as usize;
                 }
+                println!(
+                    "{} ({label}{width}): tokens {n}, UAS {:.2}%, LAS {:.2}%, complete trees {:.2}%; {:.0} tokens/s",
+                    name(p),
+                    100.0 * uas as f64 / n.max(1) as f64,
+                    100.0 * las as f64 / n.max(1) as f64,
+                    100.0 * exact as f64 / ts.len().max(1) as f64,
+                    n as f64 / t1.elapsed().as_secs_f64()
+                );
             }
-            println!(
-                "{} ({label}): tokens {n}, UAS {:.2}%, LAS {:.2}%; {:.0} tokens/s",
-                name(p),
-                100.0 * uas as f64 / n.max(1) as f64,
-                100.0 * las as f64 / n.max(1) as f64,
-                n as f64 / t1.elapsed().as_secs_f64()
-            );
+        }
+    }
+    Ok(())
+}
+
+/// `en construct-eval <train.conllu>...|<model.bin> -- <constructions.tsv> [<floor.tsv>]`: recall of the target arcs per
+/// construction (`en::construct`). With a floor file it is a gate: an error if any construction falls below its floor.
+/// `EN_WRITE_FLOOR=1` writes the measured recalls as the new floor instead. Negative control: `EN_BREAK_TAGS=1` gives
+/// the parser each word's tag shifted by one position (a broken tagger), which must turn the gate red.
+fn construct_eval(train: &[PathBuf], rest: &[PathBuf]) -> Result<()> {
+    let Some(set) = rest.first() else { bail!("construct-eval: <constructions.tsv> after --") };
+    let items = en::construct::load(set)?;
+    let model = if train.len() == 1 && train[0].extension().is_some_and(|x| x == "bin") {
+        en::annotate::Annotator::load(&train[0])?.model
+    } else {
+        Model::train(read_all(train, true)?)
+    };
+    let broken = std::env::var("EN_BREAK_TAGS").is_ok_and(|v| v == "1");
+    let parse = |w: &[&str]| {
+        let mut tags = model.tagger.tag(w);
+        if broken {
+            tags.rotate_right(1);
+        }
+        model.parser.parse(w, &tags)
+    };
+    let rec = en::construct::recall(&items, &parse);
+    if std::env::var("EN_CONSTRUCT_MISSES").is_ok_and(|v| v == "1") {
+        for m in en::construct::misses(&items, &parse) {
+            println!("{m}");
+        }
+    }
+    let floor_path = rest.get(1);
+    if std::env::var("EN_WRITE_FLOOR").is_ok_and(|v| v == "1") {
+        let Some(fp) = floor_path else { bail!("EN_WRITE_FLOOR: the floor file after the set") };
+        let body: String = rec.iter().map(|(c, &v)| format!("{c}\t{:.2}\n", en::construct::pct(v))).collect();
+        let src: Vec<String> = train.iter().map(|p| name(p)).collect();
+        std::fs::write(fp, format!("# construction recall floor (en construct-eval), {} sentences; model: {}\n{body}", items.len(), src.join(" + ")))?;
+        println!("floor written → {}", fp.display());
+    }
+    let floor = match floor_path {
+        Some(fp) if fp.exists() => Some(en::construct::read_floor(fp)?),
+        _ => None,
+    };
+    let (table, red) = en::construct::report(&rec, floor.as_ref());
+    println!("{} sentences{}\n\n{table}", items.len(), if broken { " (negative control: tags shifted)" } else { "" });
+    if !red.is_empty() {
+        bail!("construction gate RED: {}", red.join(", "));
+    }
+    if floor.is_some() {
+        println!("construction gate: green");
+    }
+    Ok(())
+}
+
+/// `en parse-diag`: the parser trained as in `parse-eval`, then the error profile of `en::diag` on each test, with our
+/// tags (and with gold tags too if `EN_DIAG_GOLD=1`). Beam widths of the oracle: `EN_DIAG_WIDTHS` (default 1,2,4,8,16).
+fn parse_diag(train: &[PathBuf], test: &[PathBuf]) -> Result<()> {
+    let sents = read_all(train, true)?;
+    let t0 = std::time::Instant::now();
+    let tagger = en::ptag::PTagger::train(&sents, 6);
+    let beam: usize = std::env::var("EN_BEAM").ok().and_then(|x| x.parse().ok()).unwrap_or(8);
+    let epochs: usize = std::env::var("EN_PEPOCHS").ok().and_then(|x| x.parse().ok()).unwrap_or(if beam > 1 { 12 } else { 10 });
+    let parser = if beam > 1 { Parser::train_beam(&sents, epochs, beam) } else { Parser::train(&sents, epochs) };
+    println!("parser: {} sentences, training {:.1} s", sents.len(), t0.elapsed().as_secs_f64());
+    let widths: Vec<usize> = std::env::var("EN_DIAG_WIDTHS").unwrap_or_else(|_| "1,2,4,8,16".into()).split(',').filter_map(|x| x.trim().parse().ok()).collect();
+    let ours = |w: &[&str], _: &Sentence| tagger.tag(w);
+    let gold = |_: &[&str], s: &Sentence| s.tokens.iter().map(|t| t.tag.expect("tagged")).collect::<Vec<Tag>>();
+    for p in test {
+        let ts = read_all(std::slice::from_ref(p), true)?;
+        println!("\n## {} (our tags)\n\n{}", name(p), en::diag::report(&parser, &ts, &ours, &widths));
+        if std::env::var("EN_DIAG_GOLD").is_ok_and(|v| v == "1") {
+            println!("\n## {} (gold tags)\n\n{}", name(p), en::diag::report(&parser, &ts, &gold, &widths));
         }
     }
     Ok(())
@@ -1349,10 +1668,15 @@ fn annotate_files(model: &Path, files: &[PathBuf]) -> Result<()> {
         } else {
             let stem = p.file_stem().unwrap_or_default().to_string_lossy().into_owned();
             for (k, line) in read_lines(p)?.iter().enumerate() {
+                // «id TAB text» (sentences.tsv, the cycle's pools): the id is the sentence id, not words
+                let (id, line) = match line.split_once('\t') {
+                    Some((id, t)) if !id.is_empty() && !id.contains(' ') => (id.to_string(), t.trim()),
+                    _ => (format!("{stem}-{}", k + 1), line.as_str()),
+                };
                 let toks = a.tokenize(line);
                 let forms: Vec<&str> = toks.iter().map(|t| t.form.as_str()).collect();
                 let space: Vec<bool> = toks.iter().map(|t| t.space_after).collect();
-                emit(&mut out, &format!("{stem}-{}", k + 1), line, &forms, &space)?;
+                emit(&mut out, &id, line, &forms, &space)?;
             }
         }
     }
@@ -1361,3 +1685,151 @@ fn annotate_files(model: &Path, files: &[PathBuf]) -> Result<()> {
     Ok(())
 }
 
+/// Closed Early Modern English words for the `compare` classes (pronouns, auxiliaries, pro-adverbs, other function
+/// words of the King James and JPS 1917 Bibles; `languages/en-x-emode/12-mova-pipeline.md`).
+const EMODE_CLOSED: &[&str] = &[
+    "thou", "thee", "thy", "thine", "thyself", "ye", "shalt", "wilt", "canst", "couldest", "couldst", "mayest", "mayst",
+    "mightest", "shouldest", "shouldst", "wouldest", "wouldst", "hast", "hath", "hadst", "dost", "doth", "didst", "art",
+    "wast", "wert", "saith", "sayest", "lest", "unto", "behold", "lo", "aught", "nought", "naught", "whosoever", "whoso",
+    "thereof", "therein", "thereon", "thereby", "thereto", "therewith", "therefrom", "thereat", "thereunto", "thereupon",
+    "whereof", "wherein", "whereon", "wherewith", "whereby", "whereunto", "whereupon", "whereat", "whither", "whence",
+    "thither", "hither", "thence", "hence", "wherefore", "peradventure", "howbeit", "yonder", "nigh", "betimes",
+    "hitherto", "henceforth", "thenceforth", "aforetime", "verily", "yea", "nay",
+];
+
+/// `en compare <ref.conllu> <pred.conllu>`: a prediction against a reference (gold or a parse database), sentences
+/// paired by id, tokens by index where the forms agree. Prints the UD scores over the sentences whose forms all
+/// agree, and UPOS, lemma and UFeats agreement by class: modern words, closed EModE words, «-eth» and 2nd person
+/// «-est»/«-st» verbs (the reference says VERB/AUX), with the most frequent disagreements of each class. The last
+/// column counts the predicted lemmas still equal to the form on reference verbs (`giveth` → giveth): the reference
+/// itself carries such lemmas, so lemma agreement alone cannot show the repair.
+fn compare(refp: &Path, predp: &Path) -> Result<()> {
+    use en::ud::{Scores, Word};
+    use std::collections::BTreeMap;
+    let refs: BTreeMap<String, Sentence> = conllu::read(refp)?.into_iter().map(|s| (s.id.clone(), s)).collect();
+    let preds = conllu::read(predp)?;
+    let word = |t: &conllu::Token| Word { upos: t.upos, tag: t.tag, feats: t.feats, lemma: t.lemma.clone(), head: t.head, rel: t.rel };
+    let mut sc = Scores::default();
+    let (mut paired, mut full, mut clean) = (0usize, 0usize, 0usize);
+    // class → (tokens, UPOS, lemma, UFeats agreements); class → «form UPOS→UPOS» → count
+    let mut cls: BTreeMap<&str, [usize; 5]> = BTreeMap::new();
+    let mut miss: BTreeMap<&str, BTreeMap<String, usize>> = BTreeMap::new();
+    for p in &preds {
+        let Some(r) = refs.get(&p.id) else { continue };
+        paired += 1;
+        let same = r.tokens.len() == p.tokens.len() && r.tokens.iter().zip(&p.tokens).all(|(a, b)| a.form == b.form);
+        if same {
+            full += 1;
+            let g: Vec<Word> = r.tokens.iter().map(word).collect();
+            let q: Vec<Word> = p.tokens.iter().map(word).collect();
+            sc.add(&g, &q, r.has_feats, r.has_lemmas);
+        }
+        let mut bad = false;
+        for (a, b) in r.tokens.iter().zip(&p.tokens).filter(|(a, b)| a.form == b.form) {
+            let low = a.form.to_lowercase();
+            let verb = matches!(a.upos, Some(UPos::VERB | UPos::AUX));
+            let c = if EMODE_CLOSED.contains(&low.as_str()) {
+                "closed EModE"
+            } else if verb && low.ends_with("eth") {
+                "-eth verbs"
+            } else if verb && low.ends_with("st") && (low.ends_with("est") || a.tag.is_some_and(|t| t != Tag::VBN)) && a.lemma.to_lowercase() != low {
+                "-est/-st verbs"
+            } else {
+                "modern"
+            };
+            let e = cls.entry(c).or_default();
+            let up = a.upos == b.upos;
+            e[0] += 1;
+            e[1] += up as usize;
+            e[2] += (a.lemma == b.lemma) as usize;
+            e[3] += (a.feats.universal() == b.feats.universal()) as usize;
+            e[4] += (verb && b.lemma.to_lowercase() == low) as usize;
+            if !up {
+                bad = true;
+                let x = |u: Option<UPos>| u.map_or("_", |u| u.name());
+                *miss.entry(c).or_default().entry(format!("{low} {}→{}", x(b.upos), x(a.upos))).or_default() += 1;
+            }
+        }
+        clean += !bad as usize;
+    }
+    println!("{}: {} sentences; {paired} paired with {}, {full} with the same tokens; {clean} without a UPOS disagreement\n", name(predp), preds.len(), name(refp));
+    println!("{}", Scores::HEADER);
+    println!("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|");
+    println!("| {} | {} | {} |\n", name(predp), sc.n, sc.row());
+    println!("| class | tokens | UPOS | lemma | UFeats | verbs with lemma = form |\n|---|---:|---:|---:|---:|---:|");
+    let p = |k: usize, n: usize| 100.0 * k as f64 / n.max(1) as f64;
+    let mut all = [0usize; 5];
+    for (c, e) in &cls {
+        println!("| {c} | {} | {:.2} | {:.2} | {:.2} | {} |", e[0], p(e[1], e[0]), p(e[2], e[0]), p(e[3], e[0]), e[4]);
+        for k in 0..5 {
+            all[k] += e[k];
+        }
+    }
+    println!("| all | {} | {:.2} | {:.2} | {:.2} | {} |", all[0], p(all[1], all[0]), p(all[2], all[0]), p(all[3], all[0]), all[4]);
+    for (c, m) in &miss {
+        let mut v: Vec<(&String, &usize)> = m.iter().collect();
+        v.sort_by(|a, b| b.1.cmp(a.1).then(a.0.cmp(b.0)));
+        println!("\n{c}, UPOS pred→ref: {}", v.iter().take(12).map(|(k, n)| format!("{k} {n}")).collect::<Vec<_>>().join(", "));
+    }
+    Ok(())
+}
+
+
+#[cfg(test)]
+mod wave27 {
+    use super::*;
+    #[test]
+    fn argument_and_xpos_precedence() {
+        let a: Vec<String> = ["x", "a", "--", "b", "--", "c"]
+            .into_iter()
+            .map(str::to_string)
+            .collect();
+        assert_eq!(
+            split(&a, 1),
+            (
+                vec![PathBuf::from("a")],
+                vec!["b".to_string(), "--".to_string(), "c".to_string()]
+            )
+        );
+        assert_eq!(xpos_of("go", "VERB", "VerbForm=Inf|Tense=Past"), "VB");
+        assert_eq!(
+            xpos_of("went", "VERB", "Tense=Past|Person=3|Number=Sing"),
+            "VBD"
+        );
+        assert_eq!(xpos_of("whose", "PRON", "Poss=Yes|PronType=Rel"), "PRP$");
+        assert_eq!(xpos_of("x", "UNKNOWN", "_"), "FW");
+        assert!(
+            train_model(&[], &[])
+                .unwrap_err()
+                .to_string()
+                .contains("model file")
+        );
+    }
+    #[test]
+    fn synthetic_folds_and_xpos_fill() {
+        let dir = std::env::temp_dir().join(format!("mova-wave27-main-{}", std::process::id()));
+        std::fs::create_dir(&dir).unwrap();
+        let p = dir.join("in.conllu");
+        std::fs::write(&p,"# newdoc id = a\n# sent_id = a\n1\tCats\tcat\tNOUN\t_\tNumber=Plur\t0\troot\t_\t_\n\n# newdoc id = b\n# sent_id = b\n1\tGo\tgo\tVERB\tVB\t_\t0\troot\t_\t_\n\n").unwrap();
+        let out = dir.join("out");
+        assert!(
+            folds(&dir.join("missing"), 1, &out)
+                .unwrap_err()
+                .to_string()
+                .contains("k ≥ 2")
+        );
+        assert!(!out.exists());
+        folds(&p, 2, &out).unwrap();
+        let f = std::fs::read_to_string(out.join("in.fold0.conllu")).unwrap();
+        assert_eq!(
+            f,
+            std::fs::read_to_string(out.join("in.rest1.conllu")).unwrap()
+        );
+        assert!(f.contains("Cats") && !f.contains("\tGo\t"));
+        let filled = dir.join("filled.conllu");
+        xpos_fill(&p, &filled).unwrap();
+        let f = std::fs::read_to_string(filled).unwrap();
+        assert!(f.contains("NOUN\tNNS\t") && f.contains("VERB\tVB\t"));
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+}

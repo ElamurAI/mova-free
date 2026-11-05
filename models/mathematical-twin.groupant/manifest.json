@@ -1,0 +1,110 @@
+{
+  "children": [
+    "mathematical-twin-library",
+    "mathematical-twin-cli"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "No composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "excluded-observations",
+        "path": "model.md",
+        "required": true,
+        "scope": "U consists of fixed-snapshot CLI run records and model transitions; an inner bound on U minus actual R contains a normal updated checkpoint after a rejected observation, or admitted prediction with invalid feature dimensions. I/O failures may retain prefixes.",
+        "section": "excluded-observations",
+        "status": "partial_source_derived",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "compatible-histories",
+        "path": "model.md",
+        "required": true,
+        "scope": "Pre(K) contains all compatible specs, prospective forecasts and accepted measurements whose validated updates yield K. Aggregate parameters and residual totals leave ordering/history ambiguous; hashes constrain bytes under collision-resistance assumptions.",
+        "section": "compatible-histories",
+        "status": "partial_source_derived",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "cohort-boundary",
+        "path": "model.md",
+        "required": false,
+        "scope": "The CLI cohort hash includes binary/input fingerprints and declared fixed settings. Feature values and named variable environment axes can vary within the cohort. No claim that undeclared hardware or library state is captured.",
+        "section": "cohort-boundary",
+        "status": "partial_source_derived",
+        "type": "cohort_partition"
+      },
+      {
+        "id": "finite-update-domain",
+        "path": "model.md",
+        "required": false,
+        "scope": "Exact RLS relations hold algebraically under positive information and valid dimensions; implementation admission additionally requires finite arithmetic and Cholesky checks. Tiny positive ridge can create a nonfinite inverse before later validation rejects it.",
+        "section": "finite-update-domain",
+        "status": "partial_source_derived",
+        "type": "numerical_domain"
+      },
+      {
+        "id": "replay-converse",
+        "path": "model.md",
+        "required": false,
+        "scope": "Parent preparation replays the previous observation and compares the model within tolerance. Same-model is not an authenticated history proof; its helper uses zip and has no standalone dimension-equality gate.",
+        "section": "replay-converse",
+        "status": "partial_source_derived",
+        "type": "evidence_replay_preimage"
+      },
+      {
+        "id": "cost-decomposition",
+        "path": "model.md",
+        "required": false,
+        "scope": "Prediction calls Cholesky validation, so its actual bound includes O(d^3), not only dot products. Update validates through prediction and candidate validation; command execution and hashing are separate measured terms.",
+        "section": "cost-decomposition",
+        "status": "partial_source_derived",
+        "type": "resource_approximation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "id": "mathematical-twin",
+  "kind": "groupant_group",
+  "registry": {
+    "node": "mathematical-twin",
+    "path": "../contracts.json"
+  },
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "tools/twin/src/lib.rs",
+      "sha256": "89a5a0b5a5dc0fde578e2108b7418ee6b47a64b59b2d132c10e8b802d5e93e9d"
+    },
+    {
+      "path": "tools/twin/src/main.rs",
+      "sha256": "01f907c5df2d09277026ffba9a9e1660c1a729159986e0232cefc423aa87b1cb"
+    }
+  ],
+  "status": "partial_source_derived"
+}

@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms interval_tree::tests"
+  ],
+  "children": [],
+  "cost": "O(n log n) build, O(n) storage. O(n+k log k) worst query time and O(log n+k) scratch; k output indexes need sorting. Balanced immutable topology gives logarithmic stack depth.",
+  "description": "Closed interval overlap tree",
+  "forward": [
+    "Sort (start,end,index), recursively choose medians, cache maximum endpoint over each subtree. Visit left subtree unless cached maximum is below query start; stop current/right processing when current start exceeds query end. Emit intervals whose end reaches query start, then sort original indexes."
+  ],
+  "id": "algorithm-interval-tree",
+  "inverse": [
+    "Typed behavior complement, ambiguous reverse reconstruction and specializations in model.md"
+  ],
+  "limitations": [
+    "Exact bounded APIs only. No generic 1/2/5/10% accuracy surrogate is supported. Finite tests do not prove universal correctness or runtime gains. Standard Vec/Box/BTreeMap allocation failure may abort or panic; allocator refusal is not injected. No callbacks, I/O or concurrency effects.",
+    "Partial syntax only; no semantic proof"
+  ],
+  "source": "algorithms/src/interval_tree/mod.rs",
+  "state": "Bounded deterministic exact data structure; explicit validation and standard allocation behavior"
+}

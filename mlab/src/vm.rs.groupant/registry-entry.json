@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "wave30_bounded_state_and_fallback",
+    "wave30_parse_runtime_and_output_state",
+    "wave30_synthetic_gate_fail_fast",
+    "vm_workspace_is_visible_after_run"
+  ],
+  "children": [],
+  "cost": "Compile costs AST traversal, string linear dedup and sorted function/workspace names; execution costs dispatched instructions plus delegated kernels, sync list size and COW copies. Range iteration avoids full range materialization on real scalar path. Registers u16, jumps u32, some argument positions u8; no universal overflow bound; tmp asserts register budget.",
+  "description": "Register compiler/executor with compact scalar registers, Rc value copy-on-write, static fallback statements and dynamic expression dispatch; workspace moves between frames and registers.",
+  "forward": [
+    "compile_program sorts function names and emits Proto code and sites; run_program imports workspace, executes specialized ops or shared tree helpers, then exports registers on returned success/error. Fallback sync_out; tree exec; sync_in preserves touched workspace before Flow propagation."
+  ],
+  "id": "mlab-vm",
+  "inverse": [
+    "A final register/workspace and stream admit multiple source ASTs and instruction traces; folded constants, unprinted assignments and loop iterations are not invertible. Reg::U corresponds to absent variable, not numerical zero. Reg conversion preserves supported value observations but erases allocation identity."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no macro expansion or semantic resolution. Finite synthetic CPU checks are not a proof. Frozen suites, corpus, teacher, GPU, allocation exhaustion and host IO failure injection were not run. No useful executable percent surrogate for categorical control/effects; unsupported gap, no 1/2/5/10% claim."
+  ],
+  "source": "mlab/src/vm.rs",
+  "state": "Under compiler-generated valid prototypes, native/fallback paths share error text and value semantics on tested fixtures. Matrix fast indices require positive integral in-bounds coordinates; mutation uses Rc::make_mut. Function pools clear registers/loops after calls. No general verifier validates arbitrary public Proto/Op values."
+}

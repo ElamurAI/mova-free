@@ -8,11 +8,13 @@ Mova's corpus holds random English sentences, annotated in a loop:
 
 ## Where it lives
 
-The corpus is kept outside the repo, in the data directory. This file only describes it; older versions of the corpus are in the git history.
+The corpus is kept outside the repo, in the data directory. This file only describes it.
 
-- The DuckDB annotation database `db/mova.duckdb` holds every layer and source over the same sentences: treebank gold, silver, bronze, the large-model and Rust runs, and the tales. [`db/README.md`](../db/README.md) describes the schema and gives example queries; the tool is `tools/db`.
+- **The open release** `corpus/open/`: the downloaded corpus 0.4 (books, treebanks, dictionary, math scripts, contrast sets), unpacked by `train/get-corpus.sh 0.4` (the 0.5 corpus: `mova fetch 0.5 corpus`); only its READMEs are in git ([open/README.md](open/README.md)).
+
+- The DuckDB annotation database `$MOVA_DATA/db/mova.duckdb` holds every layer and source over the same sentences: treebank gold, silver, bronze, the large-model and Rust runs, and the tales. [`tools/db/README.md`](../tools/db/README.md) describes the schema and gives example queries; the tool is `tools/db`.
 - The CoNLL-U files `corpus/mova-silver-en.conllu` and `corpus/mova-bronze-en.conllu`: `annot silver` appends to them, `db load` loads them into the database, and `db export` writes them back byte for byte.
-- **The school** (2026-10-15): `corpus/school/school-silver.conllu` holds the teacher's trees, 44 011 sentences. Next to it, `school-agreed.conllu` is the agreed layer: the teacher plus Stanza, Trankit and spaCy-trf, combined by the written rules of [`tools/treeagree`](../tools/treeagree), whose README has the description and measurements.
+- **The school**: `corpus/school/school-silver.conllu` holds the teacher's trees, 44 011 sentences (built 2026-10-15). Next to it, `school-agreed.conllu` is the agreed layer: the teacher plus Stanza, Trankit and spaCy-trf, combined by the written rules of [`tools/treeagree`](../tools/treeagree), whose README describes them.
 
 ## Silver
 
@@ -23,20 +25,20 @@ The corpus is kept outside the repo, in the data directory. This file only descr
 
 **Format: CoNLL-U, UD 2.18, EWT conventions.** The columns are ID, FORM, LEMMA, UPOS, XPOS (PTB), FEATS, HEAD and DEPREL with subtypes; DEPS and MISC are «_». Every sentence has:
 - `# source`: the source and licence of the text;
-- `# annotation`: who annotated it, at what effort, and the run folder;
+- `# annotation`: who annotated it, how, and the run folder;
 - `# text` and `# sent_id`.
 
-**State on 2026-09-26: 348 silver sentences.**
-- 20 sentences from Tatoeba and from papers, annotated in two passes at maximum effort.
-- 328 examples from the seeds, raised from bronze in edit mode at high effort. First came the examples of 5–30 tokens: 171 sentences, 49.5 k output tokens. Then the short ones: 157 sentences, 36 k. Long, complex sentences are kept along with the short ones; nothing is filtered by length. The first pass skipped 20 of them, and the second pass took all.
+**Size: 348 silver sentences** (as in corpus 0.4).
+- 20 sentences from Tatoeba and from papers, annotated in two passes.
+- 328 examples from the seeds, raised from bronze in edit mode: 171 sentences of 5–30 tokens and 157 shorter ones. Long, complex sentences are kept along with the short ones; nothing is filtered by length.
 
-`annot/README.md` explains, with its calibration, why edit mode was chosen.
+`annot/README.md` describes edit mode and its calibration.
 
 ## Bronze
 
 `mova-bronze-en.conllu` holds sentences annotated by the Rust annotator `en` alone, without the large model (`annot bronze`). The gates are the same as for silver.
 
-Bronze is a queue: a large-model pass can raise its sentences to silver, and they also test the rules of the expert system ([`docs/expert.md`](../docs/expert.md)). On 2026-09-26 it held 326 sentences from the examples in the seeds `en/seeds/`; the gate stopped two more.
+Bronze is a queue: a large-model pass can raise its sentences to silver, and they also test the rules of the expert system ([`docs/english.md`](../docs/english.md)). It holds 326 sentences from the examples in the seeds `en/seeds/` (as in corpus 0.4).
 
 ## Sources of the sentences
 
@@ -48,7 +50,7 @@ Bronze is a queue: a large-model pass can raise its sentences to silver, and the
 
 The author and title of each paper are in the library's card for it.
 
-**The corpus licence is CC BY 4.0.** The annotation is ours; the texts are CC0 or CC BY, with attribution in `# source`.
+**Licence.** The annotation is ours; the texts are CC0 or CC BY, with attribution in `# source`. As shipped in the open corpus 0.4, the corpus is under CC BY-SA 4.0 as a whole.
 
 ## Checks
 
@@ -57,4 +59,4 @@ The author and title of each paper are in the library's card for it.
 
 ## Licence
 
-The corpus itself is CC BY 4.0, as stated above: the texts are CC0 or CC BY, and the annotation is ours. Mova's code and models are under the Elamur Cosmic License ([LICENSE.md](../LICENSE.md)).
+The open corpus 0.4 is under CC BY-SA 4.0 as a whole ([open/README.md](open/README.md)); its silver texts are CC0 or CC BY, and the annotation is ours. The trained models (`en.bin`, the GPU parser) are under CC BY-SA 4.0; Mova's code is under the Elamur Cosmic License ([LICENSE.md](../LICENSE.md)). Details per file: [licence/DATA.md](../licence/DATA.md).

@@ -1,0 +1,22 @@
+{
+  "id": "algorithm-longest_palindromic_subsequence",
+  "source": "algorithms/src/longest_palindromic_subsequence/mod.rs",
+  "description": "longest_palindromic_subsequence exact implementation",
+  "state": "Finite slices T:Eq under reflexive symmetric transitive stable equality, sufficient memory; output usize.",
+  "forward": [
+    "Return the maximum cardinality of indices i1<...<ik whose selected values equal their reversal. Empty yields 0. Interval recurrence D(i,j)=D(i+1,j-1)+2 for equal endpoints, otherwise max(D(i+1,j),D(i,j-1)); D(i,i)=1 and empty interval=0."
+  ],
+  "inverse": [
+    "Universe (input,k). Exclude k<0 or k>n, k=0 for nonempty input, values without a palindromic subsequence witness, and values below any feasible palindromic witness length. Witness existence and maximality jointly characterize the result.",
+    "Given length n and observed k, compatible inputs are equality patterns admitting a palindromic index subsequence of size k and none larger. For an alphabet with at least n symbols: n=0 allows only k=0; n>0 allows precisely 1<=k<=n, witnessed by k copies of one symbol and n-k distinct other symbols. With smaller fixed alphabets extra constraints apply. Actual symbols and order are not uniquely recovered."
+  ],
+  "cost": "Exactly n(n-1)/2 endpoint equality evaluations; O(n²) word operations and O(n) words. Equality cost is additional. Result at most n so additions fit usize for allocatable input.",
+  "checks": [
+    "cargo test -p mova-algorithms --offline longest_palindromic_subsequence::tests::",
+    "Compiled semantic mutant rejected by a real assertion; syntax generated twice."
+  ],
+  "limitations": [
+    "Partial syntax, finite evidence, no timing or downstream gain claimed."
+  ],
+  "children": []
+}

@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "wave33::entities_sections_and_translation_partition"
+  ],
+  "children": [],
+  "cost": "O(input bytes) scanner plus template scans and aggregation; memory largest page plus distinct languages/templates/editors and pending/audio data, not constant memory. Sorted reports O(K log K), buffered output costs.",
+  "description": "Line-based export parser collects Page, aggregates on close; truncation/no pages fail before writers. Namespace counters separate redirects. English L2 and Ukrainian language/block aggregates consume unescaped page text; pending Ukrainian etymology templates checked against namespace10 pages at write, then TSVs then summary.",
+  "forward": [
+    "Line-based export parser collects Page, aggregates on close; truncation/no pages fail before writers. Namespace counters separate redirects. English L2 and Ukrainian language/block aggregates consume unescaped page text; pending Ukrainian etymology templates checked against namespace10 pages at write, then TSVs then summary."
+  ],
+  "id": "wikt-count-text-command",
+  "inverse": [
+    "Redirect cannot contribute ns bytes/linked/year/editor or language counters; translation subpage bypasses normal En language sections.",
+    "Aggregated counts admit many page orders/content revisions; trusted byte attr need not recover text length. Top100 editors loses tail identities/counts."
+  ],
+  "limitations": [
+    "Export0.11 one-tag-per-line escaped-text conventions; bounded u64 counters and UTF-8 conversion; malformed data may be lossy. No full dump or CLI effects executed.",
+    "Partial syntax and bounded synthetic helper checks; no command/corpus/model/download effects, universal proof or percentage surrogate."
+  ],
+  "source": "tools/wikt-count/src/main.rs",
+  "state": "Namespace pages count closed pages; nonredirect text bytes trust bytes attr, not decoded bytes. Sections count language occurrences not unique titles. Some HashMap report tie orders lack a final key. No semantic dictionary quality inference."
+}

@@ -1,0 +1,35 @@
+{
+  "checks": [
+    "15 exact native names twice debug/twice release, outcomes compared",
+    "Five compiled behavior controls rejected and exact-restored with positive reruns",
+    "Nine syntax projections generated twice and equal",
+    "Local augmented registry and staged/range guards"
+  ],
+  "children": [
+    "translation-flow-bible",
+    "translation-flow-blocks",
+    "translation-flow-corpus",
+    "translation-flow-main",
+    "translation-flow-many",
+    "translation-flow-measure",
+    "translation-flow-pages",
+    "translation-flow-report",
+    "translation-flow-sources"
+  ],
+  "cost": "Sum delegated parser/reader/training work plus O(P²) pair state/work per streamed block; retained training and optional dev metas prevent constant-space claim. LIS O(nlog n), UPGMA O(n³) distance visits, BTreeMap accounting O(tokens log vocabulary), rendering/output byte costs. Compact12C+17E+8T is conceptual bytes, not RAM.",
+  "description": "bible/sources supply VKey text maps; corpus groups and parses into PVerse. main evaluates target-population records with measure's reader/encoder/stack residuals and paired-source aggregates; blocks combines chapter-local layouts and reader scripts. many independently orchestrates multi-translation pair accounting from the same corpus/measure representation. report and pages consume residuals and normalized counts.",
+  "forward": [
+    "bible/sources supply VKey text maps; corpus groups and parses into PVerse. main evaluates target-population records with measure's reader/encoder/stack residuals and paired-source aggregates; blocks combines chapter-local layouts and reader scripts. many independently orchestrates multi-translation pair accounting from the same corpus/measure representation. report and pages consume residuals and normalized counts.",
+    "Real joins: bible::read_pool/sources text→corpus PVerse; main run_sys→measure::Run→Agg/VRec→block_measure and report::write; many→corpus/measure plus own pair metrics; pages receives wlc_jps VRec stage arrays from main and Hebrew encoder outputs. many::agree skips punctuation while block_meta includes it: their counts are not interchangeable. Report groups collapse layers. No invented call from report to many."
+  ],
+  "id": "translation-evaluation-pipeline",
+  "inverse": [
+    "Paired aggregates exclude absent original source keys; diagnostic target reconstruction cannot imply normal exact translation. Page Meta cells excluded from page cost, while translation residual cells all count. Partial conditional exclusion over valid declared states.",
+    "Residual+decoder state reconstructs target layers conditionally; summary ratios admit many source texts, trees, gaps and sampling histories. Recovering source or meaning uniquely is unsupported. Preserve population masks, keys and residuals when diagnosing."
+  ],
+  "limitations": [
+    "No live corpus/model/annotator/teacher/training/GPU or filesystem/site publication.",
+    "Partial syntax and helper tests do not certify full orchestration; no executable percentage approximant."
+  ],
+  "state": "Explicit valid tree/key/population domains; residual-assisted exact target reconstruction remains distinct from normal translation scores. Original production bytes preserved. Finite arithmetic and representable counters required; Docs sample n>0; storage membership indices<64."
+}

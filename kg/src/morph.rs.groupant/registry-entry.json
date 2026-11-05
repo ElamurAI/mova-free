@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "morph::tests::lines_and_government",
+    "morph::wave29::two_pass_synthetic_dictionary"
+  ],
+  "children": [],
+  "cost": "Two complete decompressions O(2B) plus hashing/strings; O(A+S) retained analysis/synthesis bytes. Empty vocab still reads twice; no byte cap.",
+  "description": "Two-pass VESUM loading: vocabulary-limited analyses and full selected-paradigm synthesis.",
+  "forward": [
+    "Pass1 tracks lemma/tags/government from bz2 lines, normalizes forms and retains vocab matches. Keys lemma|POS#xp use merged first xp marker; verb/prep inherit lemma government. Pass2 rescans all forms of selected lemma keys into synthesis."
+  ],
+  "id": "kg-morph",
+  "inverse": [
+    "norm preimage includes case, invisible/stress, apostrophe variants. Morph admits arbitrary unselected entries, comments/ignored tags; lemma_of discards POS/xp; synth offers multiple compatible surface forms."
+  ],
+  "limitations": [
+    "No real VESUM, corpus, changed-between-passes or streaming-fault tests.",
+    "Partial lexical AST; no semantic proof or useful executable percentage surrogate."
+  ],
+  "source": "kg/src/morph.rs",
+  "state": "Unchanged file across passes: retained analyses select lemma paradigms; unrequested forms may enter synth but not forms. Vectors retain dictionary order/duplicates. norm is lossy lowercase/invisible/apostrophe projection."
+}

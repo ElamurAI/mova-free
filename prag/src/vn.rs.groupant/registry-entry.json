@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p prag --lib vn::wave15_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "O(B log K + E log E) load approximation; match O(V K H F (S + (A+P) H R + P Q)) with repeated ancestor scans, plus BTreeSet chain O(H log H). B bytes, K classes, E frequency rows, H depth, F frames per ancestor, S syntax tokens, A objects, P clause PPs, Q frame PPs, R roles. No speed claim.",
+  "description": "Let T=(verbnet,nominals,frequencies) be supplied UTF-8 tables and C a finite clause. Load T in order, index classes, expand ancestor frames, score candidates, select stable class optionally, choose first maximum, then require every core slot assigned. Result is None or (class,frame-source,frame-index,score,verb,role vectors). Globals additionally read stable policy and recording flag; recording invokes the unchanged unique-winner update via a callback.",
+  "forward": [
+    "Let T=(verbnet,nominals,frequencies) be supplied UTF-8 tables and C a finite clause. Load T in order, index classes, expand ancestor frames, score candidates, select stable class optionally, choose first maximum, then require every core slot assigned. Result is None or (class,frame-source,frame-index,score,verb,role vectors). Globals additionally read stable policy and recording flag; recording invokes the unchanged unique-winner update via a callback."
+  ],
+  "id": "prag-vn",
+  "inverse": [
+    "B(y)={(T,C):F(T,C)=y} on the supplied domain. Filler values, unchosen classes and irrelevant nominal rows may vary; None includes missing verbs, expletive frames and core mismatch. Preserve shared class indices when composing child preimages."
+  ],
+  "limitations": [
+    "Bounded supplied tables and clauses only; global recording lifecycle unexecuted.",
+    "Partial syntax; malformed private indexes and extreme numeric sizes outside scope."
+  ],
+  "source": "prag/src/vn.rs",
+  "state": "Output role vectors preserve clause argument positions and length; inherited frame coordinates remain distinct from member class. Bounds and arithmetic representability below are domain premises."
+}

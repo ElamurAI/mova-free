@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cancellation_oracle covers both magnitude branches and exact i64 sums for 100 finite integer fixtures; subnormal/empty/overflow fixtures.",
+    "Replace final total+correction with total-correction; cancellation_oracle fails"
+  ],
+  "children": [],
+  "cost": "O(n) validation and reduction, O(1) state, no allocation.",
+  "description": "Neumaier accumulates total and correction, selecting correction formula by magnitude. Return total+correction with all inputs and each state finite. Mathematical target is the real sum, but f64 rounding and underflow remain.",
+  "forward": [
+    "Neumaier accumulates total and correction, selecting correction formula by magnitude. Return total+correction with all inputs and each state finite. Mathematical target is the real sum, but f64 rounding and underflow remain."
+  ],
+  "id": "algorithm-compensated-sum",
+  "inverse": [
+    "[1,2] and [3] both map to 3; zero-sum insertions preserve real totals but may change rounded traversal. The fiber contains many lengths/orders and cannot recover terms or correction state from final sum."
+  ],
+  "limitations": [
+    "Rounded arithmetic not real exactness; no universal relative accuracy bound",
+    "Finite fixtures and partial syntax do not prove correctness",
+    "Callback determinism and bounded resource use outside Simpson are caller assumptions",
+    "No executable cheaper surrogate or performance claim"
+  ],
+  "source": "algorithms/src/compensated_sum/mod.rs",
+  "state": "Finite f64 slices or bounded panel stack; tests observe tagged results and assertion outcomes"
+}

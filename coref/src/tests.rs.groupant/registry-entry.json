@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "All tests in this source (score module tests excluded)",
+    "tests::lexicon_paths_find_their_pairs",
+    "tests::lexicon_paths_negative_controls",
+    "tests::lexicon_decisions_need_evidence_and_a_clear_share",
+    "tests::lexicon_feature_keeps_it_from_a_person_noun"
+  ],
+  "children": [],
+  "cost": "Bounded constant fixtures, maximum story3 sentences; costs inherit production routines at tiny N/M. Empty eval executes all configurations with zero documents. No performance inference.",
+  "description": "Hand-authored synthetic CoNLL-U stories exercising actual resolver, format, document and evaluation APIs.",
+  "forward": [
+    "row maps short fixture columns to ten-column CoNLL-U; sent adds comments and ids; story builds three-sentence title/appos/reflexive/relative chain. Assertions compare externally specified chain texts/reasons, speaker partitions, stripped-gold output, read/write spans, it readings and strict-before-notional choice. Added wave27 checks cover document failure precedence/quotes/retree, nested Entity/head tie, coordination visibility and event/empty-eval behavior. Lexicon tests build hand trees for each path and its negative controls, decide thresholds on a hand table, check the rotation is a derangement, and resolve «it» with and without a thread-local table."
+  ],
+  "id": "coref-tests",
+  "inverse": [
+    "For the vector of passing outcomes, compatible implementations are all programs agreeing on these bounded assertions; infinitely many disagree elsewhere. For serialized fixtures, row's lowercase lemma and omitted default MISC collapse antecedent short-column strings."
+  ],
+  "limitations": [
+    "Finite fixtures; no model accuracy/corpus assertions, property exhaustiveness, performance or allocation-failure evidence.",
+    "Partial lexical syntax; no executable percentage surrogate; no corpus or universal proof."
+  ],
+  "source": "coref/src/tests.rs",
+  "state": "In-memory fixtures plus resolver/sys observations; no corpus or teacher access."
+}

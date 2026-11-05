@@ -1,0 +1,163 @@
+{
+  "children": [
+    "algorithm-bitset-subset-sum",
+    "algorithm-bitset-subset-sum-tests",
+    "algorithm-meet-in-middle-knapsack",
+    "algorithm-meet-in-middle-knapsack-tests",
+    "algorithm-smawk",
+    "algorithm-smawk-tests",
+    "algorithm-divide-conquer-dp",
+    "algorithm-divide-conquer-dp-tests",
+    "algorithm-knuth-optimal-bst",
+    "algorithm-knuth-optimal-bst-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "SMAWK every submatrix must have monotone leftmost minima; merely full-matrix monotone minima is insufficient. Partition monotone optima must hold at every layer. These properties are not verified dynamically. BST is successful-key-only objective.",
+        "domain": "Unsigned item/target inputs under word/state caps; deterministic totally-monotone matrix callbacks; monotone-leftmost-optimal-split partition callbacks; nonnegative successful-key BST weights.",
+        "evidence": "model.md#wave20-evidence; exact transitive revisions in source_bindings.",
+        "id": "dynamic-programming-optimization-behavior-complement",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For exact integer targets, exclude a bitset true decision with no subset summing to target, a knapsack objective unattainable under capacity or below the feasible maximum, a SMAWK column that is not the leftmost row minimum, a partition value violating the minimum over exactly the requested nonempty contiguous intervals, or a BST value violating the successful-key interval recurrence. SMAWK/partition exclusions are conditional on total-monotonicity/monotone-split premises: arbitrary callbacks outside those premises may yield incorrect answers without validation errors. Native categorical exclusions also include overflow wraparound, violating word/state/cell or callback caps, and returning partial answers on budget failure. These integer targets do not carry f64 tolerances.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "SMAWK every submatrix must have monotone leftmost minima; merely full-matrix monotone minima is insufficient. Partition monotone optima must hold at every layer. These properties are not verified dynamically. BST is successful-key-only objective.",
+        "domain": "Unsigned item/target inputs under word/state caps; deterministic totally-monotone matrix callbacks; monotone-leftmost-optimal-split partition callbacks; nonnegative successful-key BST weights.",
+        "evidence": "model.md#wave20-evidence; exact transitive revisions in source_bindings.",
+        "id": "dynamic-programming-optimization-reverse-reconstruction",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "A reachability true output retains all item multisets having at least one target-sum subset; false retains those having none. For [1,1] at target1, two distinct index masks share the same decision and knapsack objective, and objective-only output does not recover either witness. Fixed SMAWK minima j_i constrain each lawful row by M[i,j_i]<=M[i,j] and strict inequality for earlier j on ties; row offsets preserve minimizer indices while changing values. A partition scalar retains many interval-cost arrays and boundary choices, subject to nonempty contiguous ranges and structural premises; it does not reconstruct a split witness. BST cost similarly admits different weight vectors or tied optimal trees. Checked integer values are exact when successful under the stated premises, while an error identifies only a broad resource/domain fiber.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "SMAWK every submatrix must have monotone leftmost minima; merely full-matrix monotone minima is insufficient. Partition monotone optima must hold at every layer. These properties are not verified dynamically. BST is successful-key-only objective.",
+        "domain": "Unsigned item/target inputs under word/state caps; deterministic totally-monotone matrix callbacks; monotone-leftmost-optimal-split partition callbacks; nonnegative successful-key BST weights.",
+        "evidence": "model.md#wave20-evidence; exact transitive revisions in source_bindings.",
+        "id": "dynamic-programming-optimization-subset-embedding",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Embedding each v as weight=v,value=v gives feasible objectives equal to subset sums<=capacity. Decision(target) is true iff optimum(target)=target, provided both resource domains admit input. Many masks may give the same objective.",
+        "path": "model.md",
+        "section": "subset-embedding",
+        "status": "partial_source_model",
+        "type": "attainability_objective_relation"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "SMAWK every submatrix must have monotone leftmost minima; merely full-matrix monotone minima is insufficient. Partition monotone optima must hold at every layer. These properties are not verified dynamically. BST is successful-key-only objective.",
+        "domain": "Unsigned item/target inputs under word/state caps; deterministic totally-monotone matrix callbacks; monotone-leftmost-optimal-split partition callbacks; nonnegative successful-key BST weights.",
+        "evidence": "model.md#wave20-evidence; exact transitive revisions in source_bindings.",
+        "id": "dynamic-programming-optimization-monotone-reduction",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "SMAWK elimination is valid for total monotonicity with left ties; divide/conquer recursion restricts split search using nondecreasing leftmost optimal indices. Violating premises may silently yield wrong results, not a validation error.",
+        "path": "model.md",
+        "section": "monotone-reduction",
+        "status": "partial_source_model",
+        "type": "conditional_search_restriction"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "SMAWK every submatrix must have monotone leftmost minima; merely full-matrix monotone minima is insufficient. Partition monotone optima must hold at every layer. These properties are not verified dynamically. BST is successful-key-only objective.",
+        "domain": "Unsigned item/target inputs under word/state caps; deterministic totally-monotone matrix callbacks; monotone-leftmost-optimal-split partition callbacks; nonnegative successful-key BST weights.",
+        "evidence": "model.md#wave20-evidence; exact transitive revisions in source_bindings.",
+        "id": "dynamic-programming-optimization-tree-recurrence",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For nonnegative successful-key weights, C[i,j]=sum(w[i..j])+min_r(C[i,r]+C[r+1,j]); Knuth monotone root bounds reduce cubic root enumeration to quadratic. Equal costs can retain multiple trees; harness compares independent full enumeration.",
+        "path": "model.md",
+        "section": "tree-recurrence",
+        "status": "partial_source_model",
+        "type": "interval_root_restriction"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "dynamic-programming-optimization",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/bitset_subset_sum/mod.rs",
+      "sha256": "46fc828212ab7df1fe860d6d9f2100bb77c4b89d0f2173c39d7a7f2acf3d5a45"
+    },
+    {
+      "path": "algorithms/src/bitset_subset_sum/tests.rs",
+      "sha256": "392961c7ba27ec7c40e77091c69b5716468a32cb97a9998a7b219803beb6bbbe"
+    },
+    {
+      "path": "algorithms/src/divide_conquer_dp/mod.rs",
+      "sha256": "3553d06e23eebc7cb4272fdd2a8f45f83f54fdad06d9cb23fd1d0af1c478a616"
+    },
+    {
+      "path": "algorithms/src/divide_conquer_dp/tests.rs",
+      "sha256": "b3fb22dc6976cc17a6b4400dd9580f5f1c263955922fc7df7cedfc7f9514c23e"
+    },
+    {
+      "path": "algorithms/src/knuth_optimal_bst/mod.rs",
+      "sha256": "1b599a6880f7f8f6739cfb04079ec37790bdc9b830e990cfab859020676d3c39"
+    },
+    {
+      "path": "algorithms/src/knuth_optimal_bst/tests.rs",
+      "sha256": "f5b6e0812047232f4b91ddd5c2b491849ef59df3ad4a21769db67b8e19c2a6c7"
+    },
+    {
+      "path": "algorithms/src/meet_in_middle_knapsack/mod.rs",
+      "sha256": "b05978385d0a15a9b0be18beb77cfa108dfe45725efc8052c4f75e392e55223e"
+    },
+    {
+      "path": "algorithms/src/meet_in_middle_knapsack/tests.rs",
+      "sha256": "4426dbf75bb3b3e1becacbf933a57c8acb1785ad35da980631820aa2be3477de"
+    },
+    {
+      "path": "algorithms/src/smawk/mod.rs",
+      "sha256": "36f6c3f10ffbecb1747e6014fe76f2f5f661511cc2146fb1c5d9c8ce811080a3"
+    },
+    {
+      "path": "algorithms/src/smawk/tests.rs",
+      "sha256": "b605e7bc0ed9e304109c2d0d5d8a419c3f7f57ae3d3b3dbcbfc9987bfcabd8dc"
+    }
+  ],
+  "status": "partial_source_bound_group"
+}

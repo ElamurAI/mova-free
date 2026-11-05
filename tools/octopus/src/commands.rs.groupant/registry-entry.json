@@ -1,0 +1,22 @@
+{
+  "id": "command-school-corpus",
+  "source": "tools/octopus/src/commands.rs",
+  "children": [],
+  "description": "Command school: anonymized corpus of commands to Crab and a plan-only exam against reviewed readings.",
+  "state": "Append-only JSONL corpus; reviewed expectations separate from observed readings.",
+  "forward": [
+    "anonymize tokens; record observed readings; exam reviewed entries via review only."
+  ],
+  "inverse": [
+    "Anonymized tokens are not recoverable; readings name capability or refusal stage."
+  ],
+  "cost": "Linear anonymize; one native parse per examined entry.",
+  "checks": [
+    "2026-11-03: anonymize/audit unit tests; 21 seed commands examined twice identically, 21/21.",
+    "2026-11-04: unit tests for determiner toggling, promote gate (privacy, observation, execution outcome, duplicates), review queue and exercises with a negative control; live: seed 52/53 (the one failure is a reviewed refusal now understood: \"Is the documenter running?\"), 123 generated exercises from the seed all pass.",
+    "2026-11-05: exercise fixture declares observes for worker_status capabilities (test-only change); lib tests pass twice."
+  ],
+  "limitations": [
+    "Lexical anonymization only; no lessons or dictionary yet; no training."
+  ]
+}

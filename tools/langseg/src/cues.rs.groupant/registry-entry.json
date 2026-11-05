@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cue_features_fire_on_pointed_and_unpointed_forms"
+  ],
+  "children": [],
+  "cost": "W words,A affixes: map O(W log W) construction/O(W) entries; gloss O(W+A) scan. Static borrowed strings; no filesystem.",
+  "description": "word_cues inserts declaration-order WORDS using entry.or_insert; first duplicate form wins. gloss chooses first matching C:name/A:name or fixed P label. p/s encode affix orientation and minimum length consumed by Featurizer.",
+  "forward": [
+    "word_cues inserts declaration-order WORDS using entry.or_insert; first duplicate form wins. gloss chooses first matching C:name/A:name or fixed P label. p/s encode affix orientation and minimum length consumed by Featurizer."
+  ],
+  "id": "langseg-cues",
+  "inverse": [
+    "No learning or effect occurs. Missing names cannot fabricate glosses; later duplicate forms cannot replace earlier map entries. Expectations cannot directly choose classes.",
+    "A gloss admits all names whose first matching entry has that text; aliases prevent recovery of spelling. Map forgets later duplicates and their positions."
+  ],
+  "limitations": [
+    "Static representation and bounded downstream checks; all catalog semantics unverified.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/langseg/src/cues.rs",
+  "state": "Names may alias spellings. Expectations are explanatory text, not learned weights. Missing labels return None; exact C:/A: prefixes select separate tables."
+}

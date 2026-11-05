@@ -1,0 +1,200 @@
+{
+  "children": [
+    "world-quant",
+    "world-opchoice",
+    "world-mentions",
+    "world-treeread",
+    "quantitative-understanding"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_derived"
+    },
+    "ast": {
+      "scope": "No composed semantic AST; child partial syntax only.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_derived"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_derived"
+    },
+    "obernants": [
+      {
+        "id": "quantity-reading-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_derived",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "quantity-reading-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "quantity-reading-integer-embedding",
+        "path": "model.md",
+        "section": "integer-embedding",
+        "status": "partial_source_derived",
+        "type": "encoding_relation"
+      },
+      {
+        "id": "quantity-reading-occurrence-identity",
+        "path": "model.md",
+        "section": "occurrence-identity",
+        "status": "partial_source_derived",
+        "type": "constraint_relation"
+      },
+      {
+        "id": "quantity-reading-second-step-order",
+        "path": "model.md",
+        "section": "second-step-order",
+        "status": "partial_source_derived",
+        "type": "priority_relation"
+      },
+      {
+        "id": "quantity-reading-selection-context",
+        "path": "model.md",
+        "section": "selection-context",
+        "status": "partial_source_derived",
+        "type": "state_dependency"
+      },
+      {
+        "id": "quantity-reading-reading-branches",
+        "path": "model.md",
+        "section": "reading-branches",
+        "status": "partial_source_derived",
+        "type": "information_loss"
+      },
+      {
+        "id": "quantity-reading-anchor-provenance",
+        "path": "model.md",
+        "section": "anchor-provenance",
+        "status": "partial_source_derived",
+        "type": "provenance_constraint"
+      },
+      {
+        "id": "quantity-reading-diagnostic-effects",
+        "path": "model.md",
+        "section": "diagnostic-effects",
+        "status": "partial_source_derived",
+        "type": "state_transition"
+      },
+      {
+        "assumptions": "Dependency annotations and learned weights are not validated by helper fixtures. Public malformed structures may panic. No useful executable percent surrogate attached; future caps1/2/5/10 require metric.",
+        "domain": "Bounded synthetic valid structures and valid source indices, fixed environment; finite numeric interpretation where required. n<=64 for steps oracle and <=256 DAG pool indices. No external models, teacher, GPU, corpora, held-out or large training.",
+        "id": "wave28-quantitative-understanding-representation-transport",
+        "operator": "Exact rational cells cannot be equated with f64 search without conversion/error domain. Preserve source occurrence indices and distinct additive versus overwrite Set semantics.",
+        "path": "model.md",
+        "section": "wave28-quantitative-understanding-representation-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Dependency annotations and learned weights are not validated by helper fixtures. Public malformed structures may panic. No useful executable percent surrogate attached; future caps1/2/5/10 require metric.",
+        "domain": "Bounded synthetic valid structures and valid source indices, fixed environment; finite numeric interpretation where required. n<=64 for steps oracle and <=256 DAG pool indices. No external models, teacher, GPU, corpora, held-out or large training.",
+        "id": "wave28-quantitative-understanding-search-supervision",
+        "operator": "steps oracle forbids repeated leaves; deduct gold reuses identical nodes but self-combination search candidates absent, so syntactically accepted gold need not be reachable.",
+        "path": "model.md",
+        "section": "wave28-quantitative-understanding-search-supervision",
+        "status": "partial_composition_model",
+        "type": "search_reachability"
+      },
+      {
+        "assumptions": "Dependency annotations and learned weights are not validated by helper fixtures. Public malformed structures may panic. No useful executable percent surrogate attached; future caps1/2/5/10 require metric.",
+        "domain": "Bounded synthetic valid structures and valid source indices, fixed environment; finite numeric interpretation where required. n<=64 for steps oracle and <=256 DAG pool indices. No external models, teacher, GPU, corpora, held-out or large training.",
+        "id": "wave28-quantitative-understanding-effect-boundary",
+        "operator": "Only missing path metadata/tempdir effects exercised; Annotator and frozen suite remain excluded.",
+        "path": "model.md",
+        "section": "wave28-quantitative-understanding-effect-boundary",
+        "status": "partial_composition_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "Dependency annotations and learned weights are not validated by helper fixtures. Public malformed structures may panic. No useful executable percent surrogate attached; future caps1/2/5/10 require metric.",
+        "domain": "Bounded synthetic valid structures and valid source indices, fixed environment; finite numeric interpretation where required. n<=64 for steps oracle and <=256 DAG pool indices. No external models, teacher, GPU, corpora, held-out or large training.",
+        "id": "wave28-quantitative-understanding-cost-composition",
+        "operator": "Feature extraction, candidate clone/tree construction and exact arithmetic costs survive composition; no measured speed or global percentage bound.",
+        "path": "model.md",
+        "section": "wave28-quantitative-understanding-cost-composition",
+        "status": "partial_composition_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_derived"
+    }
+  },
+  "id": "quantity-reading",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "math/src/deduct.rs",
+      "sha256": "373e1e3d5d83d964727e9a6becd5b07b78a562291ad7d69c76626ef8e1064ac8"
+    },
+    {
+      "path": "math/src/lex.rs",
+      "sha256": "6a1e155f726c65b8e10f15dc0aba1622c52e22800a2c4d8c75fa194de79e2171"
+    },
+    {
+      "path": "math/src/qread.rs",
+      "sha256": "8389b8d58f68121743d6346e638601297c3725483f4b9fcd2eb8cd47ef2d028a"
+    },
+    {
+      "path": "math/src/qworld.rs",
+      "sha256": "6225ef705c842a9565a3a16bc259b261421d0c6c679a0eeada8de59613ea3887"
+    },
+    {
+      "path": "math/src/steps.rs",
+      "sha256": "e5cb6a8faf439e291e373da48acc452c2dbe4b831e011b44230ade64f0f9a803"
+    },
+    {
+      "path": "math/src/understand.rs",
+      "sha256": "5b3ac990c5e46e75b303f47f96d66553ee87b78309e80c6342a97453769e895e"
+    },
+    {
+      "path": "math/tests/understand.rs",
+      "sha256": "488f55c7cff6abbadc3a3c93e4bc3c4977f831f79e141265b04f5c44ac2695f4"
+    },
+    {
+      "path": "world/src/mentions.rs",
+      "sha256": "a2a239daf36ac4f2d4ceba92ecebdbd7a519128ff01f57a0e9041eaf7c1215dd"
+    },
+    {
+      "path": "world/src/opchoice.rs",
+      "sha256": "770d2eff5a128ca9eb808c6360dd33bb79ef1296f86256ff077a630eccd1862e"
+    },
+    {
+      "path": "world/src/quant.rs",
+      "sha256": "dd5cf73c5e8092c17566b87e0f6f465c3cdec5f1d87ac5a02ddc04c092987dbd"
+    },
+    {
+      "path": "world/src/treeread.rs",
+      "sha256": "854e8c3e3a7e1abd56800d0003cf2e1b92cb207ce1d07aa5fef43e2d3b08fed8"
+    }
+  ],
+  "status": "partial_source_bound_instance"
+}

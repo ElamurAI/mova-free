@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named synthetic native tests; paired syntax projection"
+  ],
+  "children": [],
+  "cost": "O(bytes+lines*metadata keys+lines*headings) parse/body/items checks can be quadratic in line/headings counts; bib parse delegated, temporary strings O(bytes). No filesystem effects.",
+  "description": "parse stores lines, toggles fence state, collects first machine metadata block with first case-insensitive key, then detects ATX/setext/caps/bare changelog outside fence/meta. body ends at next same-or-higher heading or metadata start. items scans paragraphs/lists, bib brace depth capped at 80 lines, and unmarked reference starts after period with year/word/case guards. docs_page strips exact Jekyll markers/front matter and statistics suffix.",
+  "forward": [
+    "parse stores lines, toggles fence state, collects first machine metadata block with first case-insensitive key, then detects ATX/setext/caps/bare changelog outside fence/meta. body ends at next same-or-higher heading or metadata start. items scans paragraphs/lists, bib brace depth capped at 80 lines, and unmarked reference starts after period with year/word/case guards. docs_page strips exact Jekyll markers/front matter and statistics suffix."
+  ],
+  "id": "treebanks-readme",
+  "inverse": [
+    "Readme retains line texts modulo CR endings, while section/item projections lose whitespace and markers; raw and text item representations define different fibers. Metadata alone cannot reconstruct duplicate keys or full document.",
+    "Fenced lines cannot become headings; first metadata duplicate wins case-insensitively. However items only skips fence delimiters, so fenced bodies may still become items."
+  ],
+  "limitations": [
+    "Partial source models and finite fixtures only. No corpus/model/network/site/release execution or universal proof."
+  ],
+  "source": "tools/treebanks/src/readme.rs",
+  "state": "Bounded helper inputs and source-derived CLI state/effects; see catalog."
+}

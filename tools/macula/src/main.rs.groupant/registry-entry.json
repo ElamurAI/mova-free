@@ -1,0 +1,33 @@
+{
+  "checks": [
+    "tests::genesis_1_1",
+    "tests::surface_order_and_aramaic",
+    "tests::number_before_noun",
+    "tests::clause_before_the_head_clause",
+    "tests::copula",
+    "tests::saying",
+    "tests::lists",
+    "tests::valid_conllu",
+    "tests::aramaic",
+    "tests::check_shows_red",
+    "tests::verses",
+    "wave31::majority_tie_and_empty_parser"
+  ],
+  "children": [],
+  "cost": "Parse O(B); tree repeated leaves/scans O(n*d+n²) or larger repeated subtree work on pathological nesting; check O(n²), sort O(n log n), conllu O(n²+output bytes). Depth/allocation bounded in fixtures, batch buffers retained. No speed claim.",
+  "description": "XML event reader builds words/groups. tree splices function groups, chooses ordered heads, attaches relations and postprocesses lemor/relative/fixed/article rules. check validates roots and walks heads. surface_order transports arcs under stable id sort. conllu expands words/punctuation/MWT and transports heads again. Main splits strict Aramaic majority then writes books/maps; lessons/compare unexecuted.",
+  "forward": [
+    "XML event reader builds words/groups. tree splices function groups, chooses ordered heads, attaches relations and postprocesses lemor/relative/fixed/article rules. check validates roots and walks heads. surface_order transports arcs under stable id sort. conllu expands words/punctuation/MWT and transports heads again. Main splits strict Aramaic majority then writes books/maps; lessons/compare unexecuted."
+  ],
+  "id": "macula-converter",
+  "inverse": [
+    "Main excludes empty/book-filtered sentences. Half Aramaic cannot choose A. check success within valid-index domain excludes cycles/multiple roots/self-head. No semantic-domain fields emitted; lessons not executed.",
+    "CoNLL-U admits different source groupings/order/metadata. Arcs invert only with permutation; original top cannot be recovered after reorder. Majority admits all assignments satisfying counts. Output cannot reconstruct omitted/bad sentences."
+  ],
+  "limitations": [
+    "Synthetic XML/tree/helpers only; all relation combinations, malformed XML, effects and teacher workflows untested.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/macula/src/main.rs",
+  "state": "Node indices0-based, heads1-based/0 root. Nonempty valid tree required for conllu. Majority tie Hebrew. Actual reorder clears top. check roots first; transitive later invalid head may panic before global validation. XML errors panic; incomplete sentence omitted."
+}

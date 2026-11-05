@@ -1,0 +1,90 @@
+{
+  "children": [
+    {
+      "id": "world-tune-neighbors",
+      "path": "neighbors.groupant"
+    },
+    {
+      "id": "world-tune-selection",
+      "path": "selection.groupant"
+    },
+    {
+      "id": "world-tune-orchestration",
+      "path": "orchestration.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-tune-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-tune-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-tune-validation-reuse",
+        "path": "model.md",
+        "section": "validation-reuse",
+        "status": "partial_source_model",
+        "type": "assessment_scope"
+      },
+      {
+        "id": "world-tune-journal-identity",
+        "path": "model.md",
+        "section": "journal-identity",
+        "status": "partial_source_model",
+        "type": "cache_equivalence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_native_and_inspected"
+    }
+  },
+  "id": "world-tune",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tune.rs",
+    "sha256": "932ebce85aebb89467cb9da0d82b136debed8b77f6a9f0b8e852336480db0adb"
+  },
+  "status": "partial_source_bound_model"
+}

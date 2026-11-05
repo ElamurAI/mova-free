@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Shared parent lexical projection; fragment byte scope above",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source byte range [15577,25404); lexical, not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source byte range [15577,25404); lexical, not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "tail_duality",
+        "path": "model.md",
+        "scope": "Source byte range [15577,25404); lexical, not proof",
+        "section": "tail_duality",
+        "status": "partial_source_derived_model",
+        "type": "tail_duality"
+      },
+      {
+        "id": "confidence_interval",
+        "path": "model.md",
+        "scope": "Source byte range [15577,25404); lexical, not proof",
+        "section": "confidence_interval",
+        "status": "partial_source_derived_model",
+        "type": "confidence_interval"
+      },
+      {
+        "id": "branch_relation",
+        "path": "model.md",
+        "scope": "Source byte range [15577,25404); lexical, not proof",
+        "section": "branch_relation",
+        "status": "partial_source_derived_model",
+        "type": "branch_relation"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "Source byte range [15577,25404); lexical, not proof",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "partial_bounded_parent_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 25404,
+      "start": 15577
+    },
+    "description": "test_opts checks Alpha before Tail; t_one removes NaNs, computes unbiased SD and SE, t=(mean-m0)/SE. t_two uses pooled or Welch variance. t_p guards NaN/nonpositive df then uses survival tail. Wrappers extract arguments first; ttest rejects incompatible paired lengths before options. Both wrappers parse options before checking the minimum cleaned sample count; verdict uses strict p<alpha.",
+    "source_bytes_sha256": "e68a4e806e321cbbbc9fbf666f4a111e8968fc859ad8c4677b73d1027f0c02db"
+  },
+  "id": "mlab-builtins-stats-ttests",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../stats.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "bdc3772b09d9113e108afa29e391fee97a5372caf9052bb1689996c41c94116f"
+  },
+  "status": "partial_source_bound_model"
+}

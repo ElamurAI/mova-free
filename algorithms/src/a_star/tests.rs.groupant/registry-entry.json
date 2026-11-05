@@ -1,0 +1,28 @@
+{
+  "id": "algorithm-a-star-tests",
+  "source": "algorithms/src/a_star/tests.rs",
+  "children": [
+    
+  ],
+  "description": "a_star finite independent oracle tests",
+  "state": "Fixed finite Rust fixtures and the production algorithm, observed as per-test pass or assertion failure. The compiler, Rust test runner and successful allocations are trusted. Test acceptance is not unrestricted implementation equivalence.",
+  "cost": "The fixed oracle domains are bounded: simple paths use DFS exponential in vertex count; truth tables cost O(2^V C); cut enumeration costs O(2^V V^2). Only the relevant oracle executes in each file. Production runtime bounds cannot be inferred from this test cost.",
+  "forward": [
+    "The simple-path DFS enumerates 729 three-vertex directed graphs, six non-loop arcs independently absent/zero/two. Nine endpoint pairs and two admitted heuristics give 13,122 calls, checking objective and path witness. Other fixtures cover rejection order, invalid disconnected components, two u64::MAX edges, stale snapshots, zero cycles, ties and loop fibers."
+  ],
+  "inverse": [
+    "In the universe of fixture/reference/output triples, acceptance excludes any tested objective mismatch, invalid returned witness or mismatched explicit error payload. Behavior outside the named fixture set is not excluded. This acceptance relation is a finite predicate defined by assertions, not a claim that passing forbids all production bugs.",
+    "A failed equality assertion reconstructs the candidate implementation/reference/fixture triples producing unequal compared projections at that location. A pass reconstructs the equivalence class of implementations agreeing on all observed projections, which can include faulty implementations outside the tested domain. No unique source bug or causal diagnosis follows from the failure text.",
+    "The simple-path DFS enumerates 729 three-vertex directed graphs, six non-loop arcs independently absent/zero/two. Nine endpoint pairs and two admitted heuristics give 13,122 calls, checking objective and path witness. Other fixtures cover rejection order, invalid disconnected components, two u64::MAX edges, stale snapshots, zero cycles, ties and loop fibers.",
+    "Replace candidate cost increment u128::from(weight) by zero; the wide_costs_and_heuristic_addition assertion must fail after successful compilation.",
+    "Extending the fixture set intersects the set of passing implementations with additional assertion constraints. An implementation can pass the current finite set and fail an extension. Repeating unchanged tests in debug and release constrains profile-dependent behavior but does not expand the graph/formula domain or prove total correctness."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline --lib (debug/release twice)",
+    "Focused rustfmt, strict all-target Clippy, repeated syntax, compiled production mutant"
+  ],
+  "limitations": [
+    "Finite correspondence only; partial syntax; no general proof or approximate profile",
+    "Allocation failure and u128 exhaustion are not exercised"
+  ]
+}

@@ -55,8 +55,13 @@ impl R {
             "touching" | "touch" | "touches" | "touched" | "against" => R::Touch,
             // one-edit typos of the long relation words («aove», «toucing»)
             _ => {
-                let colour_like = global::concept_words("scene_color").iter().any(|c| near_word(w, c));
-                return ["above", "below", "touching", "beneath", "underneath"].iter().find(|r| w.len() >= 4 && w != "blow" && !colour_like && near_word(w, r)).and_then(|r| R::of(r));
+                let colour_like = global::concept_words("scene_color")
+                    .iter()
+                    .any(|c| near_word(w, c));
+                return ["above", "below", "touching", "beneath", "underneath"]
+                    .iter()
+                    .find(|r| w.len() >= 4 && w != "blow" && !colour_like && near_word(w, r))
+                    .and_then(|r| R::of(r));
             }
         })
     }
@@ -77,7 +82,11 @@ fn near_word(a: &str, b: &str) -> bool {
     }
     if x.len() == y.len() && x.len() >= 5 {
         let diff: Vec<usize> = (0..x.len()).filter(|&k| x[k] != y[k]).collect();
-        if diff.len() == 2 && diff[1] == diff[0] + 1 && x[diff[0]] == y[diff[1]] && x[diff[1]] == y[diff[0]] {
+        if diff.len() == 2
+            && diff[1] == diff[0] + 1
+            && x[diff[0]] == y[diff[1]]
+            && x[diff[1]] == y[diff[0]]
+        {
             return true;
         }
     }
@@ -105,23 +114,36 @@ fn near_word(a: &str, b: &str) -> bool {
 }
 
 fn shape_of(w: &str) -> Option<String> {
-    let sing = w.strip_suffix("es").filter(|s| s.ends_with('x') || s.ends_with("ss")).or_else(|| w.strip_suffix('s')).unwrap_or(w);
-    global::concept_words("scene_shape").iter().find(|s| near_word(sing, s) || near_word(w, s)).map(|s| s.to_string())
+    let sing = w
+        .strip_suffix("es")
+        .filter(|s| s.ends_with('x') || s.ends_with("ss"))
+        .or_else(|| w.strip_suffix('s'))
+        .unwrap_or(w);
+    global::concept_words("scene_shape")
+        .iter()
+        .find(|s| near_word(sing, s) || near_word(w, s))
+        .map(|s| s.to_string())
 }
 
 /// Frequent words one edit away from a colour or size word («block» — «black», «while» — «white»): never typos.
-const NOT_TYPOS: &[&str] = &["block", "blocks", "bock", "blank", "while", "write", "fellow", "shall", "greed", "crown", "medial"];
+const NOT_TYPOS: &[&str] = &[
+    "block", "blocks", "bock", "blank", "while", "write", "fellow", "shall", "greed", "crown",
+    "medial",
+];
 
 /// Size or colour word → (is size, normalised value); one-edit typos of sizes (4+ letters) and colours (5+ letters).
 fn attr_of(w: &str) -> Option<(bool, String)> {
     let norm = |w: &str| -> Option<(bool, String)> {
         if cat("scene_size", w) {
-            return Some((true, match w {
-                "big" | "huge" => "large",
-                "little" | "tiny" => "small",
-                _ => w,
-            }
-            .to_string()));
+            return Some((
+                true,
+                match w {
+                    "big" | "huge" => "large",
+                    "little" | "tiny" => "small",
+                    _ => w,
+                }
+                .to_string(),
+            ));
         }
         if w == "midsize" || w == "mid-sized" || w == "midsized" {
             return Some((true, "medium".into()));
@@ -138,12 +160,18 @@ fn attr_of(w: &str) -> Option<(bool, String)> {
         return None;
     }
     if w.len() >= 4 {
-        if let Some(s) = global::concept_words("scene_size").iter().find(|s| s.len() >= 4 && near_word(w, s)) {
+        if let Some(s) = global::concept_words("scene_size")
+            .iter()
+            .find(|s| s.len() >= 4 && near_word(w, s))
+        {
             return norm(s);
         }
     }
     if w.len() >= 5 {
-        if let Some(c) = global::concept_words("scene_color").iter().find(|c| c.len() >= 4 && near_word(w, c)) {
+        if let Some(c) = global::concept_words("scene_color")
+            .iter()
+            .find(|c| c.len() >= 4 && near_word(w, c))
+        {
             return norm(c);
         }
     }
@@ -197,13 +225,19 @@ struct Obj {
 
 fn matches(o: &Obj, d: &Desc) -> bool {
     let f = |a: &Option<String>, b: &Option<String>| b.is_none() || a.is_none() || a == b;
-    f(&o.size, &d.size) && f(&o.color, &d.color) && f(&o.shape, &d.shape) && d.block.is_none_or(|b| o.block == Some(b))
+    f(&o.size, &d.size)
+        && f(&o.color, &d.color)
+        && f(&o.shape, &d.shape)
+        && d.block.is_none_or(|b| o.block == Some(b))
 }
 
 /// Strict match for questions: what the description lacks — anything; what it has — must match.
 fn matches_q(o: &Obj, d: &Desc) -> bool {
     let f = |a: &Option<String>, b: &Option<String>| b.is_none() || a == b;
-    f(&o.size, &d.size) && f(&o.color, &d.color) && f(&o.shape, &d.shape) && d.block.is_none_or(|b| o.block == Some(b))
+    f(&o.size, &d.size)
+        && f(&o.color, &d.color)
+        && f(&o.shape, &d.shape)
+        && d.block.is_none_or(|b| o.block == Some(b))
 }
 
 /// A plural with coordinated attributes («the yellow and black objects») — one description per attribute.
@@ -232,7 +266,10 @@ fn number(w: &str) -> Option<usize> {
 
 /// «first», «second», «third» (one-edit typos too: «fist»).
 fn ordinal_of(w: &str) -> Option<usize> {
-    ["first", "second", "third", "fourth", "fifth"].iter().position(|o| near_word(w, o) && (w.len() >= 4 || w == *o)).map(|p| p + 1)
+    ["first", "second", "third", "fourth", "fifth"]
+        .iter()
+        .position(|o| near_word(w, o) && (w.len() >= 4 || w == *o))
+        .map(|p| p + 1)
 }
 
 fn is_block_letter(s: &str) -> Option<char> {
@@ -243,9 +280,15 @@ fn is_block_letter(s: &str) -> Option<char> {
 /// Words of a sentence: split on spaces, commas, brackets, quotes; «ablue» → «a blue» (a glued article).
 fn words_of(raw: &str) -> Vec<String> {
     let mut out = Vec::new();
-    for w in raw.split(|c: char| c.is_whitespace() || matches!(c, ',' | '(' | ')' | '"' | ':' | '!')).filter(|w| !w.is_empty()) {
+    for w in raw
+        .split(|c: char| c.is_whitespace() || matches!(c, ',' | '(' | ')' | '"' | ':' | '!'))
+        .filter(|w| !w.is_empty())
+    {
         let low = w.to_lowercase();
-        if let Some(rest) = low.strip_prefix('a').filter(|r| r.len() >= 3 && (cat("scene_color", r) || cat("scene_size", r))) {
+        if let Some(rest) = low
+            .strip_prefix('a')
+            .filter(|r| r.len() >= 3 && (cat("scene_color", r) || cat("scene_size", r)))
+        {
             out.push("a".to_string());
             out.push(rest.to_string());
         } else {
@@ -271,8 +314,11 @@ fn scan(text: &str) -> Vec<Vec<Tok>> {
             }
             let c = w.chars().next()?;
             let prev = k.checked_sub(1).map(|p| low[p].as_str());
-            (w.len() == 1 && c.is_ascii_lowercase() && c != 'i' && (prev == Some("block") || prev == Some("in") && k + 1 == words.len()))
-                .then(|| c.to_ascii_uppercase())
+            (w.len() == 1
+                && c.is_ascii_lowercase()
+                && c != 'i'
+                && (prev == Some("block") || prev == Some("in") && k + 1 == words.len()))
+            .then(|| c.to_ascii_uppercase())
         };
         while i < words.len() {
             let orig = &words[i];
@@ -281,7 +327,10 @@ fn scan(text: &str) -> Vec<Vec<Tok>> {
             if let Some(b) = block_at(i) {
                 let next = low.get(i + 1).cloned().unwrap_or_default();
                 let article = orig == "A"
-                    && (attr_of(&next).is_some() || shape_of(&next).is_some() || cat("scene_any", &next) || matches!(next.as_str(), "block" | "second" | "third" | "few"));
+                    && (attr_of(&next).is_some()
+                        || shape_of(&next).is_some()
+                        || cat("scene_any", &next)
+                        || matches!(next.as_str(), "block" | "second" | "third" | "few"));
                 if !article {
                     out.push(Tok::Block(b));
                     i += 1;
@@ -289,7 +338,12 @@ fn scan(text: &str) -> Vec<Vec<Tok>> {
                 }
             }
             // «this block», «the block», «a block» without a letter — the block in context
-            if matches!(w.as_str(), "this" | "that" | "the" | "a" | "its" | "same" | "each" | "any") && low.get(i + 1).is_some_and(|x| x == "block") && block_at(i + 2).is_none() {
+            if matches!(
+                w.as_str(),
+                "this" | "that" | "the" | "a" | "its" | "same" | "each" | "any"
+            ) && low.get(i + 1).is_some_and(|x| x == "block")
+                && block_at(i + 2).is_none()
+            {
                 out.push(Tok::CurBlock);
                 i += 2;
                 continue;
@@ -298,7 +352,12 @@ fn scan(text: &str) -> Vec<Vec<Tok>> {
             let mut j = i;
             let mut d = Desc::default();
             let q = w.as_str();
-            if q == "one" && low.get(i + 1).is_some_and(|x| x == "of") && low.get(i + 2).is_some_and(|x| matches!(x.as_str(), "them" | "these" | "those")) {
+            if q == "one"
+                && low.get(i + 1).is_some_and(|x| x == "of")
+                && low
+                    .get(i + 2)
+                    .is_some_and(|x| matches!(x.as_str(), "them" | "these" | "those"))
+            {
                 // «one of them» — a member of the last group
                 d.one_of = true;
                 d.of_group = true;
@@ -310,12 +369,17 @@ fn scan(text: &str) -> Vec<Vec<Tok>> {
                 d.indef = true;
                 d.one_of = true;
                 j += 2;
-            } else if number(q).is_some_and(|n| n >= 2) && low.get(i + 1).is_some_and(|x| x == "of") {
+            } else if number(q).is_some_and(|n| n >= 2) && low.get(i + 1).is_some_and(|x| x == "of")
+            {
                 // «two of the circles» — a part of a group
                 d.count = number(q).unwrap_or(0);
                 d.partitive = true;
                 j += 2;
-            } else if matches!(q, "a" | "an" | "any" | "some" | "another") || number(q).is_some_and(|_| !matches!(q, "first" | "second" | "third" | "fourth" | "fifth")) {
+            } else if matches!(q, "a" | "an" | "any" | "some" | "another")
+                || number(q).is_some_and(|_| {
+                    !matches!(q, "first" | "second" | "third" | "fourth" | "fifth")
+                })
+            {
                 d.indef = true;
                 d.other = q == "another";
                 if q != "one" && q != "1" {
@@ -332,7 +396,10 @@ fn scan(text: &str) -> Vec<Vec<Tok>> {
                 d.neg = true;
                 j += 1;
             }
-            if low.get(j).is_some_and(|x| x == "the" || x == "these" || x == "those") {
+            if low
+                .get(j)
+                .is_some_and(|x| x == "the" || x == "these" || x == "those")
+            {
                 j += 1;
             }
             if low.get(j).is_some_and(|x| x == "other") {
@@ -351,7 +418,10 @@ fn scan(text: &str) -> Vec<Vec<Tok>> {
                     } else {
                         d.color = Some(v);
                     }
-                } else if x == "and" && j > start_attr && low.get(j + 1).is_some_and(|y| attr_of(y).is_some()) {
+                } else if x == "and"
+                    && j > start_attr
+                    && low.get(j + 1).is_some_and(|y| attr_of(y).is_some())
+                {
                     // «two big and medium triangles» — the second member gets the second attribute
                     if let Some(a) = low.get(j + 1).and_then(|y| attr_of(y)) {
                         d.alt.push(a);
@@ -366,7 +436,11 @@ fn scan(text: &str) -> Vec<Vec<Tok>> {
             let head = low.get(j).cloned().unwrap_or_default();
             let is_head = shape_of(&head).is_some() || cat("scene_any", &head);
             // «the other», «another» without a noun — the rest of the last group
-            if !is_head && d.other && j == start_attr && !matches!(head.as_str(), "block" | "blocks") {
+            if !is_head
+                && d.other
+                && j == start_attr
+                && !matches!(head.as_str(), "block" | "blocks")
+            {
                 d.of_group = true;
                 out.push(Tok::M(d));
                 i = j;
@@ -393,10 +467,23 @@ fn scan(text: &str) -> Vec<Vec<Tok>> {
                     }
                 }
                 // «… in A», «… in block A», «… of block A» — restriction to a block
-                if low.get(k).is_some_and(|x| x == "in" || x == "of" || x == "inside") {
-                    let kb = if low.get(k + 1).is_some_and(|x| x == "block" || x == "the") { k + 2 } else { k + 1 };
-                    let kb = if low.get(kb).is_some_and(|x| x == "block") { kb + 1 } else { kb };
-                    if let Some(b) = block_at(kb).filter(|_| low[k] != "of" || low[k + 1] == "block") {
+                if low
+                    .get(k)
+                    .is_some_and(|x| x == "in" || x == "of" || x == "inside")
+                {
+                    let kb = if low.get(k + 1).is_some_and(|x| x == "block" || x == "the") {
+                        k + 2
+                    } else {
+                        k + 1
+                    };
+                    let kb = if low.get(kb).is_some_and(|x| x == "block") {
+                        kb + 1
+                    } else {
+                        kb
+                    };
+                    if let Some(b) =
+                        block_at(kb).filter(|_| low[k] != "of" || low[k + 1] == "block")
+                    {
                         d.block = Some(b);
                         k = kb + 1;
                     }
@@ -431,6 +518,61 @@ pub struct Scene {
     edge: BTreeSet<(usize, Option<R>)>,
 }
 
+/// Ordered adjacency projection for one relation. Reverse edges apply only to directions.
+/// Row order follows the original fact set, preserving frontier discovery order.
+fn directional_rows<T: Copy + Ord>(facts: &BTreeSet<(T, R, T)>, r: R) -> BTreeMap<T, Vec<T>> {
+    let mut rows: BTreeMap<T, Vec<T>> = BTreeMap::new();
+    for &(a, rr, b) in facts {
+        if rr == r {
+            rows.entry(a).or_default().push(b);
+        } else if rr.directional() && rr.inv() == r {
+            rows.entry(b).or_default().push(a);
+        }
+    }
+    rows
+}
+
+// The threshold is a prospective adapter choice, not a fitted optimum.
+const ADJACENCY_SCAN_LIMIT: usize = 64;
+
+fn direction_step<T: Copy + Eq>((a, rr, b): (T, R, T), from: T, r: R) -> Option<T> {
+    if a == from && rr == r {
+        Some(b)
+    } else if b == from && rr.directional() && rr.inv() == r {
+        Some(a)
+    } else {
+        None
+    }
+}
+
+// No iterator allocation: tiny graphs execute the original full-set scan.
+enum DirectionalEdges<'a, T> {
+    Scan(std::collections::btree_set::Iter<'a, (T, R, T)>, T, R),
+    Indexed(std::slice::Iter<'a, T>),
+}
+impl<T: Copy + Eq> Iterator for DirectionalEdges<'_, T> {
+    type Item = T;
+    fn next(&mut self) -> Option<T> {
+        match self {
+            Self::Scan(facts, from, r) => facts.find_map(|&fact| direction_step(fact, *from, *r)),
+            Self::Indexed(row) => row.next().copied(),
+        }
+    }
+}
+fn direction_edges<'a, T: Copy + Ord>(
+    facts: &'a BTreeSet<(T, R, T)>,
+    rows: &'a Option<BTreeMap<T, Vec<T>>>,
+    from: T,
+    r: R,
+) -> DirectionalEdges<'a, T> {
+    match rows {
+        Some(rows) => {
+            DirectionalEdges::Indexed(rows.get(&from).map_or(&[][..], Vec::as_slice).iter())
+        }
+        None => DirectionalEdges::Scan(facts.iter(), from, r),
+    }
+}
+
 /// Relation participant: a thing, a group of things or a block.
 #[derive(Clone, Debug, PartialEq)]
 enum Ent {
@@ -450,7 +592,10 @@ impl Ent {
 }
 
 /// Words allowed before a block letter that sets the block context («In block A, …», «Block B has …», «And in C …»).
-const CONTEXT_LEAD: &[&str] = &["in", "inside", "within", "block", "and", "then", "also", "the", "for", "now", "finally", "lastly", "last", "first", "second", "third", "is"];
+const CONTEXT_LEAD: &[&str] = &[
+    "in", "inside", "within", "block", "and", "then", "also", "the", "for", "now", "finally",
+    "lastly", "last", "first", "second", "third", "is",
+];
 
 impl Scene {
     pub fn read(text: &str) -> Scene {
@@ -469,8 +614,11 @@ impl Scene {
         let mut topic: Option<char> = None;
         for sent in scan(text) {
             let has_m = sent.iter().any(|t| matches!(t, Tok::M(_)));
-            let first = sent.iter().position(|t| !matches!(t, Tok::W(w) if w == "block" || w == "the" || w == "and"));
-            let it_has = matches!(first.map(|f| &sent[f]), Some(Tok::Pron)) && matches!(first.and_then(|f| sent.get(f + 1)), Some(Tok::W(w)) if matches!(w.as_str(), "has" | "have" | "contains" | "includes" | "holds"));
+            let first = sent
+                .iter()
+                .position(|t| !matches!(t, Tok::W(w) if w == "block" || w == "the" || w == "and"));
+            let it_has = matches!(first.map(|f| &sent[f]), Some(Tok::Pron))
+                && matches!(first.and_then(|f| sent.get(f + 1)), Some(Tok::W(w)) if matches!(w.as_str(), "has" | "have" | "contains" | "includes" | "holds"));
             let mut sent = sent;
             if it_has {
                 if let Some(b) = topic {
@@ -480,13 +628,21 @@ impl Scene {
             }
             topic = match first.map(|f| &sent[f]) {
                 Some(Tok::Block(b)) if !it_has => Some(*b),
-                _ => if it_has { topic } else { None },
+                _ => {
+                    if it_has {
+                        topic
+                    } else {
+                        None
+                    }
+                }
             };
             // block context: «In A», «Inside B», «Block C has», «block called A»
             for (k, t) in sent.iter().enumerate() {
                 if let Tok::Block(b) = t {
                     sc.blocks.insert(*b);
-                    let lead = sent[..k].iter().all(|t| matches!(t, Tok::W(w) if CONTEXT_LEAD.contains(&w.as_str())));
+                    let lead = sent[..k]
+                        .iter()
+                        .all(|t| matches!(t, Tok::W(w) if CONTEXT_LEAD.contains(&w.as_str())));
                     let before_m = !sent[..k].iter().any(|t| matches!(t, Tok::M(_)));
                     let in_lead = sent[..k].iter().any(|t| matches!(t, Tok::W(w) if matches!(w.as_str(), "in" | "inside" | "within")));
                     if lead && before_m && (has_m || in_lead) && (k > 0 || sent.len() > 1) {
@@ -494,15 +650,32 @@ impl Scene {
                     }
                 }
             }
-            if sent.iter().any(|t| matches!(t, Tok::W(w) if w == "block" || w == "blocks") || matches!(t, Tok::CurBlock)) {
+            if sent.iter().any(|t| {
+                matches!(t, Tok::W(w) if w == "block" || w == "blocks")
+                    || matches!(t, Tok::CurBlock)
+            }) {
                 // a sentence about blocks — relations between them
-                let bl: Vec<(usize, char)> = sent.iter().enumerate().filter_map(|(k, t)| if let Tok::Block(b) = t { Some((k, *b)) } else { None }).collect();
+                let bl: Vec<(usize, char)> = sent
+                    .iter()
+                    .enumerate()
+                    .filter_map(|(k, t)| {
+                        if let Tok::Block(b) = t {
+                            Some((k, *b))
+                        } else {
+                            None
+                        }
+                    })
+                    .collect();
                 let mut prev: Option<(char, Vec<R>)> = None;
                 for w in bl.windows(2) {
                     let seg = &sent[w[0].0 + 1..w[1].0];
                     let (rels, _) = rels_in(seg);
                     // «C is below block A and B» — a list continues the previous relation
-                    if rels.is_empty() && seg.iter().all(|t| matches!(t, Tok::W(x) if x == "and" || x == "block")) {
+                    if rels.is_empty()
+                        && seg
+                            .iter()
+                            .all(|t| matches!(t, Tok::W(x) if x == "and" || x == "block"))
+                    {
                         if let Some((l, rs)) = &prev {
                             for &r in rs {
                                 if *l != w[1].1 {
@@ -513,7 +686,13 @@ impl Scene {
                         continue;
                     }
                     // «B is to the right of A and also is above C» — a coordinated predicate of the first block
-                    let left = if matches!(seg.first(), Some(Tok::W(x)) if x == "and") && w[0].0 != bl[0].0 { bl[0].1 } else { w[0].1 };
+                    let left = if matches!(seg.first(), Some(Tok::W(x)) if x == "and")
+                        && w[0].0 != bl[0].0
+                    {
+                        bl[0].1
+                    } else {
+                        w[0].1
+                    };
                     for &r in &rels {
                         if left != w[1].1 {
                             sc.bfacts.insert((left, r, w[1].1));
@@ -527,10 +706,15 @@ impl Scene {
                 // «called A», «we call it B»
                 let named: Vec<char> = bl
                     .iter()
-                    .filter(|&&(k, _)| naming(k.checked_sub(1).map(|p| &sent[p])) || matches!(k.checked_sub(1).map(|p| &sent[p]), Some(Tok::Pron)) && naming(k.checked_sub(2).map(|p| &sent[p])))
+                    .filter(|&&(k, _)| {
+                        naming(k.checked_sub(1).map(|p| &sent[p]))
+                            || matches!(k.checked_sub(1).map(|p| &sent[p]), Some(Tok::Pron))
+                                && naming(k.checked_sub(2).map(|p| &sent[p]))
+                    })
                     .map(|x| x.1)
                     .collect();
-                let introduced: Vec<char> = bl.iter().filter(|&&(k, _)| intro(k)).map(|x| x.1).collect();
+                let introduced: Vec<char> =
+                    bl.iter().filter(|&&(k, _)| intro(k)).map(|x| x.1).collect();
                 let new_block = sent.iter().any(|t| matches!(t, Tok::W(w) if matches!(w.as_str(), "there" | "another" | "new" | "second" | "third" | "last")));
                 // «another block C», «a block B»
                 let fresh: Vec<char> = bl
@@ -549,7 +733,11 @@ impl Scene {
                 // the first block holds for the second one
                 if let [(k0, x), (k1, y)] = bl[..] {
                     let (front, _) = rels_in(&sent[..k0]);
-                    if x != y && (named.contains(&y) || fresh.contains(&y)) && !front.is_empty() && rels_in(&sent[k0 + 1..k1]).0.is_empty() {
+                    if x != y
+                        && (named.contains(&y) || fresh.contains(&y))
+                        && !front.is_empty()
+                        && rels_in(&sent[k0 + 1..k1]).0.is_empty()
+                    {
                         for r in front {
                             sc.bfacts.insert((y, r, x));
                         }
@@ -565,12 +753,20 @@ impl Scene {
                 match t {
                     Tok::M(d) => {
                         let mut d = d.clone();
-                        if d.shape.is_none() && d.color.is_some() && last_shape.is_some() && !d.plural {
+                        if d.shape.is_none()
+                            && d.color.is_some()
+                            && last_shape.is_some()
+                            && !d.plural
+                        {
                             d.shape = last_shape.clone();
                         }
                         if d.of_group {
                             // «one of them», «the other (one)», «another» — a member of the last group not singled out yet
-                            let taken: Vec<usize> = ents.iter().filter_map(|e| if let Ent::O(o) = e.1 { Some(o) } else { None }).chain(singled.iter().copied()).collect();
+                            let taken: Vec<usize> = ents
+                                .iter()
+                                .filter_map(|e| if let Ent::O(o) = e.1 { Some(o) } else { None })
+                                .chain(singled.iter().copied())
+                                .collect();
                             if let Some(&o) = last_group.iter().find(|o| !taken.contains(o)) {
                                 singled.push(o);
                                 ents.push((k, Ent::O(o)));
@@ -580,8 +776,19 @@ impl Scene {
                         }
                         if d.partitive {
                             // «two of the circles» — the first members not singled out yet
-                            let mut pool: Vec<usize> = pending.iter().copied().filter(|&o| matches(&sc.objs[o], &d)).collect();
-                            let more: Vec<usize> = (0..sc.objs.len()).filter(|&o| sc.objs[o].block == cur && matches(&sc.objs[o], &d) && !singled.contains(&o) && !pool.contains(&o)).collect();
+                            let mut pool: Vec<usize> = pending
+                                .iter()
+                                .copied()
+                                .filter(|&o| matches(&sc.objs[o], &d))
+                                .collect();
+                            let more: Vec<usize> = (0..sc.objs.len())
+                                .filter(|&o| {
+                                    sc.objs[o].block == cur
+                                        && matches(&sc.objs[o], &d)
+                                        && !singled.contains(&o)
+                                        && !pool.contains(&o)
+                                })
+                                .collect();
                             pool.extend(more);
                             let g: Vec<usize> = pool.into_iter().take(d.count).collect();
                             pending.retain(|o| !g.contains(o));
@@ -596,7 +803,10 @@ impl Scene {
                                 let mut g = Vec::new();
                                 let mut fresh = Vec::new();
                                 while g.len() < d.count {
-                                    if let Some(p) = pending.iter().position(|&o| sc.objs[o].block == d.block.or(cur) && matches(&sc.objs[o], &d)) {
+                                    if let Some(p) = pending.iter().position(|&o| {
+                                        sc.objs[o].block == d.block.or(cur)
+                                            && matches(&sc.objs[o], &d)
+                                    }) {
                                         let o = pending.remove(p);
                                         let ob = &mut sc.objs[o];
                                         ob.size = ob.size.take().or(d.size.clone());
@@ -605,9 +815,20 @@ impl Scene {
                                         g.push(o);
                                         continue;
                                     }
-                                    let mut ob = Obj { size: d.size.clone(), color: d.color.clone(), shape: d.shape.clone(), block: d.block.or(cur) };
-                                    if let Some((is_size, v)) = g.len().checked_sub(1).and_then(|m| d.alt.get(m)) {
-                                        *(if *is_size { &mut ob.size } else { &mut ob.color }) = Some(v.clone());
+                                    let mut ob = Obj {
+                                        size: d.size.clone(),
+                                        color: d.color.clone(),
+                                        shape: d.shape.clone(),
+                                        block: d.block.or(cur),
+                                    };
+                                    if let Some((is_size, v)) =
+                                        g.len().checked_sub(1).and_then(|m| d.alt.get(m))
+                                    {
+                                        *(if *is_size {
+                                            &mut ob.size
+                                        } else {
+                                            &mut ob.color
+                                        }) = Some(v.clone());
                                     }
                                     sc.objs.push(ob);
                                     g.push(sc.objs.len() - 1);
@@ -624,7 +845,9 @@ impl Scene {
                             // «the yellow and black objects» — of either description
                             let vs = variants(&d);
                             let m = |o: usize| vs.iter().any(|v| matches(&sc.objs[o], v));
-                            let mut g: Vec<usize> = (0..sc.objs.len()).filter(|&o| sc.objs[o].block == cur && m(o)).collect();
+                            let mut g: Vec<usize> = (0..sc.objs.len())
+                                .filter(|&o| sc.objs[o].block == cur && m(o))
+                                .collect();
                             if g.is_empty() {
                                 g = (0..sc.objs.len()).filter(|&o| m(o)).collect();
                             }
@@ -636,32 +859,57 @@ impl Scene {
                         }
                         let found = if d.one_of {
                             let p = pending.iter().position(|&o| matches(&sc.objs[o], &d));
-                            let f = p.map(|p| pending.remove(p)).or_else(|| (0..sc.objs.len()).find(|&o| sc.objs[o].block == cur && matches(&sc.objs[o], &d)));
+                            let f = p.map(|p| pending.remove(p)).or_else(|| {
+                                (0..sc.objs.len())
+                                    .find(|&o| sc.objs[o].block == cur && matches(&sc.objs[o], &d))
+                            });
                             singled.extend(f);
                             f
                         } else if d.indef {
                             // a counted group member that was not singled out yet
-                            let p = pending.iter().position(|&o| sc.objs[o].block == d.block.or(cur) && matches(&sc.objs[o], &d) && d.shape.is_some());
+                            let p = pending.iter().position(|&o| {
+                                sc.objs[o].block == d.block.or(cur)
+                                    && matches(&sc.objs[o], &d)
+                                    && d.shape.is_some()
+                            });
                             p.map(|p| pending.remove(p))
                         } else if let Some(n) = d.ordinal {
-                            let mut g: Vec<usize> = (0..sc.objs.len()).filter(|&o| sc.objs[o].block == cur && matches(&sc.objs[o], &d)).collect();
+                            let mut g: Vec<usize> = (0..sc.objs.len())
+                                .filter(|&o| sc.objs[o].block == cur && matches(&sc.objs[o], &d))
+                                .collect();
                             if g.is_empty() {
-                                g = (0..sc.objs.len()).filter(|&o| matches(&sc.objs[o], &d)).collect();
+                                g = (0..sc.objs.len())
+                                    .filter(|&o| matches(&sc.objs[o], &d))
+                                    .collect();
                             }
                             singled.extend(g.get(n - 1));
                             g.get(n - 1).copied()
                         } else {
                             // «the other one» — not one already named in this sentence, nor one singled out before
-                            let taken: Vec<usize> = if d.other { ents.iter().flat_map(|e| e.1.objs()).chain(singled.iter().copied()).collect() } else { vec![] };
+                            let taken: Vec<usize> = if d.other {
+                                ents.iter()
+                                    .flat_map(|e| e.1.objs())
+                                    .chain(singled.iter().copied())
+                                    .collect()
+                            } else {
+                                vec![]
+                            };
                             let ok = |o: usize| matches(&sc.objs[o], &d) && !taken.contains(&o);
-                            let mut f = (0..sc.objs.len()).rev().find(|&o| sc.objs[o].block == cur && ok(o));
+                            let mut f = (0..sc.objs.len())
+                                .rev()
+                                .find(|&o| sc.objs[o].block == cur && ok(o));
                             if f.is_none() {
                                 f = (0..sc.objs.len()).rev().find(|&o| ok(o));
                             }
                             f
                         };
                         let o = found.unwrap_or_else(|| {
-                            sc.objs.push(Obj { size: d.size.clone(), color: d.color.clone(), shape: d.shape.clone(), block: d.block.or(cur) });
+                            sc.objs.push(Obj {
+                                size: d.size.clone(),
+                                color: d.color.clone(),
+                                shape: d.shape.clone(),
+                                block: d.block.or(cur),
+                            });
                             sc.objs.len() - 1
                         });
                         // refinement from a repeated mention
@@ -680,7 +928,11 @@ impl Scene {
                     }
                     Tok::Pron => {
                         // a sentence-initial «It is …» — the subject of the previous sentence; otherwise the last thing
-                        let o = if ents.is_empty() && k <= 1 { prev_subj.or(last) } else { last };
+                        let o = if ents.is_empty() && k <= 1 {
+                            prev_subj.or(last)
+                        } else {
+                            last
+                        };
                         if let Some(o) = o {
                             ents.push((k, Ent::O(o)));
                         }
@@ -700,13 +952,27 @@ impl Scene {
             // an edge without a block letter: «a huge red rectangle touching bottom and right edge»
             for j in 0..ents.len() {
                 let end = ents.get(j + 1).map(|e| e.0).unwrap_or(sent.len());
-                if matches!(ents.get(j + 1).map(|e| &e.1), Some(Ent::B(_))) || matches!(ents[j].1, Ent::B(_)) {
+                if matches!(ents.get(j + 1).map(|e| &e.1), Some(Ent::B(_)))
+                    || matches!(ents[j].1, Ent::B(_))
+                {
                     continue;
                 }
                 let seg = &sent[ents[j].0 + 1..end];
                 if let Some(e) = seg.iter().position(is_edge_word) {
-                    if seg[..e].iter().any(|t| matches!(t, Tok::W(w) if R::of(w) == Some(R::Touch))) {
-                        let sides: Vec<R> = seg[..e].iter().filter_map(|t| if let Tok::W(w) = t { R::of(w).filter(|r| r.directional()) } else { None }).collect();
+                    if seg[..e]
+                        .iter()
+                        .any(|t| matches!(t, Tok::W(w) if R::of(w) == Some(R::Touch)))
+                    {
+                        let sides: Vec<R> = seg[..e]
+                            .iter()
+                            .filter_map(|t| {
+                                if let Tok::W(w) = t {
+                                    R::of(w).filter(|r| r.directional())
+                                } else {
+                                    None
+                                }
+                            })
+                            .collect();
                         for x in ents[j].1.objs() {
                             if sides.is_empty() {
                                 sc.edge.insert((x, None));
@@ -738,7 +1004,12 @@ impl Scene {
                 }
             }
             // the clause subject — for coordinated predicates «X is touching A and is near Y»
-            let subj = if used_front.first() == Some(&true) { ents.get(1) } else { ents.first() }.map(|e| e.1.clone());
+            let subj = if used_front.first() == Some(&true) {
+                ents.get(1)
+            } else {
+                ents.first()
+            }
+            .map(|e| e.1.clone());
             // the last applied predicate — for lists «X is above A, B and C»
             let mut prev: Option<(Ent, Vec<R>, Vec<Tok>)> = None;
             for j in 1..ents.len() {
@@ -750,7 +1021,11 @@ impl Scene {
                 let (rels, _) = rels_in(seg);
                 let is_obj = |e: &Ent| !matches!(e, Ent::B(_));
                 // a list item: nothing but «and» between two things — the same predicate as the previous item
-                if rels.is_empty() && seg.iter().all(|t| matches!(t, Tok::W(w) if w == "and")) && is_obj(&ents[j].1) && is_obj(&ents[j - 1].1) {
+                if rels.is_empty()
+                    && seg.iter().all(|t| matches!(t, Tok::W(w) if w == "and"))
+                    && is_obj(&ents[j].1)
+                    && is_obj(&ents[j - 1].1)
+                {
                     if let Some((l, rs, pseg)) = &prev {
                         for &r in rs {
                             sc.add(l, r, &ents[j].1, pseg);
@@ -758,17 +1033,27 @@ impl Scene {
                     }
                     continue;
                 }
-                let coord = j >= 2 && matches!(seg.first(), Some(Tok::W(w)) if w == "and") && !rels.is_empty();
-                let mut left = if coord { subj.clone().unwrap_or_else(|| ents[j - 1].1.clone()) } else { ents[j - 1].1.clone() };
+                let coord = j >= 2
+                    && matches!(seg.first(), Some(Tok::W(w)) if w == "and")
+                    && !rels.is_empty();
+                let mut left = if coord {
+                    subj.clone().unwrap_or_else(|| ents[j - 1].1.clone())
+                } else {
+                    ents[j - 1].1.clone()
+                };
                 // «X is touching the top edge of this block which is above Y» — «which» skips the block back to X
-                let rel_clause = matches!(seg.first(), Some(Tok::W(w)) if w == "which" || w == "that");
+                let rel_clause =
+                    matches!(seg.first(), Some(Tok::W(w)) if w == "which" || w == "that");
                 if matches!(left, Ent::B(_)) && is_obj(&ents[j].1) && rel_clause {
                     if let Some(e) = ents[..j - 1].iter().rev().find(|e| is_obj(&e.1)) {
                         left = e.1.clone();
                     }
                 }
                 // «a rectangle touching bottom and right edge, a circle …» — the edge is the block's, not the next thing's
-                let block_edge = seg.iter().position(is_edge_word).is_some_and(|e| !matches!(seg.get(e + 1), Some(Tok::W(w)) if w == "of"));
+                let block_edge = seg
+                    .iter()
+                    .position(is_edge_word)
+                    .is_some_and(|e| !matches!(seg.get(e + 1), Some(Tok::W(w)) if w == "of"));
                 if is_obj(&ents[j].1) && block_edge {
                     prev = None;
                     continue;
@@ -781,7 +1066,8 @@ impl Scene {
             // predicate attributes: «The first one is yellow», «Another circle is big and black»
             for (k, e) in &ents {
                 if !matches!(e, Ent::B(_)) {
-                    if matches!(sent.get(k + 1), Some(Tok::W(w)) if matches!(w.as_str(), "is" | "was" | "are" | "were")) {
+                    if matches!(sent.get(k + 1), Some(Tok::W(w)) if matches!(w.as_str(), "is" | "was" | "are" | "were"))
+                    {
                         let mut t = k + 2;
                         while let Some(Tok::W(w)) = sent.get(t) {
                             if let Some((is_size, v)) = attr_of(w) {
@@ -813,11 +1099,15 @@ impl Scene {
         let mut add = Vec::new();
         for x in 0..self.objs.len() {
             for y in 0..self.objs.len() {
-                if x == y || self.objs[x].block.is_none() || self.objs[x].block != self.objs[y].block {
+                if x == y
+                    || self.objs[x].block.is_none()
+                    || self.objs[x].block != self.objs[y].block
+                {
                     continue;
                 }
                 for (hi, lo) in [(R::Above, R::Below), (R::Left, R::Right)] {
-                    let higher = side(self, x, hi) && !side(self, y, hi) || side(self, y, lo) && !side(self, x, lo);
+                    let higher = side(self, x, hi) && !side(self, y, hi)
+                        || side(self, y, lo) && !side(self, x, lo);
                     if higher && !self.holds(y, hi, x) {
                         add.push((x, hi, y));
                     }
@@ -835,7 +1125,16 @@ impl Scene {
             }
             (Ent::O(_) | Ent::G(_), Ent::B(bl)) => {
                 if r == R::Touch || edge {
-                    let sides: Vec<R> = seg.iter().filter_map(|t| if let Tok::W(w) = t { R::of(w).filter(|r| r.directional()) } else { None }).collect();
+                    let sides: Vec<R> = seg
+                        .iter()
+                        .filter_map(|t| {
+                            if let Tok::W(w) = t {
+                                R::of(w).filter(|r| r.directional())
+                            } else {
+                                None
+                            }
+                        })
+                        .collect();
                     for x in a.objs() {
                         if sides.is_empty() {
                             self.edge.insert((x, None));
@@ -862,18 +1161,32 @@ impl Scene {
     }
 
     fn breach(&self, a: char, r: R, b: char) -> bool {
+        if self.bfacts.contains(&(a, r, b))
+            || r.directional() && self.bfacts.contains(&(b, r.inv(), a))
+        {
+            return true;
+        }
+        let rows = if self.bfacts.len() > ADJACENCY_SCAN_LIMIT {
+            if !self
+                .bfacts
+                .iter()
+                .any(|&fact| direction_step(fact, a, r).is_some())
+            {
+                return false;
+            }
+            Some(directional_rows(&self.bfacts, r))
+        } else {
+            None
+        };
         let mut seen = BTreeSet::new();
         let mut q = VecDeque::from([a]);
         while let Some(x) = q.pop_front() {
-            for &(u, rr, v) in &self.bfacts {
-                let step = if u == x && rr == r { Some(v) } else if v == x && rr.inv() == r && rr.directional() { Some(u) } else { None };
-                if let Some(y) = step {
-                    if y == b {
-                        return true;
-                    }
-                    if seen.insert(y) {
-                        q.push_back(y);
-                    }
+            for y in direction_edges(&self.bfacts, &rows, x, r) {
+                if y == b {
+                    return true;
+                }
+                if seen.insert(y) {
+                    q.push_back(y);
                 }
             }
         }
@@ -898,19 +1211,32 @@ impl Scene {
                 return self.breach(a, r, b);
             }
         }
-        // transitively within the facts
+        // A direct edge needs no adjacency allocation.
+        if self.facts.contains(&(x, r, y)) || self.facts.contains(&(y, r.inv(), x)) {
+            return true;
+        }
+        let rows = if self.facts.len() > ADJACENCY_SCAN_LIMIT {
+            if !self
+                .facts
+                .iter()
+                .any(|&fact| direction_step(fact, x, r).is_some())
+            {
+                return false;
+            }
+            Some(directional_rows(&self.facts, r))
+        } else {
+            None
+        };
+        // Transitively within the facts.
         let mut seen = BTreeSet::new();
         let mut q = VecDeque::from([x]);
         while let Some(u) = q.pop_front() {
-            for &(a, rr, b) in &self.facts {
-                let step = if a == u && rr == r { Some(b) } else if b == u && rr.directional() && rr.inv() == r { Some(a) } else { None };
-                if let Some(v) = step {
-                    if v == y {
-                        return true;
-                    }
-                    if seen.insert(v) {
-                        q.push_back(v);
-                    }
+            for v in direction_edges(&self.facts, &rows, u, r) {
+                if v == y {
+                    return true;
+                }
+                if seen.insert(v) {
+                    q.push_back(v);
                 }
             }
         }
@@ -920,16 +1246,33 @@ impl Scene {
     /// Path of direction r from x to y; Some(whether the path implies «far»), None — no path. Far: a far step, or two
     /// steps or more whose distances were all qualified (near / far) — a thing in between at the narrator's scale.
     fn dir_path(&self, x: usize, r: R, y: usize) -> Option<bool> {
-        let dist = |u: usize, v: usize| [R::Near, R::Far, R::Touch].iter().any(|&d| self.facts.contains(&(u, d, v)) || self.facts.contains(&(v, d, u)));
+        let dist = |u: usize, v: usize| {
+            [R::Near, R::Far, R::Touch]
+                .iter()
+                .any(|&d| self.facts.contains(&(u, d, v)) || self.facts.contains(&(v, d, u)))
+        };
+        let rows = if self.facts.len() > ADJACENCY_SCAN_LIMIT {
+            if !self
+                .facts
+                .iter()
+                .any(|&fact| direction_step(fact, x, r).is_some())
+            {
+                return None;
+            }
+            Some(directional_rows(&self.facts, r))
+        } else {
+            None
+        };
         // state: (thing, far so far, steps (capped at 2), all steps qualified)
         let mut seen: BTreeSet<(usize, bool, u8, bool)> = BTreeSet::new();
         let mut q = VecDeque::from([(x, false, 0u8, true)]);
         let mut best: Option<bool> = None;
         while let Some((u, far, steps, qual)) = q.pop_front() {
-            for &(a, rr, b) in &self.facts {
-                let v = if a == u && rr == r { b } else if b == u && rr.directional() && rr.inv() == r { a } else { continue };
+            for v in direction_edges(&self.facts, &rows, u, r) {
                 let (steps, qual) = ((steps + 1).min(2), qual && dist(u, v));
-                let f = far || self.facts.contains(&(u, R::Far, v)) || self.facts.contains(&(v, R::Far, u));
+                let f = far
+                    || self.facts.contains(&(u, R::Far, v))
+                    || self.facts.contains(&(v, R::Far, u));
                 if v == y {
                     best = Some(best.unwrap_or(false) || f || steps >= 2 && qual);
                 }
@@ -943,12 +1286,19 @@ impl Scene {
 
     fn far(&self, x: usize, y: usize) -> bool {
         let (bx, by) = (self.objs[x].block, self.objs[y].block);
-        self.facts.contains(&(x, R::Far, y)) || self.facts.contains(&(y, R::Far, x)) || bx.is_some() && by.is_some() && bx != by
-            || !self.near(x, y) && [R::Left, R::Right, R::Above, R::Below].iter().any(|&r| self.dir_path(x, r, y) == Some(true))
+        self.facts.contains(&(x, R::Far, y))
+            || self.facts.contains(&(y, R::Far, x))
+            || bx.is_some() && by.is_some() && bx != by
+            || !self.near(x, y)
+                && [R::Left, R::Right, R::Above, R::Below]
+                    .iter()
+                    .any(|&r| self.dir_path(x, r, y) == Some(true))
     }
 
     fn near(&self, x: usize, y: usize) -> bool {
-        [R::Near, R::Touch].iter().any(|&r| self.facts.contains(&(x, r, y)) || self.facts.contains(&(y, r, x)))
+        [R::Near, R::Touch]
+            .iter()
+            .any(|&r| self.facts.contains(&(x, r, y)) || self.facts.contains(&(y, r, x)))
     }
 
     /// Three-valued: Some(true) — inferred, Some(false) — the opposite is inferred, None — unknown.
@@ -976,7 +1326,8 @@ impl Scene {
                 }
             }
             R::Touch => {
-                if self.facts.contains(&(x, R::Touch, y)) || self.facts.contains(&(y, R::Touch, x)) {
+                if self.facts.contains(&(x, R::Touch, y)) || self.facts.contains(&(y, R::Touch, x))
+                {
                     Some(true)
                 } else if self.far(x, y) {
                     Some(false)
@@ -1011,22 +1362,40 @@ impl Scene {
     /// Things under a question description: strict match; if none — things whose unknown attributes leave it possible
     /// («the small blue thing in C» when the story said only «a blue triangle» there).
     fn find(&self, d: &Desc) -> Vec<usize> {
-        let strict: Vec<usize> = (0..self.objs.len()).filter(|&o| matches_q(&self.objs[o], d)).collect();
+        let strict: Vec<usize> = (0..self.objs.len())
+            .filter(|&o| matches_q(&self.objs[o], d))
+            .collect();
         if !strict.is_empty() {
             return strict;
         }
-        (0..self.objs.len()).filter(|&o| matches(&self.objs[o], d)).collect()
+        (0..self.objs.len())
+            .filter(|&o| matches(&self.objs[o], d))
+            .collect()
     }
 
     /// Whether x touches an edge: sides — all of them («the top and right edge»; empty — any edge), block — of that block.
     fn touches_edge(&self, x: usize, sides: &[R], block: Option<char>) -> bool {
         block.is_none_or(|b| self.objs[x].block == Some(b))
-            && if sides.is_empty() { self.edge.iter().any(|&(o, _)| o == x) } else { sides.iter().all(|&s| self.edge.contains(&(x, Some(s)))) }
+            && if sides.is_empty() {
+                self.edge.iter().any(|&(o, _)| o == x)
+            } else {
+                sides.iter().all(|&s| self.edge.contains(&(x, Some(s))))
+            }
     }
 
     /// x between two different things of ys: on a line (left of one and right of the other, or above and below).
     fn between(&self, x: usize, ys: &[usize]) -> bool {
-        ys.iter().any(|&a| ys.iter().any(|&b| a != b && a != x && b != x && (self.tv(x, R::Left, a) == Some(true) && self.tv(x, R::Right, b) == Some(true) || self.tv(x, R::Above, a) == Some(true) && self.tv(x, R::Below, b) == Some(true))))
+        ys.iter().any(|&a| {
+            ys.iter().any(|&b| {
+                a != b
+                    && a != x
+                    && b != x
+                    && (self.tv(x, R::Left, a) == Some(true)
+                        && self.tv(x, R::Right, b) == Some(true)
+                        || self.tv(x, R::Above, a) == Some(true)
+                            && self.tv(x, R::Below, b) == Some(true))
+            })
+        })
     }
 
     /// Things a phrase denotes; block — restriction of the head (FB: «which block has a square above the big triangle» —
@@ -1049,7 +1418,8 @@ impl Scene {
             xs.retain(|&x| match m {
                 Mod::Rel(rels, t) => {
                     let ys = self.resolve(t, None);
-                    ys.iter().any(|&y| y != x && self.tv_all(x, rels, y) == Some(true))
+                    ys.iter()
+                        .any(|&y| y != x && self.tv_all(x, rels, y) == Some(true))
                 }
                 Mod::Edge(sides, b) => self.touches_edge(x, sides, b.or(block)),
                 Mod::Between(t, t2) => {
@@ -1071,7 +1441,12 @@ fn rels_in(seg: &[Tok]) -> (Vec<R>, bool) {
     let mut verb_before = false;
     for t in seg {
         if let Tok::W(w) = t {
-            if out.is_empty() && matches!(w.as_str(), "is" | "are" | "sits" | "lies" | "stands" | "appears" | "located") {
+            if out.is_empty()
+                && matches!(
+                    w.as_str(),
+                    "is" | "are" | "sits" | "lies" | "stands" | "appears" | "located"
+                )
+            {
                 verb_before = true;
             }
             if let Some(r) = R::of(w) {
@@ -1127,7 +1502,9 @@ fn edge_phrase(toks: &[Tok], k: usize) -> Option<(Vec<R>, Option<char>, usize)> 
     let mut block = None;
     while i < toks.len() {
         match &toks[i] {
-            Tok::W(w) if matches!(w.as_str(), "of" | "the" | "block" | "its" | "a" | "in") => i += 1,
+            Tok::W(w) if matches!(w.as_str(), "of" | "the" | "block" | "its" | "a" | "in") => {
+                i += 1
+            }
             Tok::Block(b) => {
                 block = Some(*b);
                 i += 1;
@@ -1145,14 +1522,22 @@ fn edge_phrase(toks: &[Tok], k: usize) -> Option<(Vec<R>, Option<char>, usize)> 
 
 /// A phrase from the mention at position k up to `hi`: «which/that is R …» always; a bare «R …» if `bare`.
 fn parse_np(toks: &[Tok], k: usize, hi: usize, bare: bool) -> (Phrase, usize) {
-    let Tok::M(d) = &toks[k] else { return (Phrase::default(), k + 1) };
-    let mut p = Phrase { d: d.clone(), mods: Vec::new() };
+    let Tok::M(d) = &toks[k] else {
+        return (Phrase::default(), k + 1);
+    };
+    let mut p = Phrase {
+        d: d.clone(),
+        mods: Vec::new(),
+    };
     let mut i = k + 1;
     loop {
         let mut j = i;
         let mut marked = false;
-        while j < hi && matches!(&toks[j], Tok::W(w) if matches!(w.as_str(), "which" | "that" | "who" | "is" | "are" | "and")) {
-            marked |= matches!(&toks[j], Tok::W(w) if matches!(w.as_str(), "which" | "that" | "who"));
+        while j < hi
+            && matches!(&toks[j], Tok::W(w) if matches!(w.as_str(), "which" | "that" | "who" | "is" | "are" | "and"))
+        {
+            marked |=
+                matches!(&toks[j], Tok::W(w) if matches!(w.as_str(), "which" | "that" | "who"));
             j += 1;
         }
         if !(marked || bare) || j >= hi {
@@ -1162,7 +1547,9 @@ fn parse_np(toks: &[Tok], k: usize, hi: usize, bare: bool) -> (Phrase, usize) {
         if matches!(&toks[j], Tok::W(w) if w == "between") {
             if let Some(m1) = (j + 1..hi).find(|&t| matches!(toks[t], Tok::M(_))) {
                 let (t1, e1) = parse_np(toks, m1, hi, false);
-                let and2 = (e1 < hi && matches!(&toks[e1], Tok::W(w) if w == "and")).then(|| (e1 + 1..hi).find(|&t| matches!(toks[t], Tok::M(_)))).flatten();
+                let and2 = (e1 < hi && matches!(&toks[e1], Tok::W(w) if w == "and"))
+                    .then(|| (e1 + 1..hi).find(|&t| matches!(toks[t], Tok::M(_))))
+                    .flatten();
                 if let Some(m2) = and2 {
                     let (t2, e2) = parse_np(toks, m2, hi, false);
                     p.mods.push(Mod::Between(Box::new(t1), Some(Box::new(t2))));
@@ -1177,7 +1564,10 @@ fn parse_np(toks: &[Tok], k: usize, hi: usize, bare: bool) -> (Phrase, usize) {
         }
         // relation words up to the next mention or edge
         let mut e = j;
-        while e < hi && matches!(&toks[e], Tok::W(w) if !matches!(w.as_str(), "which" | "that" | "or")) && !is_edge_word(&toks[e]) {
+        while e < hi
+            && matches!(&toks[e], Tok::W(w) if !matches!(w.as_str(), "which" | "that" | "or"))
+            && !is_edge_word(&toks[e])
+        {
             e += 1;
         }
         let (rels, _) = rels_in(&toks[j..e.min(hi)]);
@@ -1204,7 +1594,9 @@ fn parse_np(toks: &[Tok], k: usize, hi: usize, bare: bool) -> (Phrase, usize) {
 }
 
 fn mention_positions(toks: &[Tok]) -> Vec<usize> {
-    (0..toks.len()).filter(|&k| matches!(toks[k], Tok::M(_))).collect()
+    (0..toks.len())
+        .filter(|&k| matches!(toks[k], Tok::M(_)))
+        .collect()
 }
 
 fn qtoks(q: &str) -> Vec<Tok> {
@@ -1242,14 +1634,39 @@ fn quant(v: &[Option<bool>], all: bool) -> Option<bool> {
 fn yn(sc: &Scene, q: &str) -> String {
     let toks = qtoks(q);
     let ms = mention_positions(&toks);
-    let words: Vec<&str> = toks.iter().filter_map(|t| if let Tok::W(w) = t { Some(w.as_str()) } else { None }).collect();
-    let Some(&k0) = ms.first() else { return "DK".into() };
+    let words: Vec<&str> = toks
+        .iter()
+        .filter_map(|t| {
+            if let Tok::W(w) = t {
+                Some(w.as_str())
+            } else {
+                None
+            }
+        })
+        .collect();
+    let Some(&k0) = ms.first() else {
+        return "DK".into();
+    };
     // «Does block B have all of the circles inside it?» — containment
-    let blk = toks[..k0].iter().find_map(|t| if let Tok::Block(b) = t { Some(*b) } else { None });
-    if let Some(b) = blk.filter(|_| words.iter().any(|w| matches!(*w, "have" | "has" | "contain" | "contains"))) {
+    let blk = toks[..k0].iter().find_map(|t| {
+        if let Tok::Block(b) = t {
+            Some(*b)
+        } else {
+            None
+        }
+    });
+    if let Some(b) = blk.filter(|_| {
+        words
+            .iter()
+            .any(|w| matches!(*w, "have" | "has" | "contain" | "contains"))
+    }) {
         let p = parse_np(&toks, k0, toks.len(), true).0;
         let (all, inb) = (sc.resolve(&p, None), sc.resolve(&p, Some(b)));
-        let has = if p.d.all || words.contains(&"all") { !inb.is_empty() && inb.len() == all.len() } else { !inb.is_empty() };
+        let has = if p.d.all || words.contains(&"all") {
+            !inb.is_empty() && inb.len() == all.len()
+        } else {
+            !inb.is_empty()
+        };
         return if has { "Yes" } else { "No" }.into();
     }
     // subject with its marked modifiers («the circle which is left of a square»)
@@ -1263,16 +1680,30 @@ fn yn(sc: &Scene, q: &str) -> String {
     let (rels, _) = rels_in(&toks[i..seg_end]);
     // «… touching the bottom edge of a block?» — the object is an edge
     if let Some(e) = (i..seg_end).find(|&t| is_edge_word(&toks[t])) {
-        if let Some((sides, b, _)) = edge_phrase(&toks, (i..e).find(|&t| matches!(&toks[t], Tok::W(w) if R::of(w).is_some())).unwrap_or(e)) {
+        if let Some((sides, b, _)) = edge_phrase(
+            &toks,
+            (i..e)
+                .find(|&t| matches!(&toks[t], Tok::W(w) if R::of(w).is_some()))
+                .unwrap_or(e),
+        ) {
             if xs.is_empty() {
                 return "No".into();
             }
-            let v: Vec<Option<bool>> = xs.iter().map(|&x| Some(sc.touches_edge(x, &sides, b))).collect();
-            return if quant(&v, sub_all) == Some(true) { "Yes" } else { "No" }.into();
+            let v: Vec<Option<bool>> = xs
+                .iter()
+                .map(|&x| Some(sc.touches_edge(x, &sides, b)))
+                .collect();
+            return if quant(&v, sub_all) == Some(true) {
+                "Yes"
+            } else {
+                "No"
+            }
+            .into();
         }
     }
     // «Are the large yellow things in A near each other?» — pairs within one set
-    let each_other = words.windows(2).any(|w| w == ["each", "other"]) || words.contains(&"together");
+    let each_other =
+        words.windows(2).any(|w| w == ["each", "other"]) || words.contains(&"together");
     let (b, ys) = match next_m {
         Some(k1) => {
             let (obj, _) = parse_np(&toks, k1, toks.len(), true);
@@ -1298,32 +1729,76 @@ fn yn(sc: &Scene, q: &str) -> String {
                 }
             }
         }
-        return if !v.is_empty() && v.iter().all(|t| *t == Some(true)) { "Yes" } else { "No" }.into();
+        return if !v.is_empty() && v.iter().all(|t| *t == Some(true)) {
+            "Yes"
+        } else {
+            "No"
+        }
+        .into();
     }
     let obj_all = b.all || b.plural && !b.indef;
     // over the object: all / at least one; then over the subject the same way
-    let v: Vec<Option<bool>> = xs.iter().map(|&x| quant(&ys.iter().filter(|&&y| y != x).map(|&y| sc.tv_all(x, &rels, y)).collect::<Vec<_>>(), obj_all)).collect();
+    let v: Vec<Option<bool>> = xs
+        .iter()
+        .map(|&x| {
+            quant(
+                &ys.iter()
+                    .filter(|&&y| y != x)
+                    .map(|&y| sc.tv_all(x, &rels, y))
+                    .collect::<Vec<_>>(),
+                obj_all,
+            )
+        })
+        .collect();
     // measured on the training split: the gold is almost closed-world (DK — 16 of 161, mostly when the thing is absent),
     // so «not inferred» → No; «Is a X not R a Y?» — the negation of the positive question
-    let neg = toks[i..seg_end].iter().any(|t| matches!(t, Tok::W(w) if w == "not"));
-    if (quant(&v, sub_all) == Some(true)) != neg { "Yes" } else { "No" }.into()
+    let neg = toks[i..seg_end]
+        .iter()
+        .any(|t| matches!(t, Tok::W(w) if w == "not"));
+    if (quant(&v, sub_all) == Some(true)) != neg {
+        "Yes"
+    } else {
+        "No"
+    }
+    .into()
 }
 
 fn fb(sc: &Scene, q: &str) -> Vec<String> {
     let toks = qtoks(q);
-    let words: Vec<String> = toks.iter().filter_map(|t| if let Tok::W(w) = t { Some(w.clone()) } else { None }).collect();
+    let words: Vec<String> = toks
+        .iter()
+        .filter_map(|t| {
+            if let Tok::W(w) = t {
+                Some(w.clone())
+            } else {
+                None
+            }
+        })
+        .collect();
     let ms = mention_positions(&toks);
     // «What object has all of the triangles» — the asked word is the block, the mention after it is not the thing
-    let asked = |k: usize| k <= 1 && matches!(&toks[k], Tok::M(d) if d.color.is_none() && d.size.is_none() && d.shape.is_none() && !d.plural);
-    let Some(&k0) = ms.iter().find(|&&k| !asked(k)) else { return vec![] };
+    let asked = |k: usize| {
+        k <= 1
+            && matches!(&toks[k], Tok::M(d) if d.color.is_none() && d.size.is_none() && d.shape.is_none() && !d.plural)
+    };
+    let Some(&k0) = ms.iter().find(|&&k| !asked(k)) else {
+        return vec![];
+    };
     let (p, _) = parse_np(&toks, k0, toks.len(), true);
-    let neg = p.d.neg || words.iter().any(|w| matches!(w.as_str(), "not" | "doesn't" | "doesnt" | "deosn't" | "don't" | "none" | "without"));
+    let neg = p.d.neg
+        || words.iter().any(|w| {
+            matches!(
+                w.as_str(),
+                "not" | "doesn't" | "doesnt" | "deosn't" | "don't" | "none" | "without"
+            )
+        });
     let all_q = p.d.all || words.iter().any(|w| w == "all");
     // «… touching the edge of it» right after the mention
     let mut p = p;
     if !p.mods.iter().any(|m| matches!(m, Mod::Edge(..))) {
         if let Some(e) = (k0..toks.len()).find(|&t| is_edge_word(&toks[t])) {
-            if let Some(s) = (k0..e).find(|&t| matches!(&toks[t], Tok::W(w) if R::of(w).is_some())) {
+            if let Some(s) = (k0..e).find(|&t| matches!(&toks[t], Tok::W(w) if R::of(w).is_some()))
+            {
                 if let Some((sides, b, _)) = edge_phrase(&toks, s) {
                     p.mods.push(Mod::Edge(sides, b));
                 }
@@ -1334,7 +1809,11 @@ fn fb(sc: &Scene, q: &str) -> Vec<String> {
     let total = sc.resolve(&p, None);
     for &b in &sc.blocks {
         let inb = sc.resolve(&p, Some(b)).len();
-        let has = if all_q { inb > 0 && inb == total.len() } else { inb > 0 };
+        let has = if all_q {
+            inb > 0 && inb == total.len()
+        } else {
+            inb > 0
+        };
         if has != neg {
             out.push(b.to_string());
         }
@@ -1353,9 +1832,16 @@ fn co(sc: &Scene, q: &str, cands: &[String]) -> usize {
     let toks = qtoks(question_head(q));
     let ms = mention_positions(&toks);
     // «what object» — a mention right after the question word is the asked thing, not the reference
-    let asked = ms.first().filter(|&&k| k <= 1 && matches!(&toks[k], Tok::M(d) if d.color.is_none() && d.size.is_none())).copied();
+    let asked = ms
+        .first()
+        .filter(|&&k| {
+            k <= 1 && matches!(&toks[k], Tok::M(d) if d.color.is_none() && d.size.is_none())
+        })
+        .copied();
     let start = asked.map(|k| k + 1).unwrap_or(0);
-    let Some(&kr) = ms.iter().find(|&&k| k >= start) else { return 3 };
+    let Some(&kr) = ms.iter().find(|&&k| k >= start) else {
+        return 3;
+    };
     let seg = &toks[start..kr];
     let (rels, _) = rels_in(seg);
     let neg = seg.iter().any(|t| matches!(t, Tok::W(w) if w == "not"));
@@ -1374,7 +1860,9 @@ fn co(sc: &Scene, q: &str, cands: &[String]) -> usize {
     }
     let test = |c: &str| -> bool {
         let ct = qtoks(c);
-        let Some(&kc) = mention_positions(&ct).first() else { return false };
+        let Some(&kc) = mention_positions(&ct).first() else {
+            return false;
+        };
         let cp = parse_np(&ct, kc, ct.len(), true).0;
         let mut xs = sc.resolve(&cp, None);
         if !cp.d.indef {
@@ -1390,12 +1878,19 @@ fn co(sc: &Scene, q: &str, cands: &[String]) -> usize {
         }
         if neg {
             // «not R»: closed world, as the gold — no R inferred to any of the reference things
-            xs.iter().any(|&x| ys.iter().all(|&yy| sc.tv_all(x, &rels, yy) != Some(true)))
+            xs.iter()
+                .any(|&x| ys.iter().all(|&yy| sc.tv_all(x, &rels, yy) != Some(true)))
         } else {
-            xs.iter().any(|&x| ys.iter().any(|&yy| yy != x && sc.tv_all(x, &rels, yy) == Some(true)))
+            xs.iter().any(|&x| {
+                ys.iter()
+                    .any(|&yy| yy != x && sc.tv_all(x, &rels, yy) == Some(true))
+            })
         }
     };
-    let (a, b) = (cands.first().map(|c| test(c)).unwrap_or(false), cands.get(1).map(|c| test(c)).unwrap_or(false));
+    let (a, b) = (
+        cands.first().map(|c| test(c)).unwrap_or(false),
+        cands.get(1).map(|c| test(c)).unwrap_or(false),
+    );
     match (a, b) {
         (true, false) => 0,
         (false, true) => 1,
@@ -1432,7 +1927,9 @@ fn fr_parts(toks: &[Tok]) -> Option<(Phrase, Phrase)> {
 fn fr(sc: &Scene, q: &str, cands: &[String]) -> Vec<usize> {
     let toks = qtoks(q);
     let dk = cands.iter().position(|c| c.trim() == "DK");
-    let Some((p1, p2)) = fr_parts(&toks) else { return dk.into_iter().collect() };
+    let Some((p1, p2)) = fr_parts(&toks) else {
+        return dk.into_iter().collect();
+    };
     let (mut xs, mut ys) = (sc.resolve(&p1, None), sc.resolve(&p2, None));
     let single = |p: &Phrase| !p.d.plural && !p.d.all && !p.d.indef;
     if single(&p1) {
@@ -1445,14 +1942,22 @@ fn fr(sc: &Scene, q: &str, cands: &[String]) -> Vec<usize> {
         ys.retain(|y| *y != xs[0]);
     }
     // several things under the description: relations shared by all pairs about which something is inferred
-    let cand_r: Vec<(usize, R)> = cands.iter().enumerate().filter_map(|(i, c)| c.split_whitespace().next().and_then(R::of).map(|r| (i, r))).collect();
+    let cand_r: Vec<(usize, R)> = cands
+        .iter()
+        .enumerate()
+        .filter_map(|(i, c)| c.split_whitespace().next().and_then(R::of).map(|r| (i, r)))
+        .collect();
     let mut out: Option<Vec<usize>> = None;
     for &x in &xs {
         for &y in &ys {
             if x == y {
                 continue;
             }
-            let v: Vec<usize> = cand_r.iter().filter(|(_, r)| sc.tv(x, *r, y) == Some(true)).map(|x| x.0).collect();
+            let v: Vec<usize> = cand_r
+                .iter()
+                .filter(|(_, r)| sc.tv(x, *r, y) == Some(true))
+                .map(|x| x.0)
+                .collect();
             if v.is_empty() {
                 continue;
             }
@@ -1484,37 +1989,81 @@ pub fn eval(path: &Path, show: usize) -> Result<()> {
     let mut shown = 0;
     // SPARTQA_DUMP=<file>: per-question correctness («story\tq_id\ttype\tok») for paired comparisons
     let mut dump = String::new();
-    for (si, st) in v["data"].as_array().cloned().unwrap_or_default().into_iter().enumerate() {
-        let story = st["story"].as_array().map(|a| a.iter().filter_map(|x| x.as_str()).collect::<Vec<_>>().join(" ")).unwrap_or_default();
+    for (si, st) in v["data"]
+        .as_array()
+        .cloned()
+        .unwrap_or_default()
+        .into_iter()
+        .enumerate()
+    {
+        let story = st["story"]
+            .as_array()
+            .map(|a| {
+                a.iter()
+                    .filter_map(|x| x.as_str())
+                    .collect::<Vec<_>>()
+                    .join(" ")
+            })
+            .unwrap_or_default();
         let sc = Scene::read(&story);
         for q in st["questions"].as_array().cloned().unwrap_or_default() {
             let t = q["q_type"].as_str().unwrap_or("").to_string();
             let qs = q["question"].as_str().unwrap_or("");
             let gold = &q["answer"];
-            let cands: Vec<String> = q["candidate_answers"].as_array().map(|a| a.iter().filter_map(|x| x.as_str().map(String::from)).collect()).unwrap_or_default();
+            let cands: Vec<String> = q["candidate_answers"]
+                .as_array()
+                .map(|a| {
+                    a.iter()
+                        .filter_map(|x| x.as_str().map(String::from))
+                        .collect()
+                })
+                .unwrap_or_default();
             let (pred, ok) = match t.as_str() {
                 "YN" => {
                     let p = yn(&sc, qs);
-                    let ok = gold.as_array().and_then(|a| a.first()).and_then(|x| x.as_str()).map(str::trim) == Some(p.as_str());
+                    let ok = gold
+                        .as_array()
+                        .and_then(|a| a.first())
+                        .and_then(|x| x.as_str())
+                        .map(str::trim)
+                        == Some(p.as_str());
                     (p, ok)
                 }
                 "FB" => {
                     let mut p = fb(&sc, qs);
                     p.sort();
                     // gold strings carry stray spaces (["A", " B"]) — annotation formatting, trimmed
-                    let mut g: Vec<String> = gold.as_array().map(|a| a.iter().filter_map(|x| x.as_str().map(|s| s.trim().to_string())).collect()).unwrap_or_default();
+                    let mut g: Vec<String> = gold
+                        .as_array()
+                        .map(|a| {
+                            a.iter()
+                                .filter_map(|x| x.as_str().map(|s| s.trim().to_string()))
+                                .collect()
+                        })
+                        .unwrap_or_default();
                     g.sort();
                     (format!("{p:?}"), p == g)
                 }
                 "CO" => {
                     let p = co(&sc, qs, &cands);
-                    let ok = gold.as_array().and_then(|a| a.first()).and_then(|x| x.as_u64()) == Some(p as u64);
+                    let ok = gold
+                        .as_array()
+                        .and_then(|a| a.first())
+                        .and_then(|x| x.as_u64())
+                        == Some(p as u64);
                     (p.to_string(), ok)
                 }
                 "FR" => {
                     let mut p = fr(&sc, qs, &cands);
                     p.sort();
-                    let mut g: Vec<usize> = gold.as_array().map(|a| a.iter().filter_map(|x| x.as_u64().map(|n| n as usize)).collect()).unwrap_or_default();
+                    let mut g: Vec<usize> = gold
+                        .as_array()
+                        .map(|a| {
+                            a.iter()
+                                .filter_map(|x| x.as_u64().map(|n| n as usize))
+                                .collect()
+                        })
+                        .unwrap_or_default();
                     g.sort();
                     (format!("{p:?}"), p == g)
                 }
@@ -1534,16 +2083,28 @@ pub fn eval(path: &Path, show: usize) -> Result<()> {
                 if std::env::var("SPARTQA_SCENE").is_ok() {
                     println!("    {story}");
                     for (i, o) in sc.objs.iter().enumerate() {
-                        print!("    #{i} {} {} {} {:?};", o.size.as_deref().unwrap_or("-"), o.color.as_deref().unwrap_or("-"), o.shape.as_deref().unwrap_or("-"), o.block);
+                        print!(
+                            "    #{i} {} {} {} {:?};",
+                            o.size.as_deref().unwrap_or("-"),
+                            o.color.as_deref().unwrap_or("-"),
+                            o.shape.as_deref().unwrap_or("-"),
+                            o.block
+                        );
                     }
-                    println!("\n    facts {:?} blocks {:?} edge {:?}", sc.facts, sc.bfacts, sc.edge);
+                    println!(
+                        "\n    facts {:?} blocks {:?} edge {:?}",
+                        sc.facts, sc.bfacts, sc.edge
+                    );
                 }
             }
         }
         if std::env::var("SPARTQA_DEBUG").is_ok_and(|f| story.contains(&f)) {
             println!("{story}");
             for (i, o) in sc.objs.iter().enumerate() {
-                println!("  #{i} {:?} {:?} {:?} in {:?}", o.size, o.color, o.shape, o.block);
+                println!(
+                    "  #{i} {:?} {:?} {:?} in {:?}",
+                    o.size, o.color, o.shape, o.block
+                );
             }
             println!("  facts {:?}\n  blocks {:?}", sc.facts, sc.bfacts);
         }
@@ -1583,25 +2144,40 @@ const CONTRAST: &[(&str, &str)] = &[
     ("rectangle", "star"),
     ("star", "rectangle"),
 ];
-const CONTRAST_BLOCKS: &[(char, char)] = &[('A', 'D'), ('D', 'A'), ('B', 'E'), ('E', 'B'), ('C', 'F'), ('F', 'C')];
+const CONTRAST_BLOCKS: &[(char, char)] = &[
+    ('A', 'D'),
+    ('D', 'A'),
+    ('B', 'E'),
+    ('E', 'B'),
+    ('C', 'F'),
+    ('F', 'C'),
+];
 
 /// Rename one word, keeping plural and capitalisation; typos of shapes (one edit) are renamed too.
 fn contrast_word(w: &str) -> Option<String> {
     let low = w.to_lowercase();
     let (stem, suf) = if let Some(s) = low.strip_suffix("es").filter(|s| s.ends_with('x')) {
         (s.to_string(), "es")
-    } else if let Some(s) = low.strip_suffix('s').filter(|s| s.len() > 2 && !s.ends_with('s')) {
+    } else if let Some(s) = low
+        .strip_suffix('s')
+        .filter(|s| s.len() > 2 && !s.ends_with('s'))
+    {
         (s.to_string(), "s")
     } else {
         (low.clone(), "")
     };
     // a glued article «ablue» → «apurple»
-    if let Some(rest) = low.strip_prefix('a').filter(|r| r.len() >= 3 && cat("scene_color", r)) {
+    if let Some(rest) = low
+        .strip_prefix('a')
+        .filter(|r| r.len() >= 3 && cat("scene_color", r))
+    {
         return contrast_word(rest).map(|r| format!("{}{}", &w[..1], r.to_lowercase()));
     }
     let rep = CONTRAST.iter().find(|(a, _)| *a == stem).or_else(|| {
         // a misspelt shape or colour («triange», «yelow»): words of 5+ letters, not frequent look-alikes («block»)
-        (stem.len() >= 5 && !NOT_TYPOS.contains(&stem.as_str())).then(|| CONTRAST.iter().find(|(a, _)| near_word(&stem, a))).flatten()
+        (stem.len() >= 5 && !NOT_TYPOS.contains(&stem.as_str()))
+            .then(|| CONTRAST.iter().find(|(a, _)| near_word(&stem, a)))
+            .flatten()
     })?;
     let mut out = rep.1.to_string();
     if !suf.is_empty() {
@@ -1639,21 +2215,42 @@ pub fn contrast_text(text: &str) -> String {
         let ch = w.chars().next().unwrap();
         // a lower-case block letter: after «block», or after «in» with no word following but «or / and»
         if w.len() == 1 && ch.is_ascii_lowercase() {
-            let prev = (0..i).rev().find(|&k| parts[k].0).map(|k| parts[k].1.to_lowercase());
-            let next = (i + 1..n).find(|&k| parts[k].0).map(|k| parts[k].1.to_lowercase());
-            let block = prev.as_deref() == Some("block") || prev.as_deref() == Some("in") && next.as_deref().is_none_or(|x| x == "or" || x == "and");
-            if let Some(&(_, to)) = CONTRAST_BLOCKS.iter().find(|(a, _)| *a == ch.to_ascii_uppercase()).filter(|_| block) {
+            let prev = (0..i)
+                .rev()
+                .find(|&k| parts[k].0)
+                .map(|k| parts[k].1.to_lowercase());
+            let next = (i + 1..n)
+                .find(|&k| parts[k].0)
+                .map(|k| parts[k].1.to_lowercase());
+            let block = prev.as_deref() == Some("block")
+                || prev.as_deref() == Some("in")
+                    && next.as_deref().is_none_or(|x| x == "or" || x == "and");
+            if let Some(&(_, to)) = CONTRAST_BLOCKS
+                .iter()
+                .find(|(a, _)| *a == ch.to_ascii_uppercase())
+                .filter(|_| block)
+            {
                 out[i] = to.to_ascii_lowercase().to_string();
             }
             continue;
         }
         if w.len() == 1 && ch.is_ascii_uppercase() {
             if let Some(&(_, to)) = CONTRAST_BLOCKS.iter().find(|(a, _)| *a == ch) {
-                let initial = (0..i).rev().find(|&k| !parts[k].1.trim().is_empty()).is_none_or(|k| !parts[k].0 && parts[k].1.trim().ends_with(['.', '?', '!']));
+                let initial = (0..i)
+                    .rev()
+                    .find(|&k| !parts[k].1.trim().is_empty())
+                    .is_none_or(|k| !parts[k].0 && parts[k].1.trim().ends_with(['.', '?', '!']));
                 let after_sep = parts.get(i + 1).map(|p| p.1.as_str()).unwrap_or("");
                 let next = parts.get(i + 2).map(|p| p.1.as_str()).unwrap_or("");
-                let verb_next = matches!(next, "is" | "has" | "contains" | "and" | "s" | "was" | "seems" | "appears");
-                let article = ch == 'A' && initial && after_sep.trim().is_empty() && !after_sep.is_empty() && !verb_next;
+                let verb_next = matches!(
+                    next,
+                    "is" | "has" | "contains" | "and" | "s" | "was" | "seems" | "appears"
+                );
+                let article = ch == 'A'
+                    && initial
+                    && after_sep.trim().is_empty()
+                    && !after_sep.is_empty()
+                    && !verb_next;
                 if !article {
                     out[i] = to.to_string();
                 }
@@ -1667,8 +2264,14 @@ pub fn contrast_text(text: &str) -> String {
             if parts[i].1.len() == 1 && parts[i].1 != out[i] {
                 continue; // a renamed block letter
             }
-            if let Some(next) = out.get(i + 2).filter(|_| parts.get(i + 1).is_some_and(|p| p.1 == " ")) {
-                let vowel = next.chars().next().is_some_and(|c| "aeiouAEIOU".contains(c));
+            if let Some(next) = out
+                .get(i + 2)
+                .filter(|_| parts.get(i + 1).is_some_and(|p| p.1 == " "))
+            {
+                let vowel = next
+                    .chars()
+                    .next()
+                    .is_some_and(|c| "aeiouAEIOU".contains(c));
                 let cap = out[i].starts_with(|c: char| c.is_uppercase());
                 out[i] = match (vowel, cap) {
                     (true, false) => "an",
@@ -1716,13 +2319,24 @@ mod tests {
     #[test]
     fn contrast_renames_consistently() {
         assert_eq!(
-            contrast_text("A small blue circle is in A. Block B has a yellow triangle and an oval. A is left of C."),
+            contrast_text(
+                "A small blue circle is in A. Block B has a yellow triangle and an oval. A is left of C."
+            ),
             "A small purple hexagon is in D. Block E has an orange diamond and an oval. D is left of F."
         );
-        assert_eq!(contrast_text("Are all squares in B?"), "Are all pentagons in E?");
+        assert_eq!(
+            contrast_text("Are all squares in B?"),
+            "Are all pentagons in E?"
+        );
         assert_eq!(contrast_text("The black triange"), "The pink diamond");
-        assert_eq!(contrast_text(" the yelow thing in c "), " the orange thing in f ");
-        assert_eq!(contrast_text("Which block has ablue square in block a?"), "Which block has apurple pentagon in block d?");
+        assert_eq!(
+            contrast_text(" the yelow thing in c "),
+            " the orange thing in f "
+        );
+        assert_eq!(
+            contrast_text("Which block has ablue square in block a?"),
+            "Which block has apurple pentagon in block d?"
+        );
     }
 
     #[test]
@@ -1737,11 +2351,16 @@ mod tests {
         let t = qtoks("the small yellow thing in c");
         assert!(matches!(&t[0], Tok::M(d) if d.block == Some('C')));
         let t = qtoks("Is the circle in block B above the square?");
-        assert!(matches!(&t[1], Tok::M(d) if d.block == Some('B') && d.shape.as_deref() == Some("circle")));
+        assert!(
+            matches!(&t[1], Tok::M(d) if d.block == Some('B') && d.shape.as_deref() == Some("circle"))
+        );
     }
 
     fn obj(sc: &Scene, color: &str, shape: &str) -> usize {
-        sc.objs.iter().position(|o| o.color.as_deref() == Some(color) && o.shape.as_deref() == Some(shape)).unwrap()
+        sc.objs
+            .iter()
+            .position(|o| o.color.as_deref() == Some(color) && o.shape.as_deref() == Some(shape))
+            .unwrap()
     }
 
     #[test]
@@ -1751,32 +2370,50 @@ mod tests {
              Block B is to the right of block A. It has two yellow circles. One of the circles is touching the top edge of this block. \
              The other yellow circle is touching the bottom edge of the block and is near a black square.",
         );
-        let (sq, ci, tr) = (obj(&sc, "red", "square"), obj(&sc, "blue", "circle"), obj(&sc, "green", "triangle"));
+        let (sq, ci, tr) = (
+            obj(&sc, "red", "square"),
+            obj(&sc, "blue", "circle"),
+            obj(&sc, "green", "triangle"),
+        );
         assert_eq!(sc.objs[sq].block, Some('A'));
         // a list continues the relation: the square is near the triangle too
         assert_eq!(sc.tv(sq, R::Near, ci), Some(true));
         assert_eq!(sc.tv(sq, R::Near, tr), Some(true));
         // «It has» after a sentence about block B; a counted group of two
-        let ys: Vec<usize> = (0..sc.objs.len()).filter(|&o| sc.objs[o].color.as_deref() == Some("yellow")).collect();
+        let ys: Vec<usize> = (0..sc.objs.len())
+            .filter(|&o| sc.objs[o].color.as_deref() == Some("yellow"))
+            .collect();
         assert_eq!(ys.len(), 2);
         assert!(ys.iter().all(|&o| sc.objs[o].block == Some('B')));
         // one touches the top edge, the other the bottom edge: the first is above the second (edge order)
         assert_eq!(sc.tv(ys[0], R::Above, ys[1]), Some(true));
         // coordination: the other circle (not the touching block) is near the black square
-        assert_eq!(sc.tv(ys[1], R::Near, obj(&sc, "black", "square")), Some(true));
+        assert_eq!(
+            sc.tv(ys[1], R::Near, obj(&sc, "black", "square")),
+            Some(true)
+        );
         // blocks: right of → objects in different blocks are far, and directions carry over
         assert_eq!(sc.tv(ys[0], R::Right, sq), Some(true));
         // a thing touching the top border is above a thing in the block that does not touch it
-        assert_eq!(sc.tv(ys[0], R::Above, obj(&sc, "black", "square")), Some(true));
+        assert_eq!(
+            sc.tv(ys[0], R::Above, obj(&sc, "black", "square")),
+            Some(true)
+        );
         assert_eq!(sc.tv(sq, R::Above, ci), None);
     }
 
     #[test]
     fn relative_that_and_asked_word() {
-        let t = qtoks("Are all objects that are touching the right edge of a block left of a circle?");
+        let t =
+            qtoks("Are all objects that are touching the right edge of a block left of a circle?");
         assert!(matches!(&t[2], Tok::W(w) if w == "that"));
-        let sc = Scene::read("There are two blocks A and B. In A, there is a red triangle. In B, there is a blue circle.");
-        assert_eq!(fb(&sc, "What object has all of the triangles inside of it?"), vec!["A".to_string()]);
+        let sc = Scene::read(
+            "There are two blocks A and B. In A, there is a red triangle. In B, there is a blue circle.",
+        );
+        assert_eq!(
+            fb(&sc, "What object has all of the triangles inside of it?"),
+            vec!["A".to_string()]
+        );
     }
 
     #[test]
@@ -1785,7 +2422,11 @@ mod tests {
             "In A, there is a small blue square far above a small blue circle. There is a black triangle far to the right of both blue objects. \
              Near and to the left of the blue circle is a red circle. Near and to the left of the red circle is a green circle.",
         );
-        let (bsq, bci, tri) = (obj(&sc, "blue", "square"), obj(&sc, "blue", "circle"), obj(&sc, "black", "triangle"));
+        let (bsq, bci, tri) = (
+            obj(&sc, "blue", "square"),
+            obj(&sc, "blue", "circle"),
+            obj(&sc, "black", "triangle"),
+        );
         assert_eq!(sc.tv(tri, R::Right, bsq), Some(true));
         assert_eq!(sc.tv(tri, R::Right, bci), Some(true));
         let (rc, gc) = (obj(&sc, "red", "circle"), obj(&sc, "green", "circle"));
@@ -1801,17 +2442,62 @@ mod tests {
             "There are two blocks A and B. Block A is above block B. In A, there is a yellow square touching the left edge of A and a red circle to the right of the yellow square. \
              In B, there is a blue triangle touching the bottom edge of B and a blue circle near and above the blue triangle.",
         );
-        assert_eq!(yn(&sc, "Is the square touching the left edge of a block?"), "Yes");
-        assert_eq!(yn(&sc, "Is the circle which is to the right of a square above the blue triangle?"), "Yes");
+        assert_eq!(
+            yn(&sc, "Is the square touching the left edge of a block?"),
+            "Yes"
+        );
+        assert_eq!(
+            yn(
+                &sc,
+                "Is the circle which is to the right of a square above the blue triangle?"
+            ),
+            "Yes"
+        );
         assert_eq!(yn(&sc, "Is a red circle not above a blue triangle?"), "No");
-        assert_eq!(fb(&sc, "Which block has a circle above a triangle?"), vec!["A".to_string(), "B".to_string()]);
-        assert_eq!(fb(&sc, "Which block has an object touching the bottom edge of it?"), vec!["B".to_string()]);
+        assert_eq!(
+            fb(&sc, "Which block has a circle above a triangle?"),
+            vec!["A".to_string(), "B".to_string()]
+        );
+        assert_eq!(
+            fb(
+                &sc,
+                "Which block has an object touching the bottom edge of it?"
+            ),
+            vec!["B".to_string()]
+        );
         let c = |a: &str, b: &str| vec![a.to_string(), b.to_string()];
-        assert_eq!(co(&sc, "What is above the blue triangle? the red circle or the blue circle?", &c("the red circle", "the blue circle")), 2);
-        assert_eq!(co(&sc, "What object is to the right of the yellow square, the red circle in a or the blue circle?", &c("the red circle in a", "the blue circle")), 0);
-        let cands: Vec<String> = ["left", "right", "above", "below", "near to", "far from", "touching", "DK"].iter().map(|s| s.to_string()).collect();
-        let mut r = fr(&sc, "What is the relation between the circle near the blue triangle and the yellow square?", &cands);
+        assert_eq!(
+            co(
+                &sc,
+                "What is above the blue triangle? the red circle or the blue circle?",
+                &c("the red circle", "the blue circle")
+            ),
+            2
+        );
+        assert_eq!(
+            co(
+                &sc,
+                "What object is to the right of the yellow square, the red circle in a or the blue circle?",
+                &c("the red circle in a", "the blue circle")
+            ),
+            0
+        );
+        let cands: Vec<String> = [
+            "left", "right", "above", "below", "near to", "far from", "touching", "DK",
+        ]
+        .iter()
+        .map(|s| s.to_string())
+        .collect();
+        let mut r = fr(
+            &sc,
+            "What is the relation between the circle near the blue triangle and the yellow square?",
+            &cands,
+        );
         r.sort();
         assert_eq!(r, vec![3, 5]);
     }
 }
+
+#[cfg(test)]
+#[path = "spartqa.rs.groupant/inference_tests.rs"]
+mod inference_transfer_tests;

@@ -1,0 +1,22 @@
+{
+  "id": "algorithm-huffman",
+  "source": "algorithms/src/huffman/mod.rs",
+  "description": "huffman exact implementation",
+  "state": "Finite slices of u64 weights; every position is a distinct symbol even when its weight is zero. Codes are vectors of booleans in original order. Successful allocation, ordinary usize<=64-bit platforms.",
+  "forward": [
+    "Return deterministic binary prefix codes minimizing sum_i w_i*len(code_i) among prefix-free nonempty codes. Empty yields []; singleton yields [[false]]. Merge queue orders by (u128 subtree sum, creation index); false labels first pop, true second. New parents follow original indices."
+  ],
+  "inverse": [
+    "Exclude wrong symbol count, empty code for any present symbol, duplicate or prefix-related codes, suboptimal weighted cost, and ties/orientations inconsistent with creation-order merging. Empty and singleton conventions are part of the exact behavior.",
+    "For an observed code forest C, compatible weights are all nonnegative u64 vectors whose ordered merge inequalities select its oriented tree under (sum,index) comparisons. Ties permit <= only when creation index wins. Positive scaling within u64 preserves comparisons, so recovery is generally nonunique; [1,1] and [5,9] both yield [false],[true]."
+  ],
+  "cost": "O(n log n + L) time, O(n+L) space where L is total emitted code length, up to O(n²). Sums in u128 cannot overflow for allocated u64 slices on <=64-bit usize. Weighted cost is measured in tests with u128.",
+  "checks": [
+    "cargo test -p mova-algorithms --offline huffman::tests::",
+    "Compiled semantic mutant rejected by a real assertion; syntax generated twice."
+  ],
+  "limitations": [
+    "Partial syntax, finite evidence, no timing or downstream gain claimed."
+  ],
+  "children": []
+}

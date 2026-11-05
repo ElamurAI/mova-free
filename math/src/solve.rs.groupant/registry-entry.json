@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p math --lib solve::wave28",
+    "two identical syntax projections"
+  ],
+  "children": [],
+  "cost": "Teacher retries+plan costs; C trains then scores memory and<=3templates/problem. O(records+memory+plans); unchecked token/counter addition.",
+  "description": "Batch/workers clamp>=1, sort final records by id. A parses last answer/id. B retries up to max_retries+1, shares costs/tokens, correct=verified&&grade. Memos retain verified B regardless correctness. C trains10epochs, tries top3 same-method/template/count/different-id skeleton matches, gates then accepts else copies B fields with by_slm=false.",
+  "forward": [
+    "Batch/workers clamp>=1, sort final records by id. A parses last answer/id. B retries up to max_retries+1, shares costs/tokens, correct=verified&&grade. Memos retain verified B regardless correctness. C trains10epochs, tries top3 same-method/template/count/different-id skeleton matches, gates then accepts else copies B fields with by_slm=false."
+  ],
+  "id": "math-solver-orchestration",
+  "inverse": [
+    "Summaries admit permutations/many assignments. Integer token sharing loses remainder. C fallback omits B trace/history, so cannot reconstruct B record. Memo requires matching verified B but not correct."
+  ],
+  "limitations": [
+    "Teacher/Lean loops and append-failure path unexecuted; no accuracy claim.",
+    "Partial lexical AST; no semantic proof or executable percentage surrogate"
+  ],
+  "source": "math/src/solve.rs",
+  "state": "Problem batches, records/history, memos/candidates, summaries"
+}

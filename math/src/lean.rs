@@ -152,3 +152,29 @@ mod tests {
         assert!(assemble(&th, "norm_num").contains("theorem x : 1 + 1 = 2 := by\n  norm_num"));
     }
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn incomplete_blocks_and_preflight() {
+        assert!(parse_proofs("=== a\nexact x").is_empty());
+        assert_eq!(
+            parse_proofs("=== a\ndiscard\n=== b\nkept\n=== end"),
+            vec![("b".into(), "kept".into())]
+        );
+        let t = Theorem {
+            id: "synthetic".into(),
+            split: String::new(),
+            header: String::new(),
+            statement: "theorem t : True :=".into(),
+            nl: String::new(),
+        };
+        let dir = std::env::temp_dir().join(format!("wave28-lean-absent-{}", std::process::id()));
+        assert!(!dir.exists());
+        let v = check(&t, "sorry admit", &dir, "x", 1);
+        assert_eq!(v.errors.len(), 2);
+        assert!(!v.ok);
+        assert!(!dir.exists());
+    }
+}

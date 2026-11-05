@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "wave30_parse_runtime_and_output_state",
+    "wave30_bounded_state_and_fallback",
+    "parse_error_runs_nothing"
+  ],
+  "children": [],
+  "cost": "Parse O(source plus parser work); runtime O(executed AST visits plus delegated arithmetic/index/builtin costs and value clones). For loops snapshot the iterable; matrix column copies total its elements. Calls use frames up to depth 256; while/do-until have no fuel cap. Dimension products/allocation and host IO failures are not generally certified.",
+  "description": "Stateful tree evaluator with workspace frames, captured or console streams, function registry, RNG, in-memory default filesystem and optional register VM dispatch. Parse failure precedes function registration and statements; returned runtime errors retain earlier effects.",
+  "forward": [
+    "run(S,text): parse the entire text; on failure append parser diagnostic and return false. Otherwise register functions, then execute sequentially (or delegate VM). Flow Err updates last_error and prints; top-level Return/Break/Continue are successful termination. Expression evaluation is left to right; variables shadow function names; user functions precede builtins."
+  ],
+  "id": "mlab-interp",
+  "inverse": [
+    "Compatible antecedents of output o are all programs/workspaces whose formatted stream equals o; suppressed assignments, overwritten variables and empty programs can collide. Given final x=9 after runtime failure, earlier x and statements after the failure are unrecoverable. Capture draining uniquely determines prior buffer only if no intervening writes and capture sink are assumed."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no macro expansion or semantic resolution. Finite synthetic CPU checks are not a proof. Frozen suites, corpus, teacher, GPU, allocation exhaustion and host IO failure injection were not run. No useful executable percent surrogate for categorical control/effects; unsupported gap, no 1/2/5/10% claim."
+  ],
+  "source": "mlab/src/interp.rs",
+  "state": "Returned function calls restore frame count, call depth and saved end context; scalar short circuit evaluates RHS only when needed. For ordinary indexed '=' assignment, RHS type precedes target type and index evaluation in assign_index. Compound indexed assignment evaluates the RHS expression, reads the old indexed value (including index evaluation), applies the binary operation, then calls assign_index and evaluates indices again. Parse failure leaves workspace/function registrations unchanged, but emits a diagnostic. Gate warnings bypass ordinary warning suppression."
+}

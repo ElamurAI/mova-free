@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named synthetic native tests; paired syntax projection"
+  ],
+  "children": [],
+  "cost": "Rendering O(input/output bytes plus paper/card sorting), with repeated totals over at most three splits. String allocations proportional to output; Counts addition assumes no u64 overflow. lang_md requires nonempty cards; Found indices must belong to unchanged Matcher indexes.",
+  "description": "Card readme_md renders metadata, source attribution, split Counts and total; papers_md resolves Found identities against Matcher, sorts year/title, prints match method/fuzzy marker/alts and unmatched raw references. Empty found/unfound emits no-reference message. lang_md sums Counts and uses first card language/family; index_md sorts language/name and counts license categories. Formatting escapes pipes only in cell, converts surname-comma contributor names and groups decimal digits.",
+  "forward": [
+    "Card readme_md renders metadata, source attribution, split Counts and total; papers_md resolves Found identities against Matcher, sorts year/title, prints match method/fuzzy marker/alts and unmatched raw references. Empty found/unfound emits no-reference message. lang_md sums Counts and uses first card language/family; index_md sorts language/name and counts license categories. Formatting escapes pipes only in cell, converts surname-comma contributor names and groups decimal digits."
+  ],
+  "id": "treebanks-render",
+  "inverse": [
+    "Rendered totals admit all split distributions with same sums; contributor reordering loses original comma formatting; cell trims edges and conflates empty strings with dash. Paper output constrains indexed title/year/method but cannot recover raw matching evidence or all index records.",
+    "papers_md never downloads or links private library folders; only known anthology ids produce ACL links. Empty references return before Papers heading. Rendering cannot certify stats gates that were skipped by a direct caller."
+  ],
+  "limitations": [
+    "Partial source models and finite fixtures only. No corpus/model/network/site/release execution or universal proof."
+  ],
+  "source": "tools/treebanks/src/render.rs",
+  "state": "Bounded helper inputs and source-derived CLI state/effects; see catalog."
+}

@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "power_oracle",
+    "boundaries_and_fibers",
+    "final_pair_gate_preserves_reference_observations",
+    "Missing derivative gate fails; exact restoration."
+  ],
+  "children": [],
+  "cost": "O(n) validation, two products and additions per coefficient, one final pair gate; O(1) scratch. Overflow rejection may do more work than the early gate.",
+  "description": "Ascending coefficients; preserve finite input validation and recurrence order, then reject a nonfinite final value/derivative pair. Empty polynomial returns (0,0). Absorption preserves Result observations while changing rejection work.",
+  "forward": [
+    "Ascending coefficients; preserve finite input validation and recurrence order, then reject a nonfinite final value/derivative pair. Empty polynomial returns (0,0). Absorption preserves Result observations while changing rejection work."
+  ],
+  "id": "algorithm-horner",
+  "inverse": [
+    "At x=0 value=c0 and derivative=c1; all higher coefficients remain free. [2,3,7] and [2,3,99] have identical outputs. With fixed degree and x, real fiber is intersection of two affine constraints; dependent constraints and f64 rounding require separate treatment."
+  ],
+  "limitations": [
+    "Finite fixtures and partial syntax are not a general proof.",
+    "IEEE-754 no-trap/no-fast-math assumptions; no percentage guarantee.",
+    "Result equivalence does not preserve rejection work or exception timing."
+  ],
+  "source": "algorithms/src/horner/mod.rs",
+  "state": "Each suffix update uses previous value for the derivative. Success returns a finite pair. Invalid input precedes arithmetic; nonfinite intermediates cannot recover."
+}

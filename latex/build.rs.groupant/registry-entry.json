@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "wave28_tests::canonical_first_form_and_variant_order; wave28_tests::variant_identifier_boundary",
+    "Two debug/two release selected runs; paired syntax"
+  ],
+  "children": [],
+  "cost": "Table bytes B, variants V, forms F: parsing O(B+V²) worst-case linear En::add membership plus expected hash operations; emitted bytes E retained O(B+F+E).",
+  "description": "En::canon/alt retain first form; variants retain first-seen order. main validates row arity, identifier, symbol uniqueness and class before forms; explicit characters claim slots before automatic text fallback. Fixed enum emission order avoids HashMap iteration nondeterminism; writes OUT_DIR/table.rs only after validation.",
+  "forward": [
+    "En::canon/alt retain first form; variants retain first-seen order. main validates row arity, identifier, symbol uniqueness and class before forms; explicit characters claim slots before automatic text fallback. Fixed enum emission order avoids HashMap iteration nondeterminism; writes OUT_DIR/table.rs only after validation."
+  ],
+  "id": "latex-build",
+  "inverse": [
+    "Duplicate form acceptance and overwrite of the first canonical form are excluded for validated successful compilation.",
+    "Compatible inputs are tables with identical ordered variants, canonical first forms and lookup maps; comments, blank lines and redundant alternate canonical declarations can differ."
+  ],
+  "limitations": [
+    "Partial source models and finite tests, no semantic proof or expanded AST.",
+    "No useful executable percentage approximant metric established; future caps1/2/5/10% only.",
+    "No live VMM/API/corpus/GPU/full-school/held-out execution; allocation and extreme sizes untested."
+  ],
+  "source": "latex/build.rs",
+  "state": "A, A0 accepted; empty, lowercase initial, underscore and Unicode variant names rejected. Empty table can emit unusable empty enums; no whole-table semantic completeness guarantee."
+}

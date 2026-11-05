@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "tanakh::tests::public_domain_only",
+    "tanakh::tests::tanakh_order"
+  ],
+  "children": [],
+  "cost": "Edition O(B); R records,V verses,F files: maps O(R log V), files O(F log F), union O(V log V), memory O(R+output). No real filesystem benchmark.",
+  "description": "edition parses JSON, exact Public Domain admission, then chapter/verse strings through html_text/NFC retaining sparse coordinates. targums writes declared layers/provenance. by_verse appends ids per whitespace verse; index unions three maps/tagged Targum refs, sorts Tanakh order, skips unknown books, writes per-book TSV.",
+  "forward": [
+    "edition parses JSON, exact Public Domain admission, then chapter/verse strings through html_text/NFC retaining sparse coordinates. targums writes declared layers/provenance. by_verse appends ids per whitespace verse; index unions three maps/tagged Targum refs, sorts Tanakh order, skips unknown books, writes per-book TSV."
+  ],
+  "id": "macula-tanakh",
+  "inverse": [
+    "Non-PD cannot yield copied verses. Unknown book not written by index. Missing translation cannot remove verse present elsewhere: union, not intersection.",
+    "Output allows removed markup/empty positions compatible with retained ids and ignored metadata. Index row allows inputs yielding same ordered id lists; missing versus empty files indistinguishable."
+  ],
+  "limitations": [
+    "Edition/order helpers tested; filesystem outputs unexecuted.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/macula/src/tanakh.rs",
+  "state": "Licence precedes text shape validation; empty/nonstrings omit without renumbering. Missing sources empty, duplicate ids retained. Book order differs from library. Writes partial/nontransactional."
+}

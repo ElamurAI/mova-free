@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "id": "world-tabular",
+  "kind": "groupant",
+  "status": "partial_source_bound_model",
+  "source": {
+    "path": "../tabular.rs",
+    "sha256": "7ce9d08ca2a14933689811ca6db904a0eee3ba364230f0b9f69d281ca93b5595"
+  },
+  "components": {
+    "ast": {
+      "path": "syntax.json",
+      "format": "rust_syntax_projection",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "id": "world-tabular-behavior-complement",
+        "type": "behavior_complement"
+      },
+      {
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "id": "world-tabular-reverse-reconstruction",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "path": "model.md",
+        "section": "csv-fiber",
+        "status": "partial_source_model",
+        "id": "world-tabular-csv-fiber",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "path": "model.md",
+        "section": "line-boundary",
+        "status": "partial_source_model",
+        "id": "world-tabular-line-boundary",
+        "type": "error_partition"
+      },
+      {
+        "path": "model.md",
+        "section": "feature-loss",
+        "status": "partial_source_model",
+        "id": "world-tabular-feature-loss",
+        "type": "information_loss"
+      },
+      {
+        "path": "model.md",
+        "section": "threshold-partition",
+        "status": "partial_source_model",
+        "id": "world-tabular-threshold-partition",
+        "type": "constraint_relation"
+      },
+      {
+        "path": "model.md",
+        "section": "group-observation",
+        "status": "partial_source_model",
+        "id": "world-tabular-group-observation",
+        "type": "encoding_relation"
+      },
+      {
+        "path": "model.md",
+        "section": "selection-priority",
+        "status": "partial_source_model",
+        "id": "world-tabular-selection-priority",
+        "type": "priority_relation"
+      },
+      {
+        "path": "model.md",
+        "section": "io-dependency",
+        "status": "partial_source_model",
+        "id": "world-tabular-io-dependency",
+        "type": "dependency_boundary"
+      }
+    ]
+  },
+  "children": [
+    {
+      "id": "world-tabular-csv",
+      "path": "csv.groupant"
+    },
+    {
+      "id": "world-tabular-features",
+      "path": "features.groupant"
+    },
+    {
+      "id": "world-tabular-rules",
+      "path": "rules.groupant"
+    }
+  ]
+}

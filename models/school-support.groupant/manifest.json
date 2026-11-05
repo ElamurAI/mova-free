@@ -1,0 +1,272 @@
+{
+  "children": [
+    "world-schoolbench",
+    "world-schooltools",
+    "world-school-tree",
+    "world-prules",
+    "world-fbench",
+    "world-lessons",
+    "world-school",
+    "world-tune",
+    "question-generation"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_derived"
+    },
+    "ast": {
+      "scope": "Child partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_derived"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_derived"
+    },
+    "obernants": [
+      {
+        "id": "school-support-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_derived",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "school-support-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "school-support-option-canonicalization",
+        "path": "model.md",
+        "section": "option-canonicalization",
+        "status": "partial_source_derived",
+        "type": "encoding_relation"
+      },
+      {
+        "id": "school-support-tally-observation",
+        "path": "model.md",
+        "section": "tally-observation",
+        "status": "partial_source_derived",
+        "type": "projection_relation"
+      },
+      {
+        "id": "school-support-stratified-selection",
+        "path": "model.md",
+        "section": "stratified-selection",
+        "status": "partial_source_derived",
+        "type": "subset_relation"
+      },
+      {
+        "id": "school-support-selection-state",
+        "path": "model.md",
+        "section": "selection-state",
+        "status": "partial_source_derived",
+        "type": "state_transition"
+      },
+      {
+        "id": "school-support-tree-reader-boundary",
+        "path": "model.md",
+        "section": "tree-reader-boundary",
+        "status": "partial_source_derived",
+        "type": "dependency_relation"
+      },
+      {
+        "id": "school-support-rule-learning-boundary",
+        "path": "model.md",
+        "section": "rule-learning-boundary",
+        "status": "partial_source_derived",
+        "type": "effect_relation"
+      },
+      {
+        "id": "school-support-objective-filter",
+        "path": "model.md",
+        "section": "objective-filter",
+        "status": "partial_source_derived",
+        "type": "constraint_relation"
+      },
+      {
+        "id": "frame-score-serialization",
+        "path": "model.md",
+        "scope": "Parsed frame attributes and condition survive diagnostic serialization and reparsing. Loaded gold, supplied predictions and selected split preserve frame and question identity through scoring and aggregation. Sampling fixtures check deterministic index selection. Duplicate IDs, malformed metadata and external reader/teacher I/O remain separate limits; this join is not a complete lesson or training run.",
+        "section": "frame-score-serialization",
+        "status": "partial_source_correspondence",
+        "type": "frame_observation_identity"
+      },
+      {
+        "id": "school-support-wave12-arithmetic-common-domain",
+        "path": "model.md",
+        "scope": "For a,b in 0..12, independent scalar expectations compare lesson eval and school Problem::answer for addition, multiplication, nonnegative subtraction and nonzero exact division. Rejected school operations are excluded; lesson negative subtraction is a separate case. Problem::answer fallback is not typed arithmetic success.",
+        "section": "school-support-wave12-arithmetic-common-domain",
+        "status": "partial_source_model",
+        "type": "partial_arithmetic_transport"
+      },
+      {
+        "id": "school-support-wave12-generated-answer-identity",
+        "path": "model.md",
+        "scope": "One addition fixture supplies 32 exercises, tests and exams each. Parsed operands remain in 2..8 and 1..4; their sum equals the answer and primers reachable accepts the same observation. Repeated exercises agree. Supplied prefix tags establish fixture selection, not general semantic assessment separation; reachability is heuristic.",
+        "section": "school-support-wave12-generated-answer-identity",
+        "status": "partial_source_model",
+        "type": "sampled_numeric_projection"
+      },
+      {
+        "id": "school-support-wave12-retained-weight-codec",
+        "path": "model.md",
+        "scope": "Pure student/actor TSV codecs preserve current and accumulated tables for three supplied representable states, including the zero-accumulator activation witness. Eighty-one duplicate-vote pairs in -4..4 decode to independent exact sums and roundtrip canonically. MAX plus one clips once to MAX; canonicalization loses formatting and extreme totals. No filesystem durability, fresh-process learning or prediction-quality proof follows.",
+        "section": "school-support-wave12-retained-weight-codec",
+        "status": "partial_source_model",
+        "type": "learned_state_codec"
+      },
+      {
+        "id": "school-support-wave12-assessment-fold-identity",
+        "path": "model.md",
+        "scope": "For folds 1..8, repeats 0..7 and indices 0..31, public assignment matches a u128 arithmetic reference. For nine group IDs, sixteen indices share each assignment and stay in range. Zero folds reject; supported 32/64-bit extreme indices/repeats remain bounded. Changing repeats does not establish data independence, semantic holdout separation or statistical validity.",
+        "section": "school-support-wave12-assessment-fold-identity",
+        "status": "partial_source_model",
+        "type": "grouped_partition_relation"
+      },
+      {
+        "id": "school-support-wave14-tuning-identity",
+        "path": "model.md",
+        "scope": "From domains::knobs and its finite base map, each neighboring_configs candidate retains map keys, changes exactly one value and has only finite values. select_candidate on the supplied observations returns index 0, referring to that same candidate vector; separate inadmissible observations yield None. Exclude index substitution, multiknob mutation and inadmissible selection. An index without the list cannot recover configuration, scores or callback history. Adoption callbacks are tuning validation, not untouched final assessment; no adoption executes.",
+        "section": "school-support-wave14-tuning-identity",
+        "status": "partial_source_model",
+        "type": "neighbor_and_selector_coordinate"
+      },
+      {
+        "id": "school-support-wave17-question-source-coordinates",
+        "path": "model.md",
+        "scope": "The question-generation child contributes supplied selection identity, versioned schema/prompt/gate and quota/cardinality joins. Shared coordinates are the same ordered Para references, doc#para exclusions, local sentence anchors and rule value. These are distinct from lesson/benchmark IDs and do not establish question generation, persistent learning or school assessment quality. Preimages preserve omitted paragraphs and normalization ambiguity; cost is reached pure APIs.",
+        "section": "school-support-wave17-question-source-coordinates",
+        "status": "partial_source_model",
+        "type": "question_generation_scope_transport"
+      },
+      {
+        "id": "school-support-wave18-question-generation-report-preflight",
+        "path": "model.md",
+        "scope": "Actual composition path is school-support -> question-generation -> report::collect and its checked ledger preflight, observed by qagen/tests/groupant_wave18.rs. For one supplied Rule V1 paragraph, valid primary row, and three existing artifact sentinels, malformed JSONL or u64::MAX+1 input-token aggregation returns an error while qa.tsv, rejects.tsv and params.json remain unchanged. Cost is the bounded child preflight work and filesystem reads reached before failure. Reverse fiber retains all child directory states with these observed prior bytes and failure, leaving unrelated school state ambiguous. No general transaction, training/retention, inference-core or semantic-quality claim is made.",
+        "section": "school-support-wave18-question-generation-report-preflight",
+        "status": "partial_source_model",
+        "type": "child_report_preflight_preservation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_derived"
+    }
+  },
+  "id": "school-support",
+  "kind": "groupant_group",
+  "registry": {
+    "node": "school-support",
+    "path": "../contracts.json"
+  },
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "qagen/src/fix.rs",
+      "sha256": "f491a1f6223c6912def81ac3b1fb330fe08196538e1a4d7484cde914246c035f"
+    },
+    {
+      "path": "qagen/src/gate.rs",
+      "sha256": "09328f711abf4b6453f95bed3d873deb205c8801d939841974416fe74e3e5806"
+    },
+    {
+      "path": "qagen/src/lemma.rs",
+      "sha256": "cac952de748d1b854a5dfe04e0635e18816e7970625c5266152a35d0c0d761c8"
+    },
+    {
+      "path": "qagen/src/lib.rs",
+      "sha256": "5d0d4a49f95ddc5c03042d446c6ab9abade72589139085222239646fb3fc6c6e"
+    },
+    {
+      "path": "qagen/src/main.rs",
+      "sha256": "7d4410bf5d85e04c46475fe0fef9e8e5a24b44fc37973f8420b950517ef05222"
+    },
+    {
+      "path": "qagen/src/prompt.rs",
+      "sha256": "2e30ac525e2bf8cf8432298ff35eaf2ec08933c17aff60e480017a2b7cca89f6"
+    },
+    {
+      "path": "qagen/src/report.rs",
+      "sha256": "4abf85ffbd32f22802a89ef625780b288d92e92616c247a4d591e37fe10977c2"
+    },
+    {
+      "path": "qagen/src/run.rs",
+      "sha256": "a34e297bdb69e178791983d8b9f6b35b1df34f223f15f1f13bc65d29153f2abd"
+    },
+    {
+      "path": "qagen/src/schema.rs",
+      "sha256": "03e113198711324f029d8e9e4d9fc899416e3144ea856240b9d962775c78c2fe"
+    },
+    {
+      "path": "qagen/src/select.rs",
+      "sha256": "0c35caf4eda91c0a5d36bce728f3846b360b483a66fa4ca3c884964839cd2554"
+    },
+    {
+      "path": "qagen/tests/groupant_wave17.rs",
+      "sha256": "7f9447e887eae69a2a95f443555140cc8dbfa95d83a29b8062383fca5f9d38a4"
+    },
+    {
+      "path": "qagen/tests/groupant_wave18.rs",
+      "sha256": "3ab5bd3bab4823dbf89e78ab1811e2286565e1899947ba24b247e3e8c0149813"
+    },
+    {
+      "path": "qagen/tests/groupant_wave20.rs",
+      "sha256": "f50e7759c6a4e14d228678f323ac8d9449888c9241f610009231335c1063d5d4"
+    },
+    {
+      "path": "world/src/fbench.rs",
+      "sha256": "cc89a6255dc4c886743ed97825a00fbc0a6312257a96e65f3dc7d6ff82b24c14"
+    },
+    {
+      "path": "world/src/lessons.rs",
+      "sha256": "d9ea9d5543986a9421c508fd90a1f1f7aa9f143ab5392c80d7c300b34a946264"
+    },
+    {
+      "path": "world/src/prules.rs",
+      "sha256": "d3fe2fa0cbece21e34ed7b15054e8c2142db62e9e4ad771c8f8a40c5fa2c889d"
+    },
+    {
+      "path": "world/src/school.rs",
+      "sha256": "3b29edc9021b45510e68eb1e49ac894f6ab55b2b859694302db2076cc6db451d"
+    },
+    {
+      "path": "world/src/school_tree.rs",
+      "sha256": "ca5ada75804e1d2eb3a8a5e0b05331b00c4198682962fcbbb221a1020927711b"
+    },
+    {
+      "path": "world/src/schoolbench.rs",
+      "sha256": "31af0a29c60d6f58425471c828bcfb41a68ef0804c707f13eaa7d56abfb3d00d"
+    },
+    {
+      "path": "world/src/schooltools.rs",
+      "sha256": "69490a8577d28eda24da4a4357f1eb59ef56982a1f5d1895fac9f0987c43bf2f"
+    },
+    {
+      "path": "world/src/tune.rs",
+      "sha256": "932ebce85aebb89467cb9da0d82b136debed8b77f6a9f0b8e852336480db0adb"
+    }
+  ],
+  "status": "partial_source_bound_instance"
+}

@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms bk_tree::tests"
+  ],
+  "children": [],
+  "cost": "n<=4096 and L<=256. Worst build O(n²(1+L²)), query O(n(1+L²)+k log k), O(nL+n) resident storage; query O(n+k+L) scratch. BTreeMap lookup overhead is bounded by <=256 distance edges. No guaranteed sublinear query.",
+  "description": "Exact byte metric BK tree",
+  "forward": [
+    "Insert each word by repeatedly following child edge equal to its byte Levenshtein distance from the node; distance zero appends the original index. Query computes d to each visited node, emits its indexes iff d<=radius, then visits child edges in [saturating(d-radius),saturating(d+radius)]. Sort matches by original index."
+  ],
+  "id": "algorithm-bk-tree",
+  "inverse": [
+    "Typed behavior complement, ambiguous reverse reconstruction and specializations in model.md"
+  ],
+  "limitations": [
+    "Exact bounded APIs only. No generic 1/2/5/10% accuracy surrogate is supported. Finite tests do not prove universal correctness or runtime gains. Standard Vec/Box/BTreeMap allocation failure may abort or panic; allocator refusal is not injected. No callbacks, I/O or concurrency effects.",
+    "Partial syntax only; no semantic proof"
+  ],
+  "source": "algorithms/src/bk_tree/mod.rs",
+  "state": "Bounded deterministic exact data structure; explicit validation and standard allocation behavior"
+}

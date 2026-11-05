@@ -176,3 +176,27 @@ pub fn dim_arg(args: &[Value], k: usize, fname: &str) -> Result<Option<usize>, M
         }
     }
 }
+
+#[cfg(test)]
+mod wave30_tests {
+    use super::*;
+    #[test]
+    fn registry_and_dimensions() {
+        let mut r = Registry::new();
+        r.register("z", |_, _, _| num(1.0));
+        r.register("a", |_, _, _| num(2.0));
+        r.register("z", |_, _, _| num(3.0));
+        assert_eq!(r.names(), vec!["a", "z"]);
+        let mut it = Interp::capture();
+        let out = r.get("z").unwrap()(&mut it, &[], 1).unwrap();
+        assert_eq!(scalar_arg(&out, 0, "probe").unwrap(), 3.0);
+        assert_eq!(dims_args(&[], "x").unwrap(), (1, 1));
+        assert_eq!(dims_args(&[Value::num(-2.0)], "x").unwrap(), (0, 0));
+        assert_eq!(dims_args(&[Value::num(2.9)], "x").unwrap(), (2, 2));
+        assert!(dims_args(&[Value::num(f64::NAN)], "x").is_err());
+        assert_eq!(
+            scalar_arg(&[Value::Mat(Mat::col(vec![4.0, 8.0]))], 0, "x").unwrap(),
+            4.0
+        );
+    }
+}

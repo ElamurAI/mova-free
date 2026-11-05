@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "polynomial_oracle checks powers 0..5 at 23 rational queries including extrapolation; boundaries checks singleton, empty, duplicate, NaN and overflowing span; ambiguous_query checks a nonunique preimage.",
+    "Change left+right to left-right; polynomial_oracle assertion fails."
+  ],
+  "children": [],
+  "cost": "O(n^2) scalar operations and O(n) allocated storage; allocation failure follows Rust allocator behavior, not Error.",
+  "description": "Neville triangular recurrence P(i,w)=((x[i+w]-q)P(i,w-1)+(q-x[i])P(i+1,w-1))/(x[i+w]-x[i]). Updates i ascending preserve previous-width right neighbors. Nonempty matched finite slices, strictly increasing nodes, finite query; extrapolation allowed. Shape/nonfinite/order rejection precedes arithmetic. One node returns its ordinate even for distant queries.",
+  "forward": [
+    "Neville triangular recurrence P(i,w)=((x[i+w]-q)P(i,w-1)+(q-x[i])P(i+1,w-1))/(x[i+w]-x[i]). Updates i ascending preserve previous-width right neighbors. Nonempty matched finite slices, strictly increasing nodes, finite query; extrapolation allowed. Shape/nonfinite/order rejection precedes arithmetic. One node returns its ordinate even for distant queries."
+  ],
+  "id": "algorithm-neville-interpolation",
+  "inverse": [
+    "At q=0, nodes [-1,1], ordinates [-1,1] and [0,0] both yield 0. A scalar query cannot recover ordinates or nodes. At known distinct nodes, real exact interpolation is unique for degree<n; rounded evaluation is not injective."
+  ],
+  "limitations": [
+    "Partial source projection, no semantic proof",
+    "Finite fixtures do not guarantee accuracy",
+    "No executable approximation profile or speed claim",
+    "Rust allocation failures and callback panics are not caught"
+  ],
+  "source": "algorithms/src/neville_interpolation/mod.rs",
+  "state": "Validated finite arrays, rolling recurrence state or bounded quadrature level; tests observe result tags and traces"
+}

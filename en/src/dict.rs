@@ -61,6 +61,14 @@ pub fn fingerprint() -> u64 {
     *FP.get_or_init(|| crate::store::checksum(BLOB))
 }
 
+/// Licence and citations of the dictionary (`data/LICENSE.md`, CC BY-SA 4.0), compiled into every binary that
+/// prints it (`en licence`). It is not part of `BLOB`, so it never changes the fingerprint.
+pub const LICENCE: &str = include_str!("../data/LICENSE.md");
+
+/// The fingerprint `en.bin` 0.5 (`2483516a…`, header bytes 20..28) was trained with. A dictionary change that moves
+/// it forces a retrain, so the test pinning it is the gate.
+pub const RELEASED_FINGERPRINT: u64 = 0xe3e0_cb7d_31c7_e204;
+
 /// Lemma number (string as is).
 pub fn lemma(s: &str) -> Option<Sym> {
     probe(s, L_IDX, L_MASK, N_LEMMAS, lemma_bytes).map(|i| Sym::global(i as u32))
@@ -182,5 +190,49 @@ mod tests {
         assert!(paradigm(go).any(|r| r.tag == Tag::VBD && form_text(Form(r.id)) == "went"));
         assert!(known(go));
         assert_eq!(lemma("zzzqqq"), None);
+    }
+}
+
+#[cfg(test)]
+mod wave27_tests {
+    use super::*;
+    #[test]
+    fn invalid_namespace_and_frozen_lookup() {
+        for s in [Sym::NONE, Sym::local(0)] {
+            assert_eq!(text(s), "");
+            assert_eq!(lower(s), Sym::NONE);
+            assert!(!known(s));
+            assert_eq!(paradigm(s).count(), 0);
+            assert_eq!(const_name(s), None);
+        }
+        assert_eq!(lemma("wave27-zzzz-not-a-lemma"), None);
+        let l = lemma("the").expect("frozen dictionary required");
+        assert_eq!(text(l), "the");
+        assert_eq!(lex("THE"), l);
+        assert_eq!(fingerprint(), fingerprint());
+    }
+}
+
+#[cfg(test)]
+mod licence_tests {
+    use super::*;
+
+    /// The released model's dictionary is the compiled one; the licence text lives outside the blob.
+    #[test]
+    fn fingerprint_is_the_released_one() {
+        assert_eq!(fingerprint(), RELEASED_FINGERPRINT, "the in-code dictionary changed: en.bin 0.5 would refuse to load");
+        assert!(!BLOB.windows(9).any(|w| w == b"CC BY-SA ".as_slice()), "licence text leaked into the blob");
+        assert!(LICENCE.contains("CC BY-SA 4.0"));
+    }
+
+    /// Negative control: one byte more, or one byte changed, moves the fingerprint off the pin.
+    #[test]
+    fn fingerprint_pin_shows_red() {
+        let mut b = BLOB.to_vec();
+        b.push(0);
+        assert_ne!(crate::store::checksum(&b), RELEASED_FINGERPRINT);
+        let mut b = BLOB.to_vec();
+        b[L_STR] ^= 1;
+        assert_ne!(crate::store::checksum(&b), RELEASED_FINGERPRINT);
     }
 }

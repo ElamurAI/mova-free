@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "rustc --test --crate-name mova_algorithm_gcd algorithms/src/gcd/mod.rs; run binary twice",
+    "Independent source mutant must fail",
+    "mova-modelcheck syntax and groupants structural checks"
+  ],
+  "children": [],
+  "cost": "O(1+log(min(a,b)+1)) remainder steps for nonzero values, at most one for a zero input; O(1) space. Fixed-width u64 operation cost assumed; no timing measured.",
+  "description": "Repository-owned gcd implementation and finite oracle; adjacent source-bound groupant.",
+  "forward": [
+    "gcd(a,0)=a. For b>0, gcd(a,b)=gcd(b,a mod b). Thus gcd(0,0)=0; otherwise return the largest positive common divisor.",
+    "Invariant: The positive common-divisor set is unchanged by (a,b)->(b,a mod b). For b>0 the new second argument is strictly smaller; termination reaches (g,0). Remainder divides only by a positive value and multiplication is absent."
+  ],
+  "id": "algorithm-gcd",
+  "inverse": [
+    "U=u64^2 x u64. R(a,b,g) is the forward gcd relation. U minus R contains g!=0 for (0,0), and otherwise g=0, a value not dividing both inputs, or a common divisor smaller than another common divisor. This is a mathematical exact target, source-derived and only bounded-tested.",
+    "For fixed g>0, compatible inputs are (g*x,g*y) with products fitting u64 and gcd(x,y)=1, including (0,g),(g,0). For g=0 only (0,0). Multiple coprime pairs preserve ambiguity; no unique reconstruction."
+  ],
+  "limitations": [
+    "Scope is successful calls on lawful generic implementations where applicable. Partial syntax omits macro expansion, cfg resolution and semantic typing. Finite oracles do not establish all inputs or full Mova integration."
+  ],
+  "source": "algorithms/src/gcd/mod.rs",
+  "state": "All u64 pairs, one successful pure call, output u64. Divisibility oracle handles (0,0) separately."
+}

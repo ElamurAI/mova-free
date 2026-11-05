@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "count_projection",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "count_projection",
+        "status": "partial_source_derived_model",
+        "type": "count_projection"
+      },
+      {
+        "id": "sample_phase",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "sample_phase",
+        "status": "partial_source_derived_model",
+        "type": "sample_phase"
+      },
+      {
+        "id": "direct_presence",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "direct_presence",
+        "status": "partial_source_derived_model",
+        "type": "direct_presence"
+      },
+      {
+        "id": "order_sensitivity",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "order_sensitivity",
+        "status": "partial_source_derived_model",
+        "type": "order_sensitivity"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_helpers_only"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 3045,
+      "start": 2193
+    },
+    "description": "Agg::add folds one outcome into counts, three residuals and divergence; conditionally merges direct code, stores first4 failures and at most6 examples at verse count1 mod97."
+  },
+  "id": "translation-flow-main-aggregation",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../main.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "d9940f5fe1dcebf1ab586d390094028a90bc8a35bd733f4b55724483c236ecd3"
+  },
+  "status": "partial_source_bound_model"
+}

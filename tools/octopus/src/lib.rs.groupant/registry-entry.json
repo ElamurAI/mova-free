@@ -1,0 +1,33 @@
+{
+  "checks": [
+    "Native plaintext and negative controls; mocked Unix no-replay; real read-only status/log observations; source guards.",
+    "Native UTF-8 tail boundary regression: old source red, bounded suffix green; malformed admitted lines still rejected; five native library tests including actual plaintext controls.",
+    "cargo test --manifest-path tools/octopus/Cargo.toml --offline --locked with MOVA_OCTOPUS_TEST_MODEL (16 tests including the unchanged native controls; two identical runs on 2026-11-04)",
+    "2026-11-04: real_native_dolphin_pod_routes_by_name with the 0.4 model (four Dolphins, bare Dolphin refused, plural list, only quoted text sent); red control: ambiguity check disabled.",
+    "cargo test --manifest-path tools/octopus/Cargo.toml --offline with MOVA_OCTOPUS_TEST_MODEL (22 unit tests incl. 4 socket, 2 relay; 2026-11-04)",
+    "2026-11-04: 31 lib tests with MOVA_OCTOPUS_TEST_MODEL=en.bin 0.4, incl. native frames from real refused prompts, dedupe and execution-failure reading; red controls (no repair, per-build queue files, no executed_failed, ambiguity without candidates) each turned the native test red; restored.",
+    "2026-11-04: a repaired frame keeps the unrepaired admission of an observed subject noun (\"Is the queue empty?\"); seaspider English tests (2) were red without it and pass with it; nautilus, turtle, whale tests pass.",
+    "2026-11-05: 34 lib tests twice with MOVA_OCTOPUS_TEST_MODEL=en.bin 2483516a (colon-introduced Dolphin tasks, quotation negatives never sent, \"Show Crab's recent reports.\" via the repaired frame); red controls (no colon rule, no imperative repair) turned native tests red; restored. crab exam seed 66/66 (live 203013d8e: 57/66), two identical runs.",
+    "2026-11-05 (en.bin 2483516a): 35 lib tests twice; native test refuses 'Is Eel stopped?', 'Is Eel started?', 'Has Eel stopped?', 'Did you stop Eel?', 'Can Eel restart?', 'How do I stop Eel?', 'Start Eel?' (each planned the action before) and still plans 'Stop Eel.'/'Could you stop Eel?'; observes on eel_stop refused at load. Red controls: question gate off (octopus, seaspider, whale, nautilus, turtle English tests red), '?' ignored (octopus native and whale red), polar subject admission only when repaired (seaspider red), colon rule text-only (whale red); restored. crab exam seed 66/66 twice; Nautilus pool prompts 18/18 with the 0.5 expectation update."
+  ],
+  "children": [],
+  "cost": "Bounded bytes plus native parser/configured adapter costs; no measured speed claim.",
+  "description": "Bounded native plaintext deputy component; exact adjacent source/model binding.",
+  "forward": [
+    "See Forward and Composition in adjacent model.md.",
+    "crab_consult handler (enqueue/state/list with a configured Dolphin name); group_aliases refuse a singular group word without a member alias; collective intents bind only plural entities; which-questions read like what-questions.",
+    "animal_ask capabilities validated at load (animal, absolute socket, caller; one text slot) and executed by the built-in AnimalRelay.",
+    "review reasons over frame::read_repairing words (imperative read as a noun phrase repaired; observation keeps native words); bind tries slots::bound_head, then for text arguments slots::colon_head (2026-11-05).",
+    "IntentRule.observes (default false): a question (frame mood polar or wh, or a sentence ending in '?' that is not a modal request) selects only observing capabilities; an acting candidate is withheld and, with nothing left, the sentence is refused as pragmatic_ambiguity. Config::validate refuses observes on crab_control start/stop/restart, crab_consult enqueue and animal_ask. A polar frame admits its predicate when its subject is an observed noun, repaired or not. bind uses slots::colon_head for every slot kind (2026-11-05)."
+  ],
+  "id": "octopus-deputy-library",
+  "inverse": [
+    "Complement and compatible-input reconstruction remain distinct; refusal has no unique cause.",
+    "Not done: a question never yields an acting plan, so 'Did you fetch X?' may be answered by an observing reading (robots) rather than by history; mood comes from the first words and the terminator, so a declarative ending in '.' that asks indirectly is not a question."
+  ],
+  "limitations": [
+    "No trained pragmatic inference, general task understanding, automatic gold or training."
+  ],
+  "source": "tools/octopus/src/lib.rs",
+  "state": "prompt, pinned native model, configured capabilities, observations, plan, receipt"
+}

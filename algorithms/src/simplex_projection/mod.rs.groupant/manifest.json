@@ -1,0 +1,126 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Within valid inputs and real candidate outputs, complement contains infeasible or KKT-incompatible pairs and incorrect error outcomes. This is a relational complement of the unique real solution graph, not just a list of negative examples. For the concrete implementation the complement additionally excludes outputs differing from rounded evaluation and includes arithmetic/resource error partitions; real KKT alone is not a full f64 acceptance predicate.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "410b6027ffb061a2eb575eb877918ccf9f878f93abafa31d03dc1151c62fdf73",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "For fixed r>0 and feasible y, choose any theta; positive coordinates require x_i=y_i+theta, zero coordinates permit x_i<=theta. This nonunique normal-cone fiber includes arbitrary constant shifts. r=0 maps all valid vectors of matching length to zero. Concrete fibers further constrain rounded arithmetic success.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "410b6027ffb061a2eb575eb877918ccf9f878f93abafa31d03dc1151c62fdf73",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "active_support",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Each nonempty support S yields theta=(sum_{i in S} x_i-r)/|S|. It is valid exactly when active x_i>theta and inactive x_i<=theta. Exhaustive small support enumeration does not repeat sorting or the prefix scan.",
+        "path": "model.md",
+        "section": "active_support",
+        "status": "partial_relational_specification",
+        "subject_revision": "410b6027ffb061a2eb575eb877918ccf9f878f93abafa31d03dc1151c62fdf73",
+        "type": "active_support"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "translation_invariance",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Real projection is invariant under adding a common constant. Shifting by maximum avoids loss of a small radius against a common large offset; [MAX,MAX] with radius2 yields [1,1]. The subtraction can overflow for mixed extreme signs.",
+        "path": "model.md",
+        "section": "translation_invariance",
+        "status": "partial_relational_specification",
+        "subject_revision": "410b6027ffb061a2eb575eb877918ccf9f878f93abafa31d03dc1151c62fdf73",
+        "type": "translation_invariance"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "mass_and_zero",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Radius zero returns all positive zeros after validation, including empty input. Positive radius with empty input is EmptySimplex. Relative mass divides by strictly positive radius; smallest subnormals may be unrepresentable as equal shares and return Arithmetic.",
+        "path": "model.md",
+        "section": "mass_and_zero",
+        "status": "partial_relational_specification",
+        "subject_revision": "410b6027ffb061a2eb575eb877918ccf9f878f93abafa31d03dc1151c62fdf73",
+        "type": "mass_and_zero"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "arithmetic_resource_partition",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Length cap and finite/nonnegative scalar validation precede reservation. Nonfinite offsets/threshold/output/mass and excessive relative residual return Arithmetic. Cancellation may affect support and objective without tripping mass. This is not an analytical accuracy guarantee.",
+        "path": "model.md",
+        "section": "arithmetic_resource_partition",
+        "status": "partial_relational_specification",
+        "subject_revision": "410b6027ffb061a2eb575eb877918ccf9f878f93abafa31d03dc1151c62fdf73",
+        "type": "arithmetic_resource_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-simplex-projection",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "410b6027ffb061a2eb575eb877918ccf9f878f93abafa31d03dc1151c62fdf73"
+  },
+  "status": "partial_source_derived_instance"
+}

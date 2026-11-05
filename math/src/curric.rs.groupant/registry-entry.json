@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p math --lib curric::",
+    "two identical syntax projections"
+  ],
+  "children": [],
+  "cost": "O(n log n)+clone/hash bytes sampling, complete JSONL pools for prep. Grading parsing/evaluation and big arithmetic delegated.",
+  "description": "sample stable-sorts splitmix(SEED xor fnv(salt:id)) then takes k. prep assigns floor(n/2) dev before deduplicating ids (reported counts may exceed rows). grade recognized option overrides answer; else letter or unique numeric match. Int rational equality exact; otherwise abs error<=1%*max(abs(gold),1e-9) OR<1e-9.",
+  "forward": [
+    "sample stable-sorts splitmix(SEED xor fnv(salt:id)) then takes k. prep assigns floor(n/2) dev before deduplicating ids (reported counts may exceed rows). grade recognized option overrides answer; else letter or unique numeric match. Int rational equality exact; otherwise abs error<=1%*max(abs(gold),1e-9) OR<1e-9."
+  ],
+  "id": "math-curriculum",
+  "inverse": [
+    "Sample admits all pools with same keyed prefix and unseen tail; collisions retain input order. Grade true admits numeric tolerance neighborhood or alternate spellings, not unique answer."
+  ],
+  "limitations": [
+    "No corpus prep/load or held grading; arbitrary malformed numeric normalization not certified.",
+    "Partial lexical AST; no semantic proof or executable percentage surrogate"
+  ],
+  "source": "math/src/curric.rs",
+  "state": "Problem/options/gold, sampling keys, prompts"
+}

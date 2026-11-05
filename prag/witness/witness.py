@@ -8,7 +8,20 @@
 import sys, torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-H = __import__("os").environ.get("MOVA_BIG", "/data/mova") + "/pragmatics-tools/hf/"  # $MOVA_BIG: the heavy-data directory
+def _mova_big():
+    # $MOVA_BIG: the heavy-data directory; else the line MOVA_BIG=<dir> of the private peta/paths.env (absent from
+    # public checkouts); else stop and say what to set
+    import os
+    b = os.environ.get("MOVA_BIG", "")
+    if not b:
+        f = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "peta", "paths.env")
+        if os.path.exists(f):
+            b = next((l.strip()[len("MOVA_BIG="):].strip() for l in open(f) if l.strip().startswith("MOVA_BIG=")), "")
+    if not b:
+        sys.exit("witness.py: set MOVA_BIG to the heavy-data directory (README.md, «Paths»)")
+    return b
+
+H = _mova_big() + "/pragmatics-tools/hf/"
 inp, out = sys.argv[1], sys.argv[2]
 dev = "cuda"
 # WITNESS_FAST=1 or MOVA_EXEC=gpu (GPU-enhanced approximant, docs/gpu-exec.md): inputs sorted by length (less padding), fp16 weights,

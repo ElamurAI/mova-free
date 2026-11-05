@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "rustc --edition 2024 --test algorithms/src/topological_sort/mod.rs",
+    "two runs; strict Clippy; filtered new-test compiled mutant"
+  ],
+  "cost": "Oracle O(V!*(V+E)) time and O(V!*V) stored labels, bounded at V<=7 over 32 cases plus one transformation fixture; long-cycle graph has 98 vertices. Factorial bounds must stay explicit.",
+  "description": "Five topological_sort tests with independent oracle and transformations.",
+  "forward": [
+    "Two original tests plus 32 generated DAGs with 4..7 vertices and shuffled hidden order, a seven-vertex dynamic-ready fixture with duplicate/reordered arcs, and a 96-vertex chain with two isolates and a witnessed back edge. Seed 0x701020261029; generated diagnostics include case.",
+    "Enumerate vertex permutations lexicographically; independently require position[u]<position[v] for every edge; select the first valid permutation or Cycle. No heap or indegrees are shared. Hidden order guarantees generated acyclicity but is not used as the expected answer."
+  ],
+  "id": "algorithm-topological-sort-tests",
+  "inverse": [
+    "Universe U is deterministic terminating candidate return tables on the fixed fixture schedule crossed with five test verdicts. R maps each table to exact assertion verdicts. C=U minus R excludes passing when any assertion disagrees with expected values and failing when all executed assertions pass. This is exact at assertion-specification level, partial for actual runners; compilation failure, timeout and resource failure are outside U.",
+    "Pre(y) retains ALL candidate return tables giving observed verdict vector y. Passing constrains only checked calls; all untested inputs remain free. A failure retains every compatible first failing assertion and earlier passing return. No unique implementation or source reconstruction follows."
+  ],
+  "limitations": [
+    "Finite evidence, not unrestricted proof.",
+    "Partial syntax excludes macro expansion and semantic resolution."
+  ],
+  "source": "algorithms/src/topological_sort/tests.rs",
+  "state": "Fixed fixture schedule, candidate returns and verdicts."
+}

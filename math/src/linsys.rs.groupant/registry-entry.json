@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p math --lib -- linsys::wave28",
+    "18 selected tests twice debug/twice release; seven compiled mutants and restored positives"
+  ],
+  "children": [],
+  "cost": "Gauss-Jordan O(m*n*min(m,n)) rational operations/O(m(n+1)) storage plus coefficient growth. Checker count test O(1), width scan O(m), then O(mn) exact dot products and mismatch text; shape scan adds O(1) auxiliary space. linear_form repeated variable scans/vector work can be quadratic plus delegated constant evaluation.",
+  "description": "linear_form first evaluates subtrees without selected variables as exact V::Q constants, otherwise builds coefficient vector/constant recursively. Products require one zero coefficient vector; denominator must be constant and nonzero. gauss zips A,b, chooses first nonzero pivot in column order, normalizes and eliminates all other rows; inconsistent reduced rows return Inconsistent, otherwise free coordinates zero and pivot values yield Unique or Infinite. check_solution first rejects mismatched A/b counts, then any row width differing from x.len, then computes every exact dot product and collects mismatches.",
+  "forward": [
+    "linear_form first evaluates subtrees without selected variables as exact V::Q constants, otherwise builds coefficient vector/constant recursively. Products require one zero coefficient vector; denominator must be constant and nonzero. gauss zips A,b, chooses first nonzero pivot in column order, normalizes and eliminates all other rows; inconsistent reduced rows return Inconsistent, otherwise free coordinates zero and pivot values yield Unique or Infinite. check_solution first rejects mismatched A/b counts, then any row width differing from x.len, then computes every exact dot product and collects mismatches."
+  ],
+  "id": "math-linsys",
+  "inverse": [
+    "A solution x admits every matched rectangular A,b with Ax=b; Unique additionally needs full column rank. Infinite particular/free output does not contain nullspace basis and many systems share it. Inconsistency strings describe a reduced row without original-row provenance. linear_form loses expression syntax and constant evaluation may leave Env effects; coefficient equality alone cannot reconstruct expression/history."
+  ],
+  "limitations": [
+    "Partial lexical syntax/source-derived model, no proof",
+    "No executable percentage surrogate; float diagnostics have no global certificate",
+    "gauss still assumes matched rectangular dimensions and may panic/truncate on malformed input; API unchanged. check_solution now rejects mismatched count first and row width second before arithmetic. A=[]/b=[] remains true for arbitrary x, and gauss([],[]) gives Unique([]). Distinct selected variable names are assumed; duplicate names select first occurrence. Rational arithmetic is allocation-limited, constant eval delegates stateful calc. No float pivot tolerance."
+  ],
+  "source": "math/src/linsys.rs",
+  "state": "gauss still assumes matched rectangular dimensions and may panic/truncate on malformed input; API unchanged. check_solution now rejects mismatched count first and row width second before arithmetic. A=[]/b=[] remains true for arbitrary x, and gauss([],[]) gives Unique([]). Distinct selected variable names are assumed; duplicate names select first occurrence. Rational arithmetic is allocation-limited, constant eval delegates stateful calc. No float pivot tolerance."
+}

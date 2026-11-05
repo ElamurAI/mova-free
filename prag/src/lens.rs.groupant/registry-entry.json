@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p prag --lib lens::wave12_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "O(total form/lemma bytes) normalization plus external matcher cost; D emitted domain occurrences require O(D log D) sorting and O(D) storage. Reading and meaning rendering cost is linear in emitted bytes; matching costs are not measured here.",
+  "description": "Domain X is tagged calls Lens(W;E) or Means(L), with finite supplied Word sequence W, fixed compiled expression snapshot E and arbitrary finite Reading/Lens values L. No live lexical learning occurs. Let M=expressions_in_sentence(lower(forms W),lower(lemmas W);E). Lens maps each match m in M order to (join(original forms W[m.start..m.end],space),phrase,kind,meaning,register); its domains are sorted unique union of m.domains. Means selects readings whose phrase contains ASCII space, renders text + ' = ' + meaning stripped of every trailing period, joins with '; ', or returns '-' when selection is empty.",
+  "forward": [
+    "Domain X is tagged calls Lens(W;E) or Means(L), with finite supplied Word sequence W, fixed compiled expression snapshot E and arbitrary finite Reading/Lens values L. No live lexical learning occurs. Let M=expressions_in_sentence(lower(forms W),lower(lemmas W);E). Lens maps each match m in M order to (join(original forms W[m.start..m.end],space),phrase,kind,meaning,register); its domains are sorted unique union of m.domains. Means selects readings whose phrase contains ASCII space, renders text + ' = ' + meaning stripped of every trailing period, joins with '; ', or returns '-' when selection is empty."
+  ],
+  "id": "prag-lens",
+  "inverse": [
+    "B(tag,y)={tagged inputs and compatible matcher intermediate M satisfying the forward relation and yielding y}. Lens readings lose token boundaries inside joined surfaces and original lemma/head/POS fields; domain union loses occurrence multiplicity and order. Means loses all single-word readings, kind/register/domains and trailing-period multiplicity. Preserve E as a fixed provenance parameter; do not reconstruct one chosen dictionary or original sentence uniquely."
+  ],
+  "limitations": [
+    "Finite supplied fixtures; compiled lexical snapshot; partial syntax macro bodies opaque.",
+    "No live parser/teacher/corpus, retained exam, intent guarantee or speed claim."
+  ],
+  "source": "prag/src/lens.rs",
+  "state": "For Lens calls, reading count/order equal M count/order; text uses original surfaces, and domains=sort(unique(union domains(M))). For Means calls, only selected readings contribute, in order with multiplicity; empty selection yields '-'. Source-matcher span validity is a dependency premise."
+}

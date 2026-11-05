@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical projection only; fragment bound by byte range; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "memo_key_asymmetry",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "memo_key_asymmetry",
+        "status": "partial_source_derived_model",
+        "type": "memo_key_asymmetry"
+      },
+      {
+        "id": "postfix_index_guard",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "postfix_index_guard",
+        "status": "partial_source_derived_model",
+        "type": "postfix_index_guard"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 18746,
+      "start": 17211
+    },
+    "description": "Postfix traversal memoizes ordered subtree keys, recursively obtains child ids, rejects child ids>255, normalizes +/* operand index order, emits a node and memoizes its new id. It returns None for0 or>8 operations; otherwise appends Stop.",
+    "source_bytes_sha256": "9b29ac18a8eabd7dad5f1043b29f37690478aee703a6a4f9a9c29db594231cc7"
+  },
+  "id": "math-deduct-gold",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../deduct.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "373e1e3d5d83d964727e9a6becd5b07b78a562291ad7d69c76626ef8e1064ac8"
+  },
+  "status": "partial_source_bound_model"
+}

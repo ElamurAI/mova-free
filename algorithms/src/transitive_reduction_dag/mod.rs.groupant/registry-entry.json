@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms transitive_reduction_dag::tests::",
+    "Repeated standalone debug/release, strict Clippy, compiled mutant, paired syntax."
+  ],
+  "children": [],
+  "cost": "Directed DAG n<=256,m<=65536, normalize duplicate arcs; reject cycles incl loops. Compute Boolean Warshall reachability, retain edge u->v iff no other direct successor w reaches v. Ascending rows; closure invariant, unique minimal reachability-equivalent DAG. O(V^3+E) time O(V^2) memory. Aho, Garey, Ullman (1972).",
+  "description": "transitive_reduction_dag mod exact graph contract",
+  "forward": [
+    "Directed DAG n<=256,m<=65536, normalize duplicate arcs; reject cycles incl loops. Compute Boolean Warshall reachability, retain edge u->v iff no other direct successor w reaches v. Ascending rows; closure invariant, unique minimal reachability-equivalent DAG. O(V^3+E) time O(V^2) memory. Aho, Garey, Ullman (1972)."
+  ],
+  "id": "algorithm-transitive-reduction-dag",
+  "inverse": [
+    "Let R be the deterministic relation specified by Forward including validation precedence and tie rules, X the declared input type and Y its Result type. Behavior complement is (X times Y) minus R. Specifically outputs violating Warshall after k permits intermediate vertices through k. Reduction keeps precisely original edges with no alternate path; all original reachability remains. are excluded; a valid-input Err or a wrong successful witness is excluded. Resource, cycle and structural rejections are determined before algorithmic output.",
+    "Given DAG H already transitively reduced, every graph formed by adding any subset of H's reachable pairs reduces to H. Duplicate input edges also collapse. Cyclic Error recovers any directed cycle, without a unique witness."
+  ],
+  "limitations": [
+    "Finite checks only; allocation failure untyped; partial syntax; no approximate executable profiles."
+  ],
+  "source": "algorithms/src/transitive_reduction_dag/mod.rs",
+  "state": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract."
+}

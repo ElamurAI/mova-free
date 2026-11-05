@@ -1,0 +1,82 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "byte_offset_transport",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "byte_offset_transport",
+        "status": "partial_source_derived_model",
+        "type": "byte_offset_transport"
+      },
+      {
+        "id": "word_symbol_boundary",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "word_symbol_boundary",
+        "status": "partial_source_derived_model",
+        "type": "word_symbol_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4763,
+      "start": 1350
+    },
+    "description": "lex scans UTF-8 bytes and appends tokens. Backslash+ASCII letters forms one borrowed Cmd and consumes following ASCII whitespace. Backslash+nonletter consumes one scalar as command; final backslash becomes Char. Percent skips through bytes before LF. Whitespace/tilde emits Space only if output's last token is not Space. Stream::new reverses the resulting vector.",
+    "source_bytes_sha256": "b7ff658872b97454d99efcb6de24eaad6a9cd2ef892b3d01fba159f92b453d51"
+  },
+  "id": "latex-lex-stage0",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../lex.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "65c9e2c47772827ade022d41d5bf4ab4f54c0d3a7b9505ec137f0df8c4c4c922"
+  },
+  "status": "partial_source_bound_model"
+}

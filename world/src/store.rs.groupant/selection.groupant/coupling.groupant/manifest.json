@@ -1,0 +1,111 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional source relation; exact finite algebra where declared, otherwise candidate inner complement or ambiguous converse",
+        "assumptions": "Fixed corpus, indexes, order state and successful I/O; acyclic ancestry; unforgeable stamp is not assumed",
+        "domain": "Finite valid stores and ID vectors; precise specialization in operator",
+        "evidence": "../../model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "One ordered selection or saved-set load transition",
+        "operator": "Universe: ordered duplicate-free candidate vectors, valid k and seed, and output vectors. Candidate inner complement includes sampled outputs longer than min(k,n), unsorted outputs, duplicate outputs, and IDs absent from candidates. This is a conditional source model of the sample stage, not the complement of the full query.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; exact finite algebra where declared, otherwise candidate inner complement or ambiguous converse",
+        "assumptions": "Fixed corpus, indexes, order state and successful I/O; acyclic ancestry; unforgeable stamp is not assumed",
+        "domain": "Finite valid stores and ID vectors; precise specialization in operator",
+        "evidence": "../../model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "One ordered selection or saved-set load transition",
+        "operator": "Fix k and seed. A sampled observation Y has every ordered candidate vector C whose first min(k,|C|) pairs in sorted(key(C position,seed) xor id salt,id) have numerically sorted selected IDs equal to Y as compatible antecedents. Different candidate orders and losing candidates remain possible. No unique inverse; k=0 maps every candidate vector to empty.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; exact finite algebra where declared, otherwise candidate inner complement or ambiguous converse",
+        "assumptions": "Fixed corpus, indexes, order state and successful I/O; acyclic ancestry; unforgeable stamp is not assumed",
+        "domain": "Finite valid stores and ID vectors; precise specialization in operator",
+        "evidence": "../../model.md#tests",
+        "id": "positional-coupling",
+        "observation_scope": "One ordered selection or saved-set load transition",
+        "operator": "The xorshift stream advances per candidate position. Removing one eligible ID changes ranks of later unchanged IDs as well as competition for k slots. Changed-ID dictionaries therefore do not bound output membership changes. Historical witness eligible [0,1,2] to [0,2], C={1}, pred>=1 sample=1/2 gives old [1], fresh [2], legacy merge []; repaired load must return [2].",
+        "path": "model.md",
+        "section": "positional-coupling",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "dependency_closure"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; exact finite algebra where declared, otherwise candidate inner complement or ambiguous converse",
+        "assumptions": "Fixed corpus, indexes, order state and successful I/O; acyclic ancestry; unforgeable stamp is not assumed",
+        "domain": "Finite valid stores and ID vectors; precise specialization in operator",
+        "evidence": "../../model.md#tests",
+        "id": "rank-boundary",
+        "observation_scope": "One ordered selection or saved-set load transition",
+        "operator": "Hold query order and seed fixed, replace legacy delta-merge by complete target selection for stale sampled queries. Output equals F even if O\\C differs from F\\C. This intervention fixes candidate coupling but does not validate feature extraction, mutable same-hash indexes or forged stable stamps. Oracle compares repaired witness and rejects historical empty result.",
+        "path": "model.md",
+        "section": "rank-boundary",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "counterfactual"
+      }
+    ],
+    "tests": {
+      "path": "../../model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 25941,
+      "start": 23187
+    },
+    "description": "world-store-coupling",
+    "syntax_nodes": {
+      "node_ids": [
+        2551
+      ],
+      "path": "../../syntax.json"
+    }
+  },
+  "id": "world-store-coupling",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../store.rs",
+    "sha256": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9"
+  },
+  "status": "partial_source_derived_instance"
+}

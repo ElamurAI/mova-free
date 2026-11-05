@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "rustc --edition 2024 --test --crate-name mova_algorithm_bfs algorithms/src/bfs/mod.rs",
+    "independent oracle, two normalized runs, rejected source mutation"
+  ],
+  "cost": "O(V+E) time and O(V) auxiliary space",
+  "description": "Original deterministic bfs, global validation and bounded independent oracle.",
+  "forward": [
+    "For valid G,s, d[v]=min number of directed edges in any s-to-v path; d[v]=None iff no such path. d[s]=0. First source error precedes first invalid edge in adjacency order."
+  ],
+  "id": "algorithm-bfs",
+  "inverse": [
+    "In U=domain inputs crossed with all declared return values for one call, C=U minus R where R is the forward specification. This excludes every wrong successful vector/order, incorrect error and wrong first-failure precedence. Exact for the specification; partial source-derived absent-behavior approximant for Rust. Allocation failure, panic and elapsed time are outside U.",
+    "For every return y, Pre(y)={x in domain | R(x,y)} retains ALL compatible graphs and sources. Success fibers include arbitrary unreachable structure and alternatives consistent with the equations. Error fibers include every input satisfying the precise first-failure rule; no unique recovery is assumed. This is a relational specification, not an implemented inverse executor."
+  ],
+  "limitations": [
+    "Bounded tests are not unrestricted proof.",
+    "Syntax projection excludes expansion and semantic resolution."
+  ],
+  "source": "algorithms/src/bfs/mod.rs",
+  "state": "all finite directed adjacency lists with duplicates and self loops and a usize source; outputs are tagged errors or vectors of optional usize distances"
+}

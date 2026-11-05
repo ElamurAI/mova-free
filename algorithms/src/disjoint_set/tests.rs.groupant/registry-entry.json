@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms disjoint_set::tests (ten tests twice)",
+    "rustfmt --check; cargo clippy --all-targets -- -D warnings",
+    "Compiled no-compression mutant rejected by new balanced-tree test"
+  ],
+  "cost": "O(L n^2) sampled oracle work and bounded depth-three exhaustive traces; O(n) live state.",
+  "description": "Independent partition oracle, deterministic history tests and compression/error-frame checks for disjoint sets.",
+  "forward": [
+    "Run ten deterministic checks; compare partitions, return values and explicit state frames.",
+    "Cover 5,400 larger seeded operations, balanced depth-six compression and permuted edge histories."
+  ],
+  "id": "algorithm-disjoint-set-tests",
+  "inverse": [
+    "Passing finite samples leaves unsampled histories unconstrained.",
+    "A failing observation has multiple compatible source faults; preserve this ambiguity."
+  ],
+  "limitations": [
+    "Finite checks are not all-input proof.",
+    "No production performance measurement.",
+    "AST macro assertions remain opaque."
+  ],
+  "source": "algorithms/src/disjoint_set/tests.rs",
+  "state": "(compiled implementation, call history, independent labels, raw snapshots, verdict)"
+}

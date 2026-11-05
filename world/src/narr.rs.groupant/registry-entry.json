@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p world --lib narr::wave9_models -- --test-threads=1"
+  ],
+  "cost": "Public apply includes a whole World clone. Routing scans frame parents; event_any scans root then frames and events. Relation insertion clones graph and performs up to two BFS checks. Past projection materializes current entity snapshots; merge snapshots parent per recreation command and checks links. No constant-time public transaction claim.",
+  "description": "World::apply clones the world before apply_root. apply_root temporarily takes Story, routes v3 commands to exec_v3 or ordinary commands to the current frame's world, restores Story and returns a Result. register joins newly created events to line/placement/bounds; cause contradictions are soft warnings. relate snapshots the time graph for its own multi-edge rollback. Past/new/branch closure exports events; only Past recreates/merges selected entities.",
+  "forward": [
+    "World::apply clones the world before apply_root. apply_root temporarily takes Story, routes v3 commands to exec_v3 or ordinary commands to the current frame's world, restores Story and returns a Result. register joins newly created events to line/placement/bounds; cause contradictions are soft warnings. relate snapshots the time graph for its own multi-edge rollback. Past/new/branch closure exports events; only Past recreates/merges selected entities.",
+    "Actual join is World::apply -> position -> cloned apply_root -> step -> exec_v3 or frame apply_local -> register -> TimeGraph. Time command calls relate. Reveal may add a cause edge before relate fails: outer rollback, not relate alone, protects it. merge_from performs per-command rollback and may commit other successful recreations with warnings. Unmodeled local event gates and reconstruction command validity remain external."
+  ],
+  "id": "world-narr",
+  "inverse": [
+    "Within valid typed World::apply commands, rejected nested close, future knowledge or contradictory reveal cannot commit partial state. Different-world time relations are refused. Role overwrite by reveal is absent when its existing role is a different id. This inner exclusion does not apply to directly calling internal apply_root/register.",
+    "Given public output World, retain all valid command/prestate pairs whose cloned execution commits it. Refused transitions all return unchanged state, so unchanged World alone cannot distinguish a refusal from a successful observational no-op. Claims with different interpretation strings retain one canonical event id; event-count output loses those interpretations."
+  ],
+  "limitations": [
+    "Partial source models and bounded synthetic tests; no universal coverage.",
+    "Parent acyclicity, valid typed variants and sufficient resources are premises; arbitrary mutable state corruption and panic rollback are unmodeled.",
+    "No live parser, corpus, training, persistence, GPU or throughput evidence."
+  ],
+  "source": "world/src/narr.rs",
+  "state": "Public refusal preserves the original World through the outer clone. Internal helpers may mutate before error and do not promise rollback. Canonical references claim/know/reveal/time do not create a second event. Frame stack closes only the deepest nonroot frame. New/branch world identities are distinct axes."
+}

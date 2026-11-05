@@ -1,0 +1,160 @@
+{
+  "children": [
+    "algorithm-integer-sqrt-rust-approximant",
+    "algorithm-knapsack-rust-approximant",
+    "algorithm-levenshtein-rust-approximant",
+    "algorithm-longest-increasing-subsequence-rust-approximant",
+    "algorithm-quickselect-rust-approximant",
+    "algorithm-sparse-table-rust-approximant",
+    "approximation-contract",
+    "approximation-next-runner",
+    "approximation-runner",
+    "rsa-l0-rust-approximant",
+    "rsa-literal-listener",
+    "rsa-s1-rust-approximant"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "status": "partial_leaf_projections"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "bounded_measured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "assumptions": "Individual metric, domain and arithmetic assumptions apply; see leaf models.",
+        "domain": "Eight explicitly typed kernel observations on declared domains.",
+        "id": "nonbehavior",
+        "operator": "See named relation in model.md; no universal inverse or global error claim.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "scoped_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "Individual metric, domain and arithmetic assumptions apply; see leaf models.",
+        "domain": "Eight explicitly typed kernel observations on declared domains.",
+        "id": "compatible-evidence",
+        "operator": "See named relation in model.md; no universal inverse or global error claim.",
+        "path": "model.md",
+        "section": "compatible-evidence",
+        "status": "scoped_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "Individual metric, domain and arithmetic assumptions apply; see leaf models.",
+        "domain": "Eight explicitly typed kernel observations on declared domains.",
+        "id": "metric-domain",
+        "operator": "See named relation in model.md; no universal inverse or global error claim.",
+        "path": "model.md",
+        "section": "metric-domain",
+        "status": "scoped_model",
+        "type": "metric_domain"
+      },
+      {
+        "assumptions": "Individual metric, domain and arithmetic assumptions apply; see leaf models.",
+        "domain": "Eight explicitly typed kernel observations on declared domains.",
+        "id": "composition",
+        "operator": "See named relation in model.md; no universal inverse or global error claim.",
+        "path": "model.md",
+        "section": "composition",
+        "status": "scoped_model",
+        "type": "conditional_error_propagation"
+      },
+      {
+        "assumptions": "Individual metric, domain and arithmetic assumptions apply; see leaf models.",
+        "domain": "Eight explicitly typed kernel observations on declared domains.",
+        "id": "dispatch-cost",
+        "operator": "See named relation in model.md; no universal inverse or global error claim.",
+        "path": "model.md",
+        "section": "dispatch-cost",
+        "status": "scoped_model",
+        "type": "fallback_cost"
+      },
+      {
+        "assumptions": "Individual metric, domain and arithmetic assumptions apply; see leaf models.",
+        "domain": "Eight explicitly typed kernel observations on declared domains.",
+        "id": "source-evidence",
+        "operator": "See named relation in model.md; no universal inverse or global error claim.",
+        "path": "model.md",
+        "section": "source-evidence",
+        "status": "scoped_model",
+        "type": "reference_binding"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "rust-approximants",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/integer_sqrt/mod.rs.groupant/rust_approximant.rs",
+      "sha256": "801e5fd8c8a93bb25dc0bd78241634df8ea9ff81d7fde5ea8890e0fa4befa54b"
+    },
+    {
+      "path": "algorithms/src/knapsack/mod.rs.groupant/rust_approximant.rs",
+      "sha256": "34a3f81d27cf907d40262abcb8a999c3e2748fe06c1c6262dfbde4c0957f0729"
+    },
+    {
+      "path": "algorithms/src/levenshtein/mod.rs.groupant/rust_approximant.rs",
+      "sha256": "b8839fded6e08c8b2d8f557bba6f1350cf7ea6b550fc6c3d3bed656f3a5416b0"
+    },
+    {
+      "path": "algorithms/src/longest_increasing_subsequence/mod.rs.groupant/rust_approximant.rs",
+      "sha256": "6bdc82bffc2c2f50fe7faaf016253b1a91d896da3046c90c3c903348ca3acc2b"
+    },
+    {
+      "path": "algorithms/src/quickselect/mod.rs.groupant/rust_approximant.rs",
+      "sha256": "abab400e5f4d944fc1c7ad34752aa5dd7c122ae3b4bcfdf7481176c4c681eb08"
+    },
+    {
+      "path": "algorithms/src/sparse_table/mod.rs.groupant/rust_approximant.rs",
+      "sha256": "c2c5d9c8341a0c6a826dc507ba41d74db187592d65a60281fce119bb22c61934"
+    },
+    {
+      "path": "prag/src/rsa.rs",
+      "sha256": "4b56d6cf124b770d9481bd6ae29f456ecd26a58bfd46e5f0f6af9a4131ebd1a6"
+    },
+    {
+      "path": "prag/src/rsa.rs.groupant/rust_approximant.rs",
+      "sha256": "74e3c19640fce2f83c6528d85baf7af2b07fb126d30e4ff9aa19ad9d6bb1c238"
+    },
+    {
+      "path": "prag/src/rsa.rs.groupant/s1_approximant.rs",
+      "sha256": "880c3c496fcbc8da8aea3c4ce8ee8b6ced960f76ce1cacfb765538b5726cfe65"
+    },
+    {
+      "path": "tools/approx/examples/groupants.rs",
+      "sha256": "318da88340268352f31ea8b2f05cb146e74b4b69b5ce40372a6520c6b71ce75a"
+    },
+    {
+      "path": "tools/approx/examples/groupants_next.rs",
+      "sha256": "e954be5ea51bb5078d60f9ef702ea04cd71fba863ed9eba2d1bdc141f8543c9c"
+    },
+    {
+      "path": "tools/approx/src/lib.rs",
+      "sha256": "cadc492a3d62090c8dd27a4d674136d0227986a99a596f677e6c487db03e9fe3"
+    }
+  ],
+  "status": "bounded_executable_models"
+}

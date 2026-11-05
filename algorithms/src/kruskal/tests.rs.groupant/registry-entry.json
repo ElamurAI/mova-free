@@ -1,0 +1,22 @@
+{
+  "id": "algorithm-kruskal-tests",
+  "source": "algorithms/src/kruskal/tests.rs",
+  "description": "Original kruskal tests with independent oracle.",
+  "state": "deterministic terminating candidate return tables on this fixed finite fixture schedule, with four test verdicts",
+  "forward": [
+    "The fixed four-test schedule maps candidate returns to exact assertion verdicts. Four tests: 761 simple undirected graphs on 0..4 vertices, each possible arc absent/weight0/weight3; 40 seeded 8-edge multigraphs on 2..6 vertices (seed 0x6b7520261029); exact deterministic-tie/loop/parallel/invalid/empty/MAX fixtures; endpoint reversal and factor11 scaling. Enumerate all subsets of at most eight edges. Independent Boolean closure computes original components C. Retain subsets of size V-C with exactly original connectivity; that rank and connectivity force acyclic spanning forests even for loops and parallel arcs. Minimize u128 weight independently of production sorting and DSU; also verify returned indices are unique, in bounds and span the same connectivity."
+  ],
+  "inverse": [
+    "Declare U as all deterministic terminating candidate return tables on this fixed fixture schedule crossed with four pass/fail verdicts. R is assertion evaluation. U minus R excludes passing when any executed assertion disagrees with its independent expected value, and excludes failure when all assertions pass. Exact assertion specification; actual Rust correspondence is partial. Compilation failure, timeout and resource failure are outside U.",
+    "Pre(y) retains ALL candidate return tables whose assertions produce observed verdicts y. Pass constrains only tested calls, leaving untested inputs arbitrary. Failure preserves every compatible first failing assertion and earlier passing returns. No unique source implementation follows from these observations."
+  ],
+  "cost": "Subset oracle O(2^E*(V^3+E)) with E<=8,V<=6; 761 exhaustive graphs have E<=6,V<=4, plus40 seeded multigraphs. Memory O(V^2+E).",
+  "checks": [
+    "cargo test -p mova-algorithms kruskal::tests",
+    "four targeted tests twice; strict Clippy; compiled filtered mutation"
+  ],
+  "limitations": [
+    "Bounded correspondence is not unrestricted proof.",
+    "Partial syntax excludes macro expansion and semantic resolution."
+  ]
+}

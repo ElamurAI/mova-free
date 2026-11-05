@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms kd_tree::tests"
+  ],
+  "children": [],
+  "cost": "Build O(n log² n), O(n) resident storage; query O(n) worst time with O(log n) recursion. Re-sorting each subproblem is explicit; no worst-case sublinear nearest-neighbor claim.",
+  "description": "Exact bounded 2D KD nearest neighbor",
+  "forward": [
+    "Build recursively at alternating-axis medians, ordered by coordinate then original index. For query q visit the near child first and compare (squared distance,index); visit the far child when squared split-plane distance <= current minimum. Return (index,distance), or None iff no points."
+  ],
+  "id": "algorithm-kd-tree",
+  "inverse": [
+    "Typed behavior complement, ambiguous reverse reconstruction and specializations in model.md"
+  ],
+  "limitations": [
+    "Exact bounded APIs only. No generic 1/2/5/10% accuracy surrogate is supported. Finite tests do not prove universal correctness or runtime gains. Standard Vec/Box/BTreeMap allocation failure may abort or panic; allocator refusal is not injected. No callbacks, I/O or concurrency effects.",
+    "Partial syntax only; no semantic proof"
+  ],
+  "source": "algorithms/src/kd_tree/mod.rs",
+  "state": "Bounded deterministic exact data structure; explicit validation and standard allocation behavior"
+}

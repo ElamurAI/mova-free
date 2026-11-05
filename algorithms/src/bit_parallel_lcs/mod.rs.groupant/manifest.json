@@ -1,0 +1,137 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "No macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-bound domain, observation, assumptions and finite oracle in linked section",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-bound domain, observation, assumptions and finite oracle in linked section",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "boundary_partition",
+        "path": "model.md",
+        "scope": "Source-bound domain, observation, assumptions and finite oracle in linked section",
+        "section": "boundary_partition",
+        "status": "partial_source_derived_model",
+        "type": "boundary_partition"
+      },
+      {
+        "id": "orientation_quotient",
+        "path": "model.md",
+        "scope": "Concrete source-bound specialized relation and finite witness; see linked section",
+        "section": "orientation_quotient",
+        "status": "partial_source_derived_model",
+        "type": "orientation_quotient"
+      },
+      {
+        "id": "bit63_borrow_projection",
+        "path": "model.md",
+        "scope": "Concrete source-bound specialized relation and finite witness; see linked section",
+        "section": "bit63_borrow_projection",
+        "status": "partial_source_derived_model",
+        "type": "bit63_borrow_projection"
+      },
+      {
+        "id": "admission-error-fibers",
+        "type": "failure_partition",
+        "path": "model.md",
+        "section": "Admission boundary and error fibers",
+        "status": "source_reviewed_partial_correspondence",
+        "subject_revision": "7cace61982a54fac084c8306581c460a10945a7b2f10f8d43e7478babb1365fc",
+        "operator": "Partition min length <=64 success from min length >64 exact error fibers; preserve empty-loop cost distinction.",
+        "domain": "All finite byte slices, including empty and arbitrary byte contents.",
+        "observation_scope": "Result variant, error payload and explicitly declared source processing loops.",
+        "approximation_semantics": "Exact symbolic length partition; finite cap/empty witnesses; no all-length execution.",
+        "assumptions": "Finite valid byte slices and ordinary completed calls; no UTF-8 validity premise.",
+        "evidence": "../tests.rs: length_cap_and_empty_domain, top_bit_borrow_and_full_word; tools/correspondence/tests/lcs_bridges.rs: unicode_characters_are_not_bytes_and_bitparallel_boundary"
+      },
+      {
+        "id": "renaming-mask-state-transport",
+        "type": "state_transport",
+        "path": "model.md",
+        "section": "Renaming preserves positional masks and reachable states",
+        "status": "source_reviewed_partial_correspondence",
+        "subject_revision": "7cace61982a54fac084c8306581c460a10945a7b2f10f8d43e7478babb1365fc",
+        "operator": "Injective renaming on used byte values preserves every selected mask and reachable u64 state prefix; rejected inputs preserve errors only.",
+        "domain": "Finite byte pairs plus injective renaming on their combined occurring support.",
+        "observation_scope": "Full reachable state trajectory for accepted calls, result error for rejected calls.",
+        "approximation_semantics": "Exact conditional source-derived induction; existing tests observe only outputs and state endpoint implications.",
+        "assumptions": "Finite valid byte slices and ordinary completed calls; no UTF-8 validity premise.",
+        "evidence": "../tests.rs: exhaustive_lcs_against_matrix, top_bit_borrow_and_full_word, subsequence_not_substring_and_fibers"
+      },
+      {
+        "id": "accepted-extremal-fibers",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "Accepted extremal fibers and partial histogram exclusion",
+        "status": "source_reviewed_partial_correspondence",
+        "subject_revision": "7cace61982a54fac084c8306581c460a10945a7b2f10f8d43e7478babb1365fc",
+        "operator": "At accepted fixed lengths reconstruct zero and maximal score fibers; every successful fiber is empty outside the cap; histogram exclusion remains partial.",
+        "domain": "Byte pairs at fixed n,m, with acceptance restriction explicit.",
+        "observation_scope": "Returned Ok score and compatible antecedent pairs.",
+        "approximation_semantics": "Exact symbolic extremal target and inner-bound histogram consequence; finite witnesses, no complete executable reconstructor.",
+        "assumptions": "Finite valid byte slices and ordinary completed calls; no UTF-8 validity premise.",
+        "evidence": "../tests.rs: exhaustive_lcs_against_matrix, length_cap_and_empty_domain, top_bit_borrow_and_full_word, subsequence_not_substring_and_fibers"
+      },
+      {
+        "id": "byte-observation-bridge-domain",
+        "type": "observation_domain",
+        "path": "model.md",
+        "section": "Byte observation and cross-API bridge domain",
+        "status": "source_reviewed_partial_correspondence",
+        "subject_revision": "7cace61982a54fac084c8306581c460a10945a7b2f10f8d43e7478babb1365fc",
+        "operator": "Relate byte results to generic/English scalar results only on identical u8 inputs with min length <=64; distinguish UTF-8 bytes from tokens and Unicode scalars.",
+        "domain": "Identical finite byte slices with shorter side <=64 for correspondence; arbitrary byte lengths for domain counterexamples.",
+        "observation_scope": "Returned byte LCS and error variant; excludes scalar/grapheme normalization, traces and unrestricted API replacement.",
+        "approximation_semantics": "Conditional exact symbolic relation with finite native/integration witnesses; encoding/cap counterexamples constrain scope.",
+        "assumptions": "Finite valid byte slices and ordinary completed calls; no UTF-8 validity premise.",
+        "evidence": "../tests.rs: subsequence_not_substring_and_fibers; tools/correspondence/tests/lcs_bridges.rs: actual_en_algorithm_bitparallel_and_oracle_agree_on_small_byte_domain, unicode_characters_are_not_bytes_and_bitparallel_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "id": "algorithm-bit-parallel-lcs",
+  "kind": "groupant",
+  "registry": {
+    "node": "algorithm-bit-parallel-lcs",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "7cace61982a54fac084c8306581c460a10945a7b2f10f8d43e7478babb1365fc"
+  },
+  "status": "partial_descriptive_instance"
+}

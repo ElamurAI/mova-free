@@ -1,0 +1,32 @@
+{
+  "clippy": "strict all targets passed",
+  "clippy_log_sha256": "e48fdcbc229e1b97d87c9359a9b2eba2660460760256fd3ad0c3bb9f87875bb2",
+  "date": "2026-10-30",
+  "evidence": "$MOVA_DATA/runs/octopus-wave20-interpolation-2026-10-30/",
+  "limitations": [
+    "Finite absolute-tolerance observations, no general machine error guarantee",
+    "No certified executable surrogate",
+    "No timing benchmark or throughput claim"
+  ],
+  "mutant": {
+    "change": "subtract Richardson correction",
+    "compiled": true,
+    "failed_assertion": "romberg_integration::tests::polynomial_oracle",
+    "log_sha256": "22734f638ad62d0623b48f7e3d62b0eaa62d1a8a219050be5c367807fe75d49d",
+    "restored_positive_sha256": "c1f1ed909926b6b2077763ac39f0fc8f3b86d9466f25e7a1e8eac36e0729a2cf",
+    "source_bytes_restored": true
+  },
+  "native_module_tests": 3,
+  "normalized_outcomes_sha256": "7310f78ab4c8a4183faaa86b4a8df0da4e70df5c509183a01f8fce0ac5258202",
+  "paired_syntax_sha256": "4f78cff88d8f27a642b8b5e03c38dbc9308d9ee834c514a5b324acc17dffd347",
+  "profiles": [
+    "debug1",
+    "debug2",
+    "release1",
+    "release2"
+  ],
+  "source": "algorithms/src/romberg_integration/tests.rs",
+  "source_sha256": "7dbb717719565f8ba308415442d08c141cbf9a5ed808cb9689b761f1b62a06ad",
+  "syntax_scope": "partial lexical Rust projection, no macro expansion or semantic proof",
+  "whole_library_tests": 560
+}

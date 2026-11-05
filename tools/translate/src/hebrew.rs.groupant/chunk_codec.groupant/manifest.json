@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "slash_transport",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "slash_transport",
+        "status": "partial_source_derived_model",
+        "type": "slash_transport"
+      },
+      {
+        "id": "head_optional",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "head_optional",
+        "status": "partial_source_derived_model",
+        "type": "head_optional"
+      },
+      {
+        "id": "gloss_filter",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "gloss_filter",
+        "status": "partial_source_derived_model",
+        "type": "gloss_filter"
+      },
+      {
+        "id": "empty_chunks",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "empty_chunks",
+        "status": "partial_source_derived_model",
+        "type": "empty_chunks"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_native_receipts"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 7964,
+      "start": 7150
+    },
+    "description": "Encode Entry as concept/tag/relation/head separated by slash and spaces. Decode rsplitn4 allowing slashes inside concept; malformed entries omitted; nonnumeric head becomes None. gloss splits dot/space/underscore, removes entries starting parenthesis."
+  },
+  "id": "translation-meta-hebrew-chunk_codec",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../hebrew.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "d9774c9554b2ad1dc49751750c00beec8d65122b76247445ca1b991ebeb80f06"
+  },
+  "status": "partial_source_bound_model"
+}

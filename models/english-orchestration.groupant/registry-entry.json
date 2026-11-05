@@ -1,0 +1,37 @@
+{
+  "checks": [
+    "14 named Rust tests twice debug and twice release, identical sorted outcomes, exits0",
+    "Build entrypoint empty/synthetic/tag-before-id rejection scenarios twice per profile; successful outputs byte-identical",
+    "7 actual compiled mutations, compile0 / assertion101 / exact restore / rerun0",
+    "8 paired syntax projections identical; 5 source-scoped main fragments",
+    "Strict Clippy exit101 on existing build.rs:51 manual_is_multiple_of"
+  ],
+  "children": [
+    "en-build",
+    "en-ctx",
+    "en-ctxeval",
+    "en-diag",
+    "en-emode",
+    "en-lib",
+    "en-license",
+    "en-main"
+  ],
+  "cost": "Add selected adapter/delegated costs; no sum over unselected commands. build indexes expected linear/worst quadratic; ctx stype O(n²), mention handling O(bytes+mentions*stack depth), shuffle has unbounded rejection-loop worst case. ctxeval O(SRT+SRBN+SB log B), diag geometry up to O(n³) plus decoder cost. CLI folds O(k*bytes). No speed measurement or claim.",
+  "description": "CLI selected command composes argument projection with library calls. train: commercial_gate(paths) then output argument check then delegated train/save/reload; no train call on rejected license. Context evaluation: Setup→gold/derived/shuffled→masked Ctx→tagger/parser features→aligned System runs→seed means and paired bootstrap. build.rs produces little-endian lexicon/layout/constants consumed by dict/morph and thus EModE ending decisions. diag consumes parser outputs and gold geometry, with constrained decode failures falling back to baseline.",
+  "forward": [
+    "CLI selected command composes argument projection with library calls. train: commercial_gate(paths) then output argument check then delegated train/save/reload; no train call on rejected license. Context evaluation: Setup→gold/derived/shuffled→masked Ctx→tagger/parser features→aligned System runs→seed means and paired bootstrap. build.rs produces little-endian lexicon/layout/constants consumed by dict/morph and thus EModE ending decisions. diag consumes parser outputs and gold geometry, with constrained decode failures falling back to baseline.",
+    "main imports en modules declared by lib; license gate is only on train dispatcher, not a general evaluation gate. ctxeval consumes ctx::gold and ctx::Rng plus ud::Scores. diag calls parse baseline/kbest/constrained and uses gram enums. emode force/fix connect to annotation/tagger and embedded registry/dictionary; build output binary indices must match dict consumers (not independently validated here). Shape agreement by ID/token count does not prove form identity or valid trees."
+  ],
+  "id": "english-orchestration",
+  "inverse": [
+    "Across train dispatch, exclude model training/saving when any path first fails commercial_gate; across folds k<2 exclude input read and directory writes; across test_ctx None exclude path reads. Within aligned reports exclude independent baseline/treatment bootstrap draws. These scoped exclusions do not forbid partial output after later I/O failures.",
+    "Given accepted gate and rendered report, compatible antecedents are all path lists mapping to admitted sources and aligned gold/system runs producing the rounded means/intervals/group counts. They include arbitrary directory spellings, different per-seed outcomes with equal aggregates, erased annotation features and omitted examples. No unique reconstruction from report/gate result; feature ablations and constant/hash collisions further merge antecedents."
+  ],
+  "limitations": [
+    "lib.rs has compile/visibility evidence only, no independent runtime control",
+    "Real CLI training, model persistence/annotation, diagnostics decoding and corpus report paths not executed",
+    "No semantic AST expansion/proof; no executable percent approximants",
+    "Existing Setup modes/OnceLocks and dictionary-sensitive endings source-derived; malformed inputs can panic"
+  ],
+  "state": "Module declarations establish one shared namespace but prove no module semantics. Context mask removes layers, coordinates remain zero-based token positions versus one-based heads. License admission reads path names only. Paired bootstrap samples same sentence indices for both systems. No global transactional guarantee: file/stream prefixes survive later failures."
+}

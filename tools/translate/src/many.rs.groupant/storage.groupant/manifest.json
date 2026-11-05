@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "bit_alias",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "bit_alias",
+        "status": "partial_source_derived_model",
+        "type": "bit_alias"
+      },
+      {
+        "id": "root_sentinel",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "root_sentinel",
+        "status": "partial_source_derived_model",
+        "type": "root_sentinel"
+      },
+      {
+        "id": "packed_formula",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "packed_formula",
+        "status": "partial_source_derived_model",
+        "type": "packed_formula"
+      },
+      {
+        "id": "peak_accumulator",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "peak_accumulator",
+        "status": "partial_source_derived_model",
+        "type": "peak_accumulator"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_helpers_only"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 15767,
+      "start": 13061
+    },
+    "description": "Interner assigns next u32 on first encounter. block_meta ORs 1<<(t%64) into concept/edge entries and counts all tokens; MetaSize::bytes=12C+17E+8T; add sums and maxes block sizes."
+  },
+  "id": "translation-flow-many-storage",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../many.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "14b6295b8b94f871c0c2fbb90c92d19698cabe47b439443c393135a6d777555f"
+  },
+  "status": "partial_source_bound_model"
+}

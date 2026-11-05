@@ -34,6 +34,7 @@ pub fn csv(text: &str) -> Result<Vec<Vec<String>>> {
     let mut row = Vec::new();
     let mut cur = String::new();
     let mut q = false;
+    let mut quoted_field = false;
     let mut ch = text.chars().peekable();
     while let Some(c) = ch.next() {
         if q {
@@ -50,12 +51,16 @@ pub fn csv(text: &str) -> Result<Vec<Vec<String>>> {
             continue;
         }
         match c {
-            '"' if cur.is_empty() => q = true,
+            '"' if cur.is_empty() => {
+                q = true;
+                quoted_field = true;
+            }
             ',' => row.push(std::mem::take(&mut cur)),
             '\r' => {}
             '\n' => {
                 row.push(std::mem::take(&mut cur));
                 rows.push(std::mem::take(&mut row));
+                quoted_field = false;
             }
             _ => cur.push(c),
         }
@@ -63,7 +68,7 @@ pub fn csv(text: &str) -> Result<Vec<Vec<String>>> {
     if q {
         bail!("CSV: unclosed quotes");
     }
-    if !cur.is_empty() || !row.is_empty() {
+    if !cur.is_empty() || !row.is_empty() || quoted_field {
         row.push(cur);
         rows.push(row);
     }
@@ -137,14 +142,14 @@ fn decompose(sum: &str, known: &[String]) -> Vec<Result<usize, String>> {
     let mut rest = norm(sum);
     while !rest.is_empty() {
         // the longest known section the remainder starts with
-        let hit = known.iter().enumerate().filter(|(_, k)| rest.starts_with(k.as_str())).max_by_key(|(_, k)| k.len());
+        let hit = known.iter().enumerate().filter(|(_, k)| !k.is_empty() && rest.starts_with(k.as_str())).max_by_key(|(_, k)| k.len());
         if let Some((i, k)) = hit {
             out.push(Ok(i));
             rest = rest[k.len()..].trim_start().to_string();
             continue;
         }
         // unknown chunk — up to the start of the nearest known section
-        let next = known.iter().filter_map(|k| rest.find(k.as_str())).filter(|p| *p > 0).min();
+        let next = known.iter().filter(|k| !k.is_empty()).filter_map(|k| rest.find(k.as_str())).filter(|p| *p > 0).min();
         let cut = next.unwrap_or(rest.len());
         out.push(Err(rest[..cut].trim().to_string()));
         rest = rest[cut..].trim_start().to_string();
@@ -360,8 +365,12 @@ pub fn qa_tsv(qs: &[&Qa]) -> String {
 }
 
 pub fn read_qa(path: &Path) -> Result<Vec<Qa>> {
-    let story = path.file_stem().and_then(|x| x.to_str()).unwrap_or_default().to_string();
     let text = std::fs::read_to_string(path).with_context(|| path.display().to_string())?;
+    decode_qa(&text, path)
+}
+
+fn decode_qa(text: &str, path: &Path) -> Result<Vec<Qa>> {
+    let story = path.file_stem().and_then(|x| x.to_str()).unwrap_or_default().to_string();
     let mut out = Vec::new();
     for (i, l) in text.lines().enumerate() {
         if l.starts_with('#') || l.trim().is_empty() {
@@ -404,4 +413,106 @@ pub fn import(csv_path: &Path, out: &Path) -> Result<String> {
         let _ = writeln!(o, "{}\t{}\t{}\t{}\t{words}\t{}", s.name, s.sections.len(), s.orphans, t.sents.len(), qs.len());
     }
     Ok(o)
+}
+
+#[cfg(test)]
+mod wave9_models {
+    use super::*;
+    fn row(story: &str, section: &str, local: bool) -> Row {
+        Row { story: story.into(), section: section.into(), question: "where ?".into(),
+            a1: "here".into(), a2: "".into(), local, attr: "setting".into(),
+            ex: "explicit".into(), ex2: "".into() }
+    }
+    #[test]
+    fn csv_finite_encoder_oracle() {
+        let values = ["", "x", ",", "\"","a\nb", "é", "a\rb"];
+        for a in values {
+            for b in values {
+                for fields in [vec![a], vec![a, b]] {
+                    let encoded = fields.iter().map(|s| format!("\"{}\"", s.replace('"', "\"\""))).collect::<Vec<_>>().join(",");
+                    let expected: Vec<String> = fields.iter().map(|s| s.to_string()).collect();
+                    assert_eq!(csv(&encoded).unwrap(), vec![expected.clone()], "{encoded:?}");
+                    assert_eq!(csv(&(encoded + "\r\n")).unwrap(), vec![expected]);
+                }
+            }
+        }
+        assert!(csv("\"unfinished").is_err());
+        assert!(csv("").unwrap().is_empty());
+        assert_eq!(csv("\n").unwrap(), vec![vec!["".to_string()]]);
+    }
+    #[test]
+    fn csv_header_and_label_boundaries() {
+        let head = "story_name,story_section,question,answer1,answer2,local_or_sum,attribute,ex_or_im,ex_or_im2\n";
+        assert!(read_rows("").is_err());
+        assert!(read_rows("wrong\n").is_err());
+        assert!(read_rows(head).unwrap().is_empty());
+        for label in ["local", "summary", "Local", "", " local"] {
+            let input = format!("{head} tale , section , question , answer , ,{label}, setting , explicit , \n");
+            let got = read_rows(&input);
+            if ["local", "summary"].contains(&label) {
+                let r = got.unwrap().remove(0);
+                assert_eq!(r.story, " tale ");
+                assert_eq!(r.section, "section");
+                assert_eq!(r.local, label == "local");
+            } else { assert!(got.is_err()); }
+        }
+        assert!(read_rows(&(head.to_string() + "a,b\n")).is_err());
+    }
+    #[test]
+    fn empty_known_section_makes_progress() {
+        assert_eq!(decompose("five new words appear here", &[String::new()]),
+                   vec![Err("five new words appear here".into())]);
+        assert!(reconstruct(&[row("t", " ", true), row("t", "five new words appear here", false)]).is_err());
+    }
+    #[test]
+    fn reconstruction_orphans_order_and_fibers() {
+        for spaces in [" ", "  ", "\t"] {
+            let left = ["a", "small", "bird", "flies", "."].join(spaces);
+            let right = "the tall tree stands .";
+            let orphan = "five new words appear here";
+            let rows = [row("z", &left, true), row("a", "another tale .", true),
+                        row("z", right, true), row("z", &format!("{left} {orphan} {right}"), false)];
+            let (s, q) = reconstruct(&rows).unwrap();
+            assert_eq!(s.iter().map(|s| s.name.as_str()).collect::<Vec<_>>(), ["z", "a"]);
+            assert_eq!(s[0].sections, ["a small bird flies .", orphan, right]);
+            assert_eq!(s[0].orphans, 1);
+            assert_eq!(q.iter().map(|q| q.n).collect::<Vec<_>>(), [1, 2, 3, 1]);
+            assert_eq!(q[2].secs, [1, 2, 3]);
+        }
+        assert!(reconstruct(&[]).unwrap().0.is_empty());
+        assert!(reconstruct(&[row("t", "one two three four", false)]).is_err());
+        assert_eq!(reconstruct(&[row("t", "one two three four five", false)]).unwrap().0[0].orphans, 1);
+        assert_eq!(decompose("abc", &["a".into(), "abc".into()]), [Ok(1)]);
+    }
+    #[test]
+    fn sentence_tokens_and_quote_boundary() {
+        for n in 0..16 {
+            let text = vec!["word"; n].join(" ");
+            assert_eq!(sentences(&text, "\"").join(" "), text);
+        }
+        assert_eq!(sentences("\" where ? \" asked she . next ! ?", "\""),
+                   ["\" where ? \" asked she .", "next ! ?"]);
+        assert_eq!(sentences("a . b ! c ?", "\""), ["a .", "b !", "c ?"]);
+        let s = Story { name: "t".into(), sections: vec!["a . b !".into(), "c ?".into()], orphans: 0 };
+        let t = text_of(42, &s);
+        assert_eq!(t.doc, 42);
+        assert_eq!(t.sents.iter().map(|p| p.0).collect::<Vec<_>>(), [1, 1, 2]);
+        assert_eq!(story_tsv(&t), "# sec\tsent\ttext\n1\t1\ta .\n1\t2\tb !\n2\t3\tc ?\n");
+    }
+    #[test]
+    fn qa_decode_roundtrip_and_refusals() {
+        let q = Qa { story: "lost".into(), n: 7, attr: "setting".into(), ex: "explicit".into(),
+            ex2: "".into(), local: false, secs: vec![2, 1, 2], question: "where?".into(),
+            a1: "there".into(), a2: "".into() };
+        let encoded = qa_tsv(&[&q]);
+        let got = decode_qa(&encoded, Path::new("renamed.tsv")).unwrap();
+        assert_eq!(got[0].story, "renamed");
+        assert_eq!(got[0].secs, q.secs);
+        assert_eq!(qa_tsv(&[&got[0]]), encoded);
+        assert!(decode_qa("1\tx", Path::new("t.tsv")).is_err());
+        assert!(decode_qa("1\ta\te\t\tlocal\t65536\tq\ta\t", Path::new("t.tsv")).is_err());
+        let permissive = decode_qa("1\ta\te\t\tother\t0,0\tq\ta\t", Path::new("t.tsv")).unwrap();
+        assert!(!permissive[0].local);
+        assert_eq!(permissive[0].secs, [0, 0]);
+    }
 }

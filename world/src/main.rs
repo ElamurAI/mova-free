@@ -17,7 +17,7 @@
 //!   world poly-prep <book.txt> <title> <end|-> <out.tsv>   cut out a story, sentences
 //!   world v3-prompt <name> <dir> [<part>]           v3 prompt without a call
 //!   world v3-estimate <dir> <name>…                 LLM cost estimate before a run
-//!   world v3-vmm <name> <dir>                       LLM v3 in parts (ceiling WORLD_V3_BUDGET, $40)
+//!   world v3-vmm <name> <dir>                       LLM v3 in parts (ceiling WORLD_V3_BUDGET)
 //!   world v3-build <name> <dir>                     gates and world → story-<name>.md
 //!   world v3-query <name> <dir> <query…>            v3 query (qa3.rs)
 //!   world v3-eval <dir> <questions.tsv>             answers to frozen questions → answers-v3.md
@@ -581,9 +581,10 @@ fn main() -> Result<()> {
         "primers" => world::primers::main_args(&args)?,
         "lessons" => world::lessons::main_args(&args)?,
         "meanings" => world::meanings::main_args(&args)?,
+        "dict" => world::dictstore::main_args(&args)?,
+        "modules" => mova_modules::main_args(&args[1..])?,
         "knowledge" => world::knowledge::main_args(&args)?,
         "frames" => world::frames::main_args(&args)?,
-        "dictionary" => world::dictionary::main_args(&args)?,
         "worldbook-compress-teach" => world::worldbook::compress_teach_args(&args)?,
         "big-diff" => {
             // big-diff <state> <tale|real> [n]: words whose label the state changes against the original on a big sample
@@ -1130,4 +1131,24 @@ fn main() -> Result<()> {
         _ => return usage(),
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod wave28_dialogue {
+    use super::*;
+    #[test]
+    fn folder_argument_missing_and_empty() {
+        assert!(
+            dir_at(&[], 0)
+                .unwrap_err()
+                .to_string()
+                .contains("missing folder")
+        );
+        assert_eq!(dir_at(&["".into()], 0).unwrap(), PathBuf::new());
+        assert_eq!(
+            dir_at(&["cmd".into(), "relative".into()], 1).unwrap(),
+            PathBuf::from("relative")
+        );
+        assert!(usage().is_err());
+    }
 }

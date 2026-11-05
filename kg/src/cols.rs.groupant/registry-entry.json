@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cols::tests::roundtrip_and_filter",
+    "cols::wave29::codec_boundaries_and_errors"
+  ],
+  "children": [],
+  "cost": "sort O(n log n)/O(n) extra; filter O(n), out O(log n); codecs O(n), <=10 bytes/u64; zstd19 data-dependent. Whole-column decompression/count allocation have no cap.",
+  "description": "Parallel edge columns, tuple sorting, all-bit subgraphs, outgoing ranges, and delta/zigzag/byte-plane zstd persistence.",
+  "forward": [
+    "push appends aligned six-tuples. sort applies an unstable permutation by(src,rel,dst); filter retains i iff flags[i]&mask=mask; out(s)=partition_point(<s)..partition_point(<=s). write encodes wrapping src deltas, signed zigzag wrapping dst deltas, u32 byte planes, compresses six files then writes count."
+  ],
+  "id": "kg-cols",
+  "inverse": [
+    "Sorted result admits original permutations and equal-key rearrangements. Filter admits arbitrary rejected-row interleavings. Encoder stream plus count determines vectors, decoder preimages include trailing LEB bytes. Empty result may mean empty input or all filtered."
+  ],
+  "limitations": [
+    "No crash/allocation/zstd-fuzz/oversized graph execution; no approximate identifier/codec semantics.",
+    "Partial lexical AST; no semantic proof or useful executable percentage surrogate."
+  ],
+  "source": "kg/src/cols.rs",
+  "state": "Aligned vectors,n<2^32: tuple sorting/filter preserve columns; out requires sorted src. Decode(encode(v),len(v)) preserves all bits. Actual raw width32 bytes/edge, not package comment28."
+}

@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p world --lib mind::wave12_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "For B input bytes and k projected sentences, O(B+output bytes) projection/formatting plus k opaque read costs or one ask cost. Projection/gap/output storage is O(B+output bytes), excluding dependency state. Parser cost and I/O waiting are unmeasured.",
+  "description": "Ordered sentence projection, returned Story-result folding and branch-specific reply formatting.",
+  "forward": [
+    "Define P(text) by trimming lines, dropping empty lines and lines beginning '#', removing repeated '- ' prefixes, then concatenating babi::split_sentences outputs in line order. For tell let P=[s1,...,sk], S0=S and D contain actual returned read(Si-1,si)=(Si,ri). Fold Ok(None) into a success count; append (si,reason) for Ok(Some(reason)) or Err(error), with errors converted by Display. T(S,text,D)=(Sk,ok,gaps); no rollback is added.\n\nFor reply let q=trim(line). If q ends in '?', ask(S,q): Ok((a,w)) with a!='?' renders `a. Because: w`; sentinel a='?' renders `I do not know: w`; error renders `I do not know: e`. Otherwise T supplies the outcome: no gaps renders `Understood (k sentence[s]).`, singular exactly when k=1; gaps render `I do not understand: ` followed by ordered `«sentence» — reason` entries joined with `; `. Tags and D are model witnesses, not runtime String fields.\n\nNonempty Story paths are conditional source inspection. Native checks execute P and empty-projection tell/reply with seeded identity and state-lines observations."
+  ],
+  "id": "world-mind",
+  "inverse": [
+    "behavior_complement: U consists of the tagged scoped inputs, actual dependency witnesses and arbitrary candidate outputs/states. R is given by the forward equations; U minus R is the scoped complement conditional on D matching the real dependency. Relative to the full module this is an inner absent-behavior slice, with socket/probe and unreturned calls excluded.\n\nExcluded candidates include contributions from filtered blank/heading lines, reordered retained segments, a tell count/gap pairing inconsistent with the returned read trace, state changes or nonzero counts/gaps for P=[], an ask branch on a nonquestion or tell branch on a trailing '?', and reply counts/singular suffix/gap order differing from the formatting equations. Read errors are gaps, not counted successes. This imposes no additional state semantics on opaque nonempty Story calls.\n\n49 projection pairs, heading-order fixtures and three seeded empty-projection cases exercise selected exclusions. Nonempty read/ask/error/question behavior remains source-inspected.",
+    "reverse_reconstruction: For tagged y retain every (operation,input,S,D) with the same tag and R(input,S,D,y). A projected vector admits all texts with exactly that P, including arbitrary discarded headings/blank lines and compatible whitespace/bullet variants. A tell result (S',ok,gaps) retains all segment vectors and compatible read traces ending at S', containing exactly ok successful outcomes and exactly the observed ordered sentence/reason pairs. Successful sentences and intermediate states remain ambiguous; P=[] requires S'=S and (0,[]).\n\nReply fibers preserve the input's exact trailing-question predicate and corresponding ask-result or tell-fold equation, including sentinel handling and formatting. A runtime String lacks the model tag: reconstructing from only text takes the union over compatible branches/results, never infers a unique branch merely from English phrasing. Identity/state-lines are partial state observations. No complete solver or recovery of hidden Story facts is claimed."
+  ],
+  "limitations": [
+    "Finite native supplied-input checks; no parser, teacher, socket or persistence execution.",
+    "Partial syntax with opaque macros; truth and durable consistency are not established."
+  ],
+  "source": "world/src/mind.rs",
+  "state": "P retains segment order. Returned tell has ok+|gaps|=|P| and exact sentence/reason pairings. P=[] invokes no read, so T=(S,0,[]) and a nonquestion reply is exactly `Understood (0 sentences).`. Nonempty final state follows dependency transitions, including any effects on error/gap outcomes. Text output establishes neither truth nor durable state."
+}

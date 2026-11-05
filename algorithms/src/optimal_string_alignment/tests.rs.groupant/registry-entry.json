@@ -1,0 +1,21 @@
+{
+  "id": "algorithm-optimal-string-alignment-tests",
+  "source": "algorithms/src/optimal_string_alignment/tests.rs",
+  "description": "Bounded independent correspondence tests for optimal_string_alignment",
+  "state": "Native deterministic finite fixture and assertion state.",
+  "cost": "Finite enumeration plus oracle work; recursive OSA oracle is exponential and deliberately bounded.",
+  "forward": [
+    "Execute bounded oracle, boundary, reverse-fiber and algorithm-specific assertions."
+  ],
+  "inverse": [
+    "behavior_complement and reverse_reconstruction are distinct first two typed models; see model.md."
+  ],
+  "checks": [
+    "cargo test --offline -p mova-algorithms optimal_string_alignment::tests",
+    "Compiled mutation must fail an assertion; see model.md#tests."
+  ],
+  "limitations": [
+    "Finite native evidence is not universal verification.",
+    "Syntax projection excludes expansion and semantic resolution."
+  ]
+}

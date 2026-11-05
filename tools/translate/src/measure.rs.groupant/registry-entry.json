@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "measure::tests::order_residual",
+    "measure::tests::a_block_reads_as_one",
+    "measure::tests::text_layer_back"
+  ],
+  "children": [],
+  "cost": "base_order O(nlog n), moved O(nlog n) time/O(n) memory, order_ok O(nlog k); prealign delegates LCS O(nm) time/state. Reader scripts delegate matching costs. Text encode/decode O(tokens+literal bytes) plus ordered map insertion/lookup. Direct recursion adds one Words pass, never unbounded recursion.",
+  "description": "reader_res converts MTok to nodes, prealigns lowercase lemmas by LCS plus equal-length gaps, encodes tree script and charges moved positions outside a strict LIS. reader_block concatenates verses with § sentinel and shifted nonzero heads, checks script apply and order_ok. Text encoding records noncanonical literal gaps and tail. Run::verse measures normal output separately, builds reader/encoder/stack residual, decodes with first-failure precedence meta-world→meta order→tree→tokens→text; direct mode recurses once with Words.",
+  "forward": [
+    "reader_res converts MTok to nodes, prealigns lowercase lemmas by LCS plus equal-length gaps, encodes tree script and charges moved positions outside a strict LIS. reader_block concatenates verses with § sentinel and shifted nonzero heads, checks script apply and order_ok. Text encoding records noncanonical literal gaps and tail. Run::verse measures normal output separately, builds reader/encoder/stack residual, decodes with first-failure precedence meta-world→meta order→tree→tokens→text; direct mode recurses once with Words."
+  ],
+  "id": "translation-flow-measure",
+  "inverse": [
+    "Gate success excludes any earlier detected unequal layer. Meta direct mode cannot recursively request another Meta direct pass. Text decode with a retained noncanonical gap cannot silently replace it with canonical spacing. No annotation/model executed in selected reader/text/order checks.",
+    "Given forms, space and RText, decode determines one text; removing RText admits all gap/tail variants. Script plus source reconstructs target nodes on admitted domain, but target alone has many sources/scripts. LIS complement may vary across optimal subsequences; this implementation selects deterministic lowest-tail replacement."
+  ],
+  "limitations": [
+    "Source-derived effectful CLI/corpus paths only; no live model/annotator/training/filesystem/site run.",
+    "Finite synthetic helper checks and partial syntax; no universal proof or executable percent surrogate."
+  ],
+  "source": "tools/translate/src/measure.rs",
+  "state": "Trees have valid heads and aligned forms/gaps; base is permutation1..n, moved sorted distinct subset. choose_bits requires0<=k<=n; offsets/counts fit usize/i64. Finite residual arithmetic. Exact gate concerns target reproduction using residual, not residual-free translation correctness or learning."
+}

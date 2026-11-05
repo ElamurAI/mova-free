@@ -1,0 +1,286 @@
+{
+  "children": [
+    "annot-batch",
+    "annot-codex-batch",
+    "annot-hints",
+    "annot-llm",
+    "annot-main",
+    "annot-repair",
+    "annot-tests-codex-batches",
+    "annotation-review-guard",
+    "annotation-review-controller",
+    "fish-annotation-contract",
+    "fish-annotation-executor",
+    "fish-annotation-api",
+    "fish-swarm-composition",
+    "fish-batch-packing",
+    "fish-pages-composition"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "No live teacher/API/corpus/model writes. No proof of crash durability, filesystem adversary or remote inference quality.",
+        "domain": "Bounded synthetic annotations, valid unique item ids and ordinary files; fake executable integration fixtures on Unix. Live effects remain modeled only.",
+        "id": "behavior-complement",
+        "observation_scope": "ann.rs is an existing cross-group gate/type dependency, not duplicate ownership. main and batch share Outcome::add_patch_reply/finish; llm direct fixed+variable concatenation differs by two separating newlines from codex message-block join. hints advise only; repair precedes draft gates; optional post-gate FEATS replacement is not re-gated.",
+        "operator": "Unknown reply ids, missing/broken/gate-failed patches do not become accepted final annotations. Queue rejects sticky failures before launch, but existing final sentinel bypasses validation. No inference from fake success to live quality.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "No live teacher/API/corpus/model writes. No proof of crash durability, filesystem adversary or remote inference quality.",
+        "domain": "Bounded synthetic annotations, valid unique item ids and ordinary files; fake executable integration fixtures on Unix. Live effects remain modeled only.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "ann.rs is an existing cross-group gate/type dependency, not duplicate ownership. main and batch share Outcome::add_patch_reply/finish; llm direct fixed+variable concatenation differs by two separating newlines from codex message-block join. hints advise only; repair precedes draft gates; optional post-gate FEATS replacement is not re-gated.",
+        "operator": "Final Ann admits many draft/patch antecedents; result envelopes admit overwritten duplicates/discarded thinking. Queue final permits fresh or resumed execution histories; source state and prompt are not uniquely recoverable.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "No live teacher/API/corpus/model writes. No proof of crash durability, filesystem adversary or remote inference quality.",
+        "domain": "Bounded synthetic annotations, valid unique item ids and ordinary files; fake executable integration fixtures on Unix. Live effects remain modeled only.",
+        "id": "representation-transport",
+        "observation_scope": "ann.rs is an existing cross-group gate/type dependency, not duplicate ownership. main and batch share Outcome::add_patch_reply/finish; llm direct fixed+variable concatenation differs by two separating newlines from codex message-block join. hints advise only; repair precedes draft gates; optional post-gate FEATS replacement is not re-gated.",
+        "operator": "Request chunks index State items and matching drafts; this unchecked alignment is needed before reply custom_id strings can map through main patch gates.",
+        "path": "model.md",
+        "required": false,
+        "section": "representation-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No live teacher/API/corpus/model writes. No proof of crash durability, filesystem adversary or remote inference quality.",
+        "domain": "Bounded synthetic annotations, valid unique item ids and ordinary files; fake executable integration fixtures on Unix. Live effects remain modeled only.",
+        "id": "gate-order",
+        "observation_scope": "ann.rs is an existing cross-group gate/type dependency, not duplicate ownership. main and batch share Outcome::add_patch_reply/finish; llm direct fixed+variable concatenation differs by two separating newlines from codex message-block join. hints advise only; repair precedes draft gates; optional post-gate FEATS replacement is not re-gated.",
+        "operator": "Model validation before queue effects, snapshot/partial validation before resume calls, and missing/broken/tree gates before accepted patch output. Later finish failures can leave earlier writes.",
+        "path": "model.md",
+        "required": false,
+        "section": "gate-order",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "No live teacher/API/corpus/model writes. No proof of crash durability, filesystem adversary or remote inference quality.",
+        "domain": "Bounded synthetic annotations, valid unique item ids and ordinary files; fake executable integration fixtures on Unix. Live effects remain modeled only.",
+        "id": "effect-boundary",
+        "observation_scope": "ann.rs is an existing cross-group gate/type dependency, not duplicate ownership. main and batch share Outcome::add_patch_reply/finish; llm direct fixed+variable concatenation differs by two separating newlines from codex message-block join. hints advise only; repair precedes draft gates; optional post-gate FEATS replacement is not re-gated.",
+        "operator": "Fake tests exercise local subprocess/filesystem boundaries with temporary files, not live teachers. finish optional UDPipe/corpus/training paths are unexecuted.",
+        "path": "model.md",
+        "required": false,
+        "section": "effect-boundary",
+        "status": "partial_source_derived_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "No live teacher/API/corpus/model writes. No proof of crash durability, filesystem adversary or remote inference quality.",
+        "domain": "Bounded synthetic annotations, valid unique item ids and ordinary files; fake executable integration fixtures on Unix. Live effects remain modeled only.",
+        "id": "cost-join",
+        "observation_scope": "ann.rs is an existing cross-group gate/type dependency, not duplicate ownership. main and batch share Outcome::add_patch_reply/finish; llm direct fixed+variable concatenation differs by two separating newlines from codex message-block join. hints advise only; repair precedes draft gates; optional post-gate FEATS replacement is not re-gated.",
+        "operator": "Source byte and gate costs add to partial lookup P*R and external effects; compatibility USD zero for Codex is not subscription billing or zero compute.",
+        "path": "model.md",
+        "required": false,
+        "section": "cost-join",
+        "status": "partial_source_derived_model",
+        "type": "resource_composition"
+      },
+      {
+        "assumptions": "Source-bound valid files and stable inputs, one worker/writer, successful stated effects; imported-data and strict-consumer premises in the referenced model.",
+        "domain": "Validated partial envelopes with initially strict completed JSON lines; JSON-whitespace suffix consumed by a new row or empty; stable requests and single worker.",
+        "evidence": "model.md",
+        "id": "strict-record-transport",
+        "observation_scope": "Only the explicitly described child transition and its downstream representation, not every branch of the parent.",
+        "operator": "Separate only an unterminated real record, retain whitespace as the next row prefix, and preserve prior byte prefix. Tolerant parsing has a wider domain than strict physical-line readers.",
+        "path": "model.md",
+        "required": false,
+        "section": "strict_record_transport",
+        "status": "partial_source_derived_model",
+        "subject_revision": "67e8ff51c6fa7dcf31089eb8d9b6db64e76c4af8d40093af9b602edc86b7df20",
+        "type": "framing_consumer_domain"
+      },
+      {
+        "assumptions": "Source-bound valid files and stable inputs, one worker/writer, successful stated effects; imported-data and strict-consumer premises in the referenced model.",
+        "domain": "Unique ordered requests Q and accepted ordered partial subset P; a successful single completion with absent initial final sentinel.",
+        "evidence": "model.md",
+        "id": "resume-work-preimages",
+        "observation_scope": "Only the explicitly described child transition and its downstream representation, not every branch of the parent.",
+        "operator": "Source-level ask sequence is Q filtered by missing ids; |Q|-|P| calls. Final result order admits multiple prior subsets and arbitrary prior failed histories, not a unique execution trace.",
+        "path": "model.md",
+        "required": false,
+        "section": "resume_work_preimages",
+        "status": "partial_source_derived_model",
+        "subject_revision": "67e8ff51c6fa7dcf31089eb8d9b6db64e76c4af8d40093af9b602edc86b7df20",
+        "type": "operational_work_fiber"
+      },
+      {
+        "assumptions": "Current shared enum parser/encoder; raw policy consumes the admitted surface; opaque provenance excluded. No semantic truth or producer-independence assumption established.",
+        "domain": "Bounded Fish preparation's six raw pragmatic labels; not all legacy annotation routes.",
+        "id": "canonical-surface-composition",
+        "observation_scope": "Request publication, context findings and separate unauthorized GPU candidate.",
+        "operator": "Admit s only when D(s) exists and E(D(s))=s, so raw P(s)=P(E(D(s))). Invalid/noncanonical representations are excluded before publication; downstream authorization stays separate.",
+        "path": "model.md",
+        "required": false,
+        "section": "canonical_surface_composition",
+        "status": "source_derived_with_finite_rust_and_cli_counterexample",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Trusted typed serialization, collision resistance, cooperative filesystem and explicit child revision bindings.",
+        "domain": "Pinned prepared Tasks, native API/executor and immutable swarm queue/config.",
+        "evidence": "model.md",
+        "id": "artifact_typed_identity_partition",
+        "observation_scope": "Artifact identity, typed Task identity, task-specific receipt and stage authority.",
+        "path": "model.md",
+        "section": "artifact_typed_identity_partition",
+        "status": "partial_source_derived_composition",
+        "type": "serialization_fiber"
+      },
+      {
+        "assumptions": "Trusted typed serialization, collision resistance, cooperative filesystem and explicit child revision bindings.",
+        "domain": "Pinned prepared Tasks, native API/executor and immutable swarm queue/config.",
+        "evidence": "model.md",
+        "id": "review_authority_partition",
+        "observation_scope": "Artifact identity, typed Task identity, task-specific receipt and stage authority.",
+        "path": "model.md",
+        "section": "review_authority_partition",
+        "status": "partial_source_derived_composition",
+        "type": "authority_stage_partition"
+      },
+      {
+        "assumptions": "Trusted cooperative receipt producer, actual wait/reap/group check, immutable pins and explicit observer join; no hostile filesystem or arbitrary escaped-child guarantee.",
+        "domain": "Bound native invalid-response receipts, immutable reservations and declared child process groups.",
+        "evidence": "model.md",
+        "id": "process_closure_partition",
+        "observation_scope": "Retained receipt/current process closure and scheduler next-job admission.",
+        "path": "model.md",
+        "section": "process_closure_partition",
+        "status": "partial_source_derived_composition",
+        "type": "process_closure_partition"
+      },
+      {
+        "assumptions": "Pinned immutable source/phase/campaign evidence and cooperative exclusive ownership.",
+        "domain": "Bounded source packet, intent, Task, page and owned attempt observations.",
+        "id": "bounded-intent-review-partition",
+        "observation_scope": "Source-ID dispositions versus job receipts and separately admitted semantic/training authority.",
+        "operator": "Require complete disjoint source accounting and bound process history; no count or status label promotes cache/preparation into semantic truth or replay authority.",
+        "path": "model.md",
+        "section": "Bounded batch and page admission",
+        "status": "source_derived_with_component_finite_checks_not_pipeline_proof",
+        "type": "admission_composition"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "annotation-orchestration",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "annot/src/batch.rs",
+      "sha256": "511700bb12c59c2e29062a7f47db7148109c4e33084b12c5b9aa8a1f569a7f6e"
+    },
+    {
+      "path": "annot/src/codex_batch.rs",
+      "sha256": "04e68151e8633dea254f18144889427087ab03a159b7f4092b8c857e4c60d422"
+    },
+    {
+      "path": "annot/src/hints.rs",
+      "sha256": "73236507c19a700888abf3d724d219ccdfb865af9c1d9d806ae7fb34a3da6899"
+    },
+    {
+      "path": "annot/src/llm.rs",
+      "sha256": "b00293a926fe7a446a5b79197e73e4b164cee5165f053feb5497625be80c7984"
+    },
+    {
+      "path": "annot/src/main.rs",
+      "sha256": "38431df8a1b1d72a0b0ca9606fc0478e76a5dbedbad79a779b1d19ac1013a1c7"
+    },
+    {
+      "path": "annot/src/repair.rs",
+      "sha256": "023a26ef52067d26ff51c69bab65af326ba6147945aa218f12d7eb7afe228c84"
+    },
+    {
+      "path": "annot/tests/codex_batches.rs",
+      "sha256": "243929fbe42a3afeb294c966d8674fbd4a147a11e4138c7c4f888fb7f5aaf00c"
+    },
+    {
+      "path": "tools/fish-batch/src/lib.rs",
+      "sha256": "f4736aaa632208b97e1bd28036cfd50b10a23043753a7c2c66a5059fd392f15d"
+    },
+    {
+      "path": "tools/fish-pages/src/lib.rs",
+      "sha256": "284d3d93e75b0b65c63e12817e90404c3f8afbebaa3f7f2e264f0929b19d2e8a"
+    },
+    {
+      "path": "tools/fish-pages/src/main.rs",
+      "sha256": "0e1e0174f6a0b784d30833d6b5696c5a48e0b87bfc51704e5c39752056bc424c"
+    },
+    {
+      "path": "tools/fish-swarm/src/lib.rs",
+      "sha256": "d21c64916c360776d0caa1292f309ee01f17fb5bc001f47c2afffdbe9af97dc6"
+    },
+    {
+      "path": "tools/fish-swarm/src/main.rs",
+      "sha256": "e6f6f5fc2cdadbcb90ea175a8abd3a9e319c4bf77ba507e9ef1550f0ad3f8fe0"
+    },
+    {
+      "path": "tools/fish/src/annotation.rs",
+      "sha256": "e561bf34b97072ad66e8705c78563a954d7e32b88b1080af052f6ffa74296bde"
+    },
+    {
+      "path": "tools/fish/src/controller.rs",
+      "sha256": "bb05a792108eb48c7beaa765814d7cbcec9d8a088752682dedad69e702e26dcd"
+    },
+    {
+      "path": "tools/fish/src/execute.rs",
+      "sha256": "c3027996c4a9693c4d28dcd3d01096ccc066697a15da667c067bb22ec672c5c3"
+    },
+    {
+      "path": "tools/fish/src/lib.rs",
+      "sha256": "44e53480343063f542c705564cf9b984b3c040a220aff50cf60bc2ecab1d227f"
+    },
+    {
+      "path": "tools/fish/src/main.rs",
+      "sha256": "6ce48c12fb96a041cea09ba0c80982c250b425321ee736207db0635e7eb637d4"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

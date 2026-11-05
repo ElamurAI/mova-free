@@ -65,7 +65,7 @@ struct R<'a> {
 
 impl<'a> R<'a> {
     fn take(&mut self, n: usize) -> Result<&'a [u8]> {
-        if self.p + n > self.b.len() {
+        if n > self.b.len() - self.p {
             bail!("snapshot truncated: need {n} bytes at offset {}", self.p);
         }
         let s = &self.b[self.p..self.p + n];
@@ -246,4 +246,42 @@ pub fn save(g: &Graph, path: &std::path::Path) -> Result<usize> {
 pub fn load(path: &std::path::Path) -> Result<Graph> {
     let b = std::fs::read(path).with_context(|| format!("cannot read snapshot {} — run `onto build` first", path.display()))?;
     unpack(&b)
+}
+
+#[cfg(test)]
+mod wave29_tests {
+    use super::*;
+    #[test]
+    fn enormous_array_length_is_error_not_panic() {
+        let mut b = pack(&crate::wave29_tests::graph());
+        b.truncate(HEADER);
+        let body = u64::MAX.to_le_bytes();
+        b[22..30].copy_from_slice(&(body.len() as u64).to_le_bytes());
+        b[30..38].copy_from_slice(&checksum(&body).to_le_bytes());
+        b.extend_from_slice(&body);
+        let result = std::panic::catch_unwind(|| unpack(&b));
+        assert!(
+            result.is_ok(),
+            "malformed length must return an error, not panic"
+        );
+        assert!(result.unwrap().is_err());
+    }
+    #[test]
+    fn snapshot_roundtrip_and_precedence() {
+        let g = crate::wave29_tests::graph();
+        let mut b = pack(&g);
+        assert_eq!(unpack(&b).unwrap(), g);
+        b[8] = 255;
+        b[30] ^= 1;
+        assert!(
+            unpack(&b)
+                .unwrap_err()
+                .to_string()
+                .contains("format version")
+        );
+        let p = crate::wave29_tests::temp("store").join("graph.bin");
+        assert_eq!(save(&g, &p).unwrap(), pack(&g).len());
+        assert_eq!(load(&p).unwrap(), g);
+        std::fs::remove_dir_all(p.parent().unwrap()).unwrap();
+    }
 }

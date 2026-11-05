@@ -1,0 +1,104 @@
+{
+  "children": [
+    {
+      "id": "gparse-test-inference-softmax-comparison",
+      "path": "comparison.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "evidence": {
+      "path": "model.md#evidence",
+      "status": "executed_finite_checks"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "shape_boundary",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "shape_boundary",
+        "status": "partial_source_derived_model",
+        "type": "shape_boundary"
+      },
+      {
+        "id": "effect_boundary",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "effect_boundary",
+        "status": "partial_source_derived_model",
+        "type": "effect_boundary"
+      },
+      {
+        "id": "assurance_scope",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "assurance_scope",
+        "status": "partial_source_derived_model",
+        "type": "assurance_scope"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "gparse-test-inference-softmax",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../inference_softmax.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "45f0dbb793a0b01b1aae91c5ee1d53f3dc238a78dce8138b5ad57544f5220031"
+  },
+  "status": "partial_source_bound_model"
+}

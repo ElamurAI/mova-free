@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p math --lib -- poly::wave28",
+    "18 selected tests twice debug/twice release; seven compiled mutants and restored positives"
+  ],
+  "children": [],
+  "cost": "Dense multiply O(ab), long division O((a-b+1)b) rational operations; gcd depends on degree drops and coefficient widths, pow repeats multiplication. Rational conversion can grow degrees/widths. Root candidates enumerate divisor products or numeric candidates with Horner tests; nt factor costs compose. Aberth <=500 O(d²) sweeps/O(d) storage. Inequalities add denominator products, root work, sorting and samples.",
+  "description": "Poly stores ascending Q coefficients, zero empty; constructors/operators trim. divrem cancels leading terms, gcd is monic Euclid. ratfunc combines reduced fractions while dens records encountered divisor numerators before cancellation; powers require target-independent integer |k|<=200. Yun squarefree stops after multiplicity400; solve_poly extracts rational candidates, exact quadratic surds after discriminant factorization, otherwise f64 Aberth (<=500 sweeps), with substitution/completeness/rebuild checks. solve_ineq gathers real critical points, samples float intervals, compares exact rational interior signs and emits intervals.",
+  "forward": [
+    "Poly stores ascending Q coefficients, zero empty; constructors/operators trim. divrem cancels leading terms, gcd is monic Euclid. ratfunc combines reduced fractions while dens records encountered divisor numerators before cancellation; powers require target-independent integer |k|<=200. Yun squarefree stops after multiplicity400; solve_poly extracts rational candidates, exact quadratic surds after discriminant factorization, otherwise f64 Aberth (<=500 sweeps), with substitution/completeness/rebuild checks. solve_ineq gathers real critical points, samples float intervals, compares exact rational interior signs and emits intervals."
+  ],
+  "id": "math-poly",
+  "inverse": [
+    "Known divisor plus quotient/remainder reconstructs dividend uniquely as q*d+r on normalized Q[x]. Roots alone omit leading scalar and rational-domain holes; approximate roots specify neighborhoods, not exact inverse. num/den loses canceled holes; dens restores exclusions but not original syntax. Factors plus lead reconstruct polynomial if rebuild check passes. Many rational functions share one interval set."
+  ],
+  "limitations": [
+    "Partial lexical syntax/source-derived model, no proof",
+    "No executable percentage surrogate; float diagnostics have no global certificate",
+    "Public Poly(Vec) can violate normalization; divrem asserts nonzero d. Negative powers can retain zero denominator; i64 MIN abs and dimensions have unchecked extremes. Surd operations assume common d. Numeric roots may fail convergence or convert nonfinite without error; solve_poly returns possibly false checks. Inequality sort can panic on NaN, close roots merge; Ne exact-check fallback tests equality, so not a general proof. Adequate stack/allocation and normalized inputs required."
+  ],
+  "source": "math/src/poly.rs",
+  "state": "Public Poly(Vec) can violate normalization; divrem asserts nonzero d. Negative powers can retain zero denominator; i64 MIN abs and dimensions have unchecked extremes. Surd operations assume common d. Numeric roots may fail convergence or convert nonfinite without error; solve_poly returns possibly false checks. Inequality sort can panic on NaN, close roots merge; Ne exact-check fallback tests equality, so not a general proof. Adequate stack/allocation and normalized inputs required."
+}

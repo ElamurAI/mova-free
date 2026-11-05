@@ -237,17 +237,21 @@ impl Readme {
         (start, end)
     }
 
-    /// Text of the first section whose heading satisfies `pred` (blank lines at the edges trimmed).
+    /// Text of the first section whose heading satisfies `pred` (blank lines at the edges trimmed). Test-only: the
+    /// section texts check heading boundaries; no README prose goes into the output.
+    #[cfg(test)]
     pub fn section(&self, pred: impl Fn(&[String]) -> bool) -> String {
         let Some(h) = self.headings.iter().position(|x| pred(&title_words(&x.title))) else { return String::new() };
         let (a, b) = self.body(h);
         self.lines[a..b].join("\n").trim_matches('\n').trim_end().to_string()
     }
 
+    #[cfg(test)]
     pub fn summary(&self) -> String {
         self.section(|w| w.len() == 1 && w[0] == "summary")
     }
 
+    #[cfg(test)]
     pub fn introduction(&self) -> String {
         self.section(|w| w.first().is_some_and(|x| x == "introduction"))
     }

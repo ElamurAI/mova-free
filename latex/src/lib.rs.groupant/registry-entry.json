@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p latex --features math --doc; cargo check -p latex --no-default-features"
+  ],
+  "children": [],
+  "cost": "No runtime alias cost; compilation depends on selected module/dependency graph.",
+  "description": "Root declares AST/extract/gate/lex/macros/parse/print/table and math-gated tomath; selected pub uses are direct aliases. Documentation composes parse, canonical/plain print, gate.",
+  "forward": [
+    "Root declares AST/extract/gate/lex/macros/parse/print/table and math-gated tomath; selected pub uses are direct aliases. Documentation composes parse, canonical/plain print, gate."
+  ],
+  "id": "latex-lib",
+  "inverse": [
+    "Resolved reexport compatible with all callers of same item identity; cannot reconstruct implementation behavior. tomath visible witnesses build feature, not conversion success.",
+    "Without math root does not declare tomath. pub use introduces no runtime wrapper/call/effect."
+  ],
+  "limitations": [
+    "Partial source-derived model and finite synthetic checks",
+    "No universal proof or executable percentage surrogate",
+    "No live corpus, frozen VMM, teacher/API, training or GPU execution"
+  ],
+  "source": "latex/src/lib.rs",
+  "state": "Aliases identify defining items; no independent runtime state. cfg controls compilation."
+}

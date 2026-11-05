@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "error::wave31::errno_fibers_and_display"
+  ],
+  "children": [],
+  "cost": "O(1) fixed23 variants/scans; O(detail bytes) owned string and display.",
+  "description": "Errno numberings, error details and OS transport.",
+  "forward": [
+    "linux(Perm)=linux(NotCapable)=1; wasi distinguishes 63 and76. from_linux scans ALL excluding NotCapable; from_wasi scans all23. Display(detail)=detail, otherwise text plus Linux code. Unknown OS errno becomes Io with original display."
+  ],
+  "id": "vfs-error",
+  "inverse": [
+    "Linux code1 has compatible tags {Perm,NotCapable}; from_linux chooses Perm. Display with arbitrary detail cannot reconstruct errno or OS cause; recognized WASI codes recover exactly one tag."
+  ],
+  "limitations": [
+    "Finite checks only; partial source syntax, no expanded semantic AST.",
+    "No numerical surrogate: categorical/effect semantics lack useful metric; future caps 1/2/5/10 require domain and reference."
+  ],
+  "source": "vfs/src/error.rs",
+  "state": "Within ALL, WASI roundtrip preserves tags; Linux roundtrip preserves all except NotCapable becomes Perm. Detail overrides tag text without changing errno."
+}

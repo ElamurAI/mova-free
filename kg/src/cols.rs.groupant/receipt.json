@@ -1,0 +1,20 @@
+{
+  "compiled_negative_control": "one source-bound mutation; compile exit0, focused test exit101, restored positive exit0",
+  "epoch": "2026-10-31",
+  "limitations": [
+    "No crash/allocation/zstd-fuzz/oversized graph execution; no approximate identifier/codec semantics.",
+    "Partial lexical AST; no semantic proof or useful executable percentage surrogate."
+  ],
+  "named_outcomes_equal": true,
+  "partial": true,
+  "profiles": [
+    "debug",
+    "release"
+  ],
+  "runs_per_profile": 2,
+  "source_sha256": "70bf9a9666a1726974e3f926c4bed6c5df615d3b2dbf3e66b956a929c2a90778",
+  "tests": [
+    "cols::tests::roundtrip_and_filter",
+    "cols::wave29::codec_boundaries_and_errors"
+  ]
+}

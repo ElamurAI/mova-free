@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Shared parent lexical projection; fragment byte scope above",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source byte range [1433,1911); lexical, not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source byte range [1433,1911); lexical, not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "rejection_domain",
+        "path": "model.md",
+        "scope": "Source byte range [1433,1911); lexical, not proof",
+        "section": "rejection_domain",
+        "status": "partial_source_derived_model",
+        "type": "rejection_domain"
+      },
+      {
+        "id": "cache_transport",
+        "path": "model.md",
+        "scope": "Source byte range [1433,1911); lexical, not proof",
+        "section": "cache_transport",
+        "status": "partial_source_derived_model",
+        "type": "cache_transport"
+      },
+      {
+        "id": "branch_relation",
+        "path": "model.md",
+        "scope": "Source byte range [1433,1911); lexical, not proof",
+        "section": "branch_relation",
+        "status": "partial_source_derived_model",
+        "type": "branch_relation"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "Source byte range [1433,1911); lexical, not proof",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "partial_bounded_parent_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 1911,
+      "start": 1433
+    },
+    "description": "Normal takes spare first; otherwise samples u,v in [-1,1), rejects s<=0 or s>=1, emits u*sqrt(-2ln(s)/s), caches v times same scale.",
+    "source_bytes_sha256": "570cd04fab808d1eb8d8eb45121a54815484996c1a63e966596f1d07cf3d1c03"
+  },
+  "id": "mlab-rng-polar",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../rng.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "dccb613f518f32218a910c4eca3ad31df44347dd38b90d431833558e995a2046"
+  },
+  "status": "partial_source_bound_model"
+}

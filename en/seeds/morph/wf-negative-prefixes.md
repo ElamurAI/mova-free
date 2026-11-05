@@ -14,7 +14,7 @@
 
 **In UD.** A word with a prefix is an ordinary ADJ/NOUN/VERB/ADV with its own lemma; it has no `Polarity`.
 
-**Sources.** UD `docs/_en/feat/Polarity.md` ("Neither do negative prefixes (on adjectives: wise – unwise, probable – improbable)"), `docs/_en/pos/X.md` (AFX); Jespersen MEG VI 26.1₂–26.1₇ (text-5, pp. 481–485: *un-* with adjectives, adverbs, participles; *unable/inability*), 26.2₁, 26.2₄ (pp. 488–490: assimilation *il-, im-, ir-*; *invaluable*), 26.3₃, 26.4₁–26.4₄, 26.5₁, 26.6₃ (pp. 491–500: *non-*, privative *un-*, *dis-*, *mis-*); Sweet NEG I §1584, §1587 (text-1, pp. 485–486), §1652 (p. 504: *in-* only with longer foreign words), §1642, §1658 (pp. 502, 505); Whitney §100, §193d (text-1, pp. 60, 103).
+**Sources.** Aronoff 1976, *Word Formation in Generative Grammar* (blocking: an existing word blocks a synonymous derivative); UD `docs/_en/feat/Polarity.md` ("Neither do negative prefixes (on adjectives: wise – unwise, probable – improbable)"), `docs/_en/pos/X.md` (AFX); Jespersen MEG VI 26.1₂–26.1₇ (text-5, pp. 481–485: *un-* with adjectives, adverbs, participles; *unable/inability*), 26.2₁, 26.2₄ (pp. 488–490: assimilation *il-, im-, ir-*; *invaluable*), 26.3₃, 26.4₁–26.4₄, 26.5₁, 26.6₃ (pp. 491–500: *non-*, privative *un-*, *dis-*, *mis-*); Sweet NEG I §1584, §1587 (text-1, pp. 485–486), §1652 (p. 504: *in-* only with longer foreign words), §1642, §1658 (pp. 502, 505); Whitney §100, §193d (text-1, pp. 60, 103).
 
 ```rule
 rule: en.morph.no-polarity-on-lexical-words
@@ -23,4 +23,25 @@ match: w[upos=ADJ|ADV|NOUN|PROPN|VERB]
 require: w[!feats.Polarity]
 severity: error
 source: UD en feat/Polarity (negative prefixes do not receive the feature); Jespersen MEG VI 26.1–26.2
+```
+
+```derive
+# Derivation data for `en::derive` (en/README.md, "Derived words"). One prefix per line:
+# prefix <affix> <classes of the stem> <shortest stem> [block=<rival prefixes>] [except=<stem endings>]
+#        [start=<first letters of the stem>] [nostart=<first letters it may not have>] | <gloss>
+# Classes: N noun, V verb, A adjective, R adverb. A prefix keeps the stem's tags (it does not change the part of speech).
+# block=: a rival negative prefix that already makes a dictionary word with this stem blocks this one (impossible ⇒ no
+# *unpossible*, dishonest ⇒ no *unhonest*: Aronoff 1976, blocking). except=: stem endings this prefix does not take
+# (in- goes with adjectives, not with adverbs in -ly: *in- + visibly* is invisible + -ly). start=/nostart=: in-
+# assimilates to im- before b, m, p, il- before l, ir- before r (*inpossible*, *inlegal* are misspellings). part=: the
+# tag a participle stem takes (un- + participle is an adjective, *unchanged*, *unwilling*: JJ in 55 of 61 un…ed forms of
+# UD EWT 2.18 train; the rest are mostly reversative *uncovered*).
+prefix un   A,V,R  4 block=in,im,il,ir,dis part=JJ | not; reverse the action
+prefix in   A      5 block=un,dis,im,il,ir except=ly nostart=b,m,p,l,r | not
+prefix im   A      5 block=un,dis,in except=ly start=b,m,p | not (before b, m, p)
+prefix il   A      5 block=un,dis except=ly start=l | not (before l)
+prefix ir   A      5 block=un,dis except=ly start=r | not (before r)
+prefix dis  V,A,N  4 block=un,in,im,il,ir | not; undo
+prefix non  N,A    4 | not
+prefix mis  V,N    4 | wrongly
 ```

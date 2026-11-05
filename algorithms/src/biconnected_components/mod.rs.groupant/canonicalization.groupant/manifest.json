@@ -1,0 +1,100 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "within-order",
+        "path": "model.md",
+        "required": false,
+        "section": "within-order",
+        "status": "partial_source_derived_model",
+        "type": "monotone_identity"
+      },
+      {
+        "id": "block-order",
+        "path": "model.md",
+        "required": false,
+        "section": "block-order",
+        "status": "partial_source_derived_model",
+        "type": "first_occurrence"
+      },
+      {
+        "id": "label-renaming",
+        "path": "model.md",
+        "required": false,
+        "section": "label-renaming",
+        "status": "partial_source_derived_model",
+        "type": "internal_name_invariance"
+      },
+      {
+        "id": "totality",
+        "path": "model.md",
+        "required": false,
+        "section": "totality",
+        "status": "partial_source_derived_model",
+        "type": "label_precondition"
+      }
+    ],
+    "tests": {
+      "path": "../model.md#evidence",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 3276,
+      "start": 2841
+    },
+    "description": "Given a total block label for every edge, scan edge IDs in increasing order. Assign an output slot at each label's first occurrence. This preserves equivalence, puts each identity once, and orders blocks by minimum identity in O(E) time and space. Missing or out-of-range labels violate the precondition."
+  },
+  "id": "algorithm-biconnected-components-canonicalization",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../mod.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "6b1ce98504a60075c4d2d5eefba280a9efecb295eed946c1a4a7628578e09f45"
+  },
+  "status": "partial_source_bound_model"
+}

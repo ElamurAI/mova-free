@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test --release --locked -p mova-modules oewn"
+  ],
+  "cost": "Z zip bytes, U unpacked bytes (OEWN 2025: 10 MB, 72 MB, 73 files): download O(Z), SHA-256 O(Z), unzip O(U), inventory SHA-256 O(U), load check parses every JSON file O(U) memory and time; about 0.6 s for check on the real data (2026-11-05).",
+  "description": "`mova oewn`: Open English WordNet 2025 (JSON, CC BY 4.0) into $MOVA_DATA/raw/en-oewn/json: the zip's SHA-256, unpacking into staging, an exact inventory (tools/modules/oewn-2025-json.tsv, bound to the zip SHA-256) and a load check, then one rename; an installed folder is reused only when it passes the same checks.",
+  "forward": [
+    "Inventory::parse reads `# zip-sha256 <hex>` and path/bytes/sha256 rows; oewn_2025 requires the header to equal ZIP_SHA256; check_dir requires exactly those regular files with those sizes and SHA-256.",
+    "check_load reads entries-*.json and the synset files as world::wordnet does and requires every file to be a JSON object, at least one sense, and every sense's synset present.",
+    "install reuses json/ if check_dir and check_load pass; otherwise takes the given zip, the kept zip with the right SHA-256 or downloads one (https or file://), checks its SHA-256, unzips into .json-staging-<pid>, checks both, renames to json/ (an earlier json/ kept as json.before-oewn-2025)."
+  ],
+  "id": "mova-modules-oewn",
+  "inverse": [
+    "Behavior complement: no other editions or formats, no repair of a partial folder in place, no deletion of earlier folders or of the kept zip, no check of the meaning of the data beyond resolvable senses; staging folders of killed runs are left (never read).",
+    "Reverse reconstruction: a passing json/ conforms to the file inventory the compiled manifest associates with ZIP_SHA256; its contents alone do not reconstruct the zip bytes or establish their provenance; a downloaded zip is retained beside it, a supplied zip stays at its supplied path, and reuse of a valid folder needs no zip; an earlier folder survives as json.before-oewn-2025[-n]; the URL it came from is not recorded."
+  ],
+  "limitations": [
+    "Partial source model; fixture zips (stored entries) in tests and the real OEWN 2025 folder checked on 2026-11-05."
+  ],
+  "source": "tools/modules/src/oewn.rs",
+  "state": "Data directory: raw/en-oewn/ (the kept zip, json/, json.before-oewn-2025*, .json-staging-<pid> while running)."
+}

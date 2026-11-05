@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "cargo check -p world --features peta with the folder present; cargo check --all-features on the public export without it"
+  ],
+  "children": [],
+  "cost": "O(1): one environment lookup and one stat.",
+  "description": "Sets cfg(mova_legacy_worlds) only when feature worlds is on and peta/world/legacy/worlds exists; otherwise warns (feature on) or does nothing, so a public checkout compiles with --all-features.",
+  "forward": [
+    "Always: rustc-check-cfg for mova_legacy_worlds and rerun-if-changed=build.rs. Feature worlds on and folder present: rerun-if-changed=<folder> and rustc-cfg=mova_legacy_worlds. Feature on and folder absent: one cargo warning."
+  ],
+  "id": "world-build",
+  "inverse": [
+    "The cfg recovers feature on and folder present; its absence plus a warning recovers feature on and folder absent; no warning and no cfg means feature off. Folder contents are not recoverable."
+  ],
+  "limitations": [
+    "Does not check the 33 manual files individually; a partial folder fails at include_str!. No unit test; checked by compiling both ways."
+  ],
+  "source": "world/build.rs",
+  "state": "Stateless; output depends on CARGO_FEATURE_WORLDS and the folder's existence at script run time."
+}

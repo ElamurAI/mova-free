@@ -1,0 +1,164 @@
+{
+  "children": [
+    "mathlib-books",
+    "mathlib-duck",
+    "mathlib-fetch",
+    "mathlib-gcs",
+    "mathlib-http",
+    "mathlib-main",
+    "mathlib-oai",
+    "mathlib-raw",
+    "mathlib-robots"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "Source-derived effect relations assume stated external success and resource availability. No downloaded corpus and no real DB executable are used. Existing robots_rules is excluded because its negative hostname resolves DNS.",
+        "domain": "Bounded synthetic UTF-8 strings, small owned temporary files/archives and valid finite nonnegative delays; nonoverflowing counters and valid Done indices. Actual tests execute no network or DNS, live catalogs, model/teacher or database.",
+        "id": "behavior-complement",
+        "observation_scope": "Real joins: raw::License::code and books::BookLicense::code match fetch's finite allowed strings; raw inputs match OAI gzip page naming; HTTP encode transports literal token bytes; robots uses Polite and fetch invokes Gate before downloading. Counterexample: GCS JSON numeric size becomes zero; it is not raw KB format. Book build's DNS means offline TSV construction is not a pure parser. SQL filling is sequential substitution, not DB semantics.",
+        "operator": "Inner exclusions: invalid fetch list/license prevents download setup; terminal OAI token prevents request; unknown raw license host cannot map Open. Across tagged paths these exclusions apply only to the selected route and preconditions, not every caller.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "Source-derived effect relations assume stated external success and resource availability. No downloaded corpus and no real DB executable are used. Existing robots_rules is excluded because its negative hostname resolves DNS.",
+        "domain": "Bounded synthetic UTF-8 strings, small owned temporary files/archives and valid finite nonnegative delays; nonoverflowing counters and valid Done indices. Actual tests execute no network or DNS, live catalogs, model/teacher or database.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Real joins: raw::License::code and books::BookLicense::code match fetch's finite allowed strings; raw inputs match OAI gzip page naming; HTTP encode transports literal token bytes; robots uses Polite and fetch invokes Gate before downloading. Counterexample: GCS JSON numeric size becomes zero; it is not raw KB format. Book build's DNS means offline TSV construction is not a pure parser. SQL filling is sequential substitution, not DB semantics.",
+        "operator": "Final manifest admits many source catalogs, request histories and discarded archive payloads. Recover compatible Item/Done and raw/book code antecedents, retaining lossy normalization and merge fibers; no unique end-to-end inverse.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "Source-derived effect relations assume stated external success and resource availability. No downloaded corpus and no real DB executable are used. Existing robots_rules is excluded because its negative hostname resolves DNS.",
+        "domain": "Bounded synthetic UTF-8 strings, small owned temporary files/archives and valid finite nonnegative delays; nonoverflowing counters and valid Done indices. Actual tests execute no network or DNS, live catalogs, model/teacher or database.",
+        "id": "license-transport",
+        "observation_scope": "Real joins: raw::License::code and books::BookLicense::code match fetch's finite allowed strings; raw inputs match OAI gzip page naming; HTTP encode transports literal token bytes; robots uses Polite and fetch invokes Gate before downloading. Counterexample: GCS JSON numeric size becomes zero; it is not raw KB format. Book build's DNS means offline TSV construction is not a pure parser. SQL filling is sequential substitution, not DB semantics.",
+        "operator": "raw CcBy4 -> cc-by-4.0 and book CcBySa -> cc-by-sa are accepted finite fetch codes; raw None -> none and book Other -> other reject. This is policy transport, not license authenticity validation.",
+        "path": "model.md",
+        "required": false,
+        "section": "license-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Source-derived effect relations assume stated external success and resource availability. No downloaded corpus and no real DB executable are used. Existing robots_rules is excluded because its negative hostname resolves DNS.",
+        "domain": "Bounded synthetic UTF-8 strings, small owned temporary files/archives and valid finite nonnegative delays; nonoverflowing counters and valid Done indices. Actual tests execute no network or DNS, live catalogs, model/teacher or database.",
+        "id": "token-transport",
+        "observation_scope": "Real joins: raw::License::code and books::BookLicense::code match fetch's finite allowed strings; raw inputs match OAI gzip page naming; HTTP encode transports literal token bytes; robots uses Polite and fetch invokes Gate before downloading. Counterexample: GCS JSON numeric size becomes zero; it is not raw KB format. Book build's DNS means offline TSV construction is not a pure parser. SQL filling is sequential substitution, not DB semantics.",
+        "operator": "OAI textual token extraction unescapes XML then HTTP encode percent-escapes bytes. Literal token percent must be escaped again; passing already serialized query syntax as a token is not equivalent to adding query parameters.",
+        "path": "model.md",
+        "required": false,
+        "section": "token-transport",
+        "status": "partial_source_derived_model",
+        "type": "query_encoding"
+      },
+      {
+        "assumptions": "Source-derived effect relations assume stated external success and resource availability. No downloaded corpus and no real DB executable are used. Existing robots_rules is excluded because its negative hostname resolves DNS.",
+        "domain": "Bounded synthetic UTF-8 strings, small owned temporary files/archives and valid finite nonnegative delays; nonoverflowing counters and valid Done indices. Actual tests execute no network or DNS, live catalogs, model/teacher or database.",
+        "id": "checkpoint-join",
+        "observation_scope": "Real joins: raw::License::code and books::BookLicense::code match fetch's finite allowed strings; raw inputs match OAI gzip page naming; HTTP encode transports literal token bytes; robots uses Polite and fetch invokes Gate before downloading. Counterexample: GCS JSON numeric size becomes zero; it is not raw KB format. Book build's DNS means offline TSV construction is not a pure parser. SQL filling is sequential substitution, not DB semantics.",
+        "operator": "OAI gzip sync precedes state append; fetch successful file rename precedes manifest rewrite; Duck execution has separate process/DB effects. Failure between stages can leave prefix artifacts, so individual success does not imply transaction.",
+        "path": "model.md",
+        "required": false,
+        "section": "checkpoint-join",
+        "status": "partial_source_derived_model",
+        "type": "effect_order"
+      },
+      {
+        "assumptions": "Source-derived effect relations assume stated external success and resource availability. No downloaded corpus and no real DB executable are used. Existing robots_rules is excluded because its negative hostname resolves DNS.",
+        "domain": "Bounded synthetic UTF-8 strings, small owned temporary files/archives and valid finite nonnegative delays; nonoverflowing counters and valid Done indices. Actual tests execute no network or DNS, live catalogs, model/teacher or database.",
+        "id": "route-partition",
+        "observation_scope": "Real joins: raw::License::code and books::BookLicense::code match fetch's finite allowed strings; raw inputs match OAI gzip page naming; HTTP encode transports literal token bytes; robots uses Polite and fetch invokes Gate before downloading. Counterexample: GCS JSON numeric size becomes zero; it is not raw KB format. Book build's DNS means offline TSV construction is not a pure parser. SQL filling is sequential substitution, not DB semantics.",
+        "operator": "CLI command and arity select one of OAI/raw/books/fetch/GCS/SQL paths. Their costs and errors form a tagged union; GCS listing is not a prerequisite for raw parsing or books. Main helper checks cover partition, not route I/O.",
+        "path": "model.md",
+        "required": false,
+        "section": "route-partition",
+        "status": "partial_source_derived_model",
+        "type": "tagged_composition"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "math-library-ingestion",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "tools/mathlib/src/books.rs",
+      "sha256": "c45e71334ccd3618e9fad4d6117ac8048db42001ffea61d02fa6d4121d1e5060"
+    },
+    {
+      "path": "tools/mathlib/src/duck.rs",
+      "sha256": "9f7321a7f368a542a2a9cb3bd2c79adf590517f4d6a0c7b88c7adf254bac7946"
+    },
+    {
+      "path": "tools/mathlib/src/fetch.rs",
+      "sha256": "9a892fd61299338f640f9d8d08471ef7f09cac19235ad80b90d894a12489996d"
+    },
+    {
+      "path": "tools/mathlib/src/gcs.rs",
+      "sha256": "1c497d6224bcd2c1561bb1f524542f7e8d27ed6dc398b82e81a61bbd320821e8"
+    },
+    {
+      "path": "tools/mathlib/src/http.rs",
+      "sha256": "3df63f2ba1d7bcdb4f0bf02fa7c7a1f0feb5817d22f7409456945ccf6a57aa32"
+    },
+    {
+      "path": "tools/mathlib/src/main.rs",
+      "sha256": "b350b04af0e7b74d484cab2bef3f8858eb76a9cf89fea724e18e3130028d2508"
+    },
+    {
+      "path": "tools/mathlib/src/oai.rs",
+      "sha256": "a31f2f7ae8b4e679fc6c5a24e070ba078708a5336ebef35cbc1f08a10b1ea65e"
+    },
+    {
+      "path": "tools/mathlib/src/raw.rs",
+      "sha256": "7d08c4e6f06ecd7eabc2c57092405b6d010841ad384398c17f96e1438c098790"
+    },
+    {
+      "path": "tools/mathlib/src/robots.rs",
+      "sha256": "84539710d111a1045385202e26b845b3894fbd8883804cbcbdf39135d6d22897"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

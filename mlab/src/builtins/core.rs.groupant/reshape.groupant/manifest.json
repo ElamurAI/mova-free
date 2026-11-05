@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Reshape dimension inference",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Reshape dimension inference",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Reshape dimension inference",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Reshape dimension inference",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "resource_domain",
+        "path": "model.md",
+        "scope": "Reshape dimension inference",
+        "section": "resource_domain",
+        "status": "partial_source_derived_model",
+        "type": "resource_domain"
+      },
+      {
+        "id": "interaction_relation",
+        "path": "model.md",
+        "scope": "Reshape dimension inference",
+        "section": "interaction_relation",
+        "status": "partial_source_derived_model",
+        "type": "interaction_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 25219,
+      "start": 23538
+    },
+    "description": "Collect Some(cast dimension) or None for empty positional dimensions. known=product(Some); holes>1 errors. One hole fills n/known only if known!=0 and divides n. Then require at least two dimensions and trailing dimensions all one, require r*c=n, clone and replace shape.",
+    "source_bytes_sha256": "b403e8c57b83b19112c2ce040438975880ea9fcd7a9717b2532f0a9c68947355"
+  },
+  "id": "mlab-builtins-core-reshape",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../core.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "8d26d9c57654af7591dfa87298cce7f55541f4d17d513f5e2ddf31f71a8caf15"
+  },
+  "status": "partial_source_bound_model"
+}

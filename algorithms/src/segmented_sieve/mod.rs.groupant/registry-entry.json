@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "Five tests per algorithm, debug/release twice with normalized equality; compiled control and restored rerun; Clippy, formatting, syntax twice."
+  ],
+  "children": [],
+  "cost": "Fresh base sieve costs O(sqrt(high) loglog(high)+sqrt(high)), interval marking O(width loglog(high)+sqrt(high)), enumeration O(width). Storage O(sqrt(high)+width+output), all bounded by endpoint/width caps. Use loglog(max(high,3)) for small endpoints.",
+  "description": "segmented_sieve mod.rs exact std-only bounded implementation and checks",
+  "forward": [
+    "Validate reversed interval, then high cap, then width cap. Integer binary search computes floor sqrt(high). Base flags identify primes through that limit. For each base prime mark interval multiples from max(p*p,ceil(low/p)*p). Enumerate surviving values >=2 in ascending order."
+  ],
+  "id": "algorithm-segmented-sieve",
+  "inverse": [
+    "Excluded successful outputs contain any composite, omit a prime in the interval, include values outside the interval, or have duplicate/unsorted values. Rejected-domain success and wrong validation precedence are excluded.",
+    "For a nonempty output list, compatible accepted intervals contain all those primes and no additional primes. Their endpoints can move in adjacent composite gaps. Empty outputs reconstruct prime-free accepted intervals, not a unique interval: [14,16] and [24,28]. Error fibers follow reversed/high/width precedence.",
+    "Splitting an accepted [l,r] at k with l<=k<r gives output([l,k]) concatenated with output([k+1,r]); both subintervals satisfy caps. No deduplication is needed.",
+    "At p*p for a prime p the new base divisor must be included. Integer sqrt ensures perfect-square endpoints are marked correctly without floating rounding. p itself survives because marking starts at p*p.",
+    "Every removed value >=2 is a multiple k*p with k>=p for a discovered base prime p. Every surviving value >=2 has no prime divisor <=sqrt(high), proving primality on the stated domain.",
+    "Reversed order wins before high cap before width cap; no allocation occurs before these checks. Caps limit base and segment flags to 1000001 and 1000000 entries; output length<=width. This is not a recoverable allocator-failure guarantee."
+  ],
+  "limitations": [
+    "Finite observations are not a universal proof.",
+    "Partial syntax excludes macro expansion and semantic AST analysis.",
+    "Allocation abort is outside normal-return relations."
+  ],
+  "source": "algorithms/src/segmented_sieve/mod.rs",
+  "state": "Inclusive u64 intervals and Result<Vec<u64>,SieveError>; accepted low<=high<=10^12 with width<=10^6."
+}

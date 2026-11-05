@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "data::tests::features_line_up_with_words; data::cost_tests::cost_counts_real_batch_shapes_and_filters_skipped_sentences; data::wave30::projection_roles_and_zero_budget",
+    "2026-11-04: data::tests::ngrams_and_votes (character n-grams, MISC vote parsing, batch confidence rows; inputs unchanged by n-grams)."
+  ],
+  "children": [],
+  "cost": "O(input bytes + vocabulary log V + sort S log S + BT² + word characters) time, O(BT²+retained words/vocab) storage; lexical learning retains distinct form/tag/feature keys. Count/usize products and u32 narrowing are unchecked.",
+  "description": "read scans UTF-8 lines, ignores short (<8 columns), range and decimal-ID rows, retains first 8 fields, parses invalid head as zero and emits only nonempty sentences. write renumbers words and discards original DEPS/MISC/roles. Vocs lowercases word counts with lexical ordering; tags preserve first-seen order. batch_prag uses T=1+max(length), row=k*T+i, key root/real=1, mask real=1; gold heads clamp to sentence length. plan/plan_of sort (length,index), flush only a nonempty batch exceeding tokens. Lex::fill precedence is EModE table, form/tag frequency maximum with lexicographically smaller tie, then tag-frequency features and morphology. inference_cost sums BT, BT² and (n+1)³ for 0<n<max_len.",
+  "forward": [
+    "read scans UTF-8 lines, ignores short (<8 columns), range and decimal-ID rows, retains first 8 fields, parses invalid head as zero and emits only nonempty sentences. write renumbers words and discards original DEPS/MISC/roles. Vocs lowercases word counts with lexical ordering; tags preserve first-seen order. batch_prag uses T=1+max(length), row=k*T+i, key root/real=1, mask real=1; gold heads clamp to sentence length. plan/plan_of sort (length,index), flush only a nonempty batch exceeding tokens. Lex::fill precedence is EModE table, form/tag frequency maximum with lexicographically smaller tie, then tag-frequency features and morphology. inference_cost sums BT, BT² and (n+1)³ for 0<n<max_len."
+  ],
+  "id": "gparse-data",
+  "inverse": [
+    "No range/decimal row can become a word through read. Invalid numeric head cannot survive as an error: it becomes 0. Budget zero does not exclude nonempty singleton plans; absent sentence IDs do not clear old roles, while matching IDs replace them. Unknown lexical relation becomes its known base or dep unless relation set is empty.",
+    "A parsed Sent has all UTF-8 antecedents differing in ignored rows, extra columns and invalid heads mapping to zero; write is a canonical projection, not original-text recovery. A batch has compatible original forms colliding in lowercase vocabulary/affix hashes and compatible dropped word IDs; fixed Vocs and no dropout do not make it injective."
+  ],
+  "limitations": [
+    "Partial lexical syntax; no semantic proof",
+    "Finite synthetic checks only; external corpus/model experiments excluded",
+    "No executable Rust percent surrogate or throughput claim",
+    "Fault injection and exhaustive nonfinite/dimension cases absent"
+  ],
+  "source": "gparse/src/data.rs",
+  "state": "Root features [2,1,2,8]; role_arc[(k*T+d)*T+p]=r, first nonzero filler role retained and predicate flag adds 8 at most once for valid 1..=n roles. Empty shape is punctuation 6, empty Voc::load has one empty name; word hashing uses wrapping FNV and buckets 3..AFFIX. Valid roles are required for manually constructed Sent. No structural UD-tree validation."
+}

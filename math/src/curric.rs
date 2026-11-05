@@ -379,3 +379,28 @@ mod tests {
         assert_eq!(a, sample(&xs, |x| x.to_string(), 10, "s"), "sample is reproducible");
     }
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn sampling_edges_and_option_precedence() {
+        let xs = vec!["a", "b", "c"];
+        assert!(sample(&xs, |x| x.to_string(), 0, "x").is_empty());
+        assert_eq!(sample(&xs, |_| "same".into(), 9, "x"), xs);
+        let p = Problem {
+            id: String::new(),
+            level: 0,
+            source: String::new(),
+            license: String::new(),
+            split: String::new(),
+            question: String::new(),
+            options: vec![("A".into(), "3".into()), ("B".into(), "4".into())],
+            gold: "B".into(),
+            gold_kind: "option".into(),
+            topic: String::new(),
+        };
+        assert!(!grade(&p, Some("4"), Some("A")));
+        assert!(grade(&p, Some("4"), Some("Z")));
+    }
+}

@@ -404,3 +404,23 @@ mod tests {
         assert!(!check_fib(100, &(f + IBig::ONE), &f1).ok);
     }
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn zero_seeds_and_limit_precedence() {
+        assert_eq!(factorial(0).unwrap(), z(1));
+        assert_eq!(stirling2(0, 0).unwrap(), z(1));
+        assert_eq!(stirling2(2, 0).unwrap(), z(0));
+        assert!(stirling2(3001, 4000).is_err());
+        assert_eq!(partitions(0).unwrap(), z(1));
+        assert_eq!(partitions_k(0, 0).unwrap(), z(1));
+        assert_eq!(derangements(0).unwrap(), z(1));
+        assert_eq!(derangements(1).unwrap(), z(0));
+        assert_eq!(fib_pair(0), (z(0), z(1)));
+        assert_eq!(binomial(&z(-3), &z(3)).unwrap(), z(-10));
+        assert_eq!(binomial(&z(2), &z(-1)).unwrap(), z(0));
+        assert!(factorial(MAX_N + 1).is_err());
+    }
+}

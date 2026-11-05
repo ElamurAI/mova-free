@@ -1,0 +1,87 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "No syntax projection, macro expansion or semantic AST; byte ranges bind the reviewed snapshot only.",
+      "status": "not_materialized"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "twin-persistence-behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "CLI dispatch and prospective ledger persistence",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "twin-persistence-reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "CLI dispatch and prospective ledger persistence",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "twin-persistence-report-admission",
+        "path": "model.md",
+        "required": false,
+        "scope": "CLI dispatch and prospective ledger persistence",
+        "section": "report-admission",
+        "status": "partial_source_model",
+        "type": "projection_relation"
+      },
+      {
+        "id": "twin-persistence-checkpoint-order",
+        "path": "model.md",
+        "required": false,
+        "scope": "CLI dispatch and prospective ledger persistence",
+        "section": "checkpoint-order",
+        "status": "partial_source_model",
+        "type": "persistence_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 16071,
+      "start": 12028
+    },
+    "description": "CLI dispatch and prospective ledger persistence"
+  },
+  "id": "twin-persistence",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../main.rs",
+    "sha256": "01f907c5df2d09277026ffba9a9e1660c1a729159986e0232cefc423aa87b1cb"
+  },
+  "status": "partial_source_bound_model"
+}

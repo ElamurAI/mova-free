@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
-# Download the Mova corpus from research.elamur.ai, check its SHA-256 and unpack it into corpus/open/.
-# Usage: train/get-corpus.sh [version]     (default 0.4)
+# Download the Mova corpus. Usage: train/get-corpus.sh [version]   (default 0.5)
+# 0.5 and later: `mova fetch <version> corpus` (SHA-256 checked, unpacked into the data directory).
+# 0.2–0.4: the historical layout, downloaded from research.elamur.ai and unpacked into corpus/open/.
 set -euo pipefail
-v="${1:-0.4}"
-base="https://research.elamur.ai/download/${v%%.*}/$v"
+v="${1:-0.5}"
 root="$(cd "$(dirname "$0")/.." && pwd)"
+case "$v" in
+  0.2|0.3|0.4) ;;
+  *) exec "$root/target/release/mova" fetch "$v" corpus ;;
+esac
+base="https://research.elamur.ai/download/${v%%.*}/$v"
 tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
 cd "$tmp"
 echo "downloading corpus-$v.tar.gz from $base"

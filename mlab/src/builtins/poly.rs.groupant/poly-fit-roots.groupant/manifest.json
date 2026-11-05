@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "leading_trim",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "leading_trim",
+        "status": "partial_source_derived_model",
+        "type": "leading_trim"
+      },
+      {
+        "id": "trailing_roots",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "trailing_roots",
+        "status": "partial_source_derived_model",
+        "type": "trailing_roots"
+      },
+      {
+        "id": "finite_gate",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "finite_gate",
+        "status": "partial_source_derived_model",
+        "type": "finite_gate"
+      },
+      {
+        "id": "caller_join",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "caller_join",
+        "status": "partial_source_derived_model",
+        "type": "caller_join"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 3724,
+      "start": 1110
+    },
+    "description": "polyfit parses x,y,n then rejects extra outputs, unequal lengths, invalid degree; constructs Vandermonde and calls SVD. roots rejects complex/nonfinite, removes leading zeros, records trailing zeros, constructs companion first row -c[j+1]/c0 and subdiagonal1 then calls eig.",
+    "source_bytes_sha256": "2145fad2b25f466b79099293ecc96bb39d021358f798b2251ac601fe9c9011e2"
+  },
+  "id": "mlab-numerics-poly-fit-roots",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../poly.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "19ff6f221e4a7f3984115436092a1b36ea6a18222cbf8f76fc0b6fd53c13a287"
+  },
+  "status": "partial_source_bound_model"
+}

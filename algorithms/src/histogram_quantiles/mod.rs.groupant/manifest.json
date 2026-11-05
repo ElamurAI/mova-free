@@ -1,0 +1,139 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "No macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "descriptant",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Inner excluded relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-histogram-quantiles-behavior-complement",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/histogram_quantiles/mod.rs sha256:ab6c2ca180991fd201f61ac868b6984bfc00260fdc977061365beb10360f95d4",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Set-valued compatible antecedents",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-histogram-quantiles-reverse-reconstruction",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/histogram_quantiles/mod.rs sha256:ab6c2ca180991fd201f61ac868b6984bfc00260fdc977061365beb10360f95d4",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped conditional relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-histogram-quantiles-rank-rectangle",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md rank-rectangle",
+        "path": "model.md",
+        "required": false,
+        "section": "rank-rectangle",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/histogram_quantiles/mod.rs sha256:ab6c2ca180991fd201f61ac868b6984bfc00260fdc977061365beb10360f95d4",
+        "type": "order_statistic_enclosure"
+      },
+      {
+        "approximation_semantics": "Scoped conditional relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-histogram-quantiles-endpoint-arithmetic",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md endpoint-arithmetic",
+        "path": "model.md",
+        "required": false,
+        "section": "endpoint-arithmetic",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/histogram_quantiles/mod.rs sha256:ab6c2ca180991fd201f61ac868b6984bfc00260fdc977061365beb10360f95d4",
+        "type": "bounded_integer_geometry"
+      },
+      {
+        "approximation_semantics": "Scoped conditional relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-histogram-quantiles-bucket-budget",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md bucket-budget",
+        "path": "model.md",
+        "required": false,
+        "section": "bucket-budget",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/histogram_quantiles/mod.rs sha256:ab6c2ca180991fd201f61ac868b6984bfc00260fdc977061365beb10360f95d4",
+        "type": "resource_envelope"
+      },
+      {
+        "approximation_semantics": "Scoped conditional relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-histogram-quantiles-atomic-count",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md atomic-count",
+        "path": "model.md",
+        "required": false,
+        "section": "atomic-count",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/histogram_quantiles/mod.rs sha256:ab6c2ca180991fd201f61ac868b6984bfc00260fdc977061365beb10360f95d4",
+        "type": "checked_transition"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "tests",
+      "status": "partial"
+    }
+  },
+  "id": "algorithm-histogram-quantiles",
+  "kind": "groupant",
+  "registry": {
+    "node": "algorithm-histogram-quantiles",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "ab6c2ca180991fd201f61ac868b6984bfc00260fdc977061365beb10360f95d4"
+  },
+  "status": "partial"
+}

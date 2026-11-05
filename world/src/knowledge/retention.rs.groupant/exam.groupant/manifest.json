@@ -1,0 +1,99 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Shared whole-source partial projection; fragment byte_range narrows source scope. Macro expansion and semantic analysis absent.",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "scope": "Existing invariant section records local cost; no measurements implied.",
+      "section": "invariant",
+      "status": "source_derived_conditional"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_derived"
+    },
+    "obernants": [
+      {
+        "id": "retention-exam-behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Question-only retained examination",
+        "section": "behavior-complement",
+        "status": "partial_source_derived_specification",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "retention-exam-reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "Question-only retained examination",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "retention-exam-presentation",
+        "path": "model.md",
+        "required": false,
+        "scope": "Question-only retained examination",
+        "section": "presentation",
+        "status": "partial_source_derived_specification",
+        "type": "ordering_relation"
+      },
+      {
+        "id": "retention-exam-diagnosis",
+        "path": "model.md",
+        "required": false,
+        "scope": "Question-only retained examination",
+        "section": "diagnosis",
+        "status": "partial_source_derived_specification",
+        "type": "decision_partition"
+      },
+      {
+        "id": "retention-exam-state-boundary",
+        "path": "model.md",
+        "required": false,
+        "scope": "Question-only retained examination",
+        "section": "state-boundary",
+        "status": "partial_source_derived_specification",
+        "type": "observation_noninterference"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_existing_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 15933,
+      "start": 13403
+    },
+    "description": "Question-only retained examination"
+  },
+  "id": "retention-exam",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../retention.rs",
+    "revision": "sha256:89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34",
+    "sha256": "89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34"
+  },
+  "status": "partial_source_bound_model"
+}

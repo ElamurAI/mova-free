@@ -1,0 +1,82 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "boundary_preservation",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "boundary_preservation",
+        "status": "partial_source_derived_model",
+        "type": "boundary_preservation"
+      },
+      {
+        "id": "optional_scope",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "optional_scope",
+        "status": "partial_source_derived_model",
+        "type": "optional_scope"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 9128,
+      "start": 4763
+    },
+    "description": "next pops stack; peek reads last and peek2 next-to-last. push_front(t1..tk) extends reversed tokens so subsequent next yields t1..tk then the old stream. group_tokens tracks brace depth, returning at depth-zero Close; End is restored and yields failure. opt_tokens requires initial [, ignores ] within braces, restores depth-zero Close/End on failure.",
+    "source_bytes_sha256": "661f1598730ec2bf0a1e932f39335db5465330927d0bef5cf0d745e6471dc741"
+  },
+  "id": "latex-lex-stage1",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../lex.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "65c9e2c47772827ade022d41d5bf4ab4f54c0d3a7b9505ec137f0df8c4c4c922"
+  },
+  "status": "partial_source_bound_model"
+}

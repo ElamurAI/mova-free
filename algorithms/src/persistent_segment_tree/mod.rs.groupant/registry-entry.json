@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "Two debug and two release runs with identical normalized outcomes",
+    "Named compiled mutation rejected by assertion; exact source restoration",
+    "Source syntax projected twice identically"
+  ],
+  "children": [],
+  "cost": "2n-1 initial nodes, at most ceil(log2 n)+1 per update, O(log n) query",
+  "description": "Path-copy immutable versions with checked i128 range sums",
+  "forward": [
+    "See model.md forward and invariant"
+  ],
+  "id": "algorithm-persistent-segment-tree",
+  "inverse": [
+    "Behavior complement and compatible-input reconstruction are distinct relations in model.md"
+  ],
+  "limitations": [
+    "Finite tests are not all-input proof",
+    "Allocation failure outside Result/Option contract",
+    "Partial syntax is not semantic AST",
+    "No certified executable numerical approximant"
+  ],
+  "source": "algorithms/src/persistent_segment_tree/mod.rs",
+  "state": "Immutable node arena and historical root list"
+}

@@ -1,65 +1,78 @@
 # Documentation
 
-Start with [architecture.md](architecture.md): the map of Mova, its pipeline, its teacher loop and its crates. Each crate also has a README next to its code.
+Mova is a Hybrid Combinatorial–Operational System with a Combinatorial Small Language Model (SLM) at its core. These
+pages describe how it is built and how it works. Start with [the hybrid system](hybrid-system.md), then
+[the architecture](architecture.md). Each crate has a README next to its code with the full command reference.
 
 ## Overview
 
-- [architecture.md](architecture.md) — the pipeline from text to answer, the teacher loop, the students, the crates.
-- [design-three-levels.md](design-three-levels.md) — the design note on three levels of logic (global knowledge, domains, context), with the measurements of its first days.
-- [gpu-exec.md](gpu-exec.md) — the two execution modes, CPU only and GPU enhanced, and what each GPU stage measures.
-- [../CHANGELOG.md](../CHANGELOG.md) — what changed in each release; [release-0.4.md](release-0.4.md) and [release-0.3.md](release-0.3.md) — notes and metrics of releases 0.4 and 0.3.
-- [mysticism/](mysticism) — texts on the background ideas behind Mova, and [Gali](mysticism/gali.md), the working mode for AI instances that build Mova with a human operator.
+- [hybrid-system.md](hybrid-system.md) — what Mova is: the three layers (language, combinatorial, operational), what
+  is implemented and what is direction; the octopus mascot.
+- [economics.md](economics.md) — why Mova changes where intelligence is spent: a persistent orchestrator, the SLM at the margin, large models as consultants, and what to measure.
+- [architecture.md](architecture.md) — the pipeline from text to answer, the three levels of logic, the teacher loop,
+  the students, the crates and where things live.
+- [context.md](context.md) — context, layers and memory: the tale world, the SLM subsystems and what is inferred from
+  context, with the gaps named.
 
-## Language: trees and the dialect
+## The language layer
 
-- [en-explained.md](en-explained.md) — the English parser and compressor step by step, in plain terms, with real `en explain` output.
-- [dialect.md](dialect.md) — the Mova UD dialect, treebanks, and converters between conventions.
-- [expert.md](expert.md) — an expert system for English grammar: seeds and rules that check the annotator.
-- [parsers.md](parsers.md) — the collection of open English parsers, which run, and how they compare on the school.
-- [derive.md](derive.md) — trees by logical derivation: attachment rules with reasons.
-- [induce.md](induce.md) — the model derives its own tree-repair rules from its errors.
-- [selfplay.md](selfplay.md) — self-play: the model changes its own rules cheaply, tests, and keeps what helps.
-- [wiktionary.md](wiktionary.md) — dictionaries built from raw Wiktionary dumps.
-- [seeds/](seeds/) — the seeds explained, one page per folder: English morphology, the noun phrase, the clause, the lexicon, typical errors, the global level, Mova's UD dialect.
+- [english.md](english.md) — the English parser and compressor step by step, the grammar expert system, trees by
+  derivation, and the round trip through the layers.
+- [parsers.md](parsers.md) — the open parsers Mova uses as witnesses and tests, their licences and roles.
+- [dialect.md](dialect.md) — the Mova UD dialect, treebanks and converters between conventions.
+- [pragmatics.md](pragmatics.md) — frames (who did what to whom, why, and what came next), speech acts, implicature,
+  expressions read by their meaning, the external pragmatics tools.
+- [seeds/](seeds/) — the grammar seeds explained, one page per folder.
 
-## Pragmatics and knowledge
+## Worlds, knowledge and the school
 
-- [pragmatics.md](pragmatics.md) — frames: who did what to whom, why, and what came next; the reader, its yardstick, its lexicons, its rules.
-- [pragmatics-algorithms.md](pragmatics-algorithms.md) — algorithms from the literature and how each fits a deterministic Rust model.
-- [pragmatics-expressions.md](pragmatics-expressions.md) — idioms, proverbs, phrasal verbs and slang read by their real meaning.
-- [pragmatics-tools.md](pragmatics-tools.md) — the collection of open pragmatics software and models (tests and measurement).
-- [absurdity.md](absurdity.md) — the absurdity matrix: how plausible an event is, the central common-sense tool.
-- [nerves.md](nerves.md) — the graph that ties words to code, worlds and the self.
-- [events.md](events.md) — event statistics of books: who did what to whom.
-- [rag.md](rag.md) — documents expanded into layers for retrieval, and what Mova provides without AI.
+- [knowledge.md](knowledge.md) — the knowledge contract (skeleton, important graph, global graph), the absurdity
+  matrix, the nerve graph, RAG.
+- [school.md](school.md) — the primary school: how courses are made, their format, how the pupil reads and answers,
+  controls, diagnosis, tools, retention in a fresh process, Mova-driven improvement, and the school results.
+- [training.md](training.md) — how Mova is trained: the teacher transport, the training pipeline, measuring and gates,
+  self-directed learning (induce, self-play), the annotation and storage contract, reviewed promotion, re-annotation.
 
-## Schools and students
+## Workers
 
-- [school-making.md](school-making.md) — how the courses are made: the simulation, the pipeline, the voice, the limits.
-- [school-format.md](school-format.md) — the school corpus format (CoNLL-U blocks).
-- [school-tools.md](school-tools.md) — the checks and safe edits of lessons and the pupils' dictionary.
-- [school.md](school.md) — principles of Mova's own annotation for all languages (a draft).
+- [animals.md](animals.md) — the Octopus (an LLM that develops Mova, not part of its runtime) and Mova's Rust
+  animals: Crab, Eel, Fish, Whales, Nautilus, Turtle, Sea Spider (and MovaBot), terminals, the Dolphin consultants;
+  their protocols, evidence boundaries and custom modules.
 
-## Measurements and data
+## Groupants and mathematical modeling
 
-- [../tests/README.md](../tests/README.md) — unit tests and the benchmark commands, with Mova's results.
-- [../corpus/open/](../corpus/open/) — the open corpus: tales, questions, summaries, treebanks, maths scripts, contrast sets.
-- [../papers/](../papers/) — one page per scientific work Mova uses.
-- [eval/](eval) — evaluation lists, e.g. the StepGame questions left out of the clean number, with reasons.
-- [value/](value) — ablation reports: what a component is worth.
-- [usage.tsv](usage.tsv) — the manual log of where each paper and book is applied in the code.
-- [math-library.md](math-library.md), [science-library.md](science-library.md) — how the maths and science libraries were collected.
+- [groupants.md](groupants.md) — the groupant: the combinator node of a piece of code, its components, sidecars,
+  tree, registry, coverage, the external reference library and the publication scope.
+- [mathematical-modeling.md](mathematical-modeling.md) — the models every file and group needs: vidtvorants, typed
+  obernants, reverse reconstruction, the mathematical combiner, executable Rust approximants.
+- [correspondences.md](correspondences.md) — typed mathematical correspondences between algorithm groupants and Mova
+  sources, and algorithm transfers through explicit adapters.
 
-## Guides
+## Execution, data and releases
 
-- [../train/](../train/) — how to retrain Mova and rebuild it for your own domain, for people and AI agents.
+- [gpu-exec.md](gpu-exec.md) — the two execution modes, CPU only and GPU enhanced: stages, checks and reference switches.
+- [data.md](data.md) — where data lives, licences, the maths and science libraries, Wiktionary, paper cards,
+  competitions.
+- [modules.md](modules.md) — add-on modules (for example dictionaries under their own licences): install from a URL or a torrent, verify, and load into Mova.
+- [../CHANGELOG.md](../CHANGELOG.md) — what changed in each release; release notes:
+  [0.5](../releases/0.5.md), [0.4](../releases/0.4.md), [0.3](../releases/0.3.md), all in `releases/`.
+- [../LICENSE.md](../LICENSE.md) and [../licence/DATA.md](../licence/DATA.md) — the Elamur Cosmic License and the
+  licences of data and models.
 
-## Licences
+## Elsewhere in the repository
 
-- [../LICENSE.md](../LICENSE.md) and [../licence/](../licence) — the Elamur Cosmic License and its annexes; [../licence/DATA.md](../licence/DATA.md) — the licences of data and models file by file.
+- [../tests/README.md](../tests/README.md) — unit tests and benchmark commands.
+- [../corpus/open/](../corpus/open/) — the open corpus. [../papers/README.md](../papers/README.md) lists the works
+  Mova uses, each linked to its card on Elamur Research; [usage.tsv](usage.tsv) logs where each is applied.
+- [../train/](../train/) — how to retrain Mova for your own domain.
+- [eval/](eval) — evaluation lists. Ablation reports of [tools/value](../tools/value/README.md) are run records, not pages.
+- [assets/](assets) — the octopus artwork. [mysticism/](mysticism) — background texts and
+  [Gali](mysticism/02-gali.md), the working mode for AI instances that build Mova: Mova's own working philosophy,
+  not tooling; nothing in the build or the checks depends on it.
 
-## Plans and notes
+## Writing docs
 
-- [context.md](context.md) — the long design notebook: layers, context, memory, domains (history included).
-- [local-models.md](local-models.md) — local LLMs tried on the GPU (2026-10-15) and why they were set aside.
-- [competitions.md](competitions.md) — where to submit the model.
+New documentation extends one of the pages above. A new page needs a new subsystem; per-feature, per-experiment and
+per-review notes do not become pages. Docs describe how things are and work; the only measurements kept are school
+results and comparisons with earlier releases. Every relative link must resolve:
+`cargo test -p mova-modelcheck --test doc_links` checks files and heading anchors in all public Markdown.

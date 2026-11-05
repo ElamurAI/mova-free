@@ -1,0 +1,155 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "usize limits paired with Result<Vec<usize>,SieveError>, with allocator outcome as latent state.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One terminating exact call.",
+        "operator": "In U of limits, allocator traces and candidate results, U minus R includes successful vectors with composites, omissions, duplicates, descending order or values above n; success after deterministic size rejection; and typed allocation failure without a reported reserve failure. Abort/nontermination is outside the modeled terminating Result universe.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "48cc204f2b0765533fa30718cdbf94874b9c5d37b3893da6b738316ec897c2d6",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "usize limits paired with Result<Vec<usize>,SieveError>, with allocator outcome as latent state.",
+        "evidence": "model.md#evidence",
+        "id": "prime_prefix_fibers",
+        "observation_scope": "One terminating exact call.",
+        "operator": "A successful vector P admits all representable limits n for which P is exactly the inclusive prime prefix and allocation succeeds. Empty P admits n=0,1. For a nonempty prime prefix ending at p, limits range from p through one below the next prime, intersected with capacity constraints. Error observations retain size-rejection or allocator-failure antecedents; AllocationFailed does not identify a unique limit.",
+        "path": "model.md",
+        "section": "prime_prefix_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "48cc204f2b0765533fa30718cdbf94874b9c5d37b3893da6b738316ec897c2d6",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "usize limits paired with Result<Vec<usize>,SieveError>, with allocator outcome as latent state.",
+        "evidence": "model.md#evidence",
+        "id": "prefix_relation",
+        "observation_scope": "One terminating exact call.",
+        "operator": "For successful calls with m<=n, sieve(m) is sieve(n) restricted to entries <=m. Resource success at one size does not imply success at another under arbitrary allocator state.",
+        "path": "model.md",
+        "section": "prefix_relation",
+        "status": "partial_source_derived",
+        "subject_revision": "48cc204f2b0765533fa30718cdbf94874b9c5d37b3893da6b738316ec897c2d6",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "usize limits paired with Result<Vec<usize>,SieveError>, with allocator outcome as latent state.",
+        "evidence": "model.md#evidence",
+        "id": "square_boundary",
+        "observation_scope": "One terminating exact call.",
+        "operator": "For prime p with representable p*p, p*p is composite and omitted, whereas p itself is retained. The p<=n/p guard includes equality.",
+        "path": "model.md",
+        "section": "square_boundary",
+        "status": "partial_source_derived",
+        "subject_revision": "48cc204f2b0765533fa30718cdbf94874b9c5d37b3893da6b738316ec897c2d6",
+        "type": "boundary_specialization"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "usize limits paired with Result<Vec<usize>,SieveError>, with allocator outcome as latent state.",
+        "evidence": "model.md#evidence",
+        "id": "resource_boundary",
+        "observation_scope": "One terminating exact call.",
+        "operator": "n=usize::MAX fails checked addition; n=isize::MAX fails byte capacity for n+1 before reservation. Output usize capacity multiplication and isize bound are checked separately. Real OOM is not forced; allocator failure mapping is source reviewed, process-level aborts excluded.",
+        "path": "model.md",
+        "section": "resource_boundary",
+        "status": "partial_source_derived",
+        "subject_revision": "48cc204f2b0765533fa30718cdbf94874b9c5d37b3893da6b738316ec897c2d6",
+        "type": "resource_observation"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "usize limits, successful prefixes, typed capacity gates and allocator traces.",
+        "evidence": "model.md#evidence",
+        "id": "factor_witness",
+        "observation_scope": "One terminating exact call.",
+        "operator": "For any successfully returned prime prefix at n and each composite v in [2,n], a least divisor d>1 is prime, d<=v/d, and d occurs in the prefix while v does not. Conversely a proper factor 1<d<v with d dividing v certifies exclusion. Values 0 and 1 have separate nonprime reasons; absence alone at a limit smaller than v does not certify compositeness.",
+        "path": "model.md",
+        "section": "factor_witness",
+        "status": "partial_source_derived",
+        "subject_revision": "48cc204f2b0765533fa30718cdbf94874b9c5d37b3893da6b738316ec897c2d6",
+        "type": "certificate_relation"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "usize limits, successful prefixes, typed capacity gates and allocator traces.",
+        "evidence": "model.md#evidence",
+        "id": "gap_interval_converse",
+        "observation_scope": "One terminating exact call.",
+        "operator": "Let P be a complete increasing prime prefix ending at p and q its next prime. A successful sieve(n)=P iff p<=n<q, intersected with size representability and successful reservations. This requires prefix completeness: an arbitrary sorted list of primes ending at p need not have any antecedent. Empty P admits exactly n=0,1. At machine boundaries express next prime mathematically and intersect with usize; allocator traces remain part of the antecedent.",
+        "path": "model.md",
+        "section": "gap_interval_converse",
+        "status": "partial_source_derived",
+        "subject_revision": "48cc204f2b0765533fa30718cdbf94874b9c5d37b3893da6b738316ec897c2d6",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "usize limits, successful prefixes, typed capacity gates and allocator traces.",
+        "evidence": "model.md#evidence",
+        "id": "typed_storage_traces",
+        "observation_scope": "One terminating exact call.",
+        "operator": "For n>=2 deterministic gates require n+1<=isize::MAX for u8 flags and pi(n)*size_of(usize)<=isize::MAX for output; arithmetic multiplication/addition must be representable. Passing gates is not a success guarantee: either try_reserve_exact may report AllocationFailed. SizeOverflow and AllocationFailed are distinct observations; a reported allocation error does not reconstruct the failing reservation or n uniquely. The private reserve helper checks count bytes before allocation and preserves an existing vector on deterministic rejection; its production callers start empty.",
+        "path": "model.md",
+        "section": "typed_storage_traces",
+        "status": "partial_source_derived",
+        "subject_revision": "48cc204f2b0765533fa30718cdbf94874b9c5d37b3893da6b738316ec897c2d6",
+        "type": "resource_observation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-sieve",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "48cc204f2b0765533fa30718cdbf94874b9c5d37b3893da6b738316ec897c2d6"
+  },
+  "status": "partial_source_derived_instance"
+}

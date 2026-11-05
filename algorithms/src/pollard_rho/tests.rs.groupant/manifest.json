@@ -1,0 +1,113 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "Five tests: independent trial factorization n=1..4999; zero/cap/exhaustion, free prime/even cases; u64::MAX known factors, 3^40, 1000000007*1000000009, largest known prime below u64::MAX; seven deterministic replay/budget-extension cases; additive modular-product oracle for n=3..29,x<n,c=1..9.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One finite harness execution.",
+        "operator": "Over terminating candidate implementations and pass/fail observations, exclude pass when any assertion fails and failure when all assertions hold. Nontermination and abort are outside this binary observation domain.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "9d6b40e7ef478d6bb079264ef0fdfff255d6bd70cb38b38b56f66da49dff01fa",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "Five tests: independent trial factorization n=1..4999; zero/cap/exhaustion, free prime/even cases; u64::MAX known factors, 3^40, 1000000007*1000000009, largest known prime below u64::MAX; seven deterministic replay/budget-extension cases; additive modular-product oracle for n=3..29,x<n,c=1..9.",
+        "evidence": "model.md#evidence",
+        "id": "implementation_fibers",
+        "observation_scope": "One finite harness execution.",
+        "operator": "Pass reconstructs the set of implementations agreeing on every observed fixture; off-fixture behavior is unconstrained. Failure reconstructs implementations or incorrect oracle premises that cause a mismatch, not a unique defect.",
+        "path": "model.md",
+        "section": "implementation_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "9d6b40e7ef478d6bb079264ef0fdfff255d6bd70cb38b38b56f66da49dff01fa",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "Five tests: independent trial factorization n=1..4999; zero/cap/exhaustion, free prime/even cases; u64::MAX known factors, 3^40, 1000000007*1000000009, largest known prime below u64::MAX; seven deterministic replay/budget-extension cases; additive modular-product oracle for n=3..29,x<n,c=1..9.",
+        "evidence": "model.md#evidence",
+        "id": "oracle",
+        "observation_scope": "One finite harness execution.",
+        "operator": "Independent trial division produces full small-number prime multisets; known full-width factorizations and exact u128 reconstruction cover larger cases. The modular step is compared to repeated modular addition, independent of multiplication.",
+        "path": "model.md",
+        "section": "oracle",
+        "status": "partial_source_derived",
+        "subject_revision": "9d6b40e7ef478d6bb079264ef0fdfff255d6bd70cb38b38b56f66da49dff01fa",
+        "type": "oracle_correspondence"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "Five tests: independent trial factorization n=1..4999; zero/cap/exhaustion, free prime/even cases; u64::MAX known factors, 3^40, 1000000007*1000000009, largest known prime below u64::MAX; seven deterministic replay/budget-extension cases; additive modular-product oracle for n=3..29,x<n,c=1..9.",
+        "evidence": "model.md#evidence",
+        "id": "mutation",
+        "observation_scope": "One finite harness execution.",
+        "operator": "Emit three on the even-composite split instead of two; boundaries_and_budget must fail on 2^63.",
+        "path": "model.md",
+        "section": "mutation",
+        "status": "partial_source_derived",
+        "subject_revision": "9d6b40e7ef478d6bb079264ef0fdfff255d6bd70cb38b38b56f66da49dff01fa",
+        "type": "counterfactual_boundary"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "Five tests: independent trial factorization n=1..4999; zero/cap/exhaustion, free prime/even cases; u64::MAX known factors, 3^40, 1000000007*1000000009, largest known prime below u64::MAX; seven deterministic replay/budget-extension cases; additive modular-product oracle for n=3..29,x<n,c=1..9.",
+        "evidence": "model.md#evidence",
+        "id": "replay",
+        "observation_scope": "One finite harness execution.",
+        "operator": "Single-thread runs twice each in debug and release must have identical ordered normalized test records. Build output and timing are excluded. Finite agreement is not universal equivalence.",
+        "path": "model.md",
+        "section": "replay",
+        "status": "partial_source_derived",
+        "subject_revision": "9d6b40e7ef478d6bb079264ef0fdfff255d6bd70cb38b38b56f66da49dff01fa",
+        "type": "metamorphic_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-pollard-rho-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "9d6b40e7ef478d6bb079264ef0fdfff255d6bd70cb38b38b56f66da49dff01fa"
+  },
+  "status": "partial_source_derived_instance"
+}

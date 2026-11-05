@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "15selected wave29_worldlearn CPU tests paired debug/release; see model.md#tests for exact source names",
+    "Compiled negative source control, exact restoration and positive rerun"
+  ],
+  "children": [],
+  "cost": "O(S log B+B log B+C) sampling time, O(B+C) memory; n limits returned ids not full candidates. Selected parsing delegates tokenizer/annotator/hand costs, <=10workers, four variable-byte cache entries. Teacher/I/O no latency bound, usize/f64 large inputs uncertified.",
+  "description": "ids scans store indices ascending, book eligibility from fourth TSV column and h(i)=high4(i*K mod2^64), K=0x9E3779B97F4A7C15. If C<=n return all candidates, otherwise choose candidate[floor(k*C/n)] with f64 arithmetic for0<=k<n. parse keeps5..40-token sentences, annotates/hand-repairs and restores index order. sample caches Arc by exact name, at most4 entries, evicting first nonguard else oldest. judge_changes alternates A/B then counts every accepted response line.",
+  "forward": [
+    "ids scans store indices ascending, book eligibility from fourth TSV column and h(i)=high4(i*K mod2^64), K=0x9E3779B97F4A7C15. If C<=n return all candidates, otherwise choose candidate[floor(k*C/n)] with f64 arithmetic for0<=k<n. parse keeps5..40-token sentences, annotates/hand-repairs and restores index order. sample caches Arc by exact name, at most4 entries, evicting first nonguard else oldest. judge_changes alternates A/B then counts every accepted response line.",
+    "family fresh names @2..15 and guard names feed induce::explore_big; parsed sample has hand repairs but no induced rules. induce::changed_words coordinates feed judge_changes. Domain bucket1 differs from world-manual offset1."
+  ],
+  "id": "world-big",
+  "inverse": [
+    "Observed ids admit any sentence contents at same eligible indices and arbitrary skipped candidates consistent with stride. Empty admits n0 or no eligible books or invalid bucket. Cache Arc admits many changed environments after insertion. Teacher tally admits many response orderings and duplicates, not unique verdict reconstruction."
+  ],
+  "limitations": [
+    "Only domain/group runtime test; sampling, cache and external judgment source-modeled, no executable surrogate.",
+    "Partial source-derived model, not complete proof; no executable surrogate"
+  ],
+  "source": "world/src/big.rs",
+  "state": "Output ordering follows sampled store index, not worker completion. Name prefix big-tale maps tale, everything else real; big-worlds uses offset bucket%16 over manuals. Cache names omit sample size and content version. Prompt word index zero-based; head0 root, positive heads1-based and unchecked."
+}

@@ -1,0 +1,104 @@
+{
+  "children": [
+    {
+      "id": "mlab-builtins-core-reshape",
+      "path": "reshape.groupant"
+    },
+    {
+      "id": "mlab-builtins-core-control",
+      "path": "control.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Core creation, shape and interpreter controls",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Core creation, shape and interpreter controls",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Core creation, shape and interpreter controls",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Core creation, shape and interpreter controls",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "resource_domain",
+        "path": "model.md",
+        "scope": "Core creation, shape and interpreter controls",
+        "section": "resource_domain",
+        "status": "partial_source_derived_model",
+        "type": "resource_domain"
+      },
+      {
+        "id": "interaction_relation",
+        "path": "model.md",
+        "scope": "Core creation, shape and interpreter controls",
+        "section": "interaction_relation",
+        "status": "partial_source_derived_model",
+        "type": "interaction_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "mlab-builtins-core",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../core.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "8d26d9c57654af7591dfa87298cce7f55541f4d17d513f5e2ddf31f71a8caf15"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,107 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "source_derived_partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "scope": "Shared partial syntax; byte_range is the exact local scope; semantic AST absent.",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "prospective_source_cost"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "source_derived_partial"
+    },
+    "obernants": [
+      {
+        "id": "retention-number-frontier-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Checked maximum successor without reservation",
+        "section": "behavior-complement",
+        "status": "source_derived_inner_bound",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "retention-number-frontier-preimage",
+        "path": "model.md",
+        "required": true,
+        "scope": "Checked maximum successor without reservation",
+        "section": "reverse-reconstruction",
+        "status": "partial_relational_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "retention-number-frontier-sparse-ledger",
+        "path": "model.md",
+        "required": false,
+        "scope": "Checked maximum successor without reservation",
+        "section": "sparse-ledger",
+        "status": "source_derived_partial",
+        "type": "frontier_relation"
+      },
+      {
+        "id": "retention-number-frontier-error-order",
+        "path": "model.md",
+        "required": false,
+        "scope": "Checked maximum successor without reservation",
+        "section": "error-order",
+        "status": "source_derived_partial",
+        "type": "checked_arithmetic"
+      },
+      {
+        "id": "retention-number-frontier-digest-erasure",
+        "path": "model.md",
+        "required": false,
+        "scope": "Checked maximum successor without reservation",
+        "section": "digest-erasure",
+        "status": "source_derived_partial",
+        "type": "value_noninterference"
+      },
+      {
+        "id": "retention-number-frontier-no-reservation",
+        "path": "model.md",
+        "required": false,
+        "scope": "Checked maximum successor without reservation",
+        "section": "no-reservation",
+        "status": "source_derived_partial",
+        "type": "concurrency_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_named_actual_code"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 11265,
+      "start": 10902
+    },
+    "description": "Checked maximum successor without reservation"
+  },
+  "id": "retention-number-frontier",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../retention.rs",
+    "sha256": "89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34"
+  },
+  "status": "partial_source_bound_model"
+}

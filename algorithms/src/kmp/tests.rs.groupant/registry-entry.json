@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --lib -- --test-threads=1 twice",
+    "compiled production mutant rejected by a filtered NEW test"
+  ],
+  "cost": "Bounded fixture loops; explicit oracle and property costs in adjacent model.md",
+  "description": "Independent finite oracles and bounded properties for kmp",
+  "forward": [
+    "Each fixture computes an independent reference or guarded property and asserts agreement"
+  ],
+  "id": "algorithm-kmp-tests",
+  "inverse": [
+    "Passing transcript constrains implementation outputs on the finite tested domain only"
+  ],
+  "limitations": [
+    "No universal proof or automatic defect localization; parent module wiring is separately modeled"
+  ],
+  "source": "algorithms/src/kmp/tests.rs",
+  "state": "deterministic fixtures, oracle values, assertion outcomes"
+}

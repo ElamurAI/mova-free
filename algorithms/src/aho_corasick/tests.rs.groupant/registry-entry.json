@@ -1,0 +1,26 @@
+{
+  "id": "algorithm-aho-corasick-tests",
+  "source": "algorithms/src/aho_corasick/tests.rs",
+  "children": [],
+  "description": "aho_corasick deterministic tests",
+  "state": "Finite deterministic fixtures and test executions; no arbitrary programs or hidden production state.",
+  "cost": "Bounded exhaustive fixture enumeration; the oracle scans each pattern at each boundary and compares the corresponding byte window. Test cost is intentionally independent of production claims.",
+  "forward": [
+    "Run deterministic independent byte oracles, boundary cases, transformation laws and compatible-output fibers; assert exact values and explicit false-premise counterexamples. Passing finite checks does not establish universal correctness.",
+    "Oracle logic does not use production failure links. All fixtures are deterministic; comparisons include output order, offsets and multiplicity. Historical external mutation evidence is separate from the tests."
+  ],
+  "inverse": [
+    "Exclude acceptance when an asserted production output differs from the independent oracle, a stated conditional law fails under its premises, or a compatible-output fiber differs from direct constraints. Unvisited inputs are outside this finite acceptance claim.",
+    "A passing observation admits every implementation agreeing on the tested fixture observations. Many implementations may differ elsewhere; test success cannot uniquely reconstruct source or establish universal correctness.",
+    "Direct byte-window equality supplies the independent specification; production failure-link machinery is not reused.",
+    "Tests exercise injective relabeling, ID permutation and prefix extension. A noninjective collision can create a match.",
+    "Removing inherited failure outputs must fail the empty/suffix-output boundary test; compilation success and assertion failure, not compilation error, establish this control."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline aho_corasick::tests::",
+    "Debug/release twice; strict Clippy; rustfmt; source syntax twice; compiled mutant."
+  ],
+  "limitations": [
+    "Partial syntax omits semantic resolution and macro expansion. Finite evidence is not proof. Allocation exhaustion untested; no executable approximation profile or downstream wiring claim."
+  ]
+}

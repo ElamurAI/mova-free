@@ -1,0 +1,62 @@
+{
+  "command": "cargo test -p latex --features math --lib extract::tests",
+  "control": {
+    "compiler_exit": 0,
+    "kind": "compiled_assertion_inversion",
+    "log_prefix": "control-extract",
+    "negative_exit": 101,
+    "restoration": "exact bytes",
+    "restored_exit": 0,
+    "shared_with_dependency": false
+  },
+  "date": "2026-10-31",
+  "expected_test_names": [
+    "extract::tests::finds_all_kinds",
+    "extract::tests::unterminated_inline_stops_at_paragraph"
+  ],
+  "limitations": [
+    "Finite synthetic actual-code checks, not proof",
+    "Frozen DATA and sha256 subprocess unexecuted",
+    "Strict Clippy blocked by 14 pre-existing lints in unchanged library code"
+  ],
+  "receipts": [
+    {
+      "exit": 0,
+      "log": "debug-1-extract.log",
+      "log_sha256": "fa46e22f6e4011c1d189d18e8f564e1bb4716b310d7c7925c03788c3e0204fa7",
+      "named_outcomes": "debug-1-extract.names",
+      "outcomes_sha256": "2a7e3195a2c85510448b6addcb6c0b3d53146af7ee781397bb543b64efb6cfda",
+      "profile": "debug",
+      "repetition": 1
+    },
+    {
+      "exit": 0,
+      "log": "debug-2-extract.log",
+      "log_sha256": "fa46e22f6e4011c1d189d18e8f564e1bb4716b310d7c7925c03788c3e0204fa7",
+      "named_outcomes": "debug-2-extract.names",
+      "outcomes_sha256": "2a7e3195a2c85510448b6addcb6c0b3d53146af7ee781397bb543b64efb6cfda",
+      "profile": "debug",
+      "repetition": 2
+    },
+    {
+      "exit": 0,
+      "log": "release-1-extract.log",
+      "log_sha256": "8118de18c2dbcb9c27a92ac920d43d9828ca289b47e8b32101f582c7bdbaf91d",
+      "named_outcomes": "release-1-extract.names",
+      "outcomes_sha256": "2a7e3195a2c85510448b6addcb6c0b3d53146af7ee781397bb543b64efb6cfda",
+      "profile": "release",
+      "repetition": 1
+    },
+    {
+      "exit": 0,
+      "log": "release-2-extract.log",
+      "log_sha256": "6f8007f4cf96d711147337671fd3403c070f4dcc6426af5339c451f68ac67a78",
+      "named_outcomes": "release-2-extract.names",
+      "outcomes_sha256": "2a7e3195a2c85510448b6addcb6c0b3d53146af7ee781397bb543b64efb6cfda",
+      "profile": "release",
+      "repetition": 2
+    }
+  ],
+  "source": "latex/src/extract.rs",
+  "source_sha256": "b717bad28ee0917ed90161e6dffd3e4874869f1168eb2f7c1850c833832c13d2"
+}

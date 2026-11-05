@@ -1,0 +1,24 @@
+{
+  "id": "algorithm-fenwick",
+  "source": "algorithms/src/fenwick/mod.rs",
+  "description": "Checked i64 point updates and exact i128 dynamic interval sums.",
+  "state": "(i64 points, i128 block sums)",
+  "forward": [
+    "Check point arithmetic before mutation; sum disjoint Fenwick blocks."
+  ],
+  "inverse": [
+    "Complement and compatible-input preimages are defined separately in model.md.",
+    "Finite observations retain ambiguity outside their declared scope."
+  ],
+  "cost": "O(n) construction/storage; O(log(n+1)) updates and sums.",
+  "checks": [
+    "fenwick::tests (four tests twice)",
+    "rustfmt --check and Clippy -D warnings",
+    "Filtered compiled-source mutant rejected, exit 101"
+  ],
+  "limitations": [
+    "Bounded evidence is not all-input proof.",
+    "Allocation failure is outside the result model.",
+    "Partial AST omits macro expansion and semantic resolution."
+  ]
+}

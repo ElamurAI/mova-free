@@ -33,3 +33,10 @@ require: w[upos=ADJ|NOUN|PROPN]
 severity: warn
 source: Sweet NEG I §341, §1500, §1614; Whitney §94, §193
 ```
+
+```derive
+# suffix <affix> <classes of the stem> <tags of the result> | <gloss>; see wf-adj-suffixes for the format.
+# -ly after -le becomes -ly alone (scalable → scalably), after -y -ily (steady → steadily): `en::derive` tries these spellings.
+suffix ly     A    RB    | in a way that is <stem>
+suffix ally   A    RB    | in a way that is <stem> (-ic + -ally)
+```

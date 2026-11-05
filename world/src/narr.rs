@@ -947,3 +947,164 @@ fn causal_stamp(st: &mut Story, fi: usize, cmd: &Cmd, line: usize) {
         v.push((c, line));
     }
 }
+
+#[cfg(test)]
+mod wave9_models {
+    use super::*;
+    use crate::lang::Ev2;
+    use crate::world::Text;
+
+    fn id(n: u32) -> Id { Id::new(Reg::E,n) }
+    fn world() -> World {
+        World::new_v3(Text { doc: 0, title: "finite fixture".into(),
+            sents: (0..12).map(|_| (1,"A finite fixture.".into())).collect() })
+    }
+    fn event(n: u32) -> Event {
+        Event { id: id(n), verb: "wait".into(), roles: vec![], why: None, how: None, speech: None,
+            x: Ev2::default(), anchors: vec![1], pos: TextPos { chapter: 1, para: 1, sent: 1 },
+            line: 1, world: 0, branch: tag(&BRANCH,"real") }
+    }
+    fn line(cmd: Cmd) -> Line { Line { no: 1, raw: "typed fixture".into(), cmd, anchors: vec![1] } }
+    fn seed(w: &mut World, n: u32) {
+        let e = event(n);
+        register(w.story.as_deref_mut().unwrap(),0,&e,1).unwrap();
+        w.events.push(e);
+    }
+    fn graph(st: &Story) -> Vec<(usize,usize,bool,bool)> {
+        st.time.edges.iter().map(|e| (e.u,e.v,e.strict,e.alive)).collect()
+    }
+    fn frame(n: u32, open: bool, level: u8, kind: Option<Tag>) -> Cmd {
+        Cmd::Frame { id: Id::new(Reg::F,n), open, narrator: Some(Obs::Narrator), to: vec![Obs::Reader],
+            level: Some(level), world: kind, time: None, before: None, src: None, branch: None }
+    }
+
+    #[test]
+    fn relation_endpoint_oracle_and_atomic_pair() {
+        for rel in [TRel::Before,TRel::After,TRel::During,TRel::Same] {
+            let mut st = Story::new();
+            for n in 1..=2 {
+                let s = st.time.node(Pt::S(id(n)),0);
+                let e = st.time.node(Pt::E(id(n)),0);
+                st.time.add(s,e,false,Why::Span).unwrap();
+            }
+            relate(&mut st,id(1),rel,id(2),Why::Time(1)).unwrap();
+            // Enumerate all 3^4 endpoint assignments independently of graph traversal.
+            let mut satisfying = 0;
+            for a in 0..3 { for b in a..3 { for c in 0..3 { for d in c..3 {
+                let expected = match rel {
+                    TRel::Before => b < c, TRel::After => d < a,
+                    TRel::During => c <= a && b <= d, TRel::Same => a <= d && c <= b,
+                };
+                let points = [a,b,c,d];
+                let actual = st.time.edges.iter().filter(|e| e.alive).all(|e|
+                    if e.strict { points[e.u] < points[e.v] } else { points[e.u] <= points[e.v] });
+                assert_eq!(actual,expected);
+                satisfying += usize::from(actual);
+            }}}}
+            assert!(satisfying > 1); // endpoint reconstruction is nonunique
+        }
+        let mut st = Story::new();
+        for n in 1..=2 { st.time.node(Pt::S(id(n)),0); st.time.node(Pt::E(id(n)),0); }
+        st.time.add(3,1,true,Why::Time(1)).unwrap();
+        let before = graph(&st);
+        assert!(relate(&mut st,id(1),TRel::During,id(2),Why::Time(2)).is_err());
+        assert_eq!(graph(&st),before);
+    }
+
+    #[test]
+    fn public_reveal_rollback_after_cause_edge() {
+        let mut w = world();
+        seed(&mut w,1); seed(&mut w,2);
+        let before = graph(w.story().unwrap());
+        let l = line(Cmd::Reveal { ev: id(2), to: vec![], by: None, interp: None,
+            wrong: vec![], right: vec![], roles: vec![], cause: Some(id(1)), rel: Some((TRel::Before,id(1))) });
+        assert_eq!(w.apply(&l).unwrap_err().gate,Gate::Time);
+        assert_eq!(graph(w.story().unwrap()),before);
+        assert!(w.story().unwrap().reveals.is_empty());
+        assert_eq!(w.events().len(),2);
+        // The internal executor is deliberately not a transaction boundary.
+        let mut internal = w.clone();
+        let pos = internal.position(&l).unwrap();
+        assert!(internal.apply_root(&l,pos).is_err());
+        assert_eq!(graph(internal.story().unwrap()).len(),before.len()+1);
+    }
+
+    #[test]
+    fn typed_frames_close_resume_and_world_scope() {
+        let mut w = world();
+        seed(&mut w,1);
+        w.apply(&line(frame(1,true,1,Some(tag(&FRAME_WORLD,"new"))))).unwrap();
+        let st = w.story().unwrap();
+        assert_eq!((st.top(),world_frame(st,st.top()),st.frames[1].wid),(1,1,1));
+        assert!(st.frames[1].world.as_ref().unwrap().event(id(1)).is_none());
+        w.apply(&line(frame(2,true,2,None))).unwrap();
+        let before = w.story().unwrap().stack.clone();
+        assert_eq!(w.apply(&line(frame(1,false,1,None))).unwrap_err().gate,Gate::Frame);
+        assert_eq!(w.story().unwrap().stack,before);
+        w.apply(&line(frame(2,false,2,None))).unwrap();
+        w.apply(&line(frame(1,false,1,None))).unwrap();
+        w.apply(&line(frame(1,true,1,Some(tag(&FRAME_WORLD,"new"))))).unwrap();
+        assert_eq!(w.story().unwrap().frames[1].spans.len(),2);
+        assert_eq!(w.story().unwrap().frames.len(),3);
+        assert_eq!(w.story().unwrap().next_wid,2);
+    }
+
+    #[test]
+    fn canonical_claim_and_knowledge_identity() {
+        let mut w = world();
+        seed(&mut w,1);
+        let k = Id::new(Reg::K,1);
+        let cmd = line(Cmd::Claim { id: k, who: Some(Obs::Reader), about: Some(id(1)),
+            status: tag(&CLAIM_STATUS,"believes"), interp: Some("one reading".into()), from: None, by: None });
+        w.apply(&cmd).unwrap();
+        assert_eq!(w.events().len(),1);
+        assert_eq!(w.now(k).unwrap().id(Field::About),Some(id(1)));
+        assert_eq!(val_obs(&w.now(k).unwrap().get(Field::Who)),Some(Obs::Reader));
+        assert_eq!(w.apply(&cmd).unwrap_err().gate,Gate::Ref);
+        w.apply(&line(Cmd::Know { who: Obs::Reader, fact: id(1), from: 1, how: None, by: None })).unwrap();
+        assert_eq!(w.story().unwrap().knows.len(),1);
+        assert_eq!(w.events().len(),1);
+        let before = w.story().unwrap().knows.len();
+        assert_eq!(w.apply(&line(Cmd::Know { who: Obs::Reader, fact: id(1), from: 2, how: None, by: None })).unwrap_err().gate,Gate::Anchor);
+        assert_eq!(w.story().unwrap().knows.len(),before);
+    }
+
+    #[test]
+    fn projection_erases_dynamic_and_preserves_identity() {
+        let mut w = world();
+        let c = Id::new(Reg::C,1);
+        let loc = Id::new(Reg::L,1);
+        w.ents.insert(c,Entity { id: c, states: vec![State { ver: 1,
+            delta: vec![Delta::Set(Field::Name,Val::Known(V::Text("Ada".into()))),
+                Delta::Set(Field::At,Val::Known(V::Id(loc))),Delta::Add(SetF::Objects,Id::new(Reg::O,1))],
+            cause: None, by: "fixture", line: 1, pos: TextPos::default(), note: None }], mentions: vec![TextPos::default()] });
+        let projected = w.project_past();
+        assert_eq!(projected.now(c).unwrap().get(Field::Name),Val::Known(V::Text("Ada".into())));
+        assert_eq!(projected.now(c).unwrap().get(Field::At),Val::Unknown);
+        assert!(projected.now(c).unwrap().ids(SetF::Objects).is_empty());
+        assert!(projected.ent(c).unwrap().mentions().is_empty());
+        assert_eq!(projected.ent(c).unwrap().states()[0].by,"project");
+        assert!(projected.story().is_none());
+        assert_eq!(w.now(c).unwrap().id(Field::At),Some(loc));
+    }
+
+    #[test]
+    fn unchain_stitches_and_pending_consumes_once() {
+        let mut st = Story::new();
+        for n in 1..=3 { register(&mut st,0,&event(n),1).unwrap(); }
+        unchain(&mut st,id(2));
+        assert_eq!(st.frames[0].main,vec![id(1),id(3)]);
+        assert!(!st.ev[&id(2)].main);
+        assert_eq!(st.time.order(id(1),id(3)),Order::Before);
+        assert_eq!(st.time.order(id(1),id(2)),Order::Unknown);
+        let mut off = event(4); off.x.before = Some(id(3));
+        register(&mut st,0,&off,1).unwrap();
+        let cmd = Cmd::Set { who: Id::new(Reg::C,1), attrs: vec![], cause: Some(id(4)) };
+        causal_stamp(&mut st,0,&cmd,7);
+        causal_stamp(&mut st,0,&cmd,8);
+        assert_eq!(st.pending[&0],vec![(id(4),7)]);
+        register(&mut st,0,&event(5),1).unwrap();
+        assert!(st.pending.is_empty());
+        assert_eq!(st.time.order(id(4),id(5)),Order::Before);
+    }
+}

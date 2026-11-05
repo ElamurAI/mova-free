@@ -1,0 +1,82 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "quotient_oracle",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "quotient_oracle",
+        "status": "partial_source_derived_model",
+        "type": "quotient_oracle"
+      },
+      {
+        "id": "finite_conjunction",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "finite_conjunction",
+        "status": "partial_source_derived_model",
+        "type": "finite_conjunction"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 5303,
+      "start": 558
+    },
+    "description": "SUITE iterates fixed formula literals; ok requires parse success. For each tree, unknowns must be empty, gate::check must return Ok, and to_latex(parse(to_latex(tree))) must equal first print. Failures accumulate then one assert requires an empty list.",
+    "source_bytes_sha256": "724ad2617e76831d896d5c3831495301f28330ab0254c5faa25ee28f6e1f8aaf"
+  },
+  "id": "latex-test-gate-stage0",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../gate.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "710172ffe064b1fe0f860e92867b863919b0b6188d2b31ed326c50a6f72ebca3"
+  },
+  "status": "partial_source_bound_model"
+}

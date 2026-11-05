@@ -1,0 +1,115 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional source relation; exact algebra only over explicitly admitted abstract domains",
+        "assumptions": "Valid enum bytes, representable heads and lemma IDs, canonical parent lemmas, fixed parent table and successful record reads. A true identity result preserves all stored semantic fields; it does not preserve omitted Word fields.",
+        "domain": "Finite valid records, tables and ID sets; specialized in operator",
+        "evidence": "../../model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "One identity, feature or pointwise carry transition",
+        "operator": "Universe: admitted parent records/table and candidate Word sequence paired with a Boolean identity result. Its complement contains true with any differing stored semantic component or token count, and false for identical normalized projections. This is exact for the declared projection relation, conditional for actual source.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; exact algebra only over explicitly admitted abstract domains",
+        "assumptions": "Valid enum bytes, representable heads and lemma IDs, canonical parent lemmas, fixed parent table and successful record reads. A true identity result preserves all stored semantic fields; it does not preserve omitted Word fields.",
+        "domain": "Finite valid records, tables and ID sets; specialized in operator",
+        "evidence": "../../model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "One identity, feature or pointwise carry transition",
+        "operator": "For a fixed parent projection P, the true fiber contains all candidate Word sequences with projection P, arbitrary forms/feats and any lemma spelling whose Rust lowercase equals the parent lemma. False contains all remaining admitted candidates. Observing false does not identify which coordinate differs. Missing parent IDs are outside valid identity and conservatively produce false.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; exact algebra only over explicitly admitted abstract domains",
+        "assumptions": "Valid enum bytes, representable heads and lemma IDs, canonical parent lemmas, fixed parent table and successful record reads. A true identity result preserves all stored semantic fields; it does not preserve omitted Word fields.",
+        "domain": "Finite valid records, tables and ID sets; specialized in operator",
+        "evidence": "../../model.md#tests",
+        "id": "representation-fiber",
+        "observation_scope": "One identity, feature or pointwise carry transition",
+        "operator": "Equivalent semantic records may use different numeric lemma IDs if their respective tables resolve to the same strings. Equal IDs in different tables may denote different strings. Canonical lowercasing loses case and is not an inverse; words reconstructs forms through a tokenizer and defaults feats, so stored records do not recover complete annotations.",
+        "path": "model.md",
+        "section": "representation-fiber",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "serialization_projection"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; exact algebra only over explicitly admitted abstract domains",
+        "assumptions": "Valid enum bytes, representable heads and lemma IDs, canonical parent lemmas, fixed parent table and successful record reads. A true identity result preserves all stored semantic fields; it does not preserve omitted Word fields.",
+        "domain": "Finite valid records, tables and ID sets; specialized in operator",
+        "evidence": "../../model.md#tests",
+        "id": "historical-loss",
+        "observation_scope": "One identity, feature or pointwise carry transition",
+        "operator": "The historical (UPOS,relation,head)-only predicate merges distinct tag and lemma fibers. Rejecting a lemma-only or tag-only difference repairs this gate. It does not verify update annotation, read-error handling, publication ordering, same-hash early return or full codec capacity.",
+        "path": "model.md",
+        "section": "historical-loss",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "counterfactual"
+      }
+    ],
+    "tests": {
+      "path": "../../model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 37812,
+      "start": 12859
+    },
+    "description": "world-store-record-identity",
+    "syntax_nodes": {
+      "node_ids": [
+        1172,
+        1223,
+        3634,
+        3734,
+        3815
+      ],
+      "path": "../../syntax.json"
+    }
+  },
+  "id": "world-store-record-identity",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../store.rs",
+    "sha256": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9"
+  },
+  "status": "partial_source_derived_instance"
+}

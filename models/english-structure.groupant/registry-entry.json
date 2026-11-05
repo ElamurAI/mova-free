@@ -1,0 +1,36 @@
+{
+  "checks": [
+    "Nine actual-source wave27::bounded_contract tests, twice debug/twice release, normalized names identical",
+    "Compiled construct floor, parser root-legality and store checksum mutations rejected with exit101; restored9-test runs exit0",
+    "Each source partial syntax generated twice identically; source/fragment byte hashes retained"
+  ],
+  "children": [
+    "en-annotate",
+    "en-construct",
+    "en-expert",
+    "en-explain",
+    "en-lin",
+    "en-model",
+    "en-parse",
+    "en-store",
+    "en-ud"
+  ],
+  "cost": "Let n tokens, b beam, F features, R labels, k side degree, A target arcs, m expert variables, B wire bytes. Parser O(n*F*(3+R)*b+b*n^2+n*b log b); UD O(n^2); linearizer sum O(2^k*k^2) for k<=10 else O(k^2), plus construction scans. Expert worst n!/(n-m)! predicate work. Construct recall O(total token count + A + map/key work + callbacks); misses additionally formats each missed sentence, proportional to emitted bytes. Store O(B + typed element/visitor work) plus typed allocations; zero-byte element sequences can require work beyond wire length. Explain repeats parse/encode and invokes ordering for presentation/decode; no measured speed claim.",
+  "description": "Model encodes tok->PTagger->Parser->Morph into Graph; Linearizer generates an order for graph decode. Annotator composes tag->parse->EModE repair->Ud child flags/UPOS/two-pass FEATS->morph/EModE word completion. Store envelopes serialized Annotator/Model with dictionary-bound header checks. Explained separately parses and encodes, then exposes trace/graph/order/decode. Expert checks sentence facts against injective rule bindings; Construct aggregates exact target arc matches and compares rounded recall against floors.",
+  "forward": [
+    "Model encodes tok->PTagger->Parser->Morph into Graph; Linearizer generates an order for graph decode. Annotator composes tag->parse->EModE repair->Ud child flags/UPOS/two-pass FEATS->morph/EModE word completion. Store envelopes serialized Annotator/Model with dictionary-bound header checks. Explained separately parses and encodes, then exposes trace/graph/order/decode. Expert checks sentence facts against injective rule bindings; Construct aggregates exact target arc matches and compares rounded recall against floors.",
+    "Heads use root0 and1-based word coordinates; Graph truncates heads to u16, while parser/UD use usize. Ud children returns0-based child indices. GNode lemma references global dictionary or local graph heap; Store fingerprint binds global IDs but not arbitrary target serde schema. annotate repairs tree whereas kbest/complete/explain/Model.encode do not; treating them as identical is invalid. Expert consumes conllu Sentence, not Graph directly; callers must preserve tags/features/relations when adapting. Construct callbacks must return enough dependent entries and valid renderable heads."
+  ],
+  "id": "english-structure",
+  "inverse": [
+    "Compatible composition cannot equate completion/kbest with repair-aware annotate, cannot accept changed envelope checksum, cannot bind one sentence word to two expert variables, cannot label equality with a rounded construction floor red. Invalid public coordinates and empty-trained taggers are outside admitted runtime contract.",
+    "For observed graph/annotation/report y, preimage is all text/model/table/rule states satisfying the forward pipeline and same y; morphology/backoff, aggregated scores and parse selection lose information. Store typed roundtrip recovers model values but not unique map byte order or training antecedents. Explained.text alone exactly preserves its input string."
+  ],
+  "limitations": [
+    "Partial source-bound models, no full proof or linguistic accuracy claim",
+    "No executable percentage surrogate for categorical/effectful paths",
+    "No save/load filesystem fault injection, expert filesystem traversal tests, large training, corpus or GPU tests",
+    "Only3 source-mutant boundaries, not9; bounded positive actual-code test for all9"
+  ],
+  "state": "For aligned arrays with valid indices and a nonempty-trained tagger, token forms/count survive annotation completion; valid parser transitions preserve root0 and produce one-root projective completed trees. Serialized values recover under the same schema/dictionary subject to serde domain. These do not imply accuracy, valid arbitrary public Graphs, or byte-lossless original whitespace."
+}

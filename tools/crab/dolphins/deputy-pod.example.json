@@ -1,0 +1,501 @@
+{
+ "_comment": "Standard Dolphin capabilities for the Crab deputy: merge capabilities and group_aliases into a deputy configuration.",
+ "capabilities": {
+  "dolphin-opus-start": {
+   "handler": "crab_control",
+   "parameters": {
+    "operation": "worker_start",
+    "worker": "dolphin-opus"
+   },
+   "intent": {
+    "request_predicates": [
+     "start",
+     "launch"
+    ],
+    "observations": [
+     "start",
+     "launch"
+    ],
+    "entities": [
+     "opus",
+     "claude"
+    ]
+   }
+  },
+  "dolphin-opus-stop": {
+   "handler": "crab_control",
+   "parameters": {
+    "operation": "worker_stop",
+    "worker": "dolphin-opus"
+   },
+   "intent": {
+    "request_predicates": [
+     "stop"
+    ],
+    "observations": [
+     "stop"
+    ],
+    "entities": [
+     "opus",
+     "claude"
+    ]
+   }
+  },
+  "dolphin-opus-status": {
+   "handler": "crab_control",
+   "parameters": {
+    "operation": "worker_status",
+    "worker": "dolphin-opus"
+   },
+   "intent": {
+    "observes": true,
+    "request_predicates": [
+     "ask",
+     "check",
+     "inspect",
+     "review",
+     "read",
+     "show",
+     "look",
+     "get",
+     "tell",
+     "see",
+     "diagnose",
+     "find",
+     "know",
+     "report",
+     "take",
+     "have"
+    ],
+    "observations": [
+     "status",
+     "run"
+    ],
+    "entities": [
+     "opus",
+     "claude"
+    ],
+    "subordinate_predicates": [
+     "run"
+    ]
+   }
+  },
+  "dolphin-opus-ask": {
+   "handler": "crab_consult",
+   "parameters": {
+    "operation": "enqueue",
+    "dolphin": "opus"
+   },
+   "intent": {
+    "request_predicates": [
+     "ask",
+     "tell",
+     "send",
+     "give",
+     "consult"
+    ],
+    "observations": [
+     "ask",
+     "tell",
+     "send",
+     "give",
+     "consult"
+    ],
+    "entities": [
+     "opus",
+     "claude"
+    ]
+   },
+   "slots": [
+    {
+     "name": "task",
+     "kinds": [
+      "text"
+     ],
+     "min": 1,
+     "max": 1
+    }
+   ]
+  },
+  "dolphin-opus-answer": {
+   "handler": "crab_consult",
+   "parameters": {
+    "operation": "state",
+    "dolphin": "opus"
+   },
+   "intent": {
+    "observes": true,
+    "request_predicates": [
+     "ask",
+     "check",
+     "inspect",
+     "review",
+     "read",
+     "show",
+     "look",
+     "get",
+     "tell",
+     "see",
+     "diagnose",
+     "find",
+     "know",
+     "report",
+     "take",
+     "have"
+    ],
+    "observations": [
+     "answer",
+     "reply",
+     "say"
+    ],
+    "entities": [
+     "opus",
+     "claude"
+    ]
+   }
+  },
+  "dolphin-opus-busy": {
+   "handler": "crab_consult",
+   "parameters": {
+    "operation": "state",
+    "dolphin": "opus"
+   },
+   "intent": {
+    "observes": true,
+    "request_predicates": [
+     "ask",
+     "check",
+     "inspect",
+     "review",
+     "read",
+     "show",
+     "look",
+     "get",
+     "tell",
+     "see",
+     "diagnose",
+     "find",
+     "know",
+     "report",
+     "take",
+     "have"
+    ],
+    "observations": [
+     "busy",
+     "idle",
+     "free"
+    ],
+    "entities": [
+     "opus",
+     "claude"
+    ]
+   }
+  },
+  "dolphin-copilot-start": {
+   "handler": "crab_control",
+   "parameters": {
+    "operation": "worker_start",
+    "worker": "dolphin-copilot"
+   },
+   "intent": {
+    "request_predicates": [
+     "start",
+     "launch"
+    ],
+    "observations": [
+     "start",
+     "launch"
+    ],
+    "entities": [
+     "copilot"
+    ]
+   }
+  },
+  "dolphin-copilot-stop": {
+   "handler": "crab_control",
+   "parameters": {
+    "operation": "worker_stop",
+    "worker": "dolphin-copilot"
+   },
+   "intent": {
+    "request_predicates": [
+     "stop"
+    ],
+    "observations": [
+     "stop"
+    ],
+    "entities": [
+     "copilot"
+    ]
+   }
+  },
+  "dolphin-copilot-status": {
+   "handler": "crab_control",
+   "parameters": {
+    "operation": "worker_status",
+    "worker": "dolphin-copilot"
+   },
+   "intent": {
+    "observes": true,
+    "request_predicates": [
+     "ask",
+     "check",
+     "inspect",
+     "review",
+     "read",
+     "show",
+     "look",
+     "get",
+     "tell",
+     "see",
+     "diagnose",
+     "find",
+     "know",
+     "report",
+     "take",
+     "have"
+    ],
+    "observations": [
+     "status",
+     "run"
+    ],
+    "entities": [
+     "copilot"
+    ],
+    "subordinate_predicates": [
+     "run"
+    ]
+   }
+  },
+  "dolphin-copilot-ask": {
+   "handler": "crab_consult",
+   "parameters": {
+    "operation": "enqueue",
+    "dolphin": "copilot"
+   },
+   "intent": {
+    "request_predicates": [
+     "ask",
+     "tell",
+     "send",
+     "give",
+     "consult"
+    ],
+    "observations": [
+     "ask",
+     "tell",
+     "send",
+     "give",
+     "consult"
+    ],
+    "entities": [
+     "copilot"
+    ]
+   },
+   "slots": [
+    {
+     "name": "task",
+     "kinds": [
+      "text"
+     ],
+     "min": 1,
+     "max": 1
+    }
+   ]
+  },
+  "dolphin-copilot-answer": {
+   "handler": "crab_consult",
+   "parameters": {
+    "operation": "state",
+    "dolphin": "copilot"
+   },
+   "intent": {
+    "observes": true,
+    "request_predicates": [
+     "ask",
+     "check",
+     "inspect",
+     "review",
+     "read",
+     "show",
+     "look",
+     "get",
+     "tell",
+     "see",
+     "diagnose",
+     "find",
+     "know",
+     "report",
+     "take",
+     "have"
+    ],
+    "observations": [
+     "answer",
+     "reply",
+     "say"
+    ],
+    "entities": [
+     "copilot"
+    ]
+   }
+  },
+  "dolphin-copilot-busy": {
+   "handler": "crab_consult",
+   "parameters": {
+    "operation": "state",
+    "dolphin": "copilot"
+   },
+   "intent": {
+    "observes": true,
+    "request_predicates": [
+     "ask",
+     "check",
+     "inspect",
+     "review",
+     "read",
+     "show",
+     "look",
+     "get",
+     "tell",
+     "see",
+     "diagnose",
+     "find",
+     "know",
+     "report",
+     "take",
+     "have"
+    ],
+    "observations": [
+     "busy",
+     "idle",
+     "free"
+    ],
+    "entities": [
+     "copilot"
+    ]
+   }
+  },
+  "dolphin-docs-start": {
+   "handler": "crab_control",
+   "parameters": {
+    "operation": "worker_start",
+    "worker": "dolphin-docs"
+   },
+   "intent": {
+    "request_predicates": [
+     "start",
+     "launch"
+    ],
+    "observations": [
+     "start",
+     "launch"
+    ],
+    "entities": [
+     "documenter"
+    ]
+   }
+  },
+  "dolphin-docs-stop": {
+   "handler": "crab_control",
+   "parameters": {
+    "operation": "worker_stop",
+    "worker": "dolphin-docs"
+   },
+   "intent": {
+    "request_predicates": [
+     "stop"
+    ],
+    "observations": [
+     "stop"
+    ],
+    "entities": [
+     "documenter"
+    ]
+   }
+  },
+  "dolphin-docs-status": {
+   "handler": "crab_control",
+   "parameters": {
+    "operation": "worker_status",
+    "worker": "dolphin-docs"
+   },
+   "intent": {
+    "observes": true,
+    "request_predicates": [
+     "ask",
+     "check",
+     "inspect",
+     "review",
+     "read",
+     "show",
+     "look",
+     "get",
+     "tell",
+     "see",
+     "diagnose",
+     "find",
+     "know",
+     "report",
+     "take",
+     "have"
+    ],
+    "observations": [
+     "status",
+     "run"
+    ],
+    "entities": [
+     "documenter"
+    ],
+    "subordinate_predicates": [
+     "run"
+    ]
+   }
+  },
+  "dolphins-list": {
+   "handler": "crab_consult",
+   "parameters": {
+    "operation": "list"
+   },
+   "intent": {
+    "observes": true,
+    "request_predicates": [
+     "list",
+     "show",
+     "ask",
+     "check",
+     "inspect",
+     "review",
+     "read",
+     "show",
+     "look",
+     "get",
+     "tell",
+     "see",
+     "diagnose",
+     "find",
+     "know",
+     "report",
+     "take",
+     "have"
+    ],
+    "observations": [
+     "list",
+     "run",
+     "dolphin"
+    ],
+    "entities": [
+     "dolphin"
+    ],
+    "collective": true
+   }
+  }
+ },
+ "group_aliases": {
+  "dolphin": [
+   "opus",
+   "claude",
+   "copilot",
+   "documenter"
+  ]
+ }
+}

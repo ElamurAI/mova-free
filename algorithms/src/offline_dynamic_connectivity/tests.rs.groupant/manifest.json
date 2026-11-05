@@ -1,0 +1,98 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived target with finite correspondence evidence; not a proof",
+        "assumptions": "Successful std allocation; exact bounded integer arithmetic; no live external dependencies",
+        "domain": "Scheduled finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "API outputs, errors, insertion IDs or query order; named test outcomes",
+        "operator": "Universe: implementations paired with normal/panic outcomes on the scheduled timelines. Normal completion is excluded when any connectivity/component answer disagrees with the independent active-edge BFS or literal rollback/lifecycle/cap assertions. Unsampled histories remain unconstrained.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "c7f0e9526f087da03de94a426998d0db70f6d8db2b84a4e217647c2fea413380",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived target with finite correspondence evidence; not a proof",
+        "assumptions": "Successful std allocation; exact bounded integer arithmetic; no live external dependencies",
+        "domain": "Scheduled finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "API outputs, errors, insertion IDs or query order; named test outcomes",
+        "operator": "Normal completion retains all implementations agreeing on the finite observations, including different algorithms and faults outside these fixtures. A failing named assertion yields a concrete witness, not a unique faulty source reconstruction. Finite success does not recover implementation identity.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "c7f0e9526f087da03de94a426998d0db70f6d8db2b84a4e217647c2fea413380",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived target with finite correspondence evidence; not a proof",
+        "assumptions": "Successful std allocation; exact bounded integer arithmetic; no live external dependencies",
+        "domain": "Scheduled finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "oracle_independence",
+        "observation_scope": "API outputs, errors, insertion IDs or query order; named test outcomes",
+        "operator": "Execute all 4^6 edge-toggle sequences over three vertices (including a self-loop), querying all nine ordered pairs and component count after each toggle. Rebuild active-edge BFS labels independently per query. Add lifecycle, empty-domain, rollback and cap witnesses.",
+        "path": "model.md",
+        "section": "oracle_independence",
+        "status": "partial_relational_specification",
+        "subject_revision": "c7f0e9526f087da03de94a426998d0db70f6d8db2b84a4e217647c2fea413380",
+        "type": "oracle_independence"
+      },
+      {
+        "approximation_semantics": "Source-derived target with finite correspondence evidence; not a proof",
+        "assumptions": "Successful std allocation; exact bounded integer arithmetic; no live external dependencies",
+        "domain": "Scheduled finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "control_scope",
+        "observation_scope": "API outputs, errors, insertion IDs or query order; named test outcomes",
+        "operator": "One compiled production mutation is required to fail a named assertion. Exact saved bytes are restored before repeated positive runs. This witnesses sensitivity to that fault only; no exhaustive fault detection follows.",
+        "path": "model.md",
+        "section": "control_scope",
+        "status": "partial_relational_specification",
+        "subject_revision": "c7f0e9526f087da03de94a426998d0db70f6d8db2b84a4e217647c2fea413380",
+        "type": "control_scope"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-offline-dynamic-connectivity-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "c7f0e9526f087da03de94a426998d0db70f6d8db2b84a4e217647c2fea413380"
+  },
+  "status": "partial_source_derived_instance"
+}

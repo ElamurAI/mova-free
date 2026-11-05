@@ -92,3 +92,56 @@ pub fn int(row: &[Option<String>], i: usize) -> Result<i64> {
     let v = s(row, i)?;
     v.parse().with_context(|| format!("column {i} is not a number: {v}"))
 }
+
+#[cfg(test)]
+mod wave31 {
+    use super::*;
+    use crate::duck::Stage;
+
+    #[test]
+    fn actual_tsv_null_empty_and_numeric_boundaries() {
+        let stage = Stage::new("wave31-tsv").unwrap();
+        let path = stage.path("values.tsv");
+        let mut out = Tsv::create(&path, &["null", "empty", "min", "max", "truth"]).unwrap();
+        out.row(&[
+            V::Null,
+            V::S(""),
+            V::I(i64::MIN),
+            V::I(i64::MAX),
+            V::B(true),
+        ])
+        .unwrap();
+        assert_eq!(out.finish().unwrap(), 1);
+        assert_eq!(
+            std::fs::read_to_string(&path).unwrap(),
+            "null\tempty\tmin\tmax\ttruth\n\\N\t\t-9223372036854775808\t9223372036854775807\ttrue\n"
+        );
+        let rows = read(&path).unwrap();
+        assert_eq!(rows.len(), 2); // read deliberately does not strip headers
+        assert_eq!(rows[1][0], None);
+        assert_eq!(s(&rows[1], 1).unwrap(), "");
+        assert_eq!(int(&rows[1], 2).unwrap(), i64::MIN);
+        assert_eq!(int(&rows[1], 3).unwrap(), i64::MAX);
+        assert!(s(&rows[1], 0).is_err());
+        assert!(s(&rows[1], 99).is_err());
+        assert!(int(&rows[1], 4).is_err());
+        assert!(int(&[Some("9223372036854775808".into())], 0).is_err());
+    }
+
+    #[test]
+    fn rejected_rows_preserve_counter_but_may_write_prefix() {
+        let stage = Stage::new("wave31-reject").unwrap();
+        for bad in ["\t", "\n", "\r", "\\N"] {
+            let path = stage.path("bad.tsv");
+            let mut out = Tsv::create(&path, &["a", "b"]).unwrap();
+            assert!(out.row(&[V::S("only")]).is_err());
+            assert_eq!(out.rows, 0);
+            assert!(out.row(&[V::S("prefix"), V::S(bad)]).is_err());
+            assert_eq!(out.finish().unwrap(), 0);
+            assert_eq!(std::fs::read_to_string(&path).unwrap(), "a\tb\nprefix\t");
+        }
+        let path = stage.path("empty.tsv");
+        std::fs::write(&path, "").unwrap();
+        assert!(read(&path).unwrap().is_empty());
+    }
+}

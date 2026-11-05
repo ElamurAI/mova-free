@@ -1,0 +1,23 @@
+{
+  "id": "algorithm-matrix-chain-tests",
+  "source": "algorithms/src/matrix_chain/tests.rs",
+  "description": "Original std-only matrix_chain independent tests.",
+  "state": "Fixed corpus, production function and deterministic test runner.",
+  "forward": [
+    "Compare every bounded corpus observation and transformation assertion."
+  ],
+  "inverse": [
+    "behavior_complement precedes reverse_reconstruction; see model.md.",
+    "Output admits nonunique compatible antecedents; no general inverse claimed."
+  ],
+  "cost": "Bounded exponential exhaustive oracle; intentionally small domains.",
+  "checks": [
+    "rustc --edition 2024 --test algorithms/src/matrix_chain/mod.rs; debug and optimized binaries twice.",
+    "Strict clippy-driver -D warnings; rustfmt; syntax twice; compiled mutant rejection."
+  ],
+  "limitations": [
+    "Finite checks do not prove all inputs.",
+    "Syntax omits expansion and semantic resolution.",
+    "Allocation refusal not injected."
+  ]
+}

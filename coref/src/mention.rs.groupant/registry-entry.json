@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "tests::story_chains_and_reasons",
+    "tests::wave27_coordination_mentions_and_visibility"
+  ],
+  "children": [],
+  "cost": "Conservative O(sum n³ + M log M + emitted text bytes): each head can traverse closure and each modifier can walk n ancestors; retained mention strings/features can be O(N²) bytes. Recursive graph walks use explicit stacks but require acyclicity; no dimension cap.",
+  "description": "Extract ordered nominal mentions and linguistic feature masks from valid document trees without reading Entity.",
+  "forward": [
+    "is_head applies UPOS/role exclusions and optional idiom/compound switches. span_of traverses the head's allowed children then descendants; take first/last nonpunctuation/symbol and retain matching edge brackets. Coordination may emit full group and own span. build chooses pronoun table then ordered FEATS overrides, with number FEATS only when table number unknown; nonpronoun coordination forces PL and titles OR gender. Sort (sent,start,-end,head), dedup equal spans. A nominal (not coordinated) mention whose gender is still unknown takes gender, and animacy if unknown, from lexicon::noun_feats of its head lemma unless COREF_X has no-gender-table; the reason is kept in Mention.lexicon."
+  ],
+  "id": "coref-mention",
+  "inverse": [
+    "For mention vector V, compatible inputs are all documents/environment snapshots yielding V after projection and span dedup; ignored Entity, unrelated comments and some syntax/FEATS can vary. Text lowercasing and removed title information prevent unique source reconstruction."
+  ],
+  "limitations": [
+    "No exhaustive closed-list validation or malformed/cyclic public documents; production rule accuracy is unmeasured.",
+    "Partial lexical syntax; no executable percentage surrogate; no corpus or universal proof."
+  ],
+  "source": "coref/src/mention.rs",
+  "state": "Valid acyclic Document, COREF_MD snapshot, nominal head candidates and retained feature/text projections."
+}

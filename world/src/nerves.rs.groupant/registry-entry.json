@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "Selected wave28_dialogue inline tests; lib compile only",
+    "Paired source syntax generation"
+  ],
+  "children": [],
+  "cost": "Build O(B log V+E log V); three sparse edge traversals plus O(R log R) sorting per frontier; top frontier 4000, total can exceed 4000. u64 products/sums and u32 ids require representability; allocation failures unmodeled.",
+  "description": "norm filters Unicode alphanumerics and lowercases, drops stops/numbers before suffix singularization. build creates symmetric 1000-weight edges. spread seeds unique known words at 1e6 and repeats three steps: next[v]+=floor(floor(a*w/1000)/max(degree,1)), remove zeros, sort descending activation/id ascending, retain 4000; accumulate retained values with seeds.",
+  "forward": [
+    "norm filters Unicode alphanumerics and lowercases, drops stops/numbers before suffix singularization. build creates symmetric 1000-weight edges. spread seeds unique known words at 1e6 and repeats three steps: next[v]+=floor(floor(a*w/1000)/max(degree,1)), remove zeros, sort descending activation/id ascending, retain 4000; accumulate retained values with seeds."
+  ],
+  "id": "world-nerves",
+  "inverse": [
+    "A normalized word admits punctuation/case/plural variants; activation admits repeated query words and unknown additions. A graph hash is a lossy fingerprint, not unique reconstruction."
+  ],
+  "limitations": [
+    "Synthetic two-node graph and normalization/manual boundaries only; no compiled manual-feature corpus, no production graph scale guarantee.",
+    "No executable surrogate, semantic proof, live teacher, corpus, GPU or held-out execution"
+  ],
+  "source": "world/src/nerves.rs",
+  "state": "Unknown/empty query seeds nothing. Seed multiplicity does not increase activation. Equal activation sorts by id. sentences sorts coverage, integer density, activation then lexical text, not length despite comment."
+}

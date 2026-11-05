@@ -1,0 +1,25 @@
+{
+  "id": "algorithm-convex-hull-tests",
+  "source": "algorithms/src/convex_hull/tests.rs",
+  "children": [],
+  "description": "convex_hull tests.rs exact geometry checks",
+  "state": "Deterministic finite fixtures in tests.rs; ordinary terminating allocation-success execution.",
+  "cost": "Finite 512 grid subsets; certificate O(n³+nh) per fixture with n<=9, plus bounded extras.",
+  "forward": [
+    "Run deterministic assertions comparing production outputs with independent geometric or exhaustive-pair certificates and stated transformations."
+  ],
+  "inverse": [
+    "behavior_complement: Within deterministic fixture runs, exclude a passing assertion when its compared oracle/result values differ. Passing output excludes only exercised counterexamples; it does not imply correctness on unenumerated coordinates or allocator failures.",
+    "reverse_reconstruction: A passing test transcript admits every implementation agreeing with all exercised observations, including incorrect implementations differing elsewhere. Exact test output therefore cannot reconstruct source or universal behavior; independent oracles narrow this equivalence class.",
+    "oracle_relation: Independent shoelace determinants, source membership, strict CCW turns, support directions normal to all input pairs and degenerate endpoint checks certify 512 subsets of a 3x3 grid. Support maximization uses no production turn helper.",
+    "metamorphic_relation: Permutation, duplicates, interior/boundary insertion, positive scaling and translation retain predicted hull output; applying hull twice is unchanged. These relations intentionally admit ambiguous input fibers.",
+    "boundary_partition: The full i32 3x3 extremal grid exercises wide cross products; empty, singleton, collinear and duplicate cases exercise dimensional collapse. The mutant retaining collinear vertices must fail endpoint/strict-turn assertions."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline convex_hull::tests::",
+    "Debug/release twice; strict Clippy; compiled mutant; source-bound syntax twice."
+  ],
+  "limitations": [
+    "Finite observations are not universal verification; allocator exhaustion untested; syntax projection lacks semantic type resolution and macro expansion. Exact implementation has no approximate execution profile."
+  ]
+}

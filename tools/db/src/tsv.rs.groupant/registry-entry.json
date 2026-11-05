@@ -1,0 +1,28 @@
+{
+  "checks": [
+    "tsv::wave31::actual_tsv_null_empty_and_numeric_boundaries",
+    "tsv::wave31::rejected_rows_preserve_counter_but_may_write_prefix"
+  ],
+  "children": [],
+  "cost": "O(total encoded bytes) streaming write time with buffered memory plus value formatting; read materializes O(file bytes + cells). Error preview takes at most 80 chars but row validation scans entire offending string.",
+  "description": "Raw TSV representation and partial writes",
+  "forward": [
+    "create truncates/creates file and writes joined header. row checks arity then writes columns left-to-right with tabs; Null emits backslash-N, strings reject tab/LF/CR/sentinel, integers decimal and booleans lowercase. Successful newline increments rows. finish flushes and returns count. read splits every file line without removing header, mapping exact sentinel to None; s/int check presence then parse."
+  ],
+  "id": "db-src-tsv",
+  "inverse": [
+    "Wrong arity cannot write any row prefix; invalid later cell cannot produce a successful row count increment. A literal backslash-N string cannot be represented as a successful non-NULL cell.",
+    "Given valid headerless encoded rows, None uniquely indicates Null and other cells are string observations. Value variants remain ambiguous: integer 1 and string 1 encode identically, true and boolean true likewise. Source lexical numeric spelling is not reconstructed by int.",
+    "read(backslash-N)=None and read(empty cell)=Some(empty). No quote or escape processing exists. JSON control escapes are ordinary bytes if already serialized before row.",
+    "Width check precedes all writes; separator precedes validation of each later string. After writing prefix then rejecting sentinel, observed file may end in prefix-tab and rows remains zero. Direct synthetic file test checks this exact effect.",
+    "I uses full signed-i64 decimal; int accepts parseable signed-i64 strings and rejects overflow/missing/null. Finite boundaries include MIN, MAX and MAX+1 string.",
+    "Tsv::create always writes a header line even for zero columns; read does not skip it. Writer/read are not direct inverse APIs unless caller separates headers."
+  ],
+  "limitations": [
+    "Finite helper/fixture evidence only; no DuckDB integration or SQL semantics",
+    "Partial syntax projection; no macro expansion or full semantic proof",
+    "No executable approximate profile or speedup claim"
+  ],
+  "source": "tools/db/src/tsv.rs",
+  "state": "rows counts only fully successful row calls, not physically complete lines after an earlier partial failure. Strings and NULL have disjoint encodings on the admitted domain; empty string remains Some(empty). Failure after earlier cells may leave a prefix in buffer/file."
+}

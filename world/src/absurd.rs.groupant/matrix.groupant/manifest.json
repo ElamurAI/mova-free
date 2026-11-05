@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-absurd-matrix-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-absurd-matrix-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-absurd-matrix-coupling",
+        "path": "model.md",
+        "section": "coupling",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4402,
+      "start": 1444
+    },
+    "description": "File parsing decodes BTreeMap<String,[u8;2]>, splits keys at the first pipe, rejects scores outside 0..4, and builds verb rows and a noun union. Empty components and extra pipes remain accepted; duplicate JSON keys follow serde replacement. Global lookup prefers domain-rated cells. Recognized OBJ idiom/light-verb/collocation returns the rated value capped at one, or None when unrated (bypassing the known layer). Other lookups use the known layer only when no rated cell exists. Unsupported roles return None before indexing."
+  },
+  "id": "world-absurd-matrix",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../absurd.rs",
+    "sha256": "c9b7b1c3951b40314b49e5b3bf00e07f023c5bb5775866ed80a09a509da108bd"
+  },
+  "status": "partial_source_bound_model"
+}

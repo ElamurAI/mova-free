@@ -1,0 +1,240 @@
+{
+  "children": [
+    {
+      "id": "global-catalog-concept-path",
+      "path": "concept-path.groupant"
+    },
+    {
+      "id": "global-catalog-expression-catalog",
+      "path": "expression-catalog.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "scoped_specification"
+    },
+    "ast": {
+      "scope": "Source byte ranges only. include! OUT_DIR/global.rs and include_str! OUT_DIR/expressions.tsv are not expanded or source-bound by this sidecar.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "scoped_specification"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariants",
+      "status": "scoped_specification"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "evidence": "Proposed oracle: compare independently enumerated typed outputs for small catalogs; reject wrong traversal and tie policies.",
+        "id": "nonbehavior",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "For fixed generated tables T and initialized hot snapshot H, let Q be tagged calls to the scoped APIs and O their typed return values; U=Q x O, R={(q,F_T,H(q))}. B=U\\R. This is the exact target of the source-derived specification, not a proven complement of all Rust executions. Valid path indices and nonoverflowing arithmetic are assumptions; panics, IO initialization and allocation failure are outside U.",
+        "path": "model.md",
+        "scope": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "section": "nonbehavior",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "evidence": "Proposed oracle: enumerate a bounded query domain and compare every fiber with direct evaluation.",
+        "id": "antecedents",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "F^-1(y)={q in Q:F_T,H(q)=y}, retaining API tags, all compatible strings and report states. Empty lookup results conflate missing names, no cue matches, filtered glosses and absent optional tables, so no unique original text or seed artifact is recoverable.",
+        "path": "model.md",
+        "scope": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "section": "antecedents",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "evidence": "tests::values_from_fables; proposed punctuation, Unicode and uppercase-lemma cases.",
+        "id": "lexical-forms",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "has_word lowercases and replaces each non-alphanumeric non-space character with a space, pads the text, then searches space-delimited forms of the unchanged input lemma. Forms include s/es/ed/d/ing, doubled final consonants excluding aeiouwy, y->ies/ied and eight explicit irregular families. Matching is neither general lemmatization nor whitespace collapsing; an uppercase lemma need not match.",
+        "path": "model.md",
+        "scope": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "section": "lexical-forms",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "lexical_acceptance"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "evidence": "sense_tests::codes_and_senses; proposed equal-score and all-zero fixtures.",
+        "id": "sense-fiber",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "For fixed (lang,word), I is table-ordered matching concepts and score_i(t) counts stored cues unequal to word and not starting with word, using underscores replaced by spaces. Winner i requires score_i>score_j for earlier j and score_i>=score_j for later j. All texts satisfying inequalities remain antecedents, including zero-evidence ties.",
+        "path": "model.md",
+        "scope": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "section": "sense-fiber",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "evidence": "tests::newton_apple and tests::verbs_and_units; proposed cyclic/diamond graph reference.",
+        "id": "shortest-route",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "For valid source index a and valid link endpoints, path(a,b) records first-discovery incoming links in FIFO BFS scanning LINKS in order. Some([]) iff a=b; an unreachable b returns None (including b outside the concept index domain). Among multiple shortest paths only the first discovery witness is returned; arbitrary alternate routes are not outputs.",
+        "path": "model.md",
+        "scope": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "section": "shortest-route",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "reachability"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "evidence": "tests::newton_apple; proposed branching and strongly connected fixtures.",
+        "id": "chain-horizon",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "consequences discards category triggers, then discards any found c reachable from another distinct found o. Each survivor follows the first outgoing link at most eight times; emit only nonempty link chains. It does not enumerate all consequences. Mutually reachable found concepts can suppress every chain. self_describe similarly follows first links for at most four steps.",
+        "path": "model.md",
+        "scope": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "section": "chain-horizon",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "bounded_trace"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "evidence": "tests::values_from_fables; proposed a text matching both directions.",
+        "id": "judgment-triggers",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "judge emits one judgment for each matching against cue then each matching towards cue within each principle in table order. Duplicate triggers/principles can yield repeated or opposing observations. Because includes cue, name, gist and file; no story-state predicate is evaluated here.",
+        "path": "model.md",
+        "scope": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "section": "judgment-triggers",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "ordered_emission"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "evidence": "No existing self_judge test in this file; proposed Boolean/threshold oracle including NaN and duplicate-rule first selection.",
+        "id": "self-report-gates",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "self_judge emits steady_effort success for branches>=5, else failure for branches<=1&&!verified; verified adds self_quality. Escalated confidence<0.5 adds restraint, else !escalated&&confidence<0.2&&correct==Some(false) adds violation. Slow time/actions (>3 usual, usual positive) with correct!=Some(false) adds effort; rethought adds effort. Each event survives only if principle_by_rule finds a principle. NaN comparisons are false and action multiplication must not overflow.",
+        "path": "model.md",
+        "scope": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "section": "self-report-gates",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "predicate_partition"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "evidence": "absurd_tests::matrix_cells; fresh-process hot override and missing-cold-ID tests remain proposed.",
+        "id": "hot-overlay",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "First hot() captures GLOBAL_HOT files once. Read errors become empty text; valid u8 scores clamp to four, duplicate keys overwrite earlier ones, unknown idiom kinds become tombstone none. absurdity checks hot real then sorted cold indexes. tale first checks hot tale, then requires cold verb/noun IDs before a cold tale lookup or real fallback: missing cold IDs return None before hot-real fallback. This source-specific boundary must remain visible.",
+        "path": "model.md",
+        "scope": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "section": "hot-overlay",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "snapshot_precedence"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "evidence": "expression_tests::real_meanings_and_domains is conditional on optional table presence; prospective synthetic row oracle.",
+        "id": "expression-choice",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "At lengths six down to one and starts ascending, expressions_in rejects used spans; tries literal phrase then one-position possessive/interior placeholder candidates. First admissible row per candidate wins. Multiword matches reserve spans; single words do not and require nonempty derived domains. Rows need >=3 alphabetic gloss characters and no [[. Forms supplement lemma results only for multiword spans not overlapping a lemma or earlier form multiword.",
+        "path": "model.md",
+        "scope": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "section": "expression-choice",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "greedy_selection"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "evidence": "tests::uses_and_capable and tests::selection_lists; proposed code-versus-name and plural collision cases.",
+        "id": "lookup-aliases",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "concept matches name OR code; concept_words matches name only. measure lowercases, strips es only when its base exists, otherwise strips s, then selects first exact-or-singular row. relation and selection use first exact matches; uses/capable/category/state queries perform exact table membership. Equal empty slices do not establish equal input names.",
+        "path": "model.md",
+        "scope": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "section": "lookup-aliases",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "information_loss"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "evidence": "Symbolic source inspection; no performance experiment claimed.",
+        "id": "resource-envelope",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "With C concepts, L links, text bytes N and K cue occurrences, lexical scanning is O(K*N) up to form allocation/string costs; path O(C+reached_nodes*L) time and O(C) storage. Consequences can call path for O(C^2) found pairs before bounded chain scans. Expressions have at most six span lengths and O(6) candidates per span, BTreeMap lookup O(log E) comparisons plus string work and duplicate-row scans. Lazy index construction scales with included bytes; no latency measurement or whole-engine bound is implied.",
+        "path": "model.md",
+        "scope": "Compiled seed catalogs and scoped runtime catalog queries; not a durable global knowledge graph.",
+        "section": "resource-envelope",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "resource_bound"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "existing_test_references"
+    }
+  },
+  "id": "global-catalog",
+  "kind": "groupant",
+  "registry": {
+    "node": "global-catalog",
+    "path": "../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../lib.rs",
+    "sha256": "f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907"
+  },
+  "status": "partial"
+}

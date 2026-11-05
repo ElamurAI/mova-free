@@ -1,0 +1,69 @@
+{
+  "nodes": [
+    {
+      "checks": [
+        "Native plaintext and negative controls; mocked Unix no-replay; real read-only status/log observations; source guards.",
+        "Native UTF-8 tail boundary regression: old source red, bounded suffix green; malformed admitted lines still rejected; five native library tests including actual plaintext controls."
+      ],
+      "children": [],
+      "cost": "Bounded bytes plus native parser/configured adapter costs; no measured speed claim.",
+      "description": "Bounded native plaintext deputy component; exact adjacent source/model binding.",
+      "forward": [
+        "See Forward and Composition in adjacent model.md."
+      ],
+      "id": "octopus-deputy-library",
+      "inverse": [
+        "Complement and compatible-input reconstruction remain distinct; refusal has no unique cause."
+      ],
+      "limitations": [
+        "No trained pragmatic inference, general task understanding, automatic gold or training."
+      ],
+      "source": "tools/octopus/src/lib.rs",
+      "state": "prompt, pinned native model, configured capabilities, observations, plan, receipt"
+    },
+    {
+      "checks": [
+        "Native plaintext and negative controls; mocked Unix no-replay; real read-only status/log observations; source guards."
+      ],
+      "children": [],
+      "cost": "Bounded bytes plus native parser/configured adapter costs; no measured speed claim.",
+      "description": "Bounded native plaintext deputy component; exact adjacent source/model binding.",
+      "forward": [
+        "See Forward and Composition in adjacent model.md."
+      ],
+      "id": "octopus-deputy-cli",
+      "inverse": [
+        "Complement and compatible-input reconstruction remain distinct; refusal has no unique cause."
+      ],
+      "limitations": [
+        "No trained pragmatic inference, general task understanding, automatic gold or training."
+      ],
+      "source": "tools/octopus/src/main.rs",
+      "state": "prompt, pinned native model, configured capabilities, observations, plan, receipt"
+    },
+    {
+      "checks": [
+        "Focused native controls, real Crab observation, empty-log diagnosis and source guards."
+      ],
+      "children": [
+        "octopus-deputy-library",
+        "octopus-deputy-cli"
+      ],
+      "cost": "Native parser + config matching + at most eight bounded handler calls.",
+      "description": "Plaintext native deputy and configured capability composition.",
+      "forward": [
+        "Any refused sentence prevents all tool execution."
+      ],
+      "id": "native-octopus-deputy",
+      "inverse": [
+        "Complement, nonunique reconstruction and diagnostic admission remain separate."
+      ],
+      "limitations": [
+        "No automatic DB/gold/GPU learning; no arbitrary shell. Installed handlers require separate review."
+      ],
+      "state": "Input -> native observation -> plan -> reservation -> installed handler -> receipt; refusal -> review candidate"
+    }
+  ],
+  "root": "native-octopus-deputy",
+  "schema": 1
+}

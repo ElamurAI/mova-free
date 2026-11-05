@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p qagen wave17_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "For input byte length B, normalization and lookup cost O(B) time and O(B) allocation; enum/name/version operations cost O(1). Fixed alphabet sizes seven and two.",
+  "description": "Normalize with trim and Unicode lowercase, then search literal seven QType or two ExIm names; Rule admits only byte 1 or 2. Domain: all supplied UTF-8 strings and u8 values; observation: Option enum, canonical name or numeric version. Exact scoped formula, not a performance surrogate.",
+  "forward": [
+    "Normalize with trim and Unicode lowercase, then search literal seven QType or two ExIm names; Rule admits only byte 1 or 2. Domain: all supplied UTF-8 strings and u8 values; observation: Option enum, canonical name or numeric version. Exact scoped formula, not a performance surrogate."
+  ],
+  "id": "qagen-schema",
+  "inverse": [
+    "For accepted t, all s with lowercase(trim(s))=name(t) are compatible; rejected output collects every other string. Canonical name and version number uniquely recover their enum inside these closed alphabets."
+  ],
+  "limitations": [
+    "Finite synthetic checks only; no teacher/parser/data acquisition.",
+    "Partial syntax; macro bodies opaque."
+  ],
+  "source": "qagen/src/schema.rs",
+  "state": "ALL order is stable; canonical names are unique; parse(name(t))=Some(t); Rule::of(r.num())=Some(r)."
+}

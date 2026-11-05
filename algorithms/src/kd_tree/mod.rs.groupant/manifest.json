@@ -1,0 +1,126 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "For any admitted point sequence P and query q, candidate None is excluded exactly when P is nonempty; candidate (i,d) is excluded if i is absent, d differs from squared distance, or another (distance,j) is lexicographically smaller. Invalid constructor inputs paired with Ok are excluded. The deterministic median shape further constrains internal state.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "bb55b55591fb5ea0191886202c577ee182c5cf6f029084a622acb93140d0dc1d",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "An observed (i,d) admits all bounded point sequences containing point i at squared distance d from q with no lexicographically better competitor. Coordinate sign changes and extra farther points yield ambiguous preimages. None reconstructs an empty stored sequence but does not identify query q.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "bb55b55591fb5ea0191886202c577ee182c5cf6f029084a622acb93140d0dc1d",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "plane_tie",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "The far-side pruning comparison is inclusive. A far point at equal distance can carry a smaller original index. Closed split-plane search is necessary even when a best distance already exists.",
+        "path": "model.md",
+        "section": "plane_tie",
+        "status": "partial_relational_specification",
+        "subject_revision": "bb55b55591fb5ea0191886202c577ee182c5cf6f029084a622acb93140d0dc1d",
+        "type": "plane_tie"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "finite_distance",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "Stored coordinate absolute value <=10^6 and arbitrary i32 query imply each absolute difference <=2^31+10^6; twice its square <2^64. i64 subtraction and u64 sum are exact; i128 test oracle independently computes the same mathematical metric.",
+        "path": "model.md",
+        "section": "finite_distance",
+        "status": "partial_relational_specification",
+        "subject_revision": "bb55b55591fb5ea0191886202c577ee182c5cf6f029084a622acb93140d0dc1d",
+        "type": "finite_distance"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "duplicate_identity",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "Duplicate coordinates remain separate points; nearest always selects their smallest original index. Reordering input can change reported identity without changing minimum distance.",
+        "path": "model.md",
+        "section": "duplicate_identity",
+        "status": "partial_relational_specification",
+        "subject_revision": "bb55b55591fb5ea0191886202c577ee182c5cf6f029084a622acb93140d0dc1d",
+        "type": "duplicate_identity"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "validation_order",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "More than4096 points errors before coordinates are checked; otherwise any coordinate outside +/-10^6 errors before build allocation. Empty is valid and allocates no node; successful nonempty builds depend on allocator success.",
+        "path": "model.md",
+        "section": "validation_order",
+        "status": "partial_relational_specification",
+        "subject_revision": "bb55b55591fb5ea0191886202c577ee182c5cf6f029084a622acb93140d0dc1d",
+        "type": "validation_order"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-kd-tree",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "bb55b55591fb5ea0191886202c577ee182c5cf6f029084a622acb93140d0dc1d"
+  },
+  "status": "partial_source_derived_instance"
+}

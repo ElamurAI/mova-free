@@ -80,7 +80,11 @@ pub fn predict_seq(set: &Set, rows: &[Row], prev: &[Option<usize>], idx: &[usize
 }
 
 /// Accuracy and macro-F1 (classes — union of those present in gold and prediction).
+/// Empty aligned inputs return (0, 0). Panics on unequal lengths or class indices
+/// outside 0..nclass; silently truncating would report a different evaluation set.
 pub fn scores(gold: &[usize], pred: &[usize], nclass: usize) -> (f64, f64) {
+    assert_eq!(gold.len(), pred.len(), "scores: gold/pred length mismatch");
+    assert!(gold.iter().chain(pred).all(|&c| c < nclass), "scores: class outside domain");
     let n = gold.len().max(1) as f64;
     let acc = gold.iter().zip(pred).filter(|(a, b)| a == b).count() as f64 / n;
     let mut f1s = Vec::new();
@@ -540,48 +544,171 @@ fn confusion_md(o: &HashMap<usize, Out>, idx: &[usize], gy: &[usize], k: usize) 
 /// documents in order (`roles::doc_key`; the previous sentence's act is the model's own) → TSV: sent_id, the six
 /// fields, and the confidence of each (margin over the runner-up).
 pub fn label(dir: &Path, model_path: &Path, conllu: &Path, out: &Path) -> Result<()> {
-    let items = data::read_items(&dir.join("items.jsonl"))?;
-    let silver = read_silver(&dir.join("silver.tsv"))?;
-    let lab: Vec<usize> = (0..items.len()).filter(|&i| silver.contains_key(&items[i].key)).collect();
-    data::license_gate(&lab.iter().map(|&i| items[i].src).collect::<Vec<_>>())?;
-    let gold: HashMap<usize, Labels> = lab.iter().map(|&i| (i, silver[&items[i].key].clone())).collect();
     let a = Annotator::load(model_path)?;
-    let cues = Cues::load();
-    let rows = feats::extract(&a, &cues, &items);
-    let prev = feats::prev_of(&items);
-    let tr_rows = train_rows(&rows, &prev, &gold, &lab);
-    let dict = Dict::build(&tr_rows);
-    let x: Vec<Vec<u32>> = tr_rows.iter().map(|r| dict.encode(r)).collect();
-    let keys: Vec<String> = lab.iter().map(|&i| items[i].key.clone()).collect();
-    let ys: Vec<Vec<usize>> = Field::ALL.iter().map(|f| lab.iter().map(|&i| f.get(&gold[&i])).collect()).collect();
-    let set = fit_set(model::Kind::Perceptron, &x, &ys, &keys, &dict, 26);
-    // the sentences to label, as documents in order
+    let lab = Labeler::train(dir, &a)?;
     let sents = en::conllu::read(conllu)?;
-    let mut order: Vec<usize> = (0..sents.len()).collect();
-    order.sort_by_key(|&i| crate::roles::doc_key(&sents[i].id));
-    let mut targets: Vec<Item> = Vec::with_capacity(sents.len());
-    let mut ord_in: HashMap<String, i64> = HashMap::new();
-    let mut ord_of = vec![0i64; sents.len()];
-    for &i in &order {
-        let doc = crate::roles::doc_key(&sents[i].id).0;
-        let o = ord_in.entry(doc).or_insert(0);
-        *o += 1;
-        ord_of[i] = *o;
-    }
-    for (i, s) in sents.iter().enumerate() {
-        targets.push(Item { key: s.id.clone(), src: Src::Tale, doc: crate::roles::doc_key(&s.id).0, title: String::new(), para: 0, ord: ord_of[i], pos: 0, plen: 1, text: s.text.clone(), batch: 0, ctx: Vec::new() });
-    }
-    let trows = feats::extract(&a, &cues, &targets);
-    let tprev = feats::prev_of(&targets);
-    let pred = predict_seq(&set, &trows, &tprev, &order, &dict);
-    let mut t = String::from("sent_id\tform\tact\tindirect\thedge\tpolarity\tvoice\tconf\n");
-    for (i, s) in sents.iter().enumerate() {
-        let Some(o) = pred.get(&i) else { continue };
-        let vals: Vec<&str> = Field::ALL.iter().enumerate().map(|(k, f)| f.classes()[o.class[k]]).collect();
-        let conf: Vec<String> = o.preds.iter().map(|p| format!("{:.2}", p.conf)).collect();
-        let _ = writeln!(t, "{}\t{}\t{}", s.id, vals.join("\t"), conf.join(","));
-    }
+    let pairs: Vec<(String, String)> = sents.iter().map(|s| (s.id.clone(), s.text.clone())).collect();
+    let t = String::from(Labeler::HEADER) + &lab.label(&a, &pairs);
     std::fs::write(out, t)?;
-    eprintln!("label: {} sentences (trained on {} silver) → {}", sents.len(), lab.len(), out.display());
+    eprintln!("label: {} sentences (trained on {} silver) → {}", sents.len(), lab.silver, out.display());
     Ok(())
+}
+
+/// The pragmatics SLM trained once (the perceptron on a silver run), then applied to any number of sentence lists:
+/// `label` is `Labeler::train` followed by one `Labeler::label` over the whole file. Labelling documents one list at
+/// a time gives the rows labelling them together gives (a sentence's context is only the sentences of its own
+/// document), so a large corpus can be labelled in parts and in parallel with one trained model.
+pub struct Labeler {
+    cues: Cues,
+    set: Set,
+    dict: Dict,
+    /// the silver rows it was trained on
+    pub silver: usize,
+}
+
+impl Labeler {
+    /// The header of the label rows.
+    pub const HEADER: &'static str = "sent_id\tform\tact\tindirect\thedge\tpolarity\tvoice\tconf\n";
+
+    /// Trains the perceptron on the silver run `dir` (`items.jsonl`, `silver.tsv`), features read with `a`.
+    pub fn train(dir: &Path, a: &Annotator) -> Result<Labeler> {
+        let items = data::read_items(&dir.join("items.jsonl"))?;
+        let silver = read_silver(&dir.join("silver.tsv"))?;
+        let lab: Vec<usize> = (0..items.len()).filter(|&i| silver.contains_key(&items[i].key)).collect();
+        data::license_gate(&lab.iter().map(|&i| items[i].src).collect::<Vec<_>>())?;
+        let gold: HashMap<usize, Labels> = lab.iter().map(|&i| (i, silver[&items[i].key].clone())).collect();
+        let cues = Cues::load();
+        let rows = feats::extract(a, &cues, &items);
+        let prev = feats::prev_of(&items);
+        let tr_rows = train_rows(&rows, &prev, &gold, &lab);
+        let dict = Dict::build(&tr_rows);
+        let x: Vec<Vec<u32>> = tr_rows.iter().map(|r| dict.encode(r)).collect();
+        let keys: Vec<String> = lab.iter().map(|&i| items[i].key.clone()).collect();
+        let ys: Vec<Vec<usize>> = Field::ALL.iter().map(|f| lab.iter().map(|&i| f.get(&gold[&i])).collect()).collect();
+        let set = fit_set(model::Kind::Perceptron, &x, &ys, &keys, &dict, 26);
+        Ok(Labeler { cues, set, dict, silver: lab.len() })
+    }
+
+    /// The label rows (no header) of sentences given as (sent_id, text), in the given order; a sentence's
+    /// document is its id up to the last `:` (`roles::doc_key`), read in id order.
+    pub fn label(&self, a: &Annotator, sents: &[(String, String)]) -> String {
+        let mut order: Vec<usize> = (0..sents.len()).collect();
+        order.sort_by_key(|&i| crate::roles::doc_key(&sents[i].0));
+        let mut targets: Vec<Item> = Vec::with_capacity(sents.len());
+        let mut ord_in: HashMap<String, i64> = HashMap::new();
+        let mut ord_of = vec![0i64; sents.len()];
+        for &i in &order {
+            let doc = crate::roles::doc_key(&sents[i].0).0;
+            let o = ord_in.entry(doc).or_insert(0);
+            *o += 1;
+            ord_of[i] = *o;
+        }
+        for (i, (id, text)) in sents.iter().enumerate() {
+            targets.push(Item { key: id.clone(), src: Src::Tale, doc: crate::roles::doc_key(id).0, title: String::new(), para: 0, ord: ord_of[i], pos: 0, plen: 1, text: text.clone(), batch: 0, ctx: Vec::new() });
+        }
+        let trows = feats::extract(a, &self.cues, &targets);
+        let tprev = feats::prev_of(&targets);
+        let pred = predict_seq(&self.set, &trows, &tprev, &order, &self.dict);
+        let mut t = String::new();
+        for (i, (id, _)) in sents.iter().enumerate() {
+            let Some(o) = pred.get(&i) else { continue };
+            let vals: Vec<&str> = Field::ALL.iter().enumerate().map(|(k, f)| f.classes()[o.class[k]]).collect();
+            let conf: Vec<String> = o.preds.iter().map(|p| format!("{:.2}", p.conf)).collect();
+            let _ = writeln!(t, "{id}\t{}\t{}", vals.join("\t"), conf.join(","));
+        }
+        t
+    }
+}
+
+#[cfg(test)]
+mod wave14_models {
+    use super::*;
+
+    #[test]
+    fn scores_rejects_invalid_domain() {
+        for (g, p, c) in [(vec![0], vec![], 1), (vec![], vec![0], 1),
+                          (vec![1], vec![1], 1), (vec![0], vec![1], 1),
+                          (vec![0], vec![0], 0)] {
+            assert!(std::panic::catch_unwind(|| scores(&g, &p, c)).is_err(),
+                    "invalid scores domain accepted: {g:?} {p:?} {c}");
+        }
+    }
+
+    #[test]
+    fn scores_confusion_oracle() {
+        for n in 0..=4 {
+            for bits in 0..(1usize << (2 * n)) {
+                let g: Vec<_> = (0..n).map(|i| (bits >> i) & 1).collect();
+                let p: Vec<_> = (0..n).map(|i| (bits >> (n + i)) & 1).collect();
+                let mut m = [[0usize; 2]; 2];
+                for i in 0..n { m[g[i]][p[i]] += 1; }
+                let accuracy = (m[0][0] + m[1][1]) as f64 / n.max(1) as f64;
+                let mut sum = 0.0;
+                let mut used = 0;
+                for c in 0..2 {
+                    let den = 2 * m[c][c] + m[c][1-c] + m[1-c][c];
+                    if den != 0 { sum += 2.0 * m[c][c] as f64 / den as f64; used += 1; }
+                }
+                let got = scores(&g, &p, 3);
+                assert_eq!(got.0, accuracy);
+                assert!((got.1 - sum / used.max(1) as f64).abs() < 1e-12);
+                assert_eq!(got, scores(&p, &g, 3));
+            }
+        }
+        assert_eq!(scores(&[], &[], 0), (0.0, 0.0));
+    }
+
+    struct PreviousAct { start: u32, field: usize }
+    impl Classifier for PreviousAct {
+        fn kind(&self) -> Kind { Kind::IgTree }
+        fn bytes(&self) -> usize { 0 }
+        fn info(&self) -> String { "supplied transition".into() }
+        fn predict(&self, x: &[u32]) -> Pred {
+            Pred { class: if self.field == 1 { usize::from(x[prev_slot()] == self.start) } else { 0 },
+                   conf: 1.0, why: vec![] }
+        }
+    }
+
+    #[test]
+    fn prediction_uses_only_already_emitted_predecessors() {
+        let mut rows = vec![vec!["fixed".into(); feats::SLOTS.len()]; 3];
+        rows[0][prev_slot()] = "start".into();
+        rows[1][prev_slot()] = Act::ALL[1].name().into();
+        rows[2][prev_slot()] = Act::ALL[0].name().into();
+        let dict = Dict::build(&rows);
+        let set = Set { kind: Kind::IgTree, train_secs: 0.0,
+            models: (0..6).map(|field| Box::new(PreviousAct { start: dict.id(prev_slot(), "start"), field }) as Box<dyn Classifier>).collect() };
+        let before = rows.clone();
+        let prev = [None, Some(0), Some(1)];
+        let out = predict_seq(&set, &rows, &prev, &[0, 1, 2], &dict);
+        assert_eq!([out[&0].class[1], out[&1].class[1], out[&2].class[1]], [1, 0, 0]);
+        let reversed = predict_seq(&set, &rows, &prev, &[2, 1, 0], &dict);
+        assert!((0..3).all(|i| reversed[&i].class[1] == 1));
+        assert_eq!(predict_seq(&set, &rows, &prev, &[2], &dict)[&2].class[1], 1);
+        assert_eq!(rows, before);
+    }
+
+    #[test]
+    fn fit_set_field_order_and_gold_previous_row() {
+        let rows = vec![vec!["fixed".into(); feats::SLOTS.len()]; 2];
+        let mut gold = HashMap::new();
+        let label = Labels { act: Act::ALL[1], ..Labels::default() };
+        gold.insert(0, label);
+        let tr = train_rows(&rows, &[None, Some(0)], &gold, &[1, 0]);
+        assert_eq!(tr[0][prev_slot()], Act::ALL[1].name());
+        assert_eq!(tr[1][prev_slot()], "start");
+        assert_eq!(rows[0][prev_slot()], "fixed");
+        let dict = Dict::build(&tr);
+        let x: Vec<_> = tr.iter().map(|r| dict.encode(r)).collect();
+        let ys: Vec<_> = Field::ALL.iter().map(|f| vec![f.classes().len()-1; 2]).collect();
+        for kind in Kind::ALL {
+            let set = fit_set(kind, &x, &ys, &["a".into(), "b".into()], &dict, 7);
+            assert_eq!(set.models.len(), 6);
+            assert_eq!(set.kind, kind);
+            for (k, model) in set.models.iter().enumerate() {
+                assert_eq!(model.kind(), kind);
+                assert_eq!(model.predict(&x[0]).class, ys[k][0]);
+            }
+        }
+    }
 }

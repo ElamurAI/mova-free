@@ -1,0 +1,108 @@
+{
+  "children": [
+    {
+      "id": "mlab-numerics-numeric-quadrature",
+      "path": "numeric-quadrature.groupant"
+    },
+    {
+      "id": "mlab-numerics-numeric-ode",
+      "path": "numeric-ode.groupant"
+    },
+    {
+      "id": "mlab-numerics-numeric-trapezoid",
+      "path": "numeric-trapezoid.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Owned source; selected observations",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Owned source; selected observations",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "callback_effects",
+        "path": "model.md",
+        "scope": "Owned source; selected observations",
+        "section": "callback_effects",
+        "status": "partial_source_derived_model",
+        "type": "callback_effects"
+      },
+      {
+        "id": "quadrature_transform",
+        "path": "model.md",
+        "scope": "Owned source; selected observations",
+        "section": "quadrature_transform",
+        "status": "partial_source_derived_model",
+        "type": "quadrature_transform"
+      },
+      {
+        "id": "stopping_observation",
+        "path": "model.md",
+        "scope": "Owned source; selected observations",
+        "section": "stopping_observation",
+        "status": "partial_source_derived_model",
+        "type": "stopping_observation"
+      },
+      {
+        "id": "ode_precedence",
+        "path": "model.md",
+        "scope": "Owned source; selected observations",
+        "section": "ode_precedence",
+        "status": "partial_source_derived_model",
+        "type": "ode_precedence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "mlab-numerics-numeric",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../numeric.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "f6fa5b4a76ef32afd0991224f982804b325a757adab149969712eb344640c466"
+  },
+  "status": "partial_source_bound_model"
+}

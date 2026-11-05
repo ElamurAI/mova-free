@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms subset_sum_fptas::tests",
+    "Repeated debug/release, compiled production mutant and restored hashes; see model.md#tests"
+  ],
+  "children": [],
+  "cost": "O(n L log L) time with sort_unstable, L=O(n log(max(2,target))/epsilon); O(L) live storage. Charged B=input length+sum 2*old-list-length bounds generated candidates and total sort cost O(B log B), not sort comparisons exactly. Fallible reservations, subtraction-based feasible addition, checked budget accumulation.",
+  "description": "Deterministic executable assertions for subset_sum_fptas; finite fixtures observe production outputs against independent masks or exact arithmetic. Passing is a finite evidence claim, not universal correctness.",
+  "forward": [
+    "Deterministic executable assertions for subset_sum_fptas; finite fixtures observe production outputs against independent masks or exact arithmetic. Passing is a finite evidence claim, not universal correctness."
+  ],
+  "id": "algorithm-subset-sum-fptas-tests",
+  "inverse": [
+    "All implementations producing the same finite assertion vector belong to one nonunique fiber. Original production and a mutant differing only on untested data may both pass; the compiled mutant (Force returned sum to zero; lower trim representative assertion fails.) is separated by trim_is_nonexact. A pass vector cannot reconstruct source, runtime or behavior on unseen inputs."
+  ],
+  "limitations": [
+    "Partial syntax, not semantic proof",
+    "Finite oracles do not establish universal accuracy",
+    "No performance measurement or automatic substitution",
+    "Allocator failure not experimentally injected"
+  ],
+  "source": "algorithms/src/subset_sum_fptas/tests.rs",
+  "state": "Named assertions and finite fixtures"
+}

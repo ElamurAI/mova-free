@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "basis_and_direct_sum independently evaluates every basis impulse for n=1..19; roundtrip_and_energy covers n=0..65; dc_and_limits covers constant, empty and cap; invalid_values rejects nonfinite and excessive magnitude.",
+    "Changing non-DC normalization sqrt(2/n) to sqrt(1/n) compiles and fails basis_and_direct_sum."
+  ],
+  "children": [],
+  "cost": "O(n²) work, O(n) output. Standard allocator exhaustion policy.",
+  "description": "C[k,j]=alpha[k] cos(pi*(j+1/2)*k/n); alpha[0]=1/sqrt(n), others sqrt(2/n). Forward C*x, inverse C-transpose*x. n<=2048, empty identity, all finite |x|<=1e50, no extension or callbacks.",
+  "forward": [
+    "C[k,j]=alpha[k] cos(pi*(j+1/2)*k/n); alpha[0]=1/sqrt(n), others sqrt(2/n). Forward C*x, inverse C-transpose*x. n<=2048, empty identity, all finite |x|<=1e50, no extension or callbacks."
+  ],
+  "id": "algorithm-discrete-cosine-transform",
+  "inverse": [
+    "For fixed n the real orthogonal transform is bijective with inverse C-transpose. Rounded outputs may collapse nearby inputs, so exact f64 input recovery is not promised. Empty output uniquely identifies empty input within successful domain; error tags have many invalid preimages."
+  ],
+  "limitations": [
+    "Partial syntax without semantic proof",
+    "Finite numerical tests do not guarantee accuracy",
+    "No executable approximation profile or timing claim",
+    "Standard allocation exhaustion may abort; no callback effects"
+  ],
+  "source": "algorithms/src/discrete_cosine_transform/mod.rs",
+  "state": "Bounded finite sample vectors, transform/QR scratch, tagged errors; test state comprises finite observations"
+}

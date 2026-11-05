@@ -1,0 +1,23 @@
+// Compile as Rust --test with --crate-name number_groupant_probe.
+#[path="../numbers.rs"] mod numbers;
+#[test] fn bounded_numeric_oracles(){
+for n in 0..2000 {
+let expected=if (11..=13).contains(&(n%100)){"th"}else{["th","st","nd","rd","th","th","th","th","th","th"][(n%10)as usize]};
+assert_eq!(numbers::ordinal_suffix(n),expected);
+}
+let cases=[("1,2","12"),("12st","12th"),("fifty. five","55"),("fifty-five","55"),("fifty five","55")];
+for (x,y) in cases{assert_eq!(numbers::normalize(x).0,y);}
+assert_eq!(numbers::normalize("fifty. five").1[0].said,"fifty five");
+for (x,y) in [("twice",Some(2)),("two",Some(2)),("three apples then five",Some(3)),("the fifth day",None)]{assert_eq!(numbers::quantity(x),y);}
+assert_eq!(numbers::to_words(1_000_000),"ten hundred thousand");
+println!("suffix cases=2000; normalization literals=5; quantity literals=4; million boundary observed");
+}
+#[test] fn correction_and_control(){
+assert_eq!(numbers::edits("ab","ba"),1);
+assert_eq!(numbers::edits("a","b"),2);
+assert_eq!(numbers::edits("","ab"),4);
+for w in ["one","ab","ééé"]{assert_eq!(numbers::correct(w),None);}
+for _ in 0..2{assert_eq!(numbers::correct("tne"),Some("ten"));}
+let expected=if std::env::var_os("FALSE_FORMULA").is_some(){2}else{1};
+assert_eq!(numbers::edits("ab","ba"),expected,"false transposition-cost formula control");
+}

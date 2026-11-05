@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named tests in native-commands.json; paired source syntax"
+  ],
+  "children": [],
+  "cost": "Finite fixture work bounded by fixed words/frames plus called helper costs. Compilation includes all tests but only exact named safe tests execute; model() and its filesystem/model-load effects remain excluded.",
+  "description": "Synthetic fixtures call production locals/emit/projective, frame read/realize/encode/apply and world encode/decode/refer. Three tests call model() and therefore are explicitly excluded; selected tests use constructed words/frames only.",
+  "forward": [
+    "Synthetic fixtures call production locals/emit/projective, frame read/realize/encode/apply and world encode/decode/refer. Three tests call model() and therefore are explicitly excluded; selected tests use constructed words/frames only."
+  ],
+  "id": "roundtrip-tests",
+  "inverse": [
+    "A passing assertion trace is compatible with many implementations that agree on these fixtures; it cannot reconstruct universal semantics or identify unique model parameters. Mutant rejection narrows only the exercised behavior fiber.",
+    "Synthetic fixture passes do not establish corpus quality, complete branch coverage or persistent learning. Model-dependent tests are not treated as passing skips in this batch."
+  ],
+  "limitations": [
+    "No annotator/model loading, live corpus, full suite, teacher, GPU or persistent-learning evidence. No executable percentage surrogate: categorical codecs/effects need a useful metric before future caps 1/2/5/10%."
+  ],
+  "source": "tools/roundtrip/src/tests.rs",
+  "state": "Layer representations, diagnostic residuals and fixed environment state; see scoped catalog."
+}

@@ -1,0 +1,203 @@
+{
+  "children": [
+    "db-src-duck",
+    "db-src-export",
+    "db-src-load",
+    "db-src-main",
+    "db-src-prag",
+    "db-src-qa",
+    "db-src-tales",
+    "db-src-tsv",
+    "db-src-util",
+    "db-tests-prag",
+    "db-tests-qa",
+    "db-tests-roundtrip"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "DuckDB executable absent from PATH and bounded known bin paths; no download/install, no mock subprocess SQL evidence. Source-derived transaction statements are not observed database guarantees. Tests inspected before selection. All production prefixes preserved byte-for-byte; additions are cfg(test) checks only. Partial syntax excludes macro expansion/name/type resolution.",
+        "domain": "Finite CPU inputs; valid UTF-8 and representable signed IDs/counters; temp filesystem fixtures under isolated run TMPDIR; no production DB/corpus/jobs or annotator training. Database relations are conditional on real CLI/schema/SQL ordering and writer isolation, not established by this helper evidence.",
+        "id": "behavior-complement",
+        "observation_scope": "Real joins: main->load/export/prag/qa/tales; load/export/prag/qa->Duck+Stage+Tsv; load/export/tales->en::conllu or tokenizer/annotator; util supplies SHA1/path/time. TSV write includes header while read expects COPY output without header: direct write/read is not identity unless header separated. Prag eight/nine-column input and QA eight-column input are distinct tagged schemas. Integration test fixtures exercise real CoNLL representation but SQL branches remain unexecuted. SQL include_str files are external dependencies, not selected Rust sources.",
+        "operator": "In the admitted helper trace universe, invalid TSV width/sentinel, invalid parser headers/k/anchors and invalid pre-dispatch CLI flags exclude successful adapter results. Database post-check failure does not exclude committed effects; helper exclusions cannot establish SQL rollback.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "DuckDB executable absent from PATH and bounded known bin paths; no download/install, no mock subprocess SQL evidence. Source-derived transaction statements are not observed database guarantees. Tests inspected before selection. All production prefixes preserved byte-for-byte; additions are cfg(test) checks only. Partial syntax excludes macro expansion/name/type resolution.",
+        "domain": "Finite CPU inputs; valid UTF-8 and representable signed IDs/counters; temp filesystem fixtures under isolated run TMPDIR; no production DB/corpus/jobs or annotator training. Database relations are conditional on real CLI/schema/SQL ordering and writer isolation, not established by this helper evidence.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Real joins: main->load/export/prag/qa/tales; load/export/prag/qa->Duck+Stage+Tsv; load/export/tales->en::conllu or tokenizer/annotator; util supplies SHA1/path/time. TSV write includes header while read expects COPY output without header: direct write/read is not identity unless header separated. Prag eight/nine-column input and QA eight-column input are distinct tagged schemas. Integration test fixtures exercise real CoNLL representation but SQL branches remain unexecuted. SQL include_str files are external dependencies, not selected Rust sources.",
+        "operator": "Output text/table rows induce compatible-input/state relations across each join, preserving unknown IDs/provenance/unused records. NULL and empty are distinguishable in staged TSV, but bool spellings, stripped anchor whitespace, paragraph whitespace and overwritten CLI duplicates form many-to-one fibers. Exact database recovery requires ordered raw rows/comments/blank flags and external SQL assumptions.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "DuckDB executable absent from PATH and bounded known bin paths; no download/install, no mock subprocess SQL evidence. Source-derived transaction statements are not observed database guarantees. Tests inspected before selection. All production prefixes preserved byte-for-byte; additions are cfg(test) checks only. Partial syntax excludes macro expansion/name/type resolution.",
+        "domain": "Finite CPU inputs; valid UTF-8 and representable signed IDs/counters; temp filesystem fixtures under isolated run TMPDIR; no production DB/corpus/jobs or annotator training. Database relations are conditional on real CLI/schema/SQL ordering and writer isolation, not established by this helper evidence.",
+        "id": "representation-transport",
+        "observation_scope": "Real joins: main->load/export/prag/qa/tales; load/export/prag/qa->Duck+Stage+Tsv; load/export/tales->en::conllu or tokenizer/annotator; util supplies SHA1/path/time. TSV write includes header while read expects COPY output without header: direct write/read is not identity unless header separated. Prag eight/nine-column input and QA eight-column input are distinct tagged schemas. Integration test fixtures exercise real CoNLL representation but SQL branches remain unexecuted. SQL include_str files are external dependencies, not selected Rust sources.",
+        "operator": "Tsv::row encodes Null as backslash-N, rejects sentinel string, preserves empty string and writes header at creation. COPY-to read has no header skip. JSON serializes anchor arrays and comments before TSV so control characters travel as JSON escapes.",
+        "path": "model.md",
+        "required": false,
+        "section": "representation-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "DuckDB executable absent from PATH and bounded known bin paths; no download/install, no mock subprocess SQL evidence. Source-derived transaction statements are not observed database guarantees. Tests inspected before selection. All production prefixes preserved byte-for-byte; additions are cfg(test) checks only. Partial syntax excludes macro expansion/name/type resolution.",
+        "domain": "Finite CPU inputs; valid UTF-8 and representable signed IDs/counters; temp filesystem fixtures under isolated run TMPDIR; no production DB/corpus/jobs or annotator training. Database relations are conditional on real CLI/schema/SQL ordering and writer isolation, not established by this helper evidence.",
+        "id": "identity-coordinate-join",
+        "observation_scope": "Real joins: main->load/export/prag/qa/tales; load/export/prag/qa->Duck+Stage+Tsv; load/export/tales->en::conllu or tokenizer/annotator; util supplies SHA1/path/time. TSV write includes header while read expects COPY output without header: direct write/read is not identity unless header separated. Prag eight/nine-column input and QA eight-column input are distinct tagged schemas. Integration test fixtures exercise real CoNLL representation but SQL branches remain unexecuted. SQL include_str files are external dependencies, not selected Rust sources.",
+        "operator": "load matches (sent_id,text) against pre-state while qa maps doc_key then insists each anchor has unique sid with same doc and Some(para). Equal annotation bytes alone cannot identify a sentence; matching sent_id alone can admit an incorrect text.",
+        "path": "model.md",
+        "required": false,
+        "section": "identity-coordinate-join",
+        "status": "partial_source_derived_model",
+        "type": "identity_coordinate_join"
+      },
+      {
+        "assumptions": "DuckDB executable absent from PATH and bounded known bin paths; no download/install, no mock subprocess SQL evidence. Source-derived transaction statements are not observed database guarantees. Tests inspected before selection. All production prefixes preserved byte-for-byte; additions are cfg(test) checks only. Partial syntax excludes macro expansion/name/type resolution.",
+        "domain": "Finite CPU inputs; valid UTF-8 and representable signed IDs/counters; temp filesystem fixtures under isolated run TMPDIR; no production DB/corpus/jobs or annotator training. Database relations are conditional on real CLI/schema/SQL ordering and writer isolation, not established by this helper evidence.",
+        "id": "effect-frontier",
+        "observation_scope": "Real joins: main->load/export/prag/qa/tales; load/export/prag/qa->Duck+Stage+Tsv; load/export/tales->en::conllu or tokenizer/annotator; util supplies SHA1/path/time. TSV write includes header while read expects COPY output without header: direct write/read is not identity unless header separated. Prag eight/nine-column input and QA eight-column input are distinct tagged schemas. Integration test fixtures exercise real CoNLL representation but SQL branches remain unexecuted. SQL include_str files are external dependencies, not selected Rust sources.",
+        "operator": "Parse/duplicate/state checks and TSV validation precede write exec. Post TSV parsing/counts follow exec, and batch file loops preserve earlier effects after later failure. Partial TSV row buffers may contain prefixes even when count remains zero.",
+        "path": "model.md",
+        "required": false,
+        "section": "effect-frontier",
+        "status": "partial_source_derived_model",
+        "type": "effect_frontier"
+      },
+      {
+        "assumptions": "DuckDB executable absent from PATH and bounded known bin paths; no download/install, no mock subprocess SQL evidence. Source-derived transaction statements are not observed database guarantees. Tests inspected before selection. All production prefixes preserved byte-for-byte; additions are cfg(test) checks only. Partial syntax excludes macro expansion/name/type resolution.",
+        "domain": "Finite CPU inputs; valid UTF-8 and representable signed IDs/counters; temp filesystem fixtures under isolated run TMPDIR; no production DB/corpus/jobs or annotator training. Database relations are conditional on real CLI/schema/SQL ordering and writer isolation, not established by this helper evidence.",
+        "id": "tagged-independent-paths",
+        "observation_scope": "Real joins: main->load/export/prag/qa/tales; load/export/prag/qa->Duck+Stage+Tsv; load/export/tales->en::conllu or tokenizer/annotator; util supplies SHA1/path/time. TSV write includes header while read expects COPY output without header: direct write/read is not identity unless header separated. Prag eight/nine-column input and QA eight-column input are distinct tagged schemas. Integration test fixtures exercise real CoNLL representation but SQL branches remain unexecuted. SQL include_str files are external dependencies, not selected Rust sources.",
+        "operator": "Prag label schema, QA question schema, CoNLL load/export and tales segmentation are separate dispatched paths sharing transport utilities. One schema's parser success does not imply another's admission or DB table constraints.",
+        "path": "model.md",
+        "required": false,
+        "section": "tagged-independent-paths",
+        "status": "partial_source_derived_model",
+        "type": "tagged_independent_paths"
+      },
+      {
+        "assumptions": "DuckDB executable absent from PATH and bounded known bin paths; no download/install, no mock subprocess SQL evidence. Source-derived transaction statements are not observed database guarantees. Tests inspected before selection. All production prefixes preserved byte-for-byte; additions are cfg(test) checks only. Partial syntax excludes macro expansion/name/type resolution.",
+        "domain": "Finite CPU inputs; valid UTF-8 and representable signed IDs/counters; temp filesystem fixtures under isolated run TMPDIR; no production DB/corpus/jobs or annotator training. Database relations are conditional on real CLI/schema/SQL ordering and writer isolation, not established by this helper evidence.",
+        "id": "fixture-observation-limit",
+        "observation_scope": "Real joins: main->load/export/prag/qa/tales; load/export/prag/qa->Duck+Stage+Tsv; load/export/tales->en::conllu or tokenizer/annotator; util supplies SHA1/path/time. TSV write includes header while read expects COPY output without header: direct write/read is not identity unless header separated. Prag eight/nine-column input and QA eight-column input are distinct tagged schemas. Integration test fixtures exercise real CoNLL representation but SQL branches remain unexecuted. SQL include_str files are external dependencies, not selected Rust sources.",
+        "operator": "Existing DB integration tests are modeled but not run; new safe tests in those files exercise actual en::conllu Doc parsing and fixture layout only. They do not evaluate query strings, views, migrations or transactional behavior.",
+        "path": "model.md",
+        "required": false,
+        "section": "fixture-observation-limit",
+        "status": "partial_source_derived_model",
+        "type": "fixture_observation_limit"
+      },
+      {
+        "assumptions": "DuckDB executable absent from PATH and bounded known bin paths; no download/install, no mock subprocess SQL evidence. Source-derived transaction statements are not observed database guarantees. Tests inspected before selection. All production prefixes preserved byte-for-byte; additions are cfg(test) checks only. Partial syntax excludes macro expansion/name/type resolution.",
+        "domain": "Finite CPU inputs; valid UTF-8 and representable signed IDs/counters; temp filesystem fixtures under isolated run TMPDIR; no production DB/corpus/jobs or annotator training. Database relations are conditional on real CLI/schema/SQL ordering and writer isolation, not established by this helper evidence.",
+        "id": "cost-composition",
+        "observation_scope": "Real joins: main->load/export/prag/qa/tales; load/export/prag/qa->Duck+Stage+Tsv; load/export/tales->en::conllu or tokenizer/annotator; util supplies SHA1/path/time. TSV write includes header while read expects COPY output without header: direct write/read is not identity unless header separated. Prag eight/nine-column input and QA eight-column input are distinct tagged schemas. Integration test fixtures exercise real CoNLL representation but SQL branches remain unexecuted. SQL include_str files are external dependencies, not selected Rust sources.",
+        "operator": "Sum actual invoked helper costs plus process/SQL costs on the selected tagged path; do not add all CLI branches as if executed together. Full input/result materialization and sequential per-file DB calls remain, with no measured optimization claim.",
+        "path": "model.md",
+        "required": false,
+        "section": "cost-composition",
+        "status": "partial_source_derived_model",
+        "type": "cost_composition"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "annotation-store-adapters",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "tools/db/src/duck.rs",
+      "sha256": "4268f3da56edbc80675150e760cf85c1dea195c5dc8ad4913d3d77cdcb35a302"
+    },
+    {
+      "path": "tools/db/src/export.rs",
+      "sha256": "9e71e63e9a3a65eed5aca1bb650858072e0cd3abf5dff759f54215e5adfc997d"
+    },
+    {
+      "path": "tools/db/src/load.rs",
+      "sha256": "144f8e81de9c58435cc18a2a138f4e4777201c715183470d0a4b597dc39b53a8"
+    },
+    {
+      "path": "tools/db/src/main.rs",
+      "sha256": "82708640553be11397b2ed51eb21076c7b59f4bf1435d8365e34b0f7f6c662d1"
+    },
+    {
+      "path": "tools/db/src/prag.rs",
+      "sha256": "21242d408f81a8b965a795069da351ee16ab0e414607104ef0f8555b3ecbc0b3"
+    },
+    {
+      "path": "tools/db/src/qa.rs",
+      "sha256": "94da9edd7288165780ac86beff687333d29ff3b4bdc783f1cb631fafbe7c531e"
+    },
+    {
+      "path": "tools/db/src/tales.rs",
+      "sha256": "e5d6d925a1877564e36de47fadd740a68dc0dd4909c68d1ad37ac2004adba346"
+    },
+    {
+      "path": "tools/db/src/tsv.rs",
+      "sha256": "ae03009ea628e1b487c668519a8146e435ac9ed887f2fbdc031ccf176e9986cc"
+    },
+    {
+      "path": "tools/db/src/util.rs",
+      "sha256": "4da8e31f83442c17fa6d60fa41d496ec945a1ad48bd8c7d3fd46cae03b982d23"
+    },
+    {
+      "path": "tools/db/tests/prag.rs",
+      "sha256": "74cc0d7e38714dfdd1806a27e3c6367bb17cfea6de60857c2d31c963165a9d1c"
+    },
+    {
+      "path": "tools/db/tests/qa.rs",
+      "sha256": "d5ee5f0d4811fdbead2adc5d3cc52b393bb4d805d32c64559f695afde73369b4"
+    },
+    {
+      "path": "tools/db/tests/roundtrip.rs",
+      "sha256": "32a4dc30a9e54cccb6a8f8891c40998f00b507e6ea1b1987759cfc91af0971c8"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

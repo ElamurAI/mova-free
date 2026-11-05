@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms lanczos::tests"
+  ],
+  "children": [],
+  "cost": "algorithms/src/lanczos/mod.rs.groupant/model.md#approximant",
+  "description": "Symmetric Lanczos projection with twice full reorthogonalization",
+  "forward": [
+    "algorithms/src/lanczos/mod.rs.groupant/model.md#approximant"
+  ],
+  "id": "algorithm-lanczos",
+  "inverse": [
+    "algorithms/src/lanczos/mod.rs.groupant/model.md: behavior_complement then reverse_reconstruction"
+  ],
+  "limitations": [
+    "Partial syntax, finite observations; no universal solution-error or allocator-failure proof",
+    "Unsupported generic accuracy profiles remain gaps"
+  ],
+  "source": "algorithms/src/lanczos/mod.rs",
+  "state": "Deterministic bounded f64; allocation failures environmental"
+}

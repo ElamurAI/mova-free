@@ -220,3 +220,22 @@ impl From<std::io::Error> for FsError {
         }
     }
 }
+
+#[cfg(test)]
+mod wave31 {
+    use super::*;
+    #[test]
+    fn errno_fibers_and_display() {
+        for e in Errno::ALL {
+            assert_eq!(Errno::from_wasi(e.wasi()), Some(e));
+            assert_eq!(Errno::from_linux(e.linux()), Some(if e == Errno::NotCapable { Errno::Perm } else { e }));
+            assert!(!e.name().is_empty());
+        }
+        assert_eq!(Errno::from_linux(-1), None);
+        assert_eq!(Errno::from_wasi(u16::MAX), None);
+        assert_eq!(FsError::new(Errno::NoEnt).to_string(), "No such file or directory (os error 2)");
+        assert_eq!(FsError::with(Errno::Io, "detail").to_string(), "detail");
+        assert_eq!(FsError::from(std::io::Error::from_raw_os_error(2)).errno, Errno::NoEnt);
+        assert_eq!(Errno::ALL.into_iter().filter(|e| e.is_limit()).count(), 3);
+    }
+}

@@ -1,0 +1,99 @@
+{
+  "children": [
+    {
+      "id": "db-src-duck-stage-sql",
+      "path": "stage-sql.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Source-bound partial syntax; no macro expansion or semantic analysis",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source file, partial semantics",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source file, partial semantics",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "command_argument_transport",
+        "path": "model.md",
+        "scope": "Source file, partial semantics",
+        "section": "command_argument_transport",
+        "status": "partial_source_derived_model",
+        "type": "command_argument_transport"
+      },
+      {
+        "id": "stderr_failure_partition",
+        "path": "model.md",
+        "scope": "Source file, partial semantics",
+        "section": "stderr_failure_partition",
+        "status": "partial_source_derived_model",
+        "type": "stderr_failure_partition"
+      },
+      {
+        "id": "stage_resource_lifecycle",
+        "path": "model.md",
+        "scope": "Source file, partial semantics",
+        "section": "stage_resource_lifecycle",
+        "status": "partial_source_derived_model",
+        "type": "stage_resource_lifecycle"
+      },
+      {
+        "id": "sql_quote_representation",
+        "path": "model.md",
+        "scope": "Source file, partial semantics",
+        "section": "sql_quote_representation",
+        "status": "partial_source_derived_model",
+        "type": "sql_quote_representation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_checks_partial_scope"
+    }
+  },
+  "id": "db-src-duck",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../duck.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "4268f3da56edbc80675150e760cf85c1dea195c5dc8ad4913d3d77cdcb35a302"
+  },
+  "status": "partial_source_bound_model"
+}

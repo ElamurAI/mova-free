@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "cargo test -p math --lib wave28 -- --test-threads=1",
+    "cargo test -p math --test understand wave28_missing_path_skips_before_model_load -- --exact --test-threads=1",
+    "Same selected scope twice debug/release; seven compiled assertion controls and byte restoration"
+  ],
+  "children": [],
+  "cost": "Training constructor has three 2^22 arrays (~48MiB); averaged weights~16MiB. Precompute O(N²F); search O(S*B*(N+S)²) transitions times scoring/clone work and sorting.",
+  "description": "Reusable quantity-pool DAG search and postfix gold conversion.",
+  "forward": [
+    "Comb appends node retaining pool; Stop marks done. Candidate self-pairs absent, +/* only i<j. apply rejects zero divisor then nonfinite/negative/>1e12. Gold memoizes ordered subtree keys, normalizes commutative operand indices, allows1..8 operations and child indices<=255."
+  ],
+  "id": "math-deduct",
+  "inverse": [
+    "Canonical tkey admits swapped commutative children; final value admits many DAGs and weights. Memoized repeated subtrees hide repeated source tree occurrences."
+  ],
+  "limitations": [
+    "Partial source-derived model and lexical AST only",
+    "No model loading, annotated English, corpus/frozen suite, teacher, GPU or large training",
+    "No executable percent surrogate or universal accuracy guarantee",
+    "Only bounded helper branches executed; malformed structures and resource failures untested"
+  ],
+  "source": "math/src/deduct.rs",
+  "state": "Valid pool/feature indices and finite scores assumed. Gold can emit self-combinations for repeated subtrees although search forbids them; gold acceptance is not reachability. u8 indices/uses and training clocks lack overflow certificates."
+}

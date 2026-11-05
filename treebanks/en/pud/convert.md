@@ -2,7 +2,7 @@
 
 The rule language is `docs/dialect.md`. Conventions beyond the specification are in `../seeds-overview.md`. Matches were counted by `en expert-check`: `pud → mova` on PUD, `mova → pud` on EWT.
 
-PUD is test only. The trees and UPOS here are close to EWT, so the converter touches almost only the CoreNLP FEATS and `obl:agent` (`seeds/feats-corenlp.md`).
+PUD is test only. The trees and UPOS here are close to EWT, so the converter touches almost only the CoreNLP FEATS and `obl:agent` (`seeds.md#feats-corenlp`).
 
 ## pud → mova
 
@@ -134,7 +134,7 @@ from: mova
 to: pud
 match: v[feats.Mood=Imp]
 set: v[feats-=Mood]; v[feats+=VerbForm=Inf]
-source: seeds/feats-corenlp.md
+source: seeds.md#feats-corenlp
 ```
 
 ```convert
@@ -144,7 +144,7 @@ from: mova
 to: pud
 match: v[feats.VerbForm=Fin, feats.Tense=Pres, suffix!=s, form!=am|'m]
 set: v[feats-=Number]; v[feats-=Person]
-source: seeds/feats-corenlp.md
+source: seeds.md#feats-corenlp
 ```
 
 ```convert
@@ -154,7 +154,7 @@ from: mova
 to: pud
 match: v[feats.VerbForm=Fin, feats.Tense=Past, lemma!=be]
 set: v[feats-=Number]; v[feats-=Person]
-source: seeds/feats-corenlp.md
+source: seeds.md#feats-corenlp
 ```
 
 ```convert
@@ -164,7 +164,7 @@ from: mova
 to: pud
 match: v[feats.Voice]
 set: v[feats-=Voice]
-source: seeds/feats-corenlp.md
+source: seeds.md#feats-corenlp
 ```
 
 ```convert
@@ -174,7 +174,7 @@ from: mova
 to: pud
 match: o[rel=obl:agent]
 set: o[rel=obl]
-source: seeds/feats-corenlp.md
+source: seeds.md#feats-corenlp
 ```
 
 ```convert
@@ -184,7 +184,7 @@ from: mova
 to: pud
 match: p[upos=PRON, rel=nmod:poss, feats.Case=Gen]
 set: p[feats-=Case]
-source: seeds/feats-corenlp.md
+source: seeds.md#feats-corenlp
 ```
 
 

@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test --manifest-path tools/module-overlay/Cargo.toml --jobs 2"
+  ],
+  "children": [],
+  "cost": "Bounded byte scans, map ordering and filesystem effects; see source-specific cost model.",
+  "description": "Explicit source-composition CLI",
+  "forward": [
+    "See the source-bound forward relation and effect boundaries in model.md."
+  ],
+  "id": "module-overlay-cli",
+  "inverse": [
+    "Typed behavior complement first and nonunique reverse reconstruction second; specialized views preserve their observation scopes."
+  ],
+  "limitations": [
+    "Finite native fixtures and partial source-derived relations, not a semantic compatibility proof.",
+    "Stable inputs and exclusively owned output parent required; no hostile concurrent-writer snapshot guarantee."
+  ],
+  "source": "tools/module-overlay/src/main.rs",
+  "state": "Bound input metadata, exact byte copies and explicit output/status observations in the declared domain."
+}

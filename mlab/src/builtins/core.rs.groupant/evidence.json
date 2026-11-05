@@ -1,0 +1,31 @@
+{
+  "assertion_control": {
+    "changed_assertion": "assert_eq!((r.rows, r.cols), (3, 2));",
+    "compile_success": true,
+    "exact_restoration": true,
+    "exit": 101,
+    "original_assertion": "assert_eq!((r.rows, r.cols), (2, 3));",
+    "restored_exit": 0,
+    "source": "mlab/src/builtins/core.rs",
+    "test": "builtins::core::wave30::constructors"
+  },
+  "covered": "reshape inference/two-hole rejection, linspace singleton/zero, magic sums 3/4/6, warning flags, D-exponent parse",
+  "kind": "actual_code_semantics",
+  "positive_executions": 4,
+  "production_control": {
+    "compile_exit": 0,
+    "mutant_exit": 101,
+    "new": "return one(Mat::row(vec![lo]));",
+    "old": "return one(Mat::row(vec![hi]));",
+    "restored_exit": 0,
+    "restored_sha256": "8d26d9c57654af7591dfa87298cce7f55541f4d17d513f5e2ddf31f71a8caf15",
+    "source": "mlab/src/builtins/core.rs",
+    "test": "builtins::core::wave30::constructors"
+  },
+  "source": "mlab/src/builtins/core.rs",
+  "source_sha256": "8d26d9c57654af7591dfa87298cce7f55541f4d17d513f5e2ddf31f71a8caf15",
+  "tests": [
+    "builtins::core::wave30::constructors"
+  ],
+  "unexecuted": "No RNG, filesystem exist, timers, callbacks, registry dispatch, str2num, assertion numeric/message paths"
+}

@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-kruskal",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "f708e48322b16e547bfa5075e34861e1c8239a496b50e7065288fc448022b7ac",
+    "raw_code_location": "outside_this_sidecar"
+  },
+  "status": "partial_descriptive_instance",
+  "components": {
+    "ast": {
+      "status": "partial",
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "partial source syntax; no macro expansion or semantic resolution"
+    },
+    "approximant": {
+      "status": "partial",
+      "path": "model.md#approximant"
+    },
+    "invariant": {
+      "status": "partial",
+      "path": "model.md#invariant"
+    },
+    "descriptant": {
+      "status": "present",
+      "path": "model.md#descriptant"
+    },
+    "tests": {
+      "status": "executed_bounded_checks",
+      "path": "model.md#tests"
+    },
+    "obernants": [
+      {
+        "id": "behavior-complement",
+        "type": "behavior_complement",
+        "required": true,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "scope": "vertex count V and finite ordered undirected multigraph Edge records with usize endpoints and u64 weights, on <=64-bit usize targets"
+      },
+      {
+        "id": "reverse-reconstruction",
+        "type": "reverse_reconstruction",
+        "required": true,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "scope": "vertex count V and finite ordered undirected multigraph Edge records with usize endpoints and u64 weights, on <=64-bit usize targets"
+      },
+      {
+        "id": "orientation",
+        "type": "undirected_representation_equivalence",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "orientation",
+        "scope": "vertex count V and finite ordered undirected multigraph Edge records with usize endpoints and u64 weights, on <=64-bit usize targets"
+      },
+      {
+        "id": "positive-scaling",
+        "type": "weight_scaling",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "positive-scaling",
+        "scope": "vertex count V and finite ordered undirected multigraph Edge records with usize endpoints and u64 weights, on <=64-bit usize targets"
+      },
+      {
+        "id": "rejected-edge",
+        "type": "cycle_preimage",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "rejected-edge",
+        "scope": "vertex count V and finite ordered undirected multigraph Edge records with usize endpoints and u64 weights, on <=64-bit usize targets"
+      }
+    ]
+  }
+}

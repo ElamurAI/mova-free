@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test --offline --locked -p onto --bin onto -- --exact --test-threads=1 build::wave29::assemble_csr_senses_and_lu_ties build::wave29::source_parser_helpers_and_bad_edge",
+    "Paired source syntax; repeated bounded debug/release tests; mapped compiled controls"
+  ],
+  "children": [],
+  "cost": "O(B+W log W+E log E+L log L+sum s_w²), where repeated senses use linear contains. Memory O(retained text+concepts+edges+words+LUs).",
+  "description": "OEWN gzip/XML resolves member/sense IDs then relation targets then inverse pairs; FrameNet ZIP resolves frames and roles. finish sorts/deduplicates words and edges, keeps first word-sense occurrence, builds outgoing/incoming CSR and orders LU by word, descending annotations, ascending id.",
+  "forward": [
+    "OEWN gzip/XML resolves member/sense IDs then relation targets then inverse pairs; FrameNet ZIP resolves frames and roles. finish sorts/deduplicates words and edges, keeps first word-sense occurrence, builds outgoing/incoming CSR and orders LU by word, descending annotations, ascending id."
+  ],
+  "id": "onto-build",
+  "inverse": [
+    "Same Graph admits repeated edges, repeated dictionary mentions and senses, alternate LU annotation counts preserving order, and ignored XML relations; source bytes unrecoverable."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no semantic proof",
+    "Categorical/structural/effect semantics lack executable percent surrogate",
+    "Only selected synthetic branches tested; external effects unexecuted"
+  ],
+  "source": "onto/src/build.rs",
+  "state": "On representable valid inputs CSR edges are transposes. Ingestion errors leave partial mutations. finish checks endpoints but does not check taxonomy cycles. u32 pool/ID narrowing unchecked."
+}

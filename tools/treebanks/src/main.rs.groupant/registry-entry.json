@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named synthetic native tests; paired syntax projection"
+  ],
+  "children": [],
+  "cost": "O(archive bytes plus matcher costs across items plus output bytes), storing all cards and audit strings. collect seen keys expected hash-map costs plus linear found search O(hits²); indexing and parsing costs delegated. Required numeric counts must fit usize/u64.",
+  "description": "build streams release, rejects all stats mismatches before metadata gate, then builds indexes and collects references. collect runs matcher, filters noncitations, deduplicates by sorted explicit ids/DOIs else normalized bib title/text, audits first item, merges found identities preferring lower How/fuzzy tuple. build writes cards/language/global indexes then run artifacts sequentially. No seeds or converter writes.",
+  "forward": [
+    "build streams release, rejects all stats mismatches before metadata gate, then builds indexes and collects references. collect runs matcher, filters noncitations, deduplicates by sorted explicit ids/DOIs else normalized bib title/text, audits first item, merges found identities preferring lower How/fuzzy tuple. build writes cards/language/global indexes then run artifacts sequentially. No seeds or converter writes."
+  ],
+  "id": "treebanks-main",
+  "inverse": [
+    "Found list admits many duplicate references and origins; first duplicate survives audit and tighter match wins per identity. Counts and rendered cards cannot reconstruct dropped raw paragraphs or order of all duplicates.",
+    "Stats/meta failure precedes card writes. An item with no hits and no bib/id/doi/year-qualified reference is not audited or tallied. Existing seeds/convert.md are never targeted by build."
+  ],
+  "limitations": [
+    "Partial source models and finite fixtures only. No corpus/model/network/site/release execution or universal proof."
+  ],
+  "source": "tools/treebanks/src/main.rs",
+  "state": "Bounded helper inputs and source-derived CLI state/effects; see catalog."
+}

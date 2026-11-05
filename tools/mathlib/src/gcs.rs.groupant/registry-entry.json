@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Compile/source representation; paired syntax only, no runtime route execution"
+  ],
+  "children": [],
+  "cost": "O(JSON bytes+rows) per page plus full page JSON memory; no cycle detection or finite page limit, so token cycles permit unbounded requests. Network latency dominates and is unmeasured.",
+  "description": "list creates output and header, sends paginated JSON requests with encoded prefix/token, emits items in page order, sums parsed string sizes, and continues exactly while nextPageToken is a nonempty string.",
+  "forward": [
+    "list creates output and header, sends paginated JSON requests with encoded prefix/token, emits items in page order, sums parsed string sizes, and continues exactly while nextPageToken is a nonempty string."
+  ],
+  "id": "mathlib-gcs",
+  "inverse": [
+    "HTTP error cannot yield item rows for that response; parsing occurs only after successful text. Output/header can already exist when first request fails. Listing does not download object content.",
+    "For observed TSV, compatible JSON pages may have arbitrary unselected fields and page boundaries; size 0 can arise from '0', absent, nonstring or malformed size. Token history is lost."
+  ],
+  "limitations": [
+    "No network/DNS/download, real catalog/corpus/model/teacher or database execution. Effect paths are source-derived; finite helper tests are not universal verification. No executable percentage surrogate or speed claim; future caps require metric/domain/reference and remain 1/2/5/10%."
+  ],
+  "source": "tools/mathlib/src/gcs.rs",
+  "state": "Absent/nonarray items emit no rows. Missing or nonstring sizes become zero. Output is a prefix on request/parse/write failure. Counters require no overflow for this arithmetic model; bucket is interpolated without encoding."
+}

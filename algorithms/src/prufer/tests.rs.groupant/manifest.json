@@ -1,0 +1,112 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-prufer-tests-behavior_complement",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "Universe U is candidate implementations x named outcomes. A wrong implementation violating a sampled assertion cannot yield all-pass. The compiled production mutant targeting canonical_minimum_leaf is a witnessed exclusion. Unsampled defects can still pass; finite coverage is explicit.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "8eb9de780b8746676a1087c494b38eb17e66470e08f6ee471ac722ce79d1b2ea",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-prufer-tests-reverse_reconstruction",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "The all-pass observation admits every implementation agreeing on sampled assertions, including ones wrong elsewhere. A failing assertion constrains the mismatching observation but need not uniquely identify a defect. Named identities preserve more information than only a count.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "8eb9de780b8746676a1087c494b38eb17e66470e08f6ee471ac722ce79d1b2ea",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-prufer-tests-oracle_independence",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "Independent witness: All words for n=0..6 compare both directions with independent adjacency-matrix leaf elimination, connectivity, edge uniqueness, canonical order and degree laws; explicit minimum-leaf example and invalid tree/code boundaries. The oracle uses a distinct representation or exhaustive candidate enumeration; self-roundtrip alone is insufficient.",
+        "path": "model.md",
+        "section": "oracle_independence",
+        "status": "partial_relational_specification",
+        "subject_revision": "8eb9de780b8746676a1087c494b38eb17e66470e08f6ee471ac722ce79d1b2ea",
+        "type": "oracle_independence"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-prufer-tests-independent_leaf_schedule",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "reference_encode reconstructs a Boolean adjacency matrix from decoded edges, scans labels in increasing order for a row with one true neighbor, emits that neighbor and removes the edge. It shares neither production heap nor production degree bookkeeping. Comparing its output to each original short word discriminates a decoder that preserves roundtrips only by sharing an incorrect leaf order with encode. canonical_minimum_leaf additionally binds a literal tree to [4,4,4,3]; the compiled production code.push(leaf) mutation fails this named assertion.",
+        "path": "model.md",
+        "section": "independent_leaf_schedule",
+        "status": "partial_relational_specification",
+        "subject_revision": "8eb9de780b8746676a1087c494b38eb17e66470e08f6ee471ac722ce79d1b2ea",
+        "type": "independent_leaf_schedule"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-prufer-tests-degree_connectivity_discrimination",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "assert_tree independently checks n-1 edges, u<v<n, strict lexicographic edge order, reachability from 0, and degree(v)=1+occ(v) for n>1 (zero degree for n=1). Degree counts alone do not establish a tree: a triangle plus a disjoint edge on five vertices has four edges and degrees [2,2,2,1,1], yet is disconnected. Reachability rejects this candidate even though that degree vector matches a valid word's occurrence law. Every word through n=6 supplies 1443 checks across n=0..6; the empty cases use their explicit conventions.",
+        "path": "model.md",
+        "section": "degree_connectivity_discrimination",
+        "status": "partial_relational_specification",
+        "subject_revision": "8eb9de780b8746676a1087c494b38eb17e66470e08f6ee471ac722ce79d1b2ea",
+        "type": "degree_connectivity_discrimination"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-prufer-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "8eb9de780b8746676a1087c494b38eb17e66470e08f6ee471ac722ce79d1b2ea"
+  },
+  "status": "partial_source_derived_instance"
+}

@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "builtins::core::wave30::constructors",
+    "Repeated debug/release named outcomes; compiled assertion mutant; exact restore; paired syntax"
+  ],
+  "children": [],
+  "cost": "Creators O(output area), reshape O(input area clone+dimension count), magic O(n²), repmat O(repeated area), strfind O(text*pattern); arrayfun O(cells*callback cost) with retained outputs. No bounded whole-file callback/runtime guarantee.",
+  "description": "register binds matrix construction, shape/type/string, RNG, callbacks and control functions. reshape gathers dimensions and computes the unchecked known-dimension product before hole counting; after bounded nonoverflowing arithmetic it allows one empty inferred dimension, checks known-product divisibility then 2D/trailing singleton dimensions then numel equality, and changes only rows/cols. linspace floors count, returns 1x0 for !(n>=1), hi for n=1 and forces final hi otherwise. magic selects odd/doubly/singly even constructions with n=2 exceptional matrix. warning on/off changes interpreter flag before formatting paths.",
+  "forward": [
+    "register binds matrix construction, shape/type/string, RNG, callbacks and control functions. reshape gathers dimensions and computes the unchecked known-dimension product before hole counting; after bounded nonoverflowing arithmetic it allows one empty inferred dimension, checks known-product divisibility then 2D/trailing singleton dimensions then numel equality, and changes only rows/cols. linspace floors count, returns 1x0 for !(n>=1), hi for n=1 and forces final hi otherwise. magic selects odd/doubly/singly even constructions with n=2 exceptional matrix. warning on/off changes interpreter flag before formatting paths."
+  ],
+  "id": "mlab-builtins-core",
+  "inverse": [
+    "Bounded reshape excludes buffer reordering or size change on success and rejects two unknown dimensions. linspace n=1 excludes lo when lo!=hi. Core does not exclude side effects: RNG mutates, exist can inspect files, callbacks execute user functions and tic/toc use wall time. assert checks real parts only; imaginary equality is not guaranteed.",
+    "reshape result and original shape reconstruct original matrix buffers/class/im if dimensions multiply to same n; dimensions arguments are nonunique due trailing ones and inferred hole. linspace output has multiple count spellings after floor, empty fibers include NaN/nonpositive. warning final flag does not reveal prior flag or all prior commands."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no semantic proof or executable surrogate",
+    "Safe checks use tiny finite dimensions, capture interpreter and deterministic helpers. Unchecked usize products, casts, empty randi limit indexing and huge allocation remain gaps. No external file, RNG shuffle, wall-clock, arbitrary callback or source-evaluation paths executed."
+  ],
+  "source": "mlab/src/builtins/core.rs",
+  "state": "Safe checks use tiny finite dimensions, capture interpreter and deterministic helpers. Unchecked usize products, casts, empty randi limit indexing and huge allocation remain gaps. No external file, RNG shuffle, wall-clock, arbitrary callback or source-evaluation paths executed."
+}

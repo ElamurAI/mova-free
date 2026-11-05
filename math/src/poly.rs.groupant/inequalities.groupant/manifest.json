@@ -1,0 +1,94 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Parent projection restricted to[22090,25985)",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "critical_merge",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "critical_merge",
+        "status": "partial_source_derived_model",
+        "type": "critical_merge"
+      },
+      {
+        "id": "interior_choice",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "interior_choice",
+        "status": "partial_source_derived_model",
+        "type": "interior_choice"
+      },
+      {
+        "id": "operator_mismatch",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "operator_mismatch",
+        "status": "partial_source_derived_model",
+        "type": "operator_mismatch"
+      },
+      {
+        "id": "endpoint_join",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "endpoint_join",
+        "status": "partial_source_derived_model",
+        "type": "endpoint_join"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 25985,
+      "start": 22090
+    },
+    "description": "solve_ineq collects approximate critical points, samples intervals and merges through accepted endpoints. dens preserves canceled holes. Many functions share interval output. Nonfinite sort, close roots and Ne exact-check mismatch limit guarantees; count root work plus per-interval evaluations.",
+    "source_bytes_sha256": "88bd0cbc765285b366e9c7140446452a47a3aa6f69b24584d03b76711a744e83"
+  },
+  "id": "math-poly-inequalities",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../poly.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "28c7c69c8282270b6ac3bde99e6947108ec5be0f908d510806c4aefdfad61fca"
+  },
+  "status": "partial_source_bound_model"
+}

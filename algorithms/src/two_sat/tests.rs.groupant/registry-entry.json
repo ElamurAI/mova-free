@@ -1,0 +1,28 @@
+{
+  "id": "algorithm-two-sat-tests",
+  "source": "algorithms/src/two_sat/tests.rs",
+  "children": [
+    
+  ],
+  "description": "two_sat finite independent oracle tests",
+  "state": "Fixed finite Rust fixtures and the production algorithm, observed as per-test pass or assertion failure. The compiler, Rust test runner and successful allocations are trusted. Test acceptance is not unrestricted implementation equivalence.",
+  "cost": "The fixed oracle domains are bounded: simple paths use DFS exponential in vertex count; truth tables cost O(2^V C); cut enumeration costs O(2^V V^2). Only the relevant oracle executes in each file. Production runtime bounds cannot be inferred from this test cost.",
+  "forward": [
+    "Enumerate all 1,024 subsets of the ten unordered two-literal clauses over two variables. A separate four-valuation truth table checks satisfiability and every returned witness. Additional cases cover empty input, units, contradictions, tautologies, first validation failures, checked count overflow, a rank-order regression, clause permutations/duplicates, polarity flips and a 2,000-variable implication chain."
+  ],
+  "inverse": [
+    "In the universe of fixture/reference/output triples, acceptance excludes any tested objective mismatch, invalid returned witness or mismatched explicit error payload. Behavior outside the named fixture set is not excluded. This acceptance relation is a finite predicate defined by assertions, not a claim that passing forbids all production bugs.",
+    "A failed equality assertion reconstructs the candidate implementation/reference/fixture triples producing unequal compared projections at that location. A pass reconstructs the equivalence class of implementations agreeing on all observed projections, which can include faulty implementations outside the tested domain. No unique source bug or causal diagnosis follows from the failure text.",
+    "Enumerate all 1,024 subsets of the ten unordered two-literal clauses over two variables. A separate four-valuation truth table checks satisfiability and every returned witness. Additional cases cover empty input, units, contradictions, tautologies, first validation failures, checked count overflow, a rank-order regression, clause permutations/duplicates, polarity flips and a 2,000-variable implication chain.",
+    "Reverse the final component-rank comparison from > to <; the canonical_components_require_topological_ranks assertion must fail after compilation.",
+    "Extending the fixture set intersects the set of passing implementations with additional assertion constraints. An implementation can pass the current finite set and fail an extension. Repeating unchanged tests in debug and release constrains profile-dependent behavior but does not expand the graph/formula domain or prove total correctness."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline --lib (debug/release twice)",
+    "Focused rustfmt, strict all-target Clippy, repeated syntax, compiled production mutant"
+  ],
+  "limitations": [
+    "Finite correspondence only; partial syntax; no general proof or approximate profile",
+    "Allocation failure and u128 exhaustion are not exercised"
+  ]
+}

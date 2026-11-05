@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-longest-common-substring",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "f3a8260cb75c239fe448e10bfd4b69e3901d478a030fcb267aafdb1aa2c803ec",
+    "raw_code_location": "outside_this_sidecar"
+  },
+  "status": "partial_descriptive_instance",
+  "components": {
+    "ast": {
+      "status": "partial",
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "source syntax only; no expansion or semantic resolution"
+    },
+    "approximant": {
+      "status": "partial",
+      "path": "model.md#approximant"
+    },
+    "invariant": {
+      "status": "partial",
+      "description": "model.md#approximant"
+    },
+    "descriptant": {
+      "status": "present",
+      "path": "model.md#descriptant"
+    },
+    "tests": {
+      "status": "existing_checks_referenced",
+      "path": "model.md#tests"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "type": "behavior_complement",
+        "required": true,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "type": "reverse_reconstruction",
+        "required": true,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "suffix_recurrence",
+        "type": "suffix_recurrence",
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "suffix_recurrence",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "tie_selection",
+        "type": "tie_selection",
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "tie_selection",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "empty_fiber",
+        "type": "empty_fiber",
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "empty_fiber",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "swap_projection",
+        "type": "swap_projection",
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "swap_projection",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "unit_projection",
+        "type": "unit_projection",
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "unit_projection",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "storage_bound",
+        "type": "storage_bound",
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "storage_bound",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      }
+    ]
+  },
+  "registry": {
+    "path": "../../../../models/contracts.json",
+    "node": "algorithm-longest-common-substring"
+  },
+  "extensions": {
+    "limits": "No universal proof or executable fast approximant; allocation and Eq costs retain explicit premises."
+  }
+}

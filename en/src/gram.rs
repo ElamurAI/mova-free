@@ -275,3 +275,28 @@ impl std::fmt::Display for Feats {
         f.write_str(&v.join("|"))
     }
 }
+
+#[cfg(test)]
+mod wave27_tests {
+    use super::*;
+    #[test]
+    fn feature_projection_and_namespace() {
+        let (f, n) = Feats::parse("Number=Plur|Number=Plur|Typo=Yes|bad");
+        assert_eq!(n, 1);
+        assert_eq!(f.iter().count(), 2);
+        assert!(!f.universal().has(Feat::TypoYes));
+        assert_eq!(Feats::parse("_"), (Feats(0), 0));
+        assert_eq!(Feats::parse("").1, 1);
+        assert!(Tag::parse("nn").is_none());
+        assert!(serde_json::from_str::<Tag>("255").is_err());
+        for &t in Tag::ALL {
+            assert_eq!(
+                serde_json::from_str::<Tag>(&serde_json::to_string(&t).unwrap()).unwrap(),
+                t
+            );
+        }
+        assert_eq!(Sym::local(7).index(), 7);
+        assert!(Sym::local(7).is_local());
+        assert!(!Sym::NONE.is_local());
+    }
+}

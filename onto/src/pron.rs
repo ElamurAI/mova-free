@@ -153,3 +153,26 @@ pub fn animate(kb: &Kb, lemma: &str, ctx: &Ctx) -> Option<Tri> {
 pub fn human(kb: &Kb, lemma: &str, ctx: &Ctx) -> Option<Tri> {
     info(kb, lemma, ctx).map(|i| i.human)
 }
+
+#[cfg(test)]
+mod wave29_tests {
+    use super::*;
+    #[test]
+    fn cues_and_layer_persona() {
+        assert_eq!(gender_cue("a QUEEN"), Some((Gender::Fem, "queen".into())));
+        assert_eq!(gender_cue("queen and king"), None);
+        let mut k = Kb::new(crate::wave29_tests::graph());
+        let ctx = Ctx {
+            sentence: None,
+            layer: 0,
+        };
+        assert_eq!(info(&k, "crow", &ctx).unwrap().pronouns(), &["it"]);
+        k.add_assert(crate::wave29_tests::seed("speak", 0, 0, true))
+            .unwrap();
+        let p = info(&k, "crow", &ctx).unwrap();
+        assert!(p.persona);
+        assert_eq!(p.gender, Gender::Unknown);
+        assert_eq!(p.pronouns(), &["he", "she", "it"]);
+        assert!(info(&k, "missing", &ctx).is_none());
+    }
+}

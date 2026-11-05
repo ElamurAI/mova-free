@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "whole_bound",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "whole_bound",
+        "status": "partial_source_derived_model",
+        "type": "whole_bound"
+      },
+      {
+        "id": "utf8_edits",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "utf8_edits",
+        "status": "partial_source_derived_model",
+        "type": "utf8_edits"
+      },
+      {
+        "id": "last_state",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "last_state",
+        "status": "partial_source_derived_model",
+        "type": "last_state"
+      },
+      {
+        "id": "exact_counter",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "exact_counter",
+        "status": "partial_source_derived_model",
+        "type": "exact_counter"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 19535,
+      "start": 15579
+    },
+    "description": "Seed/remember push literals without counters. code evaluates Whole and bounded candidate set, computes UTF-8 aligned edit, verifies decode, updates last only for From, increments totals then pushes."
+  },
+  "id": "roundtrip-volume-residual-literal-copy",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../vol.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "0e6fc39eafffdb765f32f972847334f79853e300c31411225a581b181adb5165"
+  },
+  "status": "partial_source_bound_model"
+}

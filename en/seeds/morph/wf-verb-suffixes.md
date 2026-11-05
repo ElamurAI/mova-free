@@ -23,3 +23,15 @@ require: w[upos=VERB|PROPN|X]
 severity: warn
 source: Jespersen MEG VI 25.1₁; Sweet NEG I §1754–1758
 ```
+
+```derive
+# suffix <affix> <classes of the stem> <tags of the result> | <gloss>; see wf-adj-suffixes for the format.
+# -ise is the British spelling of -ize: wf-spelling-variants maps it before these rules.
+suffix ize    N,A  VB,VBP | make <stem>, turn into <stem>
+suffix ify    N,A  VB,VBP | make <stem>
+# A verb derived here has every verb form (tokenized, tokenizes, tokenizing); only on a word derived by these rules.
+inflect s     V    VBZ
+inflect es    V    VBZ
+inflect ed    V    VBD,VBN,JJ
+inflect ing   V    VBG,NN,JJ
+```

@@ -1,0 +1,46 @@
+{
+  "compiled_mutant": "Change RHS multiplier 6 to 3; analytic_oracle assertion fails.",
+  "date": "2026-10-30",
+  "evidence": [
+    {
+      "name": "debug1.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "debug2.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "release1.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "release2.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "clippy.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "mutant-natural_cubic_spline.log",
+      "sha256": "8051505fff89b9b0045de4613034d0ca3de6f763c9103087c0a189e9213a87c0"
+    },
+    {
+      "name": "natural_cubic_spline-mod.rs-syntax1.json",
+      "sha256": "8aee6777a41f70c92a14058e67666ebe36d65ce1b929924f26156a6b3a4ed5d4"
+    },
+    {
+      "name": "natural_cubic_spline-mod.rs-syntax2.json",
+      "sha256": "8aee6777a41f70c92a14058e67666ebe36d65ce1b929924f26156a6b3a4ed5d4"
+    }
+  ],
+  "external_run": "$MOVA_DATA/runs/octopus-wave25-numerical-2026-10-30",
+  "limitations": [
+    "No timing or universal numerical accuracy claim"
+  ],
+  "repetitions": "15 focused tests twice debug and twice optimized release; normalized output identical; positive reruns after exact mutant restoration",
+  "source": "algorithms/src/natural_cubic_spline/mod.rs",
+  "source_sha256": "60625181f8e41c7bee36109e8e51b0329bd9e15b7ee3e2a1687d974aeda81634",
+  "syntax": "Two fresh projections byte-identical"
+}

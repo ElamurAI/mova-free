@@ -1,0 +1,127 @@
+{
+  "children": [
+    {
+      "id": "corpus-register-counting",
+      "path": "counting.groupant"
+    },
+    {
+      "id": "corpus-register-ranking",
+      "path": "ranking.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "byte-tokenization",
+        "path": "model.md",
+        "section": "byte-tokenization",
+        "status": "partial_source_derived_model",
+        "type": "unicode_projection"
+      },
+      {
+        "id": "pooled-score",
+        "path": "model.md",
+        "section": "pooled-score",
+        "status": "partial_source_derived_model",
+        "type": "numeric_relation"
+      },
+      {
+        "id": "swap-law",
+        "path": "model.md",
+        "section": "swap-law",
+        "status": "partial_source_derived_model",
+        "type": "equivariance"
+      },
+      {
+        "id": "degeneracy",
+        "path": "model.md",
+        "section": "degeneracy",
+        "status": "partial_source_derived_model",
+        "type": "ieee_partition"
+      },
+      {
+        "id": "threshold-order",
+        "path": "model.md",
+        "section": "threshold-order",
+        "status": "partial_source_derived_model",
+        "type": "filter_relation"
+      },
+      {
+        "id": "body-edge",
+        "path": "model.md",
+        "section": "body-edge",
+        "status": "partial_source_derived_model",
+        "type": "composition_relation"
+      },
+      {
+        "id": "io-errors",
+        "path": "model.md",
+        "section": "io-errors",
+        "status": "partial_source_derived_model",
+        "type": "failure_partition"
+      },
+      {
+        "id": "precision-boundary",
+        "path": "model.md",
+        "section": "precision-boundary",
+        "status": "partial_source_derived_model",
+        "type": "representation_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_native_checks"
+    }
+  },
+  "id": "corpus-register",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../register.rs",
+    "sha256": "3e3f7b17b9e68917114b3a5b3e43df10a484fde1483b3656b6604eaa6e1f4eef"
+  },
+  "status": "partial_source_derived_instance"
+}

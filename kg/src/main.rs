@@ -328,3 +328,47 @@ fn parse_lines(vesum: &Path, store: &Path, input: &Path, out: &Path) -> Result<(
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod wave29 {
+    use super::*;
+    fn bz(path: &Path, text: &str) {
+        let mut enc =
+            bzip2::write::BzEncoder::new(File::create(path).unwrap(), bzip2::Compression::best());
+        enc.write_all(text.as_bytes()).unwrap();
+        enc.finish().unwrap();
+    }
+    #[test]
+    fn synthetic_reader_parse_and_sub_precedence() {
+        let dir = std::env::temp_dir().join(format!("kg-wave29-cli-{}", std::process::id()));
+        fs::create_dir_all(&dir).unwrap();
+        let input = dir.join("input.bz2");
+        bz(&input, "42\tignored-language\tКіт спить.\n");
+        assert_eq!(
+            read_tatoeba(&input).unwrap(),
+            vec![(42, "Кіт спить.".into())]
+        );
+        bz(&input, "42\tmissing text\n");
+        assert!(read_tatoeba(&input).is_err());
+        fs::write(dir.join("names.tsv"), "").unwrap();
+        let dict = dir.join("dict.bz2");
+        bz(
+            &dict,
+            "кіт noun:anim:m:v_naz\nспати verb:imperf:inf\n  спить verb:imperf:pres:s:3\n",
+        );
+        let rows = dir.join("rows.tsv");
+        let out = dir.join("out.tsv");
+        fs::write(&rows, "1\tКіт спить.\nmalformed\n2\t1?\n").unwrap();
+        parse_lines(&dict, &dir, &rows, &out).unwrap();
+        let text = fs::read_to_string(&out).unwrap();
+        assert!(text.starts_with("1\tok\tКіт спить."));
+        assert!(text.contains("2\tquestion\t1?\t"));
+        assert_eq!(text.lines().count(), 2);
+        let err = sub(&dir.join("absent"), "bogus", &dir.join("forbidden"))
+            .unwrap_err()
+            .to_string();
+        assert!(err.contains("unknown flags"));
+        assert!(!dir.join("forbidden").exists());
+        fs::remove_dir_all(dir).unwrap();
+    }
+}

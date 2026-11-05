@@ -1,0 +1,15 @@
+[package]
+name = "annotation-review-worker"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+libc = "0.2"
+anyhow = "1"
+en = { path = "../../en" }
+prag = { path = "../../prag" }
+teacher = { package = "mova-teacher", path = "../../teacher" }

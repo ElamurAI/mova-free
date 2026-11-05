@@ -1,0 +1,125 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "On successful output exclude sentence IDs that skip an emitted row or reset per paragraph. Do not infer this constraint if filesystem writing fails.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Given TSV rows and summary retain all books, annotator token sequences and detokenization results matching the rows, word count and diff. Header constrains path/selection but cannot recover original whitespace.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "emission",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Conditioned on tokenizer/detokenizer, each nonempty detokenized sentence yields paragraph index pi+1, globally increasing sentence ID and tabs replaced by spaces. words counts tokens containing an alphanumeric character; diff counts paragraphs not reproduced verbatim. Header carries raw path and selections. No guarantee that arbitrary heading text is automatically isolated without blank lines.",
+        "path": "model.md",
+        "section": "emission",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "serialization_projection"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "resource",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Let N be total input bytes, L the line count and B selected bytes. Extraction takes O(N+L+B) time: text.lines scans the entire input, including excluded text. Its auxiliary memory is O(L+B); the whole prep call also retains the raw input, so extraction-stage retained memory is O(N+L+B). Sentence scan takes O(n+sum token bytes); output adds O(Bout) time/storage, plus opaque annotator and token storage costs. These bounds assume finite valid UTF-8 and successful allocation; no measured timing prediction.",
+        "path": "model.md",
+        "section": "resource",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "resource_bound"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "dependencies",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "prep reads exactly the named input before pure extraction; annotation is acquired only after nonempty extraction; output write follows full formatting. Annotator acquisition and filesystem effects are opaque. Native test covers only the early-error no-write boundary.",
+        "path": "model.md",
+        "section": "dependencies",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "effect_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 3257,
+      "start": 1779
+    },
+    "description": "Logical source region \"/// Cut out\" through before \"/// Pure extraction\". Conditioned on tokenizer/detokenizer, each nonempty detokenized sentence yields paragraph index pi+1, globally increasing sentence ID and tabs replaced by spaces. words counts tokens containing an alphanumeric character; diff counts paragraphs not reproduced verbatim. Header carries raw path and selections. No guarantee that arbitrary heading text is automatically isolated without blank lines. Let N be total input bytes, L the line count and B selected bytes. Extraction takes O(N+L+B) time: text.lines scans the entire input, including excluded text. Its auxiliary memory is O(L+B); the whole prep call also retains the raw input, so extraction-stage retained memory is O(N+L+B). Sentence scan takes O(n+sum token bytes); output adds O(Bout) time/storage, plus opaque annotator and token storage costs. These bounds assume finite valid UTF-8 and successful allocation; no measured timing prediction. prep reads exactly the named input before pure extraction; annotation is acquired only after nonempty extraction; output write follows full formatting. Annotator acquisition and filesystem effects are opaque. Native test covers only the early-error no-write boundary. Parent composition retains shared text/clock/intermediate values. Full-file wrapper and test gaps remain in the root."
+  },
+  "id": "world-poly-emission",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../poly.rs",
+    "sha256": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c"
+  },
+  "status": "partial_source_derived_instance"
+}

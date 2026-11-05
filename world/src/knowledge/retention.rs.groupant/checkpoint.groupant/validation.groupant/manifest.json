@@ -1,0 +1,117 @@
+{
+  "children": [
+    {
+      "id": "retention-envelope-gates",
+      "path": "envelope-gates.groupant"
+    },
+    {
+      "id": "retention-source-links",
+      "path": "source-links.groupant"
+    },
+    {
+      "id": "retention-kind-provenance",
+      "path": "kind-provenance.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "scope": "Shared whole-source partial projection; fragment byte_range narrows source scope. Macro expansion and semantic analysis absent.",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#wave34-composition",
+      "status": "source_derived_partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "scope": "Existing invariant section records local cost; no measurements implied.",
+      "section": "invariant",
+      "status": "source_derived_conditional"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_derived"
+    },
+    "obernants": [
+      {
+        "id": "retention-checkpoint-validation-behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Ordered checkpoint acceptance gates",
+        "section": "behavior-complement",
+        "status": "partial_source_derived_specification",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "retention-checkpoint-validation-reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "Ordered checkpoint acceptance gates",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "retention-checkpoint-validation-first-error",
+        "path": "model.md",
+        "required": false,
+        "scope": "Ordered checkpoint acceptance gates",
+        "section": "first-error",
+        "status": "partial_source_derived_specification",
+        "type": "decision_partition"
+      },
+      {
+        "id": "retention-checkpoint-validation-provenance-boundary",
+        "path": "model.md",
+        "required": false,
+        "scope": "Ordered checkpoint acceptance gates",
+        "section": "provenance-boundary",
+        "status": "partial_source_derived_specification",
+        "type": "admissibility_relation"
+      },
+      {
+        "id": "retention-checkpoint-validation-topology-scope",
+        "path": "model.md",
+        "required": false,
+        "scope": "Ordered checkpoint acceptance gates",
+        "section": "topology-scope",
+        "status": "partial_source_derived_specification",
+        "type": "structural_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_existing_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 9087,
+      "start": 6749
+    },
+    "description": "Ordered checkpoint acceptance gates"
+  },
+  "id": "retention-checkpoint-validation",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../retention.rs",
+    "revision": "sha256:89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34",
+    "sha256": "89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34"
+  },
+  "status": "partial_source_bound_model"
+}

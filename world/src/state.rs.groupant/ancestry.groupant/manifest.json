@@ -1,0 +1,134 @@
+{
+  "schema": 1,
+  "kind": "groupant_fragment",
+  "id": "hot-state-ancestry",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../../state.rs",
+    "sha256": "135a1beeb0da2a0d86fdde81a66c9ffbffa3f6783abee5fa666e0e3dfd5a778e"
+  },
+  "coverage": {
+    "description": "ancestry_path/walk and ancestry call adapters in materialise/story/other_branch; excludes file I/O, formatting and branch selection"
+  },
+  "components": {
+    "ast": {
+      "path": "../syntax.json",
+      "status": "partial",
+      "format": "rust_syntax_projection"
+    },
+    "approximant": {
+      "path": "../model.md#model",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "../model.md#model",
+      "status": "finite_checked"
+    },
+    "cost": {
+      "path": "../model.md#model",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "../model.md#model",
+      "status": "present"
+    },
+    "tests": {
+      "path": "../model.md#tests",
+      "status": "bounded_evidence"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "../model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "Fixed finite maps from IDs to (parent,time,metric,note), requested ID and strict/permissive missing policy; successful allocation.",
+        "observation_scope": "Pure path/error transition; adapter ordering is source-inspected only.",
+        "operator": "U=(map,id,policy,path-or-error); U minus Walk excludes successful paths with repeated IDs, skipped parents, included origin, or missing terminal under strict mode; it excludes wrong error partitions.",
+        "approximation_semantics": "Conditional source-derived target; finite observations do not prove universal correspondence.",
+        "assumptions": "Fixed finite maps from IDs to (parent,time,metric,note), requested ID and strict/permissive missing policy; successful allocation.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "antecedents",
+        "type": "reverse_reconstruction",
+        "path": "../model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "Fixed finite maps from IDs to (parent,time,metric,note), requested ID and strict/permissive missing policy; successful allocation.",
+        "observation_scope": "Pure path/error transition; adapter ordering is source-inspected only.",
+        "operator": "For successful nonempty path p, compatible maps have parent(p[i])=p[i+1]; final parent is origin, or final ID is absent in permissive mode. Off-path rows and metadata vary freely. Empty path requires start origin. Error fibers retain graphs producing the same first repeat or missing ID.",
+        "approximation_semantics": "Conditional source-derived target; finite observations do not prove universal correspondence.",
+        "assumptions": "Fixed finite maps from IDs to (parent,time,metric,note), requested ID and strict/permissive missing policy; successful allocation.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "resource",
+        "type": "resource_preimage",
+        "path": "../model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "Fixed finite maps from IDs to (parent,time,metric,note), requested ID and strict/permissive missing policy; successful allocation.",
+        "observation_scope": "Pure path/error transition; adapter ordering is source-inspected only.",
+        "operator": "Accepted strict path length <= map size; permissive path length <= map size+1. These ID-count bounds exclude string byte storage and allocation failure.",
+        "approximation_semantics": "Conditional source-derived target; finite observations do not prove universal correspondence.",
+        "assumptions": "Fixed finite maps from IDs to (parent,time,metric,note), requested ID and strict/permissive missing policy; successful allocation.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "metadata",
+        "type": "information_loss",
+        "path": "../model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "Fixed finite maps from IDs to (parent,time,metric,note), requested ID and strict/permissive missing policy; successful allocation.",
+        "observation_scope": "Pure path/error transition; adapter ordering is source-inspected only.",
+        "operator": "Changing times, metrics, notes and off-path rows preserves path/error output when visited parent links remain fixed. Those values cannot be recovered from the path.",
+        "approximation_semantics": "Conditional source-derived target; finite observations do not prove universal correspondence.",
+        "assumptions": "Fixed finite maps from IDs to (parent,time,metric,note), requested ID and strict/permissive missing policy; successful allocation.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "failure",
+        "type": "failure_partition",
+        "path": "../model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "Fixed finite maps from IDs to (parent,time,metric,note), requested ID and strict/permissive missing policy; successful allocation.",
+        "observation_scope": "Pure path/error transition; adapter ordering is source-inspected only.",
+        "operator": "Origin succeeds immediately. First repeated ID yields cycle error. First missing ID yields error in strict mode or a successful terminal ID in permissive mode; story propagates cycle error and other_branch returns None.",
+        "approximation_semantics": "Conditional source-derived target; finite observations do not prove universal correspondence.",
+        "assumptions": "Fixed finite maps from IDs to (parent,time,metric,note), requested ID and strict/permissive missing policy; successful allocation.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "unique_path",
+        "type": "invariant_projection",
+        "path": "../model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "Fixed finite maps from IDs to (parent,time,metric,note), requested ID and strict/permissive missing policy; successful allocation.",
+        "observation_scope": "Pure path/error transition; adapter ordering is source-inspected only.",
+        "operator": "Successful IDs are distinct; strict paths contain existing IDs only, permissive paths may contain one missing final ID. Origin itself is excluded.",
+        "approximation_semantics": "Conditional source-derived target; finite observations do not prove universal correspondence.",
+        "assumptions": "Fixed finite maps from IDs to (parent,time,metric,note), requested ID and strict/permissive missing policy; successful allocation.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "cost",
+        "type": "cost_composition",
+        "path": "../model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "Fixed finite maps from IDs to (parent,time,metric,note), requested ID and strict/permissive missing policy; successful allocation.",
+        "observation_scope": "Pure path/error transition; adapter ordering is source-inspected only.",
+        "operator": "h visited IDs require O(h log |t| + h log h) ordered-map/set comparisons and O(h) retained IDs plus string costs. The adapters add their own opaque output/selection work; no total adapter bound is asserted.",
+        "approximation_semantics": "Conditional source-derived target; finite observations do not prove universal correspondence.",
+        "assumptions": "Fixed finite maps from IDs to (parent,time,metric,note), requested ID and strict/permissive missing policy; successful allocation.",
+        "evidence": "../model.md#tests"
+      }
+    ]
+  },
+  "children": []
+}

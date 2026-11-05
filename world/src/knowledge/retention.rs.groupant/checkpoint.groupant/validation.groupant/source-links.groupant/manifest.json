@@ -1,0 +1,107 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "source_derived_partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../../syntax.json",
+      "scope": "Shared partial syntax; byte_range is the exact local scope; semantic AST absent.",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "prospective_source_cost"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "source_derived_partial"
+    },
+    "obernants": [
+      {
+        "id": "retention-source-links-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Source uniqueness, ledger membership and global edge bounds",
+        "section": "behavior-complement",
+        "status": "source_derived_inner_bound",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "retention-source-links-preimage",
+        "path": "model.md",
+        "required": true,
+        "scope": "Source uniqueness, ledger membership and global edge bounds",
+        "section": "reverse-reconstruction",
+        "status": "partial_relational_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "retention-source-links-duplicate-before-ledger",
+        "path": "model.md",
+        "required": false,
+        "scope": "Source uniqueness, ledger membership and global edge bounds",
+        "section": "duplicate-before-ledger",
+        "status": "source_derived_partial",
+        "type": "failure_order"
+      },
+      {
+        "id": "retention-source-links-exact-source",
+        "path": "model.md",
+        "required": false,
+        "scope": "Source uniqueness, ledger membership and global edge bounds",
+        "section": "exact-source",
+        "status": "source_derived_partial",
+        "type": "provenance_relation"
+      },
+      {
+        "id": "retention-source-links-edge-scope",
+        "path": "model.md",
+        "required": false,
+        "scope": "Source uniqueness, ledger membership and global edge bounds",
+        "section": "edge-scope",
+        "status": "source_derived_partial",
+        "type": "topology_boundary"
+      },
+      {
+        "id": "retention-source-links-read-only-gates",
+        "path": "model.md",
+        "required": false,
+        "scope": "Source uniqueness, ledger membership and global edge bounds",
+        "section": "read-only-gates",
+        "status": "source_derived_partial",
+        "type": "effect_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_named_actual_code"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 8228,
+      "start": 7536
+    },
+    "description": "Source uniqueness, ledger membership and global edge bounds"
+  },
+  "id": "retention-source-links",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../../retention.rs",
+    "sha256": "89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34"
+  },
+  "status": "partial_source_bound_model"
+}

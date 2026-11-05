@@ -1,0 +1,43 @@
+{
+  "checks": [
+    "mixed::heb::tests::tokens_come_back",
+    "mixed::heb::tests::script_gives_the_tree_back",
+    "mixed::link::wave32_tests::greedy_links_and_inverse",
+    "mixed::wave32_tests::owner_and_run_merge",
+    "mixed::report::wave32_tests::denominators_and_meta",
+    "mixed::route::tests::pieces_cover_the_line",
+    "mixed::sample::wave32_tests::synthetic_stream_spans",
+    "compare::wave32_tests::lossy_rows_and_before_domain",
+    "diff::tests::classes_of_changes",
+    "tally::wave32_tests::capped_examples_additive_metrics"
+  ],
+  "children": [
+    "rt-mixed-compare",
+    "rt-mixed-diff",
+    "rt-mixed-heb",
+    "rt-mixed-link",
+    "rt-mixed-orchestration",
+    "rt-mixed-report",
+    "rt-mixed-route",
+    "rt-mixed-sample",
+    "rt-mixed-tally"
+  ],
+  "cost": "Route filtering O(segments*tokens); Hebrew frame alignment O(target*realized*lemma bytes); diff LCS O(nm) memory/time. Link scans Hebrew/English piece pairs and entities with map lookup factors. Reports scan cells/items and sort leak rows. Full model inference, corpus IO and retries excluded from measured costs. Sample streams additionally construct ordered verse maps O(N log(V+1)*verse-key bytes) and emit verse-pair documents beyond requested D. Report leaks repeat paired item/cell scans per variety and layer/class key; Q is bounded by the fixed enum universe, with explicit leaf bound O(A*Q*(I log(I+1)+C)+K log(K+1)).",
+  "description": "Synthetic Item streams produce byte-span gold; route splits byte pieces and joint residuals, dispatches tagged En/Heb/Text codecs. Hebrew text tokens retain NFC/gap residual; link creates injective IDs before world encoding, inverse renames Hebrew frames after decoding. Run/Tally aggregate into mixed reports. diff is a shared divergence classifier; compare separately reads run TSV files and is not downstream of mixed TSV without an explicit schema adapter.",
+  "forward": [
+    "Synthetic Item streams produce byte-span gold; route splits byte pieces and joint residuals, dispatches tagged En/Heb/Text codecs. Hebrew text tokens retain NFC/gap residual; link creates injective IDs before world encoding, inverse renames Hebrew frames after decoding. Run/Tally aggregate into mixed reports. diff is a shared divergence classifier; compare separately reads run TSV files and is not downstream of mixed TSV without an explicit schema adapter.",
+    "Actual joins: sample::Span -> route/owner in mixed; heb::R1/R2/R3 -> mixed exact decode; link::rename/inverse -> world frame identity; diff::compare -> tally::Diverge; Run::merge -> Tally::merge -> report metrics. compare consumes independent residual/normal schemas, not mixed report::tsv's nine columns. These shared helper joins are not an invented sequential pipeline."
+  ],
+  "id": "roundtrip-mixed-routing",
+  "inverse": [
+    "On valid residual codec inputs, changing retained original bytes is excluded; token-only Text route cannot establish parser semantics. Mixed reports cannot be assumed compatible with compare TSV parser.",
+    "Retained tokens/scripts/joints reconstruct compatible source text under fixed decoder context; aggregate reports and normalized lexical keys have many antecedents. Exact identity recovery requires injective noncolliding rename."
+  ],
+  "limitations": [
+    "Partial lexical syntax lacks macro expansion and resolution.",
+    "Finite test results do not establish semantic understanding or persistent learning.",
+    "No meaningful approximate numerical surrogate defined; future caps limited to1/2/5/10%.",
+    "Lookup fallback direct fixture and full Context report pathways remain unexecuted."
+  ],
+  "state": "Valid UTF-8 boundaries, item identities, token/scalar/byte coordinate distinction and original residuals are required for diagnostic exact reconstruction. Accepted link pairs have unique Hebrew keys/English values, but rename inverse additionally needs no target/untouched ID collision. Nonnegative finite metric domain and nonoverflowing integer counts are caller premises."
+}

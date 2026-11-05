@@ -1,0 +1,114 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Finite generated test fixtures and observation Pass or a named assertion failure; ordinary Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "For a fixed fixture collection, Pass is excluded if any production observation differs from the independent oracle or validation assertion; a named Failure is excluded when its compared values agree. This relation excludes false-green and false-red harness observations; tests do not approximate unexecuted inputs.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "b26057558cdf2b5e9a336defd097990ba2dee90bf9286e4d0f2d8bd4937df290",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Finite generated test fixtures and observation Pass or a named assertion failure; ordinary Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_inputs",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Pass admits every implementation agreeing on all finite fixtures, including implementations that disagree elsewhere. Failure at fixture f admits implementations with its reported mismatch; it does not recover a unique bug. Distinct programs with identical observed fixture results lie in the same preimage.",
+        "path": "model.md",
+        "section": "compatible_inputs",
+        "status": "partial_source_derived",
+        "subject_revision": "b26057558cdf2b5e9a336defd097990ba2dee90bf9286e4d0f2d8bd4937df290",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Finite generated test fixtures and observation Pass or a named assertion failure; ordinary Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "oracle_independence",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Flow enumerates feasible edge assignments rather than residual paths; MCS checks all priority inequalities rather than updating weights; core unions all feasible subsets rather than peeling; dominators deletes candidate vertices rather than intersecting sets; reduction deletes each edge rather than Warshall reduction. The applicable independent characterization detects semantic disagreement.",
+        "path": "model.md",
+        "section": "oracle_independence",
+        "status": "partial_source_derived",
+        "subject_revision": "b26057558cdf2b5e9a336defd097990ba2dee90bf9286e4d0f2d8bd4937df290",
+        "type": "differential_oracle"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Finite generated test fixtures and observation Pass or a named assertion failure; ordinary Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "mutant_separation",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "A compiled production mutation for maximum_cardinality_search must fail its recorded named assertion; exact original bytes are restored and the positive run must pass. This distinguishes at least the observed mutant from the accepted reference, not every possible defect.",
+        "path": "model.md",
+        "section": "mutant_separation",
+        "status": "partial_source_derived",
+        "subject_revision": "b26057558cdf2b5e9a336defd097990ba2dee90bf9286e4d0f2d8bd4937df290",
+        "type": "negative_control"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Finite generated test fixtures and observation Pass or a named assertion failure; ordinary Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "repeat_transport",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Two debug and two optimized standalone compilations produce identical normalized test-status lines with one test thread. Timing lines are omitted; equality concerns semantic status, not durations or complete machine behavior.",
+        "path": "model.md",
+        "section": "repeat_transport",
+        "status": "partial_source_derived",
+        "subject_revision": "b26057558cdf2b5e9a336defd097990ba2dee90bf9286e4d0f2d8bd4937df290",
+        "type": "configuration_invariance"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "sha256": "a1ce5962aa911e66d61d9e343ef8961effa77cd60dbcf995bed3eb1613daa224",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-maximum-cardinality-search-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "b26057558cdf2b5e9a336defd097990ba2dee90bf9286e4d0f2d8bd4937df290"
+  },
+  "status": "partial_source_derived_instance"
+}

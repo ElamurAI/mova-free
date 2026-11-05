@@ -1,0 +1,102 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "scope": "Shared parent syntax restricted to coverage byte interval; no semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "signed_zero_divisor",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "signed_zero_divisor",
+        "status": "partial_source_derived_model",
+        "type": "signed_zero_divisor"
+      },
+      {
+        "id": "nonfinite_operand_exclusion",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "nonfinite_operand_exclusion",
+        "status": "partial_source_derived_model",
+        "type": "nonfinite_operand_exclusion"
+      },
+      {
+        "id": "sticky_approximation",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "sticky_approximation",
+        "status": "partial_source_derived_model",
+        "type": "sticky_approximation"
+      },
+      {
+        "id": "tick_avoidance",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "tick_avoidance",
+        "status": "partial_source_derived_model",
+        "type": "tick_avoidance"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "Tests",
+      "status": "bounded_actual_helper_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 23417,
+      "start": 23004
+    },
+    "description": "Before scalar fallback and tick, finite R times exact Q(0), in either operand order, returns Q(0). Q(0)/R(x) returns Q(0) only for finite nonzero x. All other pairs continue through arith; this fragment is a conditional short-circuit with identity Env effects."
+  },
+  "id": "math-calc-evaluation-mixed-zero",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../calc.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e"
+  },
+  "status": "partial_source_bound_model"
+}

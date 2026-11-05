@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named tests in native-commands.json; paired source syntax"
+  ],
+  "children": [],
+  "cost": "With p parsed and r realized nodes and B lemma bytes, greedy matching O(p*r*B); two structural passes same pair bound. apply O(r+p+payload bytes) memory/time excluding deep clones. Realizer scans all F frames per clause O(F^2) plus recursive entity expansion, membership logs, punctuation cost and payload clones; recursive depth is unbounded.",
+  "description": "F::of and E::of project parser frames/entities excluding source text/how except nominal flag. Realizer emits NP and verb structures, tracks seen ids, honors links/TAM/off flags then punctuates. encode_with greedily aligns pre-pairs, lemma+coarse, lemma, two structural passes; one Insert or Take per parsed node. apply maps realized heads through inverse Take indices before explicit patches.",
+  "forward": [
+    "F::of and E::of project parser frames/entities excluding source text/how except nominal flag. Realizer emits NP and verb structures, tracks seen ids, honors links/TAM/off flags then punctuates. encode_with greedily aligns pre-pairs, lemma+coarse, lemma, two structural passes; one Insert or Take per parsed node. apply maps realized heads through inverse Take indices before explicit patches."
+  ],
+  "id": "roundtrip-frames",
+  "inverse": [
+    "Given realized tree r and encoder script s, apply(r,s) is a reconstruction witness for original parsed tree. Fixed output alone admits many frame/link/TAM states and discarded realizer nodes; scripts with missing or duplicate Take origins need not identify unique antecedents.",
+    "Realization never reads Ent.text as surface oracle. A damaged script with absent Take origin yields an empty Dep placeholder, not successful recovery of unavailable source text. Normal realization does not imply semantic equivalence."
+  ],
+  "limitations": [
+    "No annotator/model loading, live corpus, full suite, teacher, GPU or persistent-learning evidence. No executable percentage surrogate: categorical codecs/effects need a useful metric before future caps 1/2/5/10%."
+  ],
+  "source": "tools/roundtrip/src/frames.rs",
+  "state": "Layer representations, diagnostic residuals and fixed environment state; see scoped catalog."
+}

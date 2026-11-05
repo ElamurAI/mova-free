@@ -1,0 +1,125 @@
+{
+  "children": [
+    {
+      "id": "modelcheck-library-registry-tree",
+      "path": "registry-tree.groupant"
+    },
+    {
+      "id": "modelcheck-library-discovery-changes",
+      "path": "discovery-changes.groupant"
+    },
+    {
+      "id": "modelcheck-library-output-table",
+      "path": "output-table.groupant"
+    },
+    {
+      "id": "modelcheck-library-inventory-assembly",
+      "path": "inventory-assembly.groupant"
+    },
+    {
+      "id": "modelcheck-library-fragment-validation",
+      "path": "fragment-validation.groupant"
+    },
+    {
+      "id": "modelcheck-library-group-source-bindings",
+      "path": "group-source-bindings.groupant"
+    },
+    {
+      "id": "modelcheck-library-component-validation",
+      "path": "component-validation.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "source-bound selected Rust syntax; macro bodies opaque",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md#descriptant",
+        "status": "partial_projection_specification",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md#descriptant",
+        "status": "partial_relational_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "wave33-sorted_membership_contract",
+        "path": "model.md",
+        "section": "sorted_membership_contract",
+        "status": "partial_relational_specification",
+        "type": "sorted_membership_contract"
+      },
+      {
+        "id": "wave33-diagnostic_effect_order",
+        "path": "model.md",
+        "section": "diagnostic_effect_order",
+        "status": "partial_relational_specification",
+        "type": "diagnostic_effect_order"
+      },
+      {
+        "id": "wave33-repeated_io_accounting",
+        "path": "model.md",
+        "section": "repeated_io_accounting",
+        "status": "partial_relational_specification",
+        "type": "repeated_io_accounting"
+      },
+      {
+        "id": "wave33-typed_gate_separation",
+        "path": "model.md",
+        "section": "typed_gate_separation",
+        "status": "partial_relational_specification",
+        "type": "typed_gate_separation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#wave35-evidence",
+      "status": "finite_native_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": null
+  },
+  "extensions": {
+    "epoch": "2026-10-29",
+    "limitations": "Structural inventory is not mathematical verification."
+  },
+  "id": "modelcheck-library",
+  "kind": "groupant",
+  "registry": {
+    "node": "modelcheck-library",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../lib.rs",
+    "sha256": "fcea82b34afb6752d0932135e2e735d43ab166a0d6421b9727eafc8f7a02923a"
+  },
+  "status": "partial_descriptive_instance"
+}

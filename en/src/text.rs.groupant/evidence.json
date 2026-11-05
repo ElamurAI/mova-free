@@ -1,0 +1,90 @@
+{
+  "allocation_model": {
+    "baseline_nonempty": "len(a)+1 rows",
+    "candidate_empty_side": 0,
+    "candidate_nonempty": 2,
+    "observed_matches_model": true,
+    "observed_shapes": [
+      "0x0",
+      "0x8",
+      "3x3",
+      "8x8",
+      "40x40",
+      "200x200",
+      "1000x10",
+      "10x1000"
+    ]
+  },
+  "baseline_source_sha256": "436fa64f87587a2754d3a3cc699bdc9a4f5aa13aad60962865cb41e91bc3b0a9",
+  "epoch": "2026-10-31-wave37",
+  "integration": {
+    "exit": 0,
+    "mutation_control": {
+      "exit": 101,
+      "failed": 5,
+      "mutation": "prev[j] + 1 -> prev[j]",
+      "restored_exit": 0
+    },
+    "passed": 6,
+    "runs": [
+      "debug-1",
+      "debug-2",
+      "release-1",
+      "release-2"
+    ],
+    "suite": "tools/correspondence/tests/lcs_bridges.rs"
+  },
+  "integration_timing_recheck": {
+    "candidate_over_baseline_median_ratio": {
+      "1000x10": 0.81,
+      "10x1000": 0.942,
+      "200x200": 0.956,
+      "3x3": 0.774,
+      "40x40": 0.957,
+      "8x8": 0.814
+    },
+    "exit": 0,
+    "harness_source_sha256": "6f5f5363cdcc42020f3e56d8fa5402f3f023ebd439291418992d4ddc4099e43b",
+    "receipt_sha256": "60f513127988485087d8b8eeef976403a526a467fe707accbfa2473019043de1",
+    "scope": "Same benchmark Rust source and production source hash, actual integrated en crate; default allocator, input/output black_box, repository release settings. One additional warm-cache shared-machine run, not a statistical population estimate.",
+    "short_wide_sign": "different from the initial two runs; retain all observations",
+    "source_sha256": "982745e7578be07699a17ba9628d5866eb92d033968154d3607e7debe0b9d83e"
+  },
+  "previous_epoch": "2026-10-31 wave27 receipts remain in external octopus-wave27-lexical-2026-10-31",
+  "runs": [
+    {
+      "exit": 0,
+      "failed": 0,
+      "name": "en-text-debug-1",
+      "passed": 2
+    },
+    {
+      "exit": 0,
+      "failed": 0,
+      "name": "en-text-debug-2",
+      "passed": 2
+    }
+  ],
+  "source_sha256": "982745e7578be07699a17ba9628d5866eb92d033968154d3607e7debe0b9d83e",
+  "tests": [
+    "text::wave27_tests::metrics_and_adjacency_priority",
+    "text::wave27_tests::lcs_rows_empty_shapes_and_oracle"
+  ],
+  "timing": {
+    "candidate_over_baseline_median_ratio": {
+      "1000x10": "0.76-0.85",
+      "10x1000": "1.05-1.06",
+      "200x200": "0.96-0.97",
+      "3x3": "0.76-0.77",
+      "40x40": "0.94",
+      "8x8": "0.80"
+    },
+    "claim": "The two initial timing runs improved on other measured nonempty shapes and regressed 5-6% on 10x1000. Integration rerun changes the short-wide sign; timing effect there is variable. Allocation reduction is established; no universal or whole-Mova timing claim.",
+    "empty_shapes": "0x0 and 0x8 run in 1-7 ns; reported as allocation result only, not as speedup",
+    "harness": "octopus-wave37-fable-2026-10-31/bench-final (actual en::text::lcs vs source-extracted baseline, System allocator, black_box, repo release profile)",
+    "runs": [
+      "final-timing-run-1.txt",
+      "final-timing-run-2.txt"
+    ]
+  }
+}

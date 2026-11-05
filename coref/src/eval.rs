@@ -233,8 +233,8 @@ pub fn systems() -> Vec<(String, Config)> {
         ("all singletons".into(), mk(vec![])),
         ("exact string match only".into(), mk(vec![Sieve::Exact])),
         ("pronoun → nearest agreeing".into(), mk(vec![Sieve::Nearest])),
-        ("sieve (all 14)".into(), mk(Sieve::FULL.to_vec())),
-        ("sieve (12, default)".into(), Config::default()),
+        (format!("sieve (all {})", Sieve::FULL.len()), mk(Sieve::FULL.to_vec())),
+        (format!("sieve ({}, default)", Sieve::DEFAULT.len()), Config::default()),
     ]
 }
 
@@ -265,7 +265,7 @@ pub fn run(label: &str, gold_docs: &[Document], input: &Input, report: &mut Stri
         }
         let cfg = Config::default();
         let pred: Vec<Vec<Vec<MSpan>>> = docs.iter().map(|d| sys_entities(d, &resolve(d, &cfg))).collect();
-        writeln!(report, "{}", row("sieve (12) — exact span (for reference)", &score_all(&gold, &pred, Matching::Exact, sg)))?;
+        writeln!(report, "{}", row(&format!("sieve ({}) — exact span (for reference)", Sieve::DEFAULT.len()), &score_all(&gold, &pred, Matching::Exact, sg)))?;
         writeln!(report)?;
     }
     // sieve contributions: cumulative
@@ -284,12 +284,12 @@ pub fn run(label: &str, gold_docs: &[Document], input: &Input, report: &mut Stri
         }
         (prev_a, prev_b) = (a, b);
     }
-    // sieve precision — on the full sieve (all 14, so the disabled ones show too); pronouns — on the default sieve and the baseline
+    // sieve precision — on the full sieve (so the disabled ones show too); pronouns — on the default sieve and the baseline
     let mut errors = Vec::new();
     for (name, cfg, sieve_table) in [
-        ("sieve (all 14)", Config { sieves: Sieve::FULL.to_vec(), ..Config::default() }, true),
-        ("sieve (12, default)", Config::default(), false),
-        ("pronoun → nearest agreeing", Config { sieves: vec![Sieve::Nearest], ..Config::default() }, false),
+        (format!("sieve (all {})", Sieve::FULL.len()), Config { sieves: Sieve::FULL.to_vec(), ..Config::default() }, true),
+        (format!("sieve ({}, default)", Sieve::DEFAULT.len()), Config::default(), false),
+        ("pronoun → nearest agreeing".to_string(), Config { sieves: vec![Sieve::Nearest], ..Config::default() }, false),
     ] {
         let mut links: BTreeMap<Sieve, LinkStat> = BTreeMap::new();
         let mut prons: BTreeMap<String, PronStat> = BTreeMap::new();

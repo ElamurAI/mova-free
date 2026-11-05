@@ -1,0 +1,100 @@
+{
+  "children": [
+    {
+      "id": "world-parser-failures-command",
+      "path": "command.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical projection, no macro expansion or name/type resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-bound partial relation; finite checks are not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-bound partial relation; finite checks are not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "effect_boundary",
+        "path": "model.md",
+        "scope": "Source-bound partial relation; finite checks are not proof",
+        "section": "effect_boundary",
+        "status": "partial_source_derived_model",
+        "type": "effect_boundary"
+      },
+      {
+        "id": "failure_order",
+        "path": "model.md",
+        "scope": "Source-bound partial relation; finite checks are not proof",
+        "section": "failure_order",
+        "status": "partial_source_derived_model",
+        "type": "failure_order"
+      },
+      {
+        "id": "gpu_conditional",
+        "path": "model.md",
+        "scope": "Source-bound partial relation; finite checks are not proof",
+        "section": "gpu_conditional",
+        "status": "partial_source_derived_model",
+        "type": "gpu_conditional"
+      },
+      {
+        "id": "batch_claim",
+        "path": "model.md",
+        "scope": "Source-bound partial relation; finite checks are not proof",
+        "section": "batch_claim",
+        "status": "partial_source_derived_model",
+        "type": "batch_claim"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_checks_partial_scope"
+    }
+  },
+  "id": "world-parser-failures",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../parser_failures.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "dd2a966a535a39ee908619b995035e24f7efa8c7e10ed6b3d9e5d5384b63e2cc"
+  },
+  "status": "partial_source_bound_model"
+}

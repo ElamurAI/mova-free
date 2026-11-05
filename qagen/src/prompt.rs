@@ -101,12 +101,27 @@ pub fn prompt(paras: &[&Para], rule: Rule) -> String {
     let mut p = String::from(rules(rule));
     p.push_str("\nParagraphs:\n");
     for (i, a) in paras.iter().enumerate() {
-        let by = if a.author.is_empty() { String::new() } else { format!(" ({})", a.author) };
-        let _ = write!(p, "\n=== P{} - \"{}\"{by}, paragraph {}\n", i + 1, a.title, a.para);
+        let by = if a.author.is_empty() {
+            String::new()
+        } else {
+            format!(" ({})", a.author)
+        };
+        let _ = write!(
+            p,
+            "\n=== P{} - \"{}\"{by}, paragraph {}\n",
+            i + 1,
+            a.title,
+            a.para
+        );
         // context — only if the tale's previous paragraph does not stand right before in this same batch
-        let adjacent = i > 0 && paras[i - 1].doc == a.doc && paras[i - 1].para + 1 == a.para;
+        let adjacent =
+            i > 0 && paras[i - 1].doc == a.doc && paras[i - 1].para.checked_add(1) == Some(a.para);
         if !a.ctx.is_empty() && !adjacent {
-            let _ = writeln!(p, "context (before this paragraph, do not ask about it): {}", a.ctx.join(" "));
+            let _ = writeln!(
+                p,
+                "context (before this paragraph, do not ask about it): {}",
+                a.ctx.join(" ")
+            );
         }
         for (k, s) in a.sents.iter().enumerate() {
             let _ = writeln!(p, "[{}] {}", k + 1, s.text);
@@ -129,7 +144,16 @@ mod tests {
             author: "Aesop".into(),
             para: 4,
             block: "p".into(),
-            sents: vec![Sent { sent_id: "g:1:t:7".into(), text: "A fox ran.".into() }, Sent { sent_id: "g:1:t:8".into(), text: "He hid.".into() }],
+            sents: vec![
+                Sent {
+                    sent_id: "g:1:t:7".into(),
+                    text: "A fox ran.".into(),
+                },
+                Sent {
+                    sent_id: "g:1:t:8".into(),
+                    text: "He hid.".into(),
+                },
+            ],
             dialogue: false,
             words: 5,
             ctx: vec!["Night fell.".into()],
@@ -147,5 +171,94 @@ mod tests {
         assert!(p.contains("=== P2 - \"The Fox\", paragraph 4\ncontext (before"));
         // adjacent paragraph of the same tale right above — no context
         assert!(p.contains("=== P3 - \"The Fox\" (Aesop), paragraph 5\n[1] A fox ran."));
+    }
+}
+
+#[cfg(test)]
+mod wave17_models {
+    use super::*;
+    use crate::select::Sent;
+    fn para(doc: &str, n: i64) -> Para {
+        Para {
+            doc: doc.into(),
+            book: "book".into(),
+            title: "Synthetic".into(),
+            author: String::new(),
+            para: n,
+            block: "p".into(),
+            sents: vec![Sent {
+                sent_id: "unrelated:99".into(),
+                text: "A bird rested.".into(),
+            }],
+            dialogue: false,
+            words: 3,
+            ctx: vec!["Earlier.".into()],
+            batch: 77,
+        }
+    }
+    fn body(p: &str) -> &str {
+        p.split_once("\nParagraphs:\n").unwrap().1
+    }
+    #[test]
+    fn maximum_predecessor_retains_context() {
+        let a = para("d", i64::MAX);
+        let b = para("d", i64::MIN);
+        let out = prompt(&[&a, &b], Rule::V2);
+        assert_eq!(body(&out).matches("context (before").count(), 2);
+    }
+    #[test]
+    fn context_successor_finite_oracle() {
+        let domain = [i64::MIN, -1, 0, 1, 2, i64::MAX - 1, i64::MAX];
+        for previous in domain {
+            for current in domain {
+                for same in [false, true] {
+                    let a = para("d", previous);
+                    let b = para(if same { "d" } else { "other" }, current);
+                    let adjacent = same && i128::from(previous) + 1 == i128::from(current);
+                    let out = prompt(&[&a, &b], Rule::V1);
+                    assert_eq!(
+                        body(&out).matches("context (before").count(),
+                        if adjacent { 1 } else { 2 },
+                        "previous={previous}, current={current}, same={same}"
+                    );
+                }
+            }
+        }
+    }
+    #[test]
+    fn positional_coordinates_and_metadata_fiber() {
+        let mut a = para("d", 41);
+        a.sents.push(Sent {
+            sent_id: "global:800".into(),
+            text: "It sang.".into(),
+        });
+        let b = para("other", 42);
+        let out = prompt(&[&a, &b], Rule::V2);
+        assert_eq!(
+            body(&out),
+            "\n=== P1 - \"Synthetic\", paragraph 41\ncontext (before this paragraph, do not ask about it): Earlier.\n[1] A bird rested.\n[2] It sang.\n\n=== P2 - \"Synthetic\", paragraph 42\ncontext (before this paragraph, do not ask about it): Earlier.\n[1] A bird rested.\n"
+        );
+        a.book = "changed".into();
+        a.batch = 0;
+        a.words = 999;
+        a.dialogue = true;
+        a.sents[0].sent_id = "changed".into();
+        a.block = "head".into();
+        assert_eq!(out, prompt(&[&a, &b], Rule::V2));
+    }
+    #[test]
+    fn version_dispatch_and_empty_input() {
+        assert_eq!(prompt(&[], Rule::V1), format!("{RULES}\nParagraphs:\n"));
+        assert_eq!(prompt(&[], Rule::V2), format!("{RULES_V2}\nParagraphs:\n"));
+        assert!(rules(Rule::V2).contains("VERBATIM SPAN"));
+        assert!(!rules(Rule::V1).contains("VERBATIM SPAN"));
+        let mut a = para("d", 1);
+        a.ctx.clear();
+        a.sents.clear();
+        a.author = "Author".into();
+        assert_eq!(
+            body(&prompt(&[&a], Rule::V1)),
+            "\n=== P1 - \"Synthetic\" (Author), paragraph 1\n"
+        );
     }
 }

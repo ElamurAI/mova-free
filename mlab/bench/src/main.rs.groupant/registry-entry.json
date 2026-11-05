@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "wave30_tests::bounded_generator_and_three_calls: four-cell deterministic data, bounded range, first LCG state, three calls and last accumulator. Main backend benchmark excluded."
+  ],
+  "children": [],
+  "cost": "data O(n²) time/storage, best3 callback costs; main dense1000 multiply/solve and500 eig O(n³) per call with backend memory. No timings measured in this epoch.",
+  "description": "LCG state advances modulo2^64 by multiplier6364136223846793005 and increment1442695040888963407; top53 bits map to [-.5,.5). data returns n² draws. best runs callback exactly3 times and returns minimum elapsed seconds plus last callback value. main sets faer sequential mode and performs fixed large backend comparisons, reporting residuals and times.",
+  "forward": [
+    "LCG state advances modulo2^64 by multiplier6364136223846793005 and increment1442695040888963407; top53 bits map to [-.5,.5). data returns n² draws. best runs callback exactly3 times and returns minimum elapsed seconds plus last callback value. main sets faer sequential mode and performs fixed large backend comparisons, reporting residuals and times."
+  ],
+  "id": "mlab-numerics-bench",
+  "inverse": [
+    "Each sampled f64 identifies high53 post-state bits and allows2^11 low-bit antecedents before inverse LCG; sequential samples constrain the state further. best output time/value cannot recover all3 durations or earlier values."
+  ],
+  "limitations": [
+    "Partial source model; finite synthetic tests only",
+    "No executable surrogate, global numerical proof or resource-failure guarantee"
+  ],
+  "source": "mlab/bench/src/main.rs",
+  "state": "LCG u64 state, Instant samples, last callback accumulator, backend matrices"
+}

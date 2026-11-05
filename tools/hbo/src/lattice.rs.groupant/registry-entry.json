@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "lattice::wave32::supplied_readings_ties_missing_and_apply"
+  ],
+  "children": [],
+  "cost": "S sentences,N tokens,N_np nonpunctuation tokens,W words,C_i alternatives,V=1+sum(C_i-1) emitted readings per sentence. variants pays initial contextual-candidate generation plus V*N_np cut callbacks and output/comment copying; with lib::cut_with each callback recomputes Model::candidates before cutting, so callback cost is summed over every emitted reading and token, not paid once. For R parsed readings let T_R=sum of reading token counts and B_R=total comment bytes scanned/parsed (including constant repeated passes). choose costs O(T_R+B_R+R log S+R log N), gains O(T_R+B_R+R log S); n_words scans tokens, twice per retained alternative in gains. apply pays candidate lookups plus one callback per nonpunctuation token and copied output bytes.",
+  "description": "variants emits one base per sentence plus each admissible one-token alternative; cut callback receives contextual candidates. choose joins parsed readings to last base by sentence integer, takes strictly positive maximum gain per token. apply cuts chosen label or base and annotates first-word MISC.",
+  "forward": [
+    "variants emits one base per sentence plus each admissible one-token alternative; cut callback receives contextual candidates. choose joins parsed readings to last base by sentence integer, takes strictly positive maximum gain per token. apply cuts chosen label or base and annotates first-word MISC."
+  ],
+  "id": "hbo-lattice",
+  "inverse": [
+    "With finite gains<=0 no token leaves base; equal positive gains cannot replace first winner. variants never creates a simultaneous two-token alternative; independent final choices are not guaranteed jointly parser-optimal.",
+    "Choice(label,gain) admits all score/logshare/word-count tuples satisfying g=alt-base+lambda*lr+mu*delta and dominance inequalities. Empty choice conflates absent alternatives and nonpositive/NaN gains; parsed trees cannot be recovered."
+  ],
+  "limitations": [
+    "Finite supplied-input checks only; no corpus, training, external annotator, GPU, throughput or semantic-understanding claim. Allocation exhaustion and malformed arbitrary model arithmetic are not exhaustively exercised. No useful numerical surrogate is implemented; future caps may only be 1/2/5/10% with a declared metric."
+  ],
+  "source": "tools/hbo/src/lattice.rs",
+  "state": "k>=1 when any nonpunctuation token exists, valid token index and nonempty cut outputs, base present for every alternative. Finite scores/lambda/mu and finite operations for ordered gain meaning; word counts representable as i64 for gains. Integer comments refer to sentence/token positions, not sent_id."
+}

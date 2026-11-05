@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms dominators::tests::",
+    "Repeated standalone debug/release, strict Clippy, compiled mutant, paired syntax."
+  ],
+  "children": [],
+  "cost": "Directed graph n<=256,m<=65536 with duplicate arcs allowed. Valid start; unreachable vertices output empty. Initialize each reachable non-start dominator set to reachable universe, intersect predecessor sets plus vertex until fixed point; start singleton. O(V^2(V+E)) time conservative, O(V^2+E) memory. Iterative, no recursion. Aho, Sethi, Ullman Compilers (1986). No Lengauer-Tarjan complexity claim.",
+  "description": "dominators mod exact graph contract",
+  "forward": [
+    "Directed graph n<=256,m<=65536 with duplicate arcs allowed. Valid start; unreachable vertices output empty. Initialize each reachable non-start dominator set to reachable universe, intersect predecessor sets plus vertex until fixed point; start singleton. O(V^2(V+E)) time conservative, O(V^2+E) memory. Iterative, no recursion. Aho, Sethi, Ullman Compilers (1986). No Lengauer-Tarjan complexity claim."
+  ],
+  "id": "algorithm-dominators",
+  "inverse": [
+    "Let R be the deterministic relation specified by Forward including validation precedence and tie rules, X the declared input type and Y its Result type. Behavior complement is (X times Y) minus R. Specifically outputs violating Unreachable rows remain empty; start remains singleton. Reachable rows shrink monotonically, remain supersets of true dominators, and satisfy predecessor intersection at termination. are excluded; a valid-input Err or a wrong successful witness is excluded. Resource, cycle and structural rejections are determined before algorithmic output.",
+    "Given D, antecedents are graphs whose start-to-v paths all contain exactly D[v] as universal vertices; unreachable v have empty rows. A chain and the chain plus self-loops have identical D, so original edges cannot be recovered."
+  ],
+  "limitations": [
+    "Finite checks only; allocation failure untyped; partial syntax; no approximate executable profiles."
+  ],
+  "source": "algorithms/src/dominators/mod.rs",
+  "state": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract."
+}

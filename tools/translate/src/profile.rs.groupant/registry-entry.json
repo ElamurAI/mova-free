@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "profile::tests::typography_of_quotes_and_possessives",
+    "profile::tests::the_logic_gate_on_overrides",
+    "profile::wave32::contexts_votes_and_ties"
+  ],
+  "children": [],
+  "cost": "Training four map updates per retained token O(N log C log V) plus key/chunk bytes; choose scans eligible chunks; Delta repeated grouping over4 levels; top/listing O(d log d); recap may scan preceding closers O(n²).",
+  "description": "Aggregate four context levels with count/weight; choose first eligible level, greatest weight and lexical tie. Delta learns coarse-to-fine corrections then optional own words/logic filtering. Encoder selects delta before standard before bare forms, applies typography then recap.",
+  "forward": [
+    "Aggregate four context levels with count/weight; choose first eligible level, greatest weight and lexical tie. Delta learns coarse-to-fine corrections then optional own words/logic filtering. Encoder selects delta before standard before bare forms, applies typography then recap."
+  ],
+  "id": "translation-meta-profile",
+  "inverse": [
+    "keep=false tokens contribute no counts. Equal weights never choose lexically later chunk. Logic gate excludes changed logical-word multiset but does not establish event equivalence.",
+    "Tables admit many corpus orders and distributions with same context counts/weights. Chosen chunk identifies an argmax region, not a unique text. Quote removal and recasing admit ambiguous originals."
+  ],
+  "limitations": [
+    "No live corpus/model/teacher/GPU execution or language accuracy claim",
+    "Partial syntax and finite tests; full effectful paths unexecuted; no percentage surrogate"
+  ],
+  "source": "tools/translate/src/profile.rs",
+  "state": "Aligned Seen chunks, valid token i, four level tables; finite nonnegative weights and representable counts. No Annotator instantiation or morph fallback exercised."
+}

@@ -1,0 +1,28 @@
+{
+  "id": "algorithm-stoer-wagner-tests",
+  "source": "algorithms/src/stoer_wagner/tests.rs",
+  "children": [
+    
+  ],
+  "description": "stoer_wagner finite independent oracle tests",
+  "state": "Fixed finite Rust fixtures and the production algorithm, observed as per-test pass or assertion failure. The compiler, Rust test runner and successful allocations are trusted. Test acceptance is not unrestricted implementation equivalence.",
+  "cost": "The fixed oracle domains are bounded: simple paths use DFS exponential in vertex count; truth tables cost O(2^V C); cut enumeration costs O(2^V V^2). Only the relevant oracle executes in each file. Production runtime bounds cannot be inferred from this test cost.",
+  "forward": [
+    "Enumerate 729 four-vertex ternary-capacity graphs and 1,024 five-vertex binary graphs (1,753 total). Independently enumerate all proper partitions containing zero and rescan original matrix crossings. Check minimum objective, sorted/proper/zero-oriented witness and witness weight. Other fixtures cover shape/symmetry errors, empty/singleton, disconnected and tied cuts, contraction witness, u64::MAX totals, diagonal fibers, scaling, monotonicity and relabeling."
+  ],
+  "inverse": [
+    "In the universe of fixture/reference/output triples, acceptance excludes any tested objective mismatch, invalid returned witness or mismatched explicit error payload. Behavior outside the named fixture set is not excluded. This acceptance relation is a finite predicate defined by assertions, not a claim that passing forbids all production bugs.",
+    "A failed equality assertion reconstructs the candidate implementation/reference/fixture triples producing unequal compared projections at that location. A pass reconstructs the equivalence class of implementations agreeing on all observed projections, which can include faulty implementations outside the tested domain. No unique source bug or causal diagnosis follows from the failure text.",
+    "Enumerate 729 four-vertex ternary-capacity graphs and 1,024 five-vertex binary graphs (1,753 total). Independently enumerate all proper partitions containing zero and rescan original matrix crossings. Check minimum objective, sorted/proper/zero-oriented witness and witness weight. Other fixtures cover shape/symmetry errors, empty/singleton, disconnected and tied cuts, contraction witness, u64::MAX totals, diagonal fibers, scaling, monotonicity and relabeling.",
+    "Replace the phase connection increment weights[vertex][other] by zero; disconnected_ties_and_contraction_witness must fail after compilation.",
+    "Extending the fixture set intersects the set of passing implementations with additional assertion constraints. An implementation can pass the current finite set and fail an extension. Repeating unchanged tests in debug and release constrains profile-dependent behavior but does not expand the graph/formula domain or prove total correctness."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline --lib (debug/release twice)",
+    "Focused rustfmt, strict all-target Clippy, repeated syntax, compiled production mutant"
+  ],
+  "limitations": [
+    "Finite correspondence only; partial syntax; no general proof or approximate profile",
+    "Allocation failure and u128 exhaustion are not exercised"
+  ]
+}

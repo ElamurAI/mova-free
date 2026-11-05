@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms transitive_reduction_dag::tests::",
+    "Repeated standalone debug/release, strict Clippy, compiled mutant, paired syntax."
+  ],
+  "children": [],
+  "cost": "Bounded exhaustive fixtures: flow 729 DAG capacity arrays times 4 limits, 64 cyclic graphs times 4 limits; MCS and core 1024 topologies (core 7 thresholds and 32 subsets); dominators 4096 graphs times 4 starts with deletion reachability; reduction 4096 graphs with edge-removal reachability. These are per-file domains, not all tests in every file. No benchmark or speed claim.",
+  "description": "transitive_reduction_dag tests exact graph contract",
+  "forward": [
+    "Generate fixed exhaustive small domains for transitive_reduction_dag; independent oracle predicts output, assert production correspondence plus validation/boundary behavior. All assertions passing returns Pass. Any mismatched fixture causes named failure; bounded success is not universal proof."
+  ],
+  "id": "algorithm-transitive-reduction-dag-tests",
+  "inverse": [
+    "For a fixed fixture collection, Pass is excluded if any production observation differs from the independent oracle or validation assertion; a named Failure is excluded when its compared values agree. This relation excludes false-green and false-red harness observations; tests do not approximate unexecuted inputs.",
+    "Pass admits every implementation agreeing on all finite fixtures, including implementations that disagree elsewhere. Failure at fixture f admits implementations with its reported mismatch; it does not recover a unique bug. Distinct programs with identical observed fixture results lie in the same preimage."
+  ],
+  "limitations": [
+    "Finite checks only; allocation failure untyped; partial syntax; no approximate executable profiles."
+  ],
+  "source": "algorithms/src/transitive_reduction_dag/tests.rs",
+  "state": "Finite generated test fixtures and observation Pass or a named assertion failure; ordinary Rust execution."
+}

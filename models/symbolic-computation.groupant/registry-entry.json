@@ -1,0 +1,41 @@
+{
+  "checks": [
+    "18 selected actual-code tests twice debug/twice release with identical sorted outcomes",
+    "Seven compiled source mutants rejected, exact restoration and focused positives",
+    "Old shape-check code compiled0 and failed101 before repair",
+    "Seven syntax projections each generated twice identically; scoped fragments reuse parent AST",
+    "Additional linsys width-guard compiled mutant compile0/test101; restored positive0. Eight compiled controls total.",
+    "Seven isolated source snapshot groupant validations exit0; full ancestor integration left to root."
+  ],
+  "children": [
+    "math-calc",
+    "math-comb",
+    "math-deriv",
+    "math-fcheck",
+    "math-linsys",
+    "math-nt",
+    "math-poly"
+  ],
+  "cost": "Add visited expression work, operand-width arithmetic, recurrence tables, factor search, degree growth and elimination. Env ticks/factor budgets do not uniformly bound all called work. Checker shape scan O(m) time/O(1) storage before O(mn) rational substitution; no timing/speed claim.",
+  "description": "calc parses E and threads Env through exact/approximate evaluation, dispatching comb/nt with labeled Check diagnostics. poly/linsys consume E and evaluate selected-variable-free constants, producing Q polynomials/linear coefficients. deriv transforms E and checks via calc::approx. fcheck projects separate legacy Expr into SI f64; these languages/observations are not interchangeable.",
+  "forward": [
+    "calc parses E and threads Env through exact/approximate evaluation, dispatching comb/nt with labeled Check diagnostics. poly/linsys consume E and evaluate selected-variable-free constants, producing Q polynomials/linear coefficients. deriv transforms E and checks via calc::approx. fcheck projects separate legacy Expr into SI f64; these languages/observations are not interchangeable.",
+    "calc->comb/nt coerces Q to Z/u64 and appends certificates; poly/linsys->calc may mutate Env for constants; deriv->calc::approx inherits unsupported/numerical domains. comb->nt::sieve supports Legendre, poly->nt::factor/divisors supports candidates/surds. fcheck->expr/units is legacy SI path, not an adapter for dimensionless calc E. math/src/plan.rs is an existing downstream caller; ownership remains with this source list.",
+    "Selected digit composition N_b=D_b after H_b is an idempotent magnitude retraction for u32 b>=2, not signed value identity. See model.md."
+  ],
+  "id": "symbolic-computation",
+  "inverse": [
+    "For admitted fixed inputs/state exclude outputs/effect prefixes inconsistent with exact dispatch relations. Some(f64) does not exclude NaN, probable does not exclude lack of proof, unavailable Check.ok does not exclude arbitrary claimed values, and numerator roots do not exclude canceled holes. Shape-invalid substitution results now cannot be accepted.",
+    "Join fibers: quotient/remainder with divisor reconstruct dividend; factors/lead reconstruct polynomial after product check; x,A constrain b=Ax. E syntax, Env history, denominator provenance, signed factor/digit inputs and SI representation are many-to-one. Root-only/Check-only results cannot uniquely reconstruct antecedents."
+  ],
+  "limitations": [
+    "Partial lexical syntax/finite evidence is not total proof",
+    "Fixed MR bases do not justify textual randomized probability",
+    "calc failed ranges retain binding; positive range span>u64 converts to0 charged steps then unticked loop",
+    "Fingerprint factorial reduces operand before factorial; bound original operand, not only residue<=2M. P61+1 operand gives1 while actual factorial residue0, unexecuted huge input",
+    "gauss retains shape preconditions; derivative simplification erases singularities; fcheck may return nonfinite or panic",
+    "Numeric polynomial/derivative diagnostics lack global accuracy/convergence bounds",
+    "Strict scoped Clippy reports113 existing math-library findings; dependency check also blocked in global/build.rs. No lint-clean claim."
+  ],
+  "state": "Supported exact Q/Z operations retain exact representation; rational holes and gauss dimensions remain explicit obligations. check_solution now validates shape before dot products. Numeric roots/R remain approximate. Check.ok may express exact, finite, probable or unavailable evidence and requires its label."
+}

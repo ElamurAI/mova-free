@@ -109,7 +109,9 @@ pub fn tree_form(block: &str) -> &'static str {
 pub fn run(labels: &str, witness: &str, trees: &str) -> (String, String) {
     let l = table(labels);
     let w = table(witness);
-    let forms: BTreeMap<String, &'static str> = trees
+    // Normalize CRLF before splitting sentence blocks; lines() already handles TSV CRLF.
+    let normalized_trees = trees.replace("\r\n", "\n");
+    let forms: BTreeMap<String, &'static str> = normalized_trees
         .split("\n\n")
         .filter_map(|b| b.lines().find_map(|x| x.strip_prefix("# sent_id = ")).map(|id| (id.to_string(), tree_form(b))))
         .collect();
@@ -124,11 +126,11 @@ pub fn run(labels: &str, witness: &str, trees: &str) -> (String, String) {
         for r in &rules {
             *by_rule.entry(r).or_default() += 1;
         }
-        if act != lr["act"] {
-            *moves.entry(format!("act {} → {act}", lr["act"])).or_default() += 1;
+        if act != lr.get("act").map(String::as_str).unwrap_or("") {
+            *moves.entry(format!("act {} → {act}", lr.get("act").map(String::as_str).unwrap_or(""))).or_default() += 1;
         }
-        if form != lr["form"] {
-            *moves.entry(format!("form {} → {form}", lr["form"])).or_default() += 1;
+        if form != lr.get("form").map(String::as_str).unwrap_or("") {
+            *moves.entry(format!("form {} → {form}", lr.get("form").map(String::as_str).unwrap_or(""))).or_default() += 1;
         }
         n += 1;
         let _ = writeln!(
@@ -186,5 +188,110 @@ mod tests {
         assert_eq!(tree_form(decl), "decl");
         let q = "# sent_id = c\n1\tWhy\twhy\tADV\tWRB\t_\t3\tadvmod\t_\t_\n2\tdo\tdo\tAUX\tVBP\t_\t3\taux\t_\t_\n3\tgo\tgo\tVERB\tVB\t_\t0\troot\t_\t_\n4\t?\t?\tPUNCT\t.\t_\t3\tpunct\t_\t_\n";
         assert_eq!(tree_form(q), "wh");
+    }
+}
+
+#[cfg(test)]
+mod wave12_models {
+    use crate::agree::{agree_one, run, table, tree_form};
+
+    #[test]
+    fn crlf_sentence_identity_and_report_denominator() {
+        let labels = "sent_id\tform\tact\nq\tdecl\tassert\ni\tdecl\tassert\n";
+        let trees = "# sent_id = q\n1\tGo\tgo\tVERB\tVB\t_\t0\troot\t_\t_\n2\t?\t?\tPUNCT\t.\t_\t1\tpunct\t_\t_\n\n# sent_id = i\n1\tGo\tgo\tVERB\tVB\t_\t0\troot\t_\t_\n";
+        let expected = run(labels, "", trees);
+        let actual = run(labels, "", &trees.replace('\n', "\r\n"));
+        assert_eq!(
+            actual, expected,
+            "line endings must preserve sentence joins"
+        );
+        let rows = table(&actual.0);
+        assert_eq!(rows["q"]["form"], "q");
+        assert_eq!(rows["i"]["act"], "request");
+        assert!(actual.1.contains("2 sentences."));
+        assert!(actual.1.contains("| P0-tree-form | 2 |"));
+        assert!(actual.1.contains("| P1-imp-request | 1 |"));
+    }
+
+    #[test]
+    fn incomplete_labels_are_total_and_last_duplicate_wins() {
+        let (out, report) = run("sent_id\tform\tact\nz\tdecl\tassert\na\n", "", "");
+        assert_eq!(table(&out)["a"]["act"], "");
+        assert!(report.contains("2 sentences."));
+        assert!(out.lines().nth(1).unwrap().starts_with("a\t"));
+        let (out, report) = run(
+            "sent_id\tform\tact\na\timp\tassert\na\tdecl\tother\n",
+            "",
+            "",
+        );
+        assert_eq!(table(&out)["a"]["act"], "other");
+        assert!(report.contains("1 sentences."));
+    }
+
+    #[test]
+    fn finite_agreement_thresholds_and_voice_precedence() {
+        for left in ["0.19", "0.2", "0.8", "NaN"] {
+            for right in ["0.19", "0.2", "0.8", "NaN"] {
+                for books in [false, true] {
+                    let labels =
+                        table("id\tform\tact\tpolarity\thedge\nx\tdecl\tnarrate\tnone\t0\n");
+                    let witnesses = table(&format!(
+                        "id\tnli1_act\tnli1_act_p\tnli2_act\tnli2_act_p\nx\tassert\t{left}\tassert\t{right}\n"
+                    ));
+                    let id = if books {
+                        "school:books:x"
+                    } else {
+                        "school:lesson:x"
+                    };
+                    let actual = agree_one(id, &labels["x"], &witnesses["x"], None);
+                    let qualifies =
+                        !books && ["0.2", "0.8"].contains(&left) && ["0.2", "0.8"].contains(&right);
+                    assert_eq!(actual.1, if qualifies { "assert" } else { "narrate" });
+                    assert_eq!(
+                        actual.4,
+                        if qualifies {
+                            vec!["P2-lesson-assert"]
+                        } else {
+                            vec![]
+                        }
+                    );
+                }
+            }
+        }
+        let labels = table("id\tform\tact\tvoice\nx\tq\task\tcharacter\n");
+        let actual = agree_one("x", &labels["x"], &Default::default(), Some("imp"));
+        assert_eq!((actual.0.as_str(), actual.1.as_str()), ("q", "ask"));
+        assert!(actual.4.is_empty());
+    }
+
+    #[test]
+    fn finite_tree_form_observations() {
+        for punctuation in [".", "!", "?"] {
+            for subject in [false, true] {
+                for wh in [false, true] {
+                    let prefix = if wh {
+                        "1\tWhy\twhy\tADV\tWRB\t_\t2\tadvmod\t_\t_\n"
+                    } else {
+                        ""
+                    };
+                    let subj = if subject {
+                        "3\tyou\tyou\tPRON\tPRP\t_\t2\tnsubj\t_\t_\n"
+                    } else {
+                        ""
+                    };
+                    let block = format!(
+                        "{prefix}2\tGo\tgo\tVERB\tVB\t_\t0\troot\t_\t_\n{subj}4\t{punctuation}\t{punctuation}\tPUNCT\t.\t_\t2\tpunct\t_\t_\n"
+                    );
+                    let expected = match (punctuation, subject, wh) {
+                        ("?", _, true) => "wh",
+                        ("?", _, false) => "q",
+                        (_, false, false) => "imp",
+                        ("!", _, _) => "excl",
+                        _ => "decl",
+                    };
+                    assert_eq!(tree_form(&block), expected);
+                }
+            }
+        }
     }
 }

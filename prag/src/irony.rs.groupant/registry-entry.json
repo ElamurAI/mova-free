@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p prag --lib irony::wave12_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "Conservative O(N^3) for candidate pairs times bounded ancestry/contrast scans, plus fixed-seed situation scans and raw-text normalization/cue scans. O(N) polar/span temporary entries plus string/output bytes. This is a prospective source cost, not timing or accuracy evidence.",
+  "description": "Domain X is finite supplied (Word sequence W, raw cue text T) under fixed lexicons. Situation selection yields disjoint negative spans; polar sequence P follows token order, skipping ADP/SCONJ lexical sentiment and span interiors, flipping recognized lexical polarity under negation except cannot-wait. Let I and E be existence flags for the first implicit and explicit eligible pairs, C the distinct cue-kind list, and s=3I+2E+|C|. Return None iff neither pair exists or s<THRESHOLD; otherwise return s, features [implicit if I,explicit if E] followed by C, implicit pair if I else explicit pair, counts of P signs, adjacent sign flips, maximum sign-run length and positive-minus-negative. Invalid parent links supply no ancestry or ended-parent evidence; linear explicit precedence remains usable.",
+  "forward": [
+    "Domain X is finite supplied (Word sequence W, raw cue text T) under fixed lexicons. Situation selection yields disjoint negative spans; polar sequence P follows token order, skipping ADP/SCONJ lexical sentiment and span interiors, flipping recognized lexical polarity under negation except cannot-wait. Let I and E be existence flags for the first implicit and explicit eligible pairs, C the distinct cue-kind list, and s=3I+2E+|C|. Return None iff neither pair exists or s<THRESHOLD; otherwise return s, features [implicit if I,explicit if E] followed by C, implicit pair if I else explicit pair, counts of P signs, adjacent sign flips, maximum sign-run length and positive-minus-negative. Invalid parent links supply no ancestry or ended-parent evidence; linear explicit precedence remains usable."
+  ],
+  "id": "prag-irony",
+  "inverse": [
+    "B(y) retains all (W,T,P,situations,I,E,C,pair) satisfying the forward relations and observed fields, with W and T separately tagged because text is used for cues independently of annotations. None admits no sentiment, same-sign sentiment, contrast-excluded pairs and other absent-pair cases. Same score admits distinct flag/cue combinations; full candidate still loses unused words, head alternatives and raw cue spelling. Invalid-parent abstention does not identify whether the intended tree would have supported ancestry."
+  ],
+  "limitations": [
+    "Finite supplied fixtures; compiled lexical snapshot; partial syntax macro bodies opaque.",
+    "No live parser/teacher/corpus, retained exam, intent guarantee or speed claim."
+  ],
+  "source": "prag/src/irony.rs",
+  "state": "Candidate implies I or E, score=3I+2E+cue-kind count and score>=2. Positive+negative=|P|, polarity=positive-negative, flips count adjacent sign changes, longest_run is zero for empty P. Cue kinds occur once in fixed order. No candidate from cues alone. No out-of-range dependency parent is indexed by ancestry/situation checks; a cycle terminates at the bounded walk limit. Pair choice and feature flags must agree."
+}

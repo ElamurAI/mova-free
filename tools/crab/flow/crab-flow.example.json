@@ -1,0 +1,284 @@
+{
+ "_comment": "Work-flow probes and the council for a Crab configuration: merge flow and council into crab.json. Paths are examples; every count source is declared here, none is built into Crab. A pool hands out jobs to idle members (any animal whose worker reads an assignment file and writes a report).",
+ "flow": {
+  "interval_seconds": 60,
+  "probes": [
+   {
+    "name": "fish-ready",
+    "kind": "fish",
+    "input": {
+     "source": {
+      "kind": "dir_entries",
+      "path": "/abs/fish/ready",
+      "suffix": ".json"
+     },
+     "low_water": 2
+    },
+    "stacks": [
+     {
+      "name": "ready_pages",
+      "source": {
+       "kind": "dir_entries",
+       "path": "/abs/fish/ready",
+       "suffix": ".json"
+      },
+      "high_water": 12,
+      "resume_at": 8
+     }
+    ],
+    "progress": {
+     "source": {
+      "kind": "sum",
+      "of": [
+       {
+        "kind": "json_field",
+        "path": "/abs/fish/workers/f00/status.json",
+        "field": "cursor",
+        "missing": 0
+       },
+       {
+        "kind": "json_field",
+        "path": "/abs/fish/workers/f01/status.json",
+        "field": "cursor",
+        "missing": 0
+       }
+      ]
+     },
+     "stall_seconds": 3600
+    },
+    "producer": {
+     "worker": "fish-producer",
+     "pause_file": "/abs/fish/producer/PAUSE"
+    },
+    "hysteresis": 3
+   },
+   {
+    "name": "fish-f00",
+    "kind": "fish",
+    "input": {
+     "source": {
+      "kind": "json_field",
+      "path": "/abs/fish/workers/f00/status.json",
+      "field": "details.current_audit.pending_targets",
+      "missing": 0
+     },
+     "low_water": 1
+    },
+    "stacks": [
+     {
+      "name": "quarantined_jobs",
+      "role": "quarantine",
+      "source": {
+       "kind": "sum",
+       "of": [
+        {
+         "kind": "json_field",
+         "path": "/abs/fish/workers/f00/status.json",
+         "field": "counts.quarantined_targets",
+         "missing": 0
+        },
+        {
+         "kind": "json_field",
+         "path": "/abs/fish/workers/f00/status.json",
+         "field": "sealed_counts.quarantined_targets",
+         "missing": 0
+        }
+       ]
+      },
+      "finished": {
+       "kind": "sum",
+       "of": [
+        {
+         "kind": "json_field",
+         "path": "/abs/fish/workers/f00/status.json",
+         "field": "counts.validated_targets",
+         "missing": 0
+        },
+        {
+         "kind": "json_field",
+         "path": "/abs/fish/workers/f00/status.json",
+         "field": "counts.quarantined_targets",
+         "missing": 0
+        },
+        {
+         "kind": "json_field",
+         "path": "/abs/fish/workers/f00/status.json",
+         "field": "counts.rejected_targets",
+         "missing": 0
+        },
+        {
+         "kind": "json_field",
+         "path": "/abs/fish/workers/f00/status.json",
+         "field": "sealed_counts.validated_targets",
+         "missing": 0
+        },
+        {
+         "kind": "json_field",
+         "path": "/abs/fish/workers/f00/status.json",
+         "field": "sealed_counts.quarantined_targets",
+         "missing": 0
+        },
+        {
+         "kind": "json_field",
+         "path": "/abs/fish/workers/f00/status.json",
+         "field": "sealed_counts.rejected_targets",
+         "missing": 0
+        }
+       ]
+      },
+      "rate_window_seconds": 3600,
+      "max_rate": 0.5,
+      "min_finished": 16,
+      "reason_source": {
+       "path": "/abs/fish/workers/f00/status.json",
+       "field": "details.current_audit.dominant_quarantine_reason"
+      }
+     },
+     {
+      "name": "uncertain",
+      "source": {
+       "kind": "json_equals",
+       "path": "/abs/fish/workers/f00/status.json",
+       "field": "state",
+       "value": "uncertain"
+      },
+      "high_water": 0,
+      "pause_producer": false
+     }
+    ],
+    "progress": {
+     "source": {
+      "kind": "json_field",
+      "path": "/abs/fish/workers/f00/status.json",
+      "field": "counts.validated_targets",
+      "missing": 0
+     },
+     "stall_seconds": 2400
+    },
+    "producer": {
+     "pause_file": "/abs/fish/workers/f00/PAUSE"
+    },
+    "limit": {
+     "files": [
+      "/abs/fish/workers/f00/pages/*/run/jobs/*/output/raw.stdout"
+     ]
+    },
+    "hysteresis": 3
+   },
+   {
+    "name": "eel",
+    "kind": "eel",
+    "worker": "eel",
+    "progress": {
+     "source": {
+      "kind": "json_field",
+      "path": "/abs/eel/status.json",
+      "field": "round"
+     },
+     "stall_seconds": 1800
+    },
+    "restart_on_stall": false
+   },
+   {
+    "name": "turtle",
+    "kind": "turtle",
+    "input": {
+     "source": {
+      "kind": "jsonl_lines",
+      "path": "/abs/turtle/queue.jsonl"
+     },
+     "low_water": 1
+    },
+    "stacks": [
+     {
+      "name": "uncertain",
+      "source": {
+       "kind": "jsonl_lines",
+       "path": "/abs/turtle/uncertain.jsonl"
+      },
+      "high_water": 50
+     }
+    ],
+    "progress": {
+     "source": {
+      "kind": "jsonl_lines",
+      "path": "/abs/turtle/made.jsonl"
+     },
+     "stall_seconds": 3600
+    },
+    "producer": {
+     "pause_file": "/abs/turtle/PAUSE"
+    },
+    "limit": {
+     "files": [
+      "/abs/turtle/turtle.log"
+     ]
+    }
+   }
+  ],
+  "pools": [
+   {
+    "name": "dictionaries",
+    "kind": "nautilus",
+    "lease_seconds": 1800,
+    "members": [
+     {
+      "name": "nautilus-a",
+      "worker": "nautilus-a-work",
+      "assignment": "/abs/nautilus-a/assignment.json",
+      "report": "/abs/nautilus-a/report.json"
+     },
+     {
+      "name": "nautilus-b",
+      "worker": "nautilus-b-work",
+      "assignment": "/abs/nautilus-b/assignment.json",
+      "report": "/abs/nautilus-b/report.json"
+     }
+    ],
+    "jobs": [
+     {
+      "name": "judaism",
+      "priority": 30,
+      "licence": "ours",
+      "backlog": {
+       "kind": "json_field",
+       "path": "/abs/jobs/judaism/backlog.json",
+       "field": "open_items",
+       "missing": 1
+      },
+      "params": {
+       "layer": "judaism"
+      }
+     },
+     {
+      "name": "school-science",
+      "priority": 10,
+      "parts": 2,
+      "licence": "ours",
+      "backlog": {
+       "kind": "json_field",
+       "path": "/abs/jobs/school-science/backlog.json",
+       "field": "open_items",
+       "missing": 1
+      },
+      "params": {
+       "layer": "school-science"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "council": {
+  "dolphins": [
+   "opus",
+   "sol"
+  ],
+  "period_seconds": 1800,
+  "max_task_bytes": 6000,
+  "min_spacing_seconds": 300,
+  "check_seconds": 60,
+  "quorum": 2,
+  "member_timeout_seconds": 600
+ }
+}

@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "supervisor::tests (twelve bounded fake-worker, lifetime lease and context metadata controls; serial mode)"
+  ],
+  "children": [],
+  "cost": "Linear source/queue scan plus set joins; full shard buffers and each child source load; O(worker count) supervision polls.",
+  "description": "Pinned disjoint annotation shards and fail-closed supervised Rust reviewworker processes.",
+  "forward": [
+    "Filter immutable legacy queue by durable coverage, heldout ID/text and joined-source exclusions; publish exact empty campaign identities; launch each worker once with reserved/running/finished journal."
+  ],
+  "id": "peta-supervisor",
+  "inverse": [
+    "Excluded queue IDs cannot be submitted; STOP without stopped status/free lock or unresolved reservations cannot migrate.",
+    "All ordered shards interleave to the filtered queue; excluded inputs and uncertain launches cannot be uniquely reconstructed."
+  ],
+  "limitations": [
+    "Partial source syntax/model; no real teacher/GPU or power-loss validation by this node."
+  ],
+  "source": "tools/crab/src/supervisor.rs",
+  "state": "Trusted pinned artifacts, Linux flock/process diagnostics, no automatic uncertain retry; GPU alias behavior belongs to main.rs."
+}

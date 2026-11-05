@@ -90,6 +90,8 @@ pub struct Mention {
     /// Head relation (without subtype).
     pub role: Rel,
     pub depth: u32,
+    /// Gender or animacy taken from the noun lexicon (`crate::lexicon`), with its counts.
+    pub lexicon: Option<String>,
 }
 
 impl Mention {
@@ -360,6 +362,7 @@ fn build(s: &Sent, si: usize, h: usize, kind: Kind, (a, b): (usize, usize), coor
         speaker: s.speaker.clone(),
         role: s.rel(h).base(),
         depth: s.depth[h],
+        lexicon: None,
     };
     if kind == Kind::Pronoun {
         let t = &s.toks[h];
@@ -437,6 +440,20 @@ fn build(s: &Sent, si: usize, h: usize, kind: Kind, (a, b): (usize, usize), coor
                 }
             }
         }
+        // the noun lexicon learned from Mova's own parses, when the tree and the closed lists say nothing
+        // (COREF_X=no-gender-table: off)
+        if kind == Kind::Nominal
+            && !coord
+            && m.gender == 0
+            && !std::env::var("COREF_X").is_ok_and(|v| v.split(',').any(|x| x == "no-gender-table"))
+            && let Some(f) = crate::lexicon::noun_feats(&s.lem(h))
+        {
+            m.gender = f.gender;
+            if m.animacy == 0 {
+                m.animacy = f.animacy;
+            }
+            m.lexicon = Some(f.why);
+        }
         let first = s.low(a);
         let has_det = s.kids[h].iter().any(|&k| s.rel(k).base() == Rel::Det || s.rel(k) == Rel::NmodPoss);
         // quantifier determiners (some, any, no, another, each, every…) and numbers without a definite article — also a new entity
@@ -455,6 +472,15 @@ fn build(s: &Sent, si: usize, h: usize, kind: Kind, (a, b): (usize, usize), coor
 }
 
 /// All mentions of the document in text order: (sentence, start, longer first, head).
+/// A clause as a mention (an event or a statement a pronoun refers to, `crate::it`): the predicate is the head,
+/// singular, inanimate, third person.
+pub fn event(s: &Sent, si: usize, p: usize, span: (usize, usize)) -> Mention {
+    let mut m = build(s, si, p, Kind::Other, span, false);
+    m.number = SG;
+    m.animacy = INAN;
+    m
+}
+
 pub fn detect(doc: &Document) -> Vec<Mention> {
     let mut out: Vec<Mention> = Vec::new();
     for (si, s) in doc.sents.iter().enumerate() {

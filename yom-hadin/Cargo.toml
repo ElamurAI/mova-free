@@ -1,0 +1,19 @@
+[package]
+name = "yomhadin"
+version.workspace = true
+edition = "2024"
+# license: Elamur Cosmic License (LICENSE.md at the repo root). The rules it reads: the Torah in JPS 1917 (public domain),
+# the Jerusalem Talmud in Guggenheimer's translation (Sefaria, CC BY: attribution in the README), hand-written samples.
+publish = false
+description = "Yom HaDin — the Last Judgment: laws read out of texts as rules (force, act, conditions, exceptions, penalty, authority) through en → prag → world, jurisdictions as data, and a court that enumerates every way a case can be judged, with the why of each path."
+
+[[bin]]
+name = "yomhadin"
+path = "src/main.rs"
+
+[dependencies]
+# the parser and the frames: the case and the law texts are read through the same stack as everything else
+en = { path = "../en" }
+prag = { path = "../prag" }
+world = { path = "../world" }
+anyhow = "1.0.104"

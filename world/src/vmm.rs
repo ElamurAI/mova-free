@@ -858,7 +858,7 @@ pub fn estimate_call(sents: usize, prompt_chars: usize) -> f64 {
 
 /// LLM v3 for a test ground: parts (up to `max` sentences), one call per part, a retry — only on a format rejection,
 /// once per part and only for the rejected lines. Before each call — the budget cap (`WORLD_V3_BUDGET`,
-/// $40 by default): if spent + call estimate exceeds it — stop (fail-fast). Finished parts
+/// has a default): if spent + call estimate exceeds it — stop (fail-fast). Finished parts
 /// (`raw-<name>-p<N>.txt`) are not re-requested.
 pub fn call_v3(t: &Text, name: &str, dir: &Path, max: usize, budget: f64) -> Result<String> {
     let done = dir.join(format!("cmds-{name}.txt"));
@@ -933,4 +933,76 @@ pub fn call_v3(t: &Text, name: &str, dir: &Path, max: usize, budget: f64) -> Res
     }
     std::fs::write(&done, &all)?;
     Ok(all)
+}
+
+#[cfg(test)]
+mod wave28_dialogue {
+    use super::*;
+    #[test]
+    fn splice_coordinates_duplicates_and_invalid_rows() {
+        assert_eq!(
+            splice(
+                "a\nb\nc\n",
+                "@0 bad\n@4 bad\n@2 first\n@2 last\n@x no\nnoise"
+            ),
+            ("a\nlast\nc".into(), 2)
+        );
+        assert_eq!(splice("", "@1 x"), (String::new(), 0));
+    }
+    #[test]
+    fn parts_and_prompt_anchors() {
+        let t = Text {
+            doc: 1,
+            title: "Synthetic".into(),
+            sents: vec![
+                (1, "A.".into()),
+                (1, "B.".into()),
+                (2, "C.".into()),
+                (2, "D.".into()),
+            ],
+        };
+        assert_eq!(parts(&t, 2), [(1, 2), (3, 4)]);
+        let p = body_v3(&t, (3, 4), None);
+        assert!(p.contains("s3 (para 2): C."));
+        assert!(p.contains("first anchor ^s3"));
+        assert_eq!(estimate_call(0, 0), 0.35);
+        assert!(estimate_call(2, 100) > estimate_call(1, 100));
+        let empty = Text {
+            doc: 0,
+            title: String::new(),
+            sents: vec![],
+        };
+        assert_eq!(parts(&empty, 1), [(1, 0)]);
+    }
+    #[test]
+    fn done_guard_precedes_teacher_and_partition() {
+        let d = std::env::temp_dir().join(format!("wave28-dialogue-vmm-{}", std::process::id()));
+        std::fs::create_dir_all(&d).unwrap();
+        std::fs::write(d.join("cmds-1.txt"), "sentinel").unwrap();
+        let t = Text {
+            doc: 1,
+            title: String::new(),
+            sents: vec![(1, "A.".into())],
+        };
+        assert!(
+            call(&t, &d)
+                .unwrap_err()
+                .to_string()
+                .contains("already exists")
+        );
+        assert!(
+            call_v2(&t, "1", &d, 0)
+                .unwrap_err()
+                .to_string()
+                .contains("already exists")
+        );
+        assert!(
+            call_v3(&t, "1", &d, 0, 0.0)
+                .unwrap_err()
+                .to_string()
+                .contains("already exists")
+        );
+        assert_eq!(std::fs::read_dir(&d).unwrap().count(), 1);
+        std::fs::remove_dir_all(&d).unwrap();
+    }
 }

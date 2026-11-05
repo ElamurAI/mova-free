@@ -1,0 +1,20 @@
+{
+  "id": "crab-tmux-worker-cli",
+  "source": "tools/crab/src/bin/crab-tmux-worker.rs",
+  "children": [],
+  "description": "Binary entry of the Dolphin holder: argument parsing, SIGTERM/SIGINT/SIGHUP to a graceful stop, outcome to exit status.",
+  "state": "None beyond tmux_worker's static stop flag.",
+  "forward": [
+    "main -> tmux_worker::main_with_args(args): parse (usage error 2), install handlers, run, print the English reason of a refusal on stderr, exit 0/3/4/5/6."
+  ],
+  "inverse": [
+    "Exit status recovers the outcome class only."
+  ],
+  "cost": "Constant besides the holder's run.",
+  "checks": [
+    "2026-11-04: covered through tmux_worker tests of main_with_args parts (parse_args, run, outcomes)."
+  ],
+  "limitations": [
+    "Signal delivery semantics of the host; no test sends a real SIGTERM to the binary."
+  ]
+}

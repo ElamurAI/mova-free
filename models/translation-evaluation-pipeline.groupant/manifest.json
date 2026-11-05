@@ -1,0 +1,164 @@
+{
+  "children": [
+    "translation-flow-bible",
+    "translation-flow-blocks",
+    "translation-flow-corpus",
+    "translation-flow-main",
+    "translation-flow-many",
+    "translation-flow-measure",
+    "translation-flow-pages",
+    "translation-flow-report",
+    "translation-flow-sources"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "Finite admitted numeric domains and valid trees; each task owns its files; no claim about empirical corpus quality, persistent learning, or full pipeline correctness.",
+        "domain": "Synthetic in-memory keys, residuals, metric records and permutations for executed evidence. Full CLI and real corpora/models/annotators/training/page/report effects are source-inspected only.",
+        "id": "behavior-complement",
+        "observation_scope": "Real joins: bible::read_pool/sources text→corpus PVerse; main run_sys→measure::Run→Agg/VRec→block_measure and report::write; many→corpus/measure plus own pair metrics; pages receives wlc_jps VRec stage arrays from main and Hebrew encoder outputs. many::agree skips punctuation while block_meta includes it: their counts are not interchangeable. Report groups collapse layers. No invented call from report to many.",
+        "operator": "Paired aggregates exclude absent original source keys; diagnostic target reconstruction cannot imply normal exact translation. Page Meta cells excluded from page cost, while translation residual cells all count. Partial conditional exclusion over valid declared states.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "Finite admitted numeric domains and valid trees; each task owns its files; no claim about empirical corpus quality, persistent learning, or full pipeline correctness.",
+        "domain": "Synthetic in-memory keys, residuals, metric records and permutations for executed evidence. Full CLI and real corpora/models/annotators/training/page/report effects are source-inspected only.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Real joins: bible::read_pool/sources text→corpus PVerse; main run_sys→measure::Run→Agg/VRec→block_measure and report::write; many→corpus/measure plus own pair metrics; pages receives wlc_jps VRec stage arrays from main and Hebrew encoder outputs. many::agree skips punctuation while block_meta includes it: their counts are not interchangeable. Report groups collapse layers. No invented call from report to many.",
+        "operator": "Residual+decoder state reconstructs target layers conditionally; summary ratios admit many source texts, trees, gaps and sampling histories. Recovering source or meaning uniquely is unsupported. Preserve population masks, keys and residuals when diagnosing.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "Finite admitted numeric domains and valid trees; each task owns its files; no claim about empirical corpus quality, persistent learning, or full pipeline correctness.",
+        "domain": "Synthetic in-memory keys, residuals, metric records and permutations for executed evidence. Full CLI and real corpora/models/annotators/training/page/report effects are source-inspected only.",
+        "id": "population-transport",
+        "observation_scope": "Real joins: bible::read_pool/sources text→corpus PVerse; main run_sys→measure::Run→Agg/VRec→block_measure and report::write; many→corpus/measure plus own pair metrics; pages receives wlc_jps VRec stage arrays from main and Hebrew encoder outputs. many::agree skips punctuation while block_meta includes it: their counts are not interchangeable. Report groups collapse layers. No invented call from report to many.",
+        "operator": "All target VRec keys versus source-present Agg keys differ; missing whole blocks in many contribute absent/level accounting separately from cross population.",
+        "path": "model.md",
+        "required": false,
+        "section": "population-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Finite admitted numeric domains and valid trees; each task owns its files; no claim about empirical corpus quality, persistent learning, or full pipeline correctness.",
+        "domain": "Synthetic in-memory keys, residuals, metric records and permutations for executed evidence. Full CLI and real corpora/models/annotators/training/page/report effects are source-inspected only.",
+        "id": "cost-denominators",
+        "observation_scope": "Real joins: bible::read_pool/sources text→corpus PVerse; main run_sys→measure::Run→Agg/VRec→block_measure and report::write; many→corpus/measure plus own pair metrics; pages receives wlc_jps VRec stage arrays from main and Hebrew encoder outputs. many::agree skips punctuation while block_meta includes it: their counts are not interchangeable. Report groups collapse layers. No invented call from report to many.",
+        "operator": "Pair-local1000(reader+tail)/max(target_words,1), then arithmetic mean over pairs differs from pooled numerator/denominator; class sums and page filtered sums use distinct cell universes.",
+        "path": "model.md",
+        "required": false,
+        "section": "cost-denominators",
+        "status": "partial_source_derived_model",
+        "type": "metric_transport"
+      },
+      {
+        "assumptions": "Finite admitted numeric domains and valid trees; each task owns its files; no claim about empirical corpus quality, persistent learning, or full pipeline correctness.",
+        "domain": "Synthetic in-memory keys, residuals, metric records and permutations for executed evidence. Full CLI and real corpora/models/annotators/training/page/report effects are source-inspected only.",
+        "id": "effect-order",
+        "observation_scope": "Real joins: bible::read_pool/sources text→corpus PVerse; main run_sys→measure::Run→Agg/VRec→block_measure and report::write; many→corpus/measure plus own pair metrics; pages receives wlc_jps VRec stage arrays from main and Hebrew encoder outputs. many::agree skips punctuation while block_meta includes it: their counts are not interchangeable. Report groups collapse layers. No invented call from report to many.",
+        "operator": "Eval rejects train before output creation; both commands load model after output creation; report writes sequential artifacts, optional pages later. Source-derived effect order only, no rollback promise.",
+        "path": "model.md",
+        "required": false,
+        "section": "effect-order",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "Finite admitted numeric domains and valid trees; each task owns its files; no claim about empirical corpus quality, persistent learning, or full pipeline correctness.",
+        "domain": "Synthetic in-memory keys, residuals, metric records and permutations for executed evidence. Full CLI and real corpora/models/annotators/training/page/report effects are source-inspected only.",
+        "id": "coordinate-join",
+        "observation_scope": "Real joins: bible::read_pool/sources text→corpus PVerse; main run_sys→measure::Run→Agg/VRec→block_measure and report::write; many→corpus/measure plus own pair metrics; pages receives wlc_jps VRec stage arrays from main and Hebrew encoder outputs. many::agree skips punctuation while block_meta includes it: their counts are not interchangeable. Report groups collapse layers. No invented call from report to many.",
+        "operator": "VKey split depends on Kind; corpus joined heads add offsets preserving0; measure block sentinel contributes an additional offset. Unknown boundaries prevent unique reverse segmentation.",
+        "path": "model.md",
+        "required": false,
+        "section": "coordinate-join",
+        "status": "partial_source_derived_model",
+        "type": "coordinate_transport"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "translation-evaluation-pipeline",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "tools/translate/src/bible.rs",
+      "sha256": "e3abfd17d345dd4b49bdc85c6f0ef76d7e4553d89a1555756af88599c5ea1ff2"
+    },
+    {
+      "path": "tools/translate/src/blocks.rs",
+      "sha256": "64e582e8e4f6cf4827b9800c55cef9e82bd545e15db406255a7ee69511796b1d"
+    },
+    {
+      "path": "tools/translate/src/corpus.rs",
+      "sha256": "53fd344ba3bb96f84bd8b9b7d237b9cc40637dcdc49faf1b0ce0d7c98047ec3a"
+    },
+    {
+      "path": "tools/translate/src/main.rs",
+      "sha256": "d9940f5fe1dcebf1ab586d390094028a90bc8a35bd733f4b55724483c236ecd3"
+    },
+    {
+      "path": "tools/translate/src/many.rs",
+      "sha256": "14b6295b8b94f871c0c2fbb90c92d19698cabe47b439443c393135a6d777555f"
+    },
+    {
+      "path": "tools/translate/src/measure.rs",
+      "sha256": "c34da721e6921c202314dfe546331c6d192234a2e37de17049bb09e4321dbd5d"
+    },
+    {
+      "path": "tools/translate/src/pages.rs",
+      "sha256": "2607ff85822e5c752ee2c9608676f792be9c23addfd6a160c569156b868c7d75"
+    },
+    {
+      "path": "tools/translate/src/report.rs",
+      "sha256": "162c79de5df3e057212bb15c242635dc3c339d526f99ea88e0994a1e84a0bece"
+    },
+    {
+      "path": "tools/translate/src/sources.rs",
+      "sha256": "af43c125e24e661c24e2bbe91b940112d68000090f189a3f3bd36b3605906363"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

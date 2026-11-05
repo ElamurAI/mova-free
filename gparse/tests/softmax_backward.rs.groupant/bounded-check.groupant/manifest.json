@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "layout_cases",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "layout_cases",
+        "status": "partial_source_derived_model",
+        "type": "layout_cases"
+      },
+      {
+        "id": "finite_difference",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "finite_difference",
+        "status": "partial_source_derived_model",
+        "type": "finite_difference"
+      },
+      {
+        "id": "stable_mask",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "stable_mask",
+        "status": "partial_source_derived_model",
+        "type": "stable_mask"
+      },
+      {
+        "id": "negative_reference",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "negative_reference",
+        "status": "partial_source_derived_model",
+        "type": "negative_reference"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "partial_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 3620,
+      "start": 340
+    },
+    "description": "CUDA gradient test builds three rows for widths1,3,17,33,257; compares fused/reference probabilities and weighted gradients, f64 central differences, narrow offsets/transposes, and stable masked logits.",
+    "source_bytes_sha256": "51281473b4856611b4f1350442c224d4dffcb3eeaba060fa613808684519d438"
+  },
+  "id": "gparse-test-softmax-backward-bounded-check",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../softmax_backward.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "280e3f8eb33bed3dfe9b898f3e0ba60ffd5a3c4d5d1dfa47b8ce2d1997cec4e6"
+  },
+  "status": "partial_source_bound_model"
+}

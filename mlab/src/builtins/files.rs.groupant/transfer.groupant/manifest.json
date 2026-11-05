@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "copyfile source directory excludes recursive directory copy. Failed rename with n=0 excludes a returned false status.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "A successful destination state admits multiple source roots sharing basename; copy preserves source while rename antecedents depend on provider semantics.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_invariant",
+        "path": "model.md",
+        "scope": "Both source and destination strings are extracted before destination stat; failure message carries operation and normalized destination.",
+        "section": "state_invariant",
+        "status": "partial_source_derived_model",
+        "type": "state_invariant"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Destination stat errors are treated as non-directory; copy source stat errors proceed to copy and let it diagnose.",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Output shape is zero on successful n=0 or boolean plus optional message; transfer destination includes basename only for known directories.",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "Path handling O(path bytes), transfer cost provider-dependent; no streaming or atomicity guarantee introduced.",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 5334,
+      "start": 4273
+    },
+    "description": "Destination directory redirects to child(dst,base_name(src)); fname movefile selects rename, other branch rejects source directory then copies bytes.",
+    "source_bytes_sha256": "d2f57e1922a9b2d4debe7ab3a1f9b6f76ac45026e842d183cc466022279f0cfd"
+  },
+  "id": "mlab-builtins-files-transfer",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../files.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "c66336a9d4bf2e948158e64f1b02e1f9b80bfc42949cb019fd11d3f70c66cfd4"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,109 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "scoped_specification"
+    },
+    "ast": {
+      "scope": "Source byte ranges only. include! OUT_DIR/global.rs and include_str! OUT_DIR/expressions.tsv are not expanded or source-bound by this sidecar.",
+      "status": "not_materialized"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariants",
+      "status": "scoped_specification"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Forms/lemma merge and bounded greedy matcher, including candidate and span policy.",
+        "evidence": "Conditional expression test; proposed independent span-policy oracle.",
+        "id": "nonbehavior",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "U pairs finite token vectors with lists of matches. R runs descending lengths <=6, ascending starts, candidate order and accepted-row filtering. U\\R excludes overlapping chosen multiword spans in one pass and any singleton without derived domains; sentence merge rejects a form multiword overlapping an existing multiword, but can overlap existing singletons.",
+        "path": "model.md",
+        "scope": "Forms/lemma merge and bounded greedy matcher, including candidate and span policy.",
+        "section": "nonbehavior",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Forms/lemma merge and bounded greedy matcher, including candidate and span policy.",
+        "evidence": "Proposed exhaustive tiny forms/lemma domains.",
+        "id": "antecedents",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "Given the final sorted matches, recover all forms and lemmas whose separate greedy results satisfy lemma priority plus form admission. Match records do not record origin. Multiple origin assignments, discarded candidates and capitalization variants remain possible; no unique token sequence is asserted.",
+        "path": "model.md",
+        "scope": "Forms/lemma merge and bounded greedy matcher, including candidate and span policy.",
+        "section": "antecedents",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Forms/lemma merge and bounded greedy matcher, including candidate and span policy.",
+        "evidence": "Proposed two-placeholder and boundary cases.",
+        "id": "one-position-generalization",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "Candidate set is literal plus individual possessive->one's replacements; for nonpossessive interior positions of spans>=3 add someone/something/somebody substitutions. No candidate substitutes two positions at once, and placeholders are never generated at edges. Duplicate candidate strings can produce repeated singleton observations because singleton matches do not mark used.",
+        "path": "model.md",
+        "scope": "Forms/lemma merge and bounded greedy matcher, including candidate and span policy.",
+        "section": "one-position-generalization",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "candidate_language"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Forms/lemma merge and bounded greedy matcher, including candidate and span policy.",
+        "evidence": "expression_tests::real_meanings_and_domains checks one forms rescue; asymmetric overlap cases proposed.",
+        "id": "merge-priority",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "M(forms,lemmas)=sort(G(lemmas) ++ admitted multiwords from G(forms)). Admission sees already appended form matches and ignores singletons for overlap. Swapping forms and lemmas can alter chosen spans and entries; this merge is not a symmetric union or global maximum-length optimizer.",
+        "path": "model.md",
+        "scope": "Forms/lemma merge and bounded greedy matcher, including candidate and span policy.",
+        "section": "merge-priority",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "noncommutativity"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "existing_test_references"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 30315,
+      "start": 25769
+    },
+    "description": "Forms/lemma merge and bounded greedy matcher, including candidate and span policy."
+  },
+  "id": "global-catalog-expression-matching",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../lib.rs",
+    "sha256": "f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907"
+  },
+  "status": "partial"
+}

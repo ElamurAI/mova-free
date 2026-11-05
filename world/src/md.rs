@@ -422,3 +422,73 @@ pub fn story_md(r: &Run, fmt_errs: &[FormatErr], lines_total: usize) -> String {
     o.push_str(&world_md(r, fmt_errs, lines_total));
     o
 }
+
+#[cfg(test)]
+mod wave8_models {
+    use super::*;
+    use crate::world::{Text, run, run_v3};
+
+    #[test]
+    fn cell_bounded_oracle_and_loss_fibers() {
+        let alphabet = ['a', '|', '\n', ' ', '\\', 'é'];
+        let mut inputs = vec![String::new()];
+        for _ in 0..3 {
+            let prev = inputs.clone();
+            for p in prev { for c in alphabet { inputs.push(format!("{p}{c}")); } }
+        }
+        inputs.sort(); inputs.dedup();
+        assert_eq!(inputs.len(), 259);
+        for s in &inputs {
+            let expected: String = s.chars().flat_map(|c| match c {
+                '|' => vec!['\\', '|'], '\n' => vec![' '], _ => vec![c],
+            }).collect();
+            assert_eq!(cell(s), expected, "{s:?}");
+            assert!(!cell(s).contains('\n'));
+        }
+        let fiber: Vec<_> = inputs.iter().filter(|s| cell(s) == "a a").map(String::as_str).collect();
+        assert_eq!(fiber, vec!["a\na", "a a"]);
+        assert_ne!(cell(&cell("|")), cell("|")); // escaping is not idempotent
+    }
+
+    fn text() -> Text { Text { doc: 7, title: "Fixture".into(), sents: vec![(2, "Hello.".into())] } }
+
+    #[test]
+    fn empty_world_projection_and_story_fallback() {
+        let mut r = run(text(), &[]);
+        r.world.story = None; // Constructors initialize Story even in v2 mode.
+        let out = world_md(&r, &[], 3);
+        assert!(out.starts_with("# Tale world: Fixture (doc 7)\n"));
+        assert!(out.contains("Sentences 1; LLM lines 3: accepted 0, rejected by format 0, by gates 0; sentences without commands 1."));
+        assert!(out.contains("- `^s1` (par. 2) Hello."));
+        assert!(out.contains("- sentences without commands: ^s1"));
+        assert!(!out.contains("All lines accepted"));
+        assert_eq!(story_md(&r, &[], 3), out);
+        assert_eq!(ids(&r.world, &[]), "—");
+    }
+
+    #[test]
+    fn format_diagnostics_are_projected_without_execution() {
+        let r = run(text(), &[]);
+        let errs = vec![FormatErr { no: 9, raw: "bad | command".into(), msg: "reason".into() }];
+        let out = world_md(&r, &errs, 1);
+        assert!(out.contains("rejected by format 1"));
+        assert!(out.contains("- format, line 9: `bad | command` — reason"));
+        assert_eq!(r.accepted, 0);
+    }
+
+    #[test]
+    fn story_contains_root_and_preserves_section_order() {
+        let r = run_v3(text(), &[]);
+        let root = world_md(&r, &[], 0);
+        let out = story_md(&r, &[], 0);
+        assert!(out.starts_with("# World v3: Fixture"));
+        assert!(out.ends_with(&root));
+        let sections = ["## Narration frames", "## Story time axis", "## Reality branches", "## Observer claims", "## Knowledge", "## Reveals", "## Frame worlds", "# Tale world"];
+        let mut last = 0;
+        for section in sections {
+            let i = out.find(section).unwrap();
+            assert!(i >= last, "{section}");
+            last = i;
+        }
+    }
+}

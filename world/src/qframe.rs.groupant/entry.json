@@ -1,0 +1,22 @@
+{
+  "id": "world-qframe",
+  "source": "world/src/qframe.rs",
+  "children": [],
+  "description": "Question interfaces, lexical gates, parser orchestration, declarative extraction, ordered classification and display.",
+  "state": "Question tokens, WH/focus, clauses and opaque annotation/dictionary dependencies.",
+  "cost": "See adjacent model.md cost; no measured parser throughput.",
+  "forward": [
+    "tokens uses annotator tokenizer if available and fallback toks otherwise. parse cuts the first eligible subordinate marker from position 2, locates WH among first three main tokens, checks auxiliary/candidates, builds declarative trees, extracts Clause and classifies with frame. Parser loading/annotation are opaque; decl_clause and frame are exercised directly on synthetic annotated trees. show formats selected fields."
+  ],
+  "inverse": [
+    "Behavior complement is U minus the declared deterministic relation on scoped observations.",
+    "Reverse reconstruction retains all compatible inputs; finite fibers do not uniquely recover text."
+  ],
+  "checks": [
+    "cargo test -p world --lib wave7_qframe -- --test-threads=1"
+  ],
+  "limitations": [
+    "Synthetic annotated fixtures; parser loading, dictionary semantics, repair and I/O remain external.",
+    "Partial syntax only; no general accuracy or runtime safety claim."
+  ]
+}

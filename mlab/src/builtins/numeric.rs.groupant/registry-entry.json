@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "builtins::numeric::wave30_tests::maps_and_trapezoid_contract: four transforms/Jacobians, scalar-spacing trapezoid, mismatched X and early ode45 nargout error. Adaptive convergence and callback side effects remain unexecuted."
+  ],
+  "children": [],
+  "cost": "GK starts10 intervals then caps650, 15 nodes each, each refinement two rules and O(intervals) selection/sum; callback cost dominates. Brent1000 iterations after up to200 bracket expansions. Nelder-Mead O(n^2) storage and200*n iteration/evaluation thresholds (batch may overshoot). ODE at most1e6 attempted steps, O(neq*saved outputs) storage.",
+  "description": "Registry maps integral/quad/quadgk to adaptive transformed GK7-15, fzero to bracket search and Brent, fminsearch to Nelder-Mead, ode45 to adaptive Dormand-Prince and trapz to sampled trapezoids. Callback results mutate Interp as normal; vectorized quadrature trial may be followed by repeated scalar calls. Tolerances and step budgets are algorithm stopping rules, not verified global bounds.",
+  "forward": [
+    "Registry maps integral/quad/quadgk to adaptive transformed GK7-15, fzero to bracket search and Brent, fminsearch to Nelder-Mead, ode45 to adaptive Dormand-Prince and trapz to sampled trapezoids. Callback results mutate Interp as normal; vectorized quadrature trial may be followed by repeated scalar calls. Tolerances and step budgets are algorithm stopping rules, not verified global bounds."
+  ],
+  "id": "mlab-numerics-numeric",
+  "inverse": [
+    "Integral value determines a fiber of integrands differing by zero-integral components. fzero outputs constrain the computed bracket/Brent stopping relation, not a zero fiber: bracket half-width tolerance or1000-iteration exhaustion can return nonzero residual and still success flag1. Discontinuous bracketed functions with no true zero are compatible; only observed fb==0 branches establish a sampled zero. A sampled ODE trajectory is compatible with many RHS fields off visited points. Trapz sums constrain weighted adjacent ordinates but do not reconstruct unique samples."
+  ],
+  "limitations": [
+    "Partial source model; finite synthetic tests only",
+    "No executable surrogate, global numerical proof or resource-failure guarantee"
+  ],
+  "source": "mlab/src/builtins/numeric.rs",
+  "state": "Interp callback effects, quadrature intervals, brackets, simplex or ODE trajectory"
+}

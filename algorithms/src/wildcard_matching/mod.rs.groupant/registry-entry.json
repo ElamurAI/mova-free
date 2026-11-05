@@ -1,0 +1,29 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline wildcard_matching::tests::",
+    "Twice per debug/release; identical normalized identities. Compiled per-source mutation and exact restoration; strict Clippy; narrow rustfmt; repeated syntax."
+  ],
+  "children": [],
+  "cost": "For text length n and pattern length m, O((n+1)(m+1)) time and O(m+1) storage; this is exact bounded-frontier DP rather than an unproved linear greedy claim. Valid byte slice lengths fit isize so m+1 fits usize; allocation failure may panic/abort. No resource cap or approximate mode.",
+  "description": "wildcard_matching exact byte algorithm",
+  "forward": [
+    "Return true iff the complete pattern consumes the complete text. A literal byte consumes the same byte, '?' consumes one arbitrary byte, and '*' consumes k>=0 arbitrary bytes. There is no escaping or Unicode decoding. The frontier stores exact prefix-language membership.",
+    "Before updating cell j+1, diagonal is the old row[j], above is old row[j+1], and row[j] is current-prefix membership. A star accepts left OR above; a nonstar accepts diagonal AND byte predicate. Initial row accepts exactly all-star pattern prefixes."
+  ],
+  "id": "algorithm-wildcard-matching",
+  "inverse": [
+    "Within U of finite (text,pattern,bool) observations, exclude true when no whole-string token consumption exists and false when one exists. Anchoring forbids an interior literal match by itself. Bytes outside '?' and '*' remain literal, including backslash; Unicode scalar or path-separator semantics are absent.",
+    "For fixed pattern P and result true, the fiber is exactly its byte language L(P); for false it is the complement within finite byte strings. Many distinct texts match '*'. A Boolean and pattern cannot recover a unique original text or its allocation history.",
+    "At text prefix length i, row[j] equals membership of T[..i] in P[..j]. Fixing a row retains all text prefixes with the same vector of prefix memberships; in-place diagonal/above temporaries preserve the previous row observations until used.",
+    "Replacing any nonempty run of consecutive stars by one star preserves the recognized full-string language, since all nonnegative compositions of consumed lengths have the same possible total. This law does not replace or remove question marks.",
+    "If P has q nonstar tokens, every accepted text has length at least q; with no stars length must equal q. A pattern of q question marks accepts exactly length q. All stars accept every finite text, including empty.",
+    "For a pattern containing neither '?' nor '*', L(P) is the singleton {P}. On this restricted pattern domain, a successful match fixes the input bytes; adding a wildcard generally restores ambiguity.",
+    "Under byte semantics a two-byte UTF-8 character needs two question marks; a scalar-aware counterfactual would require one. Backslash is literal even immediately before '*', so backslash-star accepts a literal backslash followed by any bytes, not a lone literal star.",
+    "For star at pattern position j, accepting (i,j+1) is equivalent to accepting (i,j) with zero new bytes OR (i-1,j+1) with one more byte, for i>0. Replacing OR by AND loses witnesses such as nonempty text matched by one star."
+  ],
+  "limitations": [
+    "Partial syntax excludes macro expansion and semantic resolution. Finite enumeration is not a general proof; allocation exhaustion and throughput are untested. No executable approximation profile or downstream inference claim."
+  ],
+  "source": "algorithms/src/wildcard_matching/mod.rs",
+  "state": "Finite byte slices and ordinary terminating Rust calls with successful allocation."
+}

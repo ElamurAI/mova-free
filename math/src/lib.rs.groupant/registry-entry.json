@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "Selected math lib tests compile the public surface",
+    "two identical syntax projections"
+  ],
+  "children": [],
+  "cost": "Zero declaration runtime work; compilation depends on dependency graph/features.",
+  "description": "Declares small/big arithmetic, plan/curriculum/memory/solver, word problem and Lean modules. No initializer or runtime dispatcher.",
+  "forward": [
+    "Declares small/big arithmetic, plan/curriculum/memory/solver, word problem and Lean modules. No initializer or runtime dispatcher."
+  ],
+  "id": "math-library-surface",
+  "inverse": [
+    "Compiled symbol is compatible with module implementations exporting it; declaration file cannot reconstruct implementation output."
+  ],
+  "limitations": [
+    "Compile/representation evidence only, no independent runtime mutation control.",
+    "Partial lexical AST; no semantic proof or executable percentage surrogate"
+  ],
+  "source": "math/src/lib.rs",
+  "state": "Public module namespace"
+}

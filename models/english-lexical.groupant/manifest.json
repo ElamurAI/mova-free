@@ -1,0 +1,189 @@
+{
+  "children": [
+    "en-derive",
+    "en-dict",
+    "en-gram",
+    "en-hash",
+    "en-lexext",
+    "en-lexgen",
+    "en-lexgrow",
+    "en-morph",
+    "en-ptag",
+    "en-tag",
+    "en-tagrule",
+    "en-text",
+    "en-tok",
+    "en-udreg"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "No corpus, network, teacher, GPU, held-out evaluation or model mutation. No assurance for malformed serialized models/blobs, huge counters, allocation/I/O fault injection, cyclic tree paths. Build-time dictionary generation not semantically revalidated by temp output fixture.",
+        "domain": "Bounded UTF-8 synthetic fixtures, frozen generated dictionary from repository build inputs; valid index domains and aligned arrays. Tagging nonempty sequences requires supported candidate paths; tree conjunction ancestry must terminate. Tiny in-memory training only; lexgen tempfile effects.",
+        "id": "behavior-complement",
+        "observation_scope": "Tag and ptag call dict/hash/gram; ptag uses TnT prior only unknown words. Morph's UD/AGID/rule priority interacts with lexgen src flags and record order: changing a/r/u alters preferred analyses. tok spacing bits are not exact whitespace; consumers cannot infer original byte offsets from detokenize. text order is 1-based while array positions and dictionary indexes are 0-based. udreg validates selected enum features, so upstream Feats::parse unknown-dropping cannot become a complete annotation gate. Existing conllu callers supply Sentence/Token to learning/generation.",
+        "operator": "Composition excludes exact raw-whitespace recovery, unknown-feature validation after lossy parse, and transactional two-file generation. Hash equality cannot establish lexical identity; dict must compare bytes. Beam output cannot be claimed a global Viterbi optimum.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "No corpus, network, teacher, GPU, held-out evaluation or model mutation. No assurance for malformed serialized models/blobs, huge counters, allocation/I/O fault injection, cyclic tree paths. Build-time dictionary generation not semantically revalidated by temp output fixture.",
+        "domain": "Bounded UTF-8 synthetic fixtures, frozen generated dictionary from repository build inputs; valid index domains and aligned arrays. Tagging nonempty sequences requires supported candidate paths; tree conjunction ancestry must terminate. Tiny in-memory training only; lexgen tempfile effects.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Tag and ptag call dict/hash/gram; ptag uses TnT prior only unknown words. Morph's UD/AGID/rule priority interacts with lexgen src flags and record order: changing a/r/u alters preferred analyses. tok spacing bits are not exact whitespace; consumers cannot infer original byte offsets from detokenize. text order is 1-based while array positions and dictionary indexes are 0-based. udreg validates selected enum features, so upstream Feats::parse unknown-dropping cannot become a complete annotation gate. Existing conllu callers supply Sentence/Token to learning/generation.",
+        "operator": "Compatible antecedents for output tags include all lexical/model states attaining chosen score/order; they are many-valued. Morph codec restores exact original form via case/Raw witness, but lemmas alone do not invert forms. Tokenized rendering has arbitrary whitespace antecedents. TSV artifacts reconstruct IDs only with old-heap/order provenance.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "No corpus, network, teacher, GPU, held-out evaluation or model mutation. No assurance for malformed serialized models/blobs, huge counters, allocation/I/O fault injection, cyclic tree paths. Build-time dictionary generation not semantically revalidated by temp output fixture.",
+        "domain": "Bounded UTF-8 synthetic fixtures, frozen generated dictionary from repository build inputs; valid index domains and aligned arrays. Tagging nonempty sequences requires supported candidate paths; tree conjunction ancestry must terminate. Tiny in-memory training only; lexgen tempfile effects.",
+        "id": "dictionary-flags",
+        "observation_scope": "Tag and ptag call dict/hash/gram; ptag uses TnT prior only unknown words. Morph's UD/AGID/rule priority interacts with lexgen src flags and record order: changing a/r/u alters preferred analyses. tok spacing bits are not exact whitespace; consumers cannot infer original byte offsets from detokenize. text order is 1-based while array positions and dictionary indexes are 0-based. udreg validates selected enum features, so upstream Feats::parse unknown-dropping cannot become a complete annotation gate. Existing conllu callers supply Sentence/Token to learning/generation.",
+        "operator": "lexgen UD rows precede AGID; a/ar/r/b flags become dict UD/AGID/REV/BASE bits via build.rs. Morph UD max-count uses later tie while AGID uses first main match; preserving rows and flags is required.",
+        "path": "model.md",
+        "required": false,
+        "section": "dictionary-flags",
+        "status": "partial_source_derived_model",
+        "type": "source_priority_transport"
+      },
+      {
+        "assumptions": "No corpus, network, teacher, GPU, held-out evaluation or model mutation. No assurance for malformed serialized models/blobs, huge counters, allocation/I/O fault injection, cyclic tree paths. Build-time dictionary generation not semantically revalidated by temp output fixture.",
+        "domain": "Bounded UTF-8 synthetic fixtures, frozen generated dictionary from repository build inputs; valid index domains and aligned arrays. Tagging nonempty sequences requires supported candidate paths; tree conjunction ancestry must terminate. Tiny in-memory training only; lexgen tempfile effects.",
+        "id": "coordinate-transport",
+        "observation_scope": "Tag and ptag call dict/hash/gram; ptag uses TnT prior only unknown words. Morph's UD/AGID/rule priority interacts with lexgen src flags and record order: changing a/r/u alters preferred analyses. tok spacing bits are not exact whitespace; consumers cannot infer original byte offsets from detokenize. text order is 1-based while array positions and dictionary indexes are 0-based. udreg validates selected enum features, so upstream Feats::parse unknown-dropping cannot become a complete annotation gate. Existing conllu callers supply Sentence/Token to learning/generation.",
+        "operator": "gram Sym high bit distinguishes graph-local heap from frozen global dictionary. text detok and Morph tree heads use1-based token coordinates; dict record ids and arrays use0-based coordinates; blind interchange invalid.",
+        "path": "model.md",
+        "required": false,
+        "section": "coordinate-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No corpus, network, teacher, GPU, held-out evaluation or model mutation. No assurance for malformed serialized models/blobs, huge counters, allocation/I/O fault injection, cyclic tree paths. Build-time dictionary generation not semantically revalidated by temp output fixture.",
+        "domain": "Bounded UTF-8 synthetic fixtures, frozen generated dictionary from repository build inputs; valid index domains and aligned arrays. Tagging nonempty sequences requires supported candidate paths; tree conjunction ancestry must terminate. Tiny in-memory training only; lexgen tempfile effects.",
+        "id": "candidate-support",
+        "observation_scope": "Tag and ptag call dict/hash/gram; ptag uses TnT prior only unknown words. Morph's UD/AGID/rule priority interacts with lexgen src flags and record order: changing a/r/u alters preferred analyses. tok spacing bits are not exact whitespace; consumers cannot infer original byte offsets from detokenize. text order is 1-based while array positions and dictionary indexes are 0-based. udreg validates selected enum features, so upstream Feats::parse unknown-dropping cannot become a complete annotation gate. Existing conllu callers supply Sentence/Token to learning/generation.",
+        "operator": "TnT emits only seen positive candidate classes, PTagger masks unseen unless forced or known shortcut. Empty training supports empty tagging but nonempty unconstrained inference is not total; parents cannot assume length-preserving success on unsupported models.",
+        "path": "model.md",
+        "required": false,
+        "section": "candidate-support",
+        "status": "partial_source_derived_model",
+        "type": "support_precondition"
+      },
+      {
+        "assumptions": "No corpus, network, teacher, GPU, held-out evaluation or model mutation. No assurance for malformed serialized models/blobs, huge counters, allocation/I/O fault injection, cyclic tree paths. Build-time dictionary generation not semantically revalidated by temp output fixture.",
+        "domain": "Bounded UTF-8 synthetic fixtures, frozen generated dictionary from repository build inputs; valid index domains and aligned arrays. Tagging nonempty sequences requires supported candidate paths; tree conjunction ancestry must terminate. Tiny in-memory training only; lexgen tempfile effects.",
+        "id": "annotation-projection",
+        "observation_scope": "Tag and ptag call dict/hash/gram; ptag uses TnT prior only unknown words. Morph's UD/AGID/rule priority interacts with lexgen src flags and record order: changing a/r/u alters preferred analyses. tok spacing bits are not exact whitespace; consumers cannot infer original byte offsets from detokenize. text order is 1-based while array positions and dictionary indexes are 0-based. udreg validates selected enum features, so upstream Feats::parse unknown-dropping cannot become a complete annotation gate. Existing conllu callers supply Sentence/Token to learning/generation.",
+        "operator": "Feats parses known pairs to bits and counts unknowns separately; udreg sees only bits. Reconstructing original annotation or validating dropped pairs requires caller to preserve unknown count/raw source.",
+        "path": "model.md",
+        "required": false,
+        "section": "annotation-projection",
+        "status": "partial_source_derived_model",
+        "type": "lossy_gate_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "english-lexical",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "en/src/derive.rs",
+      "sha256": "aae76e96e977ce5ac84565921775054438e4ec16e850c1b921b75a65fb454d87"
+    },
+    {
+      "path": "en/src/dict.rs",
+      "sha256": "a744609e10853e94c756ee5d49b2bae022d74275970772ecf5a059982c19ad0c"
+    },
+    {
+      "path": "en/src/gram.rs",
+      "sha256": "32652c46ad141e158358b505bed103a143771a4f3aef9b045ff84795be514dc7"
+    },
+    {
+      "path": "en/src/hash.rs",
+      "sha256": "8a82b4ca25bfc75ea9bf640886a724689f63416a6fa8f42e9bf30bedbf8b3b70"
+    },
+    {
+      "path": "en/src/lexext.rs",
+      "sha256": "8aec85cdb04ec447fe8d57724345d7b72ec4b234803bce86ddb74054a165b781"
+    },
+    {
+      "path": "en/src/lexgen.rs",
+      "sha256": "8cdf42a3a08c5e62217708f2cbfe9518703fe004211471a4a8e0313831f414ec"
+    },
+    {
+      "path": "en/src/lexgrow.rs",
+      "sha256": "0c5313e9e1ff90c6a430e6386d5f7fbc67a2770254bb94fc7b081a10eb8d7b1d"
+    },
+    {
+      "path": "en/src/morph.rs",
+      "sha256": "d67a5373f61b6c86761211c9370b3919ed855d15560961d4b90c3e96e39da5e1"
+    },
+    {
+      "path": "en/src/ptag.rs",
+      "sha256": "e57fcd6312bb18437676eec934f80498cba29af67b298c0bd394b8b50d978ed4"
+    },
+    {
+      "path": "en/src/tag.rs",
+      "sha256": "4e58a3ac65d63ae7988a7bfce3c3f78cf58fefaf1a2e7ea202554dd8e9f407b6"
+    },
+    {
+      "path": "en/src/tagrule.rs",
+      "sha256": "dd15f5cd071cacdf845e9ceb81d022584f4d6a57e0b80c370d68652e8bb04f46"
+    },
+    {
+      "path": "en/src/text.rs",
+      "sha256": "982745e7578be07699a17ba9628d5866eb92d033968154d3607e7debe0b9d83e"
+    },
+    {
+      "path": "en/src/tok.rs",
+      "sha256": "c2eb1deea8b49057093095295581bd31002205421aa8061aeef1ddca88fa1f8c"
+    },
+    {
+      "path": "en/src/udreg.rs",
+      "sha256": "fd63bb8c06475d26ac86f403636dee99672c817bf96a6160bb9b3b2ad4d49dcc"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

@@ -1,0 +1,170 @@
+{
+  "children": [
+    {
+      "id": "twin-initial-state",
+      "path": "initial-state.groupant"
+    },
+    {
+      "id": "twin-forecast",
+      "path": "forecast.groupant"
+    },
+    {
+      "id": "twin-update",
+      "path": "update.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "No syntax projection, macro expansion or semantic AST; byte ranges bind the reviewed snapshot only.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "mathematical-twin-library-behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Mathematical twin library",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "mathematical-twin-library-reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "Mathematical twin library",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "mathematical-twin-library-ridge-prior",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin library",
+        "section": "ridge-prior",
+        "status": "partial_source_model",
+        "type": "initialization_relation"
+      },
+      {
+        "id": "mathematical-twin-library-validation-domain",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin library",
+        "section": "validation-domain",
+        "status": "partial_source_model",
+        "type": "admission_relation"
+      },
+      {
+        "id": "mathematical-twin-library-forecast-fiber",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin library",
+        "section": "forecast-fiber",
+        "status": "partial_source_model",
+        "type": "linear_observation_relation"
+      },
+      {
+        "id": "mathematical-twin-library-box-support",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin library",
+        "section": "box-support",
+        "status": "partial_source_model",
+        "type": "support_projection"
+      },
+      {
+        "id": "mathematical-twin-library-rank-one-update",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin library",
+        "section": "rank-one-update",
+        "status": "partial_source_model",
+        "type": "state_transition_relation"
+      },
+      {
+        "id": "mathematical-twin-library-information-history",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin library",
+        "section": "information-history",
+        "status": "partial_source_model",
+        "type": "sufficient_statistic_relation"
+      },
+      {
+        "id": "mathematical-twin-library-prospective-residual",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin library",
+        "section": "prospective-residual",
+        "status": "partial_source_model",
+        "type": "history_relation"
+      },
+      {
+        "id": "mathematical-twin-library-transactional-update",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin library",
+        "section": "transactional-update",
+        "status": "partial_source_model",
+        "type": "failure_atomicity"
+      },
+      {
+        "id": "mathematical-twin-library-update-antecedent",
+        "path": "model.md",
+        "required": true,
+        "scope": "Mathematical twin library",
+        "section": "update-antecedent",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "mathematical-twin-library-resource-budget",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin library",
+        "section": "resource-budget",
+        "status": "partial_source_model",
+        "type": "cost_preimage"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks (catalog)",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "id": "mathematical-twin-library",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../lib.rs",
+    "sha256": "89a5a0b5a5dc0fde578e2108b7418ee6b47a64b59b2d132c10e8b802d5e93e9d"
+  },
+  "status": "partial_source_bound_model"
+}

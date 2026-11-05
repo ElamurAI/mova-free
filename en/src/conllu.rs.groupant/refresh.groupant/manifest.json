@@ -1,0 +1,94 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-bound policy relation, not semantic proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-bound policy relation, not semantic proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "atomic_commit",
+        "path": "model.md",
+        "scope": "Source-bound policy relation, not semantic proof",
+        "section": "atomic_commit",
+        "status": "partial_source_derived_model",
+        "type": "atomic_commit"
+      },
+      {
+        "id": "index_witness",
+        "path": "model.md",
+        "scope": "Source-bound policy relation, not semantic proof",
+        "section": "index_witness",
+        "status": "partial_source_derived_model",
+        "type": "index_witness"
+      },
+      {
+        "id": "spacing_and_layers",
+        "path": "model.md",
+        "scope": "Source-bound policy relation, not semantic proof",
+        "section": "spacing_and_layers",
+        "status": "partial_source_derived_model",
+        "type": "spacing_and_layers"
+      },
+      {
+        "id": "rejection_order",
+        "path": "model.md",
+        "scope": "Source-bound policy relation, not semantic proof",
+        "section": "rejection_order",
+        "status": "partial_source_derived_model",
+        "type": "rejection_order"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 10621,
+      "start": 7317
+    },
+    "description": "FullSentence methods index rows through public words and may panic for invalid callers; label uses sent_id or source line. refresh creates a local Sentence preserving old has_* flags, scans comments then rows, skips range/decimal rows, validates consecutive word IDs and relations, builds local words indices, then assigns both derived views only on success.",
+    "source_bytes_sha256": "6c83182f83c9b75ca6c97d6fba6f8f7a465787cc0ef2e39ef35dc14344820a93"
+  },
+  "id": "en-conllu-refresh",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../conllu.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "0fab6c3718ad36dfdb49c751e91eaa291f5831efd71274ee0611ba79593227ca"
+  },
+  "status": "partial_source_bound_model"
+}

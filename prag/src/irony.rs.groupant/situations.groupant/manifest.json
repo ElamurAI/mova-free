@@ -1,0 +1,86 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-irony-situations-behavior-complement",
+        "operator": "Exclude pairs violating concrete fragment forward/invariant relation",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-irony-situations-reverse-reconstruction",
+        "operator": "Retain all compatible tagged inputs and intermediate states",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-irony-situations-coupling",
+        "operator": "Scoped intervention/coupling relation in referenced section",
+        "path": "model.md",
+        "section": "coupling",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 8385,
+      "start": 6405
+    },
+    "description": "Follow bounded dependency ancestry; dangling parents abstain. Contiguous lemma/form seeds identify nonoverlapping negative situations unless parent, adjacent preceding token or child ends/denies them. Earlier overlapping seed wins."
+  },
+  "domain": "Follow bounded dependency ancestry; dangling parents abstain. Contiguous lemma/form seeds identify nonoverlapping negative situations unless parent, adjacent preceding token or child ends/denies them. Earlier overlapping seed wins.",
+  "id": "prag-irony-situations",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../irony.rs",
+    "sha256": "2855171f6b887782c09c175e6ad59c4c3b91e8e5807b82cdf45170725a2c2eb6"
+  },
+  "state": "Head zero and out-of-range heads are never indexed. Cycles terminate. Situation spans are nonoverlapping.",
+  "status": "partial_source_bound_model"
+}

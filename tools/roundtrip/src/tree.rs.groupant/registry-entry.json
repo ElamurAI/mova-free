@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named tests in native-commands.json; paired source syntax"
+  ],
+  "children": [],
+  "cost": "kids O(n), locals O(n+sum d_h log d_h), emit O(n) on valid acyclic local-order tree. projective O(n) on rooted valid trees. Dec adds lin/morph costs and string rendering; no learned-model inference cost or accuracy measured here.",
+  "description": "of_words projects lemma/tag/head/rel. kids clamps out-of-range heads to0; projective computes contiguous subtree ranges. locals sorts head/child lists by supplied permutation; emit traverses them. Dec uses learned lin/morph, case/article/two-pass render and spacing; R2 overrides head orders or full order, spelling and output-position flips.",
+  "forward": [
+    "of_words projects lemma/tag/head/rel. kids clamps out-of-range heads to0; projective computes contiguous subtree ranges. locals sorts head/child lists by supplied permutation; emit traverses them. Dec uses learned lin/morph, case/article/two-pass render and spacing; R2 overrides head orders or full order, spelling and output-position flips."
+  ],
+  "id": "roundtrip-tree",
+  "inverse": [
+    "For projective valid tree and compatible permutation, emit(locals(t,o))=o; arbitrary crossing order can fail. R2 plus same decoder/hints reconstructs forms/spaces encoded with final spacing false. Normal forms discard original case, order and whitespace; ambiguous antecedents remain.",
+    "R2 space flips cannot make final token have trailing space because decode tests for next form. Raw spelling suppresses capitalization. kids clamping is not validation of cycles or uniqueness; malformed graphs have no totality guarantee."
+  ],
+  "limitations": [
+    "No annotator/model loading, live corpus, full suite, teacher, GPU or persistent-learning evidence. No executable percentage surrogate: categorical codecs/effects need a useful metric before future caps 1/2/5/10%."
+  ],
+  "source": "tools/roundtrip/src/tree.rs",
+  "state": "Layer representations, diagnostic residuals and fixed environment state; see scoped catalog."
+}

@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "fresh-process-retention-probe",
+  "source": {
+    "path": "../groupant_retention.rs",
+    "sha256": "d68d8a9f7a510fe947d53ea79c42acf077b0b48cf4ad26fe8d06f8dc08943a41"
+  },
+  "status": "partial_source_derived_instance",
+  "children": [],
+  "components": {
+    "ast": {
+      "status": "partial",
+      "format": "rust_syntax_projection",
+      "path": "syntax.json"
+    },
+    "approximant": {
+      "status": "bounded_checked",
+      "path": "model.md",
+      "section": "Forward"
+    },
+    "invariant": {
+      "status": "partial",
+      "path": "model.md",
+      "section": "Invariant"
+    },
+    "cost": {
+      "status": "symbolic_unmeasured",
+      "path": "model.md",
+      "section": "Cost"
+    },
+    "descriptant": {
+      "status": "present",
+      "path": "model.md#descriptant"
+    },
+    "tests": {
+      "status": "bounded_executed",
+      "path": "model.md#evidence"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "bounded_source_correspondence",
+        "domain": "Synthetic empty-frame checkpoint with two texts, one lesson and changed weight; explicit mutations.",
+        "observation_scope": "Child API return, PID receipt, checksum and input/output byte effects.",
+        "assumptions": "Trusted executable, local filesystem and collision-resistant SHA-256; ordinary OS process execution.",
+        "operator": "Relation and premises in the named model.md section.",
+        "approximation_semantics": "Partial relational specification with finite witnesses; no universal proof.",
+        "subject_revision": "d68d8a9f7a510fe947d53ea79c42acf077b0b48cf4ad26fe8d06f8dc08943a41",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "bounded_source_correspondence",
+        "domain": "Synthetic empty-frame checkpoint with two texts, one lesson and changed weight; explicit mutations.",
+        "observation_scope": "Child API return, PID receipt, checksum and input/output byte effects.",
+        "assumptions": "Trusted executable, local filesystem and collision-resistant SHA-256; ordinary OS process execution.",
+        "operator": "Relation and premises in the named model.md section.",
+        "approximation_semantics": "Partial relational specification with finite witnesses; no universal proof.",
+        "subject_revision": "d68d8a9f7a510fe947d53ea79c42acf077b0b48cf4ad26fe8d06f8dc08943a41",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "canonical_projection",
+        "type": "canonicalization_preimage",
+        "path": "model.md",
+        "section": "canonical_projection",
+        "status": "bounded_source_correspondence",
+        "domain": "Synthetic empty-frame checkpoint with two texts, one lesson and changed weight; explicit mutations.",
+        "observation_scope": "Child API return, PID receipt, checksum and input/output byte effects.",
+        "assumptions": "Trusted executable, local filesystem and collision-resistant SHA-256; ordinary OS process execution.",
+        "operator": "Relation and premises in the named model.md section.",
+        "approximation_semantics": "Partial relational specification with finite witnesses; no universal proof.",
+        "subject_revision": "d68d8a9f7a510fe947d53ea79c42acf077b0b48cf4ad26fe8d06f8dc08943a41",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "process_boundary",
+        "type": "process_separation",
+        "path": "model.md",
+        "section": "process_boundary",
+        "status": "bounded_source_correspondence",
+        "domain": "Synthetic empty-frame checkpoint with two texts, one lesson and changed weight; explicit mutations.",
+        "observation_scope": "Child API return, PID receipt, checksum and input/output byte effects.",
+        "assumptions": "Trusted executable, local filesystem and collision-resistant SHA-256; ordinary OS process execution.",
+        "operator": "Relation and premises in the named model.md section.",
+        "approximation_semantics": "Partial relational specification with finite witnesses; no universal proof.",
+        "subject_revision": "d68d8a9f7a510fe947d53ea79c42acf077b0b48cf4ad26fe8d06f8dc08943a41",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "rejected_transition_frame",
+        "type": "rejected_transition_frame",
+        "path": "model.md",
+        "section": "rejected_transition_frame",
+        "status": "bounded_source_correspondence",
+        "domain": "Synthetic empty-frame checkpoint with two texts, one lesson and changed weight; explicit mutations.",
+        "observation_scope": "Child API return, PID receipt, checksum and input/output byte effects.",
+        "assumptions": "Trusted executable, local filesystem and collision-resistant SHA-256; ordinary OS process execution.",
+        "operator": "Relation and premises in the named model.md section.",
+        "approximation_semantics": "Partial relational specification with finite witnesses; no universal proof.",
+        "subject_revision": "d68d8a9f7a510fe947d53ea79c42acf077b0b48cf4ad26fe8d06f8dc08943a41",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "trusted_checksum",
+        "type": "integrity_trust_boundary",
+        "path": "model.md",
+        "section": "trusted_checksum",
+        "status": "bounded_source_correspondence",
+        "domain": "Synthetic empty-frame checkpoint with two texts, one lesson and changed weight; explicit mutations.",
+        "observation_scope": "Child API return, PID receipt, checksum and input/output byte effects.",
+        "assumptions": "Trusted executable, local filesystem and collision-resistant SHA-256; ordinary OS process execution.",
+        "operator": "Relation and premises in the named model.md section.",
+        "approximation_semantics": "Partial relational specification with finite witnesses; no universal proof.",
+        "subject_revision": "d68d8a9f7a510fe947d53ea79c42acf077b0b48cf4ad26fe8d06f8dc08943a41",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "reuse_identity",
+        "type": "identity_partition",
+        "path": "model.md",
+        "section": "reuse_identity",
+        "status": "bounded_source_correspondence",
+        "domain": "Synthetic empty-frame checkpoint with two texts, one lesson and changed weight; explicit mutations.",
+        "observation_scope": "Child API return, PID receipt, checksum and input/output byte effects.",
+        "assumptions": "Trusted executable, local filesystem and collision-resistant SHA-256; ordinary OS process execution.",
+        "operator": "Relation and premises in the named model.md section.",
+        "approximation_semantics": "Partial relational specification with finite witnesses; no universal proof.",
+        "subject_revision": "d68d8a9f7a510fe947d53ea79c42acf077b0b48cf4ad26fe8d06f8dc08943a41",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "information_loss",
+        "type": "persistence_information_loss",
+        "path": "model.md",
+        "section": "information_loss",
+        "status": "bounded_source_correspondence",
+        "domain": "Synthetic empty-frame checkpoint with two texts, one lesson and changed weight; explicit mutations.",
+        "observation_scope": "Child API return, PID receipt, checksum and input/output byte effects.",
+        "assumptions": "Trusted executable, local filesystem and collision-resistant SHA-256; ordinary OS process execution.",
+        "operator": "Relation and premises in the named model.md section.",
+        "approximation_semantics": "Partial relational specification with finite witnesses; no universal proof.",
+        "subject_revision": "d68d8a9f7a510fe947d53ea79c42acf077b0b48cf4ad26fe8d06f8dc08943a41",
+        "evidence": "model.md#evidence"
+      }
+    ]
+  }
+}

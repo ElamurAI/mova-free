@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "blocks::wave32::layout_reconstruction_and_ranges"
+  ],
+  "children": [],
+  "cost": "Grouping O(Vlog C+text bytes) plus chapter scan; layout_code O((S+T)log(S+T)+literal bytes), retains changed target layouts; text scans corpus keys O(V) plus rendered bytes. read_layout files/footnote repeated removal may cost quadratic heading bytes; no live filesystem parsing tested.",
+  "description": "make sums selected verse words per chapter, greedily joins contiguous same-book chapters while sum<=max and emits oversized chapter alone. make_rt transports chapters into roundtrip::blocks::group. text renders chapter/layout/verse lines for target keys. layout_code charges source/target key symmetric differences and target layouts differing from available source, then reconstructs precisely target-key-restricted layouts using stored overrides or source defaults.",
+  "forward": [
+    "make sums selected verse words per chapter, greedily joins contiguous same-book chapters while sum<=max and emits oversized chapter alone. make_rt transports chapters into roundtrip::blocks::group. text renders chapter/layout/verse lines for target keys. layout_code charges source/target key symmetric differences and target layouts differing from available source, then reconstructs precisely target-key-restricted layouts using stored overrides or source defaults."
+  ],
+  "id": "translation-flow-blocks",
+  "inverse": [
+    "layout_code output never contains source-only keys or keys outside block. Changes inside a verse are not retained by read_layout's pending-before-verse model. make never combines different books or nonadjacent chapters.",
+    "Given source layouts, target keys and stored overrides, target layout is determined; returned layout alone admits multiple source layouts and key differences. Rendered block text loses original USFM markup/comments and formatting; many files produce same pending layout."
+  ],
+  "limitations": [
+    "Source-derived effectful CLI/corpus paths only; no live model/annotator/training/filesystem/site run.",
+    "Finite synthetic helper checks and partial syntax; no universal proof or executable percent surrogate."
+  ],
+  "source": "tools/translate/src/blocks.rs",
+  "state": "Valid book/chapter keys, representable word sums/chapter+1. Empty target produces empty reconstruction. Layout map absence means empty list. make and make_rt equivalence needs compatible grouping semantics and contiguous chapters; sparse-chapter equivalence not asserted."
+}

@@ -104,6 +104,10 @@ fn retrieve(sents: &[String], index: Option<&Path>, lemmas: &BTreeSet<String>, w
         for line in std::fs::read_to_string(ix).with_context(|| format!("{}", ix.display()))?.lines().filter(|l| !l.starts_with('#') && !l.starts_with("sent\t")) {
             let c: Vec<&str> = line.split('\t').collect();
             let Some(k) = c.first().and_then(|id| id.rsplit_once(':')).and_then(|(_, n)| n.parse::<usize>().ok()) else { continue };
+            // Ignore stale or malformed index positions before ranking or neighbour arithmetic.
+            if k >= sents.len() {
+                continue;
+            }
             let hits = c[1..].iter().flat_map(|f| f.split(' ')).filter(|t| lemmas.contains(*t)).count();
             *score.entry(k).or_default() += 2 * hits;
         }
@@ -160,7 +164,7 @@ pub fn run(book: &Path, question: &str, index: Option<&Path>, log: Option<&Path>
     let gate = Gate::new(body);
     // user-facing answers run on Sonnet (BOOK_ANSWER_MODEL overrides)
     let mut op = prag::opus::Opus::from_env(std::env::temp_dir().join("book-answer"));
-    op.model = std::env::var("BOOK_ANSWER_MODEL").unwrap_or_else(|_| "claude-haiku-5-5".into());
+    op.model = mova_teacher::model("BOOK_ANSWER_MODEL");
     let mut p = prompt(question, &name, &notes);
     let mut tries = Vec::new();
     for attempt in 1..=2 {
@@ -199,5 +203,77 @@ The fox said that her voice must be the sweetest in the whole forest.";
         assert!(p.iter().any(|x| x.starts_with("quotation")), "{p:?}");
         // a paraphrase passes
         assert!(g.check("A cunning fox flatters a crow holding cheese, praising her singing, so she drops it.").is_empty());
+    }
+}
+
+#[cfg(test)]
+mod wave8_models {
+    use super::*;
+    #[test]
+    fn gate_threshold_and_normalization_fibers() {
+        let g = Gate::new("Alpha beta gamma delta epsilon zeta eta theta");
+        for n in 0..=8 {
+            let ws = words("alpha beta gamma delta epsilon zeta eta theta");
+            assert_eq!(!g.check(&ws[..n].join(" ")).is_empty(), n >= 7);
+        }
+        for a in ["ALPHA beta gamma delta epsilon zeta eta", "alpha,beta gamma delta epsilon zeta eta", "'alpha' beta gamma delta epsilon zeta eta"] {
+            assert_eq!(g.check(a), vec!["copied from the book: \"alpha beta gamma delta epsilon zeta eta\""]);
+        }
+        assert_eq!(words("l'été 'FOX' 42"), vec!["l'été", "fox", "42"]);
+    }
+    #[test]
+    fn gate_extends_runs_and_checks_quote_pairs() {
+        let g = Gate::new("a b c d e f g h");
+        assert_eq!(g.check("a b c d e f g h").len(), 1);
+        for (a, b) in [("\"", "\""), ("“", "”"), ("«", "»")] {
+            assert_eq!(g.check(&format!("{a}one two three{b}")).len(), 0);
+            assert_eq!(g.check(&format!("{a}one two three four{b}")).len(), 1);
+            assert!(g.check(&format!("{a}one two three four")).is_empty());
+        }
+    }
+    #[test]
+    fn retrieval_matches_independent_bounded_word_oracle() {
+        for mask in 0..64 {
+            let s: Vec<String> = (0..6).map(|i| if mask & (1 << i) != 0 { "fox fox" } else { "crow" }.into()).collect();
+            let terms = BTreeSet::from(["fox".to_string()]);
+            let actual = retrieve(&s, None, &terms, &terms).unwrap();
+            let expected: Vec<_> = (0usize..6).filter(|j| (0usize..6).any(|i| mask & (1 << i) != 0 && i.abs_diff(*j) <= 1)).collect();
+            assert_eq!(actual, expected);
+        }
+    }
+    #[test]
+    fn retrieval_top_thirty_ties_and_empty_domain() {
+        let terms = BTreeSet::from(["fox".to_string()]);
+        let s = vec!["fox".into(); 100];
+        assert_eq!(retrieve(&s, None, &terms, &terms).unwrap(), (0..31).collect::<Vec<_>>());
+        assert!(retrieve(&[], None, &terms, &terms).unwrap().is_empty());
+        assert!(retrieve(&s, None, &BTreeSet::new(), &BTreeSet::new()).unwrap().is_empty());
+    }
+    #[test]
+    fn retrieval_rejects_invalid_index_positions() {
+        let path = std::env::temp_dir().join(format!("mova-wave8-bookans-{}.tsv", std::process::id()));
+        std::fs::write(&path, format!("fixture:{}\tfox\nfixture:4\tfox\nfixture:0\tfox fox\n", usize::MAX)).unwrap();
+        let s = vec!["crow".into(); 4];
+        let terms = BTreeSet::from(["fox".to_string()]);
+        let got = retrieve(&s, Some(&path), &terms, &BTreeSet::new());
+        let empty = retrieve(&[], Some(&path), &terms, &BTreeSet::new());
+        // Invalid high scores must not crowd the valid row out of the top thirty.
+        let mut crowded = (4..44).map(|k| format!("fixture:{k}\tfox fox fox\n")).collect::<String>();
+        crowded.push_str("fixture:1\tfox\n");
+        std::fs::write(&path, crowded).unwrap();
+        let selected = retrieve(&s, Some(&path), &terms, &BTreeSet::new());
+        std::fs::remove_file(path).unwrap();
+        assert_eq!(got.unwrap(), vec![0, 1]);
+        assert!(empty.unwrap().is_empty());
+        assert_eq!(selected.unwrap(), vec![0, 1, 2]);
+    }
+    #[test]
+    fn prompt_keeps_note_order_and_ids() {
+        let a = "invented first note".to_string();
+        let b = "invented second note".to_string();
+        let p = prompt("Which animal?", "fixture", &[("fixture:2".into(), &a), ("fixture:0".into(), &b)]);
+        assert!(p.contains("at most 120 words"));
+        assert!(p.ends_with("[fixture:2] invented first note\n[fixture:0] invented second note\n"));
+        assert!(p.contains("Question: Which animal?"));
     }
 }

@@ -1,0 +1,23 @@
+{
+  "id": "hot-state",
+  "source": "world/src/state.rs",
+  "description": "Bounded hot-state line delta and ancestry reconstruction; two local fragments; remaining legacy behavior unmodeled.",
+  "state": "(source lines, delta operations, fixed tree map, ancestry mode)",
+  "forward": [
+    "Clamped permissive line decoding; deterministic minimum edit encoding.",
+    "Strict materialisation ancestry; permissive story/branch ancestry, with cycle rejection."
+  ],
+  "inverse": [
+    "Behavior complement excludes transitions inconsistent with the declared decoder/walk relation.",
+    "Reverse reconstruction keeps all compatible deleted lines, omitted tails, unused metadata and intermediate states."
+  ],
+  "cost": "LCS O(n*m) cells; decoder proportional to operation/output bytes; ancestry O(h log N+h log h) comparisons.",
+  "checks": [
+    "cargo test -p world --lib bounded_state_tests",
+    "Native debug and release twice; compiled cursor and keep mutants; repeated syntax projections."
+  ],
+  "limitations": [
+    "Finite pure correspondence only; no transaction, path-safety or state persistence claim.",
+    "Materialise file fold and story/branch call wiring inspected, not independently executed."
+  ]
+}

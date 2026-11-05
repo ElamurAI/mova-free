@@ -1162,3 +1162,78 @@ mod tests {
         assert!(f.iter().all(|x| !matches!(x.link, Link::IsA | Link::Can | Link::CountIn)), "{:?}", f.iter().map(Fact::show).collect::<Vec<_>>());
     }
 }
+
+#[cfg(test)]
+mod wave29_worldlearn {
+    use super::*;
+    fn fact(s: &str, l: Link, o: &str, neg: bool, src: &str) -> Fact {
+        Fact {
+            subj: s.into(),
+            link: l,
+            obj: o.into(),
+            negated: neg,
+            often: Often::Generic,
+            count: None,
+            source: src.into(),
+        }
+    }
+    #[test]
+    fn english_defaults_and_malformed_weights_fallback() {
+        let r = KnowRules {
+            rank_weights: Some(vec![1; 13]),
+            verb_links: vec![("contain".into(), "".into(), Link::Has, "device".into())],
+            ..KnowRules::default()
+        };
+        assert_eq!(KnowRules::from_english(&r.to_english()), r);
+        assert_eq!(
+            KnowRules::from_english("unrecognized"),
+            KnowRules::default()
+        );
+        let malformed = KnowRules::from_english("- The weights of my answers: 1, bad, 2.");
+        assert_eq!(malformed.rank_weights, Some(vec![1, 2]));
+        let k = Knowledge {
+            by_subj: BTreeMap::new(),
+            n: 0,
+            rules: malformed,
+        };
+        let a = fact("zorp", Link::IsA, "kind", false, "A zorp is a kind.");
+        let b = fact("zorp", Link::Has, "fin", false, "Zorp has fin.");
+        let mut fs = vec![&b, &a];
+        k.order(&mut fs, "zorp");
+        assert_eq!(fs[0], &a);
+    }
+    #[test]
+    fn derivation_requires_missing_instrument_and_deduplicates() {
+        let a = fact("zorp", Link::Has, "wing", true, "Zorp has no wing.");
+        let b = fact(
+            "bird",
+            Link::Does,
+            "fly with wing",
+            false,
+            "Bird flies with wing.",
+        );
+        let d = derive(&[a.clone(), b.clone(), b.clone()]);
+        assert_eq!(d.len(), 1);
+        assert_eq!(d[0].obj, "fly with wing");
+        assert!(d[0].negated);
+        assert!(derive(std::slice::from_ref(&b)).is_empty());
+        let mut b = b;
+        b.negated = true;
+        assert!(derive(&[a, b]).is_empty());
+    }
+    #[test]
+    fn inheritance_threshold_and_own_verb_override() {
+        let mut fs = vec![
+            fact("zorp", Link::IsA, "blick", false, "A zorp is a blick."),
+            fact("blick", Link::Has, "fin", false, "Blick has fin."),
+            fact("blick", Link::Has, "tail", false, "Blick has tail."),
+            fact("blick", Link::Can, "glow", false, "Blick can glow."),
+            fact("zorp", Link::Can, "glow", true, "Zorp cannot glow."),
+        ];
+        let out = inherit(&fs);
+        assert_eq!(out.len(), 2);
+        assert!(out.iter().all(|f| f.link == Link::Has));
+        fs.remove(2);
+        assert!(inherit(&fs).is_empty());
+    }
+}

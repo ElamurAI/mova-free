@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test --offline --locked -p wasi-host --example mlab_gate --no-run (compile only; no gate execution)"
+  ],
+  "children": [],
+  "cost": "O(suite bytes+outputs+diff text)+sum native and guest run costs, unbounded scenario workload. No measured speed ratio.",
+  "description": "Example reads fixed mlab.wasm, constructs Host then for each .txt path parses scenarios; each runs native capture with fresh Vfs and guest with fresh Vfs/merged stderr, appends textual trap, compares output strings, accumulates wall times and divergence list. Main not executed in wave31.",
+  "forward": [
+    "Example reads fixed mlab.wasm, constructs Host then for each .txt path parses scenarios; each runs native capture with fresh Vfs and guest with fresh Vfs/merged stderr, appends textual trap, compares output strings, accumulates wall times and divergence list. Main not executed in wave31."
+  ],
+  "id": "wasi-mlab-gate",
+  "inverse": [
+    "same/total and summed times admit arbitrarily many code/output histories; output equality does not recover state equivalence or successful nonzero-exit status."
+  ],
+  "limitations": [
+    "Partial source syntax and finite tests; no full WASI compliance or mlab suite claim",
+    "No executable percentage surrogate or whole-system proof"
+  ],
+  "source": "wasi-host/examples/mlab_gate.rs",
+  "state": "Guest bytes/descriptors/Vfs/virtual clock/RNG, or scoped CLI/test state as described"
+}

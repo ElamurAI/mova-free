@@ -1,0 +1,58 @@
+#![allow(dead_code)]
+#[path = "../types.rs"] mod types;
+use types::*;
+fn main(){
+if std::env::args().any(|s|s=="--false-roundtrip"){
+let x=Id::new(Reg::C,0);
+assert_eq!(Id::parse(&x.to_string()),Some(x),"negative control: universal Id roundtrip is false");
+return;
+}
+let regs=[Reg::L,Reg::O,Reg::C,Reg::R,Reg::E,Reg::P,Reg::B,Reg::F,Reg::K];
+let fields=[Field::Type,Field::Class,Field::Name,Field::At,Field::Parent,Field::A,Field::B,Field::Kind,Field::Gender,Field::Age,Field::Mother,Field::Father,Field::Trait,Field::Feeling,Field::Sleep,Field::Freedom,Field::Life,Field::Goal,Field::Belief,Field::Status,Field::Num,Field::PartOf,Field::What,Field::Target,Field::Src,Field::Stage,Field::By,Field::About,Field::Truth,Field::Who];
+let mut admitted=0;
+for r in regs {for f in fields {
+let expected=match r {Reg::C=>true,Reg::O=>[Field::Name,Field::Trait,Field::Status,Field::At,Field::Num].contains(&f),Reg::L=>[Field::Name,Field::Trait,Field::Status,Field::At].contains(&f),_=>false};
+assert_eq!(key_ok(r,f),expected);admitted+=usize::from(expected);
+}}
+assert_eq!(admitted,39);
+for r in regs {for n in [0,1,9,10,999999,1000000,u32::MAX] {
+let id=Id::new(r,n);let expected=if n>=1 && n<=999999 {Some(id)}else{None};
+assert_eq!(Id::parse(&id.to_string()),expected);
+}}
+for s in ["","C","c1","C01","C0","C+1","C-1","C 1"," C1","C1 ","C١","X1","C1000000"] {assert_eq!(Id::parse(s),None);}
+let tags=[FEELING.tag("happy").unwrap(),FEELING.tag("sad").unwrap(),FEELING.tag("angry").unwrap()];
+let mut cases=0;let mut pairs=0;
+for len in 0..=4 {for mut code in 0..3usize.pow(len) {
+let mut seq=Vec::new();let mut mask=0;
+for _ in 0..len {let d=code%3;code/=3;seq.push(tags[d]);mask|=1<<d;}
+let got=V::tags(seq.clone());
+let want:Vec<Tag>=[2,0,1].iter().filter(|&&d|mask&(1<<d)!=0).map(|&d|tags[d]).collect();
+assert_eq!(got.as_ref().map(V::tag_list).unwrap_or_default(),want);
+assert_eq!(got.is_none(),mask==0);
+if let Some(v)=got.as_ref(){assert_eq!(V::tags(v.tag_list()),got);}
+for candidate in 0..8 {
+let expected:Vec<Tag>=[2,0,1].iter().filter(|&&d|candidate&(1<<d)!=0).map(|&d|tags[d]).collect();
+let related=got.as_ref().map(V::tag_list).unwrap_or_default()==expected;
+assert_eq!(related,candidate==mask);assert_eq!(!related,candidate!=mask);pairs+=1;
+}cases+=1;
+}}
+static A:Closed=Closed{what:"a",all:&["happy","two words","happy"]};
+assert_eq!(A.tag("happy").unwrap(),tags[0]);
+assert_eq!(A.list(),"happy two words happy");
+assert!(A.tag("Happy").is_err());
+let direct=V::Tags(vec![tags[1],tags[0],tags[1]]);
+assert_eq!(direct.tag_list(),vec![tags[1],tags[0],tags[1]]);
+assert_ne!(V::tags(direct.tag_list()),Some(direct));
+assert_eq!(V::Words(vec!["happy".into()]).to_string(),V::Tag(tags[0]).to_string());
+assert_eq!(V::Words(vec!["a,b".into()]).to_string(),V::Words(vec!["a".into(),"b".into()]).to_string());
+assert_eq!(Val::Unknown.to_string(),Val::Known(V::Words(vec!["?".into()])).to_string());
+assert_eq!(Field::Status.name(),Field::Stage.name());
+for s in ["at","in","to"] {let (f,d)=key(s).unwrap();assert_eq!(f,Field::At);assert!(matches!(d,Dom::Place));}
+assert!(key("src").is_none());
+let p=TextPos{chapter:1,para:2,sent:3};let q=TextPos{chapter:9,para:8,sent:3};
+assert_eq!(p.to_string(),q.to_string());assert_ne!(p.long(),q.long());assert_eq!(TextPos::default().long(),"ch.0 para.0 sent.0");
+for (s,want) in [("",false),("a",true),("a0_-",true),("0a",false),("_a",false),("-a",false),("A",false),("é",false),("aé",false),("a b",false)] {assert_eq!(is_word(s),want);}
+assert!(is_word(&"a".repeat(32)));assert!(!is_word(&"a".repeat(33)));
+println!("permission=270 accepted=39 id_boundary=63 rejected_spellings=13 normalization=121 relation_complement_pairs=968");
+assert_eq!(cases,121);assert_eq!(pairs,968);
+}

@@ -1,0 +1,26 @@
+[package]
+name = "mova-whale-world"
+version = "0.1.0"
+edition = "2021"
+description = "Append-only document dossiers and one incremental global world (entities, statements, word index, document graph) for Whale epochs"
+license = "LicenseRef-Elamur-Cosmic"
+
+[workspace]
+
+[lib]
+name = "whale_world"
+path = "src/lib.rs"
+
+[[bin]]
+name = "mova-whale-world"
+path = "src/main.rs"
+
+[dependencies]
+mova-topic-corpus = { path = "../topic-corpus" }
+mova-whale = { path = "../whale" }
+anyhow = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+libc = "0.2"
+zstd = "0.13"

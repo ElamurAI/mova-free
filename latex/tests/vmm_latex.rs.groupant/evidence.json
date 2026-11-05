@@ -1,0 +1,62 @@
+{
+  "command": "cargo test -p latex --features math --test vmm_latex wave28",
+  "control": {
+    "compiler_exit": 0,
+    "kind": "compiled_assertion_inversion",
+    "log_prefix": "control-vmm",
+    "negative_exit": 101,
+    "restoration": "exact bytes",
+    "restored_exit": 0,
+    "shared_with_dependency": false
+  },
+  "date": "2026-10-31",
+  "expected_test_names": [
+    "wave28_synthetic_dispatch",
+    "wave28_synthetic_short_row_panics"
+  ],
+  "limitations": [
+    "Finite synthetic actual-code checks, not proof",
+    "Frozen DATA and sha256 subprocess unexecuted",
+    "Strict Clippy blocked by 14 pre-existing lints in unchanged library code"
+  ],
+  "receipts": [
+    {
+      "exit": 0,
+      "log": "debug-1-vmm.log",
+      "log_sha256": "19b88cc1a1c6a2304727d3fd6b3b422c7838788d9bc3325fd9dcc30d96c95f33",
+      "named_outcomes": "debug-1-vmm.names",
+      "outcomes_sha256": "08f3bd994bb47bddfdecf7a85121fff3998a0f46bce62691d103854c396b6e8d",
+      "profile": "debug",
+      "repetition": 1
+    },
+    {
+      "exit": 0,
+      "log": "debug-2-vmm.log",
+      "log_sha256": "19b88cc1a1c6a2304727d3fd6b3b422c7838788d9bc3325fd9dcc30d96c95f33",
+      "named_outcomes": "debug-2-vmm.names",
+      "outcomes_sha256": "08f3bd994bb47bddfdecf7a85121fff3998a0f46bce62691d103854c396b6e8d",
+      "profile": "debug",
+      "repetition": 2
+    },
+    {
+      "exit": 0,
+      "log": "release-1-vmm.log",
+      "log_sha256": "09942fdbc5b603c0de5abacc9ee1a597a1b2c0aad474c71aa35c49ed056ef834",
+      "named_outcomes": "release-1-vmm.names",
+      "outcomes_sha256": "08f3bd994bb47bddfdecf7a85121fff3998a0f46bce62691d103854c396b6e8d",
+      "profile": "release",
+      "repetition": 1
+    },
+    {
+      "exit": 0,
+      "log": "release-2-vmm.log",
+      "log_sha256": "02cb75de33f669905d53cbc11917745a4e57bbbe5e892d0e1b5b4ba895f1085f",
+      "named_outcomes": "release-2-vmm.names",
+      "outcomes_sha256": "08f3bd994bb47bddfdecf7a85121fff3998a0f46bce62691d103854c396b6e8d",
+      "profile": "release",
+      "repetition": 2
+    }
+  ],
+  "source": "latex/tests/vmm_latex.rs",
+  "source_sha256": "62b39e9533b40131002baaebb0f4efd164ddc59838aa39a382175450e2be6a76"
+}

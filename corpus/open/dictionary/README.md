@@ -7,7 +7,7 @@ reader of a maths problem. The first line is the header.
 
 **How it was made:** written for Mova by its teacher models from written briefs (one entry per word, in plain English
 for a clever 9–10-year-old; the maths senses and counted facts such as «A week is 7 days» kept in a fixed form), then
-checked by Mova's validator (`world dictionary merge`). No dictionary text was copied into it.
+checked by Mova's validator (the dictionary builder's `merge`). No dictionary text was copied into it.
 
 **How Mova uses it:** the dictionary course of the school (one lesson per word) and the maths student, which takes
 counted facts and the operations words signal from it.

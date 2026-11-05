@@ -1,0 +1,19 @@
+[package]
+name = "mova-hard-case-list"
+version = "0.1.0"
+edition = "2021"
+description = "The one shared list of hard cases (sentences Mova reads badly) in one format, mova-hard-case-v2: found, learned and reopened events per parser; reads the older v1 lines"
+license = "LicenseRef-Elamur-Cosmic"
+
+[workspace]
+
+[lib]
+name = "hard_case_list"
+path = "src/lib.rs"
+
+[dependencies]
+anyhow = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+libc = "0.2"

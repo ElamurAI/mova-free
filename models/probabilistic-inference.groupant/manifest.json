@@ -1,0 +1,175 @@
+{
+  "children": [
+    "algorithm-alias-method",
+    "algorithm-alias-method-tests",
+    "algorithm-viterbi",
+    "algorithm-viterbi-tests",
+    "algorithm-forward-backward",
+    "algorithm-forward-backward-tests",
+    "algorithm-sinkhorn-scaling",
+    "algorithm-sinkhorn-scaling-tests",
+    "algorithm-weighted-covariance",
+    "algorithm-weighted-covariance-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child partial syntax; no composed semantic AST",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Leaf-admitted bounded weights, state sequences, nonnegative matrices, target marginals, finite vectors and externally supplied sampling variates; support and zero behavior as declared.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "probabilistic-inference-behavior-complement",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "Exclude V>Z for identical nonnegative path weights beyond documented rounding tolerance; posterior normalization at Z=0 contrary to status/error rules; invalid alias variates; exhausted Sinkhorn residuals treated as exact marginals; covariance with a substituted denominator.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_relational_specification",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Leaf-admitted bounded weights, state sequences, nonnegative matrices, target marginals, finite vectors and externally supplied sampling variates; support and zero behavior as declared.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "probabilistic-inference-reverse-reconstruction",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "Z admits all HMMs with that path-weight sum; Viterbi constrains maximizing path/score but leaves other weights ambiguous. Alias outcomes do not reconstruct random source. Sinkhorn u->a*u,v->v/a preserves X for a>0. Covariance retains moments; many weighted multisets share them.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_relational_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Leaf-admitted bounded weights, state sequences, nonnegative matrices, target marginals, finite vectors and externally supplied sampling variates; support and zero behavior as declared.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "probabilistic-inference-max_sum_separation",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "Viterbi optimizes a path; forward/backward sums paths. Their scores generally differ even when the selected path is valid.",
+        "path": "model.md",
+        "section": "max_sum_separation",
+        "status": "partial_relational_specification",
+        "type": "max_sum_separation"
+      },
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Leaf-admitted bounded weights, state sequences, nonnegative matrices, target marginals, finite vectors and externally supplied sampling variates; support and zero behavior as declared.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "probabilistic-inference-sampling_mass",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "Alias thresholds and supplied variates preserve their discrete mass model only under specified endpoints; no random-number source quality is certified.",
+        "path": "model.md",
+        "section": "sampling_mass",
+        "status": "partial_relational_specification",
+        "type": "sampling_mass"
+      },
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Leaf-admitted bounded weights, state sequences, nonnegative matrices, target marginals, finite vectors and externally supplied sampling variates; support and zero behavior as declared.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "probabilistic-inference-support_convergence",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "Zero support can make desired marginals unattainable. Sinkhorn residual/exhaustion statuses cannot be recast as a successful exact coupling.",
+        "path": "model.md",
+        "section": "support_convergence",
+        "status": "partial_relational_specification",
+        "type": "support_convergence"
+      },
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Leaf-admitted bounded weights, state sequences, nonnegative matrices, target marginals, finite vectors and externally supplied sampling variates; support and zero behavior as declared.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "probabilistic-inference-weight_normalization",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "Weighted covariance normalization and effective degrees of freedom must match the consumer; uniform rescaling and zero mass need explicit handling.",
+        "path": "model.md",
+        "section": "weight_normalization",
+        "status": "partial_relational_specification",
+        "type": "weight_normalization"
+      }
+    ],
+    "tests": {
+      "path": "model.md#wave26-evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "probabilistic-inference",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/alias_method/mod.rs",
+      "sha256": "2bcf5fdb943cc1d016dde90f95912fd764f579296c110d356afac2421c7cb0ee"
+    },
+    {
+      "path": "algorithms/src/alias_method/tests.rs",
+      "sha256": "5d32168f0add9d4fd047aee514f856a6648754dafb717b9e11f4d66ece60e002"
+    },
+    {
+      "path": "algorithms/src/forward_backward/mod.rs",
+      "sha256": "31d1ed69daa14ee5a66547595d2883eca8f0e5e290f4712c78e5936ad8a56190"
+    },
+    {
+      "path": "algorithms/src/forward_backward/tests.rs",
+      "sha256": "7a9a64a47411d70bc58abdb772ac209af263a38eeb4744bca0ab69970e9090e9"
+    },
+    {
+      "path": "algorithms/src/sinkhorn_scaling/mod.rs",
+      "sha256": "12b6b9db55fb94e762a27bc6d1e79740e28f6c5cefc78ee26a7e26265c88979d"
+    },
+    {
+      "path": "algorithms/src/sinkhorn_scaling/tests.rs",
+      "sha256": "ff3623baab35518b8dc05836e62a95711173b614c2c1cf1240ad848e49feb86d"
+    },
+    {
+      "path": "algorithms/src/viterbi/mod.rs",
+      "sha256": "b3969bd160adfbcc34ff5151979c2f70df341ecdec08636684320c5010bcb9c4"
+    },
+    {
+      "path": "algorithms/src/viterbi/tests.rs",
+      "sha256": "23671e35aee086dab616a11a34ed1ffac69c2c12a1bfc0221ed51915b4cc35d6"
+    },
+    {
+      "path": "algorithms/src/weighted_covariance/mod.rs",
+      "sha256": "fef9600aa0ea49eb0e1c75477f4ef15cb653fd3ca587df6b663d245c8420d8a6"
+    },
+    {
+      "path": "algorithms/src/weighted_covariance/tests.rs",
+      "sha256": "86e20688378614b07a7ca5f03a0e3b35fd792334f6d1f205c2bba272dda45564"
+    }
+  ],
+  "status": "partial_source_bound_group"
+}

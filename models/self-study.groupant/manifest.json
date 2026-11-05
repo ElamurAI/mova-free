@@ -1,0 +1,406 @@
+{
+  "children": [
+    "assessment-contract",
+    "retained-student",
+    "study-orchestrator",
+    "enrichment-artifacts",
+    "enrichment-cli",
+    "teacher-transport",
+    "learning-memo",
+    "school-runtime",
+    "self-study-interface-probe",
+    "fresh-process-retention-probe",
+    "school-support",
+    "school-vidtvorant"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#core-model",
+      "status": "partial"
+    },
+    "ast": {
+      "status": "not_materialized"
+    },
+    "descriptant": {
+      "path": "model.md#core-model",
+      "status": "present"
+    },
+    "formal_frozen_union": {
+      "path": "../../formal/FrozenUnion.lean",
+      "scope": "general set relation; Rust correspondence only on the separately tested finite domain",
+      "status": "specification_proved",
+      "theorem": "MovaFrozenUnion.union_preimage"
+    },
+    "invariant": {
+      "path": "model.md#core-model",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "absent-joined-success",
+        "path": "model.md",
+        "required": true,
+        "scope": "successful outer-step traces",
+        "section": "absent-joined-success",
+        "status": "partial_inner_bound_specification",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "compatible-cycle-antecedents",
+        "path": "model.md",
+        "required": true,
+        "scope": "a candidate receipt and its artifact graph",
+        "section": "compatible-cycle-antecedents",
+        "status": "partial_relational_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "same-question-fibers",
+        "path": "model.md",
+        "required": false,
+        "scope": "new and old before/after grade pairs",
+        "section": "same-question-fibers",
+        "status": "partial_relational_specification",
+        "type": "assessment_alignment"
+      },
+      {
+        "id": "learner-pair-square",
+        "path": "model.md",
+        "required": false,
+        "scope": "four grade corners",
+        "section": "learner-pair-square",
+        "status": "partial_relational_specification",
+        "type": "learner_alignment"
+      },
+      {
+        "id": "candidate-parent-lineage",
+        "path": "model.md",
+        "required": false,
+        "scope": "baseline study to candidate study",
+        "section": "candidate-parent-lineage",
+        "status": "partial_relational_specification",
+        "type": "state_lineage"
+      },
+      {
+        "id": "frozen-source-union-preimage",
+        "path": "model.md",
+        "required": false,
+        "scope": "multi-epoch source exclusion",
+        "section": "frozen-source-union-preimage",
+        "status": "partial_relational_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "exercise-heldout-boundary",
+        "path": "model.md",
+        "required": false,
+        "scope": "next review and context proposals",
+        "section": "exercise-heldout-boundary",
+        "status": "partial_relational_specification",
+        "type": "data_separation"
+      },
+      {
+        "id": "training-exam-channel-split",
+        "path": "model.md",
+        "required": false,
+        "scope": "lesson splitting to train and exam",
+        "section": "training-exam-channel-split",
+        "status": "partial_relational_specification",
+        "type": "information_flow"
+      },
+      {
+        "id": "passive-assessment-projection",
+        "path": "model.md",
+        "required": false,
+        "scope": "checkpoint restore, exam and binding",
+        "section": "passive-assessment-projection",
+        "status": "partial_relational_specification",
+        "type": "state_projection"
+      },
+      {
+        "id": "teacher-output-chain",
+        "path": "model.md",
+        "required": false,
+        "scope": "Codex event stream through staged review",
+        "section": "teacher-output-chain",
+        "status": "partial_relational_specification",
+        "type": "provenance_authenticity"
+      },
+      {
+        "id": "one-attempt-command-budget",
+        "path": "model.md",
+        "required": false,
+        "scope": "one improve versus recovery invocation",
+        "section": "one-attempt-command-budget",
+        "status": "partial_symbolic_model",
+        "type": "resource_budget"
+      },
+      {
+        "id": "recovery-prefix-language",
+        "path": "model.md",
+        "required": false,
+        "scope": "serial interrupted outer-step artifacts",
+        "section": "recovery-prefix-language",
+        "status": "partial_trace_specification",
+        "type": "failure_prefix"
+      },
+      {
+        "id": "write-once-artifact-boundary",
+        "path": "model.md",
+        "required": false,
+        "scope": "run files and stage directories",
+        "section": "write-once-artifact-boundary",
+        "status": "partial_relational_specification",
+        "type": "artifact_monotonicity"
+      },
+      {
+        "id": "retained-material-reuse",
+        "path": "model.md",
+        "required": false,
+        "scope": "teaching content joined to lesson ledger",
+        "section": "retained-material-reuse",
+        "status": "partial_relational_specification",
+        "type": "reuse_equivalence"
+      },
+      {
+        "id": "warm-finish-cost",
+        "path": "model.md",
+        "required": false,
+        "scope": "cold versus cached completion",
+        "section": "warm-finish-cost",
+        "status": "partial_symbolic_model",
+        "type": "reuse_cost"
+      },
+      {
+        "id": "bounded-output-unbounded-work",
+        "path": "model.md",
+        "required": false,
+        "scope": "packet, proposal and teacher stages",
+        "section": "bounded-output-unbounded-work",
+        "status": "partial_symbolic_model",
+        "type": "resource_budget"
+      },
+      {
+        "id": "current-dictionary-authority",
+        "path": "model.md",
+        "required": false,
+        "scope": "old feedback joined to refreshed packet",
+        "section": "current-dictionary-authority",
+        "status": "partial_relational_specification",
+        "type": "snapshot_precedence"
+      },
+      {
+        "id": "identity-not-counts",
+        "path": "model.md",
+        "required": false,
+        "scope": "score and artifact projections",
+        "section": "identity-not-counts",
+        "status": "partial_relational_specification",
+        "type": "information_loss"
+      },
+      {
+        "id": "promotion-policy-counterfactual",
+        "path": "model.md",
+        "required": false,
+        "scope": "four already-bound grade scores",
+        "section": "promotion-policy-counterfactual",
+        "status": "hypothesis",
+        "type": "counterfactual_policy"
+      },
+      {
+        "id": "recommendation-publication-gap",
+        "path": "model.md",
+        "required": false,
+        "scope": "evaluated candidate receipt",
+        "section": "recommendation-publication-gap",
+        "status": "partial_relational_specification",
+        "type": "scope_boundary"
+      },
+      {
+        "id": "single-turn-artifact-join",
+        "path": "model.md",
+        "required": false,
+        "scope": "Explicit domains, equations, evidence and limits in the linked section.",
+        "section": "single-turn-artifact-join",
+        "status": "bounded_source_correspondence",
+        "type": "temporal_artifact_join"
+      },
+      {
+        "id": "scored-question-projection",
+        "path": "model.md",
+        "required": false,
+        "scope": "Explicit domains, equations, evidence and limits in the linked section.",
+        "section": "scored-question-projection",
+        "status": "bounded_source_correspondence",
+        "type": "assessment_channel_join"
+      },
+      {
+        "id": "checkpoint-canonical-fixed-point",
+        "path": "model.md",
+        "required": false,
+        "scope": "Explicit projection, domains, premises, finite evidence and limits in the linked section.",
+        "section": "checkpoint-canonical-fixed-point",
+        "status": "bounded_source_correspondence",
+        "type": "canonical_restore_retraction"
+      },
+      {
+        "id": "school-support-boundaries",
+        "path": "model.md",
+        "scope": "Sampling, option validation, supplied-tree matching and rule induction retain distinct inputs, labels, artifacts and effect boundaries.",
+        "section": "school-support-boundaries",
+        "status": "partial_source_correspondence",
+        "type": "assessment_support_composition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "source_inspected_not_run"
+    }
+  },
+  "id": "self-study",
+  "kind": "groupant_group",
+  "registry": {
+    "node": "self-study",
+    "path": "../contracts.json"
+  },
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "qagen/src/fix.rs",
+      "sha256": "f491a1f6223c6912def81ac3b1fb330fe08196538e1a4d7484cde914246c035f"
+    },
+    {
+      "path": "qagen/src/gate.rs",
+      "sha256": "09328f711abf4b6453f95bed3d873deb205c8801d939841974416fe74e3e5806"
+    },
+    {
+      "path": "qagen/src/lemma.rs",
+      "sha256": "cac952de748d1b854a5dfe04e0635e18816e7970625c5266152a35d0c0d761c8"
+    },
+    {
+      "path": "qagen/src/lib.rs",
+      "sha256": "5d0d4a49f95ddc5c03042d446c6ab9abade72589139085222239646fb3fc6c6e"
+    },
+    {
+      "path": "qagen/src/main.rs",
+      "sha256": "7d4410bf5d85e04c46475fe0fef9e8e5a24b44fc37973f8420b950517ef05222"
+    },
+    {
+      "path": "qagen/src/prompt.rs",
+      "sha256": "2e30ac525e2bf8cf8432298ff35eaf2ec08933c17aff60e480017a2b7cca89f6"
+    },
+    {
+      "path": "qagen/src/report.rs",
+      "sha256": "4abf85ffbd32f22802a89ef625780b288d92e92616c247a4d591e37fe10977c2"
+    },
+    {
+      "path": "qagen/src/run.rs",
+      "sha256": "a34e297bdb69e178791983d8b9f6b35b1df34f223f15f1f13bc65d29153f2abd"
+    },
+    {
+      "path": "qagen/src/schema.rs",
+      "sha256": "03e113198711324f029d8e9e4d9fc899416e3144ea856240b9d962775c78c2fe"
+    },
+    {
+      "path": "qagen/src/select.rs",
+      "sha256": "0c35caf4eda91c0a5d36bce728f3846b360b483a66fa4ca3c884964839cd2554"
+    },
+    {
+      "path": "qagen/tests/groupant_wave17.rs",
+      "sha256": "7f9447e887eae69a2a95f443555140cc8dbfa95d83a29b8062383fca5f9d38a4"
+    },
+    {
+      "path": "qagen/tests/groupant_wave18.rs",
+      "sha256": "3ab5bd3bab4823dbf89e78ab1811e2286565e1899947ba24b247e3e8c0149813"
+    },
+    {
+      "path": "qagen/tests/groupant_wave20.rs",
+      "sha256": "f50e7759c6a4e14d228678f323ac8d9449888c9241f610009231335c1063d5d4"
+    },
+    {
+      "path": "teacher/src/lib.rs",
+      "sha256": "199397384b039e25912422d73c0c6af805e5e381ea4815a574c032acb380f768"
+    },
+    {
+      "path": "tools/approx/examples/student_vidtvorant.rs",
+      "sha256": "7a954e6d9e7d006c8270e5f324d4faea503c359a467e46501d60dc9b577912c7"
+    },
+    {
+      "path": "tools/enrich/src/assessment.rs",
+      "sha256": "c111b671217c6d3679428fe96e22e220acd88ec8f2d9922ec07fdfa7f727c1d0"
+    },
+    {
+      "path": "tools/enrich/src/lib.rs",
+      "sha256": "13ae2b236879cc6091da288ab4a53ec9d7505e31191979bbaf0f5a83128933d5"
+    },
+    {
+      "path": "tools/enrich/src/main.rs",
+      "sha256": "961224ee8d476aac3309d5e8a34919b79cf10c0e793548a79507d48d5da44c45"
+    },
+    {
+      "path": "tools/enrich/src/study.rs",
+      "sha256": "8bdc286a3d410509d10ead87281ec350cadf283407de5ebc5af8a25675a81d24"
+    },
+    {
+      "path": "tools/enrich/tests/groupant_pipeline.rs",
+      "sha256": "c8df6fa14eaef59f1aa486fc38f493a150c0903a3a0c8d4bd8e0d5e2e63fc2ff"
+    },
+    {
+      "path": "world/examples/student_probe.rs",
+      "sha256": "50c2e8b1a5ce54e1e8dafb50d897e7490f65541ae8ec011fb86c62ebbec6127d"
+    },
+    {
+      "path": "world/src/fbench.rs",
+      "sha256": "cc89a6255dc4c886743ed97825a00fbc0a6312257a96e65f3dc7d6ff82b24c14"
+    },
+    {
+      "path": "world/src/knowledge.rs",
+      "sha256": "20c352e3bf2ef465d1b00f8851d6a2a6b768906088af2e0265538b6da3df8898"
+    },
+    {
+      "path": "world/src/knowledge.rs.groupant/student-vidtvorant.groupant/rust_approximant.rs",
+      "sha256": "b2aecccebe8252d53afe93edb062382629e5c38be7b5ab19827488f179d34781"
+    },
+    {
+      "path": "world/src/knowledge/learning.rs",
+      "sha256": "27a2ad1ec4a2548c007ea360fb817b65843a89a8424910de9ba2b54534459c05"
+    },
+    {
+      "path": "world/src/knowledge/retention.rs",
+      "sha256": "89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34"
+    },
+    {
+      "path": "world/src/lessons.rs",
+      "sha256": "d9ea9d5543986a9421c508fd90a1f1f7aa9f143ab5392c80d7c300b34a946264"
+    },
+    {
+      "path": "world/src/prules.rs",
+      "sha256": "d3fe2fa0cbece21e34ed7b15054e8c2142db62e9e4ad771c8f8a40c5fa2c889d"
+    },
+    {
+      "path": "world/src/school.rs",
+      "sha256": "3b29edc9021b45510e68eb1e49ac894f6ab55b2b859694302db2076cc6db451d"
+    },
+    {
+      "path": "world/src/school_tree.rs",
+      "sha256": "ca5ada75804e1d2eb3a8a5e0b05331b00c4198682962fcbbb221a1020927711b"
+    },
+    {
+      "path": "world/src/schoolbench.rs",
+      "sha256": "31af0a29c60d6f58425471c828bcfb41a68ef0804c707f13eaa7d56abfb3d00d"
+    },
+    {
+      "path": "world/src/schooltools.rs",
+      "sha256": "69490a8577d28eda24da4a4357f1eb59ef56982a1f5d1895fac9f0987c43bf2f"
+    },
+    {
+      "path": "world/src/tune.rs",
+      "sha256": "932ebce85aebb89467cb9da0d82b136debed8b77f6a9f0b8e852336480db0adb"
+    },
+    {
+      "path": "world/tests/groupant_retention.rs",
+      "sha256": "d68d8a9f7a510fe947d53ea79c42acf077b0b48cf4ad26fe8d06f8dc08943a41"
+    }
+  ],
+  "status": "partial"
+}

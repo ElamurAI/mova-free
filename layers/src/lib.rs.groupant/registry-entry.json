@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "tests::global_math_first",
+    "tests::domain_by_coverage_and_escalation",
+    "tests::explain_mode_only_when_asked",
+    "tests::garbage_is_not_math",
+    "wave30_tests::finite_ties_declines_and_threshold"
+  ],
+  "children": [],
+  "cost": "Query normalization O(text); routing global math cost under Limits5seconds then D coverage calls, stable O(D log D) sorting and attempted solvers plus log bytes. Trait callbacks can be arbitrary; access is metadata, not enforced authorization.",
+  "description": "Independent three-level query routing: global exact math, finite-score domain selection, escalation value and decision log. No call to mlab exists.",
+  "forward": [
+    "Query detects lowercase explanation substrings. route strips these phrases for global math; if successful clear why only in Answer mode. Otherwise score original query in all domains, stable-sort descending partial comparison, try scores satisfying !(score<threshold) until a solver returns Some (equivalent to score>=threshold for finite scores and finite threshold); else construct empty Escalate answer with context facts."
+  ],
+  "id": "layers-lib",
+  "inverse": [
+    "Domain answer preimage includes queries with failed global math and preceding eligible solvers declining; returned Route can be supplied by domain solve itself, so by is not a verified domain identity. Escalation admits zero domains, low scores or all eligible solvers None."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no macro expansion or semantic resolution. Finite synthetic CPU checks are not a proof. Frozen suites, corpus, teacher, GPU, allocation exhaustion and host IO failure injection were not run. No useful executable percent surrogate for categorical control/effects; unsupported gap, no 1/2/5/10% claim."
+  ],
+  "source": "layers/src/lib.rs",
+  "state": "Global math wins over domains; finite equal scores preserve registration order. Exact threshold is eligible. Context logs register and route decisions; escalation does not contact teacher. Nonfinite/malformed scores are not validated."
+}

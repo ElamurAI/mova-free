@@ -1,0 +1,102 @@
+{
+  "children": [
+    {
+      "id": "roundtrip-derived-piece-codec-line-script",
+      "path": "line-script.groupant"
+    },
+    {
+      "id": "roundtrip-derived-piece-codec-tree-validation",
+      "path": "tree-validation.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "reference_priority",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "reference_priority",
+        "status": "partial_source_derived_model",
+        "type": "reference_priority"
+      },
+      {
+        "id": "lcs_tie",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "lcs_tie",
+        "status": "partial_source_derived_model",
+        "type": "lcs_tie"
+      },
+      {
+        "id": "tree_acceptance",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "tree_acceptance",
+        "status": "partial_source_derived_model",
+        "type": "tree_acceptance"
+      },
+      {
+        "id": "damage_eligibility",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "damage_eligibility",
+        "status": "partial_source_derived_model",
+        "type": "damage_eligibility"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "roundtrip-derived-piece-codec",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../site_code.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "8b7af5b786bf922124d3c1e99243cdd058f60ca3e1c9b828f4bb51918bc038c3"
+  },
+  "status": "partial_source_bound_model"
+}

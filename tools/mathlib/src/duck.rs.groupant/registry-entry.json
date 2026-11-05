@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "duck::wave33::substitution_order_and_quotes"
+  ],
+  "children": [],
+  "cost": "fill may expand repeatedly: cost is sum of intermediate string lengths plus replacement bytes. run stores complete stdout/stderr, memory O(output), child time and DB effects unbounded.",
+  "description": "run selects DUCKDB or HOME/bin/duckdb, spawns -bail -batch plus optional mode and db, writes SQL then waits; nonzero status or stderr Error: returns error, otherwise stdout is decoded lossily. fill folds ordered global replacements after doubling apostrophes.",
+  "forward": [
+    "run selects DUCKDB or HOME/bin/duckdb, spawns -bail -batch plus optional mode and db, writes SQL then waits; nonzero status or stderr Error: returns error, otherwise stdout is decoded lossily. fill folds ordered global replacements after doubling apostrophes."
+  ],
+  "id": "mathlib-duck",
+  "inverse": [
+    "If spawn fails, no SQL is written to a child by this call. If status is failure or stderr contains exact Error:, wrapper cannot return Ok(stdout). No claim that every DB failure uses that marker.",
+    "Given final SQL, reconstruct all original templates and ordered variable arrays whose repeated escaped substitutions yield it. Literal text and inserted values are indistinguishable; run output cannot uniquely reconstruct SQL, DB state or child diagnostics."
+  ],
+  "limitations": [
+    "No network/DNS/download, real catalog/corpus/model/teacher or database execution. Effect paths are source-derived; finite helper tests are not universal verification. No executable percentage surrogate or speed claim; future caps require metric/domain/reference and remain 1/2/5/10%."
+  ],
+  "source": "tools/mathlib/src/duck.rs",
+  "state": "Successful OS status is necessary but insufficient for wrapper success. Replacement order is observable; mode is a single argv element. No SQL parser or prepared statement semantics is supplied."
+}

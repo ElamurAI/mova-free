@@ -386,3 +386,90 @@ mod tests {
         assert!(fire("The fox ate the cheese.").is_empty());
     }
 }
+
+
+#[cfg(test)]
+mod bounded_models {
+    use super::*;
+    fn shown(text: &str, now: u64, tz: i64) -> Vec<(&'static str, String)> {
+        fire_at(text, now, tz, &[]).into_iter().map(|(t,s)| (t.name,s)).collect()
+    }
+
+    #[test]
+    fn unit_and_quantity_oracle() {
+        for (word, seconds) in [("seconds", 1.0), ("minutes", 60.0), ("hours", 3600.0),
+            ("days", 86400.0), ("weeks", 604800.0)] {
+            for n in 0..=16 {
+                let q = quantities(&format!("{n} {word}"), &TIME_UNITS);
+                assert_eq!(q.len(), 1);
+                assert_eq!(q[0].1.unwrap() * q[0].3, n as f64 * seconds);
+            }
+        }
+        assert_eq!(shown("How many seconds in three hours?",0,0),
+            vec![("duration", "three hours = 10800 seconds; that is 10800 seconds".into())]);
+        assert_eq!(shown("3 gigahertz for 2 nanoseconds",0,0)[1],
+            ("cycles", "3 gigahertz for 2 nanoseconds is 6 clock cycles".into()));
+        assert!(shown("3 GHz",0,0).is_empty());
+        for (n, answer) in [(0.0,"0 nanoseconds"),(1.0,"1 second"),(60.0,"1 minute"),
+            (90.0,"1.50 minutes"),(3600.0,"1 hour")] {
+            assert_eq!(show_duration(n),answer);
+        }
+    }
+
+    #[test]
+    fn lexical_number_oracle() {
+        for (word, expected) in [("zero",0.0),("ONE",1.0),("half",0.5),
+            ("twenty-four",24.0),("ninety-nine",99.0),("one-two-three",6.0)] {
+            assert_eq!(number_word(word),Some(expected));
+        }
+        for word in ["a","an","17","unknown","twenty-nope"] {
+            assert_eq!(number_word(word),None);
+        }
+        assert_eq!(number("1,000"),Some(1000.0));
+        assert_eq!(number("an"),Some(1.0));
+        assert_eq!(words("1,000 HOURS; 2.5 minutes."),vec!["1,000","HOURS","2.5","minutes"]);
+        // Hyphen splitting is a real distinction from number_word.
+        assert_eq!(quantities("twenty-four hours",&TIME_UNITS)[0].1,Some(4.0));
+    }
+
+    #[test]
+    fn calendar_and_clock_oracle() {
+        let leap_years = [1600, 1604, 1696, 1704, 1896, 1904, 1996, 2000, 2004, 2400];
+        let common_years = [1583, 1699, 1700, 1800, 1900, 1999, 2100, 2200, 2300, 9999];
+        for (years, leap) in [(&leap_years[..],true),(&common_years[..],false)] {
+            for y in years {
+                let expected = format!("{y} is {}a leap year ({} days)",if leap {""} else {"not "},if leap {366} else {365});
+                assert_eq!(shown(&format!("leap {y}"),0,0),vec![("calendar",expected)]);
+            }
+        }
+        assert!(shown("leap 1582",0,0).is_empty());
+        assert!(shown("leap 10000",0,0).is_empty());
+        for (now,tz,expected) in [(0,0,"1970-01-01 00:00 (UTC+0)"),
+            (0,-1,"1969-12-31 23:00 (UTC-1)"),(86400,3,"1970-01-02 03:00 (UTC+3)")] {
+            assert_eq!(shown("now",now,tz),vec![("clock",format!("now is {expected}"))]);
+        }
+    }
+
+    #[test]
+    fn event_order_frequency_and_recall_oracle() {
+        let trace = [(100,"training"),(160,"research"),(200,"training"),(220,"gathering"),
+            (300,"training"),(400,"research"),(500,"training"),(501,"message"),
+            (600,"training"),(601,"task")].map(|(t,e)|(t,e.to_string()));
+        assert_eq!(expect_after("training",&trace),vec![("research".into(),666,100),("gathering".into(),333,20)]);
+        assert!(expect_after("missing",&trace).is_empty());
+        let backwards = [(9,"training".into()),(2,"research".into())];
+        assert_eq!(expect_after("training",&backwards),vec![("research".into(),1000,0)]);
+        let tied = [(0,"training"),(2,"z"),(3,"training"),(4,"a")].map(|(t,e)|(t,e.to_string()));
+        assert_eq!(expect_after("training",&tied),vec![("a".into(),500,1),("z".into(),500,2)]);
+        let lived = vec![("task".into(),100,60.0,"first".into()),("task".into(),200,0.0,"second".into())];
+        assert_eq!(recall_events_at("JOBS",90,&lived),vec![("task".into(),"the last task was 0 nanoseconds ago, it took 1 minute: first".into())]);
+        assert!(recall_events_at("jobless",900,&lived).is_empty());
+    }
+
+    #[test]
+    fn compiled_negative_control() {
+        // False Gregorian rule (divisible by four) must disagree at 1900.
+        let wrong = vec![("calendar", "1900 is a leap year (366 days)".to_string())];
+        assert_ne!(shown("leap 1900",0,0),wrong);
+    }
+}

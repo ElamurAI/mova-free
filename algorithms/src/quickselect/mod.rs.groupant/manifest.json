@@ -1,0 +1,211 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "source syntax; no expansion or semantic resolution",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "description": "model.md#approximant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "explicit relation and observation in linked section",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "explicit relation and observation in linked section",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "interval_progress",
+        "path": "model.md",
+        "scope": "explicit relation and observation in linked section",
+        "section": "interval_progress",
+        "status": "partial_source_derived_model",
+        "type": "interval_progress"
+      },
+      {
+        "id": "duplicate_rank_fiber",
+        "path": "model.md",
+        "scope": "explicit relation and observation in linked section",
+        "section": "duplicate_rank_fiber",
+        "status": "partial_source_derived_model",
+        "type": "duplicate_rank_fiber"
+      },
+      {
+        "id": "resource_bound",
+        "path": "model.md",
+        "scope": "explicit relation and observation in linked section",
+        "section": "resource_bound",
+        "status": "partial_source_derived_model",
+        "type": "resource_bound"
+      }
+    ],
+    "rust_approximants": [
+      {
+        "assumptions": [
+          "Standard Rust integer semantics",
+          "Target usize width <=64 bits",
+          "Successful ordinary execution"
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 1,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "certified_sample",
+          "metric_kind": "normalized_rank"
+        },
+        "domain": "Immutable slices of u64 with valid zero-based index; invalid index returns None",
+        "error_percent": 1,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md",
+            "sha256": "692afdea21803aa0ad3ca037f0f93139c6a149382fd8433bd9b639cc0e86c024"
+          }
+        ],
+        "id": "quickselect-1pct",
+        "metric": "distance(index, returned value sorted-rank interval)/input_length",
+        "path": "rust_approximant.rs",
+        "sha256": "abab400e5f4d944fc1c7ad34752aa5dd7c122ae3b4bcfdf7481176c4c681eb08",
+        "source": {
+          "path": "../mod.rs",
+          "raw_code_location": "outside_this_sidecar",
+          "sha256": "12219158d4469b4f9031a6de333b6abc185a00a2c8988614bf86d3a8f0aa1352"
+        },
+        "status": "experimental_executable_standalone"
+      },
+      {
+        "assumptions": [
+          "Standard Rust integer semantics",
+          "Target usize width <=64 bits",
+          "Successful ordinary execution"
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 2,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "certified_sample",
+          "metric_kind": "normalized_rank"
+        },
+        "domain": "Immutable slices of u64 with valid zero-based index; invalid index returns None",
+        "error_percent": 2,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md",
+            "sha256": "692afdea21803aa0ad3ca037f0f93139c6a149382fd8433bd9b639cc0e86c024"
+          }
+        ],
+        "id": "quickselect-2pct",
+        "metric": "distance(index, returned value sorted-rank interval)/input_length",
+        "path": "rust_approximant.rs",
+        "sha256": "abab400e5f4d944fc1c7ad34752aa5dd7c122ae3b4bcfdf7481176c4c681eb08",
+        "source": {
+          "path": "../mod.rs",
+          "raw_code_location": "outside_this_sidecar",
+          "sha256": "12219158d4469b4f9031a6de333b6abc185a00a2c8988614bf86d3a8f0aa1352"
+        },
+        "status": "experimental_executable_standalone"
+      },
+      {
+        "assumptions": [
+          "Standard Rust integer semantics",
+          "Target usize width <=64 bits",
+          "Successful ordinary execution"
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 5,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "certified_sample",
+          "metric_kind": "normalized_rank"
+        },
+        "domain": "Immutable slices of u64 with valid zero-based index; invalid index returns None",
+        "error_percent": 5,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md",
+            "sha256": "692afdea21803aa0ad3ca037f0f93139c6a149382fd8433bd9b639cc0e86c024"
+          }
+        ],
+        "id": "quickselect-5pct",
+        "metric": "distance(index, returned value sorted-rank interval)/input_length",
+        "path": "rust_approximant.rs",
+        "sha256": "abab400e5f4d944fc1c7ad34752aa5dd7c122ae3b4bcfdf7481176c4c681eb08",
+        "source": {
+          "path": "../mod.rs",
+          "raw_code_location": "outside_this_sidecar",
+          "sha256": "12219158d4469b4f9031a6de333b6abc185a00a2c8988614bf86d3a8f0aa1352"
+        },
+        "status": "experimental_executable_standalone"
+      },
+      {
+        "assumptions": [
+          "Standard Rust integer semantics",
+          "Target usize width <=64 bits",
+          "Successful ordinary execution"
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 10,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "certified_sample",
+          "metric_kind": "normalized_rank"
+        },
+        "domain": "Immutable slices of u64 with valid zero-based index; invalid index returns None",
+        "error_percent": 10,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md",
+            "sha256": "692afdea21803aa0ad3ca037f0f93139c6a149382fd8433bd9b639cc0e86c024"
+          }
+        ],
+        "id": "quickselect-10pct",
+        "metric": "distance(index, returned value sorted-rank interval)/input_length",
+        "path": "rust_approximant.rs",
+        "sha256": "abab400e5f4d944fc1c7ad34752aa5dd7c122ae3b4bcfdf7481176c4c681eb08",
+        "source": {
+          "path": "../mod.rs",
+          "raw_code_location": "outside_this_sidecar",
+          "sha256": "12219158d4469b4f9031a6de333b6abc185a00a2c8988614bf86d3a8f0aa1352"
+        },
+        "status": "experimental_executable_standalone"
+      }
+    ],
+    "tests": {
+      "path": "model.md#checks",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "id": "algorithm-quickselect",
+  "kind": "groupant",
+  "registry": {
+    "node": "algorithm-quickselect",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "12219158d4469b4f9031a6de333b6abc185a00a2c8988614bf86d3a8f0aa1352"
+  },
+  "status": "partial_descriptive_instance"
+}

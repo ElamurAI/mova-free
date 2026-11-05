@@ -1,0 +1,288 @@
+{
+  "children": [
+    "layers-lib",
+    "mlab-interp",
+    "mlab-lib",
+    "mlab-suite",
+    "mlab-vm",
+    "mlab-tests-suite",
+    "mlab-tests-vm",
+    "virtual-filesystem-state",
+    "wasi-guest-runtime"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "No frozen VMM/Octave/Boost/NIST or mlab suite evaluation, corpus, Monte Carlo defaults, teacher, GPU, real model or host filesystem execution. Nonfinite coverage ordering, arbitrary malformed public bytecode, overflow/allocation exhaustion and unrestricted Domain callbacks remain outside checked claims. f64 arithmetic admits NaN/Inf; no blanket finite-output guarantee.",
+        "domain": "CPU-only bounded synthetic programs, in-memory Vfs, valid parser-generated AST/VM prototypes and well-formed Value matrices within integer/memory limits; finite coverage scores and finite threshold for stable threshold claims. Empty programs/scenarios/output, zero-length loops and missing-variable errors explicitly represented.",
+        "id": "behavior-complement",
+        "observation_scope": "Interp::run calls vm::run_program only after registration; VM Fallback invokes Interp::exec and DynEval invokes eval_multi through sync_out/sync_in. lib.rs exposes item identities consumed by tests. suite::run_fs consumes parser scenarios and feeds captured output to check; vm_gate compares engines independently of expected answers, so shared broken builtins can pass equivalence. layers/lib.rs is a separate tagged routing relation to math/global and Domain callbacks, with no mlab caller/callee edge; grouping does not imply runtime transport.",
+        "operator": "Parse failure excludes prefix effects; short-circuit false&&/true|| excludes RHS calls; invalid fast indices exclude direct writes; mismatch excludes remaining gate scenarios. Global math success excludes domain callbacks; finite below-threshold score excludes solve. Equivalent engine output does not exclude shared bugs.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "No frozen VMM/Octave/Boost/NIST or mlab suite evaluation, corpus, Monte Carlo defaults, teacher, GPU, real model or host filesystem execution. Nonfinite coverage ordering, arbitrary malformed public bytecode, overflow/allocation exhaustion and unrestricted Domain callbacks remain outside checked claims. f64 arithmetic admits NaN/Inf; no blanket finite-output guarantee.",
+        "domain": "CPU-only bounded synthetic programs, in-memory Vfs, valid parser-generated AST/VM prototypes and well-formed Value matrices within integer/memory limits; finite coverage scores and finite threshold for stable threshold claims. Empty programs/scenarios/output, zero-length loops and missing-variable errors explicitly represented.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Interp::run calls vm::run_program only after registration; VM Fallback invokes Interp::exec and DynEval invokes eval_multi through sync_out/sync_in. lib.rs exposes item identities consumed by tests. suite::run_fs consumes parser scenarios and feeds captured output to check; vm_gate compares engines independently of expected answers, so shared broken builtins can pass equivalence. layers/lib.rs is a separate tagged routing relation to math/global and Domain callbacks, with no mlab caller/callee edge; grouping does not imply runtime transport.",
+        "operator": "Preimage of (captured bytes,final workspace) contains all source/initial-state/fault triples yielding those observations; suppressed writes and overwritten locals make it many-to-one. Scenario parsing drops ignored text and trailing blank code, so inverse is set-valued. A route value admits many queries and declining-domain histories; Domain may supply arbitrary Answer.by.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "No frozen VMM/Octave/Boost/NIST or mlab suite evaluation, corpus, Monte Carlo defaults, teacher, GPU, real model or host filesystem execution. Nonfinite coverage ordering, arbitrary malformed public bytecode, overflow/allocation exhaustion and unrestricted Domain callbacks remain outside checked claims. f64 arithmetic admits NaN/Inf; no blanket finite-output guarantee.",
+        "domain": "CPU-only bounded synthetic programs, in-memory Vfs, valid parser-generated AST/VM prototypes and well-formed Value matrices within integer/memory limits; finite coverage scores and finite threshold for stable threshold claims. Empty programs/scenarios/output, zero-length loops and missing-variable errors explicitly represented.",
+        "id": "frame-register-transport",
+        "observation_scope": "Interp::run calls vm::run_program only after registration; VM Fallback invokes Interp::exec and DynEval invokes eval_multi through sync_out/sync_in. lib.rs exposes item identities consumed by tests. suite::run_fs consumes parser scenarios and feeds captured output to check; vm_gate compares engines independently of expected answers, so shared broken builtins can pass equivalence. layers/lib.rs is a separate tagged routing relation to math/global and Domain callbacks, with no mlab caller/callee edge; grouping does not imply runtime transport.",
+        "operator": "sync_out(regs,names) moves defined values into frame and removes U names; sync_in removes frame values back into Reg. Fallback wraps actual tree execution with this transport, including returned errors. Reg scalar packing is bit-sensitive for logical0/1 and preserves f64 scalar observations.",
+        "path": "model.md",
+        "required": false,
+        "section": "frame-register-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No frozen VMM/Octave/Boost/NIST or mlab suite evaluation, corpus, Monte Carlo defaults, teacher, GPU, real model or host filesystem execution. Nonfinite coverage ordering, arbitrary malformed public bytecode, overflow/allocation exhaustion and unrestricted Domain callbacks remain outside checked claims. f64 arithmetic admits NaN/Inf; no blanket finite-output guarantee.",
+        "domain": "CPU-only bounded synthetic programs, in-memory Vfs, valid parser-generated AST/VM prototypes and well-formed Value matrices within integer/memory limits; finite coverage scores and finite threshold for stable threshold claims. Empty programs/scenarios/output, zero-length loops and missing-variable errors explicitly represented.",
+        "id": "parse-runtime-boundary",
+        "observation_scope": "Interp::run calls vm::run_program only after registration; VM Fallback invokes Interp::exec and DynEval invokes eval_multi through sync_out/sync_in. lib.rs exposes item identities consumed by tests. suite::run_fs consumes parser scenarios and feeds captured output to check; vm_gate compares engines independently of expected answers, so shared broken builtins can pass equivalence. layers/lib.rs is a separate tagged routing relation to math/global and Domain callbacks, with no mlab caller/callee edge; grouping does not imply runtime transport.",
+        "operator": "Entire parse precedes registration/execution. Runtime failure follows already executed assignments and precedes remaining statements. Ordinary indexed '=' assignment orders RHS type, target type, then indices; compound indexed assignment first reads the indexed old value and applies its binary operation, then invokes the assignment helper, evaluating indices again; user calls order excess inputs, excess outputs, depth.",
+        "path": "model.md",
+        "required": false,
+        "section": "parse-runtime-boundary",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "No frozen VMM/Octave/Boost/NIST or mlab suite evaluation, corpus, Monte Carlo defaults, teacher, GPU, real model or host filesystem execution. Nonfinite coverage ordering, arbitrary malformed public bytecode, overflow/allocation exhaustion and unrestricted Domain callbacks remain outside checked claims. f64 arithmetic admits NaN/Inf; no blanket finite-output guarantee.",
+        "domain": "CPU-only bounded synthetic programs, in-memory Vfs, valid parser-generated AST/VM prototypes and well-formed Value matrices within integer/memory limits; finite coverage scores and finite threshold for stable threshold claims. Empty programs/scenarios/output, zero-length loops and missing-variable errors explicitly represented.",
+        "id": "scenario-gate-join",
+        "observation_scope": "Interp::run calls vm::run_program only after registration; VM Fallback invokes Interp::exec and DynEval invokes eval_multi through sync_out/sync_in. lib.rs exposes item identities consumed by tests. suite::run_fs consumes parser scenarios and feeds captured output to check; vm_gate compares engines independently of expected answers, so shared broken builtins can pass equivalence. layers/lib.rs is a separate tagged routing relation to math/global and Domain callbacks, with no mlab caller/callee edge; grouping does not imply runtime transport.",
+        "operator": "run_fs maps each Scenario to fresh engine output and compares expected exact/prefix lines; vm_gate compares tree bytes to VM bytes without expectations. check strips exactly one terminal LF; first difference is1-based. Gate total increments before first mismatch break.",
+        "path": "model.md",
+        "required": false,
+        "section": "scenario-gate-join",
+        "status": "partial_source_derived_model",
+        "type": "observation_relation"
+      },
+      {
+        "assumptions": "No frozen VMM/Octave/Boost/NIST or mlab suite evaluation, corpus, Monte Carlo defaults, teacher, GPU, real model or host filesystem execution. Nonfinite coverage ordering, arbitrary malformed public bytecode, overflow/allocation exhaustion and unrestricted Domain callbacks remain outside checked claims. f64 arithmetic admits NaN/Inf; no blanket finite-output guarantee.",
+        "domain": "CPU-only bounded synthetic programs, in-memory Vfs, valid parser-generated AST/VM prototypes and well-formed Value matrices within integer/memory limits; finite coverage scores and finite threshold for stable threshold claims. Empty programs/scenarios/output, zero-length loops and missing-variable errors explicitly represented.",
+        "id": "separate-routing-selection",
+        "observation_scope": "Interp::run calls vm::run_program only after registration; VM Fallback invokes Interp::exec and DynEval invokes eval_multi through sync_out/sync_in. lib.rs exposes item identities consumed by tests. suite::run_fs consumes parser scenarios and feeds captured output to check; vm_gate compares engines independently of expected answers, so shared broken builtins can pass equivalence. layers/lib.rs is a separate tagged routing relation to math/global and Domain callbacks, with no mlab caller/callee edge; grouping does not imply runtime transport.",
+        "operator": "For finite scores and finite threshold, stable descending sort retains equal-score registration order; a0.9 solver returning None permits0.5 first solver at threshold0.5, and raising threshold0.5001 yields escalation. This relation is tagged separately and has no mlab transport edge.",
+        "path": "model.md",
+        "required": false,
+        "section": "separate-routing-selection",
+        "status": "partial_source_derived_model",
+        "type": "stable_selection"
+      },
+      {
+        "assumptions": "No universal POSIX equivalence, atomic host confinement or transactional mkdir_all/import/export. RealFs operations and snapbench main unexecuted. No useful effect-preserving percentage surrogate.",
+        "domain": "CPU synthetic finite trees, valid UTF8 paths, bounded counters/allocation, dedicated TMPDIR host fixtures. No concurrent host mutations; trusted export roots and safe temporary prefixes.",
+        "id": "wave31-virtual-filesystem-state-backend-dispatch",
+        "operator": "open(mem,limits) installs Vfs, real ignores limits, dir canonicalizes root; shared trait does not imply identical journals or metadata.",
+        "path": "model.md",
+        "section": "wave31-virtual-filesystem-state-backend-dispatch",
+        "status": "partial_composition_model",
+        "type": "tagged_union"
+      },
+      {
+        "assumptions": "No universal POSIX equivalence, atomic host confinement or transactional mkdir_all/import/export. RealFs operations and snapbench main unexecuted. No useful effect-preserving percentage surrogate.",
+        "domain": "CPU synthetic finite trees, valid UTF8 paths, bounded counters/allocation, dedicated TMPDIR host fixtures. No concurrent host mutations; trusted export roots and safe temporary prefixes.",
+        "id": "wave31-virtual-filesystem-state-state-trace-split",
+        "operator": "Snapshot includes root,cwd,clock,next_ino,usage,tmp and excludes limits,journal,fault. Restoration equality applies to dump projection.",
+        "path": "model.md",
+        "section": "wave31-virtual-filesystem-state-state-trace-split",
+        "status": "partial_composition_model",
+        "type": "snapshot_projection"
+      },
+      {
+        "assumptions": "No universal POSIX equivalence, atomic host confinement or transactional mkdir_all/import/export. RealFs operations and snapbench main unexecuted. No useful effect-preserving percentage surrogate.",
+        "domain": "CPU synthetic finite trees, valid UTF8 paths, bounded counters/allocation, dedicated TMPDIR host fixtures. No concurrent host mutations; trusted export roots and safe temporary prefixes.",
+        "id": "wave31-virtual-filesystem-state-failure-effects",
+        "operator": "Single-file quota preflight precedes tick; mkdir_all/import/export can preserve a successful prefix. No parent-wide rollback follows.",
+        "path": "model.md",
+        "section": "wave31-virtual-filesystem-state-failure-effects",
+        "status": "partial_composition_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "No universal POSIX equivalence, atomic host confinement or transactional mkdir_all/import/export. RealFs operations and snapbench main unexecuted. No useful effect-preserving percentage surrogate.",
+        "domain": "CPU synthetic finite trees, valid UTF8 paths, bounded counters/allocation, dedicated TMPDIR host fixtures. No concurrent host mutations; trusted export roots and safe temporary prefixes.",
+        "id": "wave31-virtual-filesystem-state-caller-join",
+        "operator": "mlab file/table builtins use Interp.fs trait; sibling WASI translates errno via wasi number while host Display uses Linux number. Do not identify these numeric coordinate systems.",
+        "path": "model.md",
+        "section": "wave31-virtual-filesystem-state-caller-join",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Source-derived branch/ABI relations require valid host resources and finite guest input. is_wasi_name only checks namespace/name, not type. Metadata rights differ from cached file access flags. Example compiles but is not executed; mlab source is external reference only. No useful percentage surrogate established.",
+        "domain": "CPU; nine memory/engine tests, two synthetic integration tests; memory<=8192 bytes and minimal empty/unreachable wasm; filesystem effects restricted to unique own temporary roots. No full mlab.wasm, frozen suites, large guest build, live data or network.",
+        "id": "wave31-wasi-guest-runtime-vfs-coordinate-transport",
+        "operator": "Relative UTF8 path + directory fd -> canonical Vfs path -> descriptor carrying path/offset/flags -> iovec bytes -> Vfs read_at/write_at -> copied output/count. Explicit positioned writes override append and preserve fd position; implicit append uses file size. Finite direct-helper fixtures exercise this actual caller join.",
+        "path": "model.md",
+        "section": "wave31-wasi-guest-runtime-vfs-coordinate-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Source-derived branch/ABI relations require valid host resources and finite guest input. is_wasi_name only checks namespace/name, not type. Metadata rights differ from cached file access flags. Example compiles but is not executed; mlab source is external reference only. No useful percentage surrogate established.",
+        "domain": "CPU; nine memory/engine tests, two synthetic integration tests; memory<=8192 bytes and minimal empty/unreachable wasm; filesystem effects restricted to unique own temporary roots. No full mlab.wasm, frozen suites, large guest build, live data or network.",
+        "id": "wave31-wasi-guest-runtime-failure-order",
+        "operator": "Validation precedes CLI imports; import failure precedes guest; export gate follows run; first export failure precedes journal. Within helpers clock/seek/read/write/open effects can precede output FAULT, so success-only adapters cannot infer atomicity.",
+        "path": "model.md",
+        "section": "wave31-wasi-guest-runtime-failure-order",
+        "status": "partial_composition_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "Source-derived branch/ABI relations require valid host resources and finite guest input. is_wasi_name only checks namespace/name, not type. Metadata rights differ from cached file access flags. Example compiles but is not executed; mlab source is external reference only. No useful percentage surrogate established.",
+        "domain": "CPU; nine memory/engine tests, two synthetic integration tests; memory<=8192 bytes and minimal empty/unreachable wasm; filesystem effects restricted to unique own temporary roots. No full mlab.wasm, frozen suites, large guest build, live data or network.",
+        "id": "wave31-wasi-guest-runtime-resource-product",
+        "operator": "Fuel, memory ceiling, descriptor count and Vfs byte/file limits form separate axes. One axis cannot stand in for others: fuel counts engine work while host IO/copies and imported tree size require independent accounting.",
+        "path": "model.md",
+        "section": "wave31-wasi-guest-runtime-resource-product",
+        "status": "partial_composition_model",
+        "type": "resource_boundary"
+      },
+      {
+        "assumptions": "Source-derived branch/ABI relations require valid host resources and finite guest input. is_wasi_name only checks namespace/name, not type. Metadata rights differ from cached file access flags. Example compiles but is not executed; mlab source is external reference only. No useful percentage surrogate established.",
+        "domain": "CPU; nine memory/engine tests, two synthetic integration tests; memory<=8192 bytes and minimal empty/unreachable wasm; filesystem effects restricted to unique own temporary roots. No full mlab.wasm, frozen suites, large guest build, live data or network.",
+        "id": "wave31-wasi-guest-runtime-test-scope",
+        "operator": "Nine helper/tiny-engine and two integration tests produce11 named observations per profile. Example compile and freshness metadata tests do not imply native/guest frozen-suite equality; mlab remains a tagged external reference.",
+        "path": "model.md",
+        "section": "wave31-wasi-guest-runtime-test-scope",
+        "status": "partial_composition_model",
+        "type": "evidence_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "computing-execution",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "layers/src/lib.rs",
+      "sha256": "f7a2576c1bcd7945f960c030276bf99662c34ee3858fd2116983e3e80be3afb9"
+    },
+    {
+      "path": "mlab/src/interp.rs",
+      "sha256": "5c4d879d116b5fa07a27053b458c50f25736526b10e84ca189f825a3e3da1af8"
+    },
+    {
+      "path": "mlab/src/lib.rs",
+      "sha256": "32ec0f3c8dbdbb216496e4160a46e3c96aac0090f30b9086803408059917adf6"
+    },
+    {
+      "path": "mlab/src/suite.rs",
+      "sha256": "9f7b9b196ad8e83e9ed4dd9c544d42b0495f04ed57c268126e091b52493d1f8e"
+    },
+    {
+      "path": "mlab/src/vm.rs",
+      "sha256": "04ee871c37021946be0ea1feccd1b34fcc214765fb1cdcf78293c747320bf183"
+    },
+    {
+      "path": "mlab/tests/suite.rs",
+      "sha256": "44bf1111361f38af56288671607c9669b173753da07152c00641627e7091a3bf"
+    },
+    {
+      "path": "mlab/tests/vm.rs",
+      "sha256": "752cb721b2bda77ee9b797cde810ad959a74341f31a7e1b2c62f5ca60c773fbe"
+    },
+    {
+      "path": "vfs/examples/snapbench.rs",
+      "sha256": "df7ed460def0653789b6f33967fa58474d125c02c9fbbe9b33dd063be4132579"
+    },
+    {
+      "path": "vfs/src/error.rs",
+      "sha256": "014e34da6df423523e02b9c8f1683d6762f8c29b3f83401b321afa136d382dac"
+    },
+    {
+      "path": "vfs/src/host.rs",
+      "sha256": "d7a0bb0efff6f8f477ede3d425e9e7340f555a79891bf436985944d23b5c12fc"
+    },
+    {
+      "path": "vfs/src/journal.rs",
+      "sha256": "c6c2ac019263f12fbff99c8fdd94e12ba6b4a17fafb77a6f19e99834338daf1d"
+    },
+    {
+      "path": "vfs/src/lib.rs",
+      "sha256": "815d266a4f655f394cffdf7af67bb88468908ac9edadbffebdebe0fd419fd4ed"
+    },
+    {
+      "path": "vfs/src/mem.rs",
+      "sha256": "d97f98687ddc88ba17464b64dadc223583c39dcfa90f14bc44410cada557ca95"
+    },
+    {
+      "path": "vfs/src/path.rs",
+      "sha256": "6ccba30c719a6edef0250d92427618fc4a91ef1b4d097d65ffa3b9b70f95ba59"
+    },
+    {
+      "path": "vfs/tests/vfs.rs",
+      "sha256": "698bd9736a44e4242956651b41ab29138dd247738ff68b0009efb44cfb0aa0a2"
+    },
+    {
+      "path": "wasi-host/examples/mlab_gate.rs",
+      "sha256": "a7947069ab507ffd5ad7b71ae9146bca16e08b827af78bc5961993c788b699b8"
+    },
+    {
+      "path": "wasi-host/src/lib.rs",
+      "sha256": "91213ce9038107912c2dd707c3a6639a2d723cdfceb02981a166a6853800248e"
+    },
+    {
+      "path": "wasi-host/src/main.rs",
+      "sha256": "2200229297d1dde6d9f8477a577a7320c854d0db4fb3ea450b457a9858107122"
+    },
+    {
+      "path": "wasi-host/src/tests.rs",
+      "sha256": "74685e5440b3b7df7f40518395e62d6cd68a60e80ff71e87b772f020c80bec8d"
+    },
+    {
+      "path": "wasi-host/tests/mlab.rs",
+      "sha256": "e3b35b1a315b6d995fd3cb8e590209d9f57141b89d9def132cd733f31d8f2db8"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

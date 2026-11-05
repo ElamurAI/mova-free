@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "tests::seed_examples_skip_ungrammatical",
+    "tests::prag_patches_are_checked",
+    "wave27_tests::shuffle_seed_zero_alias_and_permutation",
+    "batch::tests::results_parse_and_patch"
+  ],
+  "children": [],
+  "cost": "B input/reply bytes, N tokens, I items: shuffle O(I), patch parse O(B) plus ordered-map lookups/cloning and delegated gates, potentially O(sum token gate work). Corpus reads and reports materialize full strings. Training, expert evaluation, teacher and UDPipe dominate separately. usize counters/letter multiplications unchecked; no hard resource cap.",
+  "description": "Annotation CLI dispatcher and shared selection, patch/gate, finish/report pipeline. Models distinguish pure bounded helpers from teacher/training/network/corpus effects. Existing annotation gates are owned by ann.rs and remain a cross-group dependency.",
+  "forward": [
+    "CLI dispatch selects direct utilities or parses training/input/count/seed/output arguments. Drafts may load saved input or train a model; items are selected and annotated in patch/draft/two-look flows. apply_patches clones drafts, tracks seen/broken ids, mutates selected fields and PRAG side-map, then returns only seen unbroken ann::check successes. finish writes outputs, optionally replaces FEATS and calls UDPipe, appends accepted corpus items, then writes report."
+  ],
+  "id": "annot-main",
+  "inverse": [
+    "A final accepted patch annotation has all compatible original drafts and patch sequences whose last valid assignments yield that annotation, provided that accepted id is seen and no line marks it broken. Acceptance is per sentence: unmentioned input ids are individually rejected and do not prevent other seen, unbroken ids from passing their annotation gate. Unknown-id lines and repeated OK are unobservable. Original draft or teacher reasoning cannot be recovered uniquely. Reports collapse per-token differences into aggregates."
+  ],
+  "limitations": [
+    "No training, live network, live teacher, corpus/model write or end-to-end finish execution.",
+    "silver n=0, duplicate ids, post-FEATS gate and unchecked indexing limitations modeled without production changes."
+  ],
+  "source": "annot/src/main.rs",
+  "state": "For unique pair ids and valid forms, output patch keys are a subset of supplied ids and every returned annotation passes ann::check. Unknown reply ids are ignored. Failed syntactic patches keep a sentence broken even after OK. PRAG side-map can retain entries for rejected sentences; finish restricts emission to final keys. This is not a transactional pipeline."
+}

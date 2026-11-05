@@ -1,0 +1,73 @@
+// Compile as a standalone std-only builder; run from repository root with external output dir.
+// Extracts unchanged attention and coverage functions, without substituting their bodies.
+// Stubs expose only dependency interfaces; full World/parser/lexicon integration is not claimed.
+use std::{fs,path::Path,process::Command};
+fn extract(src:&str,from:&str,to:&str)->String {
+ let a=src.find(from).expect("start marker"); let b=a+src[a..].find(to).expect("end marker");
+ src[a..b].to_owned()
+}
+fn run(dir:&Path,name:&str,body:&str,pass:bool){
+ let source=dir.join(format!("{name}.rs"));let binary=dir.join(name);
+ fs::write(&source,body).unwrap();
+ assert!(Command::new("rustc").args(["--edition=2024","--crate-name",name]).arg(&source).arg("-o").arg(&binary).status().unwrap().success());
+ let out=Command::new(binary).output().unwrap();
+ assert_eq!(out.status.success(),pass,"{name}: {}",String::from_utf8_lossy(&out.stderr));
+ if pass { print!("{}",String::from_utf8_lossy(&out.stdout)); } else {println!("{name}: rejected");}
+}
+fn main(){
+ let dir=std::env::args().nth(1).expect("external output directory"); let dir=Path::new(&dir);fs::create_dir_all(dir).unwrap();
+ let q=fs::read_to_string("world/src/query.rs").unwrap();
+ let attention=extract(&q,"    pub fn attention(","    /// Working memory");
+ let setup=r#"
+#[derive(Clone,Copy,PartialEq)] enum Reg{C,O}
+type Id=u32;
+struct Pos{sent:u16}
+struct Entity{id:Id,reg:Reg,m:Vec<Pos>}
+impl Entity{fn mentions(&self)->&[Pos]{&self.m}}
+struct World{e:Vec<Entity>}
+impl World{fn ents(&self,r:Reg)->impl Iterator<Item=&Entity>{self.e.iter().filter(move|e|e.reg==r)}
+"#;
+ let checks=r#"}
+fn main(){
+ let mut cases=0;
+ for a in 0..4 {for b in 0..4 {for c in 0..4 {for d in 0..4 {
+ let counts=[a,b,c,d];
+ let mut e:Vec<_>=counts.iter().enumerate().map(|(i,&n)|Entity{id:(4-i) as u32,reg:Reg::C,m:(0..n).map(|_|Pos{sent:2}).chain([Pos{sent:9}]).collect()}).collect();
+ e.push(Entity{id:99,reg:Reg::O,m:vec![Pos{sent:1}]});
+ let w=World{e}; let got=w.attention(2);
+ // Independent rank oracle: visit count buckets then IDs; no sort invocation.
+ let mut want=vec![];
+ for n in (1..4).rev(){for id in 1..=4 {if counts[(4-id) as usize]==n {want.push((id,n));}}}
+ assert_eq!(got,want);assert!(w.attention(0).is_empty());cases+=1;
+ }}}}
+ println!("attention: {cases} count assignments, cutoff exclusion and non-character exclusion");
+}
+"#;
+ let body=format!("{setup}{attention}{checks}");run(dir,"attention",&body,true);
+ let mutant=body.replace("b.1.cmp(&a.1)","a.1.cmp(&b.1)");assert_ne!(body,mutant);run(dir,"attention_mutant",&mutant,false);
+ let f=fs::read_to_string("world/src/frames.rs").unwrap();
+ let funcs=extract(&f,"fn known(","/// `world frames \"");
+ let setup=r#"
+mod prag {pub mod vn {
+pub struct Lex;
+impl Lex{pub fn classes_of(&self,v:&str)->&[usize]{if v=="walk"||v=="give"{&[1]}else{&[]}}}
+}}
+"#;
+ let checks=r#"
+fn main(){
+ use std::collections::BTreeMap;
+ let lx=prag::vn::Lex; let mut cases=0; let mut fiber=0;
+ assert!(known(&lx,"give up")); assert!(!known(&lx,"give_up"));assert!(!known(&lx," give"));
+ for a in 0..4 {for b in 0..4 {for c in 0..4 {
+ let mut n=BTreeMap::new();for (v,k) in [("walk",a),("unknown",b),("give up",c)]{if k>0{n.insert(v.to_string(),k);}}
+ let got=cover_line(&lx,&n);let t=a+b+c;let y=[a,b,c].into_iter().filter(|&x|x>0).count();
+ let (token,lemma)=if t==0 {(0.0,0.0)} else {(100.0-100.0*b as f64/t as f64,100.0-100.0*(b>0) as u8 as f64/y as f64)};
+ let expected=format!("{t} verb tokens ({y} lemmas): VerbNet {token:.1}% ({lemma:.1}% of lemmas)");
+ assert_eq!(got,expected); if got=="4 verb tokens (2 lemmas): VerbNet 100.0% (100.0% of lemmas)"{fiber+=1;}cases+=1;
+ }}}
+ assert_eq!(fiber,3);println!("coverage: {cases} frequency assignments, 3 exact report preimages, 3 head boundaries");
+}
+"#;
+ let body=format!("{setup}{funcs}{checks}");run(dir,"coverage",&body,true);
+ let mutant=body.replace("tv += k;","tv += 1;");assert_ne!(body,mutant);run(dir,"coverage_mutant",&mutant,false);
+}

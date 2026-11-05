@@ -1,0 +1,82 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "unknown_presence",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "unknown_presence",
+        "status": "partial_source_derived_model",
+        "type": "unknown_presence"
+      },
+      {
+        "id": "node_count",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "node_count",
+        "status": "partial_source_derived_model",
+        "type": "node_count"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 7960,
+      "start": 5489
+    },
+    "description": "unknowns runs walk and emits (backslash+command,stored span) or (begin{name},stored span) for unknown environments. has_unknown ORs the same node predicates without short-circuiting walk. size counts each node visit, including root and empty Row.",
+    "source_bytes_sha256": "19aba8cdbd701afd5ebd6bdddd691f57700cb80df17a93665190e49c0e4a3411"
+  },
+  "id": "latex-ast-stage2",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../ast.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "88786b90964d7ee3438883e97716def3e8076003e6739a53f1232bd9e4cf8599"
+  },
+  "status": "partial_source_bound_model"
+}

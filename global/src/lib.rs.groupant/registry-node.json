@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "cargo test -p global --lib --locked",
+    "mova-modelcheck groupants structural validation after parent registration"
+  ],
+  "children": [],
+  "cost": "Symbolic linear catalog scans, O(C+reached*L) BFS and bounded-length greedy expression lookup; no timing measurement.",
+  "description": "Query compiled seed catalogs with lexical senses, link paths, judgments and bounded expression matching.",
+  "forward": [
+    "Exact catalog queries preserve table-order policies; sense ties choose the earliest maximum.",
+    "BFS and bounded first-edge consequences are distinct traversals.",
+    "Expression matching uses greedy lengths and lemma-priority forms merge."
+  ],
+  "id": "global-catalog",
+  "inverse": [
+    "Scoped U minus R models exclude noncatalog choices and invalid traversal/selection outputs.",
+    "Preimage models retain ambiguous texts, candidates, ignored fields and build-data uncertainty."
+  ],
+  "limitations": [
+    "Compiled seed catalog only; not the fully implemented durable global graph.",
+    "AST unmaterialized; generated OUT_DIR source and data dependencies are not bound by the lib.rs hash.",
+    "Optional expression/idiom tests may return early; prospective oracles unexecuted.",
+    "Twelve root models and four nested fragments with four models each are declarations, not proofs."
+  ],
+  "source": "global/src/lib.rs",
+  "state": "Fixed compiled tables, first hot snapshot, lazy expression/register indexes and typed query inputs."
+}

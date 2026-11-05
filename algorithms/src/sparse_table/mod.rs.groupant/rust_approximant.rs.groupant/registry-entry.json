@@ -1,0 +1,11 @@
+{
+  "id": "algorithm-sparse-table-rust-approximant",
+  "source": "algorithms/src/sparse_table/mod.rs.groupant/rust_approximant.rs",
+  "description": "Numerical range minimum from a certified global interval or exact sparse table fallback.",
+  "state": "Finite u64 slices, four ErrorBudget caps, immutable compact or exact state; half-open usize ranges.",
+  "forward": ["Option shape exact; numerical lower estimate within scalar relative cap; zero exact."],
+  "inverse": ["Ordered behavior_complement and reverse_reconstruction models in adjacent model.md; nonunique antecedents."],
+  "cost": "Compact build O(n), storage O(1), query O(1); fallback adds scan to original O(n log(n+1)) construction and storage.",
+  "checks": ["Four focused Rust tests twice; exhaustive small slice/range oracle; compiled relaxed-certificate mutant rejected."],
+  "limitations": ["Value only, no reference/index/in-range witness or leftmost tie guarantee.", "Finite runtime evidence; no formal proof, global composition bound or universal speedup."]
+}

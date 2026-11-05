@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "wave31::bounded_helpers"
+  ],
+  "children": [],
+  "cost": "per_op O(n*closure cost), main allocation O(N*1024+64MiB), repeated shared-buffer edits copy64MiB; main intentionally not executed.",
+  "description": "Timing helpers and unexecuted snapshot workload.",
+  "forward": [
+    "per_op(n,f) invokes f exactly n times then divides elapsed seconds by n; fmt chooses ns if s<1e-6, microseconds if s<1e-3 else ms. Main scales1000/10000/100000 files plus64MiB and compares snapshot,restore,write,dump timings."
+  ],
+  "id": "vfs-snapbench",
+  "inverse": [
+    "Formatted rounded duration admits intervals and cannot reconstruct raw clock or workload timing distribution. Per-op mean admits many individual duration sequences."
+  ],
+  "limitations": [
+    "Finite checks only; partial source syntax, no expanded semantic AST.",
+    "No numerical surrogate: categorical/effect semantics lack useful metric; future caps 1/2/5/10 require domain and reference."
+  ],
+  "source": "vfs/examples/snapbench.rs",
+  "state": "For n>0 bounded helper elapsed is finite nonnegative; timing is nondeterministic. fmt boundaries use strict less-than. n0 remains undefined useful average (infinite/NaN possible)."
+}

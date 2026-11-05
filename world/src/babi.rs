@@ -188,6 +188,33 @@ fn pronoun(l: &str) -> bool {
 }
 
 impl Story {
+    /// The world as lines, in key order: where each person is, what each holds, where each thing has been.
+    pub fn state_lines(&self) -> Vec<String> {
+        let mut out = Vec::new();
+        for (who, p) in &self.pos {
+            out.push(match p {
+                Pos::At(x) => format!("{who} is in the {x}"),
+                Pos::Not(x) => format!("{who} is not in the {x}"),
+                Pos::Either(xs) => format!("{who} is in one of: {}", xs.join(", ")),
+            });
+        }
+        for (who, things) in &self.carry {
+            if !things.is_empty() {
+                out.push(format!("{who} carries {}", things.join(", ")));
+            }
+        }
+        for (thing, who) in &self.holder {
+            out.push(format!("{thing} is held by {who}"));
+        }
+        for (thing, places) in &self.ohist {
+            out.push(format!("{thing} has been in: {}", places.join(" → ")));
+        }
+        for (a, r, b) in &self.rels {
+            out.push(format!("{a} {r} {b}"));
+        }
+        out
+    }
+
     fn subjects(&mut self, s: &S, v: usize) -> Vec<String> {
         let time = |k: usize| global::relation(&s.lem(k), "order").is_some();
         let n = s.kids[v].iter().copied().find(|&k| matches!(s.w[k].rel, Rel::Nsubj | Rel::NsubjPass) && s.is_nominal(k) && !time(k)).or_else(|| {
@@ -1057,10 +1084,18 @@ pub fn split_sentences(t: &str) -> Vec<String> {
     out
 }
 
+/// `world babi-probe [--world] <sentence>… <question>…`: each line read or asked; with `--world`, the story's world
+/// (where each person is, who holds what, where each thing has been) before every question.
 pub fn probe(lines: &[String]) -> Result<()> {
+    let show = lines.iter().any(|l| l == "--world");
     let mut st = Story::default();
-    for l in lines {
+    for l in lines.iter().filter(|l| *l != "--world") {
         if l.contains('?') {
+            if show {
+                for s in st.state_lines() {
+                    println!("  {s}");
+                }
+            }
             println!("? {l} → {:?}", st.ask(l)?);
         } else {
             println!("{l} → {:?}", st.read(l)?);
@@ -1176,4 +1211,51 @@ pub fn eval_dir(dir: &Path, which: &str, show: usize) -> Result<()> {
     }
     println!("total {tok}/{tn} ({:.1}%), solved (≥95%) {solved}/{}", 100.0 * tok as f64 / tn.max(1) as f64, files.len());
     Ok(())
+}
+
+#[cfg(test)]
+mod wave29_tests {
+    use super::*;
+
+    #[test]
+    fn identity_and_inventory_without_parser() {
+        let mut s = Story::default();
+        assert!(s.state_lines().is_empty());
+        assert_eq!(s.ask("Who are you?").unwrap().0, "?");
+        assert!(s.set_me("NORA"));
+        assert!(s.set_me("nora"));
+        assert!(!s.set_me("other"));
+        assert_eq!(s.ask("Who are you?").unwrap().0, "nora");
+        s.move_to("nora", "hall", 2);
+        s.take("nora", "pear");
+        s.take("nora", "pear");
+        assert_eq!(s.carry["nora"], ["pear"]);
+        s.move_to("nora", "hall", 3);
+        assert_eq!(s.ohist["pear"], ["hall"]);
+        s.move_to("nora", "garden", 4);
+        s.take("other", "pear");
+        assert!(s.carry["nora"].is_empty());
+        s.drop_("nora", "pear");
+        assert_eq!(s.holder["pear"], "other");
+        s.drop_("other", "pear");
+        assert!(!s.holder.contains_key("pear"));
+        assert_eq!(s.ohist["pear"], ["hall", "garden"]);
+    }
+
+    #[test]
+    fn graph_and_sentence_boundaries_without_parser() {
+        let mut s = Story::default();
+        assert_eq!(s.offset("a", "a"), Some((0, 0)));
+        assert_eq!(s.offset("a", "b"), None);
+        assert_eq!(s.path("a", "a"), Some(vec![]));
+        s.rels.push(("a".into(), "north_of".into(), "b".into()));
+        s.rels.push(("b".into(), "east_of".into(), "c".into()));
+        assert_eq!(s.offset("a", "c"), Some((1, 1)));
+        assert_eq!(s.path("c", "a"), Some(vec!["e", "n"]));
+        assert_eq!(s.holds("a", "north_of", "c"), Some(true));
+        assert_eq!(s.holds("a", "south_of", "c"), Some(false));
+        assert!(split_sentences("  ").is_empty());
+        assert_eq!(split_sentences("A. B! c? D"), ["A.", "B! c?", "D"]);
+        assert_eq!(split_sentences("A.  B."), ["A.  B."]);
+    }
 }

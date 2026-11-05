@@ -1,0 +1,215 @@
+{
+  "children": [
+    "algorithm-myers-bitvector",
+    "algorithm-myers-bitvector-tests",
+    "algorithm-byte-pair-encoding",
+    "algorithm-byte-pair-encoding-tests",
+    "algorithm-lz77",
+    "algorithm-lz77-tests",
+    "algorithm-lzw",
+    "algorithm-lzw-tests",
+    "algorithm-patience-diff",
+    "algorithm-patience-diff-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "All inputs are bytes, not Unicode scalar sequences or lines. Allocation may panic/abort except Myers allocation-free path. Decode admits valid noncanonical streams, so decode/encode is not a universal stream identity. Output caps and model/config identity must be propagated through every join. No callbacks or executable percentage profiles.",
+        "domain": "Myers pattern<=64,text<=65536, pattern cap checked first. Codec byte/token/code counts<=65536 and decoded output<=min(caller cap,65536). BPE merges<=3840, IDs0..255 bytes and256+i merge i. LZ77 window/max_match1..4096, emits matches>=3 but decoder accepts any valid positive length. Patience diff each input<=4096, apply source<=4096, edits<=8192.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "sequence-transforms-behavior-complement",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Exclude a Myers value different from global unit-cost Levenshtein distance; canonical codec round trips changing bytes; invalid token/code/match accepted; decoded output exceeding cap; or a patch that does not fully consume matching source bytes. Exclude model-free BPE decoding, interpreting u16 IDs as bytes by truncation, and claiming patience edit count equals Levenshtein distance.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "All inputs are bytes, not Unicode scalar sequences or lines. Allocation may panic/abort except Myers allocation-free path. Decode admits valid noncanonical streams, so decode/encode is not a universal stream identity. Output caps and model/config identity must be propagated through every join. No callbacks or executable percentage profiles.",
+        "domain": "Myers pattern<=64,text<=65536, pattern cap checked first. Codec byte/token/code counts<=65536 and decoded output<=min(caller cap,65536). BPE merges<=3840, IDs0..255 bytes and256+i merge i. LZ77 window/max_match1..4096, emits matches>=3 but decoder accepts any valid positive length. Patience diff each input<=4096, apply source<=4096, edits<=8192.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "sequence-transforms-reverse-reconstruction",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Distance0 admits every equal byte pair and does not recover inputs. BPE literals[97,98] and merged[256] both decode ab under a model whose first merge is(97,98). LZ77 aaaa admits four literals or literal(a),match(1,3); LZW AAA admits[65,65,65] or[65,256]. A full patch's Equal/Delete projection recovers source and Equal/Insert projection recovers target, but target alone admits many sources/scripts.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "All inputs are bytes, not Unicode scalar sequences or lines. Allocation may panic/abort except Myers allocation-free path. Decode admits valid noncanonical streams, so decode/encode is not a universal stream identity. Output caps and model/config identity must be propagated through every join. No callbacks or executable percentage profiles.",
+        "domain": "Myers pattern<=64,text<=65536, pattern cap checked first. Codec byte/token/code counts<=65536 and decoded output<=min(caller cap,65536). BPE merges<=3840, IDs0..255 bytes and256+i merge i. LZ77 window/max_match1..4096, emits matches>=3 but decoder accepts any valid positive length. Patience diff each input<=4096, apply source<=4096, edits<=8192.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "sequence-transforms-model-identity",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "BPE decode(encode_M(x),M)=x on the model/input/output domain. Ordered merges define token meanings; using a different learned model may produce different bytes without an authentication error. When composing with a byte codec, first expand tokens or serialize u16 losslessly with explicit format and length limits.",
+        "path": "model.md",
+        "section": "model-identity",
+        "status": "partial_source_model",
+        "type": "token_dictionary_transport"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "All inputs are bytes, not Unicode scalar sequences or lines. Allocation may panic/abort except Myers allocation-free path. Decode admits valid noncanonical streams, so decode/encode is not a universal stream identity. Output caps and model/config identity must be propagated through every join. No callbacks or executable percentage profiles.",
+        "domain": "Myers pattern<=64,text<=65536, pattern cap checked first. Codec byte/token/code counts<=65536 and decoded output<=min(caller cap,65536). BPE merges<=3840, IDs0..255 bytes and256+i merge i. LZ77 window/max_match1..4096, emits matches>=3 but decoder accepts any valid positive length. Patience diff each input<=4096, apply source<=4096, edits<=8192.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "sequence-transforms-canonicalization",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For valid LZ77/LZW/BPE streams, encode(decode(stream)) may choose a different canonical stream. Only decoded-byte equality is preserved absent canonicality assumptions. LZ77 configuration and BPE model additionally influence canonical encoding; stream length alone carries no compression-quality guarantee.",
+        "path": "model.md",
+        "section": "canonicalization",
+        "status": "partial_source_model",
+        "type": "noninjective_stream_relation"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "All inputs are bytes, not Unicode scalar sequences or lines. Allocation may panic/abort except Myers allocation-free path. Decode admits valid noncanonical streams, so decode/encode is not a universal stream identity. Output caps and model/config identity must be propagated through every join. No callbacks or executable percentage profiles.",
+        "domain": "Myers pattern<=64,text<=65536, pattern cap checked first. Codec byte/token/code counts<=65536 and decoded output<=min(caller cap,65536). BPE merges<=3840, IDs0..255 bytes and256+i merge i. LZ77 window/max_match1..4096, emits matches>=3 but decoder accepts any valid positive length. Patience diff each input<=4096, apply source<=4096, edits<=8192.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "sequence-transforms-lz77-overlap",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "LZ77 distance d references already emitted bytes one at a time, permitting length>d and self-repetition. Copying a fixed pre-match slice instead of evolving output changes semantics. Encoder ties prefer smallest distance; decoder accepts valid positive lengths below3 although encoder emits only matches>=3.",
+        "path": "model.md",
+        "section": "lz77-overlap",
+        "status": "partial_source_model",
+        "type": "sequential_copy_relation"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "All inputs are bytes, not Unicode scalar sequences or lines. Allocation may panic/abort except Myers allocation-free path. Decode admits valid noncanonical streams, so decode/encode is not a universal stream identity. Output caps and model/config identity must be propagated through every join. No callbacks or executable percentage profiles.",
+        "domain": "Myers pattern<=64,text<=65536, pattern cap checked first. Codec byte/token/code counts<=65536 and decoded output<=min(caller cap,65536). BPE merges<=3840, IDs0..255 bytes and256+i merge i. LZ77 window/max_match1..4096, emits matches>=3 but decoder accepts any valid positive length. Patience diff each input<=4096, apply source<=4096, edits<=8192.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "sequence-transforms-lzw-dictionary",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Encoder and decoder begin with byte codes0..255, append previous phrase plus first byte of current phrase, and freeze at4096. Decoder's code==next_index case is previous+first(previous) only when prior phrase exists and dictionary not full. Adding clear codes or bit-packing is outside this API and cannot be inferred from a12-bit dictionary.",
+        "path": "model.md",
+        "section": "lzw-dictionary",
+        "status": "partial_source_model",
+        "type": "synchronized_dictionary_relation"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "All inputs are bytes, not Unicode scalar sequences or lines. Allocation may panic/abort except Myers allocation-free path. Decode admits valid noncanonical streams, so decode/encode is not a universal stream identity. Output caps and model/config identity must be propagated through every join. No callbacks or executable percentage profiles.",
+        "domain": "Myers pattern<=64,text<=65536, pattern cap checked first. Codec byte/token/code counts<=65536 and decoded output<=min(caller cap,65536). BPE merges<=3840, IDs0..255 bytes and256+i merge i. LZ77 window/max_match1..4096, emits matches>=3 but decoder accepts any valid positive length. Patience diff each input<=4096, apply source<=4096, edits<=8192.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "sequence-transforms-patch-distance-rejection",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Patience uses prefix/suffix stripping, unique-byte anchors and deterministic LIS ties, with delete/insert fallback. Applying diff(old,new) must recover new. Its insertion/deletion count is a valid edit-script upper bound for unit-cost Levenshtein, not generally the minimum; substitutions cost1 in Myers but require delete+insert in this patch vocabulary.",
+        "path": "model.md",
+        "section": "patch-distance-rejection",
+        "status": "partial_source_model",
+        "type": "validity_without_optimality"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "All inputs are bytes, not Unicode scalar sequences or lines. Allocation may panic/abort except Myers allocation-free path. Decode admits valid noncanonical streams, so decode/encode is not a universal stream identity. Output caps and model/config identity must be propagated through every join. No callbacks or executable percentage profiles.",
+        "domain": "Myers pattern<=64,text<=65536, pattern cap checked first. Codec byte/token/code counts<=65536 and decoded output<=min(caller cap,65536). BPE merges<=3840, IDs0..255 bytes and256+i merge i. LZ77 window/max_match1..4096, emits matches>=3 but decoder accepts any valid positive length. Patience diff each input<=4096, apply source<=4096, edits<=8192.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "sequence-transforms-resource-domain-join",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "A successful producer does not guarantee consumer admission: Myers requires one side<=64, patience diff<=4096, while codecs allow65536. BPE u16 serialization can double length and exceed byte-codec cap. Validate each transformed length and preserve first malformed-stream versus output-limit precedence; resource rejection is not an approximate answer.",
+        "path": "model.md",
+        "section": "resource-domain-join",
+        "status": "partial_source_model",
+        "type": "bounded_composition"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "All inputs are bytes, not Unicode scalar sequences or lines. Allocation may panic/abort except Myers allocation-free path. Decode admits valid noncanonical streams, so decode/encode is not a universal stream identity. Output caps and model/config identity must be propagated through every join. No callbacks or executable percentage profiles.",
+        "domain": "Myers pattern<=64,text<=65536, pattern cap checked first. Codec byte/token/code counts<=65536 and decoded output<=min(caller cap,65536). BPE merges<=3840, IDs0..255 bytes and256+i merge i. LZ77 window/max_match1..4096, emits matches>=3 but decoder accepts any valid positive length. Patience diff each input<=4096, apply source<=4096, edits<=8192.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "sequence-transforms-byte-coordinate-law",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Myers bit positions represent pattern bytes; repeated equal bytes set multiple positions and wrapping addition is the algorithm's bit recurrence. Unicode text must first choose an explicit byte encoding. Byte-level patches/tokenization do not preserve character boundaries or line-level patience semantics without an external adapter.",
+        "path": "model.md",
+        "section": "byte-coordinate-law",
+        "status": "partial_source_model",
+        "type": "alphabet_semantics"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks (wave25-evidence)",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "sequence-transforms",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/byte_pair_encoding/mod.rs",
+      "sha256": "8a3fbffc457141a9ef553718fee25e893b8230fe066dcaa65438fbb5ba72a79a"
+    },
+    {
+      "path": "algorithms/src/byte_pair_encoding/tests.rs",
+      "sha256": "16f1d5c834f4373c95f6452cbe8163bd91961cb7f153242f74b06df9670d8ab4"
+    },
+    {
+      "path": "algorithms/src/lz77/mod.rs",
+      "sha256": "bba74b9a13189336b263abaa1410c8e7b6156152762991bdca8b91f350771d47"
+    },
+    {
+      "path": "algorithms/src/lz77/tests.rs",
+      "sha256": "be090611a2b20df1ec12ca7f5ba7eaf548d73d3bb0e26f4d7211bdebedc5473f"
+    },
+    {
+      "path": "algorithms/src/lzw/mod.rs",
+      "sha256": "2d14773878ae841a2a2aad58b826241bea0ad07d2281bd3658cbfeabbd7660ec"
+    },
+    {
+      "path": "algorithms/src/lzw/tests.rs",
+      "sha256": "815b5a73abf3bc6b247398f592816b417cff81cb24efbca070a84944ce0fc6e9"
+    },
+    {
+      "path": "algorithms/src/myers_bitvector/mod.rs",
+      "sha256": "87e0f9b83fd865e10488d4785ecb6f2312ea191abc38e864b3d87f2c71987617"
+    },
+    {
+      "path": "algorithms/src/myers_bitvector/tests.rs",
+      "sha256": "2e0860c0dd5f7698d1c1253317fa123e0ce14169c290aae5f0cea66e03555c84"
+    },
+    {
+      "path": "algorithms/src/patience_diff/mod.rs",
+      "sha256": "75dca6290c8e80dad97e6be19e391660090f527f8530477ea9b1848cc5560c6b"
+    },
+    {
+      "path": "algorithms/src/patience_diff/tests.rs",
+      "sha256": "b35a56c91f2d1aeea896c3c3ffe7a70a5114099bd667a8dbae98452434b29c93"
+    }
+  ],
+  "status": "partial_source_bound_group"
+}

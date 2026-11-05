@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms viterbi::tests",
+    "Repeated debug/release, paired syntax, compiled mutant and restored rerun"
+  ],
+  "children": [],
+  "cost": "O((T+1)*n*n) total work including validation. For T>0, O(T*n+n) auxiliary storage with standard allocation. For T=0, validation still scans the transition matrix in O(n*n) time, then returns with O(1) auxiliary space.",
+  "description": "n1..64,T0..4096; finite initial, transition and time-major emission entries in[0,1]. Shape validation precedes value validation, then each computed initial/transition row sum s must satisfy abs(s-1)<=1e-10. These checks do not renormalize the accepted input weights. log score(t,j)=log emission(t,j)+max_i(score(t-1,i)+log transition(i,j)) uses the original weights; store predecessor. Empty sequence returns empty path/log0 after validation; impossible returns None.",
+  "forward": [
+    "n1..64,T0..4096; finite initial, transition and time-major emission entries in[0,1]. Shape validation precedes value validation, then each computed initial/transition row sum s must satisfy abs(s-1)<=1e-10. These checks do not renormalize the accepted input weights. log score(t,j)=log emission(t,j)+max_i(score(t-1,i)+log transition(i,j)) uses the original weights; store predecessor. Empty sequence returns empty path/log0 after validation; impossible returns None."
+  ],
+  "id": "algorithm-viterbi",
+  "inverse": [
+    "A selected state path and log score admit infinitely many HMMs differing on unused edges, subject to the path remaining optimal. The path cannot recover initial probabilities or the full transition matrix."
+  ],
+  "limitations": [
+    "Partial syntax not semantic proof",
+    "Finite oracle coverage not universal numerical accuracy",
+    "No certified surrogate, timing or allocator fault injection"
+  ],
+  "source": "algorithms/src/viterbi/mod.rs",
+  "state": "Bounded validated numeric inputs, deterministic recurrence, explicit errors/status and standard allocation policy"
+}

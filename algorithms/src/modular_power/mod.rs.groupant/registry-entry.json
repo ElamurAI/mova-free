@@ -1,0 +1,22 @@
+{
+  "id": "algorithm-modular-power",
+  "source": "algorithms/src/modular_power/mod.rs",
+  "children": [],
+  "description": "modular_power std-only implementation",
+  "state": "All u64 triples paired with Result<u64,ZeroModulus> observations.",
+  "forward": [
+    "For m=0 return Err(ZeroModulus). Otherwise return Ok(r), 0<=r<m, r congruent to base^exponent modulo m. Exponent zero means identity including 0^0; m=1 always returns zero."
+  ],
+  "inverse": [
+    "U consists of all input triples paired with Err or Ok(u64). U minus R contains Ok when m=0, Err when m>0, and Ok(r) with m>0 but r>=m or wrong power congruence. Exact mathematical target, bounded-tested.",
+    "Err admits exactly m=0 triples. Ok(r) admits all triples with m>r and b^e congruent to r mod m. Different bases/exponents/moduli retain ambiguity; e=0 restricts r=1%m and m=1 permits all b,e with r=0."
+  ],
+  "cost": "At most 64 bit iterations, O(1+log(exponent+1)) modular operations and O(1) space. Zero modulus exits before remainder. No timing claim.",
+  "checks": [
+    "cargo test -p mova-algorithms --offline modular_power::tests::",
+    "External compiled mutant rejected by exact single-test filter"
+  ],
+  "limitations": [
+    "Partial syntax omits expanded macros and semantic analysis; finite tests do not prove all inputs."
+  ]
+}

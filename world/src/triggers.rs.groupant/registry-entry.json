@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p world --lib bounded_models (debug/release twice)",
+    "mova-modelcheck syntax twice; groupants source/type checks; compiled source mutation controls"
+  ],
+  "children": [],
+  "cost": "Tokenization O(text bytes); quantity lookup O(words * units); recall O(EVENTS * words * hooks + lived scan); expectations O(events + sum group gap-sort costs); log reads O(file bytes), overlap O(manual bytes + candidates log candidates).",
+  "description": "Constants establish Trigger/TIME_UNITS/FREQ_UNITS/EVENTS. Event APIs append/read and summarize logs. Number/word/quantity helpers feed show_duration and fire_at. fire_at emits duration, cycles, clock, calendar, then recall in fixed order. fire samples dependencies; explain uses graph/fallback ranking; main_args prints. Existing tests and new bounded native tests are explicit evidence regions.",
+  "forward": [
+    "Constants establish Trigger/TIME_UNITS/FREQ_UNITS/EVENTS. Event APIs append/read and summarize logs. Number/word/quantity helpers feed show_duration and fire_at. fire_at emits duration, cycles, clock, calendar, then recall in fixed order. fire samples dependencies; explain uses graph/fallback ranking; main_args prints. Existing tests and new bounded native tests are explicit evidence regions."
+  ],
+  "id": "world-triggers",
+  "inverse": [
+    "For admitted finite pure inputs exclude GHz as an alias for gigahertz, century 1900 reported leap, absent event histories fabricated as recall, and expectation successors message/task. No claim about arbitrary nonfinite values or overflow.",
+    "Given fired messages retain all (text,now,tz,lived) tuples with matching ordered trigger observations. Text case and punctuation, unused events and multiple same-total quantity decompositions are ambiguous; formatted rounding creates additional fibers."
+  ],
+  "limitations": [
+    "Finite observations only; no semantic AST or global proof.",
+    "Opaque dependencies and I/O gaps listed in adjacent descriptant; no live-state tests."
+  ],
+  "source": "world/src/triggers.rs",
+  "state": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only."
+}

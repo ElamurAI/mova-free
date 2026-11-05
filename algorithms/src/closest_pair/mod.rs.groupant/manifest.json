@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "id": "algorithm-closest-pair",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "7e613c33946bd011ac1d584d74d28623aa87895f1e2edc428019155d306656ef"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "7e613c33946bd011ac1d584d74d28623aa87895f1e2edc428019155d306656ef",
+        "domain": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+        "operator": "Exclude None with n>=2, Some with n<2, indices outside 0<=i<j<n, incorrect squared separation, existence of a closer pair or a lexicographically smaller tied pair, and input mutation.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "One public call, with explicitly identified internal chain or strip states.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "preimages",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "7e613c33946bd011ac1d584d74d28623aa87895f1e2edc428019155d306656ef",
+        "domain": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+        "operator": "For result (i,j,d), compatible inputs have length >j, separation d at (i,j), and every pair key (distance,(a,b)) >= (d,(i,j)). None admits exactly sequences of length zero or one. Translations, rotations and varying distant points yield ambiguous coordinates and lengths.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "One public call, with explicitly identified internal chain or strip states.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "isometry",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "isometry",
+        "status": "partial_source_derived",
+        "subject_revision": "7e613c33946bd011ac1d584d74d28623aa87895f1e2edc428019155d306656ef",
+        "domain": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+        "operator": "Translation and signed coordinate permutations preserving i32 bounds preserve every distance and therefore selected original indices. Input permutations preserve minimum distance but can change index ties.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "One public call, with explicitly identified internal chain or strip states.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "scaling",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "scaling",
+        "status": "partial_source_derived",
+        "subject_revision": "7e613c33946bd011ac1d584d74d28623aa87895f1e2edc428019155d306656ef",
+        "domain": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+        "operator": "Positive integral scaling k with representable images multiplies squared distance by k² and preserves indices; k=0 collapses all points and need not preserve indices.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "One public call, with explicitly identified internal chain or strip states.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "duplicate",
+        "type": "duplicate_fiber",
+        "path": "model.md",
+        "section": "duplicate",
+        "status": "partial_source_derived",
+        "subject_revision": "7e613c33946bd011ac1d584d74d28623aa87895f1e2edc428019155d306656ef",
+        "domain": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+        "operator": "Zero distance iff equal coordinates. Sorted (point,index) runs start with the smallest two indices of each run. Minimum over adjacent equal-point pairs selects the globally least pair. All-equal input returns (0,1,0) without recursion.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "One public call, with explicitly identified internal chain or strip states.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "split",
+        "type": "decomposition_relation",
+        "path": "model.md",
+        "section": "split",
+        "status": "partial_source_derived",
+        "subject_revision": "7e613c33946bd011ac1d584d74d28623aa87895f1e2edc428019155d306656ef",
+        "domain": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+        "operator": "For x-sorted unique inputs, the global minimum is the minimum of two half minima and cross pairs. Cross pairs no farther than current best have both x distances to split_x <=sqrt(best); inclusive strip and y boundaries retain all distance/index ties.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "One public call, with explicitly identified internal chain or strip states.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "packing",
+        "type": "cost_bound",
+        "path": "model.md",
+        "section": "packing",
+        "status": "partial_source_derived",
+        "subject_revision": "7e613c33946bd011ac1d584d74d28623aa87895f1e2edc428019155d306656ef",
+        "domain": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+        "operator": "Duplicates return early, so recursive best distance is positive. At initial delta²=best, each half has internal separation >=delta. A strip of width 2delta and height delta partitions in each half into constant many cells of diameter <delta; hence constant many candidates per point, even with boundary ties. Re-sorting strips gives T(n)=2T(n/2)+O(n log n), O(n log²n); sequential recursion peaks at O(n) vectors.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "One public call, with explicitly identified internal chain or strip states.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "arithmetic",
+        "type": "range_bound",
+        "path": "model.md",
+        "section": "arithmetic",
+        "status": "partial_source_derived",
+        "subject_revision": "7e613c33946bd011ac1d584d74d28623aa87895f1e2edc428019155d306656ef",
+        "domain": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+        "operator": "Difference magnitude <=2^32-1; square <2^64; sum <=2(2^32-1)^2<2^65. Widen before subtraction/squaring, then convert nonnegative terms to u128. Original index enumeration preserves identity.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "One public call, with explicitly identified internal chain or strip states.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      }
+    ]
+  }
+}

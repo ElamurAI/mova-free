@@ -1,0 +1,95 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Explicit gap: no syntax projection or semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "scope": "U is fact plus accessor/label choice to observation pairs. R selects first field for get/text, all matching IDs for ids and prescribed label fields. U minus R contains text returning a later nonempty same-slot field when the first is empty, and label showing neg/end merely because flags are true.",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "scope": "A fixed label's preimage includes every Fact differing only in omitted fields (neg,end,by,line,sent,who and unrendered slots). Attr/Have/Part additionally constrain rendered first Value; other kinds do not. Formatting may introduce further ambiguity.",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "id-membership",
+        "path": "model.md",
+        "scope": "has_id(i) is true iff i occurs in who or any field.ids. src alone does not make it true; repeated occurrences do not change this Boolean even though ids returns duplicates.",
+        "section": "id-membership",
+        "status": "partial_source_derived_model",
+        "type": "membership_projection"
+      },
+      {
+        "id": "first-versus-all",
+        "path": "model.md",
+        "scope": "For repeated slot fields, get observes only the first while ids flattens all. Reordering fields can change text without changing ID multiset; therefore replacing ids by get.ids is not equivalent.",
+        "section": "first-versus-all",
+        "status": "partial_source_derived_model",
+        "type": "accessor_noncommutation"
+      },
+      {
+        "id": "first-predicate-versus-all-words",
+        "path": "model.md",
+        "scope": "Predicate matching reads the first Pred field only, whereas word matching takes maximum over every field, including later Pred fields. A later matching Pred can add 1.5 to a word group without setting pred. Similarly text returns None on an empty first field while ids still concatenates later field IDs. These projections cannot be substituted for one another.",
+        "section": "first-predicate-versus-all-words",
+        "status": "partial_source_derived_model",
+        "type": "projection_noncommutation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "coverage_recorded"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4908,
+      "start": 3807
+    },
+    "description": "Project fact fields through get/text/ids, test entity membership and format a human label with anchors and optional cause."
+  },
+  "id": "fact-index-evidence",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../index.rs",
+    "sha256": "c182d747ecc69b9e86a34ae5a49caa3841477c53719b2b8bb77b39e0ba4120d1"
+  },
+  "status": "partial_source_derived_instance",
+  "subject_revision": "sha256:c182d747ecc69b9e86a34ae5a49caa3841477c53719b2b8bb77b39e0ba4120d1"
+}

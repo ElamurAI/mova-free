@@ -228,6 +228,35 @@ pub fn ordinal_suffix(n: i64) -> &'static str {
     }
 }
 
+/// The first cardinal number of a text, as it is written (no typo correction: cheap enough for every entity a lesson
+/// mentions): «400 shekels» → 400, «fifty righteous people» → 50, «Twelve, for the twelve tribes» → 12, «twice» → 2.
+/// Ordinals («the seventh day») are no quantity.
+pub fn quantity(text: &str) -> Option<i64> {
+    let low: Vec<String> = tokens(text).into_iter().map(|t| t.0.to_lowercase()).collect();
+    let mut i = 0;
+    while i < low.len() {
+        match low[i].as_str() {
+            "once" => return Some(1),
+            "twice" => return Some(2),
+            "thrice" => return Some(3),
+            _ => {}
+        }
+        if let Some((v, ord)) = read_digits(&low[i]) {
+            if !ord {
+                return Some(v);
+            }
+        } else if let Some((v, ord, used)) = read_words(&low[i..]).filter(|r| !(r.2 == 1 && low[i] == "a")) {
+            if !ord {
+                return Some(v);
+            }
+            i += used;
+            continue;
+        }
+        i += 1;
+    }
+    None
+}
+
 /// A number found in a text.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Found {

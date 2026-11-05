@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "rules::tests::drop_reattaches_and_a_rule_that_fixes_gains"
+  ],
+  "children": [],
+  "cost": "Concept/Tag O(n+bytes), Drop O(n²) worst chain and O(n) memory; learn O(V*reader_cost + C*V*(reader_cost+n²)) plus sorting; C<=60 distinct admitted fold candidates.",
+  "description": "Rule Concept/Tag rewrites matching tokens, Drop removes concepts and reattaches through deleted ancestors. candidates inspect reader residual Take patches then source leftovers. learn uses opposite-fold support, max30 per fold, positive total gain ranking, then greedy positive steps among first top.",
+  "forward": [
+    "Rule Concept/Tag rewrites matching tokens, Drop removes concepts and reattaches through deleted ancestors. candidates inspect reader residual Take patches then source leftovers. learn uses opposite-fold support, max30 per fold, positive total gain ranking, then greedy positive steps among first top."
+  ],
+  "id": "translation-meta-rules",
+  "inverse": [
+    "Untouched Concept/Tag cannot alter heads/spans. Greedy never accepts nonpositive step; filtering happens after take(top), so may keep fewer than top despite later useful rules.",
+    "Concept/Tag preimages alias target values and matching source values; Drop loses removed tokens and ancestry paths. Found gain/support do not identify a unique corpus."
+  ],
+  "limitations": [
+    "No live corpus/model/teacher/GPU execution or language accuracy claim",
+    "Partial syntax and finite tests; full effectful paths unexecuted; no percentage surrogate"
+  ],
+  "source": "tools/translate/src/rules.rs",
+  "state": "Acyclic in-range dependency heads for Drop termination; fold0/1 intended; scalar reader gains finite. min_support/top arbitrary bounded usize; no full training run."
+}

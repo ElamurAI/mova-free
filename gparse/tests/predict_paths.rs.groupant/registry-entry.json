@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "synthetic_cpu_prediction_preserves_slots_and_fallback"
+  ],
+  "children": [],
+  "cost": "Small CPU encoder plus O(1³) decode and fixture setup; original experiment scales with external sentence limit.",
+  "description": "New synthetic CPU Net d=8/one layer predicts empty, singleton and max_len=4 fallback; ordinary and scored outputs must match, singleton root label forced, fallback original tuples and zero scores retained. Original ignored GPU experiment loads external model/corpus and repeats six alternating rounds; not run.",
+  "forward": [
+    "New synthetic CPU Net d=8/one layer predicts empty, singleton and max_len=4 fallback; ordinary and scored outputs must match, singleton root label forced, fallback original tuples and zero scores retained. Original ignored GPU experiment loads external model/corpus and repeats six alternating rounds; not run."
+  ],
+  "id": "gparse-test-predict-paths",
+  "inverse": [
+    "Passing selected assertions excludes their stated counterexamples within the fixtures. External saved-model/corpus experiment remains unexecuted; success of helper checks cannot establish it.",
+    "Fallback output admits input trees exactly copied at lengths>=max_len; short discrete predictions admit many parameter/logit states. Timing medians cannot reconstruct per-run values."
+  ],
+  "limitations": [
+    "Partial lexical syntax; no semantic proof",
+    "Finite synthetic checks only; external corpus/model experiments excluded",
+    "No executable Rust percent surrogate or throughput claim",
+    "Fault injection and exhaustive nonfinite/dimension cases absent"
+  ],
+  "source": "gparse/tests/predict_paths.rs",
+  "state": "Synthetic scores finite; empty and overlength zero, original order retained. Exact selected tuple equality is not trained-model corpus accuracy."
+}

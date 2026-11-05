@@ -248,3 +248,31 @@ mod tests {
         assert_eq!((b[4], b[5], b[6], b[7], b[8]), (Tag::DT as u8, Case::Title as u8, Rel::Det as u8, 1, 2));
     }
 }
+
+#[cfg(test)]
+mod wave27 {
+    use super::*;
+    #[test]
+    fn bounded_contract() {
+        let doc =
+            crate::conllu::Doc::parse("1\tcat\tcat\tNOUN\tNN\tNumber=Sing\t0\troot\t_\t_\n\n")
+                .unwrap();
+        let m = Model::train_with(vec![doc.sents[0].sent.clone(); 2], 1);
+        assert_eq!(m.decode(&m.encode("cat"), true), "cat");
+        let mut g = Graph::default();
+        let x = g.sym("zzwave27");
+        assert_eq!(x, g.sym("zzwave27"));
+        assert_eq!(g.local.len(), 1);
+        assert_eq!(article(Some("Apple")), "an");
+        assert_eq!(article(None), "a");
+        let n = GNode {
+            lemma: x,
+            tag: Tag::NN,
+            case: Case::Raw,
+            rel: Rel::Root,
+            head: 513,
+            space_after: false,
+        };
+        assert_eq!(&n.bytes()[8..], &[1, 2, 0, 0]);
+    }
+}

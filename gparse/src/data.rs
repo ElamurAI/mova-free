@@ -13,6 +13,9 @@ pub struct Word {
     pub xpos: String,
     pub head: usize,
     pub rel: String,
+    /// MISC as read; training reads the agreement vote from it (`Vote`, `VoteHead`, `VoteAlt`, see [`vote`]).
+    /// `write` does not carry it (the parser's output has no vote).
+    pub misc: String,
 }
 
 #[derive(Clone, Debug)]
@@ -70,7 +73,7 @@ pub fn read(src: &str) -> Vec<Sent> {
             if c.len() < 8 || c[0].contains('-') || c[0].contains('.') {
                 continue;
             }
-            cur.words.push(Word { form: c[1].into(), lemma: c[2].into(), feats: c[5].into(), upos: c[3].into(), xpos: c[4].into(), head: c[6].parse().unwrap_or(0), rel: c[7].into() });
+            cur.words.push(Word { form: c[1].into(), lemma: c[2].into(), feats: c[5].into(), upos: c[3].into(), xpos: c[4].into(), head: c[6].parse().unwrap_or(0), rel: c[7].into(), misc: c.get(9).map_or("_", |m| m).into() });
         }
     }
     out
@@ -176,6 +179,68 @@ pub fn feats(words: &Voc, w: &str) -> [u32; 4] {
     [words.get(&lw).unwrap_or(UNK), fnv(&pre, 1), fnv(&suf, 2), shape(w)]
 }
 
+/// The most character n-grams one word contributes (`GP_SUBWORD`); a longer word keeps its first ones, shorter n
+/// first («<in», «int», …, then 4-grams, …).
+pub const NGRAM_CAP: usize = 32;
+
+/// Default number of hashed n-gram buckets of a subword model (`GP_NGRAM_BUCKETS`).
+pub const NGRAM_BUCKETS: usize = 1 << 18;
+
+/// Hashed character n-grams of length 3–6 of the lowercased word with boundary marks («<word>»), fastText-style
+/// (Bojanowski et al. 2017, TACL 5, section 3.2: a word is the bag of its character n-grams, hashed with FNV-1a into
+/// K buckets). Bucket ids are 1..buckets; 0 is padding. At most [`NGRAM_CAP`] per word.
+pub fn ngrams(w: &str, buckets: usize) -> Vec<u32> {
+    let cs: Vec<char> = std::iter::once('<').chain(w.to_lowercase().chars()).chain(std::iter::once('>')).collect();
+    let mut out = Vec::new();
+    for n in 3..=6 {
+        for i in 0..(cs.len() + 1).saturating_sub(n) {
+            if out.len() == NGRAM_CAP {
+                return out;
+            }
+            let g: String = cs[i..i + n].iter().collect();
+            out.push(fnv_mod(&g, 3, buckets));
+        }
+    }
+    out
+}
+
+/// FNV-1a into 1..buckets (0 is reserved for padding).
+fn fnv_mod(s: &str, salt: u64, buckets: usize) -> u32 {
+    let mut h: u64 = 0xcbf29ce484222325 ^ salt;
+    for b in s.bytes() {
+        h ^= b as u64;
+        h = h.wrapping_mul(0x100000001b3);
+    }
+    (h % (buckets as u64 - 1)) as u32 + 1
+}
+
+/// The agreement vote over a word's (head, relation), as `cycle db-agree` keeps it in MISC: `Vote` — the share of the
+/// chosen (head, relation) pair, `VoteHead` — the share of the chosen head whatever the relation (defaults to
+/// `Vote`), `VoteAlt` — the other heads with their shares (`5:0.17,7:0.05`). A word with no `Vote` was not voted on
+/// (a gold or single-version tree) and is fully trusted.
+#[derive(Clone, Debug, Default, PartialEq)]
+pub struct Vote {
+    pub pair: f32,
+    pub head: f32,
+    pub alts: Vec<(usize, f32)>,
+}
+
+pub fn vote(misc: &str) -> Option<Vote> {
+    let (mut pair, mut head, mut alts) = (None, None, Vec::new());
+    for kv in misc.split('|') {
+        match kv.split_once('=') {
+            Some(("Vote", v)) => pair = v.parse::<f32>().ok(),
+            Some(("VoteHead", v)) => head = v.parse::<f32>().ok(),
+            Some(("VoteAlt", v)) => {
+                alts = v.split(',').filter_map(|a| a.split_once(':')).filter_map(|(h, s)| Some((h.parse().ok()?, s.parse().ok()?))).collect()
+            }
+            _ => {}
+        }
+    }
+    let pair = pair.filter(|p| p.is_finite())?.clamp(0., 1.);
+    Some(Vote { pair, head: head.filter(|h| h.is_finite()).map_or(pair, |h| h.clamp(0., 1.)), alts })
+}
+
 /// Model vocabularies, built from the training data.
 pub struct Vocs {
     pub words: Voc,
@@ -226,6 +291,14 @@ pub struct Batch {
     pub role_tok: Vec<u32>,
     /// (B*T*T) the role linking dependent i to predicate j (0 — none)
     pub role_arc: Vec<u32>,
+    /// n-gram buckets per position, `g` of them (B*T*g, 0 — padding); `g` is 0 for a model without subword input
+    pub ngrams: Vec<u32>,
+    pub g: usize,
+    /// per row (as `rows`): the vote share of the gold head and of the gold (head, relation); 1 when not voted
+    pub arc_conf: Vec<f32>,
+    pub rel_conf: Vec<f32>,
+    /// per row: the other heads the vote saw, with their shares (empty when not voted)
+    pub alts: Vec<Vec<(u32, f32)>>,
 }
 
 /// Deterministic xorshift for shuffles and word dropout.
@@ -249,9 +322,23 @@ pub fn batch(sents: &[&Sent], v: &Vocs, drop: f32, rng: &mut Rng) -> Batch {
 }
 
 pub fn batch_prag(sents: &[&Sent], v: &Vocs, drop: f32, prag_drop: f32, rng: &mut Rng) -> Batch {
+    batch_full(sents, v, drop, prag_drop, 0, rng)
+}
+
+/// A batch for a model with `ngram` hashed n-gram buckets (0 — no subword input), at inference.
+pub fn batch_for(sents: &[&Sent], v: &Vocs, ngram: usize, rng: &mut Rng) -> Batch {
+    batch_full(sents, v, 0., 0., ngram, rng)
+}
+
+/// Everything a batch can carry. `ngram` > 0 adds the character n-grams of every word ([`ngrams`]); word dropout
+/// hides the word id only, so a dropped word is still seen through its spelling. The random sequence does not depend
+/// on `ngram` or on the votes.
+pub fn batch_full(sents: &[&Sent], v: &Vocs, drop: f32, prag_drop: f32, ngram: usize, rng: &mut Rng) -> Batch {
     let b = sents.len();
     let t = 1 + sents.iter().map(|s| s.words.len()).max().unwrap_or(0);
-    let mut x = Batch { b, t, inp: vec![0; b * t * 4], mask: vec![0.; b * t], rows: vec![], heads: vec![], rels: vec![], xpos: vec![], upos: vec![], keys: vec![0.; b * t], role_tok: vec![0; b * t], role_arc: vec![0; b * t * t] };
+    let grams: Vec<Vec<Vec<u32>>> = if ngram > 0 { sents.iter().map(|s| s.words.iter().map(|w| ngrams(&w.form, ngram)).collect()).collect() } else { Vec::new() };
+    let g = grams.iter().flatten().map(Vec::len).max().unwrap_or(0).max((ngram > 0) as usize);
+    let mut x = Batch { b, t, inp: vec![0; b * t * 4], mask: vec![0.; b * t], rows: vec![], heads: vec![], rels: vec![], xpos: vec![], upos: vec![], keys: vec![0.; b * t], role_tok: vec![0; b * t], role_arc: vec![0; b * t * t], ngrams: vec![0; b * t * g], g, arc_conf: vec![], rel_conf: vec![], alts: vec![] };
     for (k, s) in sents.iter().enumerate() {
         let r0 = k * t;
         if !s.roles.is_empty() && !(prag_drop > 0. && rng.unit() < prag_drop) {
@@ -281,6 +368,21 @@ pub fn batch_prag(sents: &[&Sent], v: &Vocs, drop: f32, prag_drop: f32, rng: &mu
             x.rels.push(v.rels.get(&w.rel).unwrap_or(0));
             x.xpos.push(v.xpos.get(&w.xpos).unwrap_or(0));
             x.upos.push(v.upos.get(&w.upos).unwrap_or(0));
+            if let Some(gs) = grams.get(k).map(|s| &s[i]) {
+                x.ngrams[r * g..r * g + gs.len()].copy_from_slice(gs);
+            }
+            match vote(&w.misc) {
+                Some(vt) => {
+                    x.arc_conf.push(vt.head);
+                    x.rel_conf.push(vt.pair);
+                    x.alts.push(vt.alts.iter().filter(|a| a.0 <= s.words.len() && a.0 != w.head).map(|&(h, sh)| (h as u32, sh)).collect());
+                }
+                None => {
+                    x.arc_conf.push(1.);
+                    x.rel_conf.push(1.);
+                    x.alts.push(Vec::new());
+                }
+            }
         }
     }
     x
@@ -347,10 +449,73 @@ mod tests {
         let xp: Vec<&str> = b.xpos.iter().map(|&i| v.xpos.names[i as usize].as_str()).collect();
         assert_eq!(xp, vec!["DT", "NN", "VBZ", "DT", "NN"]);
     }
+
+    #[test]
+    fn ngrams_and_votes() {
+        // «<cat>»: 3-grams <ca cat at>, 4-grams <cat cat>, 5-gram <cat>; nothing longer
+        let g = ngrams("Cat", NGRAM_BUCKETS);
+        assert_eq!(g.len(), 6);
+        assert!(g.iter().all(|&b| b >= 1 && (b as usize) < NGRAM_BUCKETS));
+        assert_eq!(g, ngrams("cat", NGRAM_BUCKETS), "case is the shape's business");
+        assert_ne!(ngrams("cats", NGRAM_BUCKETS)[..3], ngrams("dogs", NGRAM_BUCKETS)[..3]);
+        assert_eq!(ngrams("cats", NGRAM_BUCKETS)[1], g[1], "shared n-grams share a bucket («cat»)");
+        assert_eq!(ngrams(&"x".repeat(40), NGRAM_BUCKETS).len(), NGRAM_CAP);
+        assert_eq!(ngrams("a", NGRAM_BUCKETS).len(), 1);
+        assert_eq!(vote("_"), None);
+        assert_eq!(vote("SpaceAfter=No|Vote=0.83|VoteHead=0.9|VoteAlt=5:0.1,0:0.07"), Some(Vote { pair: 0.83, head: 0.9, alts: vec![(5, 0.1), (0, 0.07)] }));
+        assert_eq!(vote("Vote=0.5").map(|v| v.head), Some(0.5));
+        assert_eq!(vote("Vote=nan"), None);
+        // the batch: a voted word carries its shares, an unvoted one is trusted, ngrams line up with positions
+        let src = "1\tThe\tthe\tDET\tDT\t_\t2\tdet\t_\tVote=0.6|VoteHead=0.8|VoteAlt=0:0.2,9:0.1\n2\tcat\tcat\tNOUN\tNN\t_\t0\troot\t_\t_\n\n";
+        let s = read(src);
+        let v = Vocs::build(&s, 1);
+        let plain = batch(&[&s[0]], &v, 0., &mut Rng(1));
+        assert_eq!((plain.g, plain.ngrams.len()), (0, 0));
+        assert_eq!((plain.arc_conf.clone(), plain.rel_conf.clone()), (vec![0.8, 1.], vec![0.6, 1.]));
+        assert_eq!(plain.alts, vec![vec![(0, 0.2)], vec![]], "an alternative outside the sentence is dropped");
+        let sub = batch_for(&[&s[0]], &v, 1 << 10, &mut Rng(1));
+        assert_eq!(sub.g, 6);
+        assert_eq!(&sub.ngrams[..6], &[0; 6], "the root has no spelling");
+        assert_eq!(&sub.ngrams[12..18], ngrams("cat", 1 << 10).as_slice());
+        assert_eq!(sub.inp, plain.inp, "n-grams do not change the other inputs");
+    }
+
+    /// L5 and F1 of `languages/en-x-emode/13-improvements.md`: a retagged word is lemmatized again for its new tag, and
+    /// an archaic pronoun takes its features from the EModE table, not from the most frequent PRP of the corpus («it»).
+    #[test]
+    fn retagged_words_are_filled_again() {
+        if en::dict::N_LEMMAS == 0 {
+            return;
+        }
+        let corpus = "1\tit\tit\tPRON\tPRP\tCase=Nom|Gender=Neut|Number=Sing|Person=3|PronType=Prs\t2\tnsubj\t_\t_\n2\truns\trun\tVERB\tVBZ\tMood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin\t0\troot\t_\t_\n3\tit\tit\tPRON\tPRP\tCase=Nom|Gender=Neut|Number=Sing|Person=3|PronType=Prs\t2\tobj\t_\t_\n\n";
+        let lex = Lex::learn(&read(corpus));
+        let s = ["He", "that", "giveth", "unto", "thee", "and", "thou", "saw", "it"];
+        // F1: «thou» retagged PRP gets the table's features, «thee» too, with the lemma «thou»
+        let (f, l) = lex.fill(&s, 6, "thou", "PRON", "PRP", "nsubj");
+        assert_eq!((f.as_str(), l.as_str()), ("Case=Nom|Number=Sing|Person=2|PronType=Prs|Style=Arch", "thou"));
+        assert_eq!(lex.fill(&s, 4, "thee", "PRON", "PRP", "obl").1, "thou");
+        // a word that keeps its tags: the table too (an old draft's «thou» with the features of «it»)
+        let (f, l) = Lex::table(&s, 6, "PRON", "PRP", "nsubj", "Case=Nom|Gender=Neut|Number=Sing|Person=3|PronType=Prs").unwrap();
+        assert_eq!((f.as_str(), l.as_str()), ("Case=Nom|Number=Sing|Person=2|PronType=Prs|Style=Arch", "thou"));
+        assert!(Lex::table(&s, 8, "PRON", "PRP", "obj", "_").is_none());
+        // the table only when its tag agrees: «thee» made a noun is no pronoun of the table
+        assert_eq!(lex.fill(&s, 4, "thee", "NOUN", "NN", "obl").1, "thee");
+        // L5: «giveth» from NOUN to VERB is «give»; a modern «saw» from NOUN to VBD is «see»
+        assert_eq!(lex.fill(&s, 2, "giveth", "VERB", "VBZ", "acl:relcl").1, "give");
+        assert_eq!(lex.fill(&s, 7, "saw", "VERB", "VBD", "root").1, "see");
+        // a verb keeps an informative old lemma when the new tag gives only the form back
+        assert_eq!(lex.fill(&["he", "smote", "him"], 1, "smite", "VERB", "VBP", "root").1, "smite");
+        assert_eq!(lex.fill(&["a", "saw"], 1, "see", "NOUN", "NN", "root").1, "saw");
+        // negative control: what the corpus knows comes from the corpus; a modern pronoun gets the corpus's features
+        let (f, l) = lex.fill(&s, 8, "it", "PRON", "PRP", "obj");
+        assert_eq!((f.as_str(), l.as_str()), ("Case=Nom|Gender=Neut|Number=Sing|Person=3|PronType=Prs", "it"));
+    }
 }
 
 /// LEMMA/FEATS for retagged words and the allowed relations, learned from a corpus (`GP_LEX`): the most frequent
-/// (FEATS, lemma) for (form, UPOS, XPOS), else FEATS for (UPOS, XPOS) with the old lemma. Ties go to the smaller.
+/// (FEATS, lemma) for (form, UPOS, XPOS), else FEATS for (UPOS, XPOS) with the word lemmatized again for its new tag
+/// (`en::morph`). Ties go to the smaller. The Early Modern English table (`en::emode`) comes first: its words take
+/// lemma and FEATS from it, never from the tag's most frequent FEATS («thou» would get those of «it»).
 #[derive(Default)]
 pub struct Lex {
     by_form: BTreeMap<(String, String, String), BTreeMap<(String, String), u32>>,
@@ -373,11 +538,34 @@ impl Lex {
         m.iter().max_by(|a, b| a.1.cmp(b.1).then(b.0.cmp(a.0))).map(|(k, _)| k.clone())
     }
 
-    pub fn fill(&self, form: &str, lemma: &str, upos: &str, xpos: &str) -> (String, String) {
+    /// F1: (FEATS, LEMMA) of word `i` from the EModE table (`en::emode`), when the table knows the word with these
+    /// tags; `feats` — the annotation's, for the entries that keep them. `annotate` asks it for every word, retagged or
+    /// not: a draft may carry the features of «it» on «thou».
+    pub fn table(forms: &[&str], i: usize, upos: &str, xpos: &str, rel: &str, feats: &str) -> Option<(String, String)> {
+        use en::gram::{Feats, Rel, Tag, UPos};
+        let (t, u, r) = (Tag::parse(xpos)?, UPos::parse(upos)?, Rel::parse(rel)?);
+        let (l, u2, f, _) = en::emode::fix(forms, i, t, u, r, Feats::parse(feats).0)?;
+        (u2 == u).then(|| (f.to_string(), l))
+    }
+
+    /// (FEATS, LEMMA) of word `i` of `forms`, retagged to `upos`/`xpos` with relation `rel`; `lemma` is the old one.
+    pub fn fill(&self, forms: &[&str], i: usize, lemma: &str, upos: &str, xpos: &str, rel: &str) -> (String, String) {
+        use en::gram::Tag;
+        let form = forms[i];
+        let by_tag = self.by_tag.get(&(upos.to_string(), xpos.to_string())).and_then(Self::top).unwrap_or_else(|| "_".into());
+        let tag = Tag::parse(xpos);
+        if let Some(x) = Self::table(forms, i, upos, xpos, rel, &by_tag) {
+            return x;
+        }
         if let Some(x) = self.by_form.get(&(form.to_lowercase(), upos.to_string(), xpos.to_string())).and_then(Self::top) {
             return x;
         }
-        (self.by_tag.get(&(upos.to_string(), xpos.to_string())).and_then(Self::top).unwrap_or_else(|| "_".into()), lemma.to_string())
+        // L5: the lemma for the new tag («giveth» NOUN → VERB: give, not giveth); a verb whose new lemma would only
+        // repeat its form keeps the old one («smote» VBD → VBP stays smite)
+        let new = tag.map_or_else(|| lemma.to_string(), |t| en::morph::Morph.lemmatize(form, t));
+        let verb = matches!(upos, "VERB" | "AUX");
+        let lemma = if verb && new.to_lowercase() == form.to_lowercase() && lemma.to_lowercase() != form.to_lowercase() { lemma.to_string() } else { new };
+        (by_tag, lemma)
     }
 
     /// A relation the corpus knows: as is, else its universal part, else `dep`.
@@ -387,5 +575,73 @@ impl Lex {
         }
         let base = r.split(':').next().unwrap_or(r);
         if self.rels.contains(base) { base.to_string() } else { "dep".to_string() }
+    }
+}
+
+/// Structural features for the same nonempty, in-range batches used by predict_inner.
+#[derive(Debug, Default, PartialEq, Eq)]
+pub struct InferenceCost {
+    pub sentences: usize,
+    pub words: usize,
+    pub skipped: usize,
+    pub batches: usize,
+    pub padded_tokens: u64,
+    pub attention_cells: u64,
+    pub decode_cubes: u64,
+}
+pub fn inference_cost(sents: &[Sent], tokens: usize, max_len: usize) -> InferenceCost {
+    let idx: Vec<usize> = (0..sents.len()).filter(|&i| !sents[i].words.is_empty() && sents[i].words.len() < max_len).collect();
+    let plans = plan_of(sents, &idx, tokens);
+    let mut c = InferenceCost {
+        sentences: idx.len(), words: idx.iter().map(|&i|sents[i].words.len()).sum(),
+        skipped: sents.len()-idx.len(), batches: plans.len(), ..Default::default()
+    };
+    for batch in plans {
+        let t = batch.iter().map(|&i|sents[i].words.len()+1).max().unwrap() as u64;
+        c.padded_tokens += batch.len() as u64*t;
+        c.attention_cells += batch.len() as u64*t*t;
+        c.decode_cubes += batch.iter().map(|&i|(sents[i].words.len() as u64+1).pow(3)).sum::<u64>();
+    }
+    c
+}
+#[cfg(test)]
+mod cost_tests {
+    use super::*;
+    #[test]
+    fn cost_counts_real_batch_shapes_and_filters_skipped_sentences() {
+        let src = "1\tA\t_\tNOUN\tNN\t_\t0\troot\t_\t_\n\n1\tA\t_\tNOUN\tNN\t_\t0\troot\t_\t_\n2\tB\t_\tNOUN\tNN\t_\t1\tdep\t_\t_\n\n";
+        let mut s = read(src);
+        s.push(Sent { comments: Vec::new(), words: Vec::new(), roles: Vec::new() });
+        let c = inference_cost(&s,6,256);
+        assert_eq!((c.sentences,c.words,c.skipped,c.batches,c.padded_tokens,c.attention_cells,c.decode_cubes),(2,3,1,1,6,18,35));
+        assert_eq!(inference_cost(&s,2,256).padded_tokens,5);
+        assert_eq!(inference_cost(&s,6,2).sentences,1);
+    }
+}
+
+#[cfg(test)]
+mod wave30 {
+    use super::*;
+    #[test]
+    fn projection_roles_and_zero_budget() {
+        let mut s = read("# sent_id = a\n1-2\tskip\t_\t_\t_\t_\t0\t_\n1\tX\tx\tNOUN\tNN\t_\tbad\troot\n2.1\tskip\t_\t_\t_\t_\t0\t_\n");
+        assert_eq!(s.len(), 1);
+        assert_eq!(s[0].words.len(), 1);
+        assert_eq!(s[0].words[0].head, 0);
+        assert_eq!(shape(""), 6);
+        assert_eq!(
+            attach_roles(
+                &mut s,
+                "id\tdep\tpred\trole\na\t1\t1\tagent\na\t0\t1\tpatient\na\t2\t1\tpatient\n"
+            ),
+            1
+        );
+        let v = Vocs::build(&s, 1);
+        let x = batch(&[&s[0]], &v, 0., &mut Rng(0));
+        assert_eq!(x.role_tok, vec![0, 9]);
+        assert_eq!(x.role_arc, vec![0, 0, 0, 1]);
+        assert_eq!(plan(&s, 0), vec![vec![0]]);
+        assert_eq!(Voc::load("").names, vec![""]);
+        assert_eq!(read(&write(&s))[0].words[0].form, "X");
     }
 }

@@ -1,0 +1,92 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "../model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "effect_boundary",
+        "path": "model.md",
+        "section": "effect_boundary",
+        "status": "partial_source_derived_model",
+        "type": "effect_boundary"
+      },
+      {
+        "id": "domain_restriction",
+        "path": "model.md",
+        "section": "domain_restriction",
+        "status": "partial_source_derived_model",
+        "type": "domain_restriction"
+      }
+    ],
+    "tests": {
+      "path": "../model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 25883,
+      "start": 0
+    },
+    "description": "Argument dispatch routes one command. train calls license gate before train_model. Guarded arities fall through to usage; expert-check directly indexes args[1]. split searches first global separator, so separator before from panics. No model-loading/training path was executed.",
+    "source_bytes_sha256": "1044d145220ec0ddeea054112b3f0a2868eb6f9510c9cb09c4205737184188d4"
+  },
+  "id": "en-main-dispatch",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../main.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "a843b9d343aa90e8c2a9d6efc1b25d4b67089a21f1012857e6cee43b13acf8fc"
+  },
+  "status": "partial_source_bound_model"
+}

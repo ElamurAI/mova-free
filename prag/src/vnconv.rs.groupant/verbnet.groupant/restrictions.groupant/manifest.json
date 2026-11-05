@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "prag-vnconv-verbnet-restrictions-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "prag-vnconv-verbnet-restrictions-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "prag-vnconv-verbnet-restrictions-specialization",
+        "path": "model.md",
+        "section": "specialization",
+        "status": "partial_source_model",
+        "type": "restriction_target"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 7817,
+      "start": 6664
+    },
+    "description": "Stack elements are (is_or,items). open pushes; item appends Value concatenated with type to top, or overwrites done if stack empty. close pops: an empty group contributes nothing; join with '|' for or else '&'; if nested and multiple items, parent receives parentheses; top-level completed groups combine with '&'. take clears stack and consumes done."
+  },
+  "id": "prag-vnconv-verbnet-restrictions",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../vnconv.rs",
+    "sha256": "b5e9e5a2a3fc9359403585f2a0b1ffacc4ecb71a563d252d1ea334a76695ae52"
+  },
+  "status": "partial_source_bound_model"
+}

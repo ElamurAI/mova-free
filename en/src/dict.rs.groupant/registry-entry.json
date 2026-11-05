@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p en --lib dict::wave27_tests",
+    "Repeated debug/release named outcomes and paired partial syntax"
+  ],
+  "children": [],
+  "cost": "Expected short probes, bound needs empty slot invariant; fingerprint O(blob) once; records O(r); paradigm allocates boxed iterator.",
+  "description": "Frozen blob offsets, probe tables, records and fingerprint cache",
+  "forward": [
+    "Probe str_key&mask then byte equality, zero entry terminates, linear wrap. Local/invalid Sym text empty, lower NONE, known false, paradigm empty. Records preserve blob order."
+  ],
+  "id": "en-dict",
+  "inverse": [
+    "Valid unique lemma text recovers Sym; analyses and paradigms have multiple tag/source antecedents; invalid Syms collapse to empty."
+  ],
+  "limitations": [
+    "No runtime disk reads; hash alone never matches; corrupted table can loop or panic.",
+    "No executable percent surrogate: no demonstrated useful metric preserving categorical/effect semantics; permitted future caps 1/2/5/10%, no production substitution.",
+    "Partial source-bound modeling, no corpus/API/GPU, allocation faults or exhaustive numerical checks."
+  ],
+  "source": "en/src/dict.rs",
+  "state": "Frozen blob offsets, probe tables, records and fingerprint cache"
+}

@@ -1,0 +1,123 @@
+{
+  "children": [
+    {
+      "id": "wasi-memory",
+      "path": "wasi-memory.groupant"
+    },
+    {
+      "id": "wasi-context",
+      "path": "wasi-context.groupant"
+    },
+    {
+      "id": "wasi-clock-poll",
+      "path": "wasi-clock-poll.groupant"
+    },
+    {
+      "id": "wasi-descriptors",
+      "path": "wasi-descriptors.groupant"
+    },
+    {
+      "id": "wasi-path-open",
+      "path": "wasi-path-open.groupant"
+    },
+    {
+      "id": "wasi-linker",
+      "path": "wasi-linker.groupant"
+    },
+    {
+      "id": "wasi-engine",
+      "path": "wasi-engine.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Source syntax only; no macro expansion/type resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "wasi-runtime",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "wasi-runtime",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "memory_transport",
+        "path": "model.md",
+        "scope": "wasi-runtime",
+        "section": "memory_transport",
+        "status": "partial_source_derived_model",
+        "type": "memory_transport"
+      },
+      {
+        "id": "failure_order",
+        "path": "model.md",
+        "scope": "wasi-runtime",
+        "section": "failure_order",
+        "status": "partial_source_derived_model",
+        "type": "failure_order"
+      },
+      {
+        "id": "capability_boundary",
+        "path": "model.md",
+        "scope": "wasi-runtime",
+        "section": "capability_boundary",
+        "status": "partial_source_derived_model",
+        "type": "capability_boundary"
+      },
+      {
+        "id": "engine_resource",
+        "path": "model.md",
+        "scope": "wasi-runtime",
+        "section": "engine_resource",
+        "status": "partial_source_derived_model",
+        "type": "engine_resource"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "wasi-runtime",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../lib.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "91213ce9038107912c2dd707c3a6639a2d723cdfceb02981a166a6853800248e"
+  },
+  "status": "partial_source_bound_model"
+}

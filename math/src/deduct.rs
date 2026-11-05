@@ -513,3 +513,45 @@ pub fn gold_steps(tree: &Tree, n: usize) -> Option<Vec<Step>> {
     out.push(Step::Stop);
     Some(out)
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn dag_gold_reuses_subtrees_and_canonicalizes() {
+        let a = Tree::Node(Op::Add, Box::new(Tree::Leaf(0)), Box::new(Tree::Leaf(1)));
+        let b = Tree::Node(Op::Add, Box::new(Tree::Leaf(1)), Box::new(Tree::Leaf(0)));
+        assert_eq!(tkey(&a), tkey(&b));
+        let root = Tree::Node(Op::Mul, Box::new(a.clone()), Box::new(a));
+        assert_eq!(
+            gold_steps(&root, 2),
+            Some(vec![
+                Step::Comb(0, 1, Op::Add),
+                Step::Comb(2, 2, Op::Mul),
+                Step::Stop
+            ])
+        );
+        assert!(gold_steps(&Tree::Leaf(0), 1).is_none());
+        let bad = Tree::Node(Op::Add, Box::new(Tree::Leaf(256)), Box::new(Tree::Leaf(0)));
+        assert!(gold_steps(&bad, 257).is_none());
+    }
+    #[test]
+    fn numeric_transition_boundary() {
+        let p = crate::steps::wave28::problem(&[8, 0, 3]);
+        let st = Model::start(&p);
+        assert!(Model::apply(&st, Step::Comb(0, 1, Op::Div)).is_none());
+        assert!(Model::apply(&st, Step::Comb(2, 0, Op::Sub)).is_none());
+        let ok = Model::apply(&st, Step::Comb(0, 2, Op::Sub)).unwrap();
+        assert_eq!(ok.pool.last().unwrap().val, 5.0);
+        assert_eq!(ok.pool.len(), 4);
+        assert!(
+            Model::cands(&st)
+                .iter()
+                .all(|s| !matches!(s, Step::Comb(i,j,_) if i==j))
+        );
+        assert!(Model::cands(&ok).contains(&Step::Stop));
+        let mut huge = st;
+        huge.pool[0].val = 1e12;
+        assert!(Model::apply(&huge, Step::Comb(0, 2, Op::Mul)).is_none());
+    }
+}

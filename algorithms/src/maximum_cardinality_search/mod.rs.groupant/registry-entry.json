@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms maximum_cardinality_search::tests::",
+    "Repeated standalone debug/release, strict Clippy, compiled mutant, paired syntax."
+  ],
+  "children": [],
+  "cost": "Simple undirected graph n<=256,m<=65536. Reject endpoints, loops, duplicates, asymmetry. Select unnumbered vertex with maximal number of selected neighbors, smallest vertex on ties. O(V^2+E) time and O(V^2) validation storage. Original implementation following Tarjan and Yannakakis (1984). No chordality certificate promised.",
+  "description": "maximum_cardinality_search mod exact graph contract",
+  "forward": [
+    "Simple undirected graph n<=256,m<=65536. Reject endpoints, loops, duplicates, asymmetry. Select unnumbered vertex with maximal number of selected neighbors, smallest vertex on ties. O(V^2+E) time and O(V^2) validation storage. Original implementation following Tarjan and Yannakakis (1984). No chordality certificate promised."
+  ],
+  "id": "algorithm-maximum-cardinality-search",
+  "inverse": [
+    "Let R be the deterministic relation specified by Forward including validation precedence and tie rules, X the declared input type and Y its Result type. Behavior complement is (X times Y) minus R. Specifically outputs violating After t selections weights count exactly neighbors in the t-prefix. Output is a permutation; selected vertices are never selected twice. are excluded; a valid-input Err or a wrong successful witness is excluded. Resource, cycle and structural rejections are determined before algorithmic output.",
+    "An order p admits every simple undirected graph for which at step t p[t] maximizes prefix-neighbor count with smallest-ID ties. Both empty and complete graphs yield ascending order; graph recovery is nonunique."
+  ],
+  "limitations": [
+    "Finite checks only; allocation failure untyped; partial syntax; no approximate executable profiles."
+  ],
+  "source": "algorithms/src/maximum_cardinality_search/mod.rs",
+  "state": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract."
+}

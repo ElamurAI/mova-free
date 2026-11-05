@@ -1,0 +1,24 @@
+{
+  "id": "algorithm-sparse-table-tests",
+  "source": "algorithms/src/sparse_table/tests.rs",
+  "description": "Direct reference checks and compiled negative control for sparse_table",
+  "state": "(compiled implementation, finite inputs/history, reference, verdict)",
+  "forward": [
+    "Compare sampled observations with an independent direct slice oracle."
+  ],
+  "inverse": [
+    "Complement and compatible-input preimages are defined separately in model.md.",
+    "Finite observations retain ambiguity outside their declared scope."
+  ],
+  "cost": "Bounded direct-reference oracle costs; see model.md.",
+  "checks": [
+    "sparse_table::tests (four tests twice)",
+    "rustfmt --check and Clippy -D warnings",
+    "Filtered compiled-source mutant rejected, exit 101"
+  ],
+  "limitations": [
+    "Bounded evidence is not all-input proof.",
+    "Allocation failure is outside the result model.",
+    "Partial AST omits macro expansion and semantic resolution."
+  ]
+}

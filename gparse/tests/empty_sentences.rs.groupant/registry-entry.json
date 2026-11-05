@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "decoder_accepts_no_words; GPU empty saved-model case excluded"
+  ],
+  "children": [],
+  "cost": "O(1) CPU check; ignored GPU path includes model loading and repeated inference.",
+  "description": "decoder_accepts_no_words calls actual decoder root-only and expects empty. The ignored GPU test loads GP_TEST_MODEL, compares mixed empty/nonempty parse_forms with standalone predictions and asserts empty scored outputs.",
+  "forward": [
+    "decoder_accepts_no_words calls actual decoder root-only and expects empty. The ignored GPU test loads GP_TEST_MODEL, compares mixed empty/nonempty parse_forms with standalone predictions and asserts empty scored outputs."
+  ],
+  "id": "gparse-test-empty-sentences",
+  "inverse": [
+    "Passing selected assertions excludes their stated counterexamples within the fixtures. External saved-model/corpus experiment remains unexecuted; success of helper checks cannot establish it.",
+    "Successful empty assertion is compatible with any one-row score input; GPU trees do not recover original weights or tokenization."
+  ],
+  "limitations": [
+    "Partial lexical syntax; no semantic proof",
+    "Finite synthetic checks only; external corpus/model experiments excluded",
+    "No executable Rust percent surrogate or throughput claim",
+    "Fault injection and exhaustive nonfinite/dimension cases absent"
+  ],
+  "source": "gparse/tests/empty_sentences.rs",
+  "state": "No words means no decoder heads. Saved-model CUDA branch checks outer position retention, but is unexecuted here."
+}

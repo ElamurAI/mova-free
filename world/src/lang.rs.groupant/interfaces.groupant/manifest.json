@@ -1,0 +1,125 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "Source bytes [0,11633): interfaces; the operation-specific contracts below define observation projections.",
+        "operator": "Role::At never admits C and Role::Instr never admits L. TRel::parse excludes lowercase before and any noncanonical name. Cmd::is_v3 excludes the nineteen legacy variants.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "Source bytes [0,11633): interfaces; the operation-specific contracts below define observation projections.",
+        "operator": "Role/name and canonical TRel/name maps are finite one-to-one on their enums; Cmd::name and is_v3 lose all payload fields, so their preimage is every variant payload with the selected discriminator. Ev2 placement observations lose unrelated detail fields.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "registry_roles",
+        "observation_scope": "Source bytes [0,11633): interfaces; the operation-specific contracts below define observation projections.",
+        "operator": "Role Agent permits C; Patient C/O/L; To C/L; At L; Instr O. Relation a and b are C-only; event/causal/time IDs are E where requested. Identity parsing accepts uppercase registry prefix and one to six decimal digits without leading zero; snapshot @ forms are excluded by types::Id. Native 45-cell role matrix and complete endpoint fibers check correspondence.",
+        "path": "model.md",
+        "section": "registry_roles",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "admission_constraint"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "variant_projection",
+        "observation_scope": "Source bytes [0,11633): interfaces; the operation-specific contracts below define observation projections.",
+        "operator": "Cmd is a 25-variant tagged union with optional payloads; construction in Rust can bypass parse constraints. Native fixture inventory verifies names and v3 membership but does not prove all constructed payloads satisfy language invariants.",
+        "path": "model.md",
+        "section": "variant_projection",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "tagged_union"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "placement_priority",
+        "observation_scope": "Source bytes [0,11633): interfaces; the operation-specific contracts below define observation projections.",
+        "operator": "For arbitrary Ev2 values, placement is the first Some in before/after/during/same order. Reverse reconstruction of (Before,e) constrains only before=e; later fields remain arbitrary. On parser-produced values mutual exclusion strengthens this relation.",
+        "path": "model.md",
+        "section": "placement_priority",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "ordered_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 11633,
+      "start": 0
+    },
+    "description": "Source bytes [0,11633): interfaces; the operation-specific contracts below define observation projections."
+  },
+  "id": "world-lang-interfaces",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../lang.rs",
+    "sha256": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe"
+  },
+  "status": "partial_source_derived_instance"
+}

@@ -354,3 +354,57 @@ fn delete(m: &Mat, args: &[IdxArg], name: &str) -> Result<Mat, MError> {
         }
     }
 }
+
+#[cfg(test)]
+mod wave30 {
+    use super::*;
+    #[test]
+    fn gather_update() {
+        let mut m = Mat::row(vec![10., 20.]);
+        let indices = IdxArg::Vals(Mat::col(vec![2., 1.]));
+        let r = read(&m, &[indices], "a").unwrap();
+        assert_eq!((r.rows, r.cols), (1, 2));
+        assert_eq!(r.re, vec![20., 10.]);
+        let before = m.re.clone();
+        assert!(
+            assign(
+                &mut m,
+                true,
+                &[IdxArg::Vals(Mat::row(vec![1., 3.]))],
+                &Mat::row(vec![1., 2., 3.]),
+                "a"
+            )
+            .is_err()
+        );
+        assert_eq!(m.re, before);
+        assign(
+            &mut m,
+            true,
+            &[IdxArg::Vals(Mat::row(vec![4., 4.]))],
+            &Mat::row(vec![7., 8.]),
+            "a",
+        )
+        .unwrap();
+        assert_eq!(m.re, vec![10., 20., 0., 8.]);
+        assign(
+            &mut m,
+            true,
+            &[IdxArg::Vals(Mat::row(vec![2., 2.]))],
+            &Mat::empty(),
+            "a",
+        )
+        .unwrap();
+        assert_eq!(m.re, vec![10., 0., 8.]);
+        assert_eq!(read(&m, &[IdxArg::All], "a").unwrap().rows, 3);
+        assert!(to_indices(&IdxArg::Vals(Mat::scalar(f64::NAN)), 1, "a", 0, 1).is_err());
+        let (i, _) = to_indices(
+            &IdxArg::Vals(Mat::row(vec![0., 1., 1.]).with_class(Class::Logical)),
+            1,
+            "a",
+            0,
+            1,
+        )
+        .unwrap();
+        assert_eq!(i, vec![1, 2]);
+    }
+}

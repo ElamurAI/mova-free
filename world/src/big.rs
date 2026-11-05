@@ -196,3 +196,17 @@ pub fn judge_changes(items: &[(Vec<String>, usize, usize, en::gram::Rel, en::gra
     }
     Ok((new_right, old_right, neither))
 }
+
+#[cfg(test)]
+mod wave29_worldlearn {
+    use super::*;
+    #[test]
+    fn sample_name_domain_and_groups() {
+        assert_eq!(domain_of("big-tale@15"), "tale");
+        assert_eq!(domain_of("big-tale-guard"), "tale");
+        assert_eq!(domain_of("big-worlds@1"), "real");
+        assert_eq!(domain_of(""), "real");
+        assert_eq!(groups("tale"), ["tales", "tales-more", "children"]);
+        assert_eq!(groups("unknown"), ["fiction", "legal"]);
+    }
+}

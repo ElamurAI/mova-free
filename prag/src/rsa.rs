@@ -1,4 +1,4 @@
-//! Rational Speech Acts over small closed sets, exact and deterministic (docs/pragmatics-algorithms.md).
+//! Rational Speech Acts over small closed sets, exact and deterministic (docs/pragmatics.md#algorithms-from-the-literature).
 //!
 //! The recursion of Frank & Goodman 2012 and Monroe & Potts 2015, with the layers as in Anderson 2019/2021:
 //!

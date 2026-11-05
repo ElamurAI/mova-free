@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named tests in native-commands.json; paired source syntax"
+  ],
+  "children": [],
+  "cost": "For C cells and output B bytes, set scans fixed classes/layers plus C; ranked collects O(C) rows and sorts O(C log C), examples sorts each kind map. Output storage O(B); numeric f64 formatting retains rounding/nonfinite behavior from supplied tallies.",
+  "description": "set renders ordered class/layer tables, normal rows and class counts; per(x,0)=0. ranked averages per-sentence costs with equal set weight, omits Meta proposals and sorts descending total_cmp then key. TSV serializes raw aggregates without escaping names.",
+  "forward": [
+    "set renders ordered class/layer tables, normal rows and class counts; per(x,0)=0. ranked averages per-sentence costs with equal set weight, omits Meta proposals and sorts descending total_cmp then key. TSV serializes raw aggregates without escaping names."
+  ],
+  "id": "roundtrip-report",
+  "inverse": [
+    "Rendered one-decimal bits and four-decimal chrF admit rounding intervals of raw tallies; per-sentence averages lose set sizes. TSV rows omit empty cells and cannot uniquely recover original volumes or complete tally state.",
+    "Zero sentence denominator never produces division NaN through per. Names/examples are not full Markdown/TSV escaped; output is diagnostic formatting, not schema-safe arbitrary-text serialization or evidence of learning."
+  ],
+  "limitations": [
+    "No annotator/model loading, live corpus, full suite, teacher, GPU or persistent-learning evidence. No executable percentage surrogate: categorical codecs/effects need a useful metric before future caps 1/2/5/10%."
+  ],
+  "source": "tools/roundtrip/src/report.rs",
+  "state": "Layer representations, diagnostic residuals and fixed environment state; see scoped catalog."
+}

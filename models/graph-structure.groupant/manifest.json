@@ -1,0 +1,215 @@
+{
+  "children": [
+    "algorithm-minimum-cost-flow",
+    "algorithm-minimum-cost-flow-tests",
+    "algorithm-maximum-cardinality-search",
+    "algorithm-maximum-cardinality-search-tests",
+    "algorithm-k-core",
+    "algorithm-k-core-tests",
+    "algorithm-dominators",
+    "algorithm-dominators-tests",
+    "algorithm-transitive-reduction-dag",
+    "algorithm-transitive-reduction-dag-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Source/sink and all vertex IDs must retain coordinates across joins. Allocation failure is outside typed errors. Exact integer/categorical outputs admit no generic percentage relaxation; deterministic witness need not be a canonical optimum. Flow negative-cycle refusal is stronger than source-reachable refusal.",
+        "domain": "Flow validates caps, terminals, distinctness, input-order endpoints then globally rejects any positive-capacity negative cycle, even disconnected or limit0; capacities u64, costs i64, checked totals. MCS/core reject invalid endpoints, loops, duplicate neighbors and asymmetry. Dominators allows loops/duplicates and validates caps then start/endpoints. Reduction normalizes duplicates and rejects every directed cycle.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "graph-structure-behavior-complement",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Exclude flow witnesses violating capacity, conservation, exact sum of cost*flow or capped lexicographic optimum; MCS orders violating prefix priority/ties; cores omitting feasible induced subsets; dominator membership contradicted by an avoiding path; or reductions with changed closure/redundant retained edges. Exclude invalid directedness joins, wrapping checked arithmetic and treating rejected negative cycles as zero-cost empty output.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Source/sink and all vertex IDs must retain coordinates across joins. Allocation failure is outside typed errors. Exact integer/categorical outputs admit no generic percentage relaxation; deterministic witness need not be a canonical optimum. Flow negative-cycle refusal is stronger than source-reachable refusal.",
+        "domain": "Flow validates caps, terminals, distinctness, input-order endpoints then globally rejects any positive-capacity negative cycle, even disconnected or limit0; capacities u64, costs i64, checked totals. MCS/core reject invalid endpoints, loops, duplicate neighbors and asymmetry. Dominators allows loops/duplicates and validates caps then start/endpoints. Reduction normalizes duplicates and rejects every directed cycle.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "graph-structure-reverse-reconstruction",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Empty and complete simple graphs both yield ascending MCS order. At k=1 a three-vertex path and triangle both yield all vertices. Adding loops to a directed chain preserves its dominator sets; adding any subset of reachable pairs to a reduced DAG preserves its reduction. Flow value/cost/witness admits changes to unused capacities/costs that preserve optimality. Thus neither the aggregate result nor these individual projections reconstructs a unique original graph.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Source/sink and all vertex IDs must retain coordinates across joins. Allocation failure is outside typed errors. Exact integer/categorical outputs admit no generic percentage relaxation; deterministic witness need not be a canonical optimum. Flow negative-cycle refusal is stronger than source-reachable refusal.",
+        "domain": "Flow validates caps, terminals, distinctness, input-order endpoints then globally rejects any positive-capacity negative cycle, even disconnected or limit0; capacities u64, costs i64, checked totals. MCS/core reject invalid endpoints, loops, duplicate neighbors and asymmetry. Dominators allows loops/duplicates and validates caps then start/endpoints. Reduction normalizes duplicates and rejects every directed cycle.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "graph-structure-flow-path-join",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For a directed acyclic graph with unit capacities and unit costs and distinct reachable terminals, requested flow1 has value1 and cost equal to the shortest source-sink edge count. If sink is unreachable, value0 and cost0 require a separate reachability tag. This relation does not extend to arbitrary weighted flow, negative cycles, or larger flow limits.",
+        "path": "model.md",
+        "section": "flow-path-join",
+        "status": "partial_source_model",
+        "type": "conditional_shortest_path_relation"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Source/sink and all vertex IDs must retain coordinates across joins. Allocation failure is outside typed errors. Exact integer/categorical outputs admit no generic percentage relaxation; deterministic witness need not be a canonical optimum. Flow negative-cycle refusal is stronger than source-reachable refusal.",
+        "domain": "Flow validates caps, terminals, distinctness, input-order endpoints then globally rejects any positive-capacity negative cycle, even disconnected or limit0; capacities u64, costs i64, checked totals. MCS/core reject invalid endpoints, loops, duplicate neighbors and asymmetry. Dominators allows loops/duplicates and validates caps then start/endpoints. Reduction normalizes duplicates and rejects every directed cycle.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "graph-structure-flow-potential",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For vertex potential h with transformed costs c'(u,v)=c(u,v)+h(u)-h(v) fitting i64, each feasible s-t flow changes total cost by value*(h(s)-h(t)); cycles keep their cost. Capped optimal value and negative-cycle admission are invariant. Witness tie order and checked finite arithmetic still belong to native semantics.",
+        "path": "model.md",
+        "section": "flow-potential",
+        "status": "partial_source_model",
+        "type": "potential_reweighting"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Source/sink and all vertex IDs must retain coordinates across joins. Allocation failure is outside typed errors. Exact integer/categorical outputs admit no generic percentage relaxation; deterministic witness need not be a canonical optimum. Flow negative-cycle refusal is stronger than source-reachable refusal.",
+        "domain": "Flow validates caps, terminals, distinctness, input-order endpoints then globally rejects any positive-capacity negative cycle, even disconnected or limit0; capacities u64, costs i64, checked totals. MCS/core reject invalid endpoints, loops, duplicate neighbors and asymmetry. Dominators allows loops/duplicates and validates caps then start/endpoints. Reduction normalizes duplicates and rejects every directed cycle.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "graph-structure-dominance-reduction-rejection",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "On edges 0->1,0->2,1->2 with start0, vertex1 does not dominate2. Reduction removes0->2, after which1 does dominate2. Closure equality therefore does not justify reduction before dominators, flow, edge-disjoint path or shortest-edge-count queries.",
+        "path": "model.md",
+        "section": "dominance-reduction-rejection",
+        "status": "partial_source_model",
+        "type": "nonpreserving_graph_transform"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Source/sink and all vertex IDs must retain coordinates across joins. Allocation failure is outside typed errors. Exact integer/categorical outputs admit no generic percentage relaxation; deterministic witness need not be a canonical optimum. Flow negative-cycle refusal is stronger than source-reachable refusal.",
+        "domain": "Flow validates caps, terminals, distinctness, input-order endpoints then globally rejects any positive-capacity negative cycle, even disconnected or limit0; capacities u64, costs i64, checked totals. MCS/core reject invalid endpoints, loops, duplicate neighbors and asymmetry. Dominators allows loops/duplicates and validates caps then start/endpoints. Reduction normalizes duplicates and rejects every directed cycle.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "graph-structure-core-order-join",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For K_n, MCS returns ascending IDs and k-core returns all IDs iff k<n, else empty. General MCS order is neither a core-number sequence nor a chordality proof. Removing labels or passing a directed adjacency to either API invalidates the shared-domain premise.",
+        "path": "model.md",
+        "section": "core-order-join",
+        "status": "partial_source_model",
+        "type": "shared_domain_distinct_observations"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Source/sink and all vertex IDs must retain coordinates across joins. Allocation failure is outside typed errors. Exact integer/categorical outputs admit no generic percentage relaxation; deterministic witness need not be a canonical optimum. Flow negative-cycle refusal is stronger than source-reachable refusal.",
+        "domain": "Flow validates caps, terminals, distinctness, input-order endpoints then globally rejects any positive-capacity negative cycle, even disconnected or limit0; capacities u64, costs i64, checked totals. MCS/core reject invalid endpoints, loops, duplicate neighbors and asymmetry. Dominators allows loops/duplicates and validates caps then start/endpoints. Reduction normalizes duplicates and rejects every directed cycle.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "graph-structure-dominator-deletion",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For reachable v, d is in Dom(v) iff deleting d destroys start-to-v reachability, counting removal of start as reaching nothing. Start and v belong to each reachable Dom(v). Unreachable rows remain empty; adding edges may remove dominators of already reachable vertices but also create newly reachable vertices.",
+        "path": "model.md",
+        "section": "dominator-deletion",
+        "status": "partial_source_model",
+        "type": "vertex_cut_characterization"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Source/sink and all vertex IDs must retain coordinates across joins. Allocation failure is outside typed errors. Exact integer/categorical outputs admit no generic percentage relaxation; deterministic witness need not be a canonical optimum. Flow negative-cycle refusal is stronger than source-reachable refusal.",
+        "domain": "Flow validates caps, terminals, distinctness, input-order endpoints then globally rejects any positive-capacity negative cycle, even disconnected or limit0; capacities u64, costs i64, checked totals. MCS/core reject invalid endpoints, loops, duplicate neighbors and asymmetry. Dominators allows loops/duplicates and validates caps then start/endpoints. Reduction normalizes duplicates and rejects every directed cycle.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "graph-structure-reduction-essentiality",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "In a DAG, retain edge(u,v) iff deleting it destroys u-to-v reachability. Result is idempotent and unique on the normalized edge relation. Its preimage consists of the same reduced graph plus optional transitive edges and duplicate representations; cyclic graphs are excluded rather than arbitrarily reduced.",
+        "path": "model.md",
+        "section": "reduction-essentiality",
+        "status": "partial_source_model",
+        "type": "closure_fiber"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Source/sink and all vertex IDs must retain coordinates across joins. Allocation failure is outside typed errors. Exact integer/categorical outputs admit no generic percentage relaxation; deterministic witness need not be a canonical optimum. Flow negative-cycle refusal is stronger than source-reachable refusal.",
+        "domain": "Flow validates caps, terminals, distinctness, input-order endpoints then globally rejects any positive-capacity negative cycle, even disconnected or limit0; capacities u64, costs i64, checked totals. MCS/core reject invalid endpoints, loops, duplicate neighbors and asymmetry. Dominators allows loops/duplicates and validates caps then start/endpoints. Reduction normalizes duplicates and rejects every directed cycle.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "graph-structure-core-maximality",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "core_k is the union of all induced vertex subsets of minimum degree>=k; union preserves feasibility. Consequently core_l subset core_k for k<=l, adding a simple undirected edge cannot shrink a core, and peeling the returned induced graph again deletes nothing.",
+        "path": "model.md",
+        "section": "core-maximality",
+        "status": "partial_source_model",
+        "type": "subset_union_certificate"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks (wave25-evidence)",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "graph-structure",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/dominators/mod.rs",
+      "sha256": "86ec8acb6ff360b7264aed23b0c9925626f994bcca5515f63ff5703035c4e733"
+    },
+    {
+      "path": "algorithms/src/dominators/tests.rs",
+      "sha256": "89947914da00326a698dd88465703fe454b4a9874aa2957ea07981fe95b57da6"
+    },
+    {
+      "path": "algorithms/src/k_core/mod.rs",
+      "sha256": "37a416e1386fa1f72fcf9fa8771e88af0a2a98d0bf51b94df3605c8462065707"
+    },
+    {
+      "path": "algorithms/src/k_core/tests.rs",
+      "sha256": "2bac55a2580dd9a5361f3f4bae351079e3c37a5f5477acce9ef1bc3313ed0405"
+    },
+    {
+      "path": "algorithms/src/maximum_cardinality_search/mod.rs",
+      "sha256": "d6910cc7bbbc852669798f09345feb08754f09ca7d9934750f419b7a1d8ccaac"
+    },
+    {
+      "path": "algorithms/src/maximum_cardinality_search/tests.rs",
+      "sha256": "b26057558cdf2b5e9a336defd097990ba2dee90bf9286e4d0f2d8bd4937df290"
+    },
+    {
+      "path": "algorithms/src/minimum_cost_flow/mod.rs",
+      "sha256": "a6de6ae849a183b1b508ebf475e7b1517b27bbf5c38a04dc6dbe1394e6885697"
+    },
+    {
+      "path": "algorithms/src/minimum_cost_flow/tests.rs",
+      "sha256": "5f9fb5e4225efe0b0ad625b5265338c8984dd005a455c2c34aac52ee554a8415"
+    },
+    {
+      "path": "algorithms/src/transitive_reduction_dag/mod.rs",
+      "sha256": "58125a7da360e46fdcf8bb5b9f613f5c24ea808e44c576488abbfacebb512da7"
+    },
+    {
+      "path": "algorithms/src/transitive_reduction_dag/tests.rs",
+      "sha256": "6497d05dbca044e082234a7dffc0ce948bca9a330b8116accd97267b9fd9be55"
+    }
+  ],
+  "status": "partial_source_bound_group"
+}

@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical projection only; fragment bound by byte range; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "context_before_operation",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "context_before_operation",
+        "status": "partial_source_derived_model",
+        "type": "context_before_operation"
+      },
+      {
+        "id": "query_selection",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "query_selection",
+        "status": "partial_source_derived_model",
+        "type": "query_selection"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 7370,
+      "start": 1407
+    },
+    "description": "For each nonconstant quantity, compute inherited owner/thing, update last_owner/last_thing, then choose op. '=' assigns cell=v; '+'/'-' update old-or-zero by ±v; 'r' leaves the cell map immediately unchanged but records the command/log and retains the context changes.",
+    "source_bytes_sha256": "d5c1d4df72d9de4d96413bdbb65a49a95e550e844f5f45fbb0bf04cdfed8f2ea"
+  },
+  "id": "math-qworld-cells",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../qworld.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "6225ef705c842a9565a3a16bc259b261421d0c6c679a0eeada8de59613ea3887"
+  },
+  "status": "partial_source_bound_model"
+}

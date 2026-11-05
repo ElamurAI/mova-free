@@ -1,0 +1,26 @@
+{
+  "id": "algorithm-suffix-array-tests",
+  "source": "algorithms/src/suffix_array/tests.rs",
+  "children": [],
+  "description": "suffix_array deterministic tests",
+  "state": "Finite deterministic fixtures and test executions; no arbitrary programs or hidden production state.",
+  "cost": "Bounded exhaustive fixture enumeration; oracle Aho scans each pattern at each boundary; suffix oracle uses repeated minimum selection and full byte comparisons. Test cost is intentionally independent of production claims.",
+  "forward": [
+    "Run deterministic independent byte oracles, boundary cases, transformation laws and compatible-output fibers; assert exact values and explicit false-premise counterexamples. Passing finite checks does not establish universal correctness.",
+    "Oracle logic does not use production failure links or ranks. All fixtures deterministic; comparison checks include output order, offsets and multiplicity. Negative controls compile production mutations."
+  ],
+  "inverse": [
+    "Exclude acceptance when an asserted production output differs from the independent oracle, a stated conditional law fails under its premises, or a compatible-output fiber differs from direct constraints. Unvisited inputs are outside this finite acceptance claim.",
+    "A passing observation admits every implementation agreeing on the tested fixture observations. Many implementations may differ elsewhere; test success cannot uniquely reconstruct source or establish universal correctness.",
+    "Direct byte-window equality or repeated minimum of complete suffixes supplies the independent specification; production rank and failure-link machinery is not reused.",
+    "Tests pair valid relabel/extension transformations with explicit invalid-premise counterexamples; an oracle equality does not license dropping injectivity or byte-order conditions.",
+    "Reversing the returned suffix order must fail the boundary test; compilation success and assertion failure, not compilation error, establish this control."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline suffix_array::tests::",
+    "Debug/release twice; strict Clippy; rustfmt; source syntax twice; compiled mutant."
+  ],
+  "limitations": [
+    "Partial syntax omits semantic resolution and macro expansion. Finite evidence is not proof. Allocation exhaustion untested; no executable approximation profile or downstream wiring claim."
+  ]
+}

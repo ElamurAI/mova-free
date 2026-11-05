@@ -1,0 +1,30 @@
+{
+  "checks": [
+    "Twice debug/release; compiled production mutant and restoration",
+    "Strict all-target Clippy; twice-identical syntax"
+  ],
+  "children": [],
+  "cost": "O(VE+V^2) time, O(V+E) memory.",
+  "description": "minimum_arborescence exact algorithm",
+  "forward": [
+    "Choose minimum incoming arcs, sum costs, contract directed cycles and subtract destination incoming cost from crossing arcs; repeat until acyclic or no incoming arc.",
+    "Cycle scan now stamps each nonroot vertex exactly once per contraction. Reaching an earlier stamped traversal stops; only seen[v]==current_start closes a new cycle. Cycle labeling visits disjoint cycles once. Every selected parent edge is nonloop, hence every contracted cycle has at least two vertices; at most V-1 contractions. Per round O(V+E), total O(VE+V²), O(V+E) memory. Counter records primary parent advances; debug invariant visits<V. Deterministic cycle discovery order and objective/error semantics are unchanged."
+  ],
+  "id": "algorithm-minimum-arborescence",
+  "inverse": [
+    "Exclude suboptimal totals, None on feasible inputs, acceptance of invalid coordinates, and arithmetic wrapping.",
+    "For Some(w), compatible graphs have a root-reaching branching of weight w and none cheaper. Internal edges/loops and tied trees are unrecoverable from the scalar. None reconstructs graphs with a nonroot component unreachable from root.",
+    "Each cycle contraction maps entering choices by subtracting the chosen incoming cost.",
+    "Adding edges cannot increase a feasible optimum; it can repair infeasibility.",
+    "Adding k to every nonloop edge shifts any feasible objective by (V-1)k when representable.",
+    "Permuting vertices and root preserves objective; edge ordering only chooses tied contraction paths.",
+    "Public size caps precede input-order validation, then arithmetic/search. Exact cover budget exhaustion is not infeasibility; closure capacity overflow is not infeasibility. Bounded index arithmetic cannot overflow. Checked i128 arborescence arithmetic remains defensive. Allocation failure is process-level, not returned; no callbacks or external writes. Empty cases and deterministic ties follow API docs.",
+    "Earlier completed parent walks and current-stack revisits are distinct preimage classes: only current-stack revisits discover new cycles; stopping earlier preserves their previously discovered basin information."
+  ],
+  "limitations": [
+    "Finite evidence and partial syntax only",
+    "No allocation-failure coverage or numerical surrogate"
+  ],
+  "source": "algorithms/src/minimum_arborescence/mod.rs",
+  "state": "1..512 vertices, <=131072 edges, i64 weights, valid zero-based root; Option<i128> minimum outward tree objective."
+}

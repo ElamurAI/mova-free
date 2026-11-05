@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "lex::tests::lexes_commands_and_spaces; lex::tests::positions_are_bytes; lex::tests::render_is_stable",
+    "Two debug/two release selected runs; paired syntax"
+  ],
+  "children": [],
+  "cost": "O(B+T) lex/storage, push O(k), group scanning O(k), render O(output); u32 addition overflow and oversized input cast excluded by representable-offset domain.",
+  "description": "lex appends tokens, borrows command substrings and reports base+byte offset. ASCII command words eat following ASCII whitespace; comments consume until LF; spaces and tilde collapse. Stream reverses vectors, pushes front in reverse, and preserves End on failed substream scans. render serializes tokens with control-word separators.",
+  "forward": [
+    "lex appends tokens, borrows command substrings and reports base+byte offset. ASCII command words eat following ASCII whitespace; comments consume until LF; spaces and tilde collapse. Stream reverses vectors, pushes front in reverse, and preserves End on failed substream scans. render serializes tokens with control-word separators."
+  ],
+  "id": "latex-lex",
+  "inverse": [
+    "No parser errors are returned by lex; trailing backslash and malformed parameter syntax remain characters. End may not disappear through group_tokens failure.",
+    "Sources producing a token stream differ by comments and whitespace and command-word spacing. render removes End and maps CmdRaw to Cmd; exact reverse is a compatible-source set with those distinctions forgotten."
+  ],
+  "limitations": [
+    "Partial source models and finite tests, no semantic proof or expanded AST.",
+    "No useful executable percentage approximant metric established; future caps1/2/5/10% only.",
+    "No live VMM/API/corpus/GPU/full-school/held-out execution; allocation and extreme sizes untested."
+  ],
+  "source": "latex/src/lex.rs",
+  "state": "Empty appends nothing; existing trailing Space affects append coalescing. UTF-8 input valid; base+byte offset must fit u32 for nonwrapping semantics."
+}

@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "wave32::aggregate_and_multiset"
+  ],
+  "children": [],
+  "cost": "Agg O(residual cells+divergence cells) merges; multiset_match O((a+b)log distinct(b)) time and O(distinct(b)) state. run_sys keeps O(target records+outputs), rotation position search O(N²) worst case before codec costs; block_measure scans records per block plus reader DP. Full orchestration costs remain sums of delegated parsing/training/evaluation and sequential file writes, not measured.",
+  "description": "Agg::add increments verses, target token count, exact/gate booleans, chrF and each of three residuals. direct_ok increments only when direct is Some. run_sys filters targets by only, retains records for all target keys, but adds to Agg only when has_src(original key); rotation uses +101 modulo present-source count. block_measure merges block reader+verse tail for meta systems and all verse residuals for baselines, then layout_code; gate conjuncts verse/order/layout checks. CLI dispatches many before eval args, rejects train before creating output, then loads model and corpora, trains tables, measures, writes reports and optionally pages.",
+  "forward": [
+    "Agg::add increments verses, target token count, exact/gate booleans, chrF and each of three residuals. direct_ok increments only when direct is Some. run_sys filters targets by only, retains records for all target keys, but adds to Agg only when has_src(original key); rotation uses +101 modulo present-source count. block_measure merges block reader+verse tail for meta systems and all verse residuals for baselines, then layout_code; gate conjuncts verse/order/layout checks. CLI dispatches many before eval args, rejects train before creating output, then loads model and corpora, trains tables, measures, writes reports and optionally pages."
+  ],
+  "id": "translation-flow-main",
+  "inverse": [
+    "Under valid inputs Agg never counts direct_ok without a direct residual and never stores a fifth failure. run_sys never marks an absent original source as a paired observation even if target residual reconstruction succeeds. CLI cannot run eval training split past its explicit rejection.",
+    "A summary admits every ordered sequence of Out records with the same sums and capped samples; discarded failures and unsampled text are unrecoverable. VRec carries source/target meta states and residual, permitting diagnostic target reconstruction conditionally on decoder state, not unique original source or meaning."
+  ],
+  "limitations": [
+    "Source-derived effectful CLI/corpus paths only; no live model/annotator/training/filesystem/site run.",
+    "Finite synthetic helper checks and partial syntax; no universal proof or executable percent surrogate."
+  ],
+  "source": "tools/translate/src/main.rs",
+  "state": "Finite residuals and representable counters; valid corpus trees and keys. Failures capped at4, examples at6 for verse count congruent1 mod97. Missing source still produces target record but excludes summary numerator and denominator. All-target and paired-target populations must not be interchanged."
+}

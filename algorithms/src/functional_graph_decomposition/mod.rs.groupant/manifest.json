@@ -1,0 +1,141 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=1000000 valid zero-based successors; cycles, per-vertex cycle ID, original entry coordinate, distance.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Exclude wrong coordinate conventions, noncanonical cycle rotations/order, positive cycle distances, or entries not reached at the reported distance.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "ff41869319484740e0e56fe4a7bdb790d43834f5d6f5cf87f99eb28d7eef4aa9",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=1000000 valid zero-based successors; cycles, per-vertex cycle ID, original entry coordinate, distance.",
+        "evidence": "model.md#evidence",
+        "id": "preimages",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Cycles reconstruct successor edges on cycle vertices exactly. Tail v with distance d>0 may point to any vertex with same entry and distance d-1, so tail predecessors are generally ambiguous. These choices reconstruct exactly the decomposition under canonical IDs.",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "ff41869319484740e0e56fe4a7bdb790d43834f5d6f5cf87f99eb28d7eef4aa9",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=1000000 valid zero-based successors; cycles, per-vertex cycle ID, original entry coordinate, distance.",
+        "evidence": "model.md#evidence",
+        "id": "transition",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "For noncycle v, distance[v]=distance[successor[v]]+1 and entry and ID are inherited.",
+        "path": "model.md",
+        "section": "transition",
+        "status": "partial_source_derived",
+        "subject_revision": "ff41869319484740e0e56fe4a7bdb790d43834f5d6f5cf87f99eb28d7eef4aa9",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=1000000 valid zero-based successors; cycles, per-vertex cycle ID, original entry coordinate, distance.",
+        "evidence": "model.md#evidence",
+        "id": "order",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Cycle vertices have entry[v]=v and distance zero; listed cycle orientation follows successor.",
+        "path": "model.md",
+        "section": "order",
+        "status": "partial_source_derived",
+        "subject_revision": "ff41869319484740e0e56fe4a7bdb790d43834f5d6f5cf87f99eb28d7eef4aa9",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=1000000 valid zero-based successors; cycles, per-vertex cycle ID, original entry coordinate, distance.",
+        "evidence": "model.md#evidence",
+        "id": "coordinate",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Relabeling preserves distances and cycle membership but recanonicalizes cycle IDs/rotations.",
+        "path": "model.md",
+        "section": "coordinate",
+        "status": "partial_source_derived",
+        "subject_revision": "ff41869319484740e0e56fe4a7bdb790d43834f5d6f5cf87f99eb28d7eef4aa9",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=1000000 valid zero-based successors; cycles, per-vertex cycle ID, original entry coordinate, distance.",
+        "evidence": "model.md#evidence",
+        "id": "fiber",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Deleting a leaf tail preserves remaining entry coordinates and distances while coordinate renumbering must be explicit.",
+        "path": "model.md",
+        "section": "fiber",
+        "status": "partial_source_derived",
+        "subject_revision": "ff41869319484740e0e56fe4a7bdb790d43834f5d6f5cf87f99eb28d7eef4aa9",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=1000000 valid zero-based successors; cycles, per-vertex cycle ID, original entry coordinate, distance.",
+        "evidence": "model.md#evidence",
+        "id": "errors",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Public size caps precede input-order validation, then arithmetic/search. Exact cover budget exhaustion is not infeasibility; closure capacity overflow is not infeasibility. Bounded index arithmetic cannot overflow. Checked i128 arborescence arithmetic remains defensive. Allocation failure is process-level, not returned; no callbacks or external writes. Empty cases and deterministic ties follow API docs.",
+        "path": "model.md",
+        "section": "errors",
+        "status": "partial_source_derived",
+        "subject_revision": "ff41869319484740e0e56fe4a7bdb790d43834f5d6f5cf87f99eb28d7eef4aa9",
+        "type": "error_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-functional-graph-decomposition",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "ff41869319484740e0e56fe4a7bdb790d43834f5d6f5cf87f99eb28d7eef4aa9"
+  },
+  "status": "partial_source_derived_instance"
+}

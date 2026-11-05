@@ -502,3 +502,25 @@ pub fn format_str_arr(s: &StrArr) -> String {
     }
     out
 }
+
+#[cfg(test)]
+mod wave30 {
+    use super::*;
+    #[test]
+    fn dates_keys_and_columns() {
+        assert_eq!(parse_iso("1970-01-01"), Some(EPOCH_DATENUM));
+        assert!(parse_iso("2026-02-30").is_none());
+        assert_eq!(parse_iso("1970-01-01 24:00"), Some(EPOCH_DATENUM + 1.0));
+        assert_eq!(civil_from_days(days_from_civil(2000, 2, 29)), (2000, 2, 29));
+        let v = Value::Mat(Mat::col(vec![f64::NAN, -0.0, 0.0, 2.0, f64::NAN]));
+        assert_eq!(sorted_rows(&[(&v, false)], 5), vec![1, 2, 3, 0, 4]);
+        assert_eq!(groups(&[&v], 5), vec![vec![1, 2], vec![3], vec![0, 4]]);
+        assert!(row_key(&[&v], 0).is_none());
+        assert_eq!(row_key(&[&v], 1), row_key(&[&v], 2));
+        let mut t = make(vec!["x".into()], &[Value::Mat(Mat::col(vec![1.0, 2.0]))]).unwrap();
+        set_var(&mut t, "y", &Value::num(7.0)).unwrap();
+        assert_eq!(num_col(&t, 1).unwrap().re, vec![7.0, 7.0]);
+        assert!(set_var(&mut t, "z", &Value::Mat(Mat::col(vec![1.0; 3]))).is_err());
+        assert_eq!(t.names, vec!["x", "y"]);
+    }
+}

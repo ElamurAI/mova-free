@@ -1,0 +1,163 @@
+{
+  "children": [
+    "algorithm-barycentric-lagrange",
+    "algorithm-barycentric-lagrange-tests",
+    "algorithm-monotone-cubic",
+    "algorithm-monotone-cubic-tests",
+    "algorithm-bernstein-de-casteljau",
+    "algorithm-bernstein-de-casteljau-tests",
+    "algorithm-gauss-legendre",
+    "algorithm-gauss-legendre-tests",
+    "algorithm-romberg-integration",
+    "algorithm-romberg-integration-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Polynomial/basis identities are real arithmetic. Shape preservation does not bound error against unknown original function. Romberg diagonal differences can miss unsampled structure and are heuristic.",
+        "domain": "Leaf-valid sorted interpolation nodes in[-1,1], spacing>=1e-8 and finite bounded ordinates; Bernstein t in[0,1]; Gauss orders1..5; finite bounded ordered integration intervals and callbacks.",
+        "evidence": "model.md#wave20-evidence; exact transitive revisions in source_bindings.",
+        "id": "approximation-interpolation-behavior-complement",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For the real target, exclude a Lagrange polynomial failing its nodal equations, a Bernstein evaluation outside the control convex hull for t in[0,1], and shape-preserving cubic segments with overshoot contrary to their slope construction. Conditional Gauss polynomial exactness excludes wrong integrals only for the stated degree premise in real arithmetic. Native f64 results are not required to satisfy those identities bit-for-bit: their complement contains wrong rounded recurrences, wrong basis/interval coordinates, incorrect knot return values, excess callbacks or inaccurate status bookkeeping. Romberg estimated_error=0 does not exclude a nonzero true integral error; unknown off-sample function behavior remains allowed.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Polynomial/basis identities are real arithmetic. Shape preservation does not bound error against unknown original function. Romberg diagonal differences can miss unsampled structure and are heuristic.",
+        "domain": "Leaf-valid sorted interpolation nodes in[-1,1], spacing>=1e-8 and finite bounded ordinates; Bernstein t in[0,1]; Gauss orders1..5; finite bounded ordered integration intervals and callbacks.",
+        "evidence": "model.md#wave20-evidence; exact transitive revisions in source_bindings.",
+        "id": "approximation-interpolation-reverse-reconstruction",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "At fixed distinct nodes and fixed degree<n, a complete set of real nodal ordinates identifies the interpolation polynomial, but one evaluated ordinate leaves an affine coefficient fiber. At Bernstein t=0 only the first control is observed and all later controls remain free; at interior t, perturbations of controls whose Bernstein-weighted sum is zero retain the value. Monotone sample data do not identify the true between-node function. For quadrature samples x_j, f and f+h with h(x_j)=0 have the same sampled execution but may have different integrals; h can be a scaled squared product of (x-x_j). Native rounded equality may enlarge these fibers, and callback budget/status do not restore unsampled information.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Polynomial/basis identities are real arithmetic. Shape preservation does not bound error against unknown original function. Romberg diagonal differences can miss unsampled structure and are heuristic.",
+        "domain": "Leaf-valid sorted interpolation nodes in[-1,1], spacing>=1e-8 and finite bounded ordinates; Bernstein t in[0,1]; Gauss orders1..5; finite bounded ordered integration intervals and callbacks.",
+        "evidence": "model.md#wave20-evidence; exact transitive revisions in source_bindings.",
+        "id": "approximation-interpolation-basis-change",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Degree2 controls [1,1.5,4] and nodes (0,1),(.5,2),(1,4) both denote1+x+2x². Fixed-degree complete basis data is invertible in real arithmetic; finite scalar observations admit many arbitrary functions.",
+        "path": "model.md",
+        "section": "basis-change",
+        "status": "partial_source_model",
+        "type": "polynomial_basis_transport"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Polynomial/basis identities are real arithmetic. Shape preservation does not bound error against unknown original function. Romberg diagonal differences can miss unsampled structure and are heuristic.",
+        "domain": "Leaf-valid sorted interpolation nodes in[-1,1], spacing>=1e-8 and finite bounded ordinates; Bernstein t in[0,1]; Gauss orders1..5; finite bounded ordered integration intervals and callbacks.",
+        "evidence": "model.md#wave20-evidence; exact transitive revisions in source_bindings.",
+        "id": "approximation-interpolation-quadrature-exactness",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Order n Gauss integrates degree<=2n-1 polynomials exactly in real arithmetic. Native constants and arithmetic introduce roundoff; fixtures use additive1e-12 and do not certify all scales.",
+        "path": "model.md",
+        "section": "quadrature-exactness",
+        "status": "partial_source_model",
+        "type": "conditional_polynomial_integral"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Polynomial/basis identities are real arithmetic. Shape preservation does not bound error against unknown original function. Romberg diagonal differences can miss unsampled structure and are heuristic.",
+        "domain": "Leaf-valid sorted interpolation nodes in[-1,1], spacing>=1e-8 and finite bounded ordinates; Bernstein t in[0,1]; Gauss orders1..5; finite bounded ordered integration intervals and callbacks.",
+        "evidence": "model.md#wave20-evidence; exact transitive revisions in source_bindings.",
+        "id": "approximation-interpolation-shape-versus-error",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Monotone sampled ordinates constrain interpolant shape but leave unknown between-node true functions ambiguous. Equal integral/point observations also retain many control sets or functions.",
+        "path": "model.md",
+        "section": "shape-versus-error",
+        "status": "partial_source_model",
+        "type": "shape_information_loss"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "approximation-interpolation",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/barycentric_lagrange/mod.rs",
+      "sha256": "4e0af865c14faf28be87fb9960905fc5fb387a7f0876ef932a3ad97bd68ccae0"
+    },
+    {
+      "path": "algorithms/src/barycentric_lagrange/tests.rs",
+      "sha256": "06f4703fed4be98f841f2f33fd56d9e8c086b37c0839fa2f5eecb38e8cf79af1"
+    },
+    {
+      "path": "algorithms/src/bernstein_de_casteljau/mod.rs",
+      "sha256": "a4ef39f8d90fe85ea5dea0c9126614d7ab4eddd1e8350a149c0487df270de23d"
+    },
+    {
+      "path": "algorithms/src/bernstein_de_casteljau/tests.rs",
+      "sha256": "6615d4ebb9b7a856aae6db3a0f8e925f0fbf2dcf2fbf9978c80714d0e4450e17"
+    },
+    {
+      "path": "algorithms/src/gauss_legendre/mod.rs",
+      "sha256": "53fa7745a40bcc2fd135bbe253c17807601fad1530b855efba8fb7e9474399e4"
+    },
+    {
+      "path": "algorithms/src/gauss_legendre/tests.rs",
+      "sha256": "6e536d3ac4e5601583d0ae7170924d5bf7f21ddcbc5bee7f1769786087766711"
+    },
+    {
+      "path": "algorithms/src/monotone_cubic/mod.rs",
+      "sha256": "573662c8ac099c426367d6f5dbd0ed81f4f8d067e0d256a3ebc08ff527688755"
+    },
+    {
+      "path": "algorithms/src/monotone_cubic/tests.rs",
+      "sha256": "0cfe737ec1580eea86fd285e1ddc65ef12636733e31ff9f492fc778c5782db45"
+    },
+    {
+      "path": "algorithms/src/romberg_integration/mod.rs",
+      "sha256": "68f2857cbb950961c3f48d6dbd6d3c94732fa8ca24bbf8ee6980174d3e1c6888"
+    },
+    {
+      "path": "algorithms/src/romberg_integration/tests.rs",
+      "sha256": "7dbb717719565f8ba308415442d08c141cbf9a5ed808cb9689b761f1b62a06ad"
+    }
+  ],
+  "status": "partial_source_bound_group"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "world-md",
+  "source": "world/src/md.rs",
+  "description": "Human Markdown projections of immutable world snapshots and narration metadata.",
+  "state": "Borrowed Run, World snapshots/story, FormatErrs and supplied line count.",
+  "cost": "Let B be emitted bytes, S sentences, C cursor entries, E entities, H states/history entries. Base output allocation O(B); cursor lookup O(S*C); history/snapshot/context and qa3 costs are external terms, not assumed constant. Story scans event metadata per frame O(F*V), then calls qa3 and root renderer. Memory includes intermediate strings and output; no IO occurs in this file.",
+  "forward": [
+    "For fixed Run and FormatErr inputs, world_md appends text, cursor, location/object/character/relation registries, optional intention/belief registries, events, working memory and gate diagnostics in source order. story_md falls back exactly to world_md without Story; otherwise it prepends narration views and appends the complete root report. cell maps pipe to backslash-pipe and LF to space. snap_str omits Type/Class and renders unknown Gender/Age for characters."
+  ],
+  "inverse": [
+    "Behavior complement U minus scoped forward relation with dependencies fixed.",
+    "Reverse reconstruction retains all compatible antecedents; lossy fibers need not be singleton."
+  ],
+  "checks": [
+    "cargo test -p world --lib md::wave8_models -- --test-threads=1"
+  ],
+  "limitations": [
+    "Labels, title, time and diagnostic code spans are not uniformly escaped. cell leaves CR/backticks/backslashes intact and is not idempotent. Sentence count casts to u16; large documents are outside tested domain. Dependency semantics and nonempty complex story graphs remain untested.",
+    "Partial syntax projection; no semantic AST, broad accuracy claim or executable approximation."
+  ]
+}

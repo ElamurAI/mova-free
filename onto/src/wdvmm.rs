@@ -1,29 +1,9 @@
-//! LLM (Opus) confirmation of disputed seed candidates via `claude -p` — like `math/src/vmm.rs`:
-//! empty directory, no tools, effort via `--settings` env (the box-wide `settings.json` overrides
-//! `--effort`), JSON with the cost. The API key comes from `~/Mova/local.md` (`api_env`) and is never printed. The cap is the sum
-//! of `cost_usd` from the log plus the call reserve; exceeding it means refusal without a call (fail-fast, no retries).
-//! The LLM answers "yes / no / refine + why"; this is a second opinion, not truth: into the core only after a human.
+//! Seed confirmation through the shared Codex teacher. Suggestions still pass the existing gates.
 
 use std::io::Write as _;
 use std::path::{Path, PathBuf};
-use std::process::{Command, Stdio};
 
-use anyhow::{bail, Context, Result};
-
-/// API key (line `ANTHROPIC_API_KEY=…` in `~/Mova/local.md`); if absent, the call goes through the subscription.
-fn api_env() -> Vec<(String, String)> {
-    if std::env::var("MOVA_SUBSCRIPTION").as_deref() == Ok("1") {
-        return Vec::new();
-    }
-    let Ok(home) = std::env::var("HOME") else { return Vec::new() };
-    let text = std::fs::read_to_string(Path::new(&home).join("Mova/local.md")).unwrap_or_default();
-    text.lines()
-        .find_map(|l| l.strip_prefix("ANTHROPIC_API_KEY="))
-        .map(str::trim)
-        .filter(|k| !k.is_empty())
-        .map(|k| vec![("ANTHROPIC_API_KEY".to_string(), k.to_string())])
-        .unwrap_or_default()
-}
+use anyhow::{bail, Result};
 
 /// Spent according to the log (JSON lines with `cost_usd`).
 pub fn spent(log: &Path) -> f64 {
@@ -44,23 +24,7 @@ pub fn ask(cwd: &PathBuf, log: &Path, cap: f64, reserve: f64, prompt: &str) -> R
     std::fs::create_dir_all(cwd)?;
     let effort = std::env::var("ONTO_EFFORT").unwrap_or_else(|_| "medium".into());
     let t0 = std::time::Instant::now();
-    let mut child = Command::new("claude")
-        .args(["-p", "--model", "claude-haiku-5-5", "--effort", &effort, "--output-format", "json"])
-        .args(["--settings", &format!("{{\"env\":{{\"CLAUDE_CODE_EFFORT_LEVEL\":\"{effort}\"}}}}")])
-        .args(["--disallowedTools", "Bash,Edit,Write,Read,Glob,Grep,WebFetch,WebSearch,Agent,NotebookEdit"])
-        .envs(api_env())
-        .current_dir(cwd)
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .context("claude -p")?;
-    child.stdin.take().context("stdin")?.write_all(prompt.as_bytes())?;
-    let out = child.wait_with_output()?;
-    if !out.status.success() {
-        bail!("claude -p: {}", String::from_utf8_lossy(&out.stderr).trim());
-    }
-    let v: serde_json::Value = serde_json::from_slice(&out.stdout).context("JSON from claude -p")?;
+    let v = mova_teacher::ask(cwd, &mova_teacher::model("ONTO_MODEL"), &effort, prompt)?;
     let cost = v["total_cost_usd"].as_f64().unwrap_or(0.0);
     let mut f = std::fs::OpenOptions::new().create(true).append(true).open(log)?;
     writeln!(f, "{}", serde_json::json!({"step": "wd-confirm", "secs": t0.elapsed().as_secs_f64(), "cost_usd": cost, "input_tokens": v["usage"]["input_tokens"], "output_tokens": v["usage"]["output_tokens"]}))?;
@@ -138,5 +102,31 @@ mod t {
         assert_eq!(v[0].as_ref().unwrap().0, "yes");
         assert_eq!(v[1].as_ref().unwrap().0, "no");
         assert_eq!(v[2].as_ref().unwrap().0, "refine");
+    }
+}
+
+#[cfg(test)]
+mod wave29_ontowiki {
+    use super::*;
+    #[test]
+    fn parse_overwrite_and_budget_refusal() {
+        assert_eq!(
+            parse("1\tyes\ta\n1\tNO\tb\n0\tyes\nx\tno\n2\tmaybe", 2),
+            vec![Some(("no".into(), "b".into())), None]
+        );
+        let dir = std::env::temp_dir().join(format!("onto-vmm-wave29-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let log = dir.join("log");
+        std::fs::write(&log, "bad\n{\"cost_usd\":2.0}\n{\"cost_usd\":\"3\"}\n").unwrap();
+        assert_eq!(spent(&log), 2.0);
+        let cwd = dir.join("must-not-create");
+        assert!(
+            ask(&cwd, &log, 1.0, 0.0, "unused")
+                .unwrap_err()
+                .to_string()
+                .starts_with("cap")
+        );
+        assert!(!cwd.exists());
+        std::fs::remove_dir_all(dir).unwrap();
     }
 }

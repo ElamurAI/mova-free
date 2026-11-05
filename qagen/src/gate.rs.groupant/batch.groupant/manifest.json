@@ -1,0 +1,79 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "qagen-gate-batch-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "qagen-gate-batch-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "qagen-gate-batch-specialized",
+        "path": "model.md",
+        "section": "specialization",
+        "status": "partial_source_model",
+        "type": "gate_batch_observation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "finite_observation"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 14623,
+      "start": 10067
+    },
+    "description": "Count T in-range numbered rows, J junk, M absent paragraph labels among N. Batch rejects iff T=0 or outside nonempty or 5J>T+J or 4M>N, in that reason precedence. Blank/fence/header lines ignored. A single optional P/p prefix is stripped. Valid batches fold each paragraph in local batch order, keeping at most 6 distinct checked questions with k=accepted length+1.",
+    "syntax_nodes": {
+      "node_ids": [
+        902
+      ],
+      "path": "../syntax.json"
+    }
+  },
+  "id": "qagen-gate-batch",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../gate.rs",
+    "sha256": "09328f711abf4b6453f95bed3d873deb205c8801d939841974416fe74e3e5806"
+  },
+  "status": "partial_source_bound_model"
+}

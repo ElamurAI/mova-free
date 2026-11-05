@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "cargo test -p world --lib lang::bounded_models (debug/release twice)",
+    "Compiled relation-endpoint mutant must fail complete bounded fibers",
+    "mova-modelcheck syntax twice; groupants declaration check"
+  ],
+  "children": [],
+  "cost": "For total input bytes N and line count L, a conservative whole-file time bound is O(N^2+L) under fixed closed vocabularies: duplicate-key/list scans and vector removals can be quadratic. Tokenization itself is O(N); accumulated output and peak retained parse storage are O(N+L) excluding caller-owned input and allocator overhead. No runtime speedup or finite error budget is claimed.",
+  "description": "Interfaces define Role/Speaker/Obs/TRel/Ev2/Cmd, name projections and Line/FormatErr. tokens and Args produce checked positional/key-value states; scalar/list/value helpers enforce syntactic domains. parse_line dispatches legacy and narrative commands, rejects unused args, binds anchors and preserves provenance. parse_all partitions lines without execution. Every logical production region and the appended native-test region is covered at root; dependency validation remains explicitly conditional.",
+  "forward": [
+    "Interfaces define Role/Speaker/Obs/TRel/Ev2/Cmd, name projections and Line/FormatErr. tokens and Args produce checked positional/key-value states; scalar/list/value helpers enforce syntactic domains. parse_line dispatches legacy and narrative commands, rejects unused args, binds anchors and preserves provenance. parse_all partitions lines without execution. Every logical production region and the appended native-test region is covered at root; dependency validation remains explicitly conditional."
+  ],
+  "id": "world-lang",
+  "inverse": [
+    "Exclude rel endpoints in O/L/R/E/P/B/F/K, snapshot-form IDs, exact duplicate key spellings, unmatched quotes, misplaced anchors and multiple event placements. These exclusions are conditional on this grammar and fixed dependency catalogs; no exclusion of all semantically invalid worlds is claimed.",
+    "For observation (Cmd,anchors), reconstruct every line whose trim/token/Args/dispatch relation yields that pair. Whitespace between tokens, allowed key-order permutations and accepted quote variants form nonunique fibers; Args attrs preserve their source order, so not all key permutations are equivalent. The 784-string relation domain is completely enumerated with independent expected fibers; general UTF-8 reconstruction remains relational."
+  ],
+  "limitations": [
+    "Pure parser correspondence only; no command execution or world/query validation.",
+    "Closed type/Act dependencies remain conditional; aliases, zero anchors and six-digit quantities reflect existing policy.",
+    "No semantic AST, full inverse solver or whole-language proof."
+  ],
+  "source": "world/src/lang.rs",
+  "state": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input."
+}

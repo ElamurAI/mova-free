@@ -1,0 +1,12 @@
+[package]
+name = "mova-twin"
+version.workspace = true
+edition = "2024"
+description = "Prospective cost predictions, measured runs and online calibration for Mova."
+
+[dependencies]
+anyhow = "1.0.104"
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1.0.151", features = ["float_roundtrip"] }
+sha2 = "0.10"
+libc = "0.2"

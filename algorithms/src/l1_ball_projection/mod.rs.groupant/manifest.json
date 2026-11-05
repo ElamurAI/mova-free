@@ -1,0 +1,126 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Within valid inputs and real candidate outputs, complement contains infeasible or KKT-incompatible pairs and incorrect error outcomes. This is a relational complement of the unique real solution graph, not just a list of negative examples. For the concrete implementation the complement additionally excludes outputs differing from rounded evaluation and includes arithmetic/resource error partitions; real KKT alone is not a full f64 acceptance predicate.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "1c839d1d16d63a0336ef255a783d3141c5e070844b8f2607fbb230214f4fa650",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "For interior y (||y||1<r), real preimage is uniquely x=y. On the boundary, x-y=lambda*s with lambda>=0, s_i=sign(y_i) when nonzero and |s_i|<=1 when zero. Thus [3,-1] and [4,-1] both map to [2,0] at r2. r0 has every valid x in the zero fiber; rounded fibers differ.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "1c839d1d16d63a0336ef255a783d3141c5e070844b8f2607fbb230214f4fa650",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "simplex_composition",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Outside the ball, magnitudes satisfy positive-radius simplex domain; sign restoration is an isometry for the relevant orthant. Child mass/rounding failures propagate unchanged; a valid child is necessary but not a universal parent accuracy proof.",
+        "path": "model.md",
+        "section": "simplex_composition",
+        "status": "partial_relational_specification",
+        "subject_revision": "1c839d1d16d63a0336ef255a783d3141c5e070844b8f2607fbb230214f4fa650",
+        "type": "simplex_composition"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "proximal_relation",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "For exterior inputs a shared lambda satisfies y=soft_threshold(x,lambda) in real arithmetic and sum |y|=r. KKT grid independently checks coordinate stationarity and zero subgradient intervals without calling the soft kernel.",
+        "path": "model.md",
+        "section": "proximal_relation",
+        "status": "partial_relational_specification",
+        "subject_revision": "1c839d1d16d63a0336ef255a783d3141c5e070844b8f2607fbb230214f4fa650",
+        "type": "proximal_relation"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "interior_and_zero",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Computed norm<=radius returns input bit pattern unchanged, including signed zeros. Zero radius yields all positive zeros even on extreme finite inputs. Empty vector is feasible for every finite nonnegative radius.",
+        "path": "model.md",
+        "section": "interior_and_zero",
+        "status": "partial_relational_specification",
+        "subject_revision": "1c839d1d16d63a0336ef255a783d3141c5e070844b8f2607fbb230214f4fa650",
+        "type": "interior_and_zero"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "arithmetic_resource_partition",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Validation uses simplex helper and cap. Norm overflow rejects conservatively even if projection exists; radius0 bypasses norm safely. Rounded norm can misclassify a near-boundary point. Failed magnitude or child reservation returns AllocationFailed; no allocation refusal injection.",
+        "path": "model.md",
+        "section": "arithmetic_resource_partition",
+        "status": "partial_relational_specification",
+        "subject_revision": "1c839d1d16d63a0336ef255a783d3141c5e070844b8f2607fbb230214f4fa650",
+        "type": "arithmetic_resource_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-l1-ball-projection",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "1c839d1d16d63a0336ef255a783d3141c5e070844b8f2607fbb230214f4fa650"
+  },
+  "status": "partial_source_derived_instance"
+}

@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "newline_units",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "newline_units",
+        "status": "partial_source_derived_model",
+        "type": "newline_units"
+      },
+      {
+        "id": "insertion_tie",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "insertion_tie",
+        "status": "partial_source_derived_model",
+        "type": "insertion_tie"
+      },
+      {
+        "id": "drop_coordinates",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "drop_coordinates",
+        "status": "partial_source_derived_model",
+        "type": "drop_coordinates"
+      },
+      {
+        "id": "cost_domain",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "cost_domain",
+        "status": "partial_source_derived_model",
+        "type": "cost_domain"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 21592,
+      "start": 19870
+    },
+    "description": "Bottom-up LCS lengths feed greedy keep/insert/drop. apply removes indexed source lines then inserts stored lines at output positions; script_bits charges drop positions plus stored-line bytes/positions."
+  },
+  "id": "roundtrip-derived-piece-codec-line-script",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../site_code.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "8b7af5b786bf922124d3c1e99243cdd058f60ca3e1c9b828f4bb51918bc038c3"
+  },
+  "status": "partial_source_bound_model"
+}

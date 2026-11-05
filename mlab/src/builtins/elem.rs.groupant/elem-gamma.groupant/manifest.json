@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "pole_boundary",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "pole_boundary",
+        "status": "partial_source_derived_model",
+        "type": "pole_boundary"
+      },
+      {
+        "id": "positive_factorial",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "positive_factorial",
+        "status": "partial_source_derived_model",
+        "type": "positive_factorial"
+      },
+      {
+        "id": "nan_branch",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "nan_branch",
+        "status": "partial_source_derived_model",
+        "type": "nan_branch"
+      },
+      {
+        "id": "library_dependency",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "library_dependency",
+        "status": "partial_source_derived_model",
+        "type": "library_dependency"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 15612,
+      "start": 15486
+    },
+    "description": "gamma(x) returns Inf when x==trunc(x) and x<=0; otherwise returns libm::tgamma(x).",
+    "source_bytes_sha256": "30d9262ed5bc282ac4f12df2b4cd88679b088e1f6b06cc728de0fda8fa371457"
+  },
+  "id": "mlab-numerics-elem-gamma",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../elem.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "09570b244d52019b5a08f99b48dd7fc01d163a267c89b0580689a53db36a0e8e"
+  },
+  "status": "partial_source_bound_model"
+}

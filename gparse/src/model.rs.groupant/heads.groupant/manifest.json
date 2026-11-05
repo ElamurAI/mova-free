@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "gather_coordinates",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "gather_coordinates",
+        "status": "partial_source_derived_model",
+        "type": "gather_coordinates"
+      },
+      {
+        "id": "relation_equation",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "relation_equation",
+        "status": "partial_source_derived_model",
+        "type": "relation_equation"
+      },
+      {
+        "id": "tag_projection",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "tag_projection",
+        "status": "partial_source_derived_model",
+        "type": "tag_projection"
+      },
+      {
+        "id": "dropout_effect",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "dropout_effect",
+        "status": "partial_source_derived_model",
+        "type": "dropout_effect"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "partial_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 14585,
+      "start": 13492
+    },
+    "description": "rels gathers flattened rows/heads and evaluates bilinear+linear logits; tags projects gathered words.",
+    "source_bytes_sha256": "2569bdfaee181a37617277e57e292bc7580ee93a308bd6b2b72b0b3b3c6d5b77"
+  },
+  "id": "gparse-model-heads",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../model.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "a380c81aa11433fd9e4efcfaad81abfd55fe79b896d628ee1368f8de8081c941"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,144 @@
+{
+  "children": [
+    "wasi-mlab-gate",
+    "wasi-runtime",
+    "wasi-cli",
+    "wasi-memory-tests",
+    "wasi-mlab-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "Source-derived branch/ABI relations require valid host resources and finite guest input. is_wasi_name only checks namespace/name, not type. Metadata rights differ from cached file access flags. Example compiles but is not executed; mlab source is external reference only. No useful percentage surrogate established.",
+        "domain": "CPU; nine memory/engine tests, two synthetic integration tests; memory<=8192 bytes and minimal empty/unreachable wasm; filesystem effects restricted to unique own temporary roots. No full mlab.wasm, frozen suites, large guest build, live data or network.",
+        "id": "behavior-complement",
+        "observation_scope": "Real join: Ctx::path_open resolves through Vfs, allocates descriptor; fd_write/read use canonical stored path and Vfs::write_at/read_at, with Vfs errno and journal propagation. Tests observe holes/append/read-only/limits/escape effects. main constructs Ctx from imported Vfs, Host::run returns same context for gated exports. Tagged independent paths: example mlab_gate and tests/mlab compare external mlab::Interp to Host, neither is called by main. Memory-unit tests bypass add_wasi ABI wrappers; tiny guests have no imports, so complete linker wiring is not claimed.",
+        "operator": "For successful CLI parsing and completed Host run, trap/nonzero outcome excludes export execution through main's gate; memory-gated socket helpers exclude network effects. Late FAULT does not exclude earlier Vfs changes. These are scoped source-derived exclusion relations, not whole-sandbox proofs.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "Source-derived branch/ABI relations require valid host resources and finite guest input. is_wasi_name only checks namespace/name, not type. Metadata rights differ from cached file access flags. Example compiles but is not executed; mlab source is external reference only. No useful percentage surrogate established.",
+        "domain": "CPU; nine memory/engine tests, two synthetic integration tests; memory<=8192 bytes and minimal empty/unreachable wasm; filesystem effects restricted to unique own temporary roots. No full mlab.wasm, frozen suites, large guest build, live data or network.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Real join: Ctx::path_open resolves through Vfs, allocates descriptor; fd_write/read use canonical stored path and Vfs::write_at/read_at, with Vfs errno and journal propagation. Tests observe holes/append/read-only/limits/escape effects. main constructs Ctx from imported Vfs, Host::run returns same context for gated exports. Tagged independent paths: example mlab_gate and tests/mlab compare external mlab::Interp to Host, neither is called by main. Memory-unit tests bypass add_wasi ABI wrappers; tiny guests have no imports, so complete linker wiring is not claimed.",
+        "operator": "Outcome stdout/code/final Vfs constrain compatible guest initial contexts and modules. Capture, truncation, overwritten guest memory and Vfs mutations lose histories; equal output is not unique reconstruction and exit0 merges normal return with proc_exit(0). Journal, argv and original state can narrow but not generally invert the relation.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "Source-derived branch/ABI relations require valid host resources and finite guest input. is_wasi_name only checks namespace/name, not type. Metadata rights differ from cached file access flags. Example compiles but is not executed; mlab source is external reference only. No useful percentage surrogate established.",
+        "domain": "CPU; nine memory/engine tests, two synthetic integration tests; memory<=8192 bytes and minimal empty/unreachable wasm; filesystem effects restricted to unique own temporary roots. No full mlab.wasm, frozen suites, large guest build, live data or network.",
+        "id": "vfs-coordinate-transport",
+        "observation_scope": "Real join: Ctx::path_open resolves through Vfs, allocates descriptor; fd_write/read use canonical stored path and Vfs::write_at/read_at, with Vfs errno and journal propagation. Tests observe holes/append/read-only/limits/escape effects. main constructs Ctx from imported Vfs, Host::run returns same context for gated exports. Tagged independent paths: example mlab_gate and tests/mlab compare external mlab::Interp to Host, neither is called by main. Memory-unit tests bypass add_wasi ABI wrappers; tiny guests have no imports, so complete linker wiring is not claimed.",
+        "operator": "Relative UTF8 path + directory fd -> canonical Vfs path -> descriptor carrying path/offset/flags -> iovec bytes -> Vfs read_at/write_at -> copied output/count. Explicit positioned writes override append and preserve fd position; implicit append uses file size. Finite direct-helper fixtures exercise this actual caller join.",
+        "path": "model.md",
+        "required": false,
+        "section": "vfs-coordinate-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Source-derived branch/ABI relations require valid host resources and finite guest input. is_wasi_name only checks namespace/name, not type. Metadata rights differ from cached file access flags. Example compiles but is not executed; mlab source is external reference only. No useful percentage surrogate established.",
+        "domain": "CPU; nine memory/engine tests, two synthetic integration tests; memory<=8192 bytes and minimal empty/unreachable wasm; filesystem effects restricted to unique own temporary roots. No full mlab.wasm, frozen suites, large guest build, live data or network.",
+        "id": "failure-order",
+        "observation_scope": "Real join: Ctx::path_open resolves through Vfs, allocates descriptor; fd_write/read use canonical stored path and Vfs::write_at/read_at, with Vfs errno and journal propagation. Tests observe holes/append/read-only/limits/escape effects. main constructs Ctx from imported Vfs, Host::run returns same context for gated exports. Tagged independent paths: example mlab_gate and tests/mlab compare external mlab::Interp to Host, neither is called by main. Memory-unit tests bypass add_wasi ABI wrappers; tiny guests have no imports, so complete linker wiring is not claimed.",
+        "operator": "Validation precedes CLI imports; import failure precedes guest; export gate follows run; first export failure precedes journal. Within helpers clock/seek/read/write/open effects can precede output FAULT, so success-only adapters cannot infer atomicity.",
+        "path": "model.md",
+        "required": false,
+        "section": "failure-order",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "Source-derived branch/ABI relations require valid host resources and finite guest input. is_wasi_name only checks namespace/name, not type. Metadata rights differ from cached file access flags. Example compiles but is not executed; mlab source is external reference only. No useful percentage surrogate established.",
+        "domain": "CPU; nine memory/engine tests, two synthetic integration tests; memory<=8192 bytes and minimal empty/unreachable wasm; filesystem effects restricted to unique own temporary roots. No full mlab.wasm, frozen suites, large guest build, live data or network.",
+        "id": "resource-product",
+        "observation_scope": "Real join: Ctx::path_open resolves through Vfs, allocates descriptor; fd_write/read use canonical stored path and Vfs::write_at/read_at, with Vfs errno and journal propagation. Tests observe holes/append/read-only/limits/escape effects. main constructs Ctx from imported Vfs, Host::run returns same context for gated exports. Tagged independent paths: example mlab_gate and tests/mlab compare external mlab::Interp to Host, neither is called by main. Memory-unit tests bypass add_wasi ABI wrappers; tiny guests have no imports, so complete linker wiring is not claimed.",
+        "operator": "Fuel, memory ceiling, descriptor count and Vfs byte/file limits form separate axes. One axis cannot stand in for others: fuel counts engine work while host IO/copies and imported tree size require independent accounting.",
+        "path": "model.md",
+        "required": false,
+        "section": "resource-product",
+        "status": "partial_source_derived_model",
+        "type": "resource_boundary"
+      },
+      {
+        "assumptions": "Source-derived branch/ABI relations require valid host resources and finite guest input. is_wasi_name only checks namespace/name, not type. Metadata rights differ from cached file access flags. Example compiles but is not executed; mlab source is external reference only. No useful percentage surrogate established.",
+        "domain": "CPU; nine memory/engine tests, two synthetic integration tests; memory<=8192 bytes and minimal empty/unreachable wasm; filesystem effects restricted to unique own temporary roots. No full mlab.wasm, frozen suites, large guest build, live data or network.",
+        "id": "test-scope",
+        "observation_scope": "Real join: Ctx::path_open resolves through Vfs, allocates descriptor; fd_write/read use canonical stored path and Vfs::write_at/read_at, with Vfs errno and journal propagation. Tests observe holes/append/read-only/limits/escape effects. main constructs Ctx from imported Vfs, Host::run returns same context for gated exports. Tagged independent paths: example mlab_gate and tests/mlab compare external mlab::Interp to Host, neither is called by main. Memory-unit tests bypass add_wasi ABI wrappers; tiny guests have no imports, so complete linker wiring is not claimed.",
+        "operator": "Nine helper/tiny-engine and two integration tests produce11 named observations per profile. Example compile and freshness metadata tests do not imply native/guest frozen-suite equality; mlab remains a tagged external reference.",
+        "path": "model.md",
+        "required": false,
+        "section": "test-scope",
+        "status": "partial_source_derived_model",
+        "type": "evidence_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "wasi-guest-runtime",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "wasi-host/examples/mlab_gate.rs",
+      "sha256": "a7947069ab507ffd5ad7b71ae9146bca16e08b827af78bc5961993c788b699b8"
+    },
+    {
+      "path": "wasi-host/src/lib.rs",
+      "sha256": "91213ce9038107912c2dd707c3a6639a2d723cdfceb02981a166a6853800248e"
+    },
+    {
+      "path": "wasi-host/src/main.rs",
+      "sha256": "2200229297d1dde6d9f8477a577a7320c854d0db4fb3ea450b457a9858107122"
+    },
+    {
+      "path": "wasi-host/src/tests.rs",
+      "sha256": "74685e5440b3b7df7f40518395e62d6cd68a60e80ff71e87b772f020c80bec8d"
+    },
+    {
+      "path": "wasi-host/tests/mlab.rs",
+      "sha256": "e3b35b1a315b6d995fd3cb8e590209d9f57141b89d9def132cd733f31d8f2db8"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

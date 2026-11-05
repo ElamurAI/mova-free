@@ -1,0 +1,23 @@
+{
+  "id": "algorithm-matrix-chain",
+  "source": "algorithms/src/matrix_chain/mod.rs",
+  "description": "Original std-only matrix_chain dynamic program.",
+  "state": "Finite input slice, checked storage dimensions, typed numeric or error result.",
+  "forward": [
+    "C(i,i)=0; increasing interval length computes minimum child costs plus scalar product. None represents overflow/infinity. Positive monotone sums justify dropping overflowing candidates without rejecting representable alternatives."
+  ],
+  "inverse": [
+    "behavior_complement precedes reverse_reconstruction; see model.md.",
+    "Output admits nonunique compatible antecedents; no general inverse claimed."
+  ],
+  "cost": "O(n^3) time and O(n^2) space for n>=2 matrices; linear dimension validation also applies to short chains.",
+  "checks": [
+    "rustc --edition 2024 --test algorithms/src/matrix_chain/mod.rs; debug and optimized binaries twice.",
+    "Strict clippy-driver -D warnings; rustfmt; syntax twice; compiled mutant rejection."
+  ],
+  "limitations": [
+    "Finite checks do not prove all inputs.",
+    "Syntax omits expansion and semantic resolution.",
+    "Allocation refusal not injected."
+  ]
+}

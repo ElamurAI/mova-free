@@ -219,3 +219,27 @@ pub fn fnv1a64(data: &[u8]) -> u64 {
     }
     h
 }
+
+#[cfg(test)]
+mod wave31 {
+    use super::*;
+    #[test]
+    fn parsing_and_trait_composition() {
+        assert_eq!(parse_size(" 2k ").unwrap(), 2048);
+        assert_eq!(parse_size("0G").unwrap(), 0);
+        assert!(parse_size("18446744073709551615G").is_err());
+        assert!(parse_size("").is_err());
+        assert_eq!(Limits::parse("file=2,file=3").unwrap().max_file_size, 3);
+        let mut f = open("mem", Limits::default()).unwrap();
+        f.write("/a", b"abc").unwrap();
+        assert_eq!(f.copy("/a", "/b").unwrap(), 3);
+        assert_eq!(f.read_to_string("/b").unwrap(), "abc");
+        f.write("/bad", &[255]).unwrap();
+        assert_eq!(f.read_to_string("/bad").unwrap_err().errno, Errno::Inval);
+        assert!(!f.exists("/missing"));
+        assert!(f.as_mem().is_some());
+        assert!(open("dir:", Limits::default()).is_err());
+        assert_eq!(fnv1a64(b""), 0xcbf29ce484222325);
+        assert_eq!(fnv1a64(b"a"), 0xaf63dc4c8601ec8c);
+    }
+}

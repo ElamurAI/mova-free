@@ -1,0 +1,42 @@
+{
+  "id": "correspondence-core",
+  "source": "tools/correspondence/src/lib.rs",
+  "description": "Typed finite relation validation, sound bounded canonicalization and finite correspondence witnesses.",
+  "state": "Named finite endpoint sorts, atom relations, contracts and exact Boolean matrices.",
+  "forward": [
+    "Validate bounded typed formulas before evaluation.",
+    "Canonicalize with associativity, converse/complement commutation and converse pushed to atoms; minimum-height alphabetic chains keep canonical output within depth/node budgets.",
+    "Separate normalized formula match, finite coincidence, counterexample and incompatible contract.",
+    "Pure finite compositions retain endpoint, observation and assumption constraints and report univalence, converse univalence, totality, surjectivity and identity."
+  ],
+  "inverse": [
+    "Converse preserves all antecedents within the declared finite table; no unique inverse claimed.",
+    "Complement uses the explicit inferred finite rectangle, not unsampled Rust behavior."
+  ],
+  "cost": "Bounded O(nodes*64^2) matrix work plus AST labels, ordered normalization and an O(factors*height) chain memo; source IO and catalog enumeration delegated.",
+  "checks": [
+    "small_relations_normalization_is_sound_and_idempotent",
+    "rectangular_converse_preserves_reversed_endpoints",
+    "wrong_complement_composition_and_inverse_laws_show_red",
+    "theories_effects_and_intermediate_sorts_are_checked",
+    "finite_coincidence_retains_free_symbol_identity",
+    "malformed_budget_and_unknown_nodes_are_rejected",
+    "bit_width_and_empty_endpoint_boundaries",
+    "repeated_atom_name_cannot_change_meaning",
+    "associativity_and_converse_complement_commutation_match_structurally",
+    "invalid_inverse_and_complement_laws_stay_nonstructural",
+    "canonical_is_idempotent_sound_and_never_deeper",
+    "deep_chains_rebalance_within_depth_budget",
+    "large_converse_chain_uses_bounded_mode_idempotently",
+    "canonical_output_stays_within_validation_budgets",
+    "composition_totality_surjectivity_and_empty_sets"
+  ],
+  "limitations": [
+    "Finite formula models do not establish Rust correspondence.",
+    "Canonicalization is sound but incomplete; De Morgan and Boolean lattice laws are not used.",
+    "Converse/complement commutation and converse over union/intersection lack a Lean theorem.",
+    "No prose parsing, universal theorem proving, numeric approximation or stateful composition.",
+    "Caller must bound serialized input before allocation."
+  ],
+  "children": []
+}

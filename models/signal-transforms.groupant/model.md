@@ -1,0 +1,91 @@
+# signal-transforms
+
+## model
+
+# signal-transforms
+
+## forward
+
+Tagged real/complex signal maps: DCT coefficients, Haar multiscale coefficients, arbitrary-length Bluestein DFT, Goertzel frequency observations and Savitzky-Golay local polynomial smoothing. Sample coordinates and normalizations are part of the result type. Orthonormal DCT/Haar: y=Qx,Q^TQ=I,x=Q^Ty with full coefficients in real arithmetic. Goertzel bin k is X_k=sum_j x_j exp(-2πijk/n) under matching DFT convention; Bluestein computes full DFT by chirp convolution.
+
+## invariant
+
+Length, finite arithmetic, padding, frequency indexing, coefficient normalization, window and boundary conventions remain explicit. A spectral bin, full invertible transform and smoothed signal discard different information.
+
+## cost
+
+DCT direct dense work and Haar linear pair stages follow their kernels. Bluestein chooses a convolution length and pays FFT/padding storage; Goertzel costs signal length per queried bin; Savitzky-Golay includes coefficient preparation plus window work. Repeated-bin comparisons include the queried-bin count; no blanket FFT or smoothing gain is inferred.
+
+## composition
+
+DCT-to-DFT comparisons require the exact even-extension and scale convention. Goertzel agrees with a chosen DFT bin only under matching phase/sign/frequency conventions, including endpoint bins. Haar reconstruction needs retained detail coefficients and compatible length. Savitzky-Golay polynomial preservation applies only to degree/window/boundary rules actually admitted; smoothing is not a generally invertible preprocessing step.
+
+## limitations
+
+Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.
+
+## epoch-memory
+
+Wave26. Tagged library tools; no automatic training adoption, source-volume quality claim or generic numerical profile.
+
+## checks
+
+["cargo test -p mova-algorithms discrete_cosine_transform::tests","cargo test -p mova-algorithms haar_wavelet::tests","cargo test -p mova-algorithms bluestein_fft::tests","cargo test -p mova-algorithms goertzel::tests","cargo test -p mova-algorithms savitzky_golay::tests"]
+
+## wave26-executed-checks
+
+# signal-transforms: wave26 checks
+
+20 source-local test declarations across five modules. Every module has a compiled failing production mutation followed by exact restoration. The final whole library passed 877 checks twice debug and twice release. See [integrated evidence](../algorithm-library.groupant/model.md#wave26-evidence) for scopes and limitations. These tagged APIs are not an invented serial pipeline.
+
+## catalog
+
+# Typed family relations
+
+## behavior-complement
+
+Type: behavior_complement.
+
+Exclude wrong normalization/phase/length, replacing complex bin by magnitude without projection, or reconstruction after dropping Haar details. Savitzky-Golay polynomial reproduction requires admitted degree/window/boundary conventions; rounding is separate.
+
+## reverse-reconstruction
+
+Type: reverse_reconstruction.
+
+Full exact orthonormal y uniquely reconstructs x=Q^Ty at fixed convention. Goertzel bin z has fiber {x:sum_j x_j exp(-2πijk/n)=z}, generally nontrivial nullspace. Smoothing admits {x:Sx=y}; rank determines uniqueness. Rounded outputs have rounding-compatible fibers.
+
+## normalization_phase
+
+Type: normalization_phase.
+
+Transform comparisons must preserve Fourier sign, frequency units and normalization; raw coefficient equality across conventions is excluded.
+
+## extension_padding
+
+Type: extension_padding.
+
+DCT even extension and Bluestein convolution padding have different purposes; padding must not alter interpreted sample count.
+
+## lossy_fiber
+
+Type: lossy_fiber.
+
+A single Goertzel bin, omitted Haar details or smoothed output admits many input signals; no unique inverse is claimed.
+
+## polynomial_boundary
+
+Type: polynomial_boundary.
+
+Polynomial reproduction depends on degree and boundary window semantics; interior identities do not justify edge extrapolation.
+
+## wave26-evidence
+
+### signal-transforms: wave26 checks
+
+20 source-local test declarations across five modules. Every module has a compiled failing production mutation followed by exact restoration. The final whole library passed 877 checks twice debug and twice release. See [integrated evidence](../algorithm-library.groupant/model.md#wave26-evidence) for scopes and limitations. These tagged APIs are not an invented serial pipeline.
+
+## History
+
+### 2026-10-30 · epoch-memory
+
+Wave26, 2026-10-30. Tagged library tools; no automatic training adoption, source-volume quality claim or generic numerical profile.

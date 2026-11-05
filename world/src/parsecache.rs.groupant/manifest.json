@@ -1,0 +1,145 @@
+{
+  "children": [
+    {
+      "id": "parse-cache-identity",
+      "path": "identity.groupant"
+    },
+    {
+      "id": "parse-cache-batch",
+      "path": "batch.groupant"
+    },
+    {
+      "id": "parse-cache-envelope",
+      "path": "envelope.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "dependency-key",
+        "path": "model.md",
+        "section": "dependency-key",
+        "status": "partial_source_derived_model",
+        "type": "identity_projection"
+      },
+      {
+        "id": "optional-fibers",
+        "path": "model.md",
+        "section": "optional-fibers",
+        "status": "partial_source_derived_model",
+        "type": "absence_projection"
+      },
+      {
+        "id": "occurrence-ledger",
+        "path": "model.md",
+        "section": "occurrence-ledger",
+        "status": "partial_source_derived_model",
+        "type": "multiset_accounting"
+      },
+      {
+        "id": "duplicate-overwrite",
+        "path": "model.md",
+        "section": "duplicate-overwrite",
+        "status": "partial_source_derived_model",
+        "type": "last_write_fiber"
+      },
+      {
+        "id": "error-memory",
+        "path": "model.md",
+        "section": "error-memory",
+        "status": "partial_source_derived_model",
+        "type": "failure_partition"
+      },
+      {
+        "id": "refresh-policy",
+        "path": "model.md",
+        "section": "refresh-policy",
+        "status": "partial_source_derived_model",
+        "type": "counterfactual_policy"
+      },
+      {
+        "id": "envelope-admission",
+        "path": "model.md",
+        "section": "envelope-admission",
+        "status": "partial_source_derived_model",
+        "type": "acceptance_preimage"
+      },
+      {
+        "id": "open-repair",
+        "path": "model.md",
+        "section": "open-repair",
+        "status": "partial_source_derived_model",
+        "type": "first_failure_partition"
+      },
+      {
+        "id": "finish-barrier",
+        "path": "model.md",
+        "section": "finish-barrier",
+        "status": "partial_source_derived_model",
+        "type": "publication_precondition"
+      },
+      {
+        "id": "publication-protocol",
+        "path": "model.md",
+        "section": "publication-protocol",
+        "status": "partial_source_derived_model",
+        "type": "persistence_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_execution"
+    }
+  },
+  "id": "parse-cache",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../parsecache.rs",
+    "sha256": "6545414761854d33b7b41f8a864a7f4c59eebeaee721eef68772bb4a7a652479"
+  },
+  "status": "partial_source_derived_instance"
+}

@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "wave31::text_and_coordinate_fibers",
+    "tests::verses"
+  ],
+  "children": [],
+  "cost": "Codecs O(B); key O(39+bytes). Joins O(R log R), file sorting O(F log F), memory O(B). File failures panic.",
+  "description": "Shared consonants/entity/key helpers, English pool-map join and sorted Hebrew CoNLL-U reader. html_text collects all and named-tag depth text then decodes/collapses whitespace. Exports prag module.",
+  "forward": [
+    "Shared consonants/entity/key helpers, English pool-map join and sorted Hebrew CoNLL-U reader. html_text collects all and named-tag depth text then decodes/collapses whitespace. Exports prag module."
+  ],
+  "id": "macula-library",
+  "inverse": [
+    "Consonants excludes Latin/points. Ordered unescape cannot recursively turn &amp;lt; into<. Multi-verse metadata excluded from hebrew_verses. No teacher effect.",
+    "Consonants admits arbitrary removed chars, HTML admits erased markup/whitespace, key(39,0,0) admits malformed names/numbers. Joins lose duplicate overwritten values."
+  ],
+  "limitations": [
+    "Pure helpers tested; filesystem joins source-modeled.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/macula/src/lib.rs",
+  "state": "Unknown book->39, bad/missing u32->0, trailing coordinates ignored. consonants keeps05D0..05EA without decomposition. Duplicate ids/verses overwrite in map traversal. HTML depth may become negative."
+}

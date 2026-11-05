@@ -150,3 +150,25 @@ impl Journal {
         )
     }
 }
+
+#[cfg(test)]
+mod wave31 {
+    use super::*;
+    #[test]
+    fn capped_trace_and_projection() {
+        let mut j = Journal::default();
+        j.cap = 1;
+        j.record(0, Op::Read, "a\tb\nc", 0, None);
+        j.record(1, Op::Read, "dropped", 0, None);
+        j.record(2, Op::Write, "denied", 0, Some(&FsError::new(Errno::NotCapable)));
+        j.record(3, Op::Write, "limited", 0, Some(&FsError::new(Errno::FBig)));
+        assert_eq!((j.total(), j.errors(), j.denied(), j.limited(), j.dropped()), (4, 2, 1, 1, 2));
+        assert_eq!(j.entries().iter().map(|e| e.seq).collect::<Vec<_>>(), [1, 3]);
+        assert!(j.tsv().contains("a b c"));
+        j.clear();
+        assert_eq!((j.cap, j.total(), j.entries().len()), (1, 0, 0));
+        j.cap = 0;
+        j.record(0, Op::Read, "x", 0, Some(&FsError::new(Errno::NoEnt)));
+        assert_eq!((j.total(), j.errors(), j.dropped()), (1, 1, 1));
+    }
+}

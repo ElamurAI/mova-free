@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Ten native store controls and seven reused pragmatic schema checks; see model.md#tests"
+  ],
+  "children": [],
+  "cost": "Strong snapshot hash/index pass each ingest; changed artifacts and indexed SQLite commits; status/export scale with selection and witness joins. No measured throughput improvement.",
+  "description": "Transactional SQLite WAL annotation versions, explicit eligibility and immutable teacher/parser-bound exports.",
+  "forward": [
+    "Content-bound seed/completed receipts -> serialized append-only versions and whole-pair selection -> consistent train/dev snapshots and same-revision actual-parser agreement inputs."
+  ],
+  "id": "peta-store",
+  "inverse": [
+    "Behavior complement excludes invalid or heldout inputs from eligible selection and quarantines failed batches with lost-ID evidence.",
+    "Reverse reconstruction retains compatible receipt/version antecedents; export cannot reconstruct hidden teacher state or omitted history uniquely."
+  ],
+  "limitations": [
+    "Trusted immutable source/phase evidence and SQLite/storage semantics assumed. No gold, generic power-loss, old-checkpoint or replay-safety proof. No percentage approximant admitted."
+  ],
+  "source": "tools/crab/src/store.rs",
+  "state": "Separate historical file DB; stable first selection, retained conflicts, immutable eligibility identity; no teacher/GPU calls."
+}

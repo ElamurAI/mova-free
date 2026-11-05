@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test --offline --locked -p onto --bin onto -- --exact --test-threads=1 core::wave29::field_and_synset_semantics",
+    "Paired source syntax; repeated bounded debug/release tests; mapped compiled controls"
+  ],
+  "children": [],
+  "cost": "Static lookups O(Ccore); synset map O(Cgraph) expected; check adds Kb ancestry/property costs per record and value; display allocation proportional output.",
+  "description": "Field Known returns value/known/applicable; Unknown only applicable; NotApplicable neither. Generated CoreId indexes CORE. Lemma lookup replaces underscores/lowercases; synset lookup finds first static match. Graph synset map retains last duplicate key; check rejects missing synsets/lemma mismatch/domain contradictions and ancestral part/material.",
+  "forward": [
+    "Field Known returns value/known/applicable; Unknown only applicable; NotApplicable neither. Generated CoreId indexes CORE. Lemma lookup replaces underscores/lowercases; synset lookup finds first static match. Graph synset map retains last duplicate key; check rejects missing synsets/lemma mismatch/domain contradictions and ancestral part/material."
+  ],
+  "id": "onto-core",
+  "inverse": [
+    "field_state(false,true) admits every Unknown reason; known state omits value. Formatted three-significant-digit values admit rounding intervals; original f64/provenance not uniquely recoverable."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no semantic proof",
+    "Categorical/structural/effect semantics lack executable percent surrogate",
+    "Only selected synthetic branches tested; external effects unexecuted"
+  ],
+  "source": "onto/src/core.rs",
+  "state": "Static fields preserve Known([]) versus Unknown versus NotApplicable. core check uses real layer0 and accepts missing property knowledge. Public Graph indexing requires validity. Lexfile mismatch only warning."
+}

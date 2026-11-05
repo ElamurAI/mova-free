@@ -73,3 +73,51 @@ pub fn parse(core_txt: &str, props: &str) -> Result<Parsed, String> {
     }
     Ok(Parsed { core, cells, synset })
 }
+
+#[cfg(test)]
+mod wave29 {
+    use super::*;
+    #[test]
+    fn ordered_gate_and_empty_domain() {
+        assert!(parse("", "").unwrap().core.is_empty());
+        assert!(read_core("x\tbogus").unwrap_err().contains("domain"));
+        assert!(
+            parse("x\tanimal", "x")
+                .err()
+                .unwrap()
+                .contains("instead of 20")
+        );
+        let row = |field: &str, status: &str| {
+            let mut f = vec![""; 20];
+            f[0] = "x";
+            f[1] = "animal";
+            f[2] = "oewn-1-n";
+            f[3] = field;
+            f[4] = status;
+            f.join("\t") + "\n"
+        };
+        let all: String = FIELDS.iter().map(|f| row(f, "unknown")).collect();
+        assert!(
+            parse("x\tanimal", &all).is_ok(),
+            "empty reasons are accepted"
+        );
+        let mixed = all.clone() + &row("food", "known");
+        assert!(parse("x\tanimal", &mixed).err().unwrap().contains("mixed"));
+        let two = all.replace(
+            &row("mass", "unknown"),
+            &(row("mass", "known") + &row("mass", "known")),
+        );
+        assert!(
+            parse("x\tanimal", &two)
+                .err()
+                .unwrap()
+                .contains("2 numbers")
+        );
+        assert!(
+            parse("x\tanimal", &row("bad", "bad"))
+                .err()
+                .unwrap()
+                .contains("unknown field")
+        );
+    }
+}

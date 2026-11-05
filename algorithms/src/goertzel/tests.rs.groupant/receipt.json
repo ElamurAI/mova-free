@@ -1,0 +1,54 @@
+{
+  "compiled_mutant": "Negating terminal imaginary component compiles and fails phase_and_duplicates.",
+  "date": "2026-10-30",
+  "evidence": [
+    {
+      "name": "debug1.log",
+      "sha256": "7a278f1878e1dbddd0ce01b4fdeffda2eb1cdf65489bc2d409faf4c4627dcc13"
+    },
+    {
+      "name": "debug2.log",
+      "sha256": "af05d068120d57a6de7fc5e11491787304458c0f1bea8cfcdd308ccd81f8ec5e"
+    },
+    {
+      "name": "release1.log",
+      "sha256": "a03b8886b035560f506dca62e6d5045f2589ed0d5230f616f86cae322569fbc0"
+    },
+    {
+      "name": "release2.log",
+      "sha256": "0f56c926d9f77f9520ae94441edbad404c19558de23636e7ae5c3140617cde3b"
+    },
+    {
+      "name": "clippy.log",
+      "sha256": "21a0826c5a4c358b0547dc65d304781e6a6d1136ac2e9f395877d64b09442b29"
+    },
+    {
+      "name": "controls.log",
+      "sha256": "ef74157a500002708b0fb5a2a2452725096de26de0e17ee723eb3028fe1e2389"
+    },
+    {
+      "name": "mutant-goertzel.log",
+      "sha256": "6a87b2d34a557217a63beaee3f7c52d73798677cc4d49f963be61283d8f906ed"
+    },
+    {
+      "name": "restored-goertzel.log",
+      "sha256": "43dbbf99978c1fcac7abc4497728e948e65d352bc3ba64ab9c4cd9acc9cefcab"
+    },
+    {
+      "name": "goertzel-tests.rs-syntax1.json",
+      "sha256": "f728faf41bae5437111c5e1dcf3d722d141f89fe52a5c2a92341c16592b5a5ac"
+    },
+    {
+      "name": "goertzel-tests.rs-syntax2.json",
+      "sha256": "f728faf41bae5437111c5e1dcf3d722d141f89fe52a5c2a92341c16592b5a5ac"
+    }
+  ],
+  "external_run": "$MOVA_DATA/runs/octopus-wave26-transforms-2026-10-30",
+  "limitations": [
+    "No timing or universal numerical accuracy claim"
+  ],
+  "repetitions": "20 new tests; 713 crate tests twice debug and twice release; identical normalized observations; exact restoration and four positive tests per mutant",
+  "source": "algorithms/src/goertzel/tests.rs",
+  "source_sha256": "067b6507939d39960027a7e933ca7734c0a838cc2bcb7c51cdd723de71d68d22",
+  "syntax": "Two fresh byte-identical projections"
+}

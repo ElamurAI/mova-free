@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Representation only: #[ignore] and ask call preserved in paired syntax. authenticated_teacher_smoke is NEVER invoked."
+  ],
+  "children": [],
+  "cost": "External teacher dominates; trim O(result bytes), cleanup O(temp entries). No live measurement.",
+  "description": "Ignored test resolves MOVA_TEACHER_MODEL, asks once with medium effort in a PID-derived temp path, unwraps result string, compares trim(result) with MOVA_TEACHER_OK, prints metadata, then removes the directory. Every unwrap failure prevents later effects.",
+  "forward": [
+    "Ignored test resolves MOVA_TEACHER_MODEL, asks once with medium effort in a PID-derived temp path, unwraps result string, compares trim(result) with MOVA_TEACHER_OK, prints metadata, then removes the directory. Every unwrap failure prevents later effects."
+  ],
+  "id": "teacher-live-tests",
+  "inverse": [
+    "Passing result admits every trim-preimage of MOVA_TEACHER_OK and arbitrary provider/model/usage values. Metadata cannot reconstruct timing, transport or exact whitespace.",
+    "Ordinary harness scheduling excludes this ignored body; no ask occurs absent explicit ignored-test execution. An executed successful assertion excludes a different trimmed marker, not nondeterministic teacher behavior."
+  ],
+  "limitations": [
+    "Partial syntax, bounded synthetic helper coverage; no live teacher, corpus, model, lesson or benchmark CLI. No numerical approximation budget claimed."
+  ],
+  "source": "teacher/tests/live.rs",
+  "state": "Ordinary test invocation excludes this ignored body. Conditional success requires trimmed marker; provider/model/usage are printed without assertions."
+}

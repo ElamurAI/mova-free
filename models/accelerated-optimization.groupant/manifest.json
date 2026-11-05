@@ -1,0 +1,202 @@
+{
+  "children": [
+    "algorithm-barzilai-borwein",
+    "algorithm-barzilai-borwein-tests",
+    "algorithm-heavy-ball-quadratic",
+    "algorithm-heavy-ball-quadratic-tests",
+    "algorithm-nesterov-quadratic",
+    "algorithm-nesterov-quadratic-tests",
+    "algorithm-proximal-gradient-lasso",
+    "algorithm-proximal-gradient-lasso-tests",
+    "algorithm-fista-lasso",
+    "algorithm-fista-lasso-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Real strong-convexity/acceleration identities do not certify f64 error, monotonic objective or convergence by a fixed budget. Frobenius scale is a real Lipschitz bound; cancellation/underflow and checked nonfinite states remain observable. Checked allocation errors are distinct from invalid input. No callbacks or executable percentage profiles.",
+        "domain": "Diagonal n=1..256, D_i in [1e-6,1e6], |b_i|,|x0_i|<=1e6. LASSO m=1..256,n=1..64, finite design/response/lambda magnitudes<=1e6, lambda>=0; nonzero design requires computed ||A||F²>=1e-12, zero design accepted. Finite positive absolute tolerance and budget 0..100000.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "accelerated-optimization-behavior-complement",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Exclude wrong dimension, nonfinite successful metrics, updates beyond budget, Converged when the recomputed metric exceeds tolerance, or relabeling the quadratic Euclidean metric as the LASSO infinity metric. For zero budget diagonal x must equal x0 and proximal x must be zero. A report satisfying real KKT conditions but not the specified rounded recurrence/status is not automatically a permitted native result.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Real strong-convexity/acceleration identities do not certify f64 error, monotonic objective or convergence by a fixed budget. Frobenius scale is a real Lipschitz bound; cancellation/underflow and checked nonfinite states remain observable. Checked allocation errors are distinct from invalid input. No callbacks or executable percentage profiles.",
+        "domain": "Diagonal n=1..256, D_i in [1e-6,1e6], |b_i|,|x0_i|<=1e6. LASSO m=1..256,n=1..64, finite design/response/lambda magnitudes<=1e6, lambda>=0; nonzero design requires computed ||A||F²>=1e-12, zero design accepted. Finite positive absolute tolerance and budget 0..100000.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "accelerated-optimization-reverse-reconstruction",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For any admissible diagonal D and z with b=Dz and x0=z in bounds, zero-update solution z has many compatible objectives. Identity LASSO optimum z_i!=0 implies response_i=z_i+lambda*sign(z_i), while z_i=0 admits response_i in [-lambda,lambda] in reals. General designs admit null(A') response perturbations; retaining objective still permits different equal-norm orthogonal components. Native fibers additionally reproduce rounded history and status; x alone does not recover momentum or t.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Real strong-convexity/acceleration identities do not certify f64 error, monotonic objective or convergence by a fixed budget. Frobenius scale is a real Lipschitz bound; cancellation/underflow and checked nonfinite states remain observable. Checked allocation errors are distinct from invalid input. No callbacks or executable percentage profiles.",
+        "domain": "Diagonal n=1..256, D_i in [1e-6,1e6], |b_i|,|x0_i|<=1e6. LASSO m=1..256,n=1..64, finite design/response/lambda magnitudes<=1e6, lambda>=0; nonzero design requires computed ||A||F²>=1e-12, zero design accepted. Finite positive absolute tolerance and budget 0..100000.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "accelerated-optimization-diagonal-common-target",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For positive diagonal D, the unique real minimizer is x*=D^-1 b and gradient g=D(x-x*). BB, heavy ball and Nesterov target this same vector; their finite trajectories differ. If mu=min D, real ||x-x*||2<=||g||2/mu; applying this to native reports requires accounting for residual roundoff.",
+        "path": "model.md",
+        "section": "diagonal-common-target",
+        "status": "partial_source_model",
+        "type": "stationary_target_transport"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Real strong-convexity/acceleration identities do not certify f64 error, monotonic objective or convergence by a fixed budget. Frobenius scale is a real Lipschitz bound; cancellation/underflow and checked nonfinite states remain observable. Checked allocation errors are distinct from invalid input. No callbacks or executable percentage profiles.",
+        "domain": "Diagonal n=1..256, D_i in [1e-6,1e6], |b_i|,|x0_i|<=1e6. LASSO m=1..256,n=1..64, finite design/response/lambda magnitudes<=1e6, lambda>=0; nonzero design requires computed ||A||F²>=1e-12, zero design accepted. Finite positive absolute tolerance and budget 0..100000.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "accelerated-optimization-momentum-state",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Heavy ball uses alpha=4/(sqrt(L)+sqrt(mu))² and beta=((sqrt(L)-sqrt(mu))/(sqrt(L)+sqrt(mu)))² at x. Nesterov uses y=x+beta(x-previous), beta without squaring, then gradient at y and step1/L. Moving the gradient evaluation to x or interchanging beta values is a rejected join.",
+        "path": "model.md",
+        "section": "momentum-state",
+        "status": "partial_source_model",
+        "type": "history_sensitive_recurrence"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Real strong-convexity/acceleration identities do not certify f64 error, monotonic objective or convergence by a fixed budget. Frobenius scale is a real Lipschitz bound; cancellation/underflow and checked nonfinite states remain observable. Checked allocation errors are distinct from invalid input. No callbacks or executable percentage profiles.",
+        "domain": "Diagonal n=1..256, D_i in [1e-6,1e6], |b_i|,|x0_i|<=1e6. LASSO m=1..256,n=1..64, finite design/response/lambda magnitudes<=1e6, lambda>=0; nonzero design requires computed ||A||F²>=1e-12, zero design accepted. Finite positive absolute tolerance and budget 0..100000.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "accelerated-optimization-spectral-step",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "BB1 uses s=x-previous and alpha=(s.s)/(s.Ds) clipped to [1/L,1/mu]; first step and zero-denominator fallback use1/L. This is not heavy-ball momentum. In real arithmetic positive D places the quotient in that interval; rounded zero sy invokes the specified fallback.",
+        "path": "model.md",
+        "section": "spectral-step",
+        "status": "partial_source_model",
+        "type": "safeguarded_secant_relation"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Real strong-convexity/acceleration identities do not certify f64 error, monotonic objective or convergence by a fixed budget. Frobenius scale is a real Lipschitz bound; cancellation/underflow and checked nonfinite states remain observable. Checked allocation errors are distinct from invalid input. No callbacks or executable percentage profiles.",
+        "domain": "Diagonal n=1..256, D_i in [1e-6,1e6], |b_i|,|x0_i|<=1e6. LASSO m=1..256,n=1..64, finite design/response/lambda magnitudes<=1e6, lambda>=0; nonzero design requires computed ||A||F²>=1e-12, zero design accepted. Finite positive absolute tolerance and budget 0..100000.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "accelerated-optimization-proximal-shared-kernel",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "ISTA/FISTA share validation, objective/KKT evaluation and soft_threshold(point-gradient/L,lambda/L). Zero A has zero KKT violation at zero and must stop before dividing by L=0. A tiny nonzero design whose squared norm is below1e-12 is rejected, so a zero-design shortcut must not admit it.",
+        "path": "model.md",
+        "section": "proximal-shared-kernel",
+        "status": "partial_source_model",
+        "type": "dependency_contract"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Real strong-convexity/acceleration identities do not certify f64 error, monotonic objective or convergence by a fixed budget. Frobenius scale is a real Lipschitz bound; cancellation/underflow and checked nonfinite states remain observable. Checked allocation errors are distinct from invalid input. No callbacks or executable percentage profiles.",
+        "domain": "Diagonal n=1..256, D_i in [1e-6,1e6], |b_i|,|x0_i|<=1e6. LASSO m=1..256,n=1..64, finite design/response/lambda magnitudes<=1e6, lambda>=0; nonzero design requires computed ||A||F²>=1e-12, zero design accepted. Finite positive absolute tolerance and budget 0..100000.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "accelerated-optimization-acceleration-observation",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "FISTA state (x,y,t) starts (0,0,1); t'=(1+sqrt(1+4t²))/2 and y'=x'+((t-1)/t')*(x'-x). Its first two actual x updates match ISTA for identical input, while later updates can differ. Objective nonmonotonicity is permitted; an unchanged x does not imply unchanged momentum.",
+        "path": "model.md",
+        "section": "acceleration-observation",
+        "status": "partial_source_model",
+        "type": "rejected_trajectory_equivalence"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Real strong-convexity/acceleration identities do not certify f64 error, monotonic objective or convergence by a fixed budget. Frobenius scale is a real Lipschitz bound; cancellation/underflow and checked nonfinite states remain observable. Checked allocation errors are distinct from invalid input. No callbacks or executable percentage profiles.",
+        "domain": "Diagonal n=1..256, D_i in [1e-6,1e6], |b_i|,|x0_i|<=1e6. LASSO m=1..256,n=1..64, finite design/response/lambda magnitudes<=1e6, lambda>=0; nonzero design requires computed ||A||F²>=1e-12, zero design accepted. Finite positive absolute tolerance and budget 0..100000.",
+        "evidence": "model.md; exact transitive revisions in source_bindings.",
+        "id": "accelerated-optimization-termination-partition",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Validation precedes buffers. At each committed iterate recompute metric, return Converged for residual<=tol before checking budget, otherwise return BudgetExhausted at budget. Reports must retain their original metric and error type across shared helpers; finite observed convergence is not a universal accuracy certificate.",
+        "path": "model.md",
+        "section": "termination-partition",
+        "status": "partial_source_model",
+        "type": "status_transport"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks (wave25-evidence)",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "accelerated-optimization",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/barzilai_borwein/mod.rs",
+      "sha256": "86534bbd7f1ca09a45d95b576eb40d42a5a5a80dd436ef7916b8f2877b055686"
+    },
+    {
+      "path": "algorithms/src/barzilai_borwein/tests.rs",
+      "sha256": "778c6352ec13941ccc139ea8d2a2e1ff1b67c01c397ec2747f5990264c1b99d2"
+    },
+    {
+      "path": "algorithms/src/fista_lasso/mod.rs",
+      "sha256": "9b9856eab9c48dd6af4179d8e5c2fcc76da59268a1c0466d79920144079e8829"
+    },
+    {
+      "path": "algorithms/src/fista_lasso/tests.rs",
+      "sha256": "cebfe82bb2b0e432f5482492abb0294df2417a802e1094c2fbaa7d151622519e"
+    },
+    {
+      "path": "algorithms/src/heavy_ball_quadratic/mod.rs",
+      "sha256": "3fc54b6993a47537fd35f2c6997d841097fce6678774872a84d7699f72a40327"
+    },
+    {
+      "path": "algorithms/src/heavy_ball_quadratic/tests.rs",
+      "sha256": "a2847ef483472559d3318a9722d0873907c0df7c22be870f56785c220c2fcd5b"
+    },
+    {
+      "path": "algorithms/src/nesterov_quadratic/mod.rs",
+      "sha256": "f1b09a73e2ec8bd963c22180d448f248029102ed7b1d22d301da8a78cdf25981"
+    },
+    {
+      "path": "algorithms/src/nesterov_quadratic/tests.rs",
+      "sha256": "80b13b7f45ec6b1a35d922d6086167f353e82fd8bf2f28c9d83ca12d0fa752e8"
+    },
+    {
+      "path": "algorithms/src/proximal_gradient_lasso/mod.rs",
+      "sha256": "4d6bdf740802406cf7f6031d9e03e028fca4d769688cded0dd0ccaf8e76cc2e3"
+    },
+    {
+      "path": "algorithms/src/proximal_gradient_lasso/tests.rs",
+      "sha256": "56d3fb9e810667cd7a438f63afdfd0d10135ddedb9fcced4787c45f534738bf2"
+    }
+  ],
+  "status": "partial_source_bound_group"
+}

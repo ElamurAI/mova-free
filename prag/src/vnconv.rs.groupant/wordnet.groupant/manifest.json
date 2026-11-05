@@ -1,0 +1,87 @@
+{
+  "children": [
+    {
+      "id": "prag-vnconv-wordnet-data",
+      "path": "data.groupant"
+    },
+    {
+      "id": "prag-vnconv-wordnet-selection",
+      "path": "selection.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "prag-vnconv-wordnet-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "prag-vnconv-wordnet-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "prag-vnconv-wordnet-specialization",
+        "path": "model.md",
+        "section": "specialization",
+        "status": "partial_source_model",
+        "type": "transitivity_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 38599,
+      "start": 29648
+    },
+    "description": "nominals reads index.noun, data.noun, data.verb and calls nominal_rows unchanged after checksum accumulation. The pure function builds offset maps, selects noun rows in index line order, derives verb choice, scopes frames to the selected word, sorts/deduplicates frame IDs and accumulates counts by event file. The wrapper adds attribution/header and writes one file."
+  },
+  "id": "prag-vnconv-wordnet",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../vnconv.rs",
+    "sha256": "b5e9e5a2a3fc9359403585f2a0b1ffacc4ecb71a563d252d1ea334a76695ae52"
+  },
+  "status": "partial_source_bound_model"
+}

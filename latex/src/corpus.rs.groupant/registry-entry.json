@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p latex --features math --bin latex wave28"
+  ],
+  "children": [],
+  "cost": "Directory sorting sum O(d log d), decoded file plus path/ID/hash sets retained. Extraction can rescan quadratically; parse/gate/bridge delegated. Error samples cap12/kind, gate40, bridge60; sets unbounded.",
+  "description": "collect sorts directory entries and filters suffix .xml.gz/.xml/.tex. run skips read errors, scans macros per tex file, or literal XML record/id/title/abstract with first-ID global dedup. process extracts whole text before checking formula limit; counts formula/hash then parse, unknown/clean, gate and optional Expr/relation bridge. Output writes occur after report construction, nontransactionally.",
+  "forward": [
+    "collect sorts directory entries and filters suffix .xml.gz/.xml/.tex. run skips read errors, scans macros per tex file, or literal XML record/id/title/abstract with first-ID global dedup. process extracts whole text before checking formula limit; counts formula/hash then parse, unknown/clean, gate and optional Expr/relation bridge. Output writes occur after report construction, nontransactionally."
+  ],
+  "id": "latex-corpus",
+  "inverse": [
+    "Report preimage contains many documents with differing ignored prose, duplicates and capped samples. Hash cardinalities cannot reconstruct formulas and may collide. Rounded durations and examples lose information; outputs do not recover source paths or macro states.",
+    "Zero limit excludes formula parse but not extraction errors. Duplicate IDs exclude later title/abstract. Parse error excludes gate/bridge counts. out=None excludes writes. Selected suffix does not imply valid document."
+  ],
+  "limitations": [
+    "Partial source-derived model and finite synthetic checks",
+    "No universal proof or executable percentage surrogate",
+    "No live corpus, frozen VMM, teacher/API, training or GPU execution"
+  ],
+  "source": "latex/src/corpus.rs",
+  "state": "formulas=parsed+sum(error counts), rt_ok+rt_fail=parsed, clean<=parsed, distinct_clean subset distinct. Unknown counts are occurrences. Elapsed fields and count-only error-sort ties nondeterministic."
+}

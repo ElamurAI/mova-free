@@ -1,0 +1,124 @@
+{
+  "model": "/ABSOLUTE/PATH/en.bin",
+  "model_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "ledger": "/ABSOLUTE/PATH/nautilus/ledger",
+  "followup_queue": "/ABSOLUTE/PATH/nautilus/review",
+  "capabilities": {
+    "commands-draft": {
+      "handler": "nautilus",
+      "parameters": {
+        "operation": "draft",
+        "layer": "commands"
+      },
+      "intent": {
+        "request_predicates": [
+          "make",
+          "build",
+          "draft",
+          "write",
+          "create",
+          "update",
+          "redo"
+        ],
+        "observations": [
+          "draft",
+          "make",
+          "build",
+          "write",
+          "create",
+          "update",
+          "redo"
+        ],
+        "entities": [
+          "command"
+        ]
+      }
+    },
+    "commands-stats": {
+      "handler": "nautilus",
+      "parameters": {
+        "operation": "stats",
+        "layer": "commands"
+      },
+      "intent": {
+        "observes": true,
+        "request_predicates": [
+          "have",
+          "hold",
+          "contain",
+          "count",
+          "tell",
+          "show"
+        ],
+        "observations": [
+          "many",
+          "entry",
+          "count",
+          "number",
+          "size"
+        ],
+        "entities": [
+          "command"
+        ]
+      }
+    },
+    "wikipedia-draft": {
+      "handler": "nautilus",
+      "parameters": {
+        "operation": "draft",
+        "layer": "wikipedia"
+      },
+      "intent": {
+        "request_predicates": [
+          "make",
+          "build",
+          "draft",
+          "write",
+          "create",
+          "update",
+          "redo"
+        ],
+        "observations": [
+          "draft",
+          "make",
+          "build",
+          "write",
+          "create",
+          "update",
+          "redo"
+        ],
+        "entities": [
+          "wikipedia"
+        ]
+      }
+    },
+    "wikipedia-stats": {
+      "handler": "nautilus",
+      "parameters": {
+        "operation": "stats",
+        "layer": "wikipedia"
+      },
+      "intent": {
+        "observes": true,
+        "request_predicates": [
+          "have",
+          "hold",
+          "contain",
+          "count",
+          "tell",
+          "show"
+        ],
+        "observations": [
+          "many",
+          "entry",
+          "count",
+          "number",
+          "size"
+        ],
+        "entities": [
+          "wikipedia"
+        ]
+      }
+    }
+  }
+}

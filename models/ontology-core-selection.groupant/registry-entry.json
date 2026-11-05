@@ -1,0 +1,38 @@
+{
+  "checks": [
+    "native-commands.json: 24 cargo named tests, 2 build-script named tests, twice debug/release",
+    "controls.json: 8 compiled controls with nonzero failure, restoration and positive reruns",
+    "All nine syntax projections generated twice identically",
+    "prior-isolation.json: affected query twice debug/release with absent ONTO_PRIOR"
+  ],
+  "children": [
+    "onto-build-script",
+    "onto-build",
+    "onto-core",
+    "onto-coregate",
+    "onto-coresel",
+    "onto-corevmm",
+    "onto-judge",
+    "onto-model",
+    "onto-tests"
+  ],
+  "cost": "Core gate O(RC) membership plus maps, selection sorts accepted numeric rows O(sum A log A); graph assembly O(W log W+E log E+L log L+sum s_w²). Text/CSR retained in memory; external teacher/I/O cost not measured.",
+  "description": "Candidate rows and verdict keys → coresel applicability/rank filtering → explicit 20-column core cells → coregate categorical completeness → build-script CoreId/CORE → core Field and graph contradiction queries. Separately Builder XML/ZIP ingestion → sorted Graph SoA/CSR → store/Kb callers. Judge/VMM pure parsers map responses into bounded categorical observations; live teacher transport not executed.",
+  "forward": [
+    "Candidate rows and verdict keys → coresel applicability/rank filtering → explicit 20-column core cells → coregate categorical completeness → build-script CoreId/CORE → core Field and graph contradiction queries. Separately Builder XML/ZIP ingestion → sorted Graph SoA/CSR → store/Kb callers. Judge/VMM pure parsers map responses into bounded categorical observations; live teacher transport not executed.",
+    "coresel uses wdwalk core resolution and corevmm key/verdict readers, build.rs consumes coregate then core.rs includes generated arrays. Graph model feeds store/Kb/query; core checks layer0 Kb properties and ancestry. Builder consumes Zip; judge/corevmm call wdvmm only in unexecuted effectful paths. Passing parser is not successful numeric code emission or teacher correctness."
+  ],
+  "id": "ontology-core-selection",
+  "inverse": [
+    "Explicit no candidates cannot enter core; absent fields cannot pass completeness; wrong synset candidates cannot substitute senses. Gate success alone does not exclude invalid numeric/identifier emission, and pure response parse cannot exclude teacher or append failures.",
+    "Compiled core admits all rejected/lower-ranked candidates, comments, duplicate dropped values and numeric spellings preserving emitted records. Graph admits repeated edges and senses removed by assembly. Parsed risk empty admits none and malformed valid-ID rows, so response reconstruction is not unique."
+  ],
+  "limitations": [
+    "Partial branch coverage; no full selection or external dataset ingestion",
+    "No live teacher/workers or held-out data execution",
+    "Known unchecked narrowing, nonfinite literals, camel collisions and ignored worker write errors are not repaired or certified",
+    "No useful executable percentage surrogate for categorical/effect boundaries",
+    "Initial query omitted ONTO_PRIOR; initial result not fully isolated evidence, corrected query runs pass."
+  ],
+  "state": "Core order preserved into enum/static indices; categorical unknown/n/a/known-empty stay distinct. Valid representable graph construction deduplicates edges and preserves incoming/outgoing transpose. Core lookup requires unique OEWN key/POS to agree with Graph linear lookup; public malformed Graph state outside checked domain."
+}

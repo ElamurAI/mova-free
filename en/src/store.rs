@@ -711,3 +711,24 @@ mod tests {
         assert!(unpack::<S>(&file[..file.len() - 3]).is_err());
     }
 }
+
+#[cfg(test)]
+mod wave27 {
+    use super::*;
+    #[test]
+    fn bounded_contract() {
+        let b = pack(&vec![1u16, 513]).unwrap();
+        assert_eq!(unpack::<Vec<u16>>(&b).unwrap(), vec![1, 513]);
+        let mut bad = b.clone();
+        *bad.last_mut().unwrap() ^= 1;
+        assert!(unpack::<Vec<u16>>(&bad).unwrap_err().0.contains("checksum"));
+        assert!(from_bytes::<bool>(&[2]).is_err());
+        assert!(
+            from_bytes::<u8>(&[1, 2])
+                .unwrap_err()
+                .0
+                .contains("trailing")
+        );
+        assert_eq!(from_bytes::<u16>(&[1, 2]).unwrap(), 513);
+    }
+}

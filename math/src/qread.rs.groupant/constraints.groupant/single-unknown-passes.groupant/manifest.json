@@ -1,0 +1,102 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "scope": "Shared parent syntax restricted to coverage byte interval; no semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "coefficient_isolation",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "coefficient_isolation",
+        "status": "partial_source_derived_model",
+        "type": "coefficient_isolation"
+      },
+      {
+        "id": "underdetermined_gap",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "underdetermined_gap",
+        "status": "partial_source_derived_model",
+        "type": "underdetermined_gap"
+      },
+      {
+        "id": "fixed_pass_horizon",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "fixed_pass_horizon",
+        "status": "partial_source_derived_model",
+        "type": "fixed_pass_horizon"
+      },
+      {
+        "id": "constraint_assembly_order",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "constraint_assembly_order",
+        "status": "partial_source_derived_model",
+        "type": "constraint_assembly_order"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "Tests",
+      "status": "bounded_actual_helper_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 64782,
+      "start": 61744
+    },
+    "description": "Construct equations from Is constraints, thing comparisons, time comparisons and wholes in that order using state queries. Run four passes over stored equations. After subst(sol), exactly one unknown u with coefficient a produces sol[u]=-(remaining expression)/a; zero or multiple unknowns cause no insertion."
+  },
+  "id": "math-qread-constraints-single-unknown-passes",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../qread.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "8389b8d58f68121743d6346e638601297c3725483f4b9fcd2eb8cd47ef2d028a"
+  },
+  "status": "partial_source_bound_model"
+}

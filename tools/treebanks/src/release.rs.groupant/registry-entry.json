@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named synthetic native tests; paired syntax projection"
+  ],
+  "children": [],
+  "cost": "O(archive bytes plus file/dir sorting), count uses O(max line bytes) memory; read retains README/stats/file lists and three Counts per treebank. u64 additions/range width can overflow outside bounded fixtures; checked final subtraction alone is not global arithmetic safety.",
+  "description": "count reads byte lines, trims CR/LF, counts nonempty data runs as sentences, ranges as fused with inclusive under_ranges, dotted ids as empty, other ids as words; final tokens=checked_sub(words+fused,under_ranges). read streams three-component archive paths, accepts UD_ dirs, prefers README.md, rejects code mismatch/duplicate split/no conllu. check_stats compares sentences/tokens/words/fused for train/dev/test/total, requires total, ignores empty nodes.",
+  "forward": [
+    "count reads byte lines, trims CR/LF, counts nonempty data runs as sentences, ranges as fused with inclusive under_ranges, dotted ids as empty, other ids as words; final tokens=checked_sub(words+fused,under_ranges). read streams three-component archive paths, accepts UD_ dirs, prefers README.md, rejects code mismatch/duplicate split/no conllu. check_stats compares sentences/tokens/words/fused for train/dev/test/total, requires total, ignores empty nodes."
+  ],
+  "id": "treebanks-release",
+  "inverse": [
+    "Counts admit arbitrary token text, word ids and distributions across sentences respecting totals; stats omission of words means tokens default. Stream/archive bytes are unrecoverable from totals and file inventory.",
+    "Reversed/nonnumeric ranges reject and range excess rejects at final checked subtraction; no disk extraction occurs. check_stats cannot reject disagreement solely in empty-node counts."
+  ],
+  "limitations": [
+    "Partial source models and finite fixtures only. No corpus/model/network/site/release execution or universal proof."
+  ],
+  "source": "tools/treebanks/src/release.rs",
+  "state": "Bounded helper inputs and source-derived CLI state/effects; see catalog."
+}

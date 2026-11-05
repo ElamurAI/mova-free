@@ -1,0 +1,35 @@
+{
+  "checks": [
+    "25 source-local tests; five compiled mutation controls",
+    "composition_wave25: diagonal_stationarity_join, lasso_soft_threshold_join",
+    "Full library: 782 checks twice debug and twice release; see model.md"
+  ],
+  "children": [
+    "algorithm-barzilai-borwein",
+    "algorithm-barzilai-borwein-tests",
+    "algorithm-heavy-ball-quadratic",
+    "algorithm-heavy-ball-quadratic-tests",
+    "algorithm-nesterov-quadratic",
+    "algorithm-nesterov-quadratic-tests",
+    "algorithm-proximal-gradient-lasso",
+    "algorithm-proximal-gradient-lasso-tests",
+    "algorithm-fista-lasso",
+    "algorithm-fista-lasso-tests"
+  ],
+  "cost": "Each diagonal method O(n(k+1)) time/O(n) memory, two initial checked buffers and no per-step allocations. ISTA O(m*n*(k+1))/O(n) working memory, two initial vectors and one soft_threshold output per update. FISTA has three initial vectors, one prox output per update and two gradient/objective evaluations per update. k<=100000; caller matrix storage is additional. No timing gain claimed.",
+  "description": "Run three distinct positive-diagonal quadratic recurrences and two LASSO proximal recurrences with recomputed residuals, explicit finite budgets, and tagged reports/errors. These are alternatives sharing mathematical targets, not a serial optimizer pipeline.",
+  "forward": [
+    "Run three distinct positive-diagonal quadratic recurrences and two LASSO proximal recurrences with recomputed residuals, explicit finite budgets, and tagged reports/errors. These are alternatives sharing mathematical targets, not a serial optimizer pipeline.",
+    "Diagonal methods reuse gradient_descent_quadratic Error/Report/Status, not its iteration. ISTA reuses projected_gradient_box buffer and report types plus soft_threshold; FISTA additionally calls ISTA validate/evaluate/proximal_step. Diagonal optimum b_i/D_i supplies a shared oracle; identity-design LASSO supplies soft-threshold oracle. None of these joins equates trajectories, stopping iterations, or residual units."
+  ],
+  "id": "accelerated-optimization",
+  "inverse": [
+    "Exclude wrong dimension, nonfinite successful metrics, updates beyond budget, Converged when the recomputed metric exceeds tolerance, or relabeling the quadratic Euclidean metric as the LASSO infinity metric. For zero budget diagonal x must equal x0 and proximal x must be zero. A report satisfying real KKT conditions but not the specified rounded recurrence/status is not automatically a permitted native result.",
+    "For any admissible diagonal D and z with b=Dz and x0=z in bounds, zero-update solution z has many compatible objectives. Identity LASSO optimum z_i!=0 implies response_i=z_i+lambda*sign(z_i), while z_i=0 admits response_i in [-lambda,lambda] in reals. General designs admit null(A') response perturbations; retaining objective still permits different equal-norm orthogonal components. Native fibers additionally reproduce rounded history and status; x alone does not recover momentum or t."
+  ],
+  "limitations": [
+    "Real strong-convexity/acceleration identities do not certify f64 error, monotonic objective or convergence by a fixed budget. Frobenius scale is a real Lipschitz bound; cancellation/underflow and checked nonfinite states remain observable. Checked allocation errors are distinct from invalid input. No callbacks or executable percentage profiles.",
+    "Finite tests and source-derived models are not a universal proof."
+  ],
+  "state": "Quadratics minimize .5*x'Dx-b'x and report Euclidean gradient norm; LASSO minimizes .5||Ax-b||²+lambda||x||1 and reports objective plus KKT infinity violation. Returned metrics belong to returned x. Convergence takes precedence over exhaustion, including zero budget; no one-step stagnation inference."
+}

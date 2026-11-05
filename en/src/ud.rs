@@ -459,3 +459,30 @@ mod tests {
         assert_eq!((s.upos, s.clas, s.mlas), (2, 2, 1));
     }
 }
+
+#[cfg(test)]
+mod wave27 {
+    use super::*;
+    #[test]
+    fn bounded_contract() {
+        assert_eq!(children(&[2, 0, 99]), vec![vec![], vec![0], vec![]]);
+        let k = kids_of(
+            &[2, 0, 2, 2],
+            &[Rel::Nsubj, Rel::Root, Rel::AuxPass, Rel::Conj],
+        );
+        assert_eq!(k[1], 7);
+        assert_eq!(k[3], 7);
+        let u = Ud::default();
+        assert_eq!(
+            u.upos(&View {
+                form: "x",
+                tag: Tag::NN,
+                rel: Rel::Root,
+                kids: 0,
+                agr: 0
+            }),
+            UPos::X
+        );
+        assert_eq!(Scores::default().main4(), [0.0; 4]);
+    }
+}

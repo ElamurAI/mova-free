@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "id": "algorithm-suffix-array",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "24954cb215722581fd2fe110808dbd0b2de7d6924cb4eb3a54e5482b4072d253"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "24954cb215722581fd2fe110808dbd0b2de7d6924cb4eb3a54e5482b4072d253",
+        "domain": "Finite byte slices and ordinary terminating executions with successful allocation.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "One public call or explicitly scoped internal state.",
+        "operator": "Exclude omitted, repeated or out-of-range offsets, the empty suffix n, or adjacent offsets whose suffixes are in descending order. Input bytes remain unchanged.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "preimages",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "24954cb215722581fd2fe110808dbd0b2de7d6924cb4eb3a54e5482b4072d253",
+        "domain": "Finite byte slices and ordinary terminating executions with successful allocation.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "One public call or explicitly scoped internal state.",
+        "operator": "For a fixed permutation A of 0..n, compatible byte texts are precisely length-n texts whose adjacent suffixes T[A[j]..] are strictly lexicographically increasing. Several texts satisfy these constraints; A alone does not recover bytes.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "rank-fiber",
+        "type": "state_preimage",
+        "path": "model.md",
+        "section": "rank-fiber",
+        "status": "partial_source_derived",
+        "subject_revision": "24954cb215722581fd2fe110808dbd0b2de7d6924cb4eb3a54e5482b4072d253",
+        "domain": "Finite byte slices and ordinary terminating executions with successful allocation.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "One public call or explicitly scoped internal state.",
+        "operator": "Observe rank ordering and equality, not the initial literal numeric byte ranks. At width k, equal ranks mean equal length-k truncated suffix prefixes and rank order matches their lexicographic order. Any byte text with the same ordered prefix equivalence classes is compatible with this rank observation.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "pair-refinement",
+        "type": "refinement_relation",
+        "path": "model.md",
+        "section": "pair-refinement",
+        "status": "partial_source_derived",
+        "subject_revision": "24954cb215722581fd2fe110808dbd0b2de7d6924cb4eb3a54e5482b4072d253",
+        "domain": "Finite byte slices and ordinary terminating executions with successful allocation.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "One public call or explicitly scoped internal state.",
+        "operator": "Sorting pairs (rank_i, optional rank_{i+k}) orders length-2k truncated prefixes; None is less than every present rank. Assigning consecutive ranks preserves pair equality and strict ordering.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "monotone-relabel",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "monotone-relabel",
+        "status": "partial_source_derived",
+        "subject_revision": "24954cb215722581fd2fe110808dbd0b2de7d6924cb4eb3a54e5482b4072d253",
+        "domain": "Finite byte slices and ordinary terminating executions with successful allocation.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "One public call or explicitly scoped internal state.",
+        "operator": "A strictly increasing map on the input byte support preserves the suffix array. Injectivity without monotonicity is insufficient, and wrapping maps violate the premise.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "minimum-prefix",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "minimum-prefix",
+        "status": "partial_source_derived",
+        "subject_revision": "24954cb215722581fd2fe110808dbd0b2de7d6924cb4eb3a54e5482b4072d253",
+        "domain": "Finite byte slices and ordinary terminating executions with successful allocation.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "One public call or explicitly scoped internal state.",
+        "operator": "Prepending a byte strictly below every input byte produces array [0] followed by every original offset increased by one. The empty input gives [0].",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "constant-fiber",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "constant-fiber",
+        "status": "partial_source_derived",
+        "subject_revision": "24954cb215722581fd2fe110808dbd0b2de7d6924cb4eb3a54e5482b4072d253",
+        "domain": "Finite byte slices and ordinary terminating executions with successful allocation.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "One public call or explicitly scoped internal state.",
+        "operator": "For n=3, output [2,1,0] admits exactly nonincreasing triples; over three byte values there are ten compatible triples. Equal-value and strictly decreasing texts can yield the same suffix order.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "termination",
+        "type": "progress_relation",
+        "path": "model.md",
+        "section": "termination",
+        "status": "partial_source_derived",
+        "subject_revision": "24954cb215722581fd2fe110808dbd0b2de7d6924cb4eb3a54e5482b4072d253",
+        "domain": "Finite byte slices and ordinary terminating executions with successful allocation.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "One public call or explicitly scoped internal state.",
+        "operator": "Each round doubles represented prefix length unless all n ranks are unique and returns. Width>=n distinguishes suffix lengths even for constant bytes. checked_add handles absent tails; saturating doubling cannot prevent termination for valid byte slices.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  }
+}

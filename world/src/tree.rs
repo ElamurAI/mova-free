@@ -49,7 +49,7 @@ impl Tree {
             .map(|(i, f)| if i == 0 || f == "i" || name_like(f) { cap(f) } else { f.clone() })
             .collect();
         let mut w = a.annotate(&cased);
-        // matrix-driven label repairs (inverted subject, bare oblique): `rerank::repairs`, docs/absurdity.md
+        // matrix-driven label repairs (inverted subject, bare oblique): `rerank::repairs`, docs/knowledge.md#the-absurdity-matrix
         if std::env::var("WORLD_NO_REPAIR").is_err() {
             crate::rerank::repair_words(&mut w);
         }
@@ -149,7 +149,9 @@ impl Tree {
                 continue;
             }
             out.push(x);
-            st.extend(self.kids[x].iter().copied());
+            // Each node occurs in at most one child list. A reachable cycle must
+            // therefore contain the start; suppress its closing edge.
+            st.extend(self.kids[x].iter().copied().filter(|child| *child != i));
         }
         out.sort_unstable();
         out
@@ -179,7 +181,7 @@ impl Tree {
         matches!(self.w[i].upos, UPos::NOUN | UPos::PROPN | UPos::VERB | UPos::ADJ | UPos::ADV | UPos::NUM)
     }
 
-    /// The tree on one line: `form/lemma/UPOS/head/relation` (for development).
+    /// The tree on one line: `index:form/UPOS/relation>head` (for development).
     pub fn show(&self) -> String {
         self.w.iter().enumerate().map(|(i, x)| format!("{}:{}/{}/{}>{}", i + 1, x.form, x.upos, x.rel, x.head)).collect::<Vec<_>>().join(" ")
     }
@@ -197,5 +199,111 @@ fn cap(w: &str) -> String {
     match c.next() {
         Some(f) => f.to_uppercase().chain(c).collect(),
         None => String::new(),
+    }
+}
+
+#[cfg(test)]
+mod wave7_tree {
+    use super::*;
+    fn word(head: usize, rel: Rel, upos: UPos, form: &str) -> Word {
+        Word { head, rel, upos, form: form.into(), lemma: form.into(), tag: PTag::NN, feats: Default::default() }
+    }
+    #[test]
+    fn head_fibers_and_child_order() {
+        for a in 0..6 { for b in 0..6 { for c in 0..6 {
+            let heads = [a,b,c];
+            let t = Tree::of_words(heads.iter().map(|h| word(*h, Rel::Obj, UPos::NOUN, "x")).collect());
+            assert_eq!(t.root(), heads.iter().position(|h| *h == 0));
+            for parent in 0..3 {
+                let expected: Vec<_> = (0..3).filter(|i| heads[*i] == parent + 1).collect();
+                assert_eq!(t.kids(parent), expected);
+                assert_eq!(t.kids_of(parent, Rel::Obj), expected);
+                assert_eq!(t.head(parent), match heads[parent] { 1=>Some(0),2=>Some(1),3=>Some(2),_=>None });
+            }
+        }}}
+        let fiber: Vec<_> = (0..6).filter(|h| Tree::of_words(vec![word(*h,Rel::Obj,UPos::NOUN,"x")]).head(0).is_none()).collect();
+        assert_eq!(fiber, vec![0,2,3,4,5]);
+    }
+    #[test]
+    fn forest_subtree_cut_and_dominance() {
+        for b in 0..2 { for c in 0..3 { for d in 0..4 {
+            let heads = [0,b,c,d];
+            let t = Tree::of_words(heads.iter().map(|h| word(*h,Rel::Obj,UPos::NOUN,"x")).collect());
+            for root in 0..4 { for mask in 0..16 {
+                let cut: Vec<_>=(0..4).filter(|i| mask & (1<<i) != 0).collect();
+                let mut expected=vec![];
+                for node in 0..4 {
+                    let mut p=node;
+                    let mut reachable=false;
+                    loop {
+                        if p==root { reachable=true; break; }
+                        if cut.contains(&p) || heads[p]==0 { break; }
+                        p=heads[p]-1;
+                    }
+                    if reachable { expected.push(node); }
+                }
+                assert_eq!(t.sub(root,&cut),expected);
+                if mask==0 { for node in 0..4 { assert_eq!(t.dominates(root,node),expected.contains(&node)); } }
+            }}
+        }}}
+    }
+    #[test]
+    fn cycles_have_bounded_dominance() {
+        let t=Tree::of_words(vec![word(2,Rel::Obj,UPos::NOUN,"a"),word(1,Rel::Obj,UPos::NOUN,"b"),word(0,Rel::Obj,UPos::NOUN,"c")]);
+        assert!(t.dominates(0,1));
+        assert!(!t.dominates(2,0));
+        assert_eq!(t.root(),Some(2));
+        assert_eq!(t.sub(0, &[]), vec![0, 1]);
+        assert_eq!(t.sub(0, &[0]), vec![0, 1]);
+        assert_eq!(t.sub(0, &[1]), vec![0]);
+    }
+    #[test]
+    fn observations_and_index_error() {
+        let t=Tree::of_words(vec![word(0,Rel::Obj,UPos::NOUN,"Oak"),word(1,Rel::Obj,UPos::DET,"the")]);
+        assert_eq!(t.text(&[1,0,0]),"the Oak Oak");
+        assert_eq!(t.form(0),"Oak"); assert_eq!(t.lemma(0),"Oak");
+        assert!(t.content(0)); assert!(!t.content(1));
+        assert_eq!(t.tag(0),PTag::NN);
+        assert_eq!(cap("ßeta"),"SSeta"); assert_eq!(cap(""),"");
+        assert!(std::panic::catch_unwind(||t.head(2)).is_err());
+        assert!(Tree::default().is_empty());
+        assert_eq!(Tree::default().root(),None);
+    }
+
+    #[test]
+    fn functional_graph_sub_matches_visited_reachability() {
+        let mut comparisons = 0;
+        for n in 1usize..=4 {
+            let radix = n + 2; // Root zero, every valid head, and one invalid head.
+            for code in 0..radix.pow(n as u32) {
+                let mut digits = code;
+                let heads: Vec<_> = (0..n).map(|_| {
+                    let h = digits % radix;
+                    digits /= radix;
+                    h
+                }).collect();
+                let t = Tree::of_words(heads.iter().map(|h| word(*h, Rel::Obj, UPos::NOUN, "x")).collect());
+                for root in 0..n {
+                    for mask in 0..(1usize << n) {
+                        let cut: Vec<_> = (0..n).filter(|i| mask & (1 << i) != 0).collect();
+                        // Independent graph search: scan raw heads, mark before
+                        // expansion, and never use the implementation's kids.
+                        let mut seen = vec![false; n];
+                        let mut queue = vec![root];
+                        while let Some(x) = queue.pop() {
+                            if seen[x] || (x != root && cut.contains(&x)) { continue; }
+                            seen[x] = true;
+                            for child in 0..n {
+                                if heads[child] == x + 1 { queue.push(child); }
+                            }
+                        }
+                        let expected: Vec<_> = (0..n).filter(|i| seen[*i]).collect();
+                        assert_eq!(t.sub(root, &cut), expected, "heads={heads:?}, root={root}, cut={cut:?}");
+                        comparisons += 1;
+                    }
+                }
+            }
+        }
+        assert_eq!(comparisons, 86078);
     }
 }

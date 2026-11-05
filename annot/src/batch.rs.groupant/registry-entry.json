@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "batch::tests::request_has_cached_fixed_block_and_same_prompt",
+    "batch::tests::results_parse_and_patch",
+    "batch::tests::state_roundtrip_and_epoch",
+    "batch::wave27_tests::duplicate_result_last_wins_and_price_boundary"
+  ],
+  "children": [],
+  "cost": "For B request/result bytes, R unique replies and I items: encoding O(B), ordered result map O(B+R log R), retained state O(B+I+draft tokens). apply adds downstream gate and optional training/finish costs. u64 usage addition and usize indices lack overflow guards. USD is weighted tokens/1000000 times 0.5, f64 rounded; no elapsed-speed claim.",
+  "description": "Prepared patch requests and historical reply envelopes feed the same Outcome patch gates as direct annotation. State persists model, effort, training paths, corpus target, ordered items/drafts and request index chunks. Blind preparation clears corpus/hints but retains drafts for comparison.",
+  "forward": [
+    "prepare validates teacher model, requires patch flow, loads hints, chunks at batch_size>=1, encodes fixed/variable blocks and then writes requests before state. parse_results maps each nonblank JSON line to id and success Reply or error; duplicate ids overwrite. apply looks up chunk index strings, parses blind blocks or adds patch replies, then invokes finish. Missing/errored replies refuse all their chunk items."
+  ],
+  "id": "annot-batch",
+  "inverse": [
+    "The preimage of a result map includes any blank lines, any overwritten earlier duplicate ids, and arbitrary discarded thinking blocks; final occurrences must decode to the observed Reply/errors. State roundtrip recovers serialized fields, not external files or teacher execution. Cost alone has many usage/model antecedents."
+  ],
+  "limitations": [
+    "No prepare/apply/blind end-to-end fixture; optional training, corpus append and external teacher are unexecuted.",
+    "No corrupt State index/panic or numeric overflow injection."
+  ],
+  "source": "annot/src/batch.rs",
+  "state": "With valid unique item ids, complete matching drafts and in-range chunks, request k refers to exactly that chunk. Parsing skips thinking blocks and preserves text-block concatenation order. These assumptions are unchecked on deserialized State; indexing can panic. The two preparation writes are not atomic together."
+}

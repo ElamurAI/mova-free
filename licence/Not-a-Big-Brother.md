@@ -78,7 +78,7 @@ These jurisdictions are treated as especially sensitive because the working poli
 
 Vietnam is currently treated as a closely related but separate category:
 
-- high_censorship_and_surveillance
+- `high_censorship_and_surveillance`
 
 This classification may change as the evidence base is reviewed.
 
@@ -88,7 +88,7 @@ Some democratic states also possess exceptionally powerful intelligence and surv
 
 The United States and United Kingdom are examples of:
 
-- high_capacity_surveillance_state
+- `high_capacity_surveillance_state`
 
 They are not placed in Annex A merely because they possess strong surveillance capabilities.
 

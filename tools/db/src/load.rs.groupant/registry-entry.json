@@ -1,0 +1,29 @@
+{
+  "checks": [
+    "load::wave31::option_and_comment_representation",
+    "load::tests::comments_and_dates",
+    "load::teacher_provenance_tests::codex_runs_are_not_labelled_as_legacy_claude"
+  ],
+  "children": [],
+  "cost": "O(file bytes + prior-state rows + staged rows + sum candidate-vector scans) expected Rust work; memory retains complete Doc/state and staged buffers. Repeated duplicate document keys can cause quadratic suffix probing. Database query/transaction and annotation gate costs remain additive and unmeasured.",
+  "description": "CoNLL staging and identity assignment",
+  "forward": [
+    "load_file canonicalizes, reads/hash/parses, rejects empty sentences, queries state, then skips identical path/hash or rejects changed path. Run reuse/new IDs precede six TSV writers. For each sentence, prior-state candidates require sent_id and text equality; Auto/Existing accept exactly one, reject ties, Existing rejects zero, New creates. New document keys track newdoc/file/idprefix policy; repeated newdoc IDs gain ~n. Gate failures are stored as labels. Six flushed tables execute in SQL then counts reconcile."
+  ],
+  "id": "db-src-load",
+  "inverse": [
+    "Same canonical path with changed SHA1 cannot reach write execution. Ambiguous exact sentence candidates cannot be arbitrarily tie-broken by Auto/Existing. A non-ok annotation gate does not exclude the load: it is counted and staged.",
+    "Given report counts and resulting raw rows, antecedents include all prior maxima and run/doc maps consistent with new IDs, all matching candidates producing chosen sids, and source text with matching stored comments/blank metadata. Counts alone cannot recover match identities, original bytes or unused state.",
+    "Let m=count prior entries with matching id and text. Existing succeeds only m=1; Auto creates at m=0 and errors m>1; New creates regardless. Newly staged equal sentences do not change m. SQL uniqueness/races remain assumptions.",
+    "NewDoc advances current key on newdoc comments before sentence matching; repeated keys within this file gain ~2,~3. Existing matched sentences retain their DB doc even when a new current key was opened.",
+    "comment_kv splits literal space-equals-space or trailing space-equals; absent value and present empty string remain different. Raw annotation comments preserve duplicate/order information that metadata JSON maps can overwrite.",
+    "TSV validation and ambiguity errors precede exec; post.tsv parsing/count mismatch follows exec and may report error after committed effects. The two phases must not be modeled as one rollback guarantee."
+  ],
+  "limitations": [
+    "Finite helper/fixture evidence only; no DuckDB integration or SQL semantics",
+    "Partial syntax projection; no macro expansion or full semantic proof",
+    "No executable approximate profile or speedup claim"
+  ],
+  "source": "tools/db/src/load.rs",
+  "state": "rep.created+rep.matched=rep.sents on success. Every staged annotation has one aid and ten raw columns per row. Matching uses the pre-load snapshot: newly staged sentences do not become candidates. Unchecked i64 IDs, ord/para and usize conversions require representable bounds; exhaustion behavior is not a checked error contract."
+}

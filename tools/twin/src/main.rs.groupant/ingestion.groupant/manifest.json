@@ -1,0 +1,87 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "No syntax projection, macro expansion or semantic AST; byte ranges bind the reviewed snapshot only.",
+      "status": "not_materialized"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "twin-ingestion-behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Spec ingestion, cohort and prospective preparation",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "twin-ingestion-reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "Spec ingestion, cohort and prospective preparation",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "twin-ingestion-cohort-variation",
+        "path": "model.md",
+        "required": false,
+        "scope": "Spec ingestion, cohort and prospective preparation",
+        "section": "cohort-variation",
+        "status": "partial_source_model",
+        "type": "counterfactual_relation"
+      },
+      {
+        "id": "twin-ingestion-replay-tolerance",
+        "path": "model.md",
+        "required": false,
+        "scope": "Spec ingestion, cohort and prospective preparation",
+        "section": "replay-tolerance",
+        "status": "partial_source_model",
+        "type": "compatibility_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 8279,
+      "start": 4066
+    },
+    "description": "Spec ingestion, cohort and prospective preparation"
+  },
+  "id": "twin-ingestion",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../main.rs",
+    "sha256": "01f907c5df2d09277026ffba9a9e1660c1a729159986e0232cefc423aa87b1cb"
+  },
+  "status": "partial_source_bound_model"
+}

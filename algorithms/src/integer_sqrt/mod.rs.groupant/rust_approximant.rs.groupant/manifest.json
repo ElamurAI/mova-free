@@ -1,0 +1,71 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "analytical"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional analytical relation with finite evidence",
+        "assumptions": "Standard Rust integer semantics and u64 total order",
+        "domain": "All u64 inputs; zero is exact",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "One companion call",
+        "operator": "For fixed b, exclude all (n,a) with a != F_b(n), where F is the deterministic certified-root expression above. In particular a>floor(sqrt(n)) and error exceeding b are impossible.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_source_derived",
+        "subject_revision": "801e5fd8c8a93bb25dc0bd78241634df8ea9ff81d7fde5ea8890e0fa4befa54b",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional analytical relation with finite evidence",
+        "assumptions": "Standard Rust integer semantics and u64 total order",
+        "domain": "All u64 inputs; zero is exact",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "One companion call",
+        "operator": "For a,b, compatible inputs are the union over s in 0..31 with a divisible by 2^s, q=a/2^s, of [q^2*2^(2s),(q+1)^2*2^(2s)-1] intersect u64 and the shift-choice region s=max(0,floor(log2(n)/2)-k). Include n=0 when a=0. Set-valued preimage, not unique recovery.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived",
+        "subject_revision": "801e5fd8c8a93bb25dc0bd78241634df8ea9ff81d7fde5ea8890e0fa4befa54b",
+        "type": "reverse_reconstruction"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-integer-sqrt-rust-approximant",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../rust_approximant.rs",
+    "sha256": "801e5fd8c8a93bb25dc0bd78241634df8ea9ff81d7fde5ea8890e0fa4befa54b"
+  },
+  "status": "partial_source_derived_instance"
+}

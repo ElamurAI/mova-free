@@ -203,115 +203,132 @@ struct VClass {
 }
 
 fn verbnet(dir: &Path, sum: &mut Sum) -> Result<(String, usize, usize, usize)> {
-    let mut classes: Vec<VClass> = Vec::new();
+    let mut classes = Vec::new();
     for f in xml_files(dir)? {
         let s = std::fs::read_to_string(&f)?;
         sum.add(&s);
-        let mut stack: Vec<usize> = Vec::new();
-        let mut restr = Restr::default();
-        // what the restrictions being read belong to
-        #[derive(PartialEq)]
-        enum In {
-            None,
-            Role(String),
-            Np(String),
-            Prep(String),
+        append_verbnet(&s, &mut classes);
+    }
+    verbnet_rows(&classes)
+}
+
+/// Convert one supplied VerbNet document to headerless TSV and class/member/frame counts.
+/// Uses the directory converter's small tag reader, not a validating general XML parser.
+/// Classes retain opening order, each followed by its own frames; no filesystem access.
+pub fn verbnet_xml(xml: &str) -> Result<(String, usize, usize, usize)> {
+    let mut classes = Vec::new();
+    append_verbnet(xml, &mut classes);
+    verbnet_rows(&classes)
+}
+
+fn append_verbnet(s: &str, classes: &mut Vec<VClass>) {
+    let mut stack: Vec<usize> = Vec::new();
+    let mut restr = Restr::default();
+    // what the restrictions being read belong to
+    #[derive(PartialEq)]
+    enum In {
+        None,
+        Role(String),
+        Np(String),
+        Prep(String),
+    }
+    let mut target = In::None;
+    let mut in_syntax = false;
+    let mut in_sem = false;
+    let mut in_example = false;
+    let (mut primary, mut syntax, mut sem, mut example): (String, Vec<String>, Vec<String>, String) = Default::default();
+    let finish = |target: &mut In, restr: &mut Restr, classes: &mut Vec<VClass>, stack: &[usize], syntax: &mut Vec<String>| {
+        let r = restr.take();
+        match std::mem::replace(target, In::None) {
+            In::Role(t) => {
+                if let Some(&c) = stack.last() {
+                    classes[c].roles.push(if r.is_empty() { t } else { format!("{t}[{r}]") });
+                }
+            }
+            In::Np(v) => syntax.push(if r.is_empty() { v } else { format!("{v}[{r}]") }),
+            In::Prep(v) => syntax.push(if r.is_empty() { format!("{{{v}}}") } else if v.is_empty() { format!("{{{r}}}") } else { format!("{{{v}}}[{r}]") }),
+            In::None => {}
         }
-        let mut target = In::None;
-        let mut in_syntax = false;
-        let mut in_sem = false;
-        let mut in_example = false;
-        let (mut primary, mut syntax, mut sem, mut example): (String, Vec<String>, Vec<String>, String) = Default::default();
-        let finish = |target: &mut In, restr: &mut Restr, classes: &mut Vec<VClass>, stack: &[usize], syntax: &mut Vec<String>| {
-            let r = restr.take();
-            match std::mem::replace(target, In::None) {
-                In::Role(t) => {
+    };
+    for ev in events(s) {
+        match ev {
+            Ev::Open(n, a, selfc) => match n.as_str() {
+                "VNCLASS" | "VNSUBCLASS" => {
+                    let parent = stack.last().map(|&c| classes[c].id.clone()).unwrap_or_else(|| "-".into());
+                    classes.push(VClass { id: attr(&a, "ID").to_string(), parent, members: Vec::new(), roles: Vec::new(), frames: Vec::new() });
+                    stack.push(classes.len() - 1);
+                }
+                "MEMBER" => {
                     if let Some(&c) = stack.last() {
-                        classes[c].roles.push(if r.is_empty() { t } else { format!("{t}[{r}]") });
+                        classes[c].members.push(lemma_of(attr(&a, "name")));
                     }
                 }
-                In::Np(v) => syntax.push(if r.is_empty() { v } else { format!("{v}[{r}]") }),
-                In::Prep(v) => syntax.push(if r.is_empty() { format!("{{{v}}}") } else if v.is_empty() { format!("{{{r}}}") } else { format!("{{{v}}}[{r}]") }),
-                In::None => {}
-            }
-        };
-        for ev in events(&s) {
-            match ev {
-                Ev::Open(n, a, selfc) => match n.as_str() {
-                    "VNCLASS" | "VNSUBCLASS" => {
-                        let parent = stack.last().map(|&c| classes[c].id.clone()).unwrap_or_else(|| "-".into());
-                        classes.push(VClass { id: attr(&a, "ID").to_string(), parent, members: Vec::new(), roles: Vec::new(), frames: Vec::new() });
-                        stack.push(classes.len() - 1);
+                "THEMROLE" => {
+                    target = In::Role(attr(&a, "type").to_string());
+                    if selfc {
+                        finish(&mut target, &mut restr, classes, &stack, &mut syntax);
                     }
-                    "MEMBER" => {
-                        if let Some(&c) = stack.last() {
-                            classes[c].members.push(lemma_of(attr(&a, "name")));
-                        }
+                }
+                "SELRESTRS" | "SYNRESTRS" if !selfc => restr.open(&a),
+                "SELRESTR" | "SYNRESTR" => restr.item(&a),
+                "DESCRIPTION" => primary = attr(&a, "primary").to_string(),
+                "EXAMPLE" => in_example = example.is_empty(),
+                "SYNTAX" => in_syntax = true,
+                "SEMANTICS" => in_sem = true,
+                "NP" if in_syntax => {
+                    target = In::Np(attr(&a, "value").to_string());
+                    if selfc {
+                        finish(&mut target, &mut restr, classes, &stack, &mut syntax);
                     }
-                    "THEMROLE" => {
-                        target = In::Role(attr(&a, "type").to_string());
-                        if selfc {
-                            finish(&mut target, &mut restr, &mut classes, &stack, &mut syntax);
-                        }
+                }
+                "PREP" if in_syntax => {
+                    target = In::Prep(attr(&a, "value").split_whitespace().collect::<Vec<_>>().join("|"));
+                    if selfc {
+                        finish(&mut target, &mut restr, classes, &stack, &mut syntax);
                     }
-                    "SELRESTRS" | "SYNRESTRS" if !selfc => restr.open(&a),
-                    "SELRESTR" | "SYNRESTR" => restr.item(&a),
-                    "DESCRIPTION" => primary = attr(&a, "primary").to_string(),
-                    "EXAMPLE" => in_example = example.is_empty(),
-                    "SYNTAX" => in_syntax = true,
-                    "SEMANTICS" => in_sem = true,
-                    "NP" if in_syntax => {
-                        target = In::Np(attr(&a, "value").to_string());
-                        if selfc {
-                            finish(&mut target, &mut restr, &mut classes, &stack, &mut syntax);
-                        }
+                }
+                "VERB" if in_syntax => syntax.push("V".into()),
+                "LEX" if in_syntax => syntax.push(format!("'{}'", attr(&a, "value").trim())),
+                "ADJ" if in_syntax => syntax.push("ADJ".into()),
+                "ADV" if in_syntax => syntax.push("ADV".into()),
+                "PRED" if in_sem => sem.push(format!("{}{}", if attr(&a, "bool") == "!" { "!" } else { "" }, attr(&a, "value"))),
+                _ => {}
+            },
+            Ev::Close(n) => match n.as_str() {
+                "VNCLASS" | "VNSUBCLASS" => {
+                    stack.pop();
+                }
+                "SELRESTRS" | "SYNRESTRS" => restr.close(),
+                "THEMROLE" | "NP" | "PREP" => finish(&mut target, &mut restr, classes, &stack, &mut syntax),
+                "EXAMPLE" => in_example = false,
+                "SYNTAX" => in_syntax = false,
+                "SEMANTICS" => in_sem = false,
+                "FRAME" => {
+                    if let Some(&c) = stack.last() {
+                        sem.dedup();
+                        classes[c].frames.push(format!("{}\t{}\t{}\t{}", cell(&primary), syntax.join(" ").replace('\t', " "), cell(&sem.join(" ")), cell(&example)));
                     }
-                    "PREP" if in_syntax => {
-                        target = In::Prep(attr(&a, "value").split_whitespace().collect::<Vec<_>>().join("|"));
-                        if selfc {
-                            finish(&mut target, &mut restr, &mut classes, &stack, &mut syntax);
-                        }
-                    }
-                    "VERB" if in_syntax => syntax.push("V".into()),
-                    "LEX" if in_syntax => syntax.push(format!("'{}'", attr(&a, "value").trim())),
-                    "ADJ" if in_syntax => syntax.push("ADJ".into()),
-                    "ADV" if in_syntax => syntax.push("ADV".into()),
-                    "PRED" if in_sem => sem.push(format!("{}{}", if attr(&a, "bool") == "!" { "!" } else { "" }, attr(&a, "value"))),
-                    _ => {}
-                },
-                Ev::Close(n) => match n.as_str() {
-                    "VNCLASS" | "VNSUBCLASS" => {
-                        stack.pop();
-                    }
-                    "SELRESTRS" | "SYNRESTRS" => restr.close(),
-                    "THEMROLE" | "NP" | "PREP" => finish(&mut target, &mut restr, &mut classes, &stack, &mut syntax),
-                    "EXAMPLE" => in_example = false,
-                    "SYNTAX" => in_syntax = false,
-                    "SEMANTICS" => in_sem = false,
-                    "FRAME" => {
-                        if let Some(&c) = stack.last() {
-                            sem.dedup();
-                            classes[c].frames.push(format!("{}\t{}\t{}\t{}", cell(&primary), syntax.join(" ").replace('\t', " "), cell(&sem.join(" ")), cell(&example)));
-                        }
-                        primary.clear();
-                        syntax.clear();
-                        sem.clear();
-                        example.clear();
-                    }
-                    _ => {}
-                },
-                Ev::Text(t) => {
-                    if in_example {
-                        example = t;
-                        in_example = false;
-                    }
+                    primary.clear();
+                    syntax.clear();
+                    sem.clear();
+                    example.clear();
+                }
+                _ => {}
+            },
+            Ev::Text(t) => {
+                if in_example {
+                    example = t;
+                    in_example = false;
                 }
             }
         }
     }
+}
+
+fn verbnet_rows(classes: &[VClass]) -> Result<(String, usize, usize, usize)> {
     let mut out = String::new();
     let (mut nm, mut nf) = (0, 0);
-    for c in &classes {
+    for c in classes {
         writeln!(out, "class\t{}\t{}\t{}\t{}", c.id, c.parent, c.members.join(","), c.roles.join(" "))?;
         nm += c.members.len();
         for f in &c.frames {
@@ -619,7 +636,7 @@ fn nombank(dir: &Path, sum: &mut Sum) -> Result<(String, usize, usize)> {
 
 /// Convert the three lexicons: VerbNet (permissive) into `out` (verbnet.tsv, built into the reader); PropBank (CC BY-SA)
 /// and NomBank (research-only) into `test` (propbank.tsv, nombank.tsv — outside the repo, for tests and measurement
-/// only: share-alike and research-only data never build MMM). A report of what was made.
+/// only: share-alike and research-only data never build SLM). A report of what was made.
 pub fn convert(vn: &Path, pb: &Path, nb: &Path, out: &Path, test: &Path) -> Result<String> {
     std::fs::create_dir_all(test)?;
     let mut rep = String::new();
@@ -706,7 +723,7 @@ fn wn_data(s: &str) -> std::collections::BTreeMap<u64, Syn> {
                 break;
             }
             let st = t[i + 3];
-            let (src, tgt) = (usize::from_str_radix(&st[..2.min(st.len())], 16).unwrap_or(0), usize::from_str_radix(st.get(2..4).unwrap_or("0"), 16).unwrap_or(0));
+            let (src, tgt) = (usize::from_str_radix(st.get(..2.min(st.len())).unwrap_or("0"), 16).unwrap_or(0), usize::from_str_radix(st.get(2..4).unwrap_or("0"), 16).unwrap_or(0));
             ptrs.push((t[i].to_string(), t[i + 1].parse().unwrap_or(0), t[i + 2].chars().next().unwrap_or('?'), src, tgt));
             i += 4;
         }
@@ -755,7 +772,26 @@ pub fn nominals(dict: &Path, out: &Path) -> Result<String> {
     for s in [&idx, &dn, &dv] {
         sum.add(s);
     }
-    let (nouns, verbs) = (wn_data(&dn), wn_data(&dv));
+    let (t, n, nt, by_file) = nominal_rows(&idx, &dn, &dv)?;
+    let head = format!(
+        "# Princeton WordNet 3.1 (wordnetcode.princeton.edu/wn3.1.dict.tar.gz), WordNet 3.0 License: permission to use, copy, \
+         modify and distribute for any purpose and without fee, with the notice kept — WordNet 3.1 Copyright 2011 by Princeton \
+         University. All rights reserved. Converted by `prag lexicon nominals`, input checksum {:016x}.\n\
+         # rows: noun<TAB>verb (a derivational link of the noun's first sense)<TAB>the noun's lexicographer file<TAB>t = the linked \
+         verb sense takes an object, i = it does not<TAB>its WordNet frames<TAB>the verb synset\n",
+        sum.0
+    );
+    std::fs::write(out.join("nominals.tsv"), format!("{head}{t}"))?;
+    Ok(format!(
+        "nominals.tsv: {n} nouns naming a verb's event ({nt} transitive), by file: {}, {} bytes\n",
+        by_file.iter().map(|(k, v)| format!("{k} {v}")).collect::<Vec<_>>().join(", "),
+        head.len() + t.len()
+    ))
+}
+
+// Pure production path; index order determines row order, not offset-map order.
+fn nominal_rows(idx: &str, dn: &str, dv: &str) -> Result<(String, usize, usize, std::collections::BTreeMap<&'static str, usize>)> {
+    let (nouns, verbs) = (wn_data(dn), wn_data(dv));
     let mut t = String::new();
     let (mut n, mut nt) = (0usize, 0usize);
     let mut by_file: std::collections::BTreeMap<&str, usize> = std::collections::BTreeMap::new();
@@ -807,18 +843,119 @@ pub fn nominals(dict: &Path, out: &Path) -> Result<String> {
         nt += tr as usize;
         *by_file.entry(file).or_default() += 1;
     }
-    let head = format!(
-        "# Princeton WordNet 3.1 (wordnetcode.princeton.edu/wn3.1.dict.tar.gz), WordNet 3.0 License: permission to use, copy, \
-         modify and distribute for any purpose and without fee, with the notice kept — WordNet 3.1 Copyright 2011 by Princeton \
-         University. All rights reserved. Converted by `prag lexicon nominals`, input checksum {:016x}.\n\
-         # rows: noun<TAB>verb (a derivational link of the noun's first sense)<TAB>the noun's lexicographer file<TAB>t = the linked \
-         verb sense takes an object, i = it does not<TAB>its WordNet frames<TAB>the verb synset\n",
-        sum.0
-    );
-    std::fs::write(out.join("nominals.tsv"), format!("{head}{t}"))?;
-    Ok(format!(
-        "nominals.tsv: {n} nouns naming a verb's event ({nt} transitive), by file: {}, {} bytes\n",
-        by_file.iter().map(|(k, v)| format!("{k} {v}")).collect::<Vec<_>>().join(", "),
-        head.len() + t.len()
-    ))
+    Ok((t, n, nt, by_file))
+}
+
+#[cfg(test)]
+mod wave15_models {
+    use super::*;
+
+    #[test]
+    fn malformed_unicode_wordnet_pointer_does_not_panic() {
+        let m = wn_data("1 4 n 01 arrival 0 1 + 2 v €1");
+        let p = &m[&1].ptrs[0];
+        assert_eq!((p.3, p.4), (0, 0));
+    }
+
+    #[test]
+    fn xml_quotes_entities_comments_and_truncation() {
+        let e = events("<?x?><!DOCTYPE x><!--skip--><X a='a > b' b=\"&amp;lt;\" c='é'> A &lt; B </X>");
+        assert_eq!(e.len(), 3);
+        let Ev::Open(n, a, c) = &e[0] else { panic!("open") };
+        assert_eq!((n.as_str(), *c), ("X", false));
+        assert_eq!(attr(a, "a"), "a > b");
+        assert_eq!(attr(a, "b"), "&lt;");
+        assert_eq!(attr(a, "c"), "é");
+        assert!(matches!(&e[1], Ev::Text(t) if t == "A < B"));
+        assert!(matches!(&e[2], Ev::Close(t) if t == "X"));
+        // The narrow reader accepts an unterminated quoted tag, and leaves numeric entities literal.
+        let e = events("<X a='€&#65;");
+        assert!(matches!(&e[0], Ev::Open(_, a, false) if attr(a, "a") == "€&#65;"));
+        assert!(events("<!-- incomplete €").is_empty());
+    }
+
+    #[test]
+    fn verbnet_nested_restrictions_and_row_order() {
+        let xml = r#"<VNCLASS ID="root">
+<MEMBER name="GIVE_up"/>
+<THEMROLE type="Agent"><SELRESTRS><SELRESTR Value="+" type="animate"/>
+<SELRESTRS logic="or"><SELRESTR Value="+" type="human"/><SELRESTR Value="-" type="solid"/></SELRESTRS>
+</SELRESTRS></THEMROLE>
+<VNSUBCLASS ID="child"><MEMBER name="walk"/><FRAME><DESCRIPTION primary="child"/>
+<SYNTAX><NP value="Theme"/><VERB/></SYNTAX></FRAME></VNSUBCLASS>
+<FRAME><DESCRIPTION primary="A | B"/><EXAMPLE>A &amp; B</EXAMPLE><EXAMPLE>ignored</EXAMPLE>
+<SYNTAX><NP value="Agent"/><VERB/><PREP value="to for"/><NP value="Theme"><SYNRESTRS><SYNRESTR Value="+" type="plural"/></SYNRESTRS></NP><LEX value="up"/><ADJ/><ADV/></SYNTAX>
+<SEMANTICS><PRED value="motion"/><PRED value="motion"/><PRED bool="!" value="state"/><PRED value="motion"/></SEMANTICS></FRAME>
+</VNCLASS>"#;
+        let (rows, nc, nm, nf) = verbnet_xml(xml).unwrap();
+        assert_eq!((nc, nm, nf), (2, 2, 2));
+        assert_eq!(rows, concat!(
+            "class\troot\t-\tgive up\tAgent[+animate&(+human|-solid)]\n",
+            "frame\troot\tA / B\tAgent V {to|for} Theme[+plural] 'up' ADJ ADV\tmotion !state motion\tA & B\n",
+            "class\tchild\troot\twalk\t\n",
+            "frame\tchild\tchild\tTheme V\t\t\n"));
+    }
+
+    #[test]
+    fn verbnet_document_state_resets_and_empty_counts() {
+        let mut classes = Vec::new();
+        append_verbnet("<VNCLASS ID='a'><MEMBER name='run'/><SYNTAX><NP value='Lost'/>", &mut classes);
+        append_verbnet("<VNCLASS ID='b'><FRAME><DESCRIPTION primary='B'/><SYNTAX><VERB/></SYNTAX></FRAME></VNCLASS>", &mut classes);
+        let (rows, nc, nm, nf) = verbnet_rows(&classes).unwrap();
+        assert_eq!((nc,nm,nf), (2,1,1));
+        assert_eq!(rows, "class\ta\t-\trun\t\nclass\tb\t-\t\t\nframe\tb\tB\tV\t\t\n");
+        assert_eq!(verbnet_xml("").unwrap(), (String::new(),0,0,0));
+    }
+
+    #[test]
+    fn nominal_first_linked_sense_ranking_and_frames() {
+        let idx = "arrival n 2 1 + 2 0 1 2\nwalk n 1 1 + 1 0 3";
+        let dn = concat!(
+            "1 4 n 01 arrival 0 2 + 20 v 0101 + 21 v 0101\n",
+            "2 4 n 01 arrival 0 1 + 22 v 0101\n",
+            "3 11 n 01 walk 0 1 + 23 v 0102\n");
+        let dv = concat!(
+            "20 38 v 01 come 0 0 1 + 1 00\n",
+            "21 38 v 01 arrive 0 0 4 + 8 01 + 2 00 + 8 01 + 9 02\n",
+            "22 38 v 01 arrival 0 0 1 + 1 00\n",
+            "23 38 v 02 stride 0 walk 0 0 2 + 8 01 + 1 00\n");
+        let (rows, n, nt, files) = nominal_rows(idx,dn,dv).unwrap();
+        assert_eq!(rows, "arrival\tarrive\tact\tt\t2,8\t00000021\nwalk\twalk\tevent\ti\t1\t00000023\n");
+        assert_eq!((n,nt),(2,1));
+        assert_eq!(files.into_iter().collect::<Vec<_>>(),vec![("act",1),("event",1)]);
+    }
+
+    #[test]
+    fn nominal_first_sense_and_derivation_filters() {
+        let idx = "teacher n 2 1 + 2 0 1 2\nidea n 1 1 + 1 0 3\nwalk_about n 1 1 + 1 0 2\narrival n 1 1 + 1 0 4";
+        let dn = concat!(
+            "1 18 n 01 teacher 0 1 + 20 v 0101\n",
+            "2 4 n 01 teacher 0 1 + 20 v 0101\n",
+            "3 9 n 01 idea 0 1 + 21 v 0101\n",
+            "4 4 n 01 arrival 0 1 + 20 v 0201\n");
+        let dv = "20 38 v 01 teach 0 0 0\n21 38 v 01 ideate 0 0 0";
+        let (rows,n,nt,files)=nominal_rows(idx,dn,dv).unwrap();
+        assert!(rows.is_empty() && files.is_empty());
+        assert_eq!((n,nt),(0,0));
+        assert!(deverbal("arrival","arrive"));
+        assert!(!deverbal("memory","memorize"));
+        assert_eq!(common_prefix("écho","éclair"),2);
+    }
+
+    #[test]
+    fn nomlex_positions_and_lossy_normalization() {
+        let xs = sexps(r#"; comment
+(NOM :ORTH "Arrival" :VERB "arrive" :X ((DET-POSS) (PP :PVAL ("OF" "by" "OF")) (N-N-MOD)))"#);
+        assert_eq!(xs.len(),1);
+        assert_eq!(xs[0].get(":ORTH").unwrap().atom(),"Arrival");
+        let mut p = Vec::new();
+        positions(xs[0].get(":X").unwrap(), &mut p);
+        assert_eq!(p,vec!["poss","of","by","nn"]);
+        assert_eq!(cell(" A\t B | C\n"),"A B / C");
+        assert_eq!(lemma_of(" BRING-OUT "),"bring out");
+        assert_eq!(lemma_of("well-known"),"well-known");
+        let mut x=Sum::default();x.add("abc");
+        assert_eq!(x.0,0xe71fa2190541574b);
+        let mut y=Sum::default();y.add("a");y.add("bc");assert_eq!(x.0,y.0);
+    }
 }

@@ -244,3 +244,55 @@ mod tests {
         assert_eq!(generate(&f, &m, &Freq::new(), &om).as_deref(), Some("Мама читає книжку."));
     }
 }
+
+#[cfg(test)]
+mod wave29 {
+    use super::*;
+    #[test]
+    fn variant_priority_and_head_bounds() {
+        let g = Gram::from_vesum("noun:p:v_rod:pron:3");
+        let mem = Member {
+            rel: "adverbial:в+v_rod".into(),
+            word: Some(0),
+            lemma: "вони|noun".into(),
+            gram: g,
+        };
+        let mut m = Morph::default();
+        m.synth
+            .insert((mem.lemma.clone(), g), vec!["їх".into(), "них".into()]);
+        let mut freq = Freq::new();
+        assert_eq!(form(&m, &freq, &mem, false).as_deref(), Some("їх"));
+        assert_eq!(form(&m, &freq, &mem, true).as_deref(), Some("них"));
+        freq.word.insert("них".into(), 8);
+        assert_eq!(form(&m, &freq, &mem, false).as_deref(), Some("них"));
+        freq.cond
+            .insert((mem.lemma.clone(), g.0), HashMap::from([("їх".into(), 1)]));
+        assert_eq!(form(&m, &freq, &mem, false).as_deref(), Some("їх"));
+        let om = OrderModel::default();
+        assert!(
+            generate(
+                &Fact {
+                    gram: Gram(0),
+                    members: vec![]
+                },
+                &m,
+                &freq,
+                &om
+            )
+            .is_none()
+        );
+        assert!(
+            generate(
+                &Fact {
+                    gram: Gram(0),
+                    members: vec![mem; 13]
+                },
+                &m,
+                &freq,
+                &om
+            )
+            .is_none()
+        );
+        assert_eq!(om.best_order(&["subject", "predicate"]), vec![0, 1]);
+    }
+}

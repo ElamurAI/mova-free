@@ -2,13 +2,14 @@
 
 **Goal:** built-in, compiled LaTeX support. Math-mode formulas → our own tree (enums) → back to canonical
 LaTeX or plain text. Everything is in the binary, no external TeX needed; on the website formulas are drawn by
-KaTeX. Its place in the mini-lab is described in `docs/context.md`, "Mini-lab".
+KaTeX. Its place in the mini-lab is described in [docs/context.md](../docs/context.md#mini-lab-a-matlaboctave-style-language-and-built-in-latex).
 
 ## How it is built
 
 | file | what it does |
 |---|---|
 | `data/commands.txt` + `build.rs` | **a single command table** → enums `Sym` (TeX class, Unicode, whether it is a delimiter), `FracKind`, `Accent`, `Font`, `TextStyle`, `Stack`, `XArrow`, `EnvKind` and constant `match`es: name → `Entry`, character (`≤`, `α`) → `Sym`, environment → `EnvKind`. The first form is canonical for printing (`\leq` → `\le`). A duplicate form or an unknown kind or class is a build error |
+| `table.rs` | module `table`: includes the code that `build.rs` generates from `data/commands.txt` (the enums above; lookups `lookup_cmd`, `lookup_char`, `lookup_env`) and holds the hand-written enums `Class` and `Entry` |
 | `lex.rs` | math-mode lexer (TeX rules: `\alpha` eats spaces, `%` is a comment, spaces merge) and a stack stream onto which a macro pushes its body |
 | `macros.rs` | `\newcommand`/`\renewcommand`/`\providecommand` with `[n][default]`, `\def` with `#1…#9` (and with delimiters, as in TeX: `\def\pair(#1,#2){…}`), `\let` (keeps the old value), `\DeclareMathOperator(*)`; `Macros::scan(tex)` collects definitions from a document |
 | `parse.rs` | parser: tokens → `Node`; errors with a byte position (`Error::column`, `Error::context` — a `⟦` mark in the source) |
@@ -53,8 +54,8 @@ attaches to `)`, and the bridge accounts for this), `e`, `\pi`. `\sin 2x` = sin(
 `\sin^2 x` = (sin x)². `\frac{1}{2}` (an irreducible fraction of integers) is a rational literal; `\frac{2}{4}` stays
 a division (no step is lost). `to_relation` handles a chain `a = b ≤ c`. A refusal carries the kind of reason ("variable",
 "script", "function", "construct", "relation", "syntax", …). `from_expr` is the reverse side: printing `math` steps and
-answers in LaTeX; a test checks `Expr → LaTeX → tree → Expr` on 35 expressions (with normalization
-`Div(1,2)` ≡ `1/2`). `math::Expr` may change after the v2 merge — the bridge will be fixed at merge time.
+answers in LaTeX; a test checks `Expr → LaTeX → tree → Expr` on a set of expressions (with normalization
+`Div(1,2)` ≡ `1/2`). The bridge targets the `math eval` expression tree (`math::Expr`), not the `mathsolve` plan language.
 
 ## CLI
 
@@ -65,54 +66,33 @@ cargo build --release [--features math]
 ../target/release/latex corpus $MOVA_DATA/raw/math/arxiv-oai --out DIR [--math] [--fault swapfrac|dropsup|droplast] [--limit N]
 ```
 
-## Measurements (26.09, 1 thread)
+## Real formulas
 
-Real formulas — arXiv abstracts and titles from the library pilot (`$MOVA_DATA/raw/math/arxiv-oai/`, OAI-PMH
-arXivRaw metadata, 868 `.xml.gz`; the library has no `.tex` sources): 789 040 records after removing 316 757 duplicates
-between sets, **2 540 333 formulas** (729 362 distinct).
-
-| measure | value |
-|---|---|
-| parsed | 2 539 822 (99.98 %); 511 errors — all on the author's side (unclosed `{`, `%` in reformatted abstracts swallowing `\end{…}`, `$` inside a formula) |
-| **without `Unknown`** | **2 474 313 (97.40 %)**; distinct formulas — 94.51 % |
-| **round trip** | **2 539 822 of 2 539 822 green (100 %)** |
-| bridge to `math::Expr` | 8.96 % (expression 7.91 %, relation 1.05 %); the main reason for refusals is variables outside x y z t u v w n (`math::Var`) |
-| speed | parsing **1.7–1.8 M formulas/s** (18–19 MB/s of formula text; spread due to box load, three runs); gate (print + reparse) ~1 M/s; the whole run with gzip and XML — 18–19 s |
-
-Top unknowns are author macros without a preamble (abstracts have none): `\R` 7530, `\Z` 2892, `\C` 2576, `\F` 1449,
-`\eps` 1244, `\A`, `\Q`, `\g`, `\N`, `\RR`… In `.tex` they are expanded by `Macros::scan`. Full list —
-`$MOVA_DATA/runs/latex-2026-09-26/final/unknown.tsv`.
-
-A real multi-file document (the IRSTLM manual, 29 `.tex` in `raw/ext`, read-only): 101 formulas, all
-parsed without `Unknown`, macros from the main file.
+`latex corpus` reads arXiv abstracts and titles (`$MOVA_DATA/raw/math/arxiv-oai/`, OAI-PMH arXivRaw metadata,
+`.xml.gz`; this source has no `.tex`), removes duplicates between sets and reports for each formula: parsed or error,
+`Unknown` nodes, round trip, and the bridge to `math::Expr` with the reason for each refusal. It writes the list of
+unknown commands (`unknown.tsv` in `--out`). Abstracts have no preamble, so author macros (`\R`, `\Z`, `\eps`, …)
+show up as unknowns; in `.tex` documents they are expanded by `Macros::scan`.
 
 ### Negative controls
 
-- unbalanced input → an error with the exact position (17 cases in `tests/gate.rs`);
-- **a corrupted printer → the gate turns red exactly where the defect touches the tree**, over the whole corpus:
+- unbalanced input → an error with the exact position (cases in `tests/gate.rs`);
+- a corrupted printer (`--fault swapfrac|dropsup|droplast`: numerator ↔ denominator, dropped superscripts, the last
+  atom of a row of three or more dropped) must turn the gate red exactly on the formulas the defect touches (`affected`)
+  and nowhere else;
+- a macro loop (`\def\a{\a}`) is an error, not a hang; random token inputs must not panic, and everything parsed must
+  pass the round trip; bridge: a different expression gives a different tree.
 
-  | defect | formulas affected (by construction) | red | red among unaffected |
-  |---|---|---|---|
-  | `SwapFrac` (numerator ↔ denominator) | 51 122 | 51 122 | 0 |
-  | `DropSup` (drops superscripts) | 442 956 | 442 956 | 0 |
-  | `DropLast` (drops the last atom of a row ≥ 3) | 1 105 073 | 1 105 073 | 0 |
+`cargo test` and `cargo test --features math` run unit, end-to-end, bridge and property tests on random inputs.
 
-- a macro loop (`\def\a{\a}`) is an error, not a hang; 30 000 random token inputs — no panic, everything
-  parsed passes the round trip; bridge: a different expression gives a different tree.
+## Independent tests
 
-`cargo test` and `cargo test --features math` are green (unit, end-to-end, bridge, property on random inputs).
-
-## Independent tests (tests3, 26.09)
-
-- `tests/data/vmm/latex.tsv` — **100 cases** from an independent author (Opus, effort high, did not see the code; prompts
-  alongside), frozen by hash before the first run (commit `66711cecf`): `same` 20 and `diff` 15 (tree equality without
-  positions), `err` 15 (must be an error), `ok` 20 (no `Unknown`, round trip), `value` 15 (value through the bridge
-  to `math::Expr`, only with `--features math`), `count` 8 (formulas in a document fragment), `macro` 7.
-- **First run — 95/100**; 4 red `macro` cases were a defect of the test runner, not the parser: "\n" in the format meant a line
-  break and broke `\newcommand`. Fixed in the runner (a break only when not followed by a letter) → **99/100**.
-- Remaining: `vmm-tex-088` — a test error caused by the same format: "…commented\nand \(c\)" — `\nand` is read as a
-  command, so the comment swallows `\(c\)`. No parser defects found. The test is `tests/vmm_latex.rs`; its negative
-  control (same ↔ diff) is red.
+`tests/data/vmm/latex.tsv` holds cases from an independent author (the teacher, which did not see the code; prompts
+alongside), frozen by hash before they were run. Kinds: `same` and `diff` (tree equality without positions), `err`
+(must be an error), `ok` (no `Unknown`, round trip), `value` (value through the bridge to `math::Expr`, only with
+`--features math`), `count` (formulas in a document fragment), `macro`. The runner is `tests/vmm_latex.rs`; it reads
+"\n" in the format as a line break only when it is not followed by a letter, so `\newcommand` survives. Its negative
+control swaps `same` and `diff`.
 
 ## Licenses
 
@@ -121,13 +101,13 @@ parsed without `Unknown`, macros from the main file.
 - Dependencies: `flate2` (MIT/Apache-2.0, feature `gz` — only the CLI for `.xml.gz`), `math` (our own, feature `math`).
 - arXiv abstracts are used only for measurement and do not go into the repo.
 
-## What v1 lacks
+## Limits
 
 - `\sideset`, `\tensor`, `\prescript`, `CD` diagrams (`@>>>`), `\genfrac` with non-standard delimiters — as `\left…\right`.
 - Text in `\text{…}` is stored as a canonicalized string; its inner `$…$` are not parsed into the tree.
 - A preset of common author shorthands (`\R` → `\mathbb{R}`, `\eps` → `\varepsilon`) — only as an explicit option, not by
-  default: it is a guess about the author's intent. Not done.
-- The bridge is limited by the `math` variable table; scripts (`x_1`), sums, integrals, matrices — after `math` v2.
+  default: it is a guess about the author's intent. Not implemented.
+- The bridge is limited by the `math` variable table; scripts (`x_1`), sums, integrals, matrices are refused.
 
 ## Licence
 

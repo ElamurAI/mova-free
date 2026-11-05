@@ -1,0 +1,31 @@
+{
+  "checks": [
+    "cargo test --offline --locked -p world --lib school::wave34_models::answer_priority_preserves_shadowed_absence -- --exact --test-threads=1",
+    "cargo test --offline --locked -p world --lib school::wave12_models::retained_student_format_is_ordered_and_legacy_tolerant -- --exact --test-threads=1",
+    "cargo test --offline --locked -p world --lib school::wave12_models::legacy_retention_does_not_change_answer_table -- --exact --test-threads=1",
+    "cargo test --offline --locked -p world --lib school::wave12_models::zero_accumulator_activation_survives_retention -- --exact --test-threads=1",
+    "cargo test --offline --locked -p world --lib school::wave12_models::actor_retention_and_partial_vote_projection -- --exact --test-threads=1",
+    "cargo test --offline --locked -p world --lib school::wave12_models::supplied_reading_transfer_and_fraction_use_prior_state -- --exact --test-threads=1",
+    "cargo test --offline --locked -p world --lib school::wave12_models::assessment_partition_has_exactly_one_check_fold -- --exact --test-threads=1"
+  ],
+  "children": [],
+  "cost": "Compose child costs without double-counting shared word extraction. Checked arithmetic and partition remain O(1); i128 score/vote widening changes scalar representation only. TSV encoding O(K log K+B) includes union of keys; actor decoding O(R log V log E) with O(VE) storage. Parsing, teacher, training and I/O remain opaque; no timing gain.",
+  "description": "The school composes exact elementary arithmetic, word-feature selection, mutable averaged-perceptron state, vote-based actor effects, synthetic curricula, assessment routing and retained-state publication. Evidence here concerns supplied-input native calls, not a live school run. Wave34 adds five nested helper groupants and exact selected native evidence; prior epochs remain historical.",
+  "forward": [
+    "The school composes exact elementary arithmetic, word-feature selection, mutable averaged-perceptron state, vote-based actor effects, synthetic curricula, assessment routing and retained-state publication. Evidence here concerns supplied-input native calls, not a live school run.",
+    "main.rs dispatches main_args. Actual Student/Actors load/save delegate to pure codecs. Student answer calls choose then Op::apply; learn/tick update exactly the maps serialized by save. cross_check_k calls assessment_fold for both learn/check membership. school_tree consumes parent Reading/Ev helpers. Native fixtures execute supplied Reading -> play -> answer_of and learn -> encode -> decode -> answer. Parent public-API joins are separate evidence."
+  ],
+  "id": "world-school",
+  "inverse": [
+    "Exclude (op,a,b,Some(z)) when checked arithmetic is invalid or z is the wrong exact result. Exclude selections violating maximal i128 score or the smallest-discriminant tie rule. Exclude codec transitions that synthesize accumulator presence or remove an explicit zero accumulator. Exclude assignment to two check folds. Under representable updates, exclude hint bonuses on a correct chosen operation. External parser/teacher behavior is not excluded.",
+    "All operand pairs yielding the observed checked result; all weight tables satisfying the winner inequalities; all vote maps with the observed elected marginals; all index/hash residues matching the observed fold; and all codec states with the same canonical rows and accumulator activation. Retain shared identities when composing these fibers. Reports and summaries lose training history; equal answers do not identify operations or exercises."
+  ],
+  "limitations": [
+    "Supplied-input tests and partial syntax only; no live parser, teacher, course, heldout, filesystem or publication run.",
+    "Student tick/learn and world arithmetic still require representable intermediates; malformed fraction divisors remain outside scope.",
+    "Scenario phrasing pools overlap; group hashes are not provenance certification; noncoprime fold multipliers can leave folds empty.",
+    "Graduate school.tsv omits accumulated Student weights and Actors votes; codecs do not certify graduation retention."
+  ],
+  "source": "world/src/school.rs",
+  "state": "Op results are representable i64 or None. Selection ties use fixed discriminants. Student serialization preserves accumulator activation and numeric prediction for format-safe keys. Every supplied item belongs to exactly one valid assessment fold. Learning updates and world arithmetic require representable intermediate i64 values."
+}

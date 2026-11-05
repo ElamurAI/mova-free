@@ -1,4 +1,4 @@
-//! Pragmatic roles as positions, for the parser to read back: pragmatics on top of the AST — the MMM parses, the
+//! Pragmatic roles as positions, for the parser to read back: pragmatics on top of the AST — the SLM parses, the
 //! pragmatics is made, the same parse runs again with the pragmatics as input, until it converges.
 //!
 //! The reader's frames name their fillers by head lemma (`Ent.id`), not by token. Here each frame is put back on the
@@ -166,5 +166,58 @@ mod tests {
         assert_eq!(doc_key("school:books:043-willows-ch5-part3-sardines.lesson:30").0, "books:willows");
         // negative control: two books stay apart
         assert_ne!(doc_key("school:books:018-alice-the-mock-turtles.lesson:1").0, doc_key("school:books:043-willows-ch5.lesson:1").0);
+    }
+}
+
+#[cfg(test)]
+mod wave12_models {
+    use super::*;
+    use en::gram::{Feats, Rel, Tag};
+
+    fn sentence() -> Vec<Word> {
+        [("cat", UPos::NOUN, Tag::NN, 2, Rel::Nsubj),
+         ("eat", UPos::VERB, Tag::VB, 0, Rel::Root),
+         ("fish", UPos::NOUN, Tag::NN, 2, Rel::Obj)].into_iter().map(|(s, upos, tag, head, rel)| Word {
+            form: s.into(), lemma: s.into(), upos, tag, feats: Feats::default(), head, rel,
+        }).collect()
+    }
+
+    #[test]
+    fn supplied_tree_roles_and_order() {
+        let expected = vec![(1, 2, "agent"), (3, 2, "patient")];
+        assert_eq!(roles(sentence()), expected);
+        assert!(roles(vec![]).is_empty());
+        let ids = ["school:space:001-a:2", "school:space:001-a:1", "school:space:002-b:1"];
+        let rows = roles_docs(ids.iter().map(|id| (id.to_string(), sentence())).collect());
+        for (i, (id, roles)) in rows.iter().enumerate() {
+            assert_eq!(id, ids[i]);
+            assert_eq!(*roles, expected);
+        }
+    }
+
+    #[test]
+    fn document_key_finite_fibers() {
+        for (id, expected) in [
+            ("school:space:003-mercury:4", ("space:003-mercury", 3, 4)),
+            ("school:books:043-willows-ch5:30", ("books:willows", 43, 30)),
+            ("school:books:044-willows-ch6:1", ("books:willows", 44, 1)),
+            ("loose:7", ("loose", 0, 7)),
+            ("loose:bad", ("loose", 0, 0)),
+            ("", ("", 0, 0)),
+        ] {
+            assert_eq!(doc_key(id), (expected.0.into(), expected.1, expected.2));
+        }
+    }
+
+    #[test]
+    fn prior_world_retention_and_document_reset() {
+        let ids = ["school:space:001-a:2", "school:space:001-a:1", "school:space:002-b:1"];
+        for bound in [0, 1, 2] {
+            let rows = world_docs(ids.iter().map(|id| (id.to_string(), sentence())).collect(), bound);
+            assert!(rows[1].1.ends_with("recent events: none yet"));
+            assert!(rows[2].1.ends_with("recent events: none yet"));
+            assert!(rows[0].1.ends_with(if bound == 0 { "recent events: none yet" } else { "recent events: cat eat fish" }), "{rows:?}");
+            assert_eq!(rows.iter().map(|r| r.0.as_str()).collect::<Vec<_>>(), ids);
+        }
     }
 }

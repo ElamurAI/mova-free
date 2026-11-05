@@ -1,0 +1,102 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "scope": "Shared parent syntax restricted to coverage byte interval; no semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "cross_partition_reuse",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "cross_partition_reuse",
+        "status": "partial_source_derived_model",
+        "type": "cross_partition_reuse"
+      },
+      {
+        "id": "question_before_body",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "question_before_body",
+        "status": "partial_source_derived_model",
+        "type": "question_before_body"
+      },
+      {
+        "id": "occurrence_not_value",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "occurrence_not_value",
+        "status": "partial_source_derived_model",
+        "type": "occurrence_not_value"
+      },
+      {
+        "id": "coefficient_projection",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "coefficient_projection",
+        "status": "partial_source_derived_model",
+        "type": "coefficient_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "Tests",
+      "status": "bounded_actual_helper_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 72125,
+      "start": 70927
+    },
+    "description": "Flatten source occurrences for expression leaf keys. Reject fewer than two occurrences or nonzero constant before duplicate tests. With all_used false, reject any repeated occurrence globally. With true, check repetitions separately inside compound and simple leaf partitions. Then require q_leaf0..nums and, when all_used, all0..nums."
+  },
+  "id": "math-qread-gate-occurrence-partitions",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../qread.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "8389b8d58f68121743d6346e638601297c3725483f4b9fcd2eb8cd47ef2d028a"
+  },
+  "status": "partial_source_bound_model"
+}

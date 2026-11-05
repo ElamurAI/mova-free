@@ -31,3 +31,21 @@ pub fn run(db: &Path, sql: &str, mode: Option<&str>) -> Result<String> {
 pub fn fill(sql: &str, vars: &[(&str, &str)]) -> String {
     vars.iter().fold(sql.to_string(), |s, (k, v)| s.replace(&format!("{{{k}}}"), &v.replace('\'', "''")))
 }
+
+#[cfg(test)]
+mod wave33 {
+    use super::*;
+    #[test]
+    fn substitution_order_and_quotes() {
+        assert_eq!(
+            fill(
+                "SELECT '{p}', {n}, {missing}",
+                &[("p", "O'Brien"), ("n", "7")]
+            ),
+            "SELECT 'O''Brien', 7, {missing}"
+        );
+        assert_eq!(fill("{a}", &[("a", "{b}"), ("b", "x")]), "x");
+        assert_eq!(fill("{a}", &[("b", "x"), ("a", "{b}")]), "{b}");
+        assert_eq!(fill("", &[("a", "x")]), "");
+    }
+}

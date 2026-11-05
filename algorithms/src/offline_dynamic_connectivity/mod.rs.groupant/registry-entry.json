@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms offline_dynamic_connectivity::tests"
+  ],
+  "children": [],
+  "cost": "n<=2^18 and q<=2^18. BTreeMap O(q log(q+1)); interval decomposition O(q log(q+1)) placements. Union by size bounds root depth O(log(n+1)), giving O(n+q log(q+1) log(n+1)) time and O(n+q log(q+1)) storage. Recursion depth O(log(q+1)); std allocator exhaustion is not injected.",
+  "description": "offline_dynamic_connectivity mod.rs: exact structure and independent oracle",
+  "forward": [
+    "Validate caps, then timeline endpoints and canonical undirected edge lifecycle in chronological order. Add at a and Remove at b creates [a,b); an unremoved edge lasts to q. Place intervals in a time segment tree; rollback DSU unions exactly ancestors' edges. Emit reachability/reflexivity and component counts at query leaves, in order."
+  ],
+  "id": "algorithm-offline-dynamic-connectivity",
+  "inverse": [
+    "Concrete behavior complement and ambiguous reverse reconstruction in adjacent model.md"
+  ],
+  "limitations": [
+    "Finite observations are not a proof; std allocation failure not injected; partial syntax has opaque macros and no semantic AST"
+  ],
+  "source": "algorithms/src/offline_dynamic_connectivity/mod.rs",
+  "state": "Bounded deterministic supplied-input observations"
+}

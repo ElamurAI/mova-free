@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p latex --features math --lib extract::tests"
+  ],
+  "children": [],
+  "cost": "Ordinary closed scanning O(B); repeated missing closer searches O(B²). Returned metadata O(F+U), bodies borrowed. i32 depth unchecked overflow on unbounded input.",
+  "description": "Byte scanner returns borrowed formula bodies in order plus unterminated opener records. Skips comments/escapes/closed verbatim. Dollar closers skip comments and escapes, inline also tracks signed depth and paragraph boundary. Bracket/environment closers are first literal match. Unmatched openers recover by advancing past opening syntax.",
+  "forward": [
+    "Byte scanner returns borrowed formula bodies in order plus unterminated opener records. Skips comments/escapes/closed verbatim. Dollar closers skip comments and escapes, inline also tracks signed depth and paragraph boundary. Bracket/environment closers are first literal match. Unmatched openers recover by advancing past opening syntax."
+  ],
+  "id": "latex-extract",
+  "inverse": [
+    "Compatible documents contain arbitrary ignored text constrained by byte offsets and scanner state. Delimiter metadata constrains spellings but cannot recover prose, comments or preambles. Empty result admits empty/prose/comment-only input.",
+    "Escaped dollar cannot open; positive brace depth excludes inline close; blank lines stop inline search. Bracket/environment matching is not nested TeX parsing. Unclosed verbatim may resume internal scanning."
+  ],
+  "limitations": [
+    "Partial source-derived model and finite synthetic checks",
+    "No universal proof or executable percentage surrogate",
+    "No live corpus, frozen VMM, teacher/API, training or GPU execution"
+  ],
+  "source": "latex/src/extract.rs",
+  "state": "tex[f.start..f.start+f.body.len()]==f.body; offsets are UTF-8 bytes, body starts for Formula but opener for bad. Returned bodies ordered; empty input empty vectors."
+}

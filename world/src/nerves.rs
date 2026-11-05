@@ -1,4 +1,4 @@
-//! The nerve graph: words, triggers, events of the self and the sentences of the worlds in one graph (`docs/nerves.md`).
+//! The nerve graph: words, triggers, events of the self and the sentences of the worlds in one graph (`docs/knowledge.md#the-nerve-graph`).
 //!
 //! Words met in a message, a parse or a text activate their nodes; the activation spreads along the edges and reaches
 //! the matching places — the sentences of the worlds, the triggers of the code, the events the small ones lived
@@ -308,9 +308,47 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "worlds")]
+    #[cfg(mova_legacy_worlds)]
     fn time_words_reach_the_world_of_time() {
         let s = graph().sentences("How many minutes are in an hour?", "time", 5);
         assert!(s.iter().any(|x| x.contains("minute") && x.contains("hour")), "{s:?}");
+    }
+}
+
+#[cfg(test)]
+mod wave28_dialogue {
+    use super::*;
+    #[test]
+    fn normalization_and_manual_boundaries() {
+        assert_eq!(norm("BERRIES!"), Some("berry".into()));
+        assert_eq!(norm("glass"), Some("glass".into()));
+        for s in ["", "123", "where", "three"] {
+            assert_eq!(norm(s), None);
+        }
+        assert_eq!(
+            sentences_of("# Header\nOne wrapped\nline.\n```rust\nignored\n```\nNext!"),
+            ["One wrapped line.", "Next!"]
+        );
+    }
+    #[test]
+    fn synthetic_spread_units_and_dedup() {
+        let nodes = vec![Node::Word("apple".into()), Node::Trigger("pick")];
+        let index = nodes
+            .iter()
+            .cloned()
+            .enumerate()
+            .map(|(i, n)| (n, i as u32))
+            .collect();
+        let g = Nerves {
+            nodes,
+            index,
+            adj: vec![vec![(1, 1000)], vec![(0, 1000)]],
+        };
+        assert_eq!(
+            g.spread("apple apple"),
+            vec![(0, 2_000_000), (1, 2_000_000)]
+        );
+        assert!(g.spread("unknown").is_empty());
+        assert_eq!(g.edges(), 1);
     }
 }

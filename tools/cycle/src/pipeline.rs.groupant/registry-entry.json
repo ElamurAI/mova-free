@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "pipeline::wave33_tests::cascade_count_order_and_zero; pipeline::wave33_tests::attempt_budget_is_reserved_before_retry. No scheduler/feed/collect/trainer/enrich invocation.",
+    "2026-11-01: cycle debug/release synthetic reviewed selection transaction, old-vote negative control, malformed/phase/hash/header rejection, split/heldout exclusion, idempotency and interrupted rollback.",
+    "2026-11-05: held-out filtering of training_file, fine-tune base and GP_ALWAYS inputs uses db::Heldout (db::heldout_tests); collect/trainer not run.",
+    "2026-11-05 (retrain-clean): feed/review_feed annotator inputs via annot_train; compile checked, the round path not run."
+  ],
+  "children": [],
+  "cost": "Cascade B input bytes, N blocks and maximum id length L_id: O(B+N log(N+1)*(1+L_id)+N min(n,N)), including sort_by_key's repeated id hashing and linear contains scans; output O(selected bytes). Scheduler per iteration scans flights/reviews/markers plus unbounded external effects and sleeps. Reservation O(ledger bytes) read plus append/sync. No throughput claim.",
+  "description": "Collect ready flights before feeding one next round, retain heldout/inflight exclusion set and artifact restart markers. Feed prepares draft/open parsers/context/prag then submits. Collect updates DB/prag, appends corpus, checks trees, optional enrichment/train, writes row. Legacy cascade chooses changed half then seeded hash remainder. Enrichment lock and attempt ledger reserve budget before teacher review/refine.",
+  "forward": [
+    "Collect ready flights before feeding one next round, retain heldout/inflight exclusion set and artifact restart markers. Feed prepares draft/open parsers/context/prag then submits. Collect updates DB/prag, appends corpus, checks trees, optional enrichment/train, writes row. Legacy cascade chooses changed half then seeded hash remainder. Enrichment lock and attempt ledger reserve budget before teacher review/refine.",
+    "Trainer fresh blocks use the same reviewed train allowlist as training_file, in addition to heldout exclusion; source-ID boundary normalization preserves joined sentences."
+  ],
+  "id": "cycle-pipeline",
+  "inverse": [
+    "cycle.tsv row implies a compatible successful collection prefix only under untampered artifact assumptions. Same row admits varied prompts, database versions and resumed skips; attempt ledger records attempted job, not successful teacher result.",
+    "No new feed while flight.len≥max. Successful reservation at used≥budget is excluded. However earlier DB effects are not rolled back by later collection failure; exactly-once database history cannot be claimed."
+  ],
+  "limitations": [
+    "Partial syntax, bounded synthetic helper coverage; no live teacher, corpus, model, lesson or benchmark CLI. No numerical approximation budget claimed."
+  ],
+  "source": "tools/cycle/src/pipeline.rs",
+  "state": "Current CLI admits Codex and rejects tiers for new training, while legacy branches remain modeled but unexecuted. No atomic collect transaction. Zero inflight can stall; to+1 and seed/index arithmetic assume no overflow. Reservation appends/syncs before invocation; failures may consume budget."
+}

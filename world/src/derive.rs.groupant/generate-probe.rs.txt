@@ -1,0 +1,34 @@
+// Extract selected pure production helpers. Run from the repository root.
+use std::{fs, path::PathBuf, process::Command};
+fn item<'a>(source: &'a str, begin: &str) -> &'a str {
+    let start = source.find(begin).expect(begin);
+    let open = start + source[start..].find('{').unwrap();
+    let mut depth = 0;
+    for (i,b) in source.as_bytes().iter().enumerate().skip(open) {
+        if *b == b'{' { depth += 1; }
+        if *b == b'}' { depth -= 1; if depth == 0 { return &source[start..=i]; } }
+    }
+    panic!("unterminated item");
+}
+fn main() {
+    let out = PathBuf::from(std::env::args().nth(1).expect("scratch directory"));
+    fs::create_dir_all(&out).unwrap();
+    let source = fs::read_to_string("world/src/derive.rs").unwrap();
+    let mut code = fs::read_to_string("world/src/derive.rs.groupant/probe-prefix.rs.txt").unwrap();
+    for marker in ["fn closed(", "fn class(", "fn class_with(", "pub struct S {", "fn nth(", "fn pending(", "fn nth_pending(", "pub enum Cond {", "fn cond_sets(", "fn makes_cycle(", "struct Packed {", "fn unpack("] {
+        if marker == "pub enum Cond {" { code.push_str("#[derive(Clone,Debug,PartialEq,Eq)]\n"); }
+        code.push_str(item(&source,marker)); code.push('\n');
+    }
+    code.push_str(&fs::read_to_string("world/src/derive.rs.groupant/probe-main.rs.txt").unwrap());
+    fs::write(out.join("probe.rs"), &code).unwrap();
+    assert!(Command::new("rustc").args(["--edition=2021","-Awarnings"]).arg(out.join("probe.rs")).arg("-o").arg(out.join("probe")).status().unwrap().success());
+    assert!(Command::new(out.join("probe")).status().unwrap().success());
+    // Real extracted-code mutation: erase all closed-class lexical information.
+    let mutated = code.replace("lemma.to_lowercase()", "String::new()");
+    assert_ne!(code, mutated);
+    fs::write(out.join("mutant.rs"), mutated).unwrap();
+    assert!(Command::new("rustc").args(["--edition=2021","-Awarnings"]).arg(out.join("mutant.rs")).arg("-o").arg(out.join("mutant")).status().unwrap().success());
+    let result = Command::new(out.join("mutant")).output().unwrap();
+    assert!(!result.status.success(), "negative control unexpectedly passed");
+    println!("closed-class erasure mutant rejected");
+}

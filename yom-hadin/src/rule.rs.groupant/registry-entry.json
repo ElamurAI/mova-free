@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "19 exact native tests twice debug/release; repeated syntax; three compiled source mutants"
+  ],
+  "children": [],
+  "cost": "Clause/Rule encoding and decoding O(total bytes) with allocations; read_rules reads entire file then collects until first error. write_rules buffers whole serialization then one non-atomic write.",
+  "description": "Force vocabulary, clause encoding and compatible legacy/current rule rows.",
+  "forward": [
+    "Force parse matches exact names. Clause enc uses ! negation, underscore verb spaces, slash fields and comma args; dec consumes first3 fields and ignores rest. Rule from_line accepts15 columns or inserts empty reason into14-column legacy, then force/clauses; file reader ignores empty/comment/header rows."
+  ],
+  "id": "court-rule-codec",
+  "inverse": [
+    "Excluded results include accepting any row length except14/15, unknown exact force names, and empty clause verb. Empty file can validly yield zero rules; arbitrary delimiter-bearing inputs are not promised roundtrip.",
+    "dec preimage contains equivalent underscore/space normalization, absent/empty/dash patient and ignored suffix slash fields. Rule output cannot recover old14 versus current15 empty-reason origin or cleaned tabs/newlines.",
+    "For nonempty verbs not beginning '!' and without underscore/slash, optional patient either None or a nonempty string excluding slash and the literal '-' sentinel, and every argument nonempty and excluding comma/slash, dec(enc(c))=c. to_line adds additional semicolon/pipe/plus/tab restrictions; test witnesses only finite valid cases.",
+    "A14-column row inserts '-' at reason index13 and moves original final text to14; all15-column inputs keep positions. Other lengths fail before force parsing.",
+    "from_line validates length then force, acts, conds, excs in struct evaluation order. read_rules stops at first bad retained row; write failure may leave changed filesystem state.",
+    "conds Vec<Vec<Clause>> means AND over groups of OR clauses; excs means OR over groups of AND clauses. Empty groups can exist through direct construction but '-' serialized sentinel denotes no groups, not a logical truth certificate."
+  ],
+  "limitations": [
+    "Partial source-derived models and finite correspondence only",
+    "No live parser/corpus/frozen gold or protocol filesystem effects; no percentage surrogate"
+  ],
+  "source": "yom-hadin/src/rule.rs",
+  "state": "Finite synthetic rule/case states; valid indices, bounded paths, successful allocations. No legal authority claim."
+}

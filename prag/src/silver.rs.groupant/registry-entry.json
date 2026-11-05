@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p prag --lib wave16_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "N items, K batches, B text bytes: grouping O(N log K), prompt O(B+N), gate O(B+N log N); external latency/IO unspecified.",
+  "description": "Supplied Items -> ordered borrowed batches -> prompt and numbered answer gate -> accepted labels and item/batch rejection. Wrappers additionally call teacher and persist/aggregate files; those effects are source inspected only.",
+  "forward": [
+    "Supplied Items -> ordered borrowed batches -> prompt and numbered answer gate -> accepted labels and item/batch rejection. Wrappers additionally call teacher and persist/aggregate files; those effects are source inspected only."
+  ],
+  "id": "prag-silver",
+  "inverse": [
+    "Accepted labels lose text/context/rejected rows and keys. Recover keys only by joining exact batch references; prompts lose nonrendered Item metadata."
+  ],
+  "limitations": [
+    "Finite supplied fixtures; no semantic proof.",
+    "Live parser, teacher, corpus and filesystem aggregation unexecuted."
+  ],
+  "source": "prag/src/silver.rs",
+  "state": "Batch IDs sort; members retain input order; prompt/gate numbers are 1-based per batch, not key/ord. Codex teacher policy persists with no Claude fallback; legacy Opus naming grants no execution permission."
+}

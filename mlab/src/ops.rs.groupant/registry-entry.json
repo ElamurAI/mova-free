@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "ops::wave30::arithmetic",
+    "Repeated debug/release named outcomes; compiled assertion mutant; exact restore; paired syntax"
+  ],
+  "children": [],
+  "cost": "Broadcast O(output cells), small matmul O(mnk), matrix power O(log |p|) products plus inverse for negative p; large products delegate faer. Materialized range O(n), lazy at O(1). Concat allocates/clones linear total cells. No measured speed claim.",
+  "description": "map2 uses equal-shape zip, then scalar fast paths, else singleton-dimension broadcast with k=(cols==1?0:j)*rows+(rows==1?0:i). matmul delegates scalars to EMul, checks inner dimensions, uses small loops or faer at m*n*k>=32768; complex large products combine four real products. range_spec computes n=floor((b-a)/s+3eps*max(abs(span),1))+1 with endpoint snapping and evaluates from nearer end. Concatenation discards empty pieces for shape matching, but includes classes in result class choice.",
+  "forward": [
+    "map2 uses equal-shape zip, then scalar fast paths, else singleton-dimension broadcast with k=(cols==1?0:j)*rows+(rows==1?0:i). matmul delegates scalars to EMul, checks inner dimensions, uses small loops or faer at m*n*k>=32768; complex large products combine four real products. range_spec computes n=floor((b-a)/s+3eps*max(abs(span),1))+1 with endpoint snapping and evaluates from nearer end. Concatenation discards empty pieces for shape matching, but includes classes in result class choice."
+  ],
+  "id": "mlab-ops",
+  "inverse": [
+    "Bounded broadcast excludes incompatible nonsingleton dimensions and incorrect column-major ordering. Wrong-direction/zero-step/NaN ranges exclude elements. Small real matmul skips zero RHS coefficients, therefore does not guarantee dense IEEE NaN*0 propagation. Comparisons < <= > >= ignore imaginary parts; no mathematical complex order is claimed.",
+    "Broadcast result preimage includes all operand shapes allowed by singleton expansion and values satisfying per-cell operator relation; addition admits many decompositions. Matmul preimages are factorization relations, nonunique with nullspaces. Range vectors constrain start/step/endpoint up to floating rounding and snapping; empty ranges have many causes."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no semantic proof or executable surrogate",
+    "Well-formed bounded Mat; finite modest range spans fitting usize count and memory; f64 overflow/NaN otherwise follows individual branch, no uniform numerical bound. Linalg callbacks can warn through Interp; no GPU required."
+  ],
+  "source": "mlab/src/ops.rs",
+  "state": "Well-formed bounded Mat; finite modest range spans fitting usize count and memory; f64 overflow/NaN otherwise follows individual branch, no uniform numerical bound. Linalg callbacks can warn through Interp; no GPU required."
+}

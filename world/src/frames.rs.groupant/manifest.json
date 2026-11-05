@@ -1,0 +1,145 @@
+{
+  "children": [
+    {
+      "id": "frame-adapter-parser",
+      "path": "parser.groupant"
+    },
+    {
+      "id": "frame-adapter-coverage",
+      "path": "coverage.groupant"
+    },
+    {
+      "id": "frame-adapter-diagnostics",
+      "path": "diagnostics.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "parse-error",
+        "path": "model.md",
+        "section": "parse-error",
+        "status": "partial_source_derived_model",
+        "type": "failure_partition"
+      },
+      {
+        "id": "reader-delegation",
+        "path": "model.md",
+        "section": "reader-delegation",
+        "status": "partial_source_derived_model",
+        "type": "dependency_relation"
+      },
+      {
+        "id": "lesson-context",
+        "path": "model.md",
+        "section": "lesson-context",
+        "status": "partial_source_derived_model",
+        "type": "state_reset"
+      },
+      {
+        "id": "verb-inclusion",
+        "path": "model.md",
+        "section": "verb-inclusion",
+        "status": "partial_source_derived_model",
+        "type": "filter_partition"
+      },
+      {
+        "id": "weighted-coverage",
+        "path": "model.md",
+        "section": "weighted-coverage",
+        "status": "partial_source_derived_model",
+        "type": "ratio_fiber"
+      },
+      {
+        "id": "phrasal-known",
+        "path": "model.md",
+        "section": "phrasal-known",
+        "status": "partial_source_derived_model",
+        "type": "fallback_relation"
+      },
+      {
+        "id": "ranked-report",
+        "path": "model.md",
+        "section": "ranked-report",
+        "status": "partial_source_derived_model",
+        "type": "order_constraint"
+      },
+      {
+        "id": "recording-trace",
+        "path": "model.md",
+        "section": "recording-trace",
+        "status": "partial_source_derived_model",
+        "type": "failure_effect"
+      },
+      {
+        "id": "nominal-agreement",
+        "path": "model.md",
+        "section": "nominal-agreement",
+        "status": "partial_source_derived_model",
+        "type": "conditional_ratio"
+      },
+      {
+        "id": "cli-dispatch",
+        "path": "model.md",
+        "section": "cli-dispatch",
+        "status": "partial_source_derived_model",
+        "type": "control_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "coverage_recorded"
+    }
+  },
+  "id": "frame-adapter",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../frames.rs",
+    "sha256": "86c42a1bd562ae24c760a7cbfc3b9b2bab20845da9d7945f3d80f091b8ed44b0"
+  },
+  "status": "partial_source_derived_instance"
+}

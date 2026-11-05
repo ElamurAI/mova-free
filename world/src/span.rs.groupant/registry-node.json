@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p world --lib span_models",
+    "cargo test -p world --lib --release span_models",
+    "mova-modelcheck groupants"
+  ],
+  "cost": "See adjacent catalog.",
+  "description": "Heuristic syntactic answer span selection, not semantic truth.",
+  "forward": [
+    "Find predicate; dispatch; normalize selected indices; numeric bypass.",
+    "Non-Num success content-positive and at most half echoed."
+  ],
+  "id": "answer-span",
+  "inverse": [
+    "Retain compatible inputs and discarded material; labels overlap."
+  ],
+  "limitations": [
+    "Opaque dependencies; no semantic accuracy proof."
+  ],
+  "source": "world/src/span.rs",
+  "state": "Tree, Want, ordered predicates, subordinate predicates, QFrame, qlem"
+}

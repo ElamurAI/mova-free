@@ -1,0 +1,146 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Parent projection restricted to[18019,22371)",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "multiplicative_formula",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "multiplicative_formula",
+        "status": "partial_source_derived_model",
+        "type": "multiplicative_formula"
+      },
+      {
+        "id": "divisor_materialization",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "divisor_materialization",
+        "status": "partial_source_derived_model",
+        "type": "divisor_materialization"
+      },
+      {
+        "id": "prime_search",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "prime_search",
+        "status": "partial_source_derived_model",
+        "type": "prime_search"
+      },
+      {
+        "id": "zero_digits",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "zero_digits",
+        "status": "partial_source_derived_model",
+        "type": "zero_digits"
+      },
+      {
+        "assumptions": "Normal return and stated scalar/base domain; no allocation failure. See the referenced section for formula and counterexample.",
+        "counterexample": "Concrete source-level witnesses in referenced section and tools/correspondence/tests/bridges.rs digit_*",
+        "domain": "Byte-scoped arithmetic fragment's digits/from_digits functions; integer/base restrictions in each section",
+        "evidence_status": "source_derived_algebra_and_bounded_actual_api_checks",
+        "formula": "See the source-specific named section; no generic percentage metric is admitted.",
+        "id": "wave39-canonical_sign_fiber",
+        "observation": "Digit image, carry fibers, admission and magnitude normalization",
+        "path": "../model.md",
+        "section": "canonical_sign_fiber",
+        "status": "partial_source_derived_model",
+        "type": "canonical_digit_sign_preimage"
+      },
+      {
+        "assumptions": "Normal return and stated scalar/base domain; no allocation failure. See the referenced section for formula and counterexample.",
+        "counterexample": "Concrete source-level witnesses in referenced section and tools/correspondence/tests/bridges.rs digit_*",
+        "domain": "Byte-scoped arithmetic fragment's digits/from_digits functions; integer/base restrictions in each section",
+        "evidence_status": "source_derived_algebra_and_bounded_actual_api_checks",
+        "formula": "See the source-specific named section; no generic percentage metric is admitted.",
+        "id": "wave39-positional_carry_kernel",
+        "observation": "Digit image, carry fibers, admission and magnitude normalization",
+        "path": "../model.md",
+        "section": "positional_carry_kernel",
+        "status": "partial_source_derived_model",
+        "type": "fixed_length_integer_kernel"
+      },
+      {
+        "assumptions": "Normal return and stated scalar/base domain; no allocation failure. See the referenced section for formula and counterexample.",
+        "counterexample": "Concrete source-level witnesses in referenced section and tools/correspondence/tests/bridges.rs digit_*",
+        "domain": "Byte-scoped arithmetic fragment's digits/from_digits functions; integer/base restrictions in each section",
+        "evidence_status": "source_derived_algebra_and_bounded_actual_api_checks",
+        "formula": "See the source-specific named section; no generic percentage metric is admitted.",
+        "id": "wave39-base_admission_partition",
+        "observation": "Digit image, carry fibers, admission and magnitude normalization",
+        "path": "../model.md",
+        "section": "base_admission_partition",
+        "status": "partial_source_derived_model",
+        "type": "typed_base_admission_partition"
+      },
+      {
+        "assumptions": "Normal return and stated scalar/base domain; no allocation failure. See the referenced section for formula and counterexample.",
+        "counterexample": "Concrete source-level witnesses in referenced section and tools/correspondence/tests/bridges.rs digit_*",
+        "domain": "Byte-scoped arithmetic fragment's digits/from_digits functions; integer/base restrictions in each section",
+        "evidence_status": "source_derived_algebra_and_bounded_actual_api_checks",
+        "formula": "See the source-specific named section; no generic percentage metric is admitted.",
+        "id": "wave39-magnitude_normalizer",
+        "observation": "Digit image, carry fibers, admission and magnitude normalization",
+        "path": "../model.md",
+        "section": "magnitude_normalizer",
+        "status": "partial_source_derived_model",
+        "type": "idempotent_magnitude_retraction"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 22371,
+      "start": 18019
+    },
+    "description": "phi/tau/sigma/mobius require positive complete-factor inputs; divisors accepts signs, rejects zero and checks count before sorted materialization. Prime count/rank sieve is capped, next_prime unbounded. digits strips sign; from_digits accepts arbitrary Horner coefficients. Canonical restrictions are needed for inversion.",
+    "source_bytes_sha256": "c9af5864d1b19b50ff7d9f81194aa78ea055f6dbe7a4d35119a449cefc1ed9c2"
+  },
+  "id": "math-nt-arithmetic",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../nt.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "27f4bf91578ab245e6b50f5f880126990b73b93b46882c37127e241031c359fe"
+  },
+  "status": "partial_source_bound_model"
+}

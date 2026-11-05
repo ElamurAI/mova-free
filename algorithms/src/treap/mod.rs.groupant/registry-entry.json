@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms treap::tests"
+  ],
+  "children": [],
+  "cost": "Search/insert/remove O(height); height<=n<=4096 but may be n. Expected O(log n) requires independently random priorities, not explicit arbitrary inputs. Keys O(n) traversal and output; arena O(maximum live count) with slot reuse.",
+  "description": "Explicit-priority bounded treap",
+  "forward": [
+    "Search by unique i64 key. New insertion attaches a leaf and rotates it upward while its (priority,key) is less than parent's. Deletion rotates the target downward with the smaller-ranked child until it is a leaf, detaches it and recycles the arena slot. Return membership booleans and sorted keys."
+  ],
+  "id": "algorithm-treap",
+  "inverse": [
+    "Typed behavior complement, ambiguous reverse reconstruction and specializations in model.md"
+  ],
+  "limitations": [
+    "Exact bounded APIs only. No generic 1/2/5/10% accuracy surrogate is supported. Finite tests do not prove universal correctness or runtime gains. Standard Vec/Box/BTreeMap allocation failure may abort or panic; allocator refusal is not injected. No callbacks, I/O or concurrency effects.",
+    "Partial syntax only; no semantic proof"
+  ],
+  "source": "algorithms/src/treap/mod.rs",
+  "state": "Bounded deterministic exact data structure; explicit validation and standard allocation behavior"
+}

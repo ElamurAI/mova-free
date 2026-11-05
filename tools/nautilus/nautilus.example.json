@@ -1,0 +1,51 @@
+{
+  "senses": "/ABSOLUTE/PATH/nautilus/senses.jsonl",
+  "batch": 25,
+  "pacing_secs": 600,
+  "layers": {
+    "commands": {
+      "source": "commands",
+      "out": "/ABSOLUTE/PATH/nautilus/layers/commands.tsv",
+      "base": "/ABSOLUTE/PATH/mova/world/data/dictionary-improved.tsv",
+      "course": "/ABSOLUTE/PATH/mova/world/data/school/commands",
+      "corpus": "/ABSOLUTE/PATH/corpus/commands",
+      "model": "/ABSOLUTE/PATH/en.bin",
+      "top": 80,
+      "licence": "ours, Elamur Cosmic License (the command course and its corpus are written for Mova)",
+      "name": "the commands dictionary"
+    },
+    "wikipedia": {
+      "source": "wikipedia",
+      "out": "/ABSOLUTE/PATH/nautilus/layers/wikipedia.tsv",
+      "base": "/ABSOLUTE/PATH/mova/world/data/dictionary-improved.tsv",
+      "corpus": "/ABSOLUTE/PATH/corpus/wikipedia",
+      "top": 80,
+      "licence": "CC BY-SA 4.0 like its source (English Wikipedia): internal, never in the repository or a release",
+      "name": "the Wikipedia dictionary"
+    },
+    "school-science": {
+      "source": "course",
+      "courses": [
+        "/ABSOLUTE/PATH/mova/world/data/school/biology",
+        "/ABSOLUTE/PATH/mova/world/data/school/physics"
+      ],
+      "out": "/ABSOLUTE/PATH/nautilus/layers/school-science.tsv",
+      "base": "/ABSOLUTE/PATH/mova/world/data/dictionary-improved.tsv",
+      "model": "/ABSOLUTE/PATH/en.bin",
+      "top": 300,
+      "licence": "ours, Elamur Cosmic License (the school's courses are written for Mova)",
+      "licence_class": "ours",
+      "name": "the school science dictionary"
+    },
+    "judaism": {
+      "source": "layer",
+      "file": "/ABSOLUTE/PATH/mova/world/data/dictionary-schools/judaism-senses.tsv",
+      "format": "judaism-senses",
+      "base": "/ABSOLUTE/PATH/mova/world/data/dictionary-improved.tsv",
+      "licence": "ours, Elamur Cosmic License; the quotations public domain",
+      "licence_class": "ours",
+      "shipped": true,
+      "name": "the Judaism dictionary"
+    }
+  }
+}

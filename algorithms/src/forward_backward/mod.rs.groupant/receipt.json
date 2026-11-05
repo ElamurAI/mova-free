@@ -1,0 +1,32 @@
+{
+  "clippy": "strict all targets passed",
+  "clippy_log_sha256": "51a1a9eda9c8265a7a8b3db8ccfaca9dd4c6e4aed9d9c1650653c6306c37f377",
+  "date": "2026-10-30",
+  "evidence": "$MOVA_DATA/runs/octopus-wave26-probability-2026-10-30/",
+  "limitations": [
+    "Finite oracle coverage, no universal f64 error guarantee",
+    "No timing or full-school measurements",
+    "Partial syntax only; no macro expansion or semantic proof",
+    "No executable surrogate or generic percentage certificate"
+  ],
+  "mutant": {
+    "change": "let log_likelihood = log_sum(alpha[t - 1].iter().copied()) + 0.1;",
+    "compiled": true,
+    "failed_assertion": "exhaustive_paths_oracle",
+    "log_sha256": "aa599b47585780e9cdd29d72bcb6700e64363e5fb867799bef28999cc763a447",
+    "restored_positive_sha256": "9f37ad5a4e5026c719e60415835ca5403a55729eb03763e8287eddcb23363a4c",
+    "source_bytes_restored": true
+  },
+  "native_module_tests": 3,
+  "normalized_outcomes_sha256": "893584da1b2f434a8c96b92df59b1b32fa45864c9c2271078789e434399d063e",
+  "paired_syntax_sha256": "ad5ffdb2af76f1a058bc00b0e428eee101e3b81afdafbe3b82ef74711375a0fb",
+  "profiles": [
+    "debug1",
+    "debug2",
+    "release1",
+    "release2"
+  ],
+  "source": "algorithms/src/forward_backward/mod.rs",
+  "source_sha256": "31d1ed69daa14ee5a66547595d2883eca8f0e5e290f4712c78e5936ad8a56190",
+  "whole_library_tests": 708
+}

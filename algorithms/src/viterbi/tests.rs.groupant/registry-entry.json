@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms viterbi::tests",
+    "Repeated debug/release, paired syntax, compiled mutant and restored rerun"
+  ],
+  "children": [],
+  "cost": "O(T*n*n) arithmetic, O(T*n) storage, bounded standard allocation.",
+  "description": "Independent finite oracle and boundary tests for viterbi. Production: n1..64,T0..4096; initial and transition rows normalized within1e-10, entries finite in[0,1]; emissions time-major in[0,1]. Shape precedes probability then normalization. log score(t,j)=log emission(t,j)+max_i(score(t-1,i)+log transition(i,j)); store predecessor. Empty sequence returns empty path/log0; impossible returns None.",
+  "forward": [
+    "Independent finite oracle and boundary tests for viterbi. Production: n1..64,T0..4096; initial and transition rows normalized within1e-10, entries finite in[0,1]; emissions time-major in[0,1]. Shape precedes probability then normalization. log score(t,j)=log emission(t,j)+max_i(score(t-1,i)+log transition(i,j)); store predecessor. Empty sequence returns empty path/log0; impossible returns None."
+  ],
+  "id": "algorithm-viterbi-tests",
+  "inverse": [
+    "All-pass observations admit implementations differing on unsampled inputs. This finite test fiber does not uniquely identify source or prove universality. Production fiber: A selected state path and log score admit infinitely many HMMs differing on unused edges, subject to the path remaining optimal. The path cannot recover initial probabilities or the full transition matrix."
+  ],
+  "limitations": [
+    "Partial syntax not semantic proof",
+    "Finite oracle coverage not universal numerical accuracy",
+    "No certified surrogate, timing or allocator fault injection"
+  ],
+  "source": "algorithms/src/viterbi/tests.rs",
+  "state": "Bounded validated numeric inputs, deterministic recurrence, explicit errors/status and standard allocation policy"
+}

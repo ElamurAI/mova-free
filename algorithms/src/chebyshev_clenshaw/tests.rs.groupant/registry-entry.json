@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "basis_oracle uses forward Chebyshev recurrence for degrees 0..19 at 33 dyadic points; endpoint, empty, nonfinite and cancellation fibers.",
+    "Change recurrence -b2 to +b2; basis_oracle fails"
+  ],
+  "children": [],
+  "cost": "O(n) validation plus O(n) recurrence; O(1) space, no allocation.",
+  "description": "Executable finite checks for chebyshev_clenshaw: basis_oracle uses forward Chebyshev recurrence for degrees 0..19 at 33 dyadic points; endpoint, empty, nonfinite and cancellation fibers.",
+  "forward": [
+    "Executable finite checks for chebyshev_clenshaw: basis_oracle uses forward Chebyshev recurrence for degrees 0..19 at 33 dyadic points; endpoint, empty, nonfinite and cancellation fibers."
+  ],
+  "id": "algorithm-chebyshev-clenshaw-tests",
+  "inverse": [
+    "Pass reconstructs the set of implementations consistent with these finite assertions; it does not identify one implementation. Untested inputs remain arbitrary. At x=0, p=c0-c2+c4-... while odd coefficients are arbitrary: [2,3] and [2,9] both return 2. General real fibers are affine hyperplanes in coefficient space; rounding enlarges or moves fibers. Neither degree nor coefficients uniquely reconstruct."
+  ],
+  "limitations": [
+    "Rounded arithmetic not real exactness; no universal relative accuracy bound",
+    "Finite fixtures and partial syntax do not prove correctness",
+    "Callback determinism and bounded resource use outside Simpson are caller assumptions",
+    "No executable cheaper surrogate or performance claim"
+  ],
+  "source": "algorithms/src/chebyshev_clenshaw/tests.rs",
+  "state": "Finite f64 slices or bounded panel stack; tests observe tagged results and assertion outcomes"
+}

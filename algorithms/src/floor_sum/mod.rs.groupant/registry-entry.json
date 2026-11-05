@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "Five tests per algorithm, debug/release twice with normalized equality; compiled control and restored rerun; Clippy, formatting, syntax twice."
+  ],
+  "children": [],
+  "cost": "O(log(max(a,m)+1)) Euclidean word iterations and O(1) storage; checked u128 operations, no allocation.",
+  "description": "floor_sum mod.rs exact std-only bounded implementation and checks",
+  "forward": [
+    "Reject m=0 first. Repeatedly add n(n-1)/2 * floor(a/m) and n*floor(b/m), checking each nonnegative contribution and sum. Reduce a,b modulo m. If a*n+b<m return accumulator; otherwise replace n by floor((a*n+b)/m), b by its remainder, and swap a,m."
+  ],
+  "id": "algorithm-floor-sum",
+  "inverse": [
+    "Excluded pairs are Ok with any value different from the exact sum, ZeroModulus with m>0, Overflow for a representable sum, and success for m=0 or an unrepresentable sum.",
+    "For output Ok(s), compatible inputs are exactly positive-modulus tuples with sum s within u128. They are highly nonunique: (3,2,1,0) and (1,7,99,7) both give 1. ZeroModulus reconstructs m=0 but no other parameter; Overflow reconstructs positive m with sum above u128::MAX.",
+    "For representable parameter shifts a'=a+k*m,b'=b+l*m with nonnegative k,l, the sum increases by k*n(n-1)/2+l*n. Machine comparisons require both results representable.",
+    "For n<u64::MAX and representable sums, S(n+1)-S(n)=floor((a*n+b)/m). This provides an independent local boundary observation.",
+    "After stripping quotients, let h=a*n+b and h>=m. Remaining lattice count is S(floor(h/m),a,m,h mod m). When h<m the remaining count is zero. The swapped denominator is positive.",
+    "For n=0 and m>0 the sum is zero; m=0 still errors first. With a=0 the answer is n*floor(b/m) and fits u128. With m=1 and full-width n,a, the sum can exceed u128. Dividing an even triangle factor before multiplication avoids an unnecessary intermediate overflow."
+  ],
+  "limitations": [
+    "Finite observations are not a universal proof.",
+    "Partial syntax excludes macro expansion and semantic AST analysis.",
+    "Allocation abort is outside normal-return relations."
+  ],
+  "source": "algorithms/src/floor_sum/mod.rs",
+  "state": "All u64 (n,m,a,b), normal terminating calls, Result<u128,FloorSumError> observations."
+}

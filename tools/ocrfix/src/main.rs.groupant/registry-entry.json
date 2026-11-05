@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "tests::brackets_rejoined",
+    "tests::stream_and_cer",
+    "tests::channel_corrects_and_keeps",
+    "tests::negative_control_known_word_stays",
+    "wave33::channel_depth_alignment_and_masks"
+  ],
+  "children": [],
+  "cost": "Normalization O(B); two-depth channel frontier may expand O(branching^2) with string/BTreeMap costs. CER O((n+1)(m+1)) time/space; word alignment O((N+1)(M+1)*(L+1)^2) time plus O((N+1)(M+1)) matrix. Mask merge O(H*M*textlen+H), process latency unmeasured.",
+  "description": "Independent commands compose normalization/lexicon/channel correction, CER alignment, OCR masks, witness voting and line export. Corrector applies two-edit candidates and strict log-score improvement; CER normalizes letter streams then diagonal-first DP. External OCR renders then recognizes/masks then writes text, removes PNG after recognition closure.",
+  "forward": [
+    "Independent commands compose normalization/lexicon/channel correction, CER alignment, OCR masks, witness voting and line export. Corrector applies two-edit candidates and strict log-score improvement; CER normalizes letter streams then diagonal-first DP. External OCR renders then recognizes/masks then writes text, removes PNG after recognition closure."
+  ],
+  "id": "ocrfix-text-command",
+  "inverse": [
+    "Short words below min_len cannot change; unattested/nonpositive candidate cannot win; mixed core scripts/brackets leave original token. OCR network/model/process effects are outside tests.",
+    "Skeleton maps many pointed/editorial texts to one consonant sequence. Corrected output admits unchanged originals or channel predecessors plus compatible lexicon scores; logs do not recover stripped marks."
+  ],
+  "limitations": [
+    "UTF-8 Hebrew text, finite positive lexicon total/oov and nonnegative finite costs for score interpretation; lengths/boxes bounded against u32/i32 overflow. Raw parsers do not enforce all premises.",
+    "Partial syntax and bounded synthetic helper checks; no command/corpus/model/download effects, universal proof or percentage surrogate."
+  ],
+  "source": "tools/ocrfix/src/main.rs",
+  "state": "Skeleton correction retains punctuation and unchanged original token if no improvement; altered skeleton drops points. Final-letter gate rejects internal final forms only. Alignment counts sum to DP distance under bounded u32 lengths. Command output is nontransactional."
+}

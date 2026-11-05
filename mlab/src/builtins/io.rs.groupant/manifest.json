@@ -1,0 +1,104 @@
+{
+  "children": [
+    {
+      "id": "mlab-builtins-io-format-parser",
+      "path": "format-parser.groupant"
+    },
+    {
+      "id": "mlab-builtins-io-atom-cycle",
+      "path": "atom-cycle.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Unsupported atom types exclude any successful formatted output even for a literal-only format because atoms is called first. Empty argument queue excludes numeric substitution; empty specs can still contribute width padding.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Rendered strings admit many inputs: integer/float atoms with same formatting, varying matrix shapes with identical real storage, ignored imaginary components and fid values in the qualifying scalar-fid/char-format branch. No inverse recovers those discarded components.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_invariant",
+        "path": "model.md",
+        "scope": "Formatting builds a String before calling out; string precision counts Unicode scalars, output count uses UTF-8 bytes. %g preserves negative zero via fmt_num, shortest canonicalizes it.",
+        "section": "state_invariant",
+        "status": "partial_source_derived_model",
+        "type": "state_invariant"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Argument extraction and atom conversion precede output. Unknown format specs remain literal, excessive width/precision can exhaust resources rather than return a structured format error.",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Numeric atoms follow m.re storage, not printed row order; char matrices are one string atom. num2str default aligns columns while mat2str assembles row syntax.",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "O(format bytes + expanded atoms + repeated segment/flag scans + emitted bytes); repeated conversion/flag scans can require O(format length * expanded atoms) work even with small output. String-to-code expansion and requested width/precision can dominate allocations. No resource bound or useful percent surrogate for exact text.",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "mlab-builtins-io",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../io.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "474fbd7e9d27e2e2333b4e7324f348d79475aef977847e353b8c363a6f9f23ed"
+  },
+  "status": "partial_source_bound_model"
+}

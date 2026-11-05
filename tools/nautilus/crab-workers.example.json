@@ -1,0 +1,88 @@
+{
+  "_comment": "Crab worker entries for nautilus: merge into a Crab configuration's workers. Off by default (autostart false): the English service, the standing loop and the animal's own teacher terminal (held by crab-tmux-worker, Opus through Claude Code; see tools/terminal/README.md). Each is one instance per lock. `nautilus-pool-a` is a work-pool member: Crab (flow.pools) leases it jobs through its assignment file.",
+  "workers": [
+    {
+      "name": "nautilus",
+      "argv": [
+        "/ABSOLUTE/PATH/bin/nautilus",
+        "serve",
+        "/ABSOLUTE/PATH/nautilus/deputy.json",
+        "/ABSOLUTE/PATH/nautilus/nautilus.json",
+        "/ABSOLUTE/PATH/nautilus/socket/nautilus.sock",
+        "/ABSOLUTE/PATH/nautilus/nautilus.lock"
+      ],
+      "cwd": "/ABSOLUTE/PATH/nautilus",
+      "log": "/ABSOLUTE/PATH/nautilus/nautilus.log",
+      "autostart": false,
+      "stop_marker": "/ABSOLUTE/PATH/nautilus/socket/STOP",
+      "restart": false
+    },
+    {
+      "name": "nautilus-work",
+      "argv": [
+        "/ABSOLUTE/PATH/bin/nautilus",
+        "work",
+        "/ABSOLUTE/PATH/nautilus/nautilus.json",
+        "/ABSOLUTE/PATH/nautilus/teachers.json",
+        "opus",
+        "/ABSOLUTE/PATH/nautilus/work"
+      ],
+      "cwd": "/ABSOLUTE/PATH/nautilus",
+      "log": "/ABSOLUTE/PATH/nautilus/work.log",
+      "autostart": false,
+      "stop_marker": "/ABSOLUTE/PATH/nautilus/work/STOP",
+      "restart": false
+    },
+    {
+      "name": "nautilus-terminal",
+      "argv": [
+        "/ABSOLUTE/PATH/bin/crab-tmux-worker",
+        "--lock",
+        "/ABSOLUTE/PATH/nautilus/nautilus-1-terminal.lock",
+        "--owner-marker",
+        "mova-nautilus-1",
+        "--prompt-file",
+        "/ABSOLUTE/PATH/mova/tools/terminal/prompts/animal-terminal.md",
+        "--var",
+        "name=nautilus-1",
+        "--var",
+        "idle_marker=TERMINAL READY",
+        "nautilus-1-opus",
+        "/ABSOLUTE/PATH/nautilus/terminal",
+        "--",
+        "/ABSOLUTE/PATH/bin/claude",
+        "--model",
+        "opus",
+        "--permission-mode",
+        "acceptEdits",
+        "--disallowedTools=Bash,WebFetch,WebSearch"
+      ],
+      "cwd": "/ABSOLUTE/PATH/nautilus/terminal",
+      "log": "/ABSOLUTE/PATH/nautilus/terminal.log",
+      "autostart": false,
+      "restart": false
+    },
+    {
+      "name": "nautilus-pool-a",
+      "argv": [
+        "/ABSOLUTE/PATH/bin/nautilus",
+        "pool-work",
+        "/ABSOLUTE/PATH/nautilus/nautilus.json",
+        "/ABSOLUTE/PATH/nautilus/teachers.json",
+        "opus",
+        "nautilus-a",
+        "/ABSOLUTE/PATH/nautilus-a/work",
+        "/ABSOLUTE/PATH/nautilus-a/assignment.json",
+        "/ABSOLUTE/PATH/nautilus-a/report.json",
+        "/ABSOLUTE/PATH/nautilus-pool/jobs",
+        "-",
+        "120"
+      ],
+      "cwd": "/ABSOLUTE/PATH/nautilus-a",
+      "log": "/ABSOLUTE/PATH/nautilus-a/work.log",
+      "autostart": false,
+      "stop_marker": "/ABSOLUTE/PATH/nautilus-a/work/STOP",
+      "restart": false
+    }
+  ]
+}

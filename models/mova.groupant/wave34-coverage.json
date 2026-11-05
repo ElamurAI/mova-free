@@ -1,0 +1,880 @@
+{
+  "base": "ab2909f7fc408b75fc5e2e962e13761f944f3088",
+  "before": {
+    "fragments": 841,
+    "groups": 79,
+    "models": 10693,
+    "nodes": 1812,
+    "sources": 892,
+    "syntax": 884,
+    "types": 3895
+  },
+  "current": {
+    "fragments": 891,
+    "groups": 79,
+    "models": 10993,
+    "nodes": 1862,
+    "sources": 892,
+    "syntax": 885,
+    "types": 4004
+  },
+  "date": "2026-10-31",
+  "improved_source_files": 10,
+  "new_fragments": 50,
+  "new_nodes": [
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 19673,
+          "start": 17898
+        },
+        "description": "Decode lines in order: ignore # and widths below five; parse four current columns with invalid numbers mapped to zero; widths >=9 also replace accumulator columns. A later five-column duplicate replaces w but leaves an earlier acc row. Encode sorted union keys; emit nonzero w or any explicit acc, and only emit accumulator columns when present."
+      },
+      "id": "world-school-student-state-retained-codec",
+      "sidecar": "world/src/school.rs.groupant/student-state.groupant/retained-codec.groupant",
+      "source": "world/src/school.rs",
+      "source_sha256": "06aaec6f562c2acc167046945b0bc2737bb8bcda4fa16de616e7124ba848a69b"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 45245,
+          "start": 44647
+        },
+        "description": "For each side c, aggregate T_c(x)=sum votes(e) where e_c=x and x!=9 in i128. Elect the smallest signed x attaining maximal T_c. Missing verb or absent subject evidence yields None; absent receiver evidence defaults to zero."
+      },
+      "id": "world-school-actors-world-marginal-election",
+      "sidecar": "world/src/school.rs.groupant/actors-world.groupant/marginal-election.groupant",
+      "source": "world/src/school.rs",
+      "source_sha256": "06aaec6f562c2acc167046945b0bc2737bb8bcda4fa16de616e7124ba848a69b"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 58414,
+          "start": 57273
+        },
+        "description": "Fold all initial holdings by actor. For each ordered event obtain (-1,0) for pay, else eff(verb) or return None. Quantity is e.n or (pre-event subject minus keep)*p/q. Update subject first; then explicit receiver, else first original holder different from subject if subject was not an original holder. Return the signed map without pruning."
+      },
+      "id": "world-school-actors-world-event-play",
+      "sidecar": "world/src/school.rs.groupant/actors-world.groupant/event-play.groupant",
+      "source": "world/src/school.rs",
+      "source_sha256": "06aaec6f562c2acc167046945b0bc2737bb8bcda4fa16de616e7124ba848a69b"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 61333,
+          "start": 58468
+        },
+        "description": "Ordered return chain: front+back; front direction; inclusive span; clock wrap; minutes; unknown start/change; full/remainder packing; rate; remaining share; spent; share; last group; named subset; comparisons; named holder plus shift; all; isolated question number; first original holder/event subject. A selected branch may return None and shadows later candidates."
+      },
+      "id": "world-school-actors-world-answer-priority",
+      "sidecar": "world/src/school.rs.groupant/actors-world.groupant/answer-priority.groupant",
+      "source": "world/src/school.rs",
+      "source_sha256": "06aaec6f562c2acc167046945b0bc2737bb8bcda4fa16de616e7124ba848a69b"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 147340,
+          "start": 146884
+        },
+        "description": "folds=0 returns None. Otherwise ungrouped result is (index*p[repeat mod 5]+repeat) mod folds in u128. Grouped result is (hash XOR wrapping64(repeat*C)) mod folds; index is ignored."
+      },
+      "id": "world-school-scenario-assessment-fold-residues",
+      "sidecar": "world/src/school.rs.groupant/scenario-assessment.groupant/fold-residues.groupant",
+      "source": "world/src/school.rs",
+      "source_sha256": "06aaec6f562c2acc167046945b0bc2737bb8bcda4fa16de616e7124ba848a69b"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 3559,
+          "start": 3281
+        },
+        "description": "Trim line, reject leading #, split at first colon, trim key, accept exactly exercise/test/exam. Split value at every | and trim each field, retaining empty fields and arbitrary width."
+      },
+      "id": "world-schooltools-parsing-key-fields",
+      "sidecar": "world/src/schooltools.rs.groupant/parsing.groupant/key-fields.groupant",
+      "source": "world/src/schooltools.rs",
+      "source_sha256": "a892a1ce9f8c6855c3d28711fea2bbf66933e62827377e972d4606aee43ee519"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 4142,
+          "start": 3773
+        },
+        "description": "Collect indices >=1 with starts_with('*'). If exactly one r, output question then field[r] stripped of all initial stars and following leading whitespace, then all other options in their original order. Zero or multiple marked options return a copy unchanged."
+      },
+      "id": "world-schooltools-parsing-marked-answer",
+      "sidecar": "world/src/schooltools.rs.groupant/parsing.groupant/marked-answer.groupant",
+      "source": "world/src/schooltools.rs",
+      "source_sha256": "a892a1ce9f8c6855c3d28711fea2bbf66933e62827377e972d4606aee43ee519"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 17206,
+          "start": 16816
+        },
+        "description": "Split on literal newline including trailing empty segment. Each recognized option line rebuilds original leading indentation, trimmed key, colon-space, trimmed fields joined by space-bar-space, and original terminal CR if present. Nonoption lines are copied. Rejoin with newline."
+      },
+      "id": "world-schooltools-lint-space-normalization",
+      "sidecar": "world/src/schooltools.rs.groupant/lint.groupant/space-normalization.groupant",
+      "source": "world/src/schooltools.rs",
+      "source_sha256": "a892a1ce9f8c6855c3d28711fea2bbf66933e62827377e972d4606aee43ee519"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 22000,
+          "start": 19443
+        },
+        "description": "Start with split newline buffer. For each edit validate line bounds, option recognition, nonempty separator-free new text, exactly one old option match after stripping stars, actual change, five fields, right-answer protection and casefold uniqueness. Successful edits rebuild that line preserving CR/star position; errors accumulate and later edits still run. Return buffer only if no errors."
+      },
+      "id": "world-schooltools-editing-edit-sequence",
+      "sidecar": "world/src/schooltools.rs.groupant/editing.groupant/edit-sequence.groupant",
+      "source": "world/src/schooltools.rs",
+      "source_sha256": "a892a1ce9f8c6855c3d28711fea2bbf66933e62827377e972d4606aee43ee519"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 26573,
+          "start": 25542
+        },
+        "description": "Resolve snapshot copy by parent-basename/file-basename. Read saved then current lines split on newline. Refuse unequal line counts, then refuse any zero or oversized requested index before writing. Copy selected saved lines in list order, count only actual differences, write whole joined buffer, report changes."
+      },
+      "id": "world-schooltools-editing-restore-selection",
+      "sidecar": "world/src/schooltools.rs.groupant/editing.groupant/restore-selection.groupant",
+      "source": "world/src/schooltools.rs",
+      "source_sha256": "a892a1ce9f8c6855c3d28711fea2bbf66933e62827377e972d4606aee43ee519"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 5876,
+          "start": 4956
+        },
+        "description": "Citation scanner and unread-suffix state"
+      },
+      "id": "school-citation-scan",
+      "sidecar": "world/src/knowledge.rs.groupant/format.groupant/citation-scan.groupant",
+      "source": "world/src/knowledge.rs",
+      "source_sha256": "417ff737f1bd85ebaa449d81abcae6242f1e603d8873b9c0008966a0fd484553"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 6628,
+          "start": 6209
+        },
+        "description": "Ordered English and idea fact projection"
+      },
+      "id": "school-fact-layers",
+      "sidecar": "world/src/knowledge.rs.groupant/format.groupant/fact-layers.groupant",
+      "source": "world/src/knowledge.rs",
+      "source_sha256": "417ff737f1bd85ebaa449d81abcae6242f1e603d8873b9c0008966a0fd484553"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 7881,
+          "start": 6629
+        },
+        "description": "Ordered lesson field fold and legacy admission"
+      },
+      "id": "school-field-fold",
+      "sidecar": "world/src/knowledge.rs.groupant/format.groupant/field-fold.groupant",
+      "source": "world/src/knowledge.rs",
+      "source_sha256": "417ff737f1bd85ebaa449d81abcae6242f1e603d8873b9c0008966a0fd484553"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 47775,
+          "start": 46538
+        },
+        "description": "Scenario-tail partition and finite recognizer"
+      },
+      "id": "school-tail-recognition",
+      "sidecar": "world/src/knowledge.rs.groupant/tail-recognition.groupant",
+      "source": "world/src/knowledge.rs",
+      "source_sha256": "417ff737f1bd85ebaa449d81abcae6242f1e603d8873b9c0008966a0fd484553"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 61090,
+          "start": 60194
+        },
+        "description": "Missing-unit batch publication"
+      },
+      "id": "school-preparse-publication",
+      "sidecar": "world/src/knowledge.rs.groupant/preparse-publication.groupant",
+      "source": "world/src/knowledge.rs",
+      "source_sha256": "417ff737f1bd85ebaa449d81abcae6242f1e603d8873b9c0008966a0fd484553"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 4358,
+          "start": 3855
+        },
+        "description": "Envelope integrity and weight-layout prefix"
+      },
+      "id": "retention-envelope-gates",
+      "sidecar": "world/src/knowledge/retention.rs.groupant/checkpoint.groupant/validation.groupant/envelope-gates.groupant",
+      "source": "world/src/knowledge/retention.rs",
+      "source_sha256": "89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 5050,
+          "start": 4358
+        },
+        "description": "Source uniqueness, ledger membership and global edge bounds"
+      },
+      "id": "retention-source-links",
+      "sidecar": "world/src/knowledge/retention.rs.groupant/checkpoint.groupant/validation.groupant/source-links.groupant",
+      "source": "world/src/knowledge/retention.rs",
+      "source_sha256": "89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 5909,
+          "start": 5256
+        },
+        "description": "Kind relation uniqueness and sentinel provenance"
+      },
+      "id": "retention-kind-provenance",
+      "sidecar": "world/src/knowledge/retention.rs.groupant/checkpoint.groupant/validation.groupant/kind-provenance.groupant",
+      "source": "world/src/knowledge/retention.rs",
+      "source_sha256": "89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 7610,
+          "start": 7231
+        },
+        "description": "Least compatible teaching-digest witness"
+      },
+      "id": "retention-digest-reuse",
+      "sidecar": "world/src/knowledge/retention.rs.groupant/material.groupant/digest-reuse.groupant",
+      "source": "world/src/knowledge/retention.rs",
+      "source_sha256": "89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 7973,
+          "start": 7610
+        },
+        "description": "Checked maximum successor without reservation"
+      },
+      "id": "retention-number-frontier",
+      "sidecar": "world/src/knowledge/retention.rs.groupant/material.groupant/number-frontier.groupant",
+      "source": "world/src/knowledge/retention.rs",
+      "source_sha256": "89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 1931,
+          "start": 1217
+        },
+        "description": "Heading recognition",
+        "syntax_nodes": {
+          "node_ids": [
+            59
+          ],
+          "path": "../../syntax.json"
+        }
+      },
+      "id": "world-read-segmentation-heading",
+      "sidecar": "world/src/read.rs.groupant/segmentation.groupant/heading.groupant",
+      "source": "world/src/read.rs",
+      "source_sha256": "80ef1f69d776dcb5cd03bf925cc5c01e827d7919495ccda17d785eb3de459857"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 2505,
+          "start": 2057
+        },
+        "description": "Story admission before service filtering",
+        "syntax_nodes": {
+          "node_ids": [
+            196
+          ],
+          "path": "../../syntax.json"
+        }
+      },
+      "id": "world-read-segmentation-admission",
+      "sidecar": "world/src/read.rs.groupant/segmentation.groupant/admission.groupant",
+      "source": "world/src/read.rs",
+      "source_sha256": "80ef1f69d776dcb5cd03bf925cc5c01e827d7919495ccda17d785eb3de459857"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 3588,
+          "start": 3225
+        },
+        "description": "Retained paragraph and title gate",
+        "syntax_nodes": {
+          "node_ids": [
+            367,
+            390
+          ],
+          "path": "../../syntax.json"
+        }
+      },
+      "id": "world-read-segmentation-service",
+      "sidecar": "world/src/read.rs.groupant/segmentation.groupant/service.groupant",
+      "source": "world/src/read.rs",
+      "source_sha256": "80ef1f69d776dcb5cd03bf925cc5c01e827d7919495ccda17d785eb3de459857"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 4174,
+          "start": 3600
+        },
+        "description": "Direct modifier phrase projection",
+        "syntax_nodes": {
+          "node_ids": [
+            425
+          ],
+          "path": "../../syntax.json"
+        }
+      },
+      "id": "world-read-projection-phrase",
+      "sidecar": "world/src/read.rs.groupant/projection.groupant/phrase.groupant",
+      "source": "world/src/read.rs",
+      "source_sha256": "80ef1f69d776dcb5cd03bf925cc5c01e827d7919495ccda17d785eb3de459857"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 7967,
+          "start": 4450
+        },
+        "description": "Selected clause closure and subject carry",
+        "syntax_nodes": {
+          "node_ids": [
+            526,
+            527,
+            529,
+            530,
+            533,
+            535
+          ],
+          "path": "../../syntax.json"
+        }
+      },
+      "id": "world-read-projection-clause-carry",
+      "sidecar": "world/src/read.rs.groupant/projection.groupant/clause-carry.groupant",
+      "source": "world/src/read.rs",
+      "source_sha256": "80ef1f69d776dcb5cd03bf925cc5c01e827d7919495ccda17d785eb3de459857"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 23153,
+          "start": 22804
+        },
+        "description": "Exclusive lexical evidence priority",
+        "syntax_nodes": {
+          "node_ids": [
+            2767,
+            2768,
+            2772,
+            2773,
+            2775,
+            2778
+          ],
+          "path": "../../syntax.json"
+        }
+      },
+      "id": "world-ans-ranking-score-priority",
+      "sidecar": "world/src/ans.rs.groupant/ranking.groupant/score-priority.groupant",
+      "source": "world/src/ans.rs",
+      "source_sha256": "d8d94c891e347d2b640744b20c4662dc35064368e7d4d9253c4954b4297e1e09"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 27281,
+          "start": 25978
+        },
+        "description": "Event eligibility and rank boundary",
+        "syntax_nodes": {
+          "node_ids": [
+            3222
+          ],
+          "path": "../../syntax.json"
+        }
+      },
+      "id": "world-ans-ranking-eligibility",
+      "sidecar": "world/src/ans.rs.groupant/ranking.groupant/eligibility.groupant",
+      "source": "world/src/ans.rs",
+      "source_sha256": "d8d94c891e347d2b640744b20c4662dc35064368e7d4d9253c4954b4297e1e09"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 31372,
+          "start": 30939
+        },
+        "description": "ASCII-space number rendering",
+        "syntax_nodes": {
+          "node_ids": [
+            3918,
+            3919,
+            3921,
+            3922
+          ],
+          "path": "../../syntax.json"
+        }
+      },
+      "id": "world-ans-dispatch-number-tokens",
+      "sidecar": "world/src/ans.rs.groupant/dispatch.groupant/number-tokens.groupant",
+      "source": "world/src/ans.rs",
+      "source_sha256": "d8d94c891e347d2b640744b20c4662dc35064368e7d4d9253c4954b4297e1e09"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 63713,
+          "start": 58534
+        },
+        "description": "Why first-return fallback chain",
+        "syntax_nodes": {
+          "node_ids": [
+            7578,
+            7579,
+            7581,
+            7582,
+            7584,
+            7585,
+            7588,
+            7589,
+            7592,
+            7593,
+            7596,
+            7597,
+            7599,
+            7600
+          ],
+          "path": "../../syntax.json"
+        }
+      },
+      "id": "world-ans-dispatch-why-chain",
+      "sidecar": "world/src/ans.rs.groupant/dispatch.groupant/why-chain.groupant",
+      "source": "world/src/ans.rs",
+      "source_sha256": "d8d94c891e347d2b640744b20c4662dc35064368e7d4d9253c4954b4297e1e09"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 65164,
+          "start": 64818
+        },
+        "description": "Rolling longest-common-subsequence row",
+        "syntax_nodes": {
+          "node_ids": [
+            8440
+          ],
+          "path": "../../syntax.json"
+        }
+      },
+      "id": "world-ans-metric-lcs-row",
+      "sidecar": "world/src/ans.rs.groupant/metric.groupant/lcs-row.groupant",
+      "source": "world/src/ans.rs",
+      "source_sha256": "d8d94c891e347d2b640744b20c4662dc35064368e7d4d9253c4954b4297e1e09"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 9052,
+          "start": 6237
+        },
+        "description": "State (character vector, cursor, tokens) advances left to right. Numeric runs admit digits and dots, then an optional well-formed exponent suffix. Alphabetic/underscore starts identifiers; bracket/equality/multiplication/minus specials precede the ordered symbol table. Unknown characters return Err with no token vector. Recognized aliases collapse to canonical Sym tokens."
+      },
+      "id": "math-calc-parser-lex-normalization",
+      "sidecar": "math/src/calc.rs.groupant/parser.groupant/lex-normalization.groupant",
+      "source": "math/src/calc.rs",
+      "source_sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 13882,
+          "start": 13128
+        },
+        "description": "pow first consumes postfix; if ^ follows it advances once and parses unary as exponent, producing Pow(base,exponent). postfix repeatedly adds Fact or Index nodes after a primary. Unary may recursively reenter pow, so exponentiation associates right while leading minus wraps the power."
+      },
+      "id": "math-calc-parser-power-association",
+      "sidecar": "math/src/calc.rs.groupant/parser.groupant/power-association.groupant",
+      "source": "math/src/calc.rs",
+      "source_sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 23417,
+          "start": 23004
+        },
+        "description": "Before scalar fallback and tick, finite R times exact Q(0), in either operand order, returns Q(0). Q(0)/R(x) returns Q(0) only for finite nonzero x. All other pairs continue through arith; this fragment is a conditional short-circuit with identity Env effects."
+      },
+      "id": "math-calc-evaluation-mixed-zero",
+      "sidecar": "math/src/calc.rs.groupant/evaluation.groupant/mixed-zero.groupant",
+      "source": "math/src/calc.rs",
+      "source_sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 32191,
+          "start": 29070
+        },
+        "description": "Validate arity and variable, evaluate lo then hi, check span, save the current binding. Each inclusive iteration ticks, binds k, evaluates body, updates the selected accumulator or early-exits. Normal loop exit restores saved binding before result extraction and capped note. Any ? before restoration retains reached prefix state."
+      },
+      "id": "math-calc-evaluation-ranged-binding",
+      "sidecar": "math/src/calc.rs.groupant/evaluation.groupant/ranged-binding.groupant",
+      "source": "math/src/calc.rs",
+      "source_sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 60501,
+          "start": 58669
+        },
+        "description": "Integer literals/variables are reduced modulo P61. Negation and add/sub/mul combine residues. Power evaluates exponent exactly in a fresh Env cloned from vars, rejects negative/noninteger exponents, then square-and-multiplies over exponent bits. Factorial uses the operand residue as its argument and rejects residue>2M."
+      },
+      "id": "math-calc-checks-residue-fibers",
+      "sidecar": "math/src/calc.rs.groupant/checks.groupant/residue-fibers.groupant",
+      "source": "math/src/calc.rs",
+      "source_sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 1669,
+          "start": 1339
+        },
+        "description": "Clone left Lin; update constant by s*o.c and each right coefficient by ordered entry addition; retain only coefficients whose absolute value is strictly greater than1e-12. scale uses zero-left add. Floating operations are in source order, not ideal exact algebra."
+      },
+      "id": "math-qread-affine-support-pruning",
+      "sidecar": "math/src/qread.rs.groupant/affine.groupant/support-pruning.groupant",
+      "source": "math/src/qread.rs",
+      "source_sha256": "8389b8d58f68121743d6346e638601297c3725483f4b9fcd2eb8cd47ef2d028a"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 2220,
+          "start": 1744
+        },
+        "description": "Start at constant-only Lin. Visit original keys in sorted order. Replace key k by sol[k] scaled by its original coefficient if present, otherwise by var(k); each insertion passes through add pruning. Newly introduced keys are not revisited in the same call. unknowns returns keys below LEAF."
+      },
+      "id": "math-qread-affine-one-pass-images",
+      "sidecar": "math/src/qread.rs.groupant/affine.groupant/one-pass-images.groupant",
+      "source": "math/src/qread.rs",
+      "source_sha256": "8389b8d58f68121743d6346e638601297c3725483f4b9fcd2eb8cd47ef2d028a"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 61055,
+          "start": 58152
+        },
+        "description": "At depth<3 and with a named owner, inspect the full event list for direct facts and applicable owner relations; reject moved-after-relation histories. Otherwise initialize an optional unknown from initial_ev and any told Is state, then fold events matching owner/thing/time, excluding Is/Rel and outside events for owner=None. Set and Add both add; Sub subtracts."
+      },
+      "id": "math-qread-constraints-temporal-fold",
+      "sidecar": "math/src/qread.rs.groupant/constraints.groupant/temporal-fold.groupant",
+      "source": "math/src/qread.rs",
+      "source_sha256": "8389b8d58f68121743d6346e638601297c3725483f4b9fcd2eb8cd47ef2d028a"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 64782,
+          "start": 61744
+        },
+        "description": "Construct equations from Is constraints, thing comparisons, time comparisons and wholes in that order using state queries. Run four passes over stored equations. After subst(sol), exactly one unknown u with coefficient a produces sol[u]=-(remaining expression)/a; zero or multiple unknowns cause no insertion."
+      },
+      "id": "math-qread-constraints-single-unknown-passes",
+      "sidecar": "math/src/qread.rs.groupant/constraints.groupant/single-unknown-passes.groupant",
+      "source": "math/src/qread.rs",
+      "source_sha256": "8389b8d58f68121743d6346e638601297c3725483f4b9fcd2eb8cd47ef2d028a"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 72125,
+          "start": 70927
+        },
+        "description": "Flatten source occurrences for expression leaf keys. Reject fewer than two occurrences or nonzero constant before duplicate tests. With all_used false, reject any repeated occurrence globally. With true, check repetitions separately inside compound and simple leaf partitions. Then require q_leaf0..nums and, when all_used, all0..nums."
+      },
+      "id": "math-qread-gate-occurrence-partitions",
+      "sidecar": "math/src/qread.rs.groupant/gate.groupant/occurrence-partitions.groupant",
+      "source": "math/src/qread.rs",
+      "source_sha256": "8389b8d58f68121743d6346e638601297c3725483f4b9fcd2eb8cd47ef2d028a"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 27611,
+          "start": 21538
+        },
+        "description": "Immediate child admission and diagnostic reservation"
+      },
+      "id": "modelcheck-library-child-admission",
+      "sidecar": "tools/modelcheck/src/lib.rs.groupant/fragment-validation.groupant/child-admission.groupant",
+      "source": "tools/modelcheck/src/lib.rs",
+      "source_sha256": "c50b445397b9f6cc7d132254f15838f30f733e9bcaed832912f85b639f675bcf"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 29521,
+          "start": 27698
+        },
+        "description": "Projection selection and exact envelope"
+      },
+      "id": "modelcheck-library-syntax-envelope",
+      "sidecar": "tools/modelcheck/src/lib.rs.groupant/fragment-validation.groupant/syntax-envelope.groupant",
+      "source": "tools/modelcheck/src/lib.rs",
+      "source_sha256": "c50b445397b9f6cc7d132254f15838f30f733e9bcaed832912f85b639f675bcf"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 37221,
+          "start": 35679
+        },
+        "description": "Source identity and opt-in AST dispatch"
+      },
+      "id": "modelcheck-library-source-ast-dispatch",
+      "sidecar": "tools/modelcheck/src/lib.rs.groupant/group-source-bindings.groupant/source-ast-dispatch.groupant",
+      "source": "tools/modelcheck/src/lib.rs",
+      "source_sha256": "c50b445397b9f6cc7d132254f15838f30f733e9bcaed832912f85b639f675bcf"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 45356,
+          "start": 44949
+        },
+        "description": "Confined hashed-reference verification"
+      },
+      "id": "modelcheck-library-evidence-digest",
+      "sidecar": "tools/modelcheck/src/lib.rs.groupant/component-validation.groupant/evidence-digest.groupant",
+      "source": "tools/modelcheck/src/lib.rs",
+      "source_sha256": "c50b445397b9f6cc7d132254f15838f30f733e9bcaed832912f85b639f675bcf"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 47942,
+          "start": 46870
+        },
+        "description": "Narrow H2 fence automaton"
+      },
+      "id": "modelcheck-library-section-fences",
+      "sidecar": "tools/modelcheck/src/lib.rs.groupant/component-validation.groupant/section-fences.groupant",
+      "source": "tools/modelcheck/src/lib.rs",
+      "source_sha256": "c50b445397b9f6cc7d132254f15838f30f733e9bcaed832912f85b639f675bcf"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 16547,
+          "start": 16015
+        },
+        "description": "Projection schema and source header admission"
+      },
+      "id": "modelcheck-syntax-artifact-header",
+      "sidecar": "tools/modelcheck/src/syntax.rs.groupant/artifact-integrity.groupant/artifact-header.groupant",
+      "source": "tools/modelcheck/src/syntax.rs",
+      "source_sha256": "35c315cc9b581bea50ea2a7dcb2ec40209f6f836e721ccf5b307764aa2b62d30"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 17204,
+          "start": 16547
+        },
+        "description": "Fresh source and projection metadata consistency"
+      },
+      "id": "modelcheck-syntax-source-reread",
+      "sidecar": "tools/modelcheck/src/syntax.rs.groupant/artifact-integrity.groupant/source-reread.groupant",
+      "source": "tools/modelcheck/src/syntax.rs",
+      "source_sha256": "35c315cc9b581bea50ea2a7dcb2ec40209f6f836e721ccf5b307764aa2b62d30"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 18297,
+          "start": 17620
+        },
+        "description": "Node coordinate and label admission"
+      },
+      "id": "modelcheck-syntax-node-coordinates",
+      "sidecar": "tools/modelcheck/src/syntax.rs.groupant/artifact-integrity.groupant/node-coordinates.groupant",
+      "source": "tools/modelcheck/src/syntax.rs",
+      "source_sha256": "35c315cc9b581bea50ea2a7dcb2ec40209f6f836e721ccf5b307764aa2b62d30"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 19049,
+          "start": 18297
+        },
+        "description": "Root identity and prior-parent interval safety"
+      },
+      "id": "modelcheck-syntax-parent-containment",
+      "sidecar": "tools/modelcheck/src/syntax.rs.groupant/artifact-integrity.groupant/parent-containment.groupant",
+      "source": "tools/modelcheck/src/syntax.rs",
+      "source_sha256": "35c315cc9b581bea50ea2a7dcb2ec40209f6f836e721ccf5b307764aa2b62d30"
+    },
+    {
+      "coverage": {
+        "byte_range": {
+          "end": 22989,
+          "start": 21794
+        },
+        "description": "Bounded exact-byte JSON decode memo"
+      },
+      "id": "modelcheck-syntax-decode-memo",
+      "sidecar": "tools/modelcheck/src/syntax.rs.groupant/decode-memo.groupant",
+      "source": "tools/modelcheck/src/syntax.rs",
+      "source_sha256": "35c315cc9b581bea50ea2a7dcb2ec40209f6f836e721ccf5b307764aa2b62d30"
+    }
+  ],
+  "new_source_files": 0,
+  "new_typed_models": 300,
+  "schema": 1,
+  "sources": [
+    {
+      "base_production_sha256": "fe79f6a469c7285a0653fc08a8951266e87b2ecad98464d3a34ec3eaae8bcc69",
+      "base_sha256": "dc5128329bbebd814b03529e075bc05be358ce4d7500dcab325af8236a2d39a9",
+      "changed": true,
+      "current_production_sha256": "fe79f6a469c7285a0653fc08a8951266e87b2ecad98464d3a34ec3eaae8bcc69",
+      "current_sha256": "06aaec6f562c2acc167046945b0bc2737bb8bcda4fa16de616e7124ba848a69b",
+      "production_changed": false,
+      "raw_base_prefix_preserved": true,
+      "source": "world/src/school.rs"
+    },
+    {
+      "base_production_sha256": "a24bc2c06e396878b56cdd975446b3e0cf73eb9fc361d6f0972ac6f1f79bf588",
+      "base_sha256": "e1ed83bc9178ddb89ab4358347331985c13134e3a9886cb587e57012bccd1dbf",
+      "changed": true,
+      "current_production_sha256": "a24bc2c06e396878b56cdd975446b3e0cf73eb9fc361d6f0972ac6f1f79bf588",
+      "current_sha256": "a892a1ce9f8c6855c3d28711fea2bbf66933e62827377e972d4606aee43ee519",
+      "production_changed": false,
+      "raw_base_prefix_preserved": true,
+      "source": "world/src/schooltools.rs"
+    },
+    {
+      "base_production_sha256": "2e1e2fe9ff2ae8ac67fda23f04a7f5c011b4c8d4f4a9432e62f4cfeb79f9d732",
+      "base_sha256": "702a30a69d2a01914900e3d4128a54881ae6bf798429234e67d25e0f26968dea",
+      "changed": true,
+      "current_production_sha256": "2e1e2fe9ff2ae8ac67fda23f04a7f5c011b4c8d4f4a9432e62f4cfeb79f9d732",
+      "current_sha256": "417ff737f1bd85ebaa449d81abcae6242f1e603d8873b9c0008966a0fd484553",
+      "production_changed": false,
+      "raw_base_prefix_preserved": true,
+      "source": "world/src/knowledge.rs"
+    },
+    {
+      "base_production_sha256": "0c415b858ad6afa169dfe6dbc31305e8a47d0dbfe054df66c3b846c7ba782db0",
+      "base_sha256": "89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34",
+      "changed": false,
+      "current_production_sha256": "0c415b858ad6afa169dfe6dbc31305e8a47d0dbfe054df66c3b846c7ba782db0",
+      "current_sha256": "89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34",
+      "production_changed": false,
+      "raw_base_prefix_preserved": true,
+      "source": "world/src/knowledge/retention.rs"
+    },
+    {
+      "base_production_sha256": "5d1baf270c2625c3660942b28d93e5bbc7da8069debb5c2ba55e3715a0b29920",
+      "base_sha256": "10e0011630db42b9b07f1ce73b584784470e98782e18d097b688aa841c12466f",
+      "changed": true,
+      "current_production_sha256": "5d1baf270c2625c3660942b28d93e5bbc7da8069debb5c2ba55e3715a0b29920",
+      "current_sha256": "80ef1f69d776dcb5cd03bf925cc5c01e827d7919495ccda17d785eb3de459857",
+      "production_changed": false,
+      "raw_base_prefix_preserved": true,
+      "source": "world/src/read.rs"
+    },
+    {
+      "base_production_sha256": "f2ee5bd15310abb1eedbf1df110453c306e15bd80dfeae2c5ba5cc233f9c4b19",
+      "base_sha256": "c8cadb5f0b8205ded6fe4fdf3c1e558fac4a894fae2c4041ac62c4ae63ca1690",
+      "changed": true,
+      "current_production_sha256": "f2ee5bd15310abb1eedbf1df110453c306e15bd80dfeae2c5ba5cc233f9c4b19",
+      "current_sha256": "d8d94c891e347d2b640744b20c4662dc35064368e7d4d9253c4954b4297e1e09",
+      "production_changed": false,
+      "raw_base_prefix_preserved": true,
+      "source": "world/src/ans.rs"
+    },
+    {
+      "base_production_sha256": "96eba0759929d07c79181abbad7d25e712822d6d5e8aa4d5a3bb029c6bedab32",
+      "base_sha256": "3c0aa55f1fecbf578c9b5cfcd9475268c44ef140e93297eb603a2e1433888e4e",
+      "changed": true,
+      "current_production_sha256": "96eba0759929d07c79181abbad7d25e712822d6d5e8aa4d5a3bb029c6bedab32",
+      "current_sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e",
+      "production_changed": false,
+      "raw_base_prefix_preserved": true,
+      "source": "math/src/calc.rs"
+    },
+    {
+      "base_production_sha256": "644e1ce26fc0560c1aeb4c4d85b74e597b52fac733a2ba7aaa08b2bb6b338258",
+      "base_sha256": "1ea65eda3473a9ad6312640ba21261215e15683a0c1b1d5babbe5342ce6f9885",
+      "changed": true,
+      "current_production_sha256": "644e1ce26fc0560c1aeb4c4d85b74e597b52fac733a2ba7aaa08b2bb6b338258",
+      "current_sha256": "8389b8d58f68121743d6346e638601297c3725483f4b9fcd2eb8cd47ef2d028a",
+      "production_changed": false,
+      "raw_base_prefix_preserved": true,
+      "source": "math/src/qread.rs"
+    },
+    {
+      "base_production_sha256": "5d5f162212fcfa9aa26681c3ba58a892cf8f17d68a3bca5e03be4ea3d31b3983",
+      "base_sha256": "24708702f2f867eb8d2589e4910c85ad3e7b46314ed5b607cde398833f2319bf",
+      "changed": true,
+      "current_production_sha256": "ce667d74b978f820b07fdf50a4d7ad6d66a531b5f5b6a8e0111c5c15f3b16fc9",
+      "current_sha256": "c50b445397b9f6cc7d132254f15838f30f733e9bcaed832912f85b639f675bcf",
+      "production_changed": true,
+      "raw_base_prefix_preserved": false,
+      "source": "tools/modelcheck/src/lib.rs"
+    },
+    {
+      "base_production_sha256": "570f255d3abe030bff338641390749165913917ccfb5869a369596e4a33581ea",
+      "base_sha256": "4d1023e16777442c7f436eb6277ff0278c010c6570279fc1b5b5fb38acfa3c87",
+      "changed": true,
+      "current_production_sha256": "85b1cbcd0f4b64d048b12f9f30152ab8cc5befb474dfaf4a0e04bd8e1e02ff05",
+      "current_sha256": "35c315cc9b581bea50ea2a7dcb2ec40209f6f836e721ccf5b307764aa2b62d30",
+      "production_changed": true,
+      "raw_base_prefix_preserved": true,
+      "source": "tools/modelcheck/src/syntax.rs"
+    }
+  ],
+  "validation": {
+    "assertion_controls": 0,
+    "full_system_proof": false,
+    "join_instances": 24,
+    "join_tests": 6,
+    "native_names": 55,
+    "root_repetitions_per_profile": 1,
+    "source_bindings_verified": 14,
+    "source_mutations": 14,
+    "syntax_pairs": 10,
+    "worker_repetitions_per_profile": 2
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "algorithm-strongly-connected-components-tests",
+  "source": "algorithms/src/strongly_connected_components/tests.rs",
+  "description": "Original strongly_connected_components tests with independent oracle.",
+  "state": "deterministic terminating candidate return tables on this fixed finite fixture schedule, with four test verdicts",
+  "forward": [
+    "The fixed four-test schedule maps candidate returns to exact assertion verdicts. Four tests: 531 exhaustive simple directed graphs with 0..3 vertices; 64 seeded graphs with 4..16 vertices and transposed duplicate/reversed adjacency (seed 0x5cc020261029); validation/canonical fixtures; 10,000-vertex chain and closing cycle. Independent Boolean transitive closure computes all-pairs reachability; group u,v iff both directions hold. It does not use finish ordering, graph transposition or the implementation stacks."
+  ],
+  "inverse": [
+    "Declare U as all deterministic terminating candidate return tables on this fixed fixture schedule crossed with four pass/fail verdicts. R is assertion evaluation. U minus R excludes passing when any executed assertion disagrees with its independent expected value, and excludes failure when all assertions pass. Exact assertion specification; actual Rust correspondence is partial. Compilation failure, timeout and resource failure are outside U.",
+    "Pre(y) retains ALL candidate return tables whose assertions produce observed verdicts y. Pass constrains only tested calls, leaving untested inputs arbitrary. Failure preserves every compatible first failing assertion and earlier passing returns. No unique source implementation follows from these observations."
+  ],
+  "cost": "Exhaustive and seeded closure O(sum V^3), matrix memory O(V^2); generated V<=16, 64 cases. Long chain uses 10,000 vertices and production explicit stacks, not recursive oracle.",
+  "checks": [
+    "cargo test -p mova-algorithms strongly_connected_components::tests",
+    "four targeted tests twice; strict Clippy; compiled filtered mutation"
+  ],
+  "limitations": [
+    "Bounded correspondence is not unrestricted proof.",
+    "Partial syntax excludes macro expansion and semantic resolution."
+  ]
+}

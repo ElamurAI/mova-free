@@ -1,0 +1,112 @@
+{
+  "children": [
+    {
+      "id": "coref-score-assignment",
+      "path": "assignment.groupant"
+    },
+    {
+      "id": "coref-score-matching",
+      "path": "matching.groupant"
+    },
+    {
+      "id": "coref-score-metrics",
+      "path": "metrics.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "coref-score-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "coref-score-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "coref-score-tie-selection",
+        "path": "model.md",
+        "section": "tie-selection",
+        "status": "partial_source_model",
+        "type": "tie_selection"
+      },
+      {
+        "id": "coref-score-resource-partition",
+        "path": "model.md",
+        "section": "resource-partition",
+        "status": "partial_source_model",
+        "type": "resource_partition"
+      },
+      {
+        "id": "coref-score-state-reset",
+        "path": "model.md",
+        "section": "state-reset",
+        "status": "partial_source_model",
+        "type": "state_reset"
+      },
+      {
+        "id": "coref-score-observation-projection",
+        "path": "model.md",
+        "section": "observation-projection",
+        "status": "partial_source_model",
+        "type": "observation_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 24255,
+      "start": 0
+    },
+    "description": "Compute MUC, B3, CEAF-e, CEAF-m and mention counts from matched partitions. Matching feeds scorer identities; CEAF overlap components feed floating assignment."
+  },
+  "id": "coref-score",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../score.rs",
+    "sha256": "da0433c1ce72ec0e5bb3b99c522543b6f677e1cd255d2d5767a9818be200393b"
+  },
+  "status": "partial_source_bound_model"
+}

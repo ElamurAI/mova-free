@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "gram::tests::vesum_tags",
+    "gram::wave29::ordered_tags_and_implicit_projection"
+  ],
+  "children": [],
+  "cost": "O(tag bytes), bounded field lookup; O(1) packed state and bounded display names allocation.",
+  "description": "Packed u32 VESUM grammar projection, implicit-subject constructor and dotted display.",
+  "forward": [
+    "First colon token sets POS(unknown13,empty0); recognized subsequent tags overwrite fields, unknown tags ignored; gender implies SG only when number0. implicit_subject copies number/gender/person into fresh noun+NAZ+PRON+IMPLICIT."
+  ],
+  "id": "kg-gram",
+  "inverse": [
+    "Packed grammar admits ignored/overwritten tag sequences. implicit_subject permits any antecedent tense/aspect/flags/animacy matching copied coordinates. Display provides no unique source-tag reconstruction."
+  ],
+  "limitations": [
+    "Invalid arbitrary Gram display/bit-index panics are domain limits, not exercised.",
+    "Partial lexical AST; no semantic proof or useful executable percentage surrogate."
+  ],
+  "source": "kg/src/gram.rs",
+  "state": "Masked setters preserve disjoint fields. Parser-generated values fit display tables; arbitrary public Gram(u32) need not. flag/with require bit<32. Implicit projection clears verb tense/aspect/negation."
+}

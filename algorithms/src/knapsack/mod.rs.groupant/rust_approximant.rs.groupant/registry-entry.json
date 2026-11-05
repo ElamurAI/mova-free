@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Four Rust tests; 1100 bounded brute-force instances at every budget; compiled always-accept mutant rejected."
+  ],
+  "cost": "O(n log n) time O(n) storage accepted; rejected adds exact O(n(C+1)) time and O(C+1) storage.",
+  "description": "Certified density greedy knapsack with exact fallback.",
+  "forward": [
+    "Attainable objective L with (OPT-L)/OPT <= budget, zero loss at OPT=0.",
+    "Accept integer relaxation certificate or use exact reference."
+  ],
+  "id": "algorithm-knapsack-rust-approximant",
+  "inverse": [
+    "Adjacent behavior_complement and reverse_reconstruction models retain ambiguous compatible inputs."
+  ],
+  "limitations": [
+    "No universal speedup or formal proof.",
+    "Certified large capacities may succeed where exact row dimension overflows."
+  ],
+  "source": "algorithms/src/knapsack/mod.rs.groupant/rust_approximant.rs",
+  "state": "Finite u64 value and usize weight items; usize<=64; four ErrorBudget profiles; Estimate or typed error."
+}

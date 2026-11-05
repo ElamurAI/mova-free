@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p world --lib rerank::wave10_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "C candidates and N sentences: pick O(C), report O(sum C + 1000N) time and O(N) bootstrap storage. Lambda sweep multiplies candidate cost by ten. repairs repeatedly scans nodes and matrix lookups; hand passes bounded by two. Parser, matrix initialization and induced-rule costs not bounded here. No timing gain claimed.",
+  "description": "Candidate reranking and token-weighted paired measurement with separate lexical/role repair entrypoints. Pure selection and metric helpers are exercised on supplied candidates; parser/gold I/O and repair inference remain external.",
+  "forward": [
+    "Candidate reranking and token-weighted paired measurement with separate lexical/role repair entrypoints. Pure selection and metric helpers are exercised on supplied candidates; parser/gold I/O and repair inference remain external.",
+    "main.rs absurd-rerank calls run, which loads dev/test via items using annotator.annotate/annotate_kbest and absurd::judge. Scores pass through en::annotate::annotate_kbest from parser.parse_kbest (f32 promoted to f64), so negative infinity is admissible. run selects lambda on dev, report uses get for sentinel safety. Actual repair callers are tree/reader and evaluation paths; source inspection does not execute them."
+  ],
+  "id": "world-rerank",
+  "inverse": [
+    "Universe: bounded supplied candidate or Row inputs and one terminating call. Exclude observations forbidden by the scoped child invariants, conditional on each child's explicit premises. This is an inner absent-behavior model, not the complement of all Rust traces.",
+    "Keep every compatible scoped input and intermediate observation satisfying forward constraints. Aggregate scores, selected candidates and sampled records discard information; no unique inverse or causal explanation follows."
+  ],
+  "limitations": [
+    "Finite synthetic evidence, partial syntax and source-inspected callers only.",
+    "No live parser, gold/heldout, teacher, GPU or full-course runs; no speedup or error-budget claim.",
+    "See fragment models for unsupported malformed state, overflow, positional identity and metadata boundaries."
+  ],
+  "source": "world/src/rerank.rs",
+  "state": "Only declared bounded valid domains have modeled invariants. Successful allocations and stable dependency snapshots are assumed; arbitrary public states and external effects are not certified."
+}

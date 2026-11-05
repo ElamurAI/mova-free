@@ -151,3 +151,55 @@ pub fn migrate_sql(schema: &str) -> Result<&str> {
     let at = schema.find("-- migrate:v").context("schema.sql has no migrations")?;
     Ok(&schema[at..])
 }
+
+#[cfg(test)]
+mod wave31 {
+    use super::*;
+
+    #[test]
+    fn labels_bits_and_migration_boundaries() {
+        for s in ["0", "false"] {
+            assert!(!bit(s).unwrap());
+        }
+        for s in ["1", "true"] {
+            assert!(bit(s).unwrap());
+        }
+        for s in ["", "True", "yes", "-1", "2"] {
+            assert!(bit(s).is_err());
+        }
+        assert_eq!(
+            migrate_sql("old\n-- migrate:v2\nnext\n-- migrate:v3").unwrap(),
+            "-- migrate:v2\nnext\n-- migrate:v3"
+        );
+        assert!(migrate_sql("none").is_err());
+        let stage = Stage::new("wave31-labels").unwrap();
+        let path = stage.path("labels.tsv");
+        let head = "sent_id\tform\tact\tindirect\thedge\tpolarity\tvoice\tmeans";
+        std::fs::write(
+            &path,
+            format!("{head}\ns\tq\trequest\t1\t0\tnone\tnone\t\n"),
+        )
+        .unwrap();
+        let rows = read_labels(&path).unwrap();
+        assert_eq!(rows.len(), 1);
+        assert_eq!(rows[0].sent_id, "s");
+        assert_eq!(rows[0].cols.len(), 8);
+        assert_eq!(rows[0].cols[7], "");
+        std::fs::write(
+            &path,
+            format!("{head}\ttrace\ns\tq\trequest\t1\t0\tnone\tnone\t\tjson\n"),
+        )
+        .unwrap();
+        assert_eq!(read_labels(&path).unwrap()[0].cols[7], "json");
+        for text in [
+            "".to_string(),
+            format!("{head}\twrong\n"),
+            format!("{head}\ns\tq\n"),
+        ] {
+            std::fs::write(&path, text).unwrap();
+            assert!(read_labels(&path).is_err());
+        }
+        std::fs::write(&path, format!("{head}\n\n")).unwrap();
+        assert!(read_labels(&path).unwrap().is_empty());
+    }
+}

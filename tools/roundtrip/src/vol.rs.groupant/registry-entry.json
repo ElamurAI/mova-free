@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "vol::wave32::copier_unicode_and_gap_reconstruction",
+    "vol::tests::txt_pieces_give_the_text_back"
+  ],
+  "children": [],
+  "cost": "Plain layout O(bytes); cut worst bounded closers scan can be quadratic in long closer sequences. residual O(pieces+tokens+marks+stored bytes) excluding copier. Copier retains all history O(H bytes); <=51 candidates but each comparison O(length), map O(log histories). repeat caller may clone entire history.",
+  "description": "txt_volume preserves paragraphs and layout, with_marks inserts markup at byte coordinates. segment aligns tokens against text then cut partitions punctuation boundaries; residual records noncanonical gaps/tails and charges layout/markup. decode_blocks combines canonical spaces and residual overrides, volume_text reapplies pieces/marks. Copier scans next/recent/head/tail candidates, picks strictly cheaper copy, verifies decode, updates counters/history.",
+  "forward": [
+    "txt_volume preserves paragraphs and layout, with_marks inserts markup at byte coordinates. segment aligns tokens against text then cut partitions punctuation boundaries; residual records noncanonical gaps/tails and charges layout/markup. decode_blocks combines canonical spaces and residual overrides, volume_text reapplies pieces/marks. Copier scans next/recent/head/tail candidates, picks strictly cheaper copy, verifies decode, updates counters/history."
+  ],
+  "id": "roundtrip-volume-residual",
+  "inverse": [
+    "Residual coordinate override wins over canonical gaps; metadata always charged; Given/Conllu/FrTable literals excluded here. Copier never selects equal-cost copy over current candidate; returned code costs <=whole flag+literal bits on admitted domain.",
+    "Token forms, spacing bits, gap/tail residual, pieces and ordered marks reconstruct bytes. Forms alone have many whitespace/layout antecedents. Copy plus referenced history reconstructs literal, but code alone does not recover absent history. Counter totals lose sequence."
+  ],
+  "limitations": [
+    "Partial source syntax and finite pure-code tests only; no model loading, live corpus/site/lesson workflows, full pipeline or persistent learning claim.",
+    "No executable percentage surrogate or semantic proof; explicit codec domains and resource limits apply."
+  ],
+  "source": "tools/roundtrip/src/vol.rs",
+  "state": "Valid Piece indices, Sent vectors and nonempty sentence forms; mark/gap UTF-8 boundaries; copy indices and pre/suf within earlier strings; representable counts and finite symbolic bit sums. Annotator and file readers unexecuted."
+}

@@ -1,0 +1,112 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived target with finite correspondence evidence; not a proof",
+        "assumptions": "Successful std allocation; exact bounded integer arithmetic; no live external dependencies",
+        "domain": "Documented bounded API input histories",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "API outputs, errors, insertion IDs or query order; named test outcomes",
+        "operator": "Universe: valid timelines paired with query answer sequences. Exclude Connected(false) for equal valid vertices or for an active path, Connected(true) for disconnected vertices, and component counts other than the active graph's partition cardinality. Invalid endpoint/lifecycle traces paired with Ok are absent. A removed edge cannot affect later leaves without a new Add.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "d26f4f177ad0ecbe9976c94498b21cc329d633b611cbb9eb8d8f7fa8d1f9c852",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived target with finite correspondence evidence; not a proof",
+        "assumptions": "Successful std allocation; exact bounded integer arithmetic; no live external dependencies",
+        "domain": "Documented bounded API input histories",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "API outputs, errors, insertion IDs or query order; named test outcomes",
+        "operator": "Observed answers retain every valid timeline whose active graphs induce those observations. Edge sets are not recoverable: a triangle and its spanning tree have identical connectivity/component observations. With fixed timeline operations except unknown edges, retain all graph completions satisfying the observed equivalence relations; query-free histories all yield an empty vector.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "d26f4f177ad0ecbe9976c94498b21cc329d633b611cbb9eb8d8f7fa8d1f9c852",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived target with finite correspondence evidence; not a proof",
+        "assumptions": "Successful std allocation; exact bounded integer arithmetic; no live external dependencies",
+        "domain": "Documented bounded API input histories",
+        "evidence": "model.md#evidence",
+        "id": "rollback_scope",
+        "observation_scope": "API outputs, errors, insertion IDs or query order; named test outcomes",
+        "operator": "An entry mark is the history length. After visiting both children, undo precisely the successful unions since that mark; redundant/self-loop unions add no records. A child-only edge must not leak into its sibling. Suppressing rollback compiles but rollback_and_lifecycle fails.",
+        "path": "model.md",
+        "section": "rollback_scope",
+        "status": "partial_relational_specification",
+        "subject_revision": "d26f4f177ad0ecbe9976c94498b21cc329d633b611cbb9eb8d8f7fa8d1f9c852",
+        "type": "rollback_scope"
+      },
+      {
+        "approximation_semantics": "Source-derived target with finite correspondence evidence; not a proof",
+        "assumptions": "Successful std allocation; exact bounded integer arithmetic; no live external dependencies",
+        "domain": "Documented bounded API input histories",
+        "evidence": "model.md#evidence",
+        "id": "lifecycle_partition",
+        "observation_scope": "API outputs, errors, insertion IDs or query order; named test outcomes",
+        "operator": "Caps are checked vertices first, then operation count. At each timeline step first invalid endpoint wins, then duplicate Add or absent Remove. Undirected reversal preserves identity; Remove ends activity before its own leaf. Empty vertices permit Components but no endpoint operation.",
+        "path": "model.md",
+        "section": "lifecycle_partition",
+        "status": "partial_relational_specification",
+        "subject_revision": "d26f4f177ad0ecbe9976c94498b21cc329d633b611cbb9eb8d8f7fa8d1f9c852",
+        "type": "lifecycle_partition"
+      },
+      {
+        "approximation_semantics": "Source-derived target with finite correspondence evidence; not a proof",
+        "assumptions": "Successful std allocation; exact bounded integer arithmetic; no live external dependencies",
+        "domain": "Documented bounded API input histories",
+        "evidence": "model.md#evidence",
+        "id": "component_information",
+        "observation_scope": "API outputs, errors, insertion IDs or query order; named test outcomes",
+        "operator": "Union of distinct roots lowers components by one, rollback raises it by one. Self-loops and redundant paths leave it fixed. Component counts discard labels and internal edge multiplicity; BFS on each independently reconstructed active graph observes the partition.",
+        "path": "model.md",
+        "section": "component_information",
+        "status": "partial_relational_specification",
+        "subject_revision": "d26f4f177ad0ecbe9976c94498b21cc329d633b611cbb9eb8d8f7fa8d1f9c852",
+        "type": "component_information"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-offline-dynamic-connectivity",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "d26f4f177ad0ecbe9976c94498b21cc329d633b611cbb9eb8d8f7fa8d1f9c852"
+  },
+  "status": "partial_source_derived_instance"
+}

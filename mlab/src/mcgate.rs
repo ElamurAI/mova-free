@@ -88,3 +88,27 @@ pub fn run(k: usize, seed: u64, fault: Option<&str>) -> Vec<Row> {
     check("chi2test 2x3, n = 300", 0.004, &ps);
     out
 }
+
+#[cfg(test)]
+mod wave30 {
+    use super::*;
+    #[test]
+    fn tiny_and_zero_gate() {
+        let zero = run(0, 42, None);
+        assert_eq!(zero.len(), 32);
+        assert!(
+            zero.iter()
+                .all(|r| r.frac.is_nan() && r.tol.is_infinite() && !r.ok)
+        );
+        let a = run(2, 42, None);
+        let b = run(2, 42, None);
+        assert_eq!(a.len(), 32);
+        for (x, y) in a.iter().zip(b) {
+            assert_eq!(
+                (x.test, x.alpha, x.frac, x.tol, x.ok),
+                (y.test, y.alpha, y.frac, y.tol, y.ok)
+            );
+            assert!((0.0..=1.0).contains(&x.frac));
+        }
+    }
+}

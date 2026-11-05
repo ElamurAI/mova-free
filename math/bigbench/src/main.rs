@@ -261,3 +261,28 @@ fn main() {
     row("H(3000) exact, rationals", "num-rational 0.4.2", t);
     assert_eq!(d::rat_str(&hd), n::rat_str(&hn));
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn bounded_libraries() {
+        for k in [1, 2, 7, 17] {
+            assert_eq!(d::fact(k).to_string(), n::fact(k).to_string());
+            assert_eq!(d::fact(k).to_string(), n5::fact(k).to_string());
+        }
+        assert_eq!(d::harmonic(3).to_string(), n::harmonic(3).to_string());
+        assert_eq!(d::pow3(8).to_string(), "6561");
+    }
+    #[test]
+    fn last_value_min_time() {
+        let mut i = 0;
+        let (v, t) = best(3, || {
+            i += 1;
+            i
+        });
+        assert_eq!(v, 3);
+        assert!(t >= 0.0);
+        assert!(std::panic::catch_unwind(|| best(0, || 0)).is_err());
+    }
+}

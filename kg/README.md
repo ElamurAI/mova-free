@@ -26,7 +26,7 @@ One grammatical core (predicate + subject) yields one **fact**: a `fact` vertex 
 
 The service edge `from_sentence` points to the source sentence.
 
-A fact is a vertex rather than a single edge, as in the earlier ConceptNet-style graph (`VessoftLegacy/js/nlp/knowledge`). This way sentences without an object and sentences with adverbials fit without loss. The roles are syntactic, i.e. derived from case, agreement and government. Semantic roles come as the next layer.
+A fact is a vertex rather than a single edge. This way sentences without an object and sentences with adverbials fit without loss. The roles are syntactic, i.e. derived from case, agreement and government. Semantic roles come as the next layer.
 
 Relation labels are English; the case in `object:<case>` and `adverbial:<preposition>+<case>` is the VESUM tag (`v_zna`, `v_mis`, …), and the preposition and quantity word are the Ukrainian words themselves (needed to restore the sentence).
 
@@ -84,44 +84,31 @@ A **subgraph** is a mask filter over the flags column: `kg sub <store> uk,fact,c
   - everything compressed with zstd-19.
 - The store is `$MOVA_DATA/kg/`: `heaps.tsv`, `keys/`, `edges/`, `sentences.tsv`, reports.
 
-## Status of v2 (24.09.2026), Tatoeba uk
+## Tatoeba uk
 
 ```
 kg tatoeba-uk $MOVA_DATA/raw/multi-tatoeba …/uk-vesum-dict-uk/dict_corp_vis.txt.bz2 $MOVA_DATA/kg
 ```
 
-**Run:**
+**Rejections:** commas, questions, conjunctions, an infinitive after the predicate, a dash with a verb — these are not yet simple sentences. Ambiguous cases are not guessed.
 
-| Metric | Value |
-|---|---|
-| sentences | 188,811 |
-| parsed as a simple sentence | **55,716 (29.5%)** |
-| edges | 245,300 |
-| size on disk | **3.65 B/edge** (raw columns — 32 B; ×8.8 compression) |
-| run time | 14 s, of which 11.6 s is VESUM |
-| subgraph `uk,fact,checked` | 189,584 edges, filter 1.9 ms |
-
-**Rejections:** commas, questions, conjunctions, an infinitive after the predicate, a dash with a verb — for v2 these are not yet simple sentences. Ambiguous cases are not guessed.
-
-**Quality — manual evaluation:**
-- Development gold standard `examples/gold-v1.tsv`: v1 — 19/30 ✓, v2 — 28/30 ✓ + 2 half-right.
-- **Independent samples** `examples/heldout-v2.tsv` (76 sentences, 3 samples, each graded before any fixes based on it): **57 ✓ (75%), 4 half-right, 15 ✗ (20%)**.
-- Error causes and what was fixed:
-  - proper names instead of common words — names are now taken from the corpus;
-  - verb government — the object's case is taken from VESUM `rv_*` (76% of verbs);
+**Manual evaluation:** a development gold standard `examples/gold-v1.tsv` and independent samples `examples/heldout-v2.tsv`, each sample graded before any fixes based on it.
+- Error causes the parser handles:
+  - proper names instead of common words — names are taken from the corpus;
+  - verb government — the object's case is taken from VESUM `rv_*` where VESUM has it;
   - pronouns after prepositions;
   - quantity phrases;
   - "це" as a particle;
-  - attributes no longer attach to personal pronouns.
-- Remaining:
+  - attributes do not attach to personal pronouns.
+- Not handled:
   - substantivized adjectives ("першим" as the noun "перше");
   - genitive of time ("минулої осені" is currently an object);
   - proverbs with inversion.
 
 **Checks:**
-- `render_check` checks only **completeness**: the graph together with the grammar reproduces every word of the sentence. It does not see role correctness, so on parsed sentences it is always 100%.
+- `render_check` checks only **completeness**: the graph together with the grammar reproduces every word of the sentence. It does not see role correctness, so it passes on every parsed sentence.
 - A unit test proves the check can show red: a lost member, a wrong grammar, an extra "не".
-- The real correctness gate is the manual samples and (next step) the **round trip text → graph → text**.
+- The real correctness gate is the manual samples and the **round trip text → graph → text** (section "Generator").
 
 ## Commands
 
@@ -146,15 +133,19 @@ Rules:
   - Tatoeba — CC BY 2.0 FR.
   - Data derived from Wiktionary, when distributed — with attribution and share-alike.
 
-## Next
+## Generator (graph → sentence)
 
-1. ~~Generator (graph → sentence)~~ — **done** (`src/textgen.rs`):
-   - chunk order is a Markov chain over classes, trained on 90% of parsed sentences;
-   - forms come from VESUM synthesis, the variant is chosen by the frequency of (lemma, grammar) → form.
-   Round-trip gate on the held-out 10% (5,488 facts): **verbatim 68.8%, same words in a different order 28.5%, different words 2.6%**. Before choosing variants by frequency, different words were 14%.
-2. **AI fallback path.** A pilot on a small sample of rejections (commas, conjunctions): Opus rewrites the sentence into simple ones, the parser parses them. Measure the share parsed and meaning preservation. A mass run only with explicit approval.
-3. **English:** translations from Tatoeba `links` → `translation` edges; an English parser (morphology from open dictionaries).
-4. **Broader constructions:** coordinated members, questions, complex sentences.
+`src/textgen.rs`:
+- chunk order is a Markov chain over classes, trained on 90% of parsed sentences;
+- forms come from VESUM synthesis, the variant is chosen by the frequency of (lemma, grammar) → form.
+
+Round-trip gate on the held-out 10% of facts: each regenerated sentence is classed as verbatim, the same words in a different order, or different words.
+
+## Limits
+
+- **No AI fallback path** for rejected sentences (commas, conjunctions): a teacher that rewrites them into simple ones is not built or measured.
+- **Ukrainian only:** no `translation` edges from Tatoeba `links` and no English parser in `kg`.
+- **Simple sentences only:** coordinated members, questions and complex sentences are rejected.
 
 ## Licence
 

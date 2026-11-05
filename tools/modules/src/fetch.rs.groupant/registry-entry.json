@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test --release --locked -p mova-modules fetch"
+  ],
+  "cost": "B archive bytes: download O(B), SHA-1 pieces O(B) by torrent/magnet, SHA-256 O(B), unpack O(B), content and tree hashes O(raw); one piece or 1 MiB buffers in memory.",
+  "description": "`mova fetch`: a release's files from the repository's manifest (releases/0.5-files.json, compiled in) over HTTPS, from the .torrent (info hash checked, BEP 19 web seed, every piece's SHA-1) or from the magnet link (xs source); size and SHA-256 must match before anything is unpacked; installs without deleting earlier files; the manifest's policy check and its Markdown page.",
+  "forward": [
+    "check enforces URL/torrent/magnet derivation from base_url and trackers, hashes, safe paths, raw_bytes = sum of contents and the licence policy (model/corpus/dictionaries CC-BY-SA-4.0, modules not ours and optional, no Wikipedia/Wiktionary outside a module, only the model required); render_bone writes the page (usage via target/release/mova and the PATH line); `mova fetch --page` prints it.",
+    "fetch_one downloads by https, torrent or magnet into a .part, refuses a size or SHA-256 mismatch (removing the part), lists the tar.gz (members inside <top>), reuses a cached <unpack_to>/<top> only when its stamp names the archive and check_inventory passes (exactly the manifest contents: paths, sizes, SHA-256, no extra files or links), otherwise unpacks into staging that must pass the same check, verifies a module, and copies install entries, renaming a differing earlier target or a failed cache .before-<release>."
+  ],
+  "id": "mova-modules-fetch",
+  "inverse": [
+    "Behavior complement: no peer wire protocol, trackers, DHT or BEP 9; no multi-file or v2 torrents; no resume; no deletion of earlier installs; licences checked only against fixed policy rules.",
+    "Reverse reconstruction: earlier installs and failed caches survive as .before-<release>; the stamp gives the archive SHA-256 and hence the manifest row (the inventory check, not the stamp, vouches for the cached bytes); the way of fetching is not recorded."
+  ],
+  "limitations": [
+    "Partial source model; finite tests with file:// fixtures (including tampered-cache negative controls) and one live run on 2026-11-05."
+  ],
+  "source": "tools/modules/src/fetch.rs",
+  "state": "Data directory: release/<r>/ (stamps, unpacked tops), modules/, install targets and their .before-<r> copies."
+}

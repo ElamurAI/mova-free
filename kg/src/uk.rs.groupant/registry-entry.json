@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "uk::tests::tokens_strip_stress_and_keep_apostrophes",
+    "uk::tests::render_check_catches_damage",
+    "uk::wave29::failure_precedence_and_real_parse"
+  ],
+  "children": [],
+  "cost": "O(B) tokenization. After gates n<=8, a alternatives/word and P finite predicate analyses: conservative O(P*n^2*a^2 + P^2*n) for nested noun/attribute analysis scans and Fact deduplication; a and P are not globally capped. Render costs form search plus W log W sorting and retained strings. This refines the prospective O(P*n^2*a) hypothesis after inspecting nested agreement searches.",
+  "description": "Conservative Ukrainian tokenization/rule Fact extraction and separate multiset completeness check.",
+  "forward": [
+    "Tokenize, scan punctuation gate, then empty/>8/ASCII-digit/conjunction/unknown gates; proper-filter analyses, reject dash+finite verb. Enumerate finite analyses or nominal fallback; greedy attachments/case preferences produce candidates, deduplicate equal Facts and accept exactly one. render_check synthesizes members and compares normalized sorted word multisets after restoring prep/quantity/negation."
+  ],
+  "id": "kg-uk",
+  "inverse": [
+    "Fact preimages vary punctuation/order/case/spelling and Morph/names state. render preimage includes supported form/index assignments with equal normalized multiset; Fact loses punctuation/rejected candidates."
+  ],
+  "limitations": [
+    "No gold/corpus/held-out accuracy run; modal/nominal/proper/attachment branches partially source-derived.",
+    "No exact parse/generate inverse or percentage surrogate.",
+    "Partial lexical AST; no semantic proof or useful executable percentage surrogate."
+  ],
+  "source": "kg/src/uk.rs",
+  "state": "Word coordinates index word tokens, not bytes/all tokens. render success proves per-member form compatibility and multiset completeness only, not roles/order/unique parse. Greedy rules do not enumerate all linguistic ambiguity."
+}

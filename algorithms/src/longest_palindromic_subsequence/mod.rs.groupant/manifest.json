@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-longest_palindromic_subsequence",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "6f3e612929a58a8edd369de3a5c9893ddf4a2ff55ab33721fdc0e423b595faa3"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "path": "syntax.json",
+      "format": "rust_syntax_projection",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "domain": "Finite slices T:Eq under reflexive symmetric transitive stable equality, sufficient memory; output usize.",
+        "operator": "Universe (input,k). Exclude k<0 or k>n, k=0 for nonempty input, values without a palindromic subsequence witness, and values below any feasible palindromic witness length. Witness existence and maximality jointly characterize the result.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "6f3e612929a58a8edd369de3a5c9893ddf4a2ff55ab33721fdc0e423b595faa3",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "compatible_antecedents",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "compatible_antecedents",
+        "domain": "Finite slices T:Eq under reflexive symmetric transitive stable equality, sufficient memory; output usize.",
+        "operator": "Given length n and observed k, compatible inputs are equality patterns admitting a palindromic index subsequence of size k and none larger. For an alphabet with at least n symbols: n=0 allows only k=0; n>0 allows precisely 1<=k<=n, witnessed by k copies of one symbol and n-k distinct other symbols. With smaller fixed alphabets extra constraints apply. Actual symbols and order are not uniquely recovered.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "6f3e612929a58a8edd369de3a5c9893ddf4a2ff55ab33721fdc0e423b595faa3",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "reversal",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "reversal",
+        "domain": "Finite slices T:Eq under reflexive symmetric transitive stable equality, sufficient memory; output usize.",
+        "operator": "Reversing the input bijects subsequences and preserves palindromicity, hence preserves the optimum.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "6f3e612929a58a8edd369de3a5c9893ddf4a2ff55ab33721fdc0e423b595faa3",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "injective_symbols",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "injective_symbols",
+        "domain": "Finite slices T:Eq under reflexive symmetric transitive stable equality, sufficient memory; output usize.",
+        "operator": "An injective symbol mapping preserves equality patterns and length. Collapsing symbols can increase the optimum, as abc mapped to aaa.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "6f3e612929a58a8edd369de3a5c9893ddf4a2ff55ab33721fdc0e423b595faa3",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "wrapped_endpoint",
+        "type": "composition_relation",
+        "path": "model.md",
+        "section": "wrapped_endpoint",
+        "domain": "Finite slices T:Eq under reflexive symmetric transitive stable equality, sufficient memory; output usize.",
+        "operator": "Adding the same symbol at both ends yields length(s)+2 by the equal-endpoint interval recurrence, including the empty inner interval.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "6f3e612929a58a8edd369de3a5c9893ddf4a2ff55ab33721fdc0e423b595faa3",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "boundary_values",
+        "type": "output_constraint",
+        "path": "model.md",
+        "section": "boundary_values",
+        "domain": "Finite slices T:Eq under reflexive symmetric transitive stable equality, sufficient memory; output usize.",
+        "operator": "Nonempty input yields at least one; constant inputs yield n; pairwise-distinct inputs yield one. These boundaries exercise diagonal initialization and equality matching.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "6f3e612929a58a8edd369de3a5c9893ddf4a2ff55ab33721fdc0e423b595faa3",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "subsequence_monotonicity",
+        "type": "order_relation",
+        "path": "model.md",
+        "section": "subsequence_monotonicity",
+        "domain": "Finite slices T:Eq under reflexive symmetric transitive stable equality, sufficient memory; output usize.",
+        "operator": "Deleting elements cannot increase the optimum. Inserting one element increases it by at most two: remove its mirrored mate too from any optimum containing it; the remaining subsequence is palindromic.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "6f3e612929a58a8edd369de3a5c9893ddf4a2ff55ab33721fdc0e423b595faa3",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "length_information_loss",
+        "type": "information_loss",
+        "path": "model.md",
+        "section": "length_information_loss",
+        "domain": "Finite slices T:Eq under reflexive symmetric transitive stable equality, sufficient memory; output usize.",
+        "operator": "The scalar omits the witness, its position and its symbols. abc and xyz both give one; multiple distinct optimal subsequences may exist. Reconstruction needs more than the returned length.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "6f3e612929a58a8edd369de3a5c9893ddf4a2ff55ab33721fdc0e423b595faa3",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      }
+    ]
+  }
+}

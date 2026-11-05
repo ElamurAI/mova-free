@@ -2,11 +2,11 @@
 
 The rule language is `docs/dialect.md`. Conventions beyond the specification are in `../seeds-overview.md`. Matches were counted by `en expert-check`: `childes → mova` on all parts of CHILDES, `mova → childes` on EWT.
 
-CHILDES has no FEATS (`seeds/data.md`). The converter does not invent them: training skips the layer (`Sentence::has_feats`). The converter does not treat the 11,446 sentences with `gold_annotation = False` separately. Training should give them a weight, as silver data.
+CHILDES has no FEATS (`seeds.md#data`). The converter does not invent them: training skips the layer (`Sentence::has_feats`). The converter does not treat the 11,446 sentences with `gold_annotation = False` separately. Training should give them a weight, as silver data.
 
 ## childes → mova
 
-### 1. `:npmod` → `:unmarked` (`seeds/npmod.md`)
+### 1. `:npmod` → `:unmarked` (`seeds.md#npmod`)
 
 ```convert
 rule: childes.unmarked-time
@@ -38,7 +38,7 @@ set: t[rel=nmod:unmarked]
 source: UD 2.15, docs#1028
 ```
 
-### 2. Punctuation (`seeds/punct.md`)
+### 2. Punctuation (`seeds.md#punct`)
 
 ```convert
 rule: childes.punct-xpos
@@ -50,7 +50,7 @@ set: p[xpos=.]
 source: Santorini 1990, `.`
 ```
 
-### 3. Pronoun lemmas (`seeds/pron-lemma.md`)
+### 3. Pronoun lemmas (`seeds.md#pron-lemma`)
 
 ```convert
 rule: childes.lemma-me
@@ -112,7 +112,7 @@ set: p[lemma=I]
 source: EWT 2.18
 ```
 
-### 4. Old customs (`seeds/old-ud.md`)
+### 4. Old customs (`seeds.md#old-ud`)
 
 ```convert
 rule: childes.wh-advmod
@@ -183,7 +183,7 @@ from: childes
 to: mova
 match: s[form='s, upos=AUX, xpos=POS]
 set: s[xpos=VBZ]
-source: seeds/errors.md
+source: seeds.md#errors
 ```
 
 The last rule fixes an error, not a dialect, because this error is systematic (81). There is no reverse rule.
@@ -199,7 +199,7 @@ from: mova
 to: childes
 match: t[rel=obl:unmarked, lemma!=today|tomorrow|yesterday|tonight|morning|afternoon|evening|night|day|week|time|minute|year|month|now|weekend]
 set: t[rel=obl:npmod]
-source: seeds/npmod.md
+source: seeds.md#npmod
 ```
 
 ```convert
@@ -209,7 +209,7 @@ from: mova
 to: childes
 match: t[rel=nmod:unmarked, lemma!=today|tomorrow|yesterday|tonight|morning|afternoon|evening|night|day|week|time|minute|year|month|now|weekend]
 set: t[rel=nmod:npmod]
-source: seeds/npmod.md
+source: seeds.md#npmod
 ```
 
 ```convert-todo
@@ -219,7 +219,7 @@ from: mova
 to: childes
 match: t[rel=obl:unmarked, misc.TemporalNPAdjunct!=Yes]
 set: t[rel=obl:npmod]
-source: seeds/npmod.md
+source: seeds.md#npmod
 ```
 
 ```convert-todo
@@ -229,7 +229,7 @@ from: mova
 to: childes
 match: p[upos=PUNCT, form=?]
 set: p[xpos=?]
-source: seeds/punct.md
+source: seeds.md#punct
 ```
 
 Needs string XPOS: `?` and `!` are not PTB tags, and `xpos=` will not accept them.
@@ -241,7 +241,7 @@ from: mova
 to: childes
 match: t[]
 set: t[feats-=Number]; t[feats-=Person]; t[feats-=Tense]; t[feats-=Mood]; t[feats-=VerbForm]; t[feats-=Voice]; t[feats-=Case]; t[feats-=Gender]; t[feats-=PronType]; t[feats-=Poss]; t[feats-=Reflex]; t[feats-=Definite]; t[feats-=Degree]; t[feats-=NumType]; t[feats-=NumForm]; t[feats-=Polarity]; t[feats-=Foreign]; t[feats-=Abbr]; t[feats-=Style]
-source: seeds/data.md
+source: seeds.md#data
 ```
 
 ```convert
@@ -251,7 +251,7 @@ from: mova
 to: childes
 match: p[form=your, upos=PRON]
 set: p[lemma=you]
-source: seeds/pron-lemma.md (1093 versus 784)
+source: seeds.md#pron-lemma (1093 versus 784)
 ```
 
 ```convert
@@ -261,7 +261,7 @@ from: mova
 to: childes
 match: v[rel=advcl]; w[form=when, rel=advmod, head=v]
 set: w[upos=SCONJ]; w[xpos=WRB]; w[rel=mark]
-source: seeds/old-ud.md (when SCONJ mark — 420)
+source: seeds.md#old-ud (when SCONJ mark — 420)
 ```
 
 Matches on EWT: `npmod` 550, `nmod-npmod` 1254, `feats` 254 820, `lemma-your` 815, `when-mark` 402.

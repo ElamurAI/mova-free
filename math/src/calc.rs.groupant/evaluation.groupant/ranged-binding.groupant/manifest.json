@@ -1,0 +1,102 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "scope": "Shared parent syntax restricted to coverage byte interval; no semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "tick_insert_order",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "tick_insert_order",
+        "status": "partial_source_derived_model",
+        "type": "tick_insert_order"
+      },
+      {
+        "id": "early_witness",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "early_witness",
+        "status": "partial_source_derived_model",
+        "type": "early_witness"
+      },
+      {
+        "id": "empty_identities",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "empty_identities",
+        "status": "partial_source_derived_model",
+        "type": "empty_identities"
+      },
+      {
+        "id": "restoration_cut",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "restoration_cut",
+        "status": "partial_source_derived_model",
+        "type": "restoration_cut"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "Tests",
+      "status": "bounded_actual_helper_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 32191,
+      "start": 29070
+    },
+    "description": "Validate arity and variable, evaluate lo then hi, check span, save the current binding. Each inclusive iteration ticks, binds k, evaluates body, updates the selected accumulator or early-exits. Normal loop exit restores saved binding before result extraction and capped note. Any ? before restoration retains reached prefix state."
+  },
+  "id": "math-calc-evaluation-ranged-binding",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../calc.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e"
+  },
+  "status": "partial_source_bound_model"
+}

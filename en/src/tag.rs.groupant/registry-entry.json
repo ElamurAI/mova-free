@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p en --lib tag::wave27_tests",
+    "Repeated debug/release named outcomes and paired partial syntax"
+  ],
+  "children": [],
+  "cost": "Train O(T+NT^3+suffix work); decode O(n*K^3) time/O(n*K^2), NT fixed; unchecked counters.",
+  "description": "TnT trigram tables, lexical emissions, suffix model, Viterbi",
+  "forward": [
+    "Tagged sentences only; double BOS then final BOS. Interpolation ties trigram then bigram; rare<=10 suffix max10. Exact then lowercase known lexicon bypasses hints. Unknown suffix stops at first absent; dictionary soft/hard then seen positive emission candidates.",
+    "The unknown-word dictionary hint includes derive::hint for a lower-case form the dictionary lacks (2026-11-04)."
+  ],
+  "id": "en-tag",
+  "inverse": [
+    "A sequence has all words/parameters for which its score maximizes under strict-greater first-candidate ties; aggregated training counts lose original sentence ordering."
+  ],
+  "limitations": [
+    "Empty tagging empty; empty training has NaNs/no support and nonempty inference may panic. Deserialize and Soft multiplier have no validation.",
+    "No executable percent surrogate: no demonstrated useful metric preserving categorical/effect semantics; permitted future caps 1/2/5/10%, no production substitution.",
+    "Partial source-bound modeling, no corpus/API/GPU, allocation faults or exhaustive numerical checks."
+  ],
+  "source": "en/src/tag.rs",
+  "state": "TnT trigram tables, lexical emissions, suffix model, Viterbi"
+}

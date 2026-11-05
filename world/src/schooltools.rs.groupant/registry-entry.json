@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "cargo test --offline --locked -p world --lib schooltools::wave9_models::parser_canonical_fibers_and_tally -- --exact --test-threads=1",
+    "cargo test --offline --locked -p world --lib schooltools::wave9_models::edit_transaction_and_argument_effects -- --exact --test-threads=1",
+    "cargo test --offline --locked -p world --lib schooltools::tests::fix_spaces_changes_spaces_only -- --exact --test-threads=1",
+    "cargo test --offline --locked -p world --lib schooltools::wave34_models::restore_preflight_and_duplicate_selection -- --exact --test-threads=1"
+  ],
+  "children": [],
+  "cost": "Text parsing linear bytes; lint pair comparisons quadratic in options and string lengths plus glued scans. apply_edits clones/splits text and scans fields per edit, with final join linear bytes. Filesystem cost proportional to bytes transferred; no atomic/durable write guarantee.",
+  "description": "option_line trims key/fields for three case-sensitive kinds. canon moves a uniquely starred answer to position one and strips leading stars; zero/multiple marked options remain unchanged. Tally compares Unicode scalar counts. Lint reports structural and heuristic findings; spacing fixer normalizes option lines. Edits fold in table order on a working text and return either complete edited text or accumulated refusals. File edit command processes files in BTreeMap order with per-file writes. Restore validates line count and indices before copying requested saved lines. Wave34 adds five nested helper groupants and exact selected native evidence; prior epochs remain historical.",
+  "forward": [
+    "option_line trims key/fields for three case-sensitive kinds. canon moves a uniquely starred answer to position one and strips leading stars; zero/multiple marked options remain unchanged. Tally compares Unicode scalar counts. Lint reports structural and heuristic findings; spacing fixer normalizes option lines. Edits fold in table order on a working text and return either complete edited text or accumulated refusals. File edit command processes files in BTreeMap order with per-file writes. Restore validates line count and indices before copying requested saved lines."
+  ],
+  "id": "world-schooltools",
+  "inverse": [
+    "Universe is finite UTF-8 text, edit lists and supplied fixture filesystem transitions under successful allocations. Inner absence excludes successful replacement with forbidden separators, ambiguous old text, duplicate case-folded options or invalid line indices. Lint clean does not prove correctness of teaching content; errors in later files do not undo earlier writes.",
+    "Canonicalization loses whitespace, original marked position and repeated leading stars. Tally loses every question and option string beyond length order. Successful edit result with unknown edits has many earlier texts; snapshot restore reconstructs selected saved lines only, not external file history."
+  ],
+  "limitations": [
+    "Partial source models and finite native evidence; no live lesson edits, parser, teacher, run-course, GPU or held-out benchmarks.",
+    "External filesystem errors can preserve earlier effects; syntax is partial, macro bodies opaque."
+  ],
+  "source": "world/src/schooltools.rs",
+  "state": "Pure apply_edits exposes no partially changed string on Err; command-level edit is not all-files atomic. Original option positions and star of replaced answer are preserved for supported edits. Restore rejects zero and out-of-range indices before writing."
+}

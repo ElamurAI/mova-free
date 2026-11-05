@@ -1,0 +1,28 @@
+{
+  "checks": [
+    "ans::wave8_models::score_precedence_and_fibers",
+    "ans::wave8_models::ranking_sections_ties_and_relaxed_fallback",
+    "ans::wave8_models::supplied_frame_why_precedence_and_anchor_only_failure",
+    "ans::wave8_models::answer_projection_and_section_boundaries",
+    "ans::wave8_models::lcs_matches_subsequence_oracle",
+    "ans::wave34_models::participant_rescue_requires_total_four",
+    "ans::wave34_models::number_rendering_spacing_and_fibers"
+  ],
+  "children": [],
+  "cost": "For E events, Q query classes, L lemma-comparison work and H snapshot/history work: ranking O(E*(Q*L+H)+E log E), potentially twice on fallback. Dispatch includes branch-dependent histories; no complete bound. LCS n*m cell updates and m+1 usize cells.",
+  "description": "Scoped answer composition: lexical/question interpretation -> subject/anchor resolution -> intent dispatch -> State(text,note,anchor) or None(empty text,note,anchor). Ranking weights each query class exclusively: verb 3, participant 1.5, text 1, then role/section bonuses. Selected why paths prioritize explicit why, causal how, cause event, agent belief, goal, fulfilled intent; feeling-specific search precedes ordinary events. Other branches are read but not comprehensively modeled. Wave34 adds five scoped nested children and exact safe helper evidence; historical evidence retains its original epoch.",
+  "forward": [
+    "Scoped answer composition: lexical/question interpretation -> subject/anchor resolution -> intent dispatch -> State(text,note,anchor) or None(empty text,note,anchor). Ranking weights each query class exclusively: verb 3, participant 1.5, text 1, then role/section bonuses. Selected why paths prioritize explicit why, causal how, cause event, agent belief, goal, fulfilled intent; feeling-specific search precedes ordinary events. Other branches are read but not comprehensively modeled."
+  ],
+  "id": "world-ans",
+  "inverse": [
+    "Behavior complement first: scoped excluded pairs with explicit unknowns.",
+    "Reverse reconstruction second: all compatible inputs, not unique text recovery."
+  ],
+  "limitations": [
+    "Partial syntax and bounded native fixtures; no live parser/teacher.",
+    "No general semantic proof or executable approximant."
+  ],
+  "source": "world/src/ans.rs",
+  "state": "Supplied World/Frame, lexical classes and token streams; valid one-based event sentence anchors. Compiled dictionary remains a dependency."
+}

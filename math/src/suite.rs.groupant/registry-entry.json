@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p math --lib suite::wave28",
+    "two identical syntax projections"
+  ],
+  "children": [],
+  "cost": "O(TSV+rows)+understanding/eval; unit sort O(u log u); unchecked usize counters.",
+  "description": "Trim expected, accept NU/ERR:* code, optional≈ then number/unit; scale before monomial. Exact output/nonapprox expectation exact equality else tolerance1e-6*max(abs(want),1e-12), plus unit equality. NU expected Hit else HonestNu. run requires3fields and category id prefix before '-'.",
+  "forward": [
+    "Trim expected, accept NU/ERR:* code, optional≈ then number/unit; scale before monomial. Exact output/nonapprox expectation exact equality else tolerance1e-6*max(abs(want),1e-12), plus unit equality. NU expected Hit else HonestNu. run requires3fields and category id prefix before '-'."
+  ],
+  "id": "math-suite-verdicts",
+  "inverse": [
+    "Totals admit all row sets with same category/verdict counts. Equivalent rational spellings lose formatting. HonestNu constrains error kind not unique question/model."
+  ],
+  "limitations": [
+    "judge/run model-backed paths unexecuted.",
+    "Partial lexical AST; no semantic proof or executable percentage surrogate"
+  ],
+  "source": "math/src/suite.rs",
+  "state": "Want rational/unit/code; rows/category counters"
+}

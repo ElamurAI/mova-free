@@ -1,0 +1,29 @@
+{
+  "id": "algorithm-aho-corasick",
+  "source": "algorithms/src/aho_corasick/mod.rs",
+  "children": [],
+  "description": "aho_corasick exact implementation",
+  "state": "Finite byte slices and ordinary terminating executions with successful allocation.",
+  "cost": "Let M=sum pattern lengths, p=pattern count, L=max length, H=total stored output IDs and o_s=outputs at state s. Construction O(p+M L log 256+H+sum_s o_s log o_s), storage O(M+H+p). Scan O(n log 256+z) time, O(z) returned output; copied inherited outputs can be superlinear in M. No timing measurement.",
+  "forward": [
+    "Build an owned trie with breadth-first failure links and inherited sorted output IDs. Scan arbitrary bytes and emit every exact occurrence, including overlaps, in (end,pattern) order. Duplicates preserve IDs; empty patterns match all boundaries.",
+    "Trie labels are distinct prefixes; each nonroot failure points to a shorter proper suffix prefix. BFS initializes failure ancestors first. Sorted output IDs exactly match suffix patterns, including empty IDs once. State is longest prefix suffix of consumed text."
+  ],
+  "inverse": [
+    "Exclude missing or spurious occurrences, duplicate reports of the same (end,pattern), out-of-range offsets, wrong byte spans, changed inputs, and an output not ordered by (end,pattern). Empty-pattern omissions and deduplication of equal pattern values are outside the contract.",
+    "For fixed patterns P and length n, restrict R to valid pattern IDs and ranges 0<=s<=e<=n, unique (end,pattern) pairs, and canonical increasing (end,pattern) order. Such an output R admits exactly byte texts T of length n for which each (i,s,e) in R has e-s=|P_i| and T[s..e]=P_i, and every matching span is in R. These positive and negative span constraints generally admit several texts; no unique reconstruction is claimed.",
+    "After consuming T[..e], state represents the longest suffix of T[..e] which is a trie prefix. Compatible histories are precisely histories with this longest-prefix-suffix property, not histories with only the same final byte.",
+    "Outputs at a state are exactly IDs whose patterns are suffixes of that state's trie label. Each pattern ID occurs once; distinct IDs with equal bytes coexist. Root outputs are exactly empty IDs.",
+    "Every injective byte map applied jointly to patterns and text preserves the entire match list. Noninjective maps can introduce occurrences and are excluded.",
+    "Permuting pattern IDs transports each report's pattern field by the same permutation, then sorting by (end,pattern) restores required order. Repeated byte patterns remain separate IDs.",
+    "For text U followed by V, filtering matches on UV to end<=|U| gives exactly matches on U, including empty matches at the shared boundary only once.",
+    "With e empty pattern IDs and text length n, empty reports number e(n+1); all other reports have start<end. No patterns yields an empty result on every text."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline aho_corasick::tests::",
+    "Debug/release twice; strict Clippy; rustfmt; source syntax twice; compiled mutant."
+  ],
+  "limitations": [
+    "Partial syntax omits semantic resolution and macro expansion. Finite evidence is not proof. Allocation exhaustion untested; no executable approximation profile or downstream wiring claim."
+  ]
+}

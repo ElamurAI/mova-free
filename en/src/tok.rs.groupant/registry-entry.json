@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p en --lib tok::wave27_tests",
+    "Repeated debug/release named outcomes and paired partial syntax",
+    "2026-11-05: tok::tests::lexicon_bytes_do_not_depend_on_hash_order (mutation: abbrev without sorted_set fails); two en trainings on the same files byte-identical."
+  ],
+  "children": [],
+  "cost": "FSA O(chars), recursive splits and repeated merge concatenation potentially quadratic; usize/u32 learning counts unchecked.",
+  "description": "Eight-state thirteen-class FSA with lexical split/merge policies",
+  "forward": [
+    "Back pops joiner and reprocesses character; sentinel NUL flushes. Period, leading apostrophe, number suffix, cannot, clitic, hyphen rules ordered. Whole hyphen precedes split; prefix split>keep else default; adjacent punctuation merges last."
+  ],
+  "id": "en-tok",
+  "inverse": [
+    "Rendered token text admits many original whitespace runs and lexicons; whitespace exact recovery impossible."
+  ],
+  "limitations": [
+    "trace omits sentinel and Back reprocessing; embedded NUL flushes and disappears; no original whitespace preservation.",
+    "No executable percent surrogate: no demonstrated useful metric preserving categorical/effect semantics; permitted future caps 1/2/5/10%, no production substitution.",
+    "Partial source-bound modeling, no corpus/API/GPU, allocation faults or exhaustive numerical checks."
+  ],
+  "source": "en/src/tok.rs",
+  "state": "Eight-state thirteen-class FSA with lexical split/merge policies"
+}

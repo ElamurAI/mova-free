@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "id": "algorithm-dag-shortest-paths",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "4e2600f35317074040e42a5ba47e63848dad58793208226f422defaf065cf4a7"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "4e2600f35317074040e42a5ba47e63848dad58793208226f422defaf065cf4a7",
+        "domain": "Finite materialized directed adjacency lists of (usize,i64), usize source, and Result<Vec<Option<i128>>,Error> observations. Successful allocation and usize width at most 64 for the stated signed bound; arbitrary labels, parallel edges and disconnected components.",
+        "operator": "For U of declared input/output pairs, U\\\\graph(F) excludes success on any cyclic component, wrong endpoint/source error priority, nonminimal signed path sums, finite labels on unreachable vertices and vector-length mismatches. Negative edges are permitted on DAGs, so rejecting negativity alone is also excluded behavior.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "One exact terminating call.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "distance_fibers",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "distance_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "4e2600f35317074040e42a5ba47e63848dad58793208226f422defaf065cf4a7",
+        "domain": "Finite materialized directed adjacency lists of (usize,i64), usize source, and Result<Vec<Option<i128>>,Error> observations. Successful allocation and usize width at most 64 for the stated signed bound; arbitrary labels, parallel edges and disconnected components.",
+        "operator": "For Ok(d), reconstruct the set of valid acyclic G and s with d[s]=0, reachability equal to the Some support, d[v]<=d[u]+w for each edge from a finite u, and a realizing source path of total d[v] for each finite v. These conditions characterize the preimage by telescoping path inequalities and witness paths. Multiple graphs, parallel edges and dominated edges share the same vector. Error fibers preserve validation priority; Cycle requires valid source/endpoints and a cycle anywhere.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "One exact terminating call.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "relabeling",
+        "type": "equivariance_relation",
+        "path": "model.md",
+        "section": "relabeling",
+        "status": "partial_source_derived",
+        "subject_revision": "4e2600f35317074040e42a5ba47e63848dad58793208226f422defaf065cf4a7",
+        "domain": "Finite materialized directed adjacency lists of (usize,i64), usize source, and Result<Vec<Option<i128>>,Error> observations. Successful allocation and usize width at most 64 for the stated signed bound; arbitrary labels, parallel edges and disconnected components.",
+        "operator": "A vertex permutation p maps D'[p(v)]=D[v] for valid DAGs. The sorter's tie order may change, but no predecessor relation or path sum does. Invalid-input error payloads require separate ordered validation modeling.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "One exact terminating call.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "potential_transform",
+        "type": "algebraic_relation",
+        "path": "model.md",
+        "section": "potential_transform",
+        "status": "partial_source_derived",
+        "subject_revision": "4e2600f35317074040e42a5ba47e63848dad58793208226f422defaf065cf4a7",
+        "domain": "Finite materialized directed adjacency lists of (usize,i64), usize source, and Result<Vec<Option<i128>>,Error> observations. Successful allocation and usize width at most 64 for the stated signed bound; arbitrary labels, parallel edges and disconnected components.",
+        "operator": "Let h:V->Z and replace w(u,v) by w(u,v)+h(v)-h(u), provided transformed weights fit i64 and arithmetic stays in i128. Every path telescopes, hence D'[v]=D[v]+h(v)-h(s) for reachable v, with reachability unchanged. This justifies signed reweighting without assuming nonnegative edges.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "One exact terminating call.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "redundant_edges",
+        "type": "closure_relation",
+        "path": "model.md",
+        "section": "redundant_edges",
+        "status": "partial_source_derived",
+        "subject_revision": "4e2600f35317074040e42a5ba47e63848dad58793208226f422defaf065cf4a7",
+        "domain": "Finite materialized directed adjacency lists of (usize,i64), usize source, and Result<Vec<Option<i128>>,Error> observations. Successful allocation and usize width at most 64 for the stated signed bound; arbitrary labels, parallel edges and disconnected components.",
+        "operator": "Adding a duplicate edge, or any edge that preserves acyclicity and satisfies D[v]<=D[u]+w for finite endpoints, cannot improve distances. Acyclicity is essential: adding a distance-neutral reverse edge may create a globally rejected cycle.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "One exact terminating call.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "optimality_certificate",
+        "type": "certificate_relation",
+        "path": "model.md",
+        "section": "optimality_certificate",
+        "status": "partial_source_derived",
+        "subject_revision": "4e2600f35317074040e42a5ba47e63848dad58793208226f422defaf065cf4a7",
+        "domain": "Finite materialized directed adjacency lists of (usize,i64), usize source, and Result<Vec<Option<i128>>,Error> observations. Successful allocation and usize width at most 64 for the stated signed bound; arbitrary labels, parallel edges and disconnected components.",
+        "operator": "For a valid DAG, source zero, reachability closure, all edge inequalities and a realizing path for every finite label certify exact minima. No claim of uniquely recovering paths: equal-cost alternatives and parallel edges can share the output.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "One exact terminating call.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "global_error_order",
+        "type": "error_partition",
+        "path": "model.md",
+        "section": "global_error_order",
+        "status": "partial_source_derived",
+        "subject_revision": "4e2600f35317074040e42a5ba47e63848dad58793208226f422defaf065cf4a7",
+        "domain": "Finite materialized directed adjacency lists of (usize,i64), usize source, and Result<Vec<Option<i128>>,Error> observations. Successful allocation and usize width at most 64 for the stated signed bound; arbitrary labels, parallel edges and disconnected components.",
+        "operator": "InvalidSource precedes the first row-order InvalidEdge, which precedes Cycle. Negative/zero/positive cycles all reject, even disconnected ones. DistanceOverflow is retained defensively but cannot be exercised with practical materialized graphs on <=64-bit usize; full-width weight tests cover widening, not overflow rejection.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "One exact terminating call.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "weight_monotonicity",
+        "type": "order_relation",
+        "path": "model.md",
+        "section": "weight_monotonicity",
+        "status": "partial_source_derived",
+        "subject_revision": "4e2600f35317074040e42a5ba47e63848dad58793208226f422defaf065cf4a7",
+        "domain": "Finite materialized directed adjacency lists of (usize,i64), usize source, and Result<Vec<Option<i128>>,Error> observations. Successful allocation and usize width at most 64 for the stated signed bound; arbitrary labels, parallel edges and disconnected components.",
+        "operator": "For fixed acyclic topology, increasing any weights within i64 leaves reachability unchanged and cannot decrease finite shortest distances. Uniform multiplication by a nonnegative integer k preserves D'=kD provided all transformed weights/sums fit; k=0 makes all reachable distances zero.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "One exact terminating call.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  }
+}

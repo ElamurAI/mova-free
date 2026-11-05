@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms minimum_cost_flow::tests::",
+    "Repeated standalone debug/release, strict Clippy, compiled mutant, paired syntax."
+  ],
+  "children": [],
+  "cost": "Successive shortest augmenting paths, Bellman-Ford over residual arcs. Bound n<=64,m<=512,requested<=1024; reject any original positive-capacity negative cycle globally before even zero requested flow. Flow integral and bounded; shortest residual augmentation preserves minimum cost for current value. Maximize value<=requested then minimize signed i128 cost. Input edge order resolves strict relaxation ties. Checked arithmetic. Cost O((limit+1)V(E+V)), storage O(V+E). No speed claim.",
+  "description": "minimum_cost_flow mod exact graph contract",
+  "forward": [
+    "Successive shortest augmenting paths, Bellman-Ford over residual arcs. Bound n<=64,m<=512,requested<=1024; reject any original positive-capacity negative cycle globally before even zero requested flow. Flow integral and bounded; shortest residual augmentation preserves minimum cost for current value. Maximize value<=requested then minimize signed i128 cost. Input edge order resolves strict relaxation ties. Checked arithmetic. Cost O((limit+1)V(E+V)), storage O(V+E). No speed claim."
+  ],
+  "id": "algorithm-minimum-cost-flow",
+  "inverse": [
+    "Let R be the deterministic relation specified by Forward including validation precedence and tie rules, X the declared input type and Y its Result type. Behavior complement is (X times Y) minus R. Specifically outputs violating Each residual pair sums to original capacity. Internal flow conservation holds. No negative residual cycle; each augmentation attains a shortest residual path and increases integer value. are excluded; a valid-input Err or a wrong successful witness is excluded. Resource, cycle and structural rejections are determined before algorithmic output.",
+    "Given (value,cost,edge_flows), antecedents satisfy capacity bounds, conservation, sum f_e*c_e=cost and lexicographic optimality under limit. Different unused capacities/costs yield the same output. InvalidEdge identifies first bad index; NegativeCycle recovers existence, not location."
+  ],
+  "limitations": [
+    "Finite checks only; allocation failure untyped; partial syntax; no approximate executable profiles."
+  ],
+  "source": "algorithms/src/minimum_cost_flow/mod.rs",
+  "state": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract."
+}

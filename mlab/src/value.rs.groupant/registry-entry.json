@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "value::wave30::layout",
+    "Repeated debug/release named outcomes; compiled assertion mutant; exact restore; paired syntax"
+  ],
+  "children": [],
+  "cost": "Transpose, char conversion and imaginary zero materialization O(rows*cols) time/storage; narrow O(im.len); scalar/shape predicates O(1). Rc value clones share functions/tables/string arrays; Mat clones own vectors.",
+  "description": "Mat stores rows,cols,re and optional im plus class. at(i,j)=re[j*rows+i]. transpose maps destination i*cols+j from source j*rows+i, swaps dimensions and preserves class. narrow removes im iff every entry equals zero (including empty). StrArr records missing strings as None; Exact has no variants.",
+  "forward": [
+    "Mat stores rows,cols,re and optional im plus class. at(i,j)=re[j*rows+i]. transpose maps destination i*cols+j from source j*rows+i, swaps dimensions and preserves class. narrow removes im iff every entry equals zero (including empty). StrArr records missing strings as None; Exact has no variants."
+  ],
+  "id": "mlab-value",
+  "inverse": [
+    "For well-formed bounded matrices transpose excludes row-major reinterpretation, dropping nonzero/NaN imaginary data, or class change. narrow excludes Some(all-zero) afterward. Public fields and complex constructor do not exclude inconsistent lengths; new checks re length only in debug.",
+    "Transpose is its own inverse on well-formed Mat, including optional-im representation. narrow's None fiber contains prior None and any all-zero imaginary buffer; allocation identity and signed imaginary zero are lost. Char decoding's replacement/saturating conversions lose original f64 payloads."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no semantic proof or executable surrogate",
+    "Bounded valid dimensions/buffers and available allocation; arbitrary f64 values allowed. Char scalar decoding uses Rust casts and Unicode replacement. No filesystem, RNG or GPU."
+  ],
+  "source": "mlab/src/value.rs",
+  "state": "Bounded valid dimensions/buffers and available allocation; arbitrary f64 values allowed. Char scalar decoding uses Rust casts and Unicode replacement. No filesystem, RNG or GPU."
+}

@@ -16,6 +16,7 @@ pub struct Sent {
     pub form: Vec<String>,
     pub lemma: Vec<String>,
     pub upos: Vec<String>,
+    /// Dense one-based parent positions; zero means root, missing or ambiguous parent.
     pub head: Vec<usize>,
     pub rel: Vec<String>,
     /// gold expressions: token index sets with their category
@@ -29,6 +30,13 @@ pub fn read_cupt(path: &Path) -> Result<Vec<Sent>> {
     let flush = |cur: &mut Vec<Vec<String>>, out: &mut Vec<Sent>| {
         if cur.is_empty() {
             return;
+        }
+        // CUpt IDs may be sparse after filtering range and empty-node rows.
+        // Duplicate IDs cannot identify a unique parent and map to no arc.
+        let mut positions = BTreeMap::new();
+        for (i, c) in cur.iter().enumerate() {
+            let id = c[0].parse::<usize>().unwrap();
+            positions.entry(id).and_modify(|p| *p = 0).or_insert(i + 1);
         }
         let mut groups: BTreeMap<String, (Vec<usize>, String)> = BTreeMap::new();
         for (i, c) in cur.iter().enumerate() {
@@ -45,7 +53,7 @@ pub fn read_cupt(path: &Path) -> Result<Vec<Sent>> {
             form: cur.iter().map(|c| c[1].clone()).collect(),
             lemma: cur.iter().map(|c| c[2].to_lowercase()).collect(),
             upos: cur.iter().map(|c| c[3].clone()).collect(),
-            head: cur.iter().map(|c| c[6].parse().unwrap_or(0)).collect(),
+            head: cur.iter().map(|c| c[6].parse::<usize>().ok().and_then(|h| positions.get(&h).copied()).unwrap_or(0)).collect(),
             rel: cur.iter().map(|c| c[7].clone()).collect(),
             gold: groups.into_values().collect(),
         });
@@ -56,7 +64,7 @@ pub fn read_cupt(path: &Path) -> Result<Vec<Sent>> {
             flush(&mut cur, &mut out);
         } else if !l.starts_with('#') {
             let c: Vec<String> = l.split('\t').map(String::from).collect();
-            if c.len() >= 11 && c[0].chars().all(|x| x.is_ascii_digit()) {
+            if c.len() >= 11 && c[0].bytes().all(|x| x.is_ascii_digit()) && c[0].parse::<usize>().is_ok_and(|id| id > 0) {
                 cur.push(c);
             }
         }
@@ -116,7 +124,7 @@ pub fn predict(s: &Sent, cfg: &BTreeMap<String, f64>) -> Vec<Vec<usize>> {
     if k("arcs") {
         for i in 0..s.form.len() {
             let h = s.head[i];
-            if h == 0 || !matches!(s.rel[i].as_str(), "obj" | "compound:prt" | "iobj") || s.upos[h - 1] != "VERB" {
+            if h == 0 || h > s.upos.len() || h == i + 1 || !matches!(s.rel[i].as_str(), "obj" | "compound:prt" | "iobj") || s.upos[h - 1] != "VERB" {
                 continue;
             }
             let ok = match global::idiom(&s.lemma[h - 1], &s.lemma[i]) {
@@ -137,12 +145,18 @@ pub fn predict(s: &Sent, cfg: &BTreeMap<String, f64>) -> Vec<Vec<usize>> {
     out
 }
 
-/// (right, wrong, gold) for a sentence.
+/// (right, wrong, gold) for a sentence. Greedy in prediction and gold order;
+/// each gold can be used once. Overlap requires two distinct valid indices,
+/// including a shared VERB. This is not maximum bipartite matching.
 pub fn judge(s: &Sent, pred: &[Vec<usize>]) -> (usize, usize, usize) {
     let mut used = vec![false; s.gold.len()];
     let (mut right, mut wrong) = (0, 0);
     for p in pred {
-        let hit = s.gold.iter().enumerate().find(|(gi, (g, _))| !used[*gi] && p.iter().filter(|x| g.contains(x)).count() >= 2);
+        let hit = s.gold.iter().enumerate().find(|(gi, (g, _))| {
+            let common: std::collections::BTreeSet<usize> = p.iter().copied()
+                .filter(|i| *i < s.upos.len() && g.contains(i)).collect();
+            !used[*gi] && common.len() >= 2 && common.iter().any(|&i| s.upos[i] == "VERB")
+        });
         match hit {
             Some((gi, _)) => {
                 used[gi] = true;
@@ -171,4 +185,115 @@ pub fn pr(data: &[Sent], cfg: &BTreeMap<String, f64>) -> (f64, f64) {
         g += c;
     }
     (100.0 * r as f64 / (r + w).max(1) as f64, 100.0 * r as f64 / g.max(1) as f64)
+}
+
+#[cfg(test)]
+mod wave10_models {
+    use super::*;
+    use std::collections::BTreeSet;
+
+    fn sent(gold: Vec<Vec<usize>>) -> Sent {
+        Sent {
+            form: vec!["v".into(), "a".into(), "b".into(), "c".into()],
+            lemma: vec!["v".into(), "a".into(), "b".into(), "c".into()],
+            upos: vec!["VERB".into(), "NOUN".into(), "NOUN".into(), "NOUN".into()],
+            head: vec![0, 1, 1, 1],
+            rel: vec!["root".into(), "obj".into(), "obj".into(), "obj".into()],
+            gold: gold.into_iter().map(|g| (g, "VID".into())).collect(),
+        }
+    }
+
+    #[test]
+    fn judge_shared_verb_and_distinct_overlap() {
+        let s = sent(vec![vec![0, 1, 2]]);
+        assert_eq!(judge(&s, &[vec![1, 2]]), (0, 1, 1));
+        assert_eq!(judge(&s, &[vec![0, 0]]), (0, 1, 1));
+        assert_eq!(judge(&s, &[vec![0, 1]]), (1, 0, 1));
+    }
+
+    #[test]
+    fn judge_finite_set_oracle() {
+        for gm in 0..16 {
+            for pm in 0..16 {
+                let g: Vec<usize> = (0..4).filter(|i| gm & (1 << i) != 0).collect();
+                let p: Vec<usize> = (0..4).filter(|i| pm & (1 << i) != 0).collect();
+                let common: BTreeSet<_> = g
+                    .iter()
+                    .copied()
+                    .collect::<BTreeSet<_>>()
+                    .intersection(&p.iter().copied().collect())
+                    .copied()
+                    .collect();
+                let hit = usize::from(common.len() >= 2 && common.contains(&0));
+                let s = sent(vec![g]);
+                for duplicate in [false, true] {
+                    let mut q = p.clone();
+                    if duplicate {
+                        q.extend_from_slice(&p);
+                    }
+                    assert_eq!(judge(&s, &[q]), (hit, 1 - hit, 1), "gm={gm} pm={pm}");
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn judge_greedy_order_and_denominators() {
+        let s = sent(vec![vec![0, 1], vec![0, 2]]);
+        assert_eq!(judge(&s, &[vec![0, 1, 2], vec![0, 1]]), (1, 1, 2));
+        assert_eq!(judge(&s, &[vec![0, 1], vec![0, 1, 2]]), (2, 0, 2));
+        assert_eq!(judge(&s, &[vec![0, 1], vec![0, 1], vec![9]]), (1, 2, 2));
+        let data = vec![s, sent(vec![])];
+        assert_eq!(score(&data, &BTreeMap::new()), vec![0, 0]);
+        assert_eq!(pr(&data, &BTreeMap::new()), (0.0, 0.0));
+        assert_eq!(pr(&[], &BTreeMap::new()), (0.0, 0.0));
+    }
+
+    #[test]
+    fn cupt_head_ids_are_dense_positions() {
+        let path =
+            std::env::temp_dir().join(format!("mova-mwe-wave10-{}.cupt", std::process::id()));
+        // IDs are not vector positions; range/decimal rows are deliberately ignored.
+        let text = "# supplied fixture\n10\tTook\tTAKE\tVERB\t_\t_\t0\troot\t_\t_\t1:VID\n10-20\tx\tx\tX\t_\t_\t0\t_\t_\t_\t*\n20\tAction\tACTION\tNOUN\t_\t_\t10\tobj\t_\t_\t1\n20.1\tx\tx\tX\t_\t_\t10\t_\t_\t_\t*\n30\tx\tx\tNOUN\t_\t_\t99\tobj\t_\t_\t*";
+        std::fs::write(&path, text).unwrap();
+        let got = read_cupt(&path);
+        std::fs::remove_file(path).unwrap();
+        let got = got.unwrap();
+        assert_eq!(got.len(), 1);
+        assert_eq!(got[0].head, vec![0, 1, 0]);
+        assert_eq!(got[0].lemma, vec!["take", "action", "x"]);
+        assert_eq!(got[0].gold, vec![(vec![0, 1], "VID".into())]);
+    }
+
+    #[test]
+    fn cupt_ambiguous_and_invalid_ids_do_not_attach() {
+        let path =
+            std::env::temp_dir().join(format!("mova-mwe-ids-wave10-{}.cupt", std::process::id()));
+        let mut text = String::new();
+        for (id, head) in [
+            ("7", "0"),
+            ("7", "7"),
+            ("9", "7"),
+            ("0", "9"),
+            ("", "9"),
+            ("999999999999999999999999999", "9"),
+        ] {
+            text.push_str(&format!("{id}\tx\tX\tNOUN\t_\t_\t{head}\tobj\t_\t_\t*\n"));
+        }
+        std::fs::write(&path, text).unwrap();
+        let got = read_cupt(&path);
+        std::fs::remove_file(path).unwrap();
+        let got = got.unwrap();
+        assert_eq!(got[0].head, [0, 0, 0]);
+        assert_eq!(got[0].form.len(), 3);
+    }
+
+    #[test]
+    fn malformed_arc_head_is_ignored() {
+        let mut s = sent(vec![]);
+        s.head[1] = usize::MAX;
+        s.head[2] = 0;
+        s.head[3] = 0;
+        assert!(predict(&s, &BTreeMap::from([("arcs".into(), 1.0)])).is_empty());
+    }
 }

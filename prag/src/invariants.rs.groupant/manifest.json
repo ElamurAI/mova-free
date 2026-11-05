@@ -1,0 +1,92 @@
+{
+  "children": [
+    {
+      "id": "prag-invariants-frame-checks",
+      "path": "frame-checks.groupant"
+    },
+    {
+      "id": "prag-invariants-unsaid-anchors",
+      "path": "unsaid-anchors.groupant"
+    },
+    {
+      "id": "prag-invariants-spread",
+      "path": "spread.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "domain": "Tagged finite API inputs and matching output schema in model.md forward; exact source revision and fixed dependency premises.",
+        "id": "prag-invariants-behavior-complement",
+        "operator": "C_inner={(x,y): not J(x,y)} over declared domain; concrete forward/invariant exclusions",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "domain": "Tagged finite API inputs and matching output schema in model.md forward; exact source revision and fixed dependency premises.",
+        "id": "prag-invariants-reverse-reconstruction",
+        "operator": "Converse/preimage relation retaining all compatible tagged inputs, states and intermediates",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "domain": "Tagged finite API inputs and matching output schema in model.md forward; exact source revision and fixed dependency premises.",
+        "id": "prag-invariants-intervention",
+        "operator": "Scoped intervention/coupling relation in referenced section",
+        "path": "model.md",
+        "section": "intervention",
+        "status": "partial_source_model",
+        "type": "counterfactual_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "domain": "Domain X is tagged Sentence(Tree,ordered frames,aligned anchors), or finite Spread action trace starting at default state. Sentence requires valid cached Tree child indices and in-range predicate anchors, with anchors[i] belonging to frames[i]. For frame i, row=i+1; append copula-no-who iff Fact Is/IsA or non-Bare verb be lacks agent, time-in-where iff time_word(place.id,place.named), and who-is-what iff equal nonempty ASCII-case-insensitive agent/patient IDs survive reflexive and both-bare exclusions. Then each unsaid slot uses its aligned predicate's first unused qualifying child; Agent accepts passive OblAgent or nonpassive Nsubj, Patient NsubjPass or non-time Obj, Recipient Iobj; other slots abstain. Spread appends only VerbNet/nonempty-signature frames to key (verb,signature), class, ordered (id,i+1) occurrences. counts=(number of keys,number of keys with >1 class). Winner per key is lexicographically smallest class among maximal occurrence counts; hits emits every losing occurrence in key/class order and within-class insertion order.",
+  "id": "prag-invariants",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../invariants.rs",
+    "sha256": "64ddcdabea1704fc3216d06f5f299ec06171dc4432b7f5c9b7d4b7c4a4fbf190"
+  },
+  "state": "Sentence hits preserve 1-based frame row association; anchors and token indices stay zero-based and are never substituted for frame row numbers. Missing anchor/predicate suppresses only unsaid-own. Any anchored-role use excludes that token for all unsaid slots; reflexives and both-bare unresolved identities exclude who-is-what. Multiple hits per row and repeated unsaid slots are possible. Spread counts occurrences, including repeated add calls/IDs; no deduplication or absolute majority is required. Single-class groups have no losers, ties choose smaller class and different verb/signature keys never share a winner.",
+  "status": "partial_source_bound_model"
+}

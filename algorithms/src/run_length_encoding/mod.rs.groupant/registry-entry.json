@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline run_length_encoding::tests::; twice debug and twice release",
+    "9,841 ternary words through length 8 checked for roundtrip, transition-count canonicality and exact total lengths. Every byte and a 10,000-byte run checked. Zero, adjacent equal, usize overflow, budget and capacity errors checked. Mutation increments a run count by two; exhaustive_canonical_roundtrips fails."
+  ],
+  "children": [],
+  "cost": "Encoding O(n) time and O(r) output, with ordinary Vec allocation failure behavior. Decoding O(r+n) time and O(n) output; checked sum, explicit max_output, and fallible reservation. A run count cannot overflow during encoding because it is bounded by slice length.",
+  "description": "run_length_encoding exact byte algorithm",
+  "forward": [
+    "Encode bytes into their unique maximal constant-byte runs. Decode only positive counts with differing adjacent bytes; check the count sum and explicit byte budget before allocating output. Classical lossless run-length coding, original implementation.",
+    "Encoding runs cover the consumed input exactly, counts are positive, and neighboring run bytes differ. Decoding accumulates a checked sum before output allocation, then each resize extends precisely one validated run."
+  ],
+  "id": "algorithm-run-length-encoding",
+  "inverse": [
+    "Decoding rejects zero counts and neighboring equal byte runs rather than silently canonicalizing malformed input. It cannot exceed max_output on success or return a partial decoded prefix.",
+    "On canonical runs, encode(decode(runs))=runs; on byte strings, decode(encode(bytes))=bytes with a sufficient budget. Thus both successful maps are injective on their stated domains. Error outputs have many antecedents.",
+    "At each run test zero count then neighboring equality then checked length addition. Check output budget only after every run validates. Consequently later malformed runs take precedence over an earlier budget excess.",
+    "After r runs the accumulated length equals their sum and previous records the last byte. These observations retain many different run prefixes; total length alone cannot recover their byte order.",
+    "Encoding x followed by y concatenates their run lists, merging exactly the boundary pair when both are nonempty and the final x byte equals the first y byte.",
+    "For a fixed byte string every transition starts exactly one new run, so positive maximal run representation is unique; allowing zero or adjacent-equal runs would destroy this uniqueness."
+  ],
+  "limitations": [
+    "Partial Rust syntax projection excludes macro expansion and semantic resolution. Finite tests do not prove general correctness or linear cost. No executable approximation profile: outputs are discrete exact objects and no useful certified surrogate metric is proposed."
+  ],
+  "source": "algorithms/src/run_length_encoding/mod.rs",
+  "state": "Finite byte inputs with explicitly documented limits and allocation outcomes."
+}

@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "analytic_oracle compares powers 0..4 and sine to exact integrals; budget_and_order checks 7+13 counts, ascending interior abscissae, repeated samples, midpoint and budget=7 estimator None; failure_and_alias checks invalid/no calls, first-call abort, adjacent floats and hidden bump.",
+    "Multiply transformed sum by 0.5; analytic_oracle assertion fails."
+  ],
+  "children": [],
+  "cost": "O(evaluations) transcendental work and O(1) storage; each level has geometry and sampling pass. Budget checked for whole panels+1 calls; checked doubling. Callback costs/panics outside model.",
+  "description": "Finite test transition maps fixture implementations to pass or assertion panic. analytic_oracle compares powers 0..4 and sine to exact integrals; budget_and_order checks 7+13 counts, ascending interior abscissae, repeated samples, midpoint and budget=7 estimator None; failure_and_alias checks invalid/no calls, first-call abort, adjacent floats and hidden bump.",
+  "forward": [
+    "Finite test transition maps fixture implementations to pass or assertion panic. analytic_oracle compares powers 0..4 and sine to exact integrals; budget_and_order checks 7+13 counts, ascending interior abscissae, repeated samples, midpoint and budget=7 estimator None; failure_and_alias checks invalid/no calls, first-call abort, adjacent floats and hidden bump."
+  ],
+  "id": "algorithm-tanh-sinh-quadrature-tests",
+  "inverse": [
+    "Pass has many preimages: exact implementations and implementations agreeing only on this finite fixture set. Untested q=12345 behavior can change while all assertions pass. Zero function and indicator in (0.3,0.31) agree on the first 7+13 samples and yield identical zero report although integrals differ by .01. Sampled values and report cannot recover unvisited function values, tail contributions or smoothness."
+  ],
+  "limitations": [
+    "Partial source projection, no semantic proof",
+    "Finite fixtures do not guarantee accuracy",
+    "No executable approximation profile or speed claim",
+    "Rust allocation failures and callback panics are not caught"
+  ],
+  "source": "algorithms/src/tanh_sinh_quadrature/tests.rs",
+  "state": "Validated finite arrays, rolling recurrence state or bounded quadrature level; tests observe result tags and traces"
+}

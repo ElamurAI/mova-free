@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p world --lib meanings::wave9_models -- --test-threads=1"
+  ],
+  "cost": "k lexical tokens: O(k) fixed-table comparisons plus four-element sort. Dictionary suffix lookup O(log D) comparisons each. Fact normalization/lookup add upstream cost; cache retrieval clones output. TSV O(B+r log D) comparison-weighted with stored accepted strings.",
+  "description": "Lexical operation, numeric extraction and record overrides",
+  "forward": [
+    "entry_word lowercases, prefers exact record, then ordered suffix candidates of length>2. op_of selects frozen map when MOVA_LIVEOPS absent and map nonempty; exact '0' blocks fallback then becomes None. Live mode may retry euphemism base when its own operation is absent. operation_record counts opening lesson cues plus STRONG pupil cues excluding entry word; unique positive plurality wins. facts_in appends qualified numbers/stemmed units. improved_from keeps last lowercase-key row.",
+    "opchoice uses op_of for operation cues; mentions calls facts_of only when prior facts empty and MOVA_DICTFACTS present. op_in delegates to pure operation_record after lookup. facts depend on numbers::normalize and mentions::stem. No freeze command or dictionary write executed."
+  ],
+  "id": "world-meanings",
+  "inverse": [
+    "Universe: supplied records/token streams/TSV and scoped outputs with fixed stemmer. Inner absence excludes an operation on tied counts, facts n<=1 or unapproved predecessor, retained earlier duplicate rows. Linguistic mistakes remain possible.",
+    "An operation identifies compatible cue vectors, not unique definitions. None includes silence and ties. Facts erase context; TSV erases comments/overrides/extra fields. Tests enumerate all 256 count vectors in 0..3 and explicit projection families."
+  ],
+  "limitations": [
+    "Partial syntax and source models; finite synthetic evidence, no general proof.",
+    "Parser/teacher, persistence and full retrieval/training paths remain unexecuted. Supplied trees require valid indices and matching original token positions."
+  ],
+  "source": "world/src/meanings.rs",
+  "state": "Tied/all-zero cue counts produce None. Fixed resources/configuration yield deterministic projection. Cache key is original spelling, distinct from lowercase entry identity. TSV dates empty; extra fields ignored; last duplicate wins."
+}

@@ -1,0 +1,42 @@
+{
+  "checks": [
+    "tests::args_and_prestat",
+    "tests::clock_is_virtual_and_random_is_seeded",
+    "tests::escape_and_absolute_paths_are_not_capable",
+    "tests::limits_reach_the_guest_as_errno",
+    "tests::open_read_seek_write",
+    "tests::readdir_with_small_buffer_and_cookies",
+    "tests::wave31_late_faults_keep_prior_effects",
+    "tests::wave31_memory_poll_and_descriptor_boundaries",
+    "tests::wave31_tiny_engine_outcomes",
+    "wave31_newest_mtime_isolated_tree",
+    "wave31_cli_tiny_guest_isolated_effects",
+    "mlab_gate compile only",
+    "five compiled source mutants with exact byte restoration"
+  ],
+  "children": [
+    "wasi-mlab-gate",
+    "wasi-runtime",
+    "wasi-cli",
+    "wasi-memory-tests",
+    "wasi-mlab-tests"
+  ],
+  "cost": "Module validation and interpreter steps plus host O(iov+bytes), O(descriptor slots), O(directory entries+names), O(subscription count); optional engine fuel is not a bound on all host work. CLI imports/exports/journal charge real IO and bytes. Native mlab and full guest costs unmeasured and excluded.",
+  "description": "CLI parse/read/validate/import → Ctx(Vfs,args,seed,limits) → Host fresh Store/instantiate/_start → Outcome → success-gated export then optional journal/stats. WASI memory/iovec/path helpers transform guest coordinates into actual Vfs calls; errno transports Vfs errors. Independent example and legacy mlab test paths compare external native/guest output but are not invoked by CLI. Bounded tests directly exercise private helpers and tiny engine/CLI paths.",
+  "forward": [
+    "CLI parse/read/validate/import → Ctx(Vfs,args,seed,limits) → Host fresh Store/instantiate/_start → Outcome → success-gated export then optional journal/stats. WASI memory/iovec/path helpers transform guest coordinates into actual Vfs calls; errno transports Vfs errors. Independent example and legacy mlab test paths compare external native/guest output but are not invoked by CLI. Bounded tests directly exercise private helpers and tiny engine/CLI paths.",
+    "Real join: Ctx::path_open resolves through Vfs, allocates descriptor; fd_write/read use canonical stored path and Vfs::write_at/read_at, with Vfs errno and journal propagation. Tests observe holes/append/read-only/limits/escape effects. main constructs Ctx from imported Vfs, Host::run returns same context for gated exports. Tagged independent paths: example mlab_gate and tests/mlab compare external mlab::Interp to Host, neither is called by main. Memory-unit tests bypass add_wasi ABI wrappers; tiny guests have no imports, so complete linker wiring is not claimed."
+  ],
+  "id": "wasi-guest-runtime",
+  "inverse": [
+    "For successful CLI parsing and completed Host run, trap/nonzero outcome excludes export execution through main's gate; memory-gated socket helpers exclude network effects. Late FAULT does not exclude earlier Vfs changes. These are scoped source-derived exclusion relations, not whole-sandbox proofs.",
+    "Outcome stdout/code/final Vfs constrain compatible guest initial contexts and modules. Capture, truncation, overwritten guest memory and Vfs mutations lose histories; equal output is not unique reconstruction and exit0 merges normal return with proc_exit(0). Journal, argv and original state can narrow but not generally invert the relation."
+  ],
+  "limitations": [
+    "Partial syntax and finite observations; no complete preview1 compliance or full-system proof.",
+    "Missing imported tiny-guest ABI dispatch coverage; private helper tests do not exercise all add_wasi wrappers.",
+    "Full mlab/frozen tests excluded; gate comparison ignores exit code and may lose invalid UTF8 distinctions.",
+    "No runtime speedup or numerical approximation-budget claim."
+  ],
+  "state": "Memory accesses require checked ranges, but output FAULT can follow irreversible state transitions within the guest context. Vfs confinement and limits are delegated through actual path/read/write calls. Successful CLI exports require exit0 and no trap. Fresh Store does not imply fresh Vfs unless caller supplies it."
+}

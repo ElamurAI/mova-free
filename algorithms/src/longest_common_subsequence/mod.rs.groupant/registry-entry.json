@@ -1,0 +1,28 @@
+{
+  "id": "algorithm-longest-common-subsequence",
+  "source": "algorithms/src/longest_common_subsequence/mod.rs",
+  "children": [],
+  "description": "longest_common_subsequence exact classical dynamic programming implementation",
+  "state": "Finite inputs and ordinary execution including documented failure branches.",
+  "cost": "O(nm) equality calls, O(min(n,m)) words; equality's own cost is caller-dependent. Empty case O(1). No timing measured.",
+  "forward": [
+    "Returns maximum common ordered-subsequence length using F(i,j)=F(i-1,j-1)+1 for equal final symbols, otherwise max(F(i-1,j),F(i,j-1)); empty prefixes have length zero."
+  ],
+  "inverse": [
+    "For lawful Eq and successful termination exclude results above min lengths, results below any common subsequence, results without an attaining subsequence, mutated inputs or an emitted witness. Eq panics and allocation aborts are not ordinary returned lengths.",
+    "A result k admits exactly pairs having a common subsequence of length k and none of length k+1. Many unrelated pairs map to k; symbol values, lengths and witness cannot be uniquely recovered.",
+    "L(a,b)=L(b,a) under symmetric lawful Eq. Transposing inputs also selects the same smaller dimension, not a full matrix.",
+    "Reversing both inputs reverses every common subsequence bijectively and preserves length; reversing just one need not preserve it (ab versus ba).",
+    "Appending the same symbol to both gives L(a+[x],b+[x])=L(a,b)+1. Appending only to one changes length by zero or one. Identity L(a,a)=len(a).",
+    "Updating a row is lossy: previous above must be saved before overwrite. Given new row alone, old diagonal is generally ambiguous. Equal-symbol recurrence consumes the old diagonal, not the newly updated left cell.",
+    "Length zero admits all pairs with disjoint equality-class support, including empty inputs. For k>0, multiplicity intersection alone is insufficient: ab/ab yields two, ab/ba one, despite equal histograms.",
+    "Empty shorter slice returns zero without allocation. Otherwise checked length+1 may panic, Vec byte-capacity/allocation failure may panic or abort, Eq may panic, or ordinary recurrence returns. These are not typed returned errors; impossible extreme allocations are not tested."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline",
+    "Repeated debug/release outcomes; strict Clippy; compiled production mutant; syntax twice"
+  ],
+  "limitations": [
+    "Partial syntax does not expand macros or resolve semantic types. Finite evidence is not proof; allocator exhaustion untested. Exact implementation has no executable approximate profile; no substitution or numerical error budget claimed."
+  ]
+}

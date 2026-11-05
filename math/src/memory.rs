@@ -397,3 +397,19 @@ mod tests {
         assert!(!g.why.is_empty());
     }
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn empty_duplicates_and_lcs_limits() {
+        assert!(Perceptron::default().guess(&[]).is_none());
+        assert_eq!(skeleton_sim(&[], &[]), 0.0);
+        let x = vec!["x".into(); 401];
+        assert_eq!(skeleton_sim(&x, &x), 0.0);
+        let p = serde_json::json!({"answer":"3+3"});
+        assert!(make_template(&p, "3 and 3").is_none());
+        assert!(instantiate(&serde_json::json!({"answer":"#1"}), "3").is_none());
+        assert_eq!(numbers("-3 and half"), vec![q(3), q(2)]);
+    }
+}

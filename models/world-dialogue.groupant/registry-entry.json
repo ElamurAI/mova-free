@@ -1,0 +1,32 @@
+{
+  "checks": [
+    "wave28_dialogue selected nonempty tests twice debug/release",
+    "Compiled source mutants and restored positive",
+    "Parent syntax generated twice identically"
+  ],
+  "children": [
+    "world-ideas",
+    "world-lib",
+    "world-main",
+    "world-nerves",
+    "world-talk",
+    "world-vmm"
+  ],
+  "cost": "Argument dispatch plus three sparse diffusion rounds, rarity index and rank sorting, whole-memory sorting; file/teacher/executor costs additive at actual call sites, no uniform speed claim.",
+  "description": "lib exports dialogue/graph/persistence/VMM; main activates state then dispatches. ideas related joins norms from nerves and timestamps from talk. VMM prompts serialize story+world views, teacher text parses into world commands, repairs address physical lines.",
+  "forward": [
+    "lib exports dialogue/graph/persistence/VMM; main activates state then dispatches. ideas related joins norms from nerves and timestamps from talk. VMM prompts serialize story+world views, teacher text parses into world commands, repairs address physical lines.",
+    "ideas->nerves::norm, ideas->talk::now, talk->babi::split_sentences, main->vmm->lang/world. Act cue normalization and concept normalization are not equivalent adapters."
+  ],
+  "id": "world-dialogue",
+  "inverse": [
+    "Exclude live teacher or state mutation from pure classification; exclude counting duplicate query words twice in diffusion/rarity; done-file errors cannot call teacher. No guarantee that repaired lines pass execution gates.",
+    "Joint observations admit all texts with same normalized concept sets and act priority, files sharing retained ranked rows, and cached histories yielding same command bytes. These fibers are set-valued and do not recover overwritten memories or raw repair history."
+  ],
+  "limitations": [
+    "Partial lexical AST and source models",
+    "Effectful untested paths retained explicitly per source",
+    "No executable numeric surrogate or whole-composition proof"
+  ],
+  "state": "Pure helpers are deterministic under fixed inputs; clock/file/state/teacher paths require fixed external observations. Case/plural projection loses information; repair acceptance is not gate validity."
+}

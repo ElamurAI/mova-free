@@ -1,0 +1,169 @@
+{
+  "children": [
+    "coref-corefud",
+    "coref-doc",
+    "coref-eval",
+    "coref-it",
+    "coref-lexicon",
+    "coref-lib",
+    "coref-main",
+    "coref-mention",
+    "coref-sieve",
+    "coref-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "No corpus/teacher/API/GPU actions. No production behavior edits; only inline tests added to existing main/tests files. Existing score.rs remains unchanged. Runtime control coverage excludes lib declarations and tests fixture source as independent production components.",
+        "domain": "Finite in-memory synthetic UTF-8 CoNLL-U with valid raw/index mappings and acyclic in-range trees, stable COREF_X/COREF_MD/PRAG_OFF snapshots. Native allocation/counter limits apply. Parser and malformed-input failure models explicitly distinguish weaker public/permissive adapters.",
+        "id": "behavior-complement",
+        "observation_scope": "doc supplies kids/depth/sub/quote to mention and it; mention fields feed sieve masks/head keys/candidate order; sieve returns full membership (including internal mentions) to eval; visible tests full cluster length before filtering. eval::sys_entities recomputes head via corefud::span_head, whereas out_mentions writes detector head, so no universal head equality is claimed. score is existing external sibling ownership. main::load joins strict CoNLL-U reading and optional retree, then documents. tests assertions cross actual joins and do not substitute copied algorithms.",
+        "operator": "For admitted default pipeline inputs, forbidden observations include Entity-dependent span/eid/note output, internal mentions in external entities, emitted unclosed/cross-sentence read mentions and cluster splitting. This relation is scoped: strip leak witness compares only span/eid/note; head/etype independence is not established by that check, and Nearest is outside default binding exclusions.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "No corpus/teacher/API/GPU actions. No production behavior edits; only inline tests added to existing main/tests files. Existing score.rs remains unchanged. Runtime control coverage excludes lib declarations and tests fixture source as independent production components.",
+        "domain": "Finite in-memory synthetic UTF-8 CoNLL-U with valid raw/index mappings and acyclic in-range trees, stable COREF_X/COREF_MD/PRAG_OFF snapshots. Native allocation/counter limits apply. Parser and malformed-input failure models explicitly distinguish weaker public/permissive adapters.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "doc supplies kids/depth/sub/quote to mention and it; mention fields feed sieve masks/head keys/candidate order; sieve returns full membership (including internal mentions) to eval; visible tests full cluster length before filtering. eval::sys_entities recomputes head via corefud::span_head, whereas out_mentions writes detector head, so no universal head equality is claimed. score is existing external sibling ownership. main::load joins strict CoNLL-U reading and optional retree, then documents. tests assertions cross actual joins and do not substitute copied algorithms.",
+        "operator": "R(output) is the set of raw documents, environment/config snapshots and merge traces whose parsing/detection/visibility/serialization equals the observation. Gold Entity variants, discarded syntax/comments, invisible mentions, OR-mask provenance and old MISC annotations can vary. After rebuilding Entity views from raw output, parsed generated output recovers span/eid pairs only for sentence-bounded, stack-compatible same-eid spans (including serialized e prefixes); valid crossing same-eid spans can reconstruct different spans. Existing Document views stay stale after raw write. Original text annotation, resolver trace and retree-discarded word DEPS are unrecoverable.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "No corpus/teacher/API/GPU actions. No production behavior edits; only inline tests added to existing main/tests files. Existing score.rs remains unchanged. Runtime control coverage excludes lib declarations and tests fixture source as independent production components.",
+        "domain": "Finite in-memory synthetic UTF-8 CoNLL-U with valid raw/index mappings and acyclic in-range trees, stable COREF_X/COREF_MD/PRAG_OFF snapshots. Native allocation/counter limits apply. Parser and malformed-input failure models explicitly distinguish weaker public/permissive adapters.",
+        "id": "span-head-transport",
+        "observation_scope": "doc supplies kids/depth/sub/quote to mention and it; mention fields feed sieve masks/head keys/candidate order; sieve returns full membership (including internal mentions) to eval; visible tests full cluster length before filtering. eval::sys_entities recomputes head via corefud::span_head, whereas out_mentions writes detector head, so no universal head equality is claimed. score is existing external sibling ownership. main::load joins strict CoNLL-U reading and optional retree, then documents. tests assertions cross actual joins and do not substitute copied algorithms.",
+        "operator": "MSpan=(span, span_head(tree,span)); OutMention=(span,detected_head,visible_cluster_ordinal,note). Equal spans need not imply identical heads across gold/predicted trees. retree requires equal sentence/word forms but can change head matching.",
+        "path": "model.md",
+        "required": false,
+        "section": "span-head-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No corpus/teacher/API/GPU actions. No production behavior edits; only inline tests added to existing main/tests files. Existing score.rs remains unchanged. Runtime control coverage excludes lib declarations and tests fixture source as independent production components.",
+        "domain": "Finite in-memory synthetic UTF-8 CoNLL-U with valid raw/index mappings and acyclic in-range trees, stable COREF_X/COREF_MD/PRAG_OFF snapshots. Native allocation/counter limits apply. Parser and malformed-input failure models explicitly distinguish weaker public/permissive adapters.",
+        "id": "partition-visibility",
+        "observation_scope": "doc supplies kids/depth/sub/quote to mention and it; mention fields feed sieve masks/head keys/candidate order; sieve returns full membership (including internal mentions) to eval; visible tests full cluster length before filtering. eval::sys_entities recomputes head via corefud::span_head, whereas out_mentions writes detector head, so no universal head equality is claimed. score is existing external sibling ownership. main::load joins strict CoNLL-U reading and optional retree, then documents. tests assertions cross actual joins and do not substitute copied algorithms.",
+        "operator": "Let C partition [0,M). Visible output filters v(m,C)=!internal(m) && !(coord(m)&&|C|=1&&!override), drops empty projected clusters, then assigns consecutive ids. A group plus one invisible member has |C|=2 and may survive; filtering and singleton detection do not commute.",
+        "path": "model.md",
+        "required": false,
+        "section": "partition-visibility",
+        "status": "partial_source_derived_model",
+        "type": "partition_projection"
+      },
+      {
+        "assumptions": "No corpus/teacher/API/GPU actions. No production behavior edits; only inline tests added to existing main/tests files. Existing score.rs remains unchanged. Runtime control coverage excludes lib declarations and tests fixture source as independent production components.",
+        "domain": "Finite in-memory synthetic UTF-8 CoNLL-U with valid raw/index mappings and acyclic in-range trees, stable COREF_X/COREF_MD/PRAG_OFF snapshots. Native allocation/counter limits apply. Parser and malformed-input failure models explicitly distinguish weaker public/permissive adapters.",
+        "id": "failure-effects",
+        "observation_scope": "doc supplies kids/depth/sub/quote to mention and it; mention fields feed sieve masks/head keys/candidate order; sieve returns full membership (including internal mentions) to eval; visible tests full cluster length before filtering. eval::sys_entities recomputes head via corefud::span_head, whereas out_mentions writes detector head, so no universal head equality is claimed. score is existing external sibling ownership. main::load joins strict CoNLL-U reading and optional retree, then documents. tests assertions cross actual joins and do not substitute copied algorithms.",
+        "operator": "CLI eval mkdir precedes read. run gold parse/self-check precede length check and report; diagnostic file write precedes leak check; CoNLL-U write precedes caller report-file write. Failure may leave earlier effects; there is no cross-file transaction.",
+        "path": "model.md",
+        "required": false,
+        "section": "failure-effects",
+        "status": "partial_source_derived_model",
+        "type": "effect_order"
+      },
+      {
+        "assumptions": "No corpus/teacher/API/GPU actions. No production behavior edits; only inline tests added to existing main/tests files. Existing score.rs remains unchanged. Runtime control coverage excludes lib declarations and tests fixture source as independent production components.",
+        "domain": "Finite in-memory synthetic UTF-8 CoNLL-U with valid raw/index mappings and acyclic in-range trees, stable COREF_X/COREF_MD/PRAG_OFF snapshots. Native allocation/counter limits apply. Parser and malformed-input failure models explicitly distinguish weaker public/permissive adapters.",
+        "id": "micro-metrics",
+        "observation_scope": "doc supplies kids/depth/sub/quote to mention and it; mention fields feed sieve masks/head keys/candidate order; sieve returns full membership (including internal mentions) to eval; visible tests full cluster length before filtering. eval::sys_entities recomputes head via corefud::span_head, whereas out_mentions writes detector head, so no universal head equality is claimed. score is existing external sibling ownership. main::load joins strict CoNLL-U reading and optional retree, then documents. tests assertions cross actual joins and do not substitute copied algorithms.",
+        "operator": "Aggregate Counts=sum over aligned documents, then compute ratios/F1. Averaging per-document F1 is a different function. Empty denominators in scorer map0, whereas CLI mention-stat raw recall/precision can print NaN; do not unify their zero semantics.",
+        "path": "model.md",
+        "required": false,
+        "section": "micro-metrics",
+        "status": "partial_source_derived_model",
+        "type": "aggregation_transport"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "coreference-pipeline",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "coref/src/corefud.rs",
+      "sha256": "4f7008569d0c56ee5955ddb7e05384ffcfe064846c09d728d7f77dbb32f0322f"
+    },
+    {
+      "path": "coref/src/doc.rs",
+      "sha256": "e3fa96e6122a91b90075c4d4839879349e99c1cfd5a03a99df49e236c8f3500a"
+    },
+    {
+      "path": "coref/src/eval.rs",
+      "sha256": "5682c8888142509fc2c9ea531f6eb5e003d4a80fac3c9e2db304b8e37ebb52ef"
+    },
+    {
+      "path": "coref/src/it.rs",
+      "sha256": "7eb98828a602c2ff87c48f3a356bba7b1c5883c3b7e6a84081d1ec8e03db5f62"
+    },
+    {
+      "path": "coref/src/lexicon.rs",
+      "sha256": "79adfd1260673619c2c887d71a6e532dbec4a6266873214717b519d2518c960b"
+    },
+    {
+      "path": "coref/src/lib.rs",
+      "sha256": "14c9c339d7bd5281755f0afbce6f8d9ae2716952c49953fa3fd32b8b8e33e3b3"
+    },
+    {
+      "path": "coref/src/main.rs",
+      "sha256": "e2ff8656a295c323b2a1db93a78d97508465a4a8344955d87401be1da227aeb7"
+    },
+    {
+      "path": "coref/src/mention.rs",
+      "sha256": "677dfa544ef4eb28424d2b67ceea4dd8d34af58c0dfa12eccd844500eccccd63"
+    },
+    {
+      "path": "coref/src/sieve.rs",
+      "sha256": "65bf58746585d62a98389bf64fa27d828aedb9e9db6103d38c6b1641a37cad52"
+    },
+    {
+      "path": "coref/src/tests.rs",
+      "sha256": "41386cabb254786232e985da896b4425fd01cfaf1a8a77c3867b026bb95f022e"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

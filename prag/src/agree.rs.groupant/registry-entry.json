@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p prag --lib agree:: -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "For B bytes, N rows/blocks and H columns: table parsing/copying O(B+N log N+NH log H), tree-form bounded row scans O(B+N), CRLF normalization O(B) extra allocation. Run performs fixed rule probes per retained label, map lookups and O(M log M) sorting of M distinct move descriptions, plus output bytes. External file reads/witness inference are excluded.",
+  "description": "Domain X is tagged Table(text), TreeForm(block), AgreeOne(id,L,W,tree,A) or Run(labels,witness,trees,A); A is whether PRAG_AGREE_ALL equals '1', fixed during the call. Table maps first-column IDs to header/value zip maps: last duplicate header and last duplicate ID win, empty lines omitted but an empty ID on a nonempty row is retained. Run forms L and W maps and a last-block-wins exact sent_id->tree_form map after CRLF normalization. It emits one row per key of L in lexical order. TreeForm applies question before imperative before exclamation before declarative. AgreeOne applies P0 only to recognized original forms with non-character voice, then P1 else P2 else optional P3, then optional P4 and P5; rule predicates and numeric thresholds are those in labels/tree-form children. Missing label fields default empty for changed fields. Report n=|keys(L)|, rule counts sum per-row rule indicators, and move counts sum only form/act changes.",
+  "forward": [
+    "Domain X is tagged Table(text), TreeForm(block), AgreeOne(id,L,W,tree,A) or Run(labels,witness,trees,A); A is whether PRAG_AGREE_ALL equals '1', fixed during the call. Table maps first-column IDs to header/value zip maps: last duplicate header and last duplicate ID win, empty lines omitted but an empty ID on a nonempty row is retained. Run forms L and W maps and a last-block-wins exact sent_id->tree_form map after CRLF normalization. It emits one row per key of L in lexical order. TreeForm applies question before imperative before exclamation before declarative. AgreeOne applies P0 only to recognized original forms with non-character voice, then P1 else P2 else optional P3, then optional P4 and P5; rule predicates and numeric thresholds are those in labels/tree-form children. Missing label fields default empty for changed fields. Report n=|keys(L)|, rule counts sum per-row rule indicators, and move counts sum only form/act changes."
+  ],
+  "id": "prag-agree",
+  "inverse": [
+    "B(tag,y) retains all tagged raw tables/blocks, parsed maps L,W,T, environment branch A and per-ID rule traces compatible with the child predicates and output y. Run constrains exact shared keys and last-wins maps; Table and AgreeOne observations are separate tags, never silently equated. Duplicate overwritten rows/headers, ignored witness/tree keys, missing-vs-explicit-default fields and unreported witness columns are lost. Report-only projection loses changed IDs; full TSV still cannot recover overwritten inputs or witness probabilities uniquely. A may be ambiguous when optional rules do not fire."
+  ],
+  "limitations": [
+    "Finite supplied-input checks, not full parser/corpus/teacher/DB or live course evidence.",
+    "Partial syntax leaves macro bodies opaque; no semantic AST or universal proof.",
+    "Environment optional rules and malformed anchor/cache states remain explicit unexecuted boundaries."
+  ],
+  "source": "prag/src/agree.rs",
+  "state": "Exact ID joins do not borrow witnesses/trees from another key. Witness-only/tree-only keys add no output rows. n counts retained label-map entries, including an empty ID if present, not raw lines. P0 cannot override character voice or an unrecognized original form; P1 consumes the form after P0 and prevents P2/P3. With A=false P3/P4/P5 cannot apply, so polarity/hedge stay supplied defaults. No move entry records polarity/hedge alone; rule totals may exceed n. Question marker takes tree-form precedence over imperative and exclamation."
+}

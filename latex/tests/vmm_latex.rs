@@ -138,3 +138,25 @@ fn vmm_latex_negative_control() {
     let (_, _, red) = run(&bad);
     assert!(red.len() >= 15, "swapping same → diff gave only {} reds", red.len());
 }
+
+#[test]
+fn wave28_synthetic_dispatch() {
+    assert_eq!(case("same", "x", "x"), Some(Ok(true)));
+    assert_eq!(case("diff", "x", "x"), Some(Ok(false)));
+    assert_eq!(case("count", r"% hidden\n $x$", "1"), Some(Ok(true)));
+    assert!(case("ok", r"\unrecognizedwave", "").unwrap().is_err());
+    assert!(case("macro", "no formula", "x").unwrap().is_err());
+    assert!(case("absent", "", "").unwrap().is_err());
+    let (n, ran, red) = run("# synthetic\na\tsame\tx\tx\nb\tdiff\tx\tx\n");
+    assert_eq!((n, ran, red.len()), (2, 2, 1));
+    #[cfg(feature = "math")]
+    assert_eq!(case("value", "0.5", "1/2"), Some(Ok(true)));
+    #[cfg(not(feature = "math"))]
+    assert_eq!(case("value", "0.5", "1/2"), None);
+}
+
+#[test]
+#[should_panic]
+fn wave28_synthetic_short_row_panics() {
+    run("missing-fields");
+}

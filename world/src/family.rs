@@ -1584,3 +1584,50 @@ mod tests {
         assert!(!is_test_set(std::path::Path::new("/x/ewt-dev-h.conllu")));
     }
 }
+
+#[cfg(test)]
+mod wave29_worldlearn {
+    use super::*;
+    #[test]
+    fn scoped_change_preserves_position_and_domain() {
+        let a = crate::induce::parse_rules("general\tobj\tnsubj\t0:7")
+            .remove(0)
+            .1;
+        let b = crate::induce::parse_rules("domain\tobj\tnsubj\t0:7,17:1")
+            .remove(0)
+            .1;
+        let sc = vec![("general".into(), a.clone()), ("domain".into(), b.clone())];
+        assert_eq!(in_domain(&sc, "real"), vec![a.clone()]);
+        assert_eq!(in_domain(&sc, "tale"), vec![a.clone(), b.clone()]);
+        assert_eq!(
+            apply_scoped(&sc, &crate::induce::Change::Add(a.clone()), "domain"),
+            sc
+        );
+        let c = crate::induce::Change::Replace(a.clone(), b.clone());
+        let next = apply_scoped(&sc, &c, "domain");
+        assert_eq!(
+            next,
+            vec![("general".into(), b.clone()), ("domain".into(), b)]
+        );
+        let line = change_line(&c, "general");
+        assert_eq!(change_scope(&line), "general");
+        assert_eq!(change_line(&change_of(&line).unwrap(), "general"), line);
+        assert!(matches!(
+            change_of("unknown\tgeneral\tobj\tnsubj\t0:7"),
+            Some(crate::induce::Change::Remove(_))
+        ));
+        assert!(change_of("replace\tbroken").is_none());
+    }
+    #[test]
+    fn split_fence_and_label_pair_direction() {
+        assert!(is_test_set(std::path::Path::new("tales-odd-a.conllu")));
+        assert!(is_test_set(std::path::Path::new("ewt-test.conllu")));
+        assert!(!is_test_set(std::path::Path::new("ewt-dev-h.conllu")));
+        assert!(!is_test_set(std::path::Path::new("test.conllu")));
+        assert_eq!(idea_key("add: obl:agent → obl IF x"), "obl:agent → obl");
+        assert_ne!(
+            idea_key("add: obj → nsubj IF x"),
+            idea_key("add: nsubj → obj IF x")
+        );
+    }
+}

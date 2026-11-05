@@ -1,0 +1,28 @@
+{
+  "id": "algorithm-weighted-interval-scheduling",
+  "source": "algorithms/src/weighted_interval_scheduling/mod.rs",
+  "children": [],
+  "description": "weighted_interval_scheduling exact classical dynamic programming implementation",
+  "state": "Finite inputs and ordinary execution including documented failure branches.",
+  "cost": "O(n log n) comparisons and O(n) words; validation errors take O(first-invalid-index+1) time and O(1) space. No timing measured.",
+  "forward": [
+    "Reject first original index with start>=end. Sort by (end,start,index). For item j let p be count of earlier ends<=start. B(j+1)=max(B(j),B(p)+weight). Take only strict improvements, then reconstruct original indices in chronological order."
+  ],
+  "inverse": [
+    "Exclude invalid-interval success, nonfirst invalid-index errors, duplicate/out-of-range output indices, overlapping chosen intervals, wrong sum, suboptimal score or tie behavior inconsistent with strict improvements. Allocation aborts are outside returned Result.",
+    "A successful (indices,total) admits all valid item arrays whose deterministic recurrence chooses those indices with that sum. Endpoints can shift while preserving compatibility. Weights of excluded items may vary while remaining dominated. Neither input nor unique optimum follows from output.",
+    "Half-open positive-duration intervals are compatible exactly when one end<=the other's start. Positive duration ensures sorted predecessor candidates precede the current item; replacing <= by < loses adjacency.",
+    "At equal candidate and previous score, skip current sorted item. Duplicate intervals select earliest original index if positive. Zero weights never create a strict gain. This witness rule does not promise lexicographically minimal original-index vectors.",
+    "Uniform endpoint translation preserving i64 bounds preserves order, compatibility and exact Schedule. Multiplying all weights by positive integer preserving u64/u128 bounds preserves chosen indices and scales score; zero multiplier does not preserve witness.",
+    "Input permutation preserves optimum weight, but indices transform and equal-key ties may pick a different original item. Thus only score invariance is unconditional.",
+    "Err InvalidInterval{i} admits arrays with all earlier start<end and item i start>=end; later items unconstrained. After validation, DimensionOverflow precedes allocations; checked WeightOverflow occurs during DP. On usual 32/64-bit targets the latter two are unreachable for valid allocated non-ZST Item slices; allocator exhaustion is not caught.",
+    "Given sorted order and all take/predecessor arrays, reconstruct by decreasing prefixes; chosen transitions jump to predecessor, skips decrement. Final score alone cannot recover these arrays: one weight-seven interval and adjacent weight-three/four intervals share score seven."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline",
+    "Repeated debug/release outcomes; strict Clippy; compiled production mutant; syntax twice"
+  ],
+  "limitations": [
+    "Partial syntax does not expand macros or resolve semantic types. Finite evidence is not proof; allocator exhaustion untested. Exact implementation has no executable approximate profile; no substitution or numerical error budget claimed."
+  ]
+}

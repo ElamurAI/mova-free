@@ -1,0 +1,104 @@
+{
+  "children": [
+    {
+      "id": "mlab-tests-vm-synthetic-parity",
+      "path": "synthetic-parity.groupant"
+    },
+    {
+      "id": "mlab-tests-vm-state-gate",
+      "path": "state-gate.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical projection only; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence, no semantic proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence, no semantic proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "oracle_independence",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence, no semantic proof",
+        "section": "oracle_independence",
+        "status": "partial_source_derived_model",
+        "type": "oracle_independence"
+      },
+      {
+        "id": "fault_observation",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence, no semantic proof",
+        "section": "fault_observation",
+        "status": "partial_source_derived_model",
+        "type": "fault_observation"
+      },
+      {
+        "id": "workspace_observation",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence, no semantic proof",
+        "section": "workspace_observation",
+        "status": "partial_source_derived_model",
+        "type": "workspace_observation"
+      },
+      {
+        "id": "scope_partition",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence, no semantic proof",
+        "section": "scope_partition",
+        "status": "partial_source_derived_model",
+        "type": "scope_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "mlab-tests-vm",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../vm.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "752cb721b2bda77ee9b797cde810ad959a74341f31a7e1b2c62f5ca60c773fbe"
+  },
+  "status": "partial_source_bound_model"
+}

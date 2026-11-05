@@ -1,0 +1,18 @@
+{
+  "control": "mutant-talk: question priority",
+  "kind": "finite_actual_code_tests",
+  "limits": "Pure dialogue/calendar; memory writes excluded",
+  "named_outcomes_equal": true,
+  "paired_profiles": [
+    "debug1",
+    "debug2",
+    "release1",
+    "release2"
+  ],
+  "source": "world/src/talk.rs",
+  "source_sha256": "2b4f6e1bb33bd9def1c1c831a2325f30598a544b4e1603b02ec50242c4336115",
+  "tests": [
+    "talk::wave28_dialogue::act_precedence_and_indirect_gate",
+    "talk::wave28_dialogue::civil_negative_seconds_and_politeness"
+  ]
+}

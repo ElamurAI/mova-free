@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "tests::wave27_document_failure_order_quotes_and_retree",
+    "tests::resolver_ignores_gold_entities",
+    "wave27_tests::synthetic_load_preserves_gold_and_rejects_mismatched_trees"
+  ],
+  "children": [],
+  "cost": "For sentence lengths n: O(sum n² + sum n log n + raw bytes), O(N+raw bytes) storage. retree clones all gold bytes and checks aligned words; from_words also traverses depth quadratically. u32 depth/qid and usize lengths have no explicit overflow policy.",
+  "description": "Build document tree views, quote state and speaker metadata; transplant aligned trees and adapt annotate::Word values.",
+  "forward": [
+    "For each nonempty sentence, validate all heads<=n then walk each parent path to reject cycles after depth>n. kids[p] records source order. Descending-depth propagation computes sub[p]=hull(sub[p],sub[child]). Split at any newdoc prefix and mark quotes per document, resetting open (not qid) at paragraph boundaries. retree clones gold, validates nonempty-sentence counts then word counts/forms, replaces six syntax columns, clears DEPS and refreshes. from_words clamps head>n to0 and bounds parent walks without rejecting cycles."
+  ],
+  "id": "coref-doc",
+  "inverse": [
+    "For a built view D, compatible raw inputs preserve its token projection, retained metadata and Entity values while allowing discarded comments/DEPS and skipped empty sentences. retree output admits compatible gold/tree pairs agreeing on aligned forms, with the six replaced syntax columns from trees and remaining raw columns from gold except word DEPS, which is forced to _. Original overwritten syntax and original word DEPS are unrecoverable."
+  ],
+  "limitations": [
+    "from_words cyclic-input downstream termination is not established; no fault injection, u32 exhaustion or nonprojective exhaustive checks.",
+    "Partial lexical syntax; no executable percentage surrogate; no corpus or universal proof."
+  ],
+  "source": "coref/src/doc.rs",
+  "state": "Raw UdDoc plus independent tokens, kids, depth, subtree intervals, quote ids, speakers and raw Entity views."
+}

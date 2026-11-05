@@ -1,0 +1,82 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "captured_meaning",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "captured_meaning",
+        "status": "partial_source_derived_model",
+        "type": "captured_meaning"
+      },
+      {
+        "id": "scan_accounting",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "scan_accounting",
+        "status": "partial_source_derived_model",
+        "type": "scan_accounting"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4987,
+      "start": 1321
+    },
+    "description": "scan lexes input and dispatches recognized definition commands in order. Successful overwrite definitions replace the map; provide inserts only absent names but increments defined either way. Reader error increments skipped after its consumed prefix. let_meaning clones an existing target macro or saves CmdRaw(target) when absent.",
+    "source_bytes_sha256": "79020f94d3d9d6a7443907f5a9d8b3595872bd1e3336563d83d9b9cf78d3e6a4"
+  },
+  "id": "latex-macros-stage0",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../macros.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "4253c16fd5f46f05dd9e527d4b097d906594f20e8fa54caa014288da5aa48c96"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,98 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Source syntax only; no macro expansion/type resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "wasi-cli-effects",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "wasi-cli-effects",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "import_failure",
+        "path": "model.md",
+        "scope": "wasi-cli-effects",
+        "section": "import_failure",
+        "status": "partial_source_derived_model",
+        "type": "import_failure"
+      },
+      {
+        "id": "basename_argv",
+        "path": "model.md",
+        "scope": "wasi-cli-effects",
+        "section": "basename_argv",
+        "status": "partial_source_derived_model",
+        "type": "basename_argv"
+      },
+      {
+        "id": "export_order",
+        "path": "model.md",
+        "scope": "wasi-cli-effects",
+        "section": "export_order",
+        "status": "partial_source_derived_model",
+        "type": "export_order"
+      },
+      {
+        "id": "status_clamp",
+        "path": "model.md",
+        "scope": "wasi-cli-effects",
+        "section": "status_clamp",
+        "status": "partial_source_derived_model",
+        "type": "status_clamp"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4788,
+      "start": 2932
+    },
+    "description": "Construct limited Vfs, sequentially import each real->virtual pair, derive basename argv and append suffix, apply seed/mem/echo, run; exports gated on code0+no trap. Journal/stat occur after export loop.",
+    "source_bytes_sha256": "4049d6b6ae4a2dfc16572ae2ec0f34cba6b99968e2fdadb7b5b77678da4c8f85"
+  },
+  "id": "wasi-cli-effects",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../main.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "2200229297d1dde6d9f8477a577a7320c854d0db4fb3ea450b457a9858107122"
+  },
+  "status": "partial_source_bound_model"
+}

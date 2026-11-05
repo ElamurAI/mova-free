@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test --manifest-path tools/fish-terminal/Cargo.toml --offline --locked -j2",
+    "cargo test --manifest-path tools/fish-terminal/Cargo.toml --release --offline --locked -j2"
+  ],
+  "cost": "Each client polls at5ms up to5s; stdout cap32KiB and stderr2KiB. File-backed capture prevents pipe accumulation in memory but assumes trusted local resources; client latency, tmux process state and Codex scheduling are distinct.",
+  "description": "An argv-only tmux adapter creates a new fixed session, marks its config owner and checks exactly one pane across the session. Capture returns command, dead state and bounded text. Literal buffers deliver prompts; Enter is a separate effect. Each tmux client is bounded by a five-second timeout and output limits. No model API or shell interpolation is used.",
+  "forward": [
+    "An argv-only tmux adapter creates a new fixed session, marks its config owner and checks exactly one pane across the session. Capture returns command, dead state and bounded text. Literal buffers deliver prompts; Enter is a separate effect. Each tmux client is bounded by a five-second timeout and output limits. No model API or shell interpolation is used."
+  ],
+  "id": "private-fish-terminal-tmux",
+  "inverse": [
+    "On successful adapter checks, exclude adoption of a session with a different owner marker or multiple panes, shell evaluation of task text, and unbounded client-output admission. A client timeout fails with uncertain terminal effects rather than retrying. The trusted same-user metadata premise excludes malicious local marker forgery.",
+    "An equal command/screen capture is compatible with many prior Codex histories and does not reconstruct whether the model reasoning is correct. An owner marker binds configuration under cooperative local operation, not cryptographic process authentication. Matching bytes cannot reconstruct hidden child actions."
+  ],
+  "limitations": [
+    "Partial source-derived model",
+    "No formal proof or automatic root review",
+    "Root two-task smoke used preceding binary; revised binary cutover remains root-owned",
+    "Cooperative local stability; no hostile concurrent rename/session replacement guarantee"
+  ],
+  "source": "tools/fish-terminal/src/terminal.rs",
+  "state": "Explicit job/session/report states; review-only, no automatic training or DB admission."
+}

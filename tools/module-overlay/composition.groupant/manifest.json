@@ -1,0 +1,119 @@
+{
+  "children": [
+    "module-overlay-library",
+    "module-overlay-cli",
+    "module-overlay-fixtures"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "status": "not_materialized"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "assumptions": [
+          "Stable bounded trees and exclusive output ownership."
+        ],
+        "domain": "CLI/library/fixture joins described in model.md.",
+        "id": "module-overlay-composition-behavior-complement",
+        "observation": "Bound metadata, fresh output, receipt and evidence state.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": [
+          "Stable bounded trees and exclusive output ownership."
+        ],
+        "domain": "CLI/library/fixture joins described in model.md.",
+        "id": "module-overlay-composition-reverse-reconstruction",
+        "observation": "Bound metadata, fresh output, receipt and evidence state.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": [
+          "Stable bounded trees and exclusive output ownership."
+        ],
+        "domain": "CLI/library/fixture joins described in model.md.",
+        "id": "module-overlay-composition-publication-boundary",
+        "observation": "Bound metadata, fresh output, receipt and evidence state.",
+        "path": "model.md",
+        "section": "publication-boundary",
+        "status": "partial_source_model",
+        "type": "publication_boundary"
+      },
+      {
+        "assumptions": [
+          "Stable bounded trees and exclusive output ownership."
+        ],
+        "domain": "CLI/library/fixture joins described in model.md.",
+        "id": "module-overlay-composition-model-compatibility-join",
+        "observation": "Bound metadata, fresh output, receipt and evidence state.",
+        "path": "model.md",
+        "section": "model-compatibility-join",
+        "status": "partial_source_model",
+        "type": "independent_evidence_join"
+      },
+      {
+        "assumptions": [
+          "Stable bounded inputs and correct explicit rebind, with trusted expected commitments.",
+          "Source-tree commitment excludes generated receipt; source equality is narrower than physical-directory equality."
+        ],
+        "domain": "Valid old/new bound synthetic bases with fixed replacement content, targets and output topology.",
+        "id": "output-provenance-join",
+        "observation": "Joint admission, composed source map and retained base/manifest/original provenance.",
+        "operator": "Source equality does not imply old-base admission or equal provenance. Parent retains receipt distinctions instead of promoting the child's many-to-one projection to upgrade approval.",
+        "path": "model.md",
+        "section": "output-provenance-join",
+        "status": "source_derived_with_finite_native_composition_controls",
+        "type": "independent_evidence_join"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_native_evidence"
+    }
+  },
+  "id": "module-overlay-composition",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "tools/module-overlay/src/lib.rs",
+      "sha256": "3cf810a72ea4673d56f15eed40b0f82699beea0a7ea54376db9fd2ddfae8ca13"
+    },
+    {
+      "path": "tools/module-overlay/src/main.rs",
+      "sha256": "49cff307eadff18e4a5ebc1b010f5f0fe928c512ef061ee7d8af5447ed6f3e9a"
+    },
+    {
+      "path": "tools/module-overlay/src/tests.rs",
+      "sha256": "6eda2bb6500b185d3fac21733a615605b95e0c5c4b4f65d8a0e6f7d60f5cd080"
+    }
+  ],
+  "status": "partial_source_bound_model"
+}

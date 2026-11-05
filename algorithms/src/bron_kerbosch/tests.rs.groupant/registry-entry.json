@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --lib bron_kerbosch --offline"
+  ],
+  "children": [],
+  "cost": "Bounded exhaustive enumeration only: subset/closure MST oracle, short word tree checks, or subset clique oracle. These test costs are exponential in their tiny fixed domains, not production performance measurements.",
+  "description": "Execute three named deterministic tests over the actual public API. Every simple graph through five vertices compares independent subset clique enumeration, plus lexicographic ties, vertex 63, empty and complete 64-vertex graphs and typed validation boundaries. Acceptance is conjunction of all named assertions, not a proof over unenumerated inputs.",
+  "forward": [
+    "Execute three named deterministic tests over the actual public API. Every simple graph through five vertices compares independent subset clique enumeration, plus lexicographic ties, vertex 63, empty and complete 64-vertex graphs and typed validation boundaries. Acceptance is conjunction of all named assertions, not a proof over unenumerated inputs."
+  ],
+  "id": "algorithm-bron-kerbosch-tests",
+  "inverse": [
+    "The all-pass observation admits every implementation agreeing on sampled assertions, including ones wrong elsewhere. A failing assertion constrains the mismatching observation but need not uniquely identify a defect. Named identities preserve more information than only a count."
+  ],
+  "limitations": [
+    "Finite oracle coverage is not proof.",
+    "Partial syntax leaves macros opaque; no performance claim."
+  ],
+  "source": "algorithms/src/bron_kerbosch/tests.rs",
+  "state": "Independent oracles do not call production graph algorithms. Fixtures are deterministic and do not modify process-global state; positive runs use exactly restored production source."
+}

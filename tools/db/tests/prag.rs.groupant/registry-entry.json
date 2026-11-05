@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "prag::wave31_fixture_representation_without_database"
+  ],
+  "children": [],
+  "cost": "Fixture representation O(TEXT bytes); legacy test entails many process startups and small SQL transactions/queries, with cost conditional on actual CLI. No production corpus.",
+  "description": "Pragmatic database fixture and assertions",
+  "forward": [
+    "Legacy integration fixture initializes temp DB, loads two sentences, migrates, inserts pragmatic labels and checks view values, then rejected duplicate/missing/invalid-bit/header attempts preserve counts. New representation check only parses TEXT into two CoNLL sentences, checks nine header columns and byte roundtrip."
+  ],
+  "id": "db-tests-prag",
+  "inverse": [
+    "Fixture-only success excludes malformed CoNLL/changed ID/header-width observations covered by assertions; it cannot exclude SQL constraint bugs. Legacy intended relation excludes count growth after rejected loads, but remains unexecuted.",
+    "Successful fixture assertions admit any environment supporting the same parser outputs; they do not recover a database. Legacy final view values admit different unused DB metadata and cannot identify all intermediate SQL states.",
+    "TEXT supplies tatoeba:1 and tatoeba:2 with six and two rows; successful direct parsing must retain ID and exact bytes. Header includes optional trace.",
+    "Legacy failures exercise duplicate run, missing sentence, bad bit and foreign header; stable before/after counts are stronger than nonzero status alone, but only when the real CLI runs.",
+    "Legacy final query demands NULL means and JSON trace pointer w1=can for Rust source. The new parser check does not evaluate this SQL expression.",
+    "duckdb helper asserts a file at DUCKDB or home/bin path before child launch. Missing executable is an infrastructure blocker, not evidence of database semantic failure."
+  ],
+  "limitations": [
+    "Finite helper/fixture evidence only; no DuckDB integration or SQL semantics",
+    "Partial syntax projection; no macro expansion or full semantic proof",
+    "No executable approximate profile or speedup claim"
+  ],
+  "source": "tools/db/tests/prag.rs",
+  "state": "Legacy assertions concern actual DB subprocesses and require real CLI. The executed fixture-only check neither creates a DB nor proves rollback/view behavior. Temporary fixture paths are PID scoped."
+}

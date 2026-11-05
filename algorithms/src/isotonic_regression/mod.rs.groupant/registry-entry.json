@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms isotonic_regression::tests"
+  ],
+  "children": [],
+  "cost": "O(n) validation, pushes, merges and output writes, O(n) auxiliary blocks and output. Each merge removes one block; at most n-1 merges. n<=1,000,000 bounds resource policy, not timing.",
+  "description": "Finite f64 convex projection/proximal kernel",
+  "forward": [
+    "Minimize sum_i (y_i-x_i)^2 over nondecreasing y. PAVA pushes singleton (sum,count) blocks and merges the last two while their rounded means decrease. Return each block mean repeated count times. Real arithmetic gives the unique least-squares projection; f64 branching and rounded means are a separate deterministic implementation."
+  ],
+  "id": "algorithm-isotonic-regression",
+  "inverse": [
+    "Typed complement, normal-cone or subgradient fibers and specialized views in model.md"
+  ],
+  "limitations": [
+    "Finite observations do not certify universal f64 accuracy",
+    "Allocation refusal unforced",
+    "Partial source syntax; executable surrogate absent"
+  ],
+  "source": "algorithms/src/isotonic_regression/mod.rs",
+  "state": "Deterministic, finite validation and explicit resource/arithmetic limits"
+}

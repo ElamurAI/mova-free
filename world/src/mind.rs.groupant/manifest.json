@@ -1,0 +1,106 @@
+{
+  "children": [
+    {
+      "id": "world-mind-line-projection",
+      "path": "line-projection.groupant"
+    },
+    {
+      "id": "world-mind-reply-state-io",
+      "path": "reply-state-io.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived absent-behavior relation, conditional on stated dependency premises",
+        "assumptions": [
+          "Fixed source/dependency revision",
+          "Only returned-call and I/O premises explicitly stated in model.md"
+        ],
+        "domain": "Tagged project(text), tell(S,text,D), reply(S,line,D), with finite text and actual returned Story dependency trace D at a fixed revision. Socket/probe effects lie outside this relational slice.",
+        "evidence": "model.md checks and file-level model.md#evidence separate native fixtures from source inspection",
+        "id": "world-mind-behavior-complement",
+        "observation_scope": "Tagged output/state/dependency observations specified in model.md; runtime strings alone retain all compatible branch fibers",
+        "operator": "U_scope minus R_scope",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "subject_revision": {
+          "path": "../mind.rs",
+          "sha256": "d83c8c3b03e9b7c29f29db9c67dcd15b7c1c5d2a413ef6bb93958cbaf4b78936"
+        },
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Ambiguous relational fibers; no unique recovery or complete search claim",
+        "assumptions": [
+          "Fixed source/dependency revision",
+          "Only returned-call and I/O premises explicitly stated in model.md"
+        ],
+        "domain": "Tagged project(text), tell(S,text,D), reply(S,line,D), with finite text and actual returned Story dependency trace D at a fixed revision. Socket/probe effects lie outside this relational slice.",
+        "evidence": "model.md checks and file-level model.md#evidence separate native fixtures from source inspection",
+        "id": "world-mind-reverse-reconstruction",
+        "observation_scope": "Tagged output/state/dependency observations specified in model.md; runtime strings alone retain all compatible branch fibers",
+        "operator": "{x | R_scope(x, observed output)}",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "subject_revision": {
+          "path": "../mind.rs",
+          "sha256": "d83c8c3b03e9b7c29f29db9c67dcd15b7c1c5d2a413ef6bb93958cbaf4b78936"
+        },
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-mind-coupling",
+        "path": "model.md",
+        "section": "coupling",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "id": "world-mind",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mind.rs",
+    "sha256": "d83c8c3b03e9b7c29f29db9c67dcd15b7c1c5d2a413ef6bb93958cbaf4b78936"
+  },
+  "status": "partial_source_bound_model"
+}

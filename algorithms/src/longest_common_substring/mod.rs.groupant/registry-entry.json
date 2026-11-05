@@ -1,0 +1,21 @@
+{
+  "id": "algorithm-longest-common-substring",
+  "source": "algorithms/src/longest_common_substring/mod.rs",
+  "description": "Deterministic maximal contiguous common witness over Eq elements.",
+  "state": "Immutable finite slices; local rows or hash/shift state; returned witness, distance or offsets.",
+  "cost": "O(n*m) equality operations, O(m) row words. Eq operation costs are external.",
+  "forward": [
+    "Select (i,j,l) with a[i..i+l]=b[j..j+l], maximum l then minimum (i,j); choose (0,0,0) when l=0."
+  ],
+  "inverse": [
+    "behavior_complement and reverse_reconstruction are distinct first two typed models; see model.md."
+  ],
+  "checks": [
+    "cargo test --offline -p mova-algorithms longest_common_substring::tests",
+    "Compiled mutation must fail an assertion; see model.md#tests."
+  ],
+  "limitations": [
+    "Finite native evidence is not universal verification.",
+    "Syntax projection excludes expansion and semantic resolution."
+  ]
+}

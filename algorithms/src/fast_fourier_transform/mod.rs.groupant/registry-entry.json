@@ -1,0 +1,21 @@
+{
+  "id": "algorithm-fast-fourier-transform",
+  "source": "algorithms/src/fast_fourier_transform/mod.rs",
+  "children": [],
+  "description": "Original bounded algebra algorithm with independent finite checks",
+  "state": "Deterministic values and explicit validation",
+  "cost": "Radix-two Cooley–Tukey DFT: X[k]=sum x[j] exp(-2pi i jk/n); inverse conjugate sign and divide n. n is nonempty power2 <=65536, finite components bounded by 1e100. O(n log n) operations O(n) memory. Bit-reversed ordering then length-doubling butterflies. Floating results finite but no universal relative accuracy promise. Cooley and Tukey, Mathematics of Computation 19 (1965).",
+  "forward": [
+    "Radix-two Cooley–Tukey DFT: X[k]=sum x[j] exp(-2pi i jk/n); inverse conjugate sign and divide n. n is nonempty power2 <=65536, finite components bounded by 1e100. O(n log n) operations O(n) memory. Bit-reversed ordering then length-doubling butterflies. Floating results finite but no universal relative accuracy promise. Cooley and Tukey, Mathematics of Computation 19 (1965)."
+  ],
+  "inverse": [
+    "For validated input, output length differs from n or contains nonfinite components is excluded. The real DFT equation identifies an ideal target, but equality to it is not asserted for rounded f64 outputs; negative-phase and inverse normalization are required by the actual butterfly program.",
+    "Ideal fixed-size DFT is invertible via inverse DFT. Rounded program fibers retain all finite bounded input bit patterns yielding the observed output; rounding may merge distinct inputs. Error InvalidValue admits any length-valid vector containing NaN, infinity or a component above1e100."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms fast_fourier_transform::tests"
+  ],
+  "limitations": [
+    "Partial syntax; finite tests do not prove universal correctness; no allocator failure injection; no executable surrogate"
+  ]
+}

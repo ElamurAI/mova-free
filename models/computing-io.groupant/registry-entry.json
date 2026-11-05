@@ -1,0 +1,37 @@
+{
+  "checks": [
+    "13 exact named tests twice debug/twice release; identical sorted outcomes",
+    "9 compiled assertion mutants across 9 sources; byte-exact restore and positive rerun",
+    "18 fresh syntax projections paired equal; source-scoped nested byte/hash bindings"
+  ],
+  "children": [
+    "mlab-builtins-files",
+    "mlab-builtins-io",
+    "mlab-builtins-mod",
+    "mlab-display",
+    "mlab-fileio",
+    "mlab-main",
+    "mlab-tests-fs",
+    "mlab-tests-octave-ext",
+    "mlab-tests-vmm-suites"
+  ],
+  "cost": "Parsing has a linear input baseline; formatting adds repeated segment/flag scans up to O(format length * expanded atoms) and output allocation. JSON serialization copies each subtree at every ancestor, bounded by O(depth * output bytes); a singleton-array chain can require quadratic copying. Table key discovery/lookup can cost O(rows*keys^2). VFS/import/export and interpreter costs are delegated; external subprocess and frozen-suite costs remain unmeasured and unexecuted.",
+  "description": "Registry::with_defaults wires files and io builtin pointers into Interp. Files maps validated char paths to Interp.fs effects/status; io maps Value storage and fmt to String then Interp.out. fileio transports CSV/JSON to typed columns and matrices used by table builtins. CLI make_fs imports before Interp.run; finish_fs exports only on ok, then journal. Selected fs tests invoke this CLI on temporary synthetic data; Octave and VMM harnesses contribute only bounded selector/hash-helper evidence.",
+  "forward": [
+    "Registry::with_defaults wires files and io builtin pointers into Interp. Files maps validated char paths to Interp.fs effects/status; io maps Value storage and fmt to String then Interp.out. fileio transports CSV/JSON to typed columns and matrices used by table builtins. CLI make_fs imports before Interp.run; finish_fs exports only on ok, then journal. Selected fs tests invoke this CLI on temporary synthetic data; Octave and VMM harnesses contribute only bounded selector/hash-helper evidence.",
+    "builtins/mod registers files/io; io calls display::format_disp and exp_str; fileio uses table inference/date/name adapters and column-major Mat; main creates Interp with selected fs and selected tests/fs CLI helper observes exit/stdout/stderr/journal/files. sprintf column-major traversal and display row layout are different adapters; JSON orientation/nonfinite loss prevents identity roundtrip. Octave calls lexical filter is not parser validation, and VMM digest helper evidence is not scenario correctness."
+  ],
+  "id": "computing-io",
+  "inverse": [
+    "Interp failure excludes CLI export_dir but permits journal and previous imports; VFS error with requested status excludes throw for mkdir/rmdir/move/copy. J::Num/numeric-class nonfinite conversion excludes the original numeric literal; logical NaN instead converts to true under the nonzero predicate. No runtime scenario guarantee follows from helper checks.",
+    "Printed output maps to sets of Value/format antecedents, serialization admits missing/null and shape ambiguities, exit codes admit multiple failure stages. Joint journal and filesystem observations narrow compatible histories but do not reconstruct all interpreter steps."
+  ],
+  "limitations": [
+    "Finite tests, no semantic proof",
+    "Categorical/effectful percent surrogate unsupported",
+    "VMM400 frozen scenarios and known-red baseline unchanged and unexecuted",
+    "External Octave orchestration unexecuted; helper evidence only",
+    "No global failure atomicity or resource bound"
+  ],
+  "state": "Memory is default CLI/interpreter backend; file builtins do not bypass it. Formatting and serialization themselves perform no filesystem writes. Failed interpreter status suppresses CLI export; successful finalization is required for exit0. Test helpers use bounded synthetic data and frozen baselines stay unchanged."
+}

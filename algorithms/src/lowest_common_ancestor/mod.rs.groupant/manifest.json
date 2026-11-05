@@ -1,0 +1,156 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite allocated typed inputs under ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One construction or query/flow invocation.",
+        "operator": "Let X be finite parent arrays or constructed forests with query pairs, Y the corresponding typed Result observations, and U=X times Y under sufficient allocation. R follows Forward validation and query rules. U minus R includes acceptance of cycles/out-of-range parents, wrong first errors, nondeep common ancestors and Some results across trees. Source-derived relation; finite tests do not prove all behavior.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "93349f758b9106e38fe78849cebacc1c25e9fc9e0d484bae8357a07f032d78d7",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite allocated typed inputs under ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_inputs",
+        "observation_scope": "One construction or query/flow invocation.",
+        "operator": "For observed query result Some(c), compatible validated parent forests have c on both ancestor chains and no proper descendant of c common to both. None means distinct roots. Error observations constrain first invalid index or deterministic cycle entry. These fibers generally contain many forests; a result never uniquely reconstructs parents. Construction internals are not exposed.",
+        "path": "model.md",
+        "section": "compatible_inputs",
+        "status": "partial_source_derived",
+        "subject_revision": "93349f758b9106e38fe78849cebacc1c25e9fc9e0d484bae8357a07f032d78d7",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite allocated typed inputs under ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "ancestor_intersection",
+        "observation_scope": "One construction or query/flow invocation.",
+        "operator": "For a rooted forest define ancestor order including reflexivity. LCA(a,b) is the deepest member of Anc(a) intersection Anc(b), or None when empty. Tests use direct ancestor lists independently of doubling, enumerating every parent function for n=1..5 and rejecting cyclic functions.",
+        "path": "model.md",
+        "section": "ancestor_intersection",
+        "status": "partial_source_derived",
+        "subject_revision": "93349f758b9106e38fe78849cebacc1c25e9fc9e0d484bae8357a07f032d78d7",
+        "type": "order_characterization"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite allocated typed inputs under ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "symmetry",
+        "observation_scope": "One construction or query/flow invocation.",
+        "operator": "On valid endpoints query(a,b)=query(b,a); query(a,a)=Some(a). Invalid endpoint error precedence is left-to-right and is not claimed symmetric. All valid finite fixtures compare swapped queries and long-chain fixtures check reflexivity.",
+        "path": "model.md",
+        "section": "symmetry",
+        "status": "partial_source_derived",
+        "subject_revision": "93349f758b9106e38fe78849cebacc1c25e9fc9e0d484bae8357a07f032d78d7",
+        "type": "commutativity"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite allocated typed inputs under ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "absorption",
+        "observation_scope": "One construction or query/flow invocation.",
+        "operator": "If query(a,b)=Some(c), then query(a,c)=query(c,b)=Some(c). This constrains c to the common ancestor chain; alone it does not guarantee deepest selection. Combined with the independent oracle it is checked for every pair in every validated n<=5 forest.",
+        "path": "model.md",
+        "section": "absorption",
+        "status": "partial_source_derived",
+        "subject_revision": "93349f758b9106e38fe78849cebacc1c25e9fc9e0d484bae8357a07f032d78d7",
+        "type": "ancestor_absorption"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite allocated typed inputs under ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "relabeling",
+        "observation_scope": "One construction or query/flow invocation.",
+        "operator": "For bijection p of vertex labels, set parent'[p(v)]=p(parent[v]) with None preserved. Then successful query results transport by p. Cycle witness labels/error precedence are not claimed equivariant. The five-vertex fixture checks all 25 query pairs under a nontrivial permutation.",
+        "path": "model.md",
+        "section": "relabeling",
+        "status": "partial_source_derived",
+        "subject_revision": "93349f758b9106e38fe78849cebacc1c25e9fc9e0d484bae8357a07f032d78d7",
+        "type": "equivariance"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite allocated typed inputs under ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "leaf_extension",
+        "observation_scope": "One construction or query/flow invocation.",
+        "operator": "Add a new vertex whose parent is an existing vertex, without changing old parent entries. Every query between old vertices is unchanged, because old ancestor chains are unchanged. The fixture appends a leaf under a depth-two vertex and compares all old pairs.",
+        "path": "model.md",
+        "section": "leaf_extension",
+        "status": "partial_source_derived",
+        "subject_revision": "93349f758b9106e38fe78849cebacc1c25e9fc9e0d484bae8357a07f032d78d7",
+        "type": "conservative_extension"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite allocated typed inputs under ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "query_fiber",
+        "observation_scope": "One construction or query/flow invocation.",
+        "operator": "For distinct a,b,c, any rooted forest with a and b direct children of c yields query(a,b)=Some(c). Additional components and descendants not lying on these chains preserve this observation, providing distinct antecedents. Tests compare two forests with result zero and exclude a chain whose deepest shared ancestor is one.",
+        "path": "model.md",
+        "section": "query_fiber",
+        "status": "partial_source_derived",
+        "subject_revision": "93349f758b9106e38fe78849cebacc1c25e9fc9e0d484bae8357a07f032d78d7",
+        "type": "constructive_preimage"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "sha256": "0ebcd85b3090c846602c8540036de7adfd32548c9ec89b865dc027a6f700a281",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-lowest-common-ancestor",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "93349f758b9106e38fe78849cebacc1c25e9fc9e0d484bae8357a07f032d78d7"
+  },
+  "status": "partial_source_derived_instance"
+}

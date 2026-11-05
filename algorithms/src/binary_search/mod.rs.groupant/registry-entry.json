@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "rustc --test --crate-name mova_algorithm_binary_search algorithms/src/binary_search/mod.rs; run binary twice",
+    "Independent source mutant must fail",
+    "mova-modelcheck syntax and groupants structural checks"
+  ],
+  "children": [],
+  "cost": "O(log(n+1)) comparisons, O(1) auxiliary storage; first adds at most one equality comparison. Assumes constant-cost comparisons; no timing measured.",
+  "description": "Repository-owned binary_search implementation and finite oracle; adjacent source-bound groupant.",
+  "forward": [
+    "For sorted A and target t, k=|{i:A[i]<t}|. lower_bound returns k. first returns Some(k) iff k<n and A[k]=t, else None.",
+    "Invariant: 0<=lo<=hi<=n; all i<lo satisfy A[i]<t; all i>=hi satisfy A[i]>=t. Each nonempty iteration strictly shortens hi-lo; midpoint lo+(hi-lo)/2 lies inside the interval."
+  ],
+  "id": "algorithm-binary-search",
+  "inverse": [
+    "Let U={(A,t,k): sorted A, 0<=k<=len(A)}. R is the forward cut relation. U minus R consists exactly of k with an earlier element >=t or a later element <t. Candidate source-derived exact characterization under preconditions; bounded oracle evidence, no general machine proof.",
+    "For fixed output k, retain all sorted A and t with k<=n, every i<k having A[i]<t and every i>=k having A[i]>=t. Many lengths, values and targets remain possible; no unique inverse."
+  ],
+  "limitations": [
+    "Scope is successful calls on lawful generic implementations where applicable. Partial syntax omits macro expansion, cfg resolution and semantic typing. Finite oracles do not establish all inputs or full Mova integration."
+  ],
+  "source": "algorithms/src/binary_search/mod.rs",
+  "state": "Sorted finite slices of lawful totally ordered values and targets; successful calls; values and comparison behavior fixed."
+}

@@ -1,0 +1,46 @@
+{
+  "compiled_mutant": "Change coefficient difference subtraction to addition; polynomial_oracle assertion fails.",
+  "date": "2026-10-30",
+  "evidence": [
+    {
+      "name": "debug1.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "debug2.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "release1.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "release2.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "clippy.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "mutant-newton_divided_differences.log",
+      "sha256": "1aaf9d6486f016940b1fc44e00d333a499340a9137e42bc29df3a4ec993f6320"
+    },
+    {
+      "name": "newton_divided_differences-mod.rs-syntax1.json",
+      "sha256": "c5d7319ca90b6794ab4f22e43e4607ad5ec87c3b0cd8e5ce130cfb2844e5e17f"
+    },
+    {
+      "name": "newton_divided_differences-mod.rs-syntax2.json",
+      "sha256": "c5d7319ca90b6794ab4f22e43e4607ad5ec87c3b0cd8e5ce130cfb2844e5e17f"
+    }
+  ],
+  "external_run": "$MOVA_DATA/runs/octopus-wave25-numerical-2026-10-30",
+  "limitations": [
+    "No timing or universal numerical accuracy claim"
+  ],
+  "repetitions": "15 focused tests twice debug and twice optimized release; normalized output identical; positive reruns after exact mutant restoration",
+  "source": "algorithms/src/newton_divided_differences/mod.rs",
+  "source_sha256": "74a121a10074b427637c057f0cc4819af6cc4b4a6aca8235f1431630abe15f73",
+  "syntax": "Two fresh projections byte-identical"
+}

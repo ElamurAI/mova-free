@@ -1,0 +1,157 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional mathematical relation with finite checks; no universal proof.",
+        "assumptions": "Standard Rust execution, sufficient allocation, independently checked oracle within stated bounds.",
+        "domain": "Finite allocated adjacency vectors and typed result observations, ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One algorithm call.",
+        "operator": "Let X be allocated finite ordered adjacency vectors and usize right-partition sizes, and Y the typed Result<Vec<Option<usize>>,BipartiteMatchingError> observation space, excluding allocation failure and nontermination. Define R subset X times Y by first-invalid-edge validation followed by the exact ordered FIFO augmenting traversal in Forward, not by arbitrary maximum matching. Set U=X times Y and behavior_complement=U minus R. It includes every valid maximum differing from that deterministic selected vector, as well as invalid, infeasible and submaximum observations. Finite negative fixtures check selected memberships only.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "5178f09b94721815f93f8c126e9f9a566fc6872c599e14054aa35140d7cc8d75",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical relation with finite checks; no universal proof.",
+        "assumptions": "Standard Rust execution, sufficient allocation, independently checked oracle within stated bounds.",
+        "domain": "Finite allocated adjacency vectors and typed result observations, ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_inputs",
+        "observation_scope": "One algorithm call.",
+        "operator": "For output mate vector m, compatible inputs have L=len(m), R greater than every present mate, contain every selected edge and have matching number equal to count(Some). Exact compatibility additionally requires the stated FIFO/adjacency traversal to select m. Different edge sets and duplicate multiplicities can fit one result; unique graph recovery is not claimed. InvalidEdge restricts inputs to the reported first invalid endpoint and all earlier endpoints valid.",
+        "path": "model.md",
+        "section": "compatible_inputs",
+        "status": "partial_source_derived",
+        "subject_revision": "5178f09b94721815f93f8c126e9f9a566fc6872c599e14054aa35140d7cc8d75",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical relation with finite checks; no universal proof.",
+        "assumptions": "Standard Rust execution, sufficient allocation, independently checked oracle within stated bounds.",
+        "domain": "Finite allocated adjacency vectors and typed result observations, ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "graph_laws",
+        "observation_scope": "One algorithm call.",
+        "operator": "Adding duplicate occurrences preserves maximum cardinality and feasibility. Reordering adjacency preserves optimum size but can change chosen mates. A long alternating chain requires reassignment of existing mates; simple greedy free-neighbor selection does not satisfy the contract.",
+        "path": "model.md",
+        "section": "graph_laws",
+        "status": "partial_source_derived",
+        "subject_revision": "5178f09b94721815f93f8c126e9f9a566fc6872c599e14054aa35140d7cc8d75",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation with bounded Rust correspondence; no universal verification.",
+        "assumptions": "Original deterministic Rust; graph endpoint validation; sufficient allocation. Specialized domains are stated in each relation.",
+        "domain": "Validated finite adjacency vectors; exact representable arithmetic; sufficient allocation.",
+        "evidence": "model.md#evidence",
+        "id": "residual_obstruction",
+        "observation_scope": "Successful outputs and declared transformed inputs; errors only where explicitly stated.",
+        "operator": "For a valid graph and feasible matching M, orient unmatched edges left-to-right and matched edges right-to-left. M is maximum iff no residual path connects a free left vertex to a free right vertex. Feasibility requires original-edge membership and distinct matched right endpoints. The production result is checked over all 512 simple 3-by-3 graphs. Duplicates do not change the cardinality relation.",
+        "path": "model.md",
+        "section": "residual_obstruction",
+        "status": "conditional_relation_bounded_checked",
+        "subject_revision": "5178f09b94721815f93f8c126e9f9a566fc6872c599e14054aa35140d7cc8d75",
+        "type": "augmenting_path_obstruction"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation with bounded Rust correspondence; no universal verification.",
+        "assumptions": "Original deterministic Rust; graph endpoint validation; sufficient allocation. Specialized domains are stated in each relation.",
+        "domain": "Validated finite adjacency vectors; exact representable arithmetic; sufficient allocation.",
+        "evidence": "model.md#evidence",
+        "id": "cover_duality",
+        "observation_scope": "Successful outputs and declared transformed inputs; errors only where explicitly stated.",
+        "operator": "From all free left vertices let Z_L,Z_R be alternating residual reachability. For a maximum matching, C=(L minus Z_L) union Z_R covers every edge and |C|=|M|. Thus any matching is at most |C| and returned M attains that bound; this is an independent certificate rather than a second augmenting solver. The 512-graph test checks feasibility, absence of a reached free right, every edge covered and equality of cardinalities. The empty cover is outside the cover relation whenever an edge exists.",
+        "path": "model.md",
+        "section": "cover_duality",
+        "status": "conditional_relation_bounded_checked",
+        "subject_revision": "5178f09b94721815f93f8c126e9f9a566fc6872c599e14054aa35140d7cc8d75",
+        "type": "optimality_certificate"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation with bounded Rust correspondence; no universal verification.",
+        "assumptions": "Original deterministic Rust; graph endpoint validation; sufficient allocation. Specialized domains are stated in each relation.",
+        "domain": "Validated finite adjacency vectors; exact representable arithmetic; sufficient allocation.",
+        "evidence": "model.md#evidence",
+        "id": "edge_extension",
+        "observation_scope": "Successful outputs and declared transformed inputs; errors only where explicitly stated.",
+        "operator": "For a validated graph G and one added valid edge e, nu(G)<=nu(G+e)<=nu(G)+1. The lower bound retains any old matching; deleting e from a new maximum proves the upper bound. Exact selected mates need not be preserved. All 512 simple 3-by-3 graphs times nine edge insertions yield 4608 comparisons, including already-present edges.",
+        "path": "model.md",
+        "section": "edge_extension",
+        "status": "conditional_relation_bounded_checked",
+        "subject_revision": "5178f09b94721815f93f8c126e9f9a566fc6872c599e14054aa35140d7cc8d75",
+        "type": "cardinality_monotonicity"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation with bounded Rust correspondence; no universal verification.",
+        "assumptions": "Original deterministic Rust; graph endpoint validation; sufficient allocation. Specialized domains are stated in each relation.",
+        "domain": "Validated finite adjacency vectors; exact representable arithmetic; sufficient allocation.",
+        "evidence": "model.md#evidence",
+        "id": "transpose_transport",
+        "observation_scope": "Successful outputs and declared transformed inputs; errors only where explicitly stated.",
+        "operator": "Transpose a valid L-by-R graph to R-by-L while preserving edges. Swapping endpoints bijects matchings and therefore preserves maximum cardinality. The deterministic output vector is not an invariant: its length and left order change and tie selection may change. Tests check cardinality for 512 square graphs, and a two-row permutation explicitly rejects vector identity. This finite square fixture does not exhaust rectangular graphs.",
+        "path": "model.md",
+        "section": "transpose_transport",
+        "status": "conditional_relation_bounded_checked",
+        "subject_revision": "5178f09b94721815f93f8c126e9f9a566fc6872c599e14054aa35140d7cc8d75",
+        "type": "partition_duality"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation with bounded Rust correspondence; no universal verification.",
+        "assumptions": "Original deterministic Rust; graph endpoint validation; sufficient allocation. Specialized domains are stated in each relation.",
+        "domain": "Validated finite adjacency vectors; exact representable arithmetic; sufficient allocation.",
+        "evidence": "model.md#evidence",
+        "id": "singleton_reconstruction",
+        "observation_scope": "Successful outputs and declared transformed inputs; errors only where explicitly stated.",
+        "operator": "For any feasible output vector M of length L with distinct Some(r)<R, construct G_M by giving row l only its selected r, or no edges for None. Production returns exactly M because each present edge has a distinct right endpoint. Repeating that sole edge also returns M, showing nonunique antecedents whenever M is nonempty. This is a sound subset of the deterministic output preimage. It does not imply every graph where M is maximum yields M. Tests reconstruct outputs from 512 graphs and reject both duplicate-right output and a different maximum matching for an ordered complete 2-by-2 graph.",
+        "path": "model.md",
+        "section": "singleton_reconstruction",
+        "status": "conditional_relation_bounded_checked",
+        "subject_revision": "5178f09b94721815f93f8c126e9f9a566fc6872c599e14054aa35140d7cc8d75",
+        "type": "constructive_preimage"
+      }
+    ],
+    "tests": {
+      "epoch": "2026-10-30 deep graph correspondence",
+      "path": "model.md#evidence",
+      "sha256": "f91f3939b25a00fec893a2b6904a4ca3804f094a3974f5b01840c0c0b90f815f",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-bipartite-matching",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "5178f09b94721815f93f8c126e9f9a566fc6872c599e14054aa35140d7cc8d75"
+  },
+  "status": "partial_source_derived_instance"
+}

@@ -1,0 +1,91 @@
+// Appended inside the actual parsecache module by probe-driver.txt.
+#[cfg(test)]
+mod probe {
+    use super::*;
+    fn words(marker: usize) -> Vec<Word> {
+        vec![Word { form: "cat".into(), lemma: "cat".into(), upos: en::gram::UPos::NOUN,
+            tag: en::gram::Tag::NN, feats: en::gram::Feats(1u128 << 100), head: marker,
+            rel: en::gram::Rel::Root }]
+    }
+    fn root(name: &str) -> PathBuf {
+        let p=PathBuf::from(std::env::var_os("PARSECACHE_PROBE_ROOT").expect("isolated root"))
+            .join(name); fs::create_dir(&p).unwrap(); p
+    }
+    fn cache(path: &Path, refresh: bool) -> Cache {
+        Cache::open_key(path, "probe".into(), refresh).unwrap()
+    }
+    #[test]
+    fn finite_batches() {
+        let path=root("batches");let mut cases=0;
+        for n in 0..=3 { for code in 0..(1usize<<n) { for mask in 0..4 { for refresh in [false,true] {
+            let texts:Vec<String>=(0..n).map(|i| if code&(1<<i)==0 {"a"}else{"b"}.into()).collect();
+            let mut c=cache(&path,refresh);
+            for (i,key) in ["a","b"].iter().enumerate() {if mask&(1<<i)!=0 {c.trees.insert((*key).into(),words(100+i));}}
+            let before=c.trees.clone();let mut expected=before.clone();let mut wanted=Vec::new();
+            // Independent occurrence scan, preserving duplicates and using pre-call membership.
+            for text in &texts {if refresh || !before.contains_key(text) {wanted.push(text.clone());}}
+            for (i,text) in wanted.iter().enumerate(){expected.insert(text.clone(),words(i+1));}
+            let mut calls=0;
+            let output=c.parse_with(&texts,|xs| {calls+=1;assert_eq!(xs,&wanted);Ok((0..xs.len()).map(|i|words(i+1)).collect())}).unwrap();
+            assert_eq!(calls,usize::from(!wanted.is_empty()));assert_eq!(c.trees,expected);
+            assert_eq!((c.hits,c.misses),(n-wanted.len(),wanted.len()));
+            assert_eq!(output,texts.iter().map(|x|expected[x].clone()).collect::<Vec<_>>());cases+=1;
+        }}}}
+        assert_eq!(cases,120);println!("finite batches: {cases}");
+    }
+    #[test]
+    fn duplicate_preimages_and_clone() {
+        let path=root("fibers");let xs=vec!["a".into(),"a".into()];let mut observations=Vec::new();
+        for old_a in 0..2 {for old_b in 0..2 {for p0 in 0..2 {for p1 in 0..2 {
+            let mut c=cache(&path,true);c.trees.insert("a".into(),words(old_a));c.trees.insert("b".into(),words(old_b));
+            let out=c.parse_with(&xs,|_|Ok(vec![words(p0),words(p1)])).unwrap();
+            assert_eq!(out,vec![words(p1),words(p1)]);assert_eq!(c.trees["b"],words(old_b));
+            observations.push(((old_a,old_b,p0,p1),out));
+        }}}}
+        for wanted in 0..2 {let actual:Vec<_>=observations.iter().filter(|(_,out)|*out==vec![words(wanted),words(wanted)]).map(|(antecedent,_)|*antecedent).collect();
+            let expected:Vec<_>=(0..2).flat_map(|a|(0..2).flat_map(move |b|(0..2).map(move |p|(a,b,p,wanted)))).collect();assert_eq!(actual,expected);assert_eq!(actual.len(),8);}
+        let mut c=cache(&path,false);let mut out=c.parse_with(&xs,|_|Ok(vec![words(1),words(2)])).unwrap();
+        assert_eq!(c.misses,2);assert_ne!(c.misses,1,"unique-key miss model is false");
+        out[0][0].head=999;assert_eq!(c.parse_with(&xs,|_|panic!("hit must skip parser")).unwrap(),vec![words(2),words(2)]);
+        println!("preimages: 16 antecedents, two fibers of 8; duplicate-count false formula rejected");
+    }
+    #[test]
+    fn failures_and_refresh() {
+        let path=root("failures");let mut c=cache(&path,false);c.trees.insert("a".into(),words(8));let before=c.trees.clone();let xs=vec!["a".into(),"b".into(),"b".into()];
+        for repeat in 1..=2 {assert!(c.parse_with(&xs,|_|Err(anyhow::anyhow!("synthetic parser failure"))).is_err());assert_eq!(c.trees,before);assert_eq!((c.hits,c.misses),(repeat,2*repeat));}
+        assert!(c.parse_with(&xs,|_|Ok(vec![words(1)])).is_err());assert_eq!(c.trees,before);assert_eq!((c.hits,c.misses),(3,6));assert!(!c.path.exists());
+        fs::write(&c.path,b"broken").unwrap();let repaired=cache(&path,false);assert!(repaired.repaired&&repaired.trees.is_empty());assert_eq!(fs::read(&c.path).unwrap(),b"broken");
+        let mut fresh=cache(&path,true);assert!(!fresh.repaired);for mark in 0..2 {assert_eq!(fresh.parse_with(&["a".into()],|xs|{assert_eq!(xs.len(),1);Ok(vec![words(mark)])}).unwrap(),vec![words(mark)]);}
+        assert_eq!((fresh.hits,fresh.misses),(0,2));
+        println!("failure ledger: 3 attempts; corrupt read leaves disk unchanged; refresh called twice");
+    }
+    #[test]
+    fn envelope_guards_and_fibers() {
+        let path=root("envelopes");let mut c=cache(&path,false);c.trees.insert("a".into(),words(4));c.trees.insert("".into(),vec![]);c.write().unwrap();
+        let bytes=fs::read(&c.path).unwrap();assert_eq!(decode(&bytes,"probe").unwrap(),c.trees);let base=String::from_utf8(bytes.clone()).unwrap();
+        let mut accepted=0;
+        for mask in 0..8 {let mut v:Envelope=serde_json::from_slice(&bytes).unwrap();if mask&1==0 {v.schema=2;}if mask&2==0 {v.identity="wrong".into();}if mask&4==0 {v.checksum="wrong".into();}
+            let got=decode(&serde_json::to_vec(&v).unwrap(),"probe");assert_eq!(got.is_ok(),mask==7);
+            if let Err(e)=got {assert_eq!(e.to_string(),if mask&3!=3 {"cache identity mismatch"}else{"cache checksum mismatch"});}else{accepted+=1;}}
+        assert_eq!(accepted,1);assert!(decode(b"{","probe").is_err());
+        let extra=format!("{} , \"ignored\": [1,2,3] }}",base.strip_suffix('}').unwrap());let pretty=format!("  \n{extra}\n  ");assert_eq!(decode(pretty.as_bytes(),"probe").unwrap(),c.trees);
+        let mut edited:Envelope=serde_json::from_slice(&bytes).unwrap();edited.trees.get_mut("a").unwrap()[0].head=999;
+        assert!(decode(&serde_json::to_vec(&edited).unwrap(),"probe").is_err());edited.checksum=hash(&serde_json::to_vec(&edited.trees).unwrap());assert_eq!(decode(&serde_json::to_vec(&edited).unwrap(),"probe").unwrap(),edited.trees);
+        println!("envelope guards: 8 assignments, 1 accepted; representation and recomputed-checksum fibers checked");
+    }
+    #[test]
+    fn stale_snapshot_publication_is_not_union() {
+        let path=root("writers");let mut first=cache(&path,false);let mut second=cache(&path,false);
+        first.trees.insert("first".into(),words(1));second.trees.insert("second".into(),words(2));
+        first.write().unwrap();second.write().unwrap();let loaded=cache(&path,false);
+        assert_eq!(loaded.trees,second.trees);assert!(!loaded.trees.contains_key("first"));
+        println!("stale writers: last publication replaces, does not union, two snapshots");
+    }
+    #[test]
+    fn hash_boundaries_and_optional() {
+        let path=root("hashes");let a=path.join("a");let b=path.join("b");assert_eq!(optional_hash(&a).unwrap(),"absent");assert_eq!(optional_hash(&a).unwrap(),optional_hash(&b).unwrap());
+        for n in [0,1,65535,65536,65537,131073] {let bytes:Vec<u8>=(0..n).map(|i|(i%251) as u8).collect();fs::write(&a,&bytes).unwrap();assert_eq!(file_hash(&a).unwrap(),hash(&bytes));}
+        fs::copy(&a,&b).unwrap();assert_eq!(optional_hash(&a).unwrap(),optional_hash(&b).unwrap());assert!(optional_hash(&path).is_err());
+        println!("hash boundaries: 6 lengths; absent/equal-byte/directory observations checked");
+    }
+}

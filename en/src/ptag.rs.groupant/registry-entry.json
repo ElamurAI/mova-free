@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p en --lib ptag::wave27_tests",
+    "Repeated debug/release named outcomes and paired partial syntax"
+  ],
+  "children": [],
+  "cost": "Inference O(n*b*(F+NT log NT)+n*b^2), histories O(n*b^2); training epochs*tokens*features; u32 clock unchecked.",
+  "description": "Averaged perceptron with frequent dictionary, TnT prior and beam",
+  "forward": [
+    "Context length asserted before filtering; known freq>=20/share>=.97. Update clock excludes known; wrong saturates u8; robust env changes updates. Forced before known; beam zero clamps1; stable score sorting then last-pair dedup; jackknife k0 clones.",
+    "dict_mask uses derive::hint for a form the dictionary lacks, except a capitalised word inside the sentence (2026-11-04)."
+  ],
+  "id": "en-ptag",
+  "inverse": [
+    "Many weights/training sets/hash collisions share outputs; forced tags constrain outputs without identifying weights; averaging discards update history."
+  ],
+  "limitations": [
+    "Finite beam not global optimum; empty words empty; no supported candidates can panic at history lookup; epochs0 may mark every token suspect.",
+    "No executable percent surrogate: no demonstrated useful metric preserving categorical/effect semantics; permitted future caps 1/2/5/10%, no production substitution.",
+    "Partial source-bound modeling, no corpus/API/GPU, allocation faults or exhaustive numerical checks."
+  ],
+  "source": "en/src/ptag.rs",
+  "state": "Averaged perceptron with frequent dictionary, TnT prior and beam"
+}

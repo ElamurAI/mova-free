@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "builtins::files::wave30_tests::status_and_partial_delete"
+  ],
+  "children": [],
+  "cost": "O(argument bytes + VFS operation work); delete adds O(number of paths) sequential stat/remove calls; listing retains O(entries + name bytes). No transaction, allocation or traversal cap is added here.",
+  "description": "Filesystem builtins dispatch through Interp.fs: file/dir predicates, directory creation/removal, sequential deletion, move/copy and directory listing.",
+  "forward": [
+    "F(op,args,n,fs) validates path strings then performs the selected trait operation. mkdir/rmdir/move/copy return no result on successful n=0, true status for n>0; trait errors throw for n=0 and become false/message for n>0. delete processes paths left-to-right; readdir returns dot entries plus provider order."
+  ],
+  "id": "mlab-builtins-files",
+  "inverse": [
+    "For valid path strings, an FsError from rmdir with n>0 excludes a thrown MError; the same FsError with n=0 excludes false-return success. delete(directory) excludes remove_file(directory), but does not exclude earlier successful deletions.",
+    "Successful status has all compatible VFS antecedents permitting the requested operation, including already-existing mkdir directories. exist_path=0 includes every stat error, not just absence; status/messages cannot reconstruct original filesystem contents."
+  ],
+  "limitations": [
+    "Partial source-bound model, not semantic proof",
+    "No executable percentage surrogate",
+    "Finite synthetic fixtures only; frozen suites/external measurement unexecuted"
+  ],
+  "source": "mlab/src/builtins/files.rs",
+  "state": "exist_path uses 7 for directories, 2 for any other stat success, 0 for error. readdir prepends . and .. and delegates remaining ordering to provider. Recursive rmdir is enabled only by second string equal to s."
+}

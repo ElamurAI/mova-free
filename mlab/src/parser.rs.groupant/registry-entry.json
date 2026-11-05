@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "parser::wave30::precedence",
+    "Repeated debug/release named outcomes; compiled assertion mutant; exact restore; paired syntax"
+  ],
+  "children": [],
+  "cost": "O(T) ordinary descent plus speculative LHS parse/reparse; deeply nested indexed LHS probes can add repeated subexpression work, so no uniform linear proof. O(T) retained AST plus recursion depth; no nesting cap.",
+  "description": "parse_program lexes then descends statements. Functions partition into Program.functions. LHS probing restores position when no assignment follows. Power is left-associated: 2^3^2 maps Pow(Pow(2,3),2); unary wraps power: -2^2 maps Neg(Pow(2,2)). Matrix whitespace before unspaced sign starts a new element; end is special only with positive index_depth.",
+  "forward": [
+    "parse_program lexes then descends statements. Functions partition into Program.functions. LHS probing restores position when no assignment follows. Power is left-associated: 2^3^2 maps Pow(Pow(2,3),2); unary wraps power: -2^2 maps Neg(Pow(2,2)). Matrix whitespace before unspaced sign starts a new element; end is special only with positive index_depth."
+  ],
+  "id": "mlab-parser",
+  "inverse": [
+    "The accepted parse relation excludes right-associated 2^3^2, flattening [1 -2] to subtraction, accepting naked end as expression, or returning a partially built Program on Result::Err. It does not exclude semantically invalid break, unknown function, public invalid AST or runtime division by zero.",
+    "P^-1(tree) contains texts sharing AST tags/literals and retained statement line/print flags; comments and many separators are ambiguous. For Pow(Pow(2,3),2), 2^3^2 is compatible; 2^(3^2) differs through Paren and tree shape. An evaluated scalar has much larger fibers."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no semantic proof or executable surrogate",
+    "Lexer-accepted token stream; recursive stack/allocation resources. No external files/evaluation. Function bodies may terminate at EOF/next function; ordinary blocks require matching terminator."
+  ],
+  "source": "mlab/src/parser.rs",
+  "state": "Lexer-accepted token stream; recursive stack/allocation resources. No external files/evaluation. Function bodies may terminate at EOF/next function; ordinary blocks require matching terminator."
+}

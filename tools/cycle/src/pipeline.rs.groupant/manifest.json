@@ -1,0 +1,122 @@
+{
+  "children": [
+    {
+      "id": "cycle-pipeline-cascade",
+      "path": "cascade.groupant"
+    },
+    {
+      "id": "cycle-pipeline-reservation",
+      "path": "reservation.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Source-bound syntax; no macro expansion, resolution or semantic proof.",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "flight_reachability",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "flight_reachability",
+        "status": "partial_source_derived_model",
+        "type": "flight_reachability"
+      },
+      {
+        "id": "heldout_scope",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "heldout_scope",
+        "status": "partial_source_derived_model",
+        "type": "heldout_scope"
+      },
+      {
+        "id": "legacy_budget",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "legacy_budget",
+        "status": "partial_source_derived_model",
+        "type": "legacy_budget"
+      },
+      {
+        "id": "durable_attempt",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "durable_attempt",
+        "status": "partial_source_derived_model",
+        "type": "durable_attempt"
+      },
+      {
+        "id": "training_status_partition",
+        "path": "model.md",
+        "scope": "Actual branch and successful-command/publication prefix of one final round report.",
+        "section": "training_status_partition",
+        "status": "partial_source_derived_compile_checked_model",
+        "subject_revision": "7f2bf58dade3757acaa7ea71ee60c64c7ed4e36a88afc88cc66571c618727876",
+        "type": "training_effect_partition"
+      },
+      {
+        "id": "training_status_preimage",
+        "path": "model.md",
+        "scope": "Compatible guard states and incomplete effect histories for the reported training suffix.",
+        "section": "training_status_preimage",
+        "status": "partial_source_derived_compile_checked_model",
+        "subject_revision": "7f2bf58dade3757acaa7ea71ee60c64c7ed4e36a88afc88cc66571c618727876",
+        "type": "training_status_preimage"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_or_representation"
+    }
+  },
+  "id": "cycle-pipeline",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../pipeline.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "7f2bf58dade3757acaa7ea71ee60c64c7ed4e36a88afc88cc66571c618727876"
+  },
+  "status": "partial_source_bound_model"
+}

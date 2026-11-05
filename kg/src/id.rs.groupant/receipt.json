@@ -1,0 +1,150 @@
+{
+  "baseline_source_sha256": "9df511fea2f2468747ddeb5502e63695a480913173dfe75d71b028f2d7183000",
+  "compiled_negative_control": "Baseline source: three new heap-name tests compiled and failed (exit 101) for the intended reasons; an over-rejecting mutant (TAB and any CR) failed the exact-names test (exit 101); candidate restored byte-identically.",
+  "epoch": "2026-10-31 wave38",
+  "evidence": [
+    {
+      "file": "prospective.md",
+      "sha256": "1f9c2188c8c0e28fca70c98949adb695146ba3f2f8768aac54c7a6561850a9b8"
+    },
+    {
+      "file": "probe-module.rs",
+      "sha256": "39178cf0e0e2b56d152f7b3656ca186a5511c302f2591011b2d54292dbead823"
+    },
+    {
+      "file": "baseline-probe.log",
+      "sha256": "b0b4ee2907e49896d53d09e76a7931ba513cb0f55e28896d8dcdb0ebe7c00b1b"
+    },
+    {
+      "file": "baseline-red.log",
+      "sha256": "a22f8582d4930228b5e99ea9d89efb40b97c726637dadc783f0b3a7cac35aa72"
+    },
+    {
+      "file": "fixed-debug.log",
+      "sha256": "66aeebdf4310eb9ab3a8d5c14e7f8bf6b79e025f1eff48220902b80aaadcc761"
+    },
+    {
+      "file": "fixed-release.log",
+      "sha256": "9eadef94861cd4d84d75fb88ff48e511c9991552482255ea29cf0d2092253f8e"
+    },
+    {
+      "file": "mutant-overreject.log",
+      "sha256": "9cb2e08a1a1dfa6923edddc7d272c2f0183774257d44da5982a3c925d3c3c874"
+    },
+    {
+      "file": "attempt0-no-lib-target.log",
+      "sha256": "9a6a78edd02528f919e298d6e91674958c56ba9658986a6524e3ed0955d87776"
+    }
+  ],
+  "evidence_root": "$MOVA_DATA/runs/octopus-wave38-opus-2026-10-31",
+  "historical_wave37_receipt": {
+    "baseline_source_sha256": "fad515586a3778ca63753a1d5ec40a14b126a7fb924fa2f10f64be61e516407f",
+    "compiled_negative_control": "Pre-fix actual-source trailing-CR roundtrip witness compiled and failed its assertion in debug and release (exit101); raw witness retained externally.",
+    "epoch": "2026-10-31 wave37",
+    "evidence": [
+      {
+        "file": "prospective.md",
+        "sha256": "a5da43d7a5f13e3cc755115286dc61146a7de5366fa0eae1e36a6a340ee692dc"
+      },
+      {
+        "file": "id-baseline-witness.rs",
+        "sha256": "c3f9a400ebb8e045f772c1ba9cf74ba1de91ec7bfdc180dca39e4595135f2d86"
+      },
+      {
+        "file": "baseline-red-debug.log",
+        "sha256": "5f9abbabd60bd8c1a34b3667141409d7de76894d1485dbc0121c5cfa8de50407"
+      },
+      {
+        "file": "baseline-red-release.log",
+        "sha256": "3075ed201c93c7e6a3c7917872a10714bf976c544bf978650013c870bfb7c037"
+      },
+      {
+        "file": "verified-debug-1.log",
+        "sha256": "e186e34520ef6e7fe3b67dc5a53b19113fa907ce66a56cdb4b15856db9c45a3c"
+      },
+      {
+        "file": "verified-debug-2.log",
+        "sha256": "4f59398ae3f047d9584849b30bb6b7ff20c6c63f711316197161272dffbed5c0"
+      },
+      {
+        "file": "verified-release-1.log",
+        "sha256": "eb0e7df4a60387860113fcb57dcf70ae1afc4523c56c4ca76e16701c14f5a8f2"
+      },
+      {
+        "file": "verified-release-2.log",
+        "sha256": "868a4a6bc45976a871ed1cbd2a033d185c27cfd0e436590a8039cfcd9d648254"
+      }
+    ],
+    "evidence_root": "$MOVA_DATA/runs/octopus-wave37-key-roundtrip-2026-10-31",
+    "historical_wave29_receipt": {
+      "compiled_negative_control": "one source-bound mutation; compile exit0, focused test exit101, restored positive exit0",
+      "epoch": "2026-10-31",
+      "limitations": [
+        "No concurrent/crash/flush-fault/huge key-count tests. Old release wrapping is source-derived; old debug witness retained.",
+        "Partial lexical AST; no semantic proof or useful executable percentage surrogate."
+      ],
+      "named_outcomes_equal": true,
+      "partial": true,
+      "profiles": [
+        "debug",
+        "release"
+      ],
+      "runs_per_profile": 2,
+      "source_sha256": "fad515586a3778ca63753a1d5ec40a14b126a7fb924fa2f10f64be61e516407f",
+      "tests": [
+        "id::tests::id_parts",
+        "id::wave29::global_heap_exhaustion_preserves_state",
+        "id::wave29::registry_persistence_and_corruption"
+      ]
+    },
+    "limitations": [
+      "No concurrent/crash/flush-fault/huge key-count tests. Old release wrapping is source-derived; old debug witness retained.",
+      "Partial lexical AST; no semantic proof or useful executable percentage surrogate.",
+      "Invalid-key errors now precede lazy I/O and legacy cached lookup. Arbitrary heap-name delimiter inputs, old ambiguous CR keys, failed buffered flushes and crash/concurrent recovery remain outside the roundtrip claim."
+    ],
+    "named_outcomes_equal": true,
+    "partial": true,
+    "profiles": [
+      "debug",
+      "release"
+    ],
+    "runs_per_profile": 2,
+    "source_sha256": "9df511fea2f2468747ddeb5502e63695a480913173dfe75d71b028f2d7183000",
+    "tests": [
+      "id::tests::id_parts",
+      "id::wave29::global_heap_exhaustion_preserves_state",
+      "id::wave29::registry_persistence_and_corruption",
+      "id::wave37::rejected_key_separators_preserve_registry_state",
+      "id::wave37::rejected_keys_precede_lazy_io_and_legacy_lookup",
+      "id::wave37::admitted_unicode_keys_reopen_with_exact_ids",
+      "id::wave37::legacy_trailing_carriage_return_remains_decode_ambiguous"
+    ]
+  },
+  "limitations": [
+    "No concurrent/crash/flush-fault/huge key-count tests. Old release wrapping is source-derived; old debug witness retained.",
+    "Partial lexical AST; no semantic proof or useful executable percentage surrogate.",
+    "Heap-name admission rejects only LF and terminal CR; duplicate imported heap names or numbers, old ambiguous CR keys/heap rows, failed buffered flushes and crash/concurrent recovery remain outside the roundtrip claims.",
+    "attempt0-no-lib-target.log is a setup error (kg has no library target), not a negative control."
+  ],
+  "named_outcomes_equal": true,
+  "partial": true,
+  "profiles": [
+    "debug",
+    "release"
+  ],
+  "runs_per_profile": 1,
+  "source_sha256": "2d9a9d00550ecd11000c8885ddb3418afd6835bd06c1a52f057a191145d4db52",
+  "tests": [
+    "id::tests::id_parts",
+    "id::wave29::global_heap_exhaustion_preserves_state",
+    "id::wave29::registry_persistence_and_corruption",
+    "id::wave37::rejected_key_separators_preserve_registry_state",
+    "id::wave37::rejected_keys_precede_lazy_io_and_legacy_lookup",
+    "id::wave37::admitted_unicode_keys_reopen_with_exact_ids",
+    "id::wave37::legacy_trailing_carriage_return_remains_decode_ambiguous",
+    "id::wave38::lossy_heap_names_are_rejected_without_state_or_file_change",
+    "id::wave38::heap_name_admission_precedes_kind_conflict_and_exhaustion",
+    "id::wave38::unusual_exact_heap_names_reopen_with_stable_numbers",
+    "id::wave38::legacy_heap_files_decode_unchanged_and_ambiguous_forms_stay_rejected"
+  ]
+}

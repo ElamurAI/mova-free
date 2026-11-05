@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "wave32::cuts_views_and_partial_merge_effects"
+  ],
+  "children": [],
+  "cost": "B bytes,W words,S sentences: segment includes model candidate costs plus O(B+W) text assembly; parser_view/merge O(B+W) copying, merge per-sentence word pointers O(Wmax). annotate costs serialization, filesystem IO and external subprocess unknown time/resource use.",
+  "description": "Raw lines tokenize -> normalize keys -> contextual split -> cut_as or PUNCT; parser_view copies and normalizes word forms/clears UPOS; merge copies columns2..7 by flat word order after per-sentence counts. load_seg optionally reads sibling unpointed fallback. annotate writes parser input, spawns, reads, merges, removes temporary paths only on success.",
+  "forward": [
+    "Raw lines tokenize -> normalize keys -> contextual split -> cut_as or PUNCT; parser_view copies and normalizes word forms/clears UPOS; merge copies columns2..7 by flat word order after per-sentence counts. load_seg optionally reads sibling unpointed fallback. annotate writes parser input, spawns, reads, merges, removes temporary paths only on success."
+  ],
+  "id": "hbo-library",
+  "inverse": [
+    "merge never copies ID, FORM, DEPS or MISC; a sentence-count error cannot mutate base, but a later word-count error can leave earlier annotations. parser_view cannot preserve UPOS. No parser execution follows from supplied helper tests.",
+    "Merged result fixes preserved base columns and parsed2..7 but admits arbitrary old annotations, parsed IDs/forms/MISC and equal-count wrong alignments. Seg metadata is explanatory output, not enough to reconstruct original whitespace or segmenter state."
+  ],
+  "limitations": [
+    "Finite supplied-input checks only; no corpus, training, external annotator, GPU, throughput or semantic-understanding claim. Allocation exhaustion and malformed arbitrary model arithmetic are not exhaustively exercised. No useful numerical surrogate is implemented; future caps may only be 1/2/5/10% with a declared metric."
+  ],
+  "source": "tools/hbo/src/lib.rs",
+  "state": "cut_as requires nonempty cut result; sentence ID addition representable. merge equal sentence counts checked globally, word counts incrementally; earlier sentences can mutate before late error. Parser alignment is positional only; equal count does not establish same form or sentence identity."
+}

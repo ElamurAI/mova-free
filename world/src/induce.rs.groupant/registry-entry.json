@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "15selected wave29_worldlearn CPU tests paired debug/release; see model.md#tests for exact source names",
+    "Compiled negative source control, exact restoration and positive rerun"
+  ],
+  "children": [],
+  "cost": "Subset work W*(A+C(A,2)+C(A,3)), candidate sort O(G log G), local per-worker counts/maps. Feature extraction scans sentence dependents roughlyO(L^2) plus delegated graph costs. u32 counts/indices and i64 sums require representability. No timing claim.",
+  "description": "acode(f,v)=((f<<16)|v)+1; pack1..3 sorted codes at21bit offsets. Fix=number of head-correct/label-wrong words carrying subset and current/from,target/gold; Break=head-and-label-correct words carrying(from,subset). Sort (-Fix+Break,atom_count,Rule). apply changes labels using per-rule feature snapshot; run needs precision>=.85 and Fix>=min+Break. explore_all gd>0,gh>=0 reports p without significance filter; selfplay adoption needs p<.05.",
+  "forward": [
+    "acode(f,v)=((f<<16)|v)+1; pack1..3 sorted codes at21bit offsets. Fix=number of head-correct/label-wrong words carrying subset and current/from,target/gold; Break=head-and-label-correct words carrying(from,subset). Sort (-Fix+Break,atom_count,Rule). apply changes labels using per-rule feature snapshot; run needs precision>=.85 and Fix>=min+Break. explore_all gd>0,gh>=0 reports p without significance filter; selfplay adoption needs p<.05.",
+    "family transfers Change/scope then adds admission/guard rules. big matrix pseudo-labels exclude matrix feature predicates for new rules. GPU adapter only flattens head-and-label-correct words; equivalence requires valid widths/count bounds."
+  ],
+  "id": "world-induce",
+  "inverse": [
+    "Valid packed subset uniquely decodes its1..3 atoms, but leaves omitted atoms unknown. Count vectors admit word/sentence permutations and arbitrary wrong-head additions. Changed label to admits prior from matches and prior to; inverse needs ordered rules/feature context. Change removal preimage preserves arbitrary removed multiplicity."
+  ],
+  "limitations": [
+    "Pure codes/counting/parsing/changes/threshold tests; feature extraction, persistent effects and live learning remain partial, no surrogate.",
+    "Partial source-derived model, not complete proof; no executable surrogate"
+  ],
+  "source": "world/src/induce.rs",
+  "state": "Explicit total order removes FxMap iteration dependence. Empty LAS0, bootstrap1;1000 fixed-seed resamples, all positive deltas p0. parse_rules preserves valid atom order/duplicates. Add exact-dedups while holds_in checks broader coverage, not identical operation effect."
+}

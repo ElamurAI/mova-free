@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p math --lib -- deriv::wave28",
+    "18 selected tests twice debug/twice release; seven compiled mutants and restored positives"
+  ],
+  "children": [],
+  "cost": "Repeated has/vars scans and dedup, subtree cloning and simplify can be quadratic or output-size dominated, without AST budget. Numerical check uses up to24 evaluations plus cloned envs: O(8*(cost(f)+cost(df)+env size)), with delegated arithmetic and recursion.",
+  "description": "simplify recursively folds Q constants/identities including0*x and0/x, with constant power |k|<=64. derive returns0 first if target absent; otherwise applies arithmetic and supported unary chain rules, appends steps and simplifies. Supported calls sin/cos/tan/exp/ln/log/sqrt/asin/acos/atan. check_derivative samples eight fixed points, central difference h=1e-5 max(|p|,1), skips unsupported/nonfinite samples and accepts >=3 usable points with each normalized discrepancy<=1e-5 against max(|df|,1).",
+  "forward": [
+    "simplify recursively folds Q constants/identities including0*x and0/x, with constant power |k|<=64. derive returns0 first if target absent; otherwise applies arithmetic and supported unary chain rules, appends steps and simplifies. Supported calls sin/cos/tan/exp/ln/log/sqrt/asin/acos/atan. check_derivative samples eight fixed points, central difference h=1e-5 max(|p|,1), skips unsupported/nonfinite samples and accepts >=3 usable points with each normalized discrepancy<=1e-5 against max(|df|,1)."
+  ],
+  "id": "math-deriv",
+  "inverse": [
+    "Derivative g admits all supported source trees whose rule expansion simplifies to g. On connected valid domains antiderivatives already differ by additive constants; syntax simplification expands fibers. Unknown target-free calls also map0. Numeric Check constrains only sampled neighborhoods, not a unique antecedent or global identity; steps are partial rule traces, not reversible serialization."
+  ],
+  "limitations": [
+    "Partial lexical syntax/source-derived model, no proof",
+    "No executable percentage surrogate; float diagnostics have no global certificate",
+    "Rules need valid mathematical domains; simplify retains none and0/0 becomes0. i64 MIN abs unchecked at power guard. Steps can append before child failure; errors are not atomic. Expression copying may grow or exhaust stack/resources. Checker clones env and overwrites target; calc::approx subset can leave fewer than3 usable points, which fails. No proof from finite samples."
+  ],
+  "source": "math/src/deriv.rs",
+  "state": "Rules need valid mathematical domains; simplify retains none and0/0 becomes0. i64 MIN abs unchecked at power guard. Steps can append before child failure; errors are not atomic. Expression copying may grow or exhaust stack/resources. Checker clones env and overwrites target; calc::approx subset can leave fewer than3 usable points, which fails. No proof from finite samples."
+}

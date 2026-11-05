@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "llm::wave27_tests::closed_pragmatic_domains_and_fixed_tokens",
+    "batch::tests::request_has_cached_fixed_block_and_same_prompt"
+  ],
+  "children": [],
+  "cost": "Prompt construction O(registry bytes+input draft/text/hint/context output bytes) plus map lookup O(log context rows) per item. OnceLock loading retains file maps for process lifetime. log_calls O(serialized bytes). Transport runtime and token counts are unbounded externally; elapsed seconds are wall-clock f64.",
+  "description": "Teacher prompt construction, cached optional context/pragmatic labels, closed pragmatic value validation and call accounting. Production transport delegates to shared Codex CLI; prompt generation remains deterministic only for fixed registry/environment cache state.",
+  "forward": [
+    "annotate_prompt returns registry rules and numbered forms; patch_prompt appends draft blocks, optional context/prag/hints with instructions. world_context and prag_labels initialize OnceLock once from environment files, swallowing missing/unreadable input into empty maps. Opus::ask creates cwd then calls teacher and records usage/time. log_calls serializes lines then writes once."
+  ],
+  "id": "annot-llm",
+  "inverse": [
+    "A variable annotation prompt constrains ordered ids/forms but has arbitrary compatible Item.text/gold fields. Cached context map has many antecedent TSVs because duplicate ids overwrite and malformed lines disappear. Reply/accounting does not uniquely identify prompt or remote execution."
+  ],
+  "limitations": [
+    "Live ask, adjudicate/correct transport, environment cache variants and log write failures are unexecuted.",
+    "Categorical prompts/schema have no useful percent surrogate."
+  ],
+  "source": "annot/src/llm.rs",
+  "state": "Fixed forms are enumerated one-based in input order and are never tokenized by prompt builder. prag_ok accepts only case-sensitive listed values; loading labels does not itself enforce prag_ok. Missing numeric usage defaults zero; cost field is reported input, not independently priced."
+}

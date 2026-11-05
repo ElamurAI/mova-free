@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "hebrew::wave32::gloss_chunks_and_owned_alignment"
+  ],
+  "children": [],
+  "cost": "IBM costs delegated to ibm; ownership/chunk extraction O(nm+m²), BTree counts. Grammar kids O(n²), each subtree scan up toO(n² log n), repeated across verbs O(n³ log n). read head climbs O(nm) conservatively.",
+  "description": "Read sorted CoNLL files into verse tokens/offset heads/groups, optional negation OR. Train five IBM iterations with gloss prior then override by matching Strong centers; fill ownership gaps, count chunks in3 contexts. read optionally applies grammar/idioms, emits spans and remaps chunk heads.",
+  "forward": [
+    "Read sorted CoNLL files into verse tokens/offset heads/groups, optional negation OR. Train five IBM iterations with gloss prior then override by matching Strong centers; fill ownership gaps, count chunks in3 contexts. read optionally applies grammar/idioms, emits spans and remaps chunk heads."
+  ],
+  "id": "translation-meta-hebrew",
+  "inverse": [
+    "Unseen initialized chunks use gloss; unknown gloss cannot create evidence of semantic accuracy. World excludes nonVERB events and roles outside A0/A1/A2.",
+    "Meta output admits multiple Hebrew forms, glosses, Strong values and nonemitting owners. Given chunk signatures, owner array and token metadata, emitted structure is reconstructible but original verse spelling is not."
+  ],
+  "limitations": [
+    "No live corpus/model/teacher/GPU execution or language accuracy claim",
+    "Partial syntax and finite tests; full effectful paths unexecuted; no percentage surrogate"
+  ],
+  "source": "tools/translate/src/hebrew.rs",
+  "state": "Heads within0..n, chunk internal indices valid; counts representable. Initialized Reader from train, not empty Default for chunk fallback. Real file/corpus paths unexecuted. Chunk delimiters restrict serialized concepts."
+}

@@ -1,0 +1,26 @@
+{
+  "id": "agent-runner-cli",
+  "source": "tools/agent-runner/src/main.rs",
+  "children": [],
+  "description": "Typed native queue CLI with initial/activity/health-change/STOP reporting and read-only example preparation.",
+  "state": "Command arguments and delegated Runner; concrete configurations/runtime data remain external.",
+  "cost": "Library work plus configured idle wait; no wall-clock STOP or throughput bound.",
+  "forward": [
+    "Only declared CLI argument shapes call native queue functions.",
+    "Watch retains a single Runner between bounded passes; task/model policy remains outside role labels.",
+    "Watch compares the serialized summary excluding only attempted_this_pass; zero-work integrity and diagnostic changes emit once while identical idle polls stay silent."
+  ],
+  "inverse": [
+    "See adjacent behavior-complement and reverse-reconstruction sections; unique histories are not asserted."
+  ],
+  "checks": [
+    "Three focused CLI tests in debug/release, with a failing extracted-old-predicate regression control and dedicated release build.",
+    "Actual Runner::pass cached-receipt integrity observation is exercised without native graph operations; fixture-only diagnostic/activity controls remain separate."
+  ],
+  "limitations": [
+    "Partial source-derived models and bounded native fixture evidence, not formal or whole-system verification.",
+    "Trusted local filesystem/cooperating lease users; no universal exactly-once, real-world truth or learned general planner claim.",
+    "No operational trace/training pilot, teacher/API, GPU, full corpus or held-out assessment in this cycle.",
+    "Pass summaries are nontransactional; stdout flush is not durable storage or liveness evidence, and unobserved transient changes may be missed."
+  ]
+}

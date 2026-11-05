@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "repair::wave27_tests::malformed_word_aborts_before_repair_and_ranges_survive",
+    "repair::tests::repairs_with_negative_controls"
+  ],
+  "children": [],
+  "cost": "B row bytes and N selected words: O(B) projection/serialization plus delegated morphology/table lookup and postverbal_not cost. Temporary columns/forms O(B+N). Counters usize and string allocation have no fallible resource boundary or overflow certificate.",
+  "description": "Deterministic Early Modern English lexical, feature and postverbal-not repairs on selected ten-column word rows, with per-rule changed-word counts. text is a line-oriented normalization wrapper, not a byte-preserving serializer.",
+  "forward": [
+    "sentence selects all-digit first fields, copies their columns, returns unchanged if any selected row lacks exactly10 columns. It parses tag/upos/rel, applies matching emode table/ending before archaic verb lemma before eligible lowercase lemma, counts only changed rows, then postverbal_not updates heads/relations and writes selected rows back. text flushes sentence blocks and preserves comment content while normalizing newlines."
+  ],
+  "id": "annot-repair",
+  "inverse": [
+    "Repaired rows admit original rows differing in corrected lemma/features/head/relation, subject to ordered rule predicates. Counts restrict the number of changed rule applications but do not identify old values. text output admits LF or CRLF input and final-newline variants; original bytes cannot be uniquely reconstructed."
+  ],
+  "limitations": [
+    "Existing broad repair test returns early if dictionary is empty; new shape/lowercase test does not depend on dictionary presence.",
+    "No universal idempotence, morphology correctness or malformed-head preservation claim."
+  ],
+  "source": "annot/src/repair.rs",
+  "state": "Malformed selected row causes no mutation/count increment for the entire sentence. Nonselected range/empty-node lines remain untouched by sentence. Lexical branches do not change FORM, UPOS or XPOS. Counts are additive; each lexical row contributes to at most one branch plus possible not repair."
+}

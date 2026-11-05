@@ -1,0 +1,96 @@
+{
+  "children": [
+    {
+      "id": "math-qread-affine-support-pruning",
+      "path": "support-pruning.groupant"
+    },
+    {
+      "id": "math-qread-affine-one-pass-images",
+      "path": "one-pass-images.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical projection only; fragment bound by byte range; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "one_pass_substitution",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "one_pass_substitution",
+        "status": "partial_source_derived_model",
+        "type": "one_pass_substitution"
+      },
+      {
+        "id": "key_classification",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "key_classification",
+        "status": "partial_source_derived_model",
+        "type": "key_classification"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 3942,
+      "start": 1002
+    },
+    "description": "add((c,x),(d,y),s)=(c+s*d, prune(x+s*y)); prune keeps exactly |a|>1e-12. subst replaces each original key once with its supplied Lin, preserving unsolved keys.",
+    "source_bytes_sha256": "a282938a771a4eaacf22d60c5c11cde920058b4ea05504248d0de588a1d94186"
+  },
+  "id": "math-qread-affine",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../qread.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "8389b8d58f68121743d6346e638601297c3725483f4b9fcd2eb8cd47ef2d028a"
+  },
+  "status": "partial_source_bound_model"
+}

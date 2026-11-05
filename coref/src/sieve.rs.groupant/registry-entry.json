@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "tests::story_chains_and_reasons",
+    "tests::principle_b_is_what_blocks_who",
+    "tests::speakers",
+    "tests::notional_they_only_without_a_plural",
+    "tests::resolver_ignores_gold_entities"
+  ],
+  "children": [],
+  "cost": "Let S passes,M mentions,n maximum sentence length,L retained mention text/features. Conservative O(S M³ L + S M² n + S M² log M), plus mention extraction: candidate sorting, repeated cluster materialization and ancestor/binding scans. Storage O(ML+N+M) plus per-candidate temporaries. Hash lookups expected; no throughput claim.",
+  "description": "Stateful ordered coreference passes with cluster membership, union feature masks and explanatory links.",
+  "forward": [
+    "new detects mentions, classifies it, internalizes pleonastic mentions and optionally inserts event mentions before sorting/dedup. Start singleton clusters. run dispatches configured passes in order. merge(from,to) moves whole source cluster, rewrites of, sorts members, ORs masks and appends link (possibly redirecting internal target to first earlier visible member). clusters sorts surviving groups by first member. Ordinary compatibility rejects same cluster, number, gender, animacy, person, then disjoint I voices, in that order. The pronoun sieve appends a chosen antecedent's lexicon reason to the link evidence and a rejected candidate's lexicon reason to Gender/Animacy rejections."
+  ],
+  "id": "coref-sieve",
+  "inverse": [
+    "Given clusters and links, compatible pre-states include singleton mention features/configs whose ordered transitions produce those observations. OR masks lose provenance and final partition alone loses merge order. A link's explanation constrains branch/rank but does not reconstruct all rejected candidates or original tree."
+  ],
+  "limitations": [
+    "No full branch or language-accuracy proof; environmental ablations and arbitrary malformed graphs untested. HashSet iteration is not used to select semantic winners; explanations sort set words.",
+    "Partial lexical syntax; no executable percentage surrogate; no corpus or universal proof."
+  ],
+  "source": "coref/src/sieve.rs",
+  "state": "Mention vector, of partition map, clusters/members/masks, links, by_head, reading/deictic caches, config and environment."
+}

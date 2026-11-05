@@ -41,7 +41,18 @@ pub struct Item {
 pub fn write_block(id: &str, a: &Ann) -> String {
     let mut s = format!("# sent_id = {id}\n");
     for (i, t) in a.iter().enumerate() {
-        let _ = writeln!(s, "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t_\t_", i + 1, t.form, t.lemma, t.upos, t.tag, t.feats, t.head, t.rel);
+        let _ = writeln!(
+            s,
+            "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t_\t_",
+            i + 1,
+            t.form,
+            t.lemma,
+            t.upos,
+            t.tag,
+            t.feats,
+            t.head,
+            t.rel
+        );
     }
     s.push('\n');
     s
@@ -141,7 +152,15 @@ pub fn parse_block(lines: &[String], forms: &[String], reg: &Registry) -> Result
         };
         let rel = Rel::parse(rel_s).ok_or_else(|| Bad::Rel(i, c[7].to_string()))?;
         let head: usize = c[6].parse().map_err(|_| Bad::Head(i))?;
-        a.push(Tok { form: c[1].to_string(), lemma: c[2].to_string(), upos, tag, feats, head, rel });
+        a.push(Tok {
+            form: c[1].to_string(),
+            lemma: c[2].to_string(),
+            upos,
+            tag,
+            feats,
+            head,
+            rel,
+        });
     }
     check(&a, forms, reg)?;
     Ok(a)
@@ -159,7 +178,11 @@ pub fn check(a: &Ann, forms: &[String], reg: &Registry) -> Result<(), Bad> {
         if t.head > a.len() || t.head == i + 1 {
             return Err(Bad::Head(i + 1));
         }
-        if let Some(m) = reg.check(t.upos, t.feats, t.rel, &t.lemma).into_iter().next() {
+        if let Some(m) = reg
+            .check(t.upos, t.feats, t.rel, &t.lemma)
+            .into_iter()
+            .next()
+        {
             return Err(Bad::Registry(i + 1, m));
         }
     }
@@ -167,24 +190,69 @@ pub fn check(a: &Ann, forms: &[String], reg: &Registry) -> Result<(), Bad> {
     if roots != 1 {
         return Err(Bad::Roots(roots));
     }
-    for i in 1..=a.len() {
-        let mut j = i;
-        for _ in 0..=a.len() {
-            j = a[j - 1].head;
-            if j == 0 {
-                break;
+    if a.len() <= 64 {
+        for i in 1..=a.len() {
+            let mut j = i;
+            for _ in 0..=a.len() {
+                j = a[j - 1].head;
+                if j == 0 {
+                    break;
+                }
+            }
+            if j != 0 {
+                return Err(Bad::Cycle(i));
             }
         }
-        if j != 0 {
-            return Err(Bad::Cycle(i));
+        return Ok(());
+    }
+    // Cheap ordered walks handle shallow trees without allocating adjacency.
+    // Bound their total work before falling back to linear-time reachability.
+    let mut budget = a.len().saturating_mul(4);
+    'walks: {
+        for i in 1..=a.len() {
+            let mut j = i;
+            for _ in 0..=a.len() {
+                if budget == 0 {
+                    break 'walks;
+                }
+                budget -= 1;
+                j = a[j - 1].head;
+                if j == 0 {
+                    break;
+                }
+            }
+            if j != 0 {
+                return Err(Bad::Cycle(i));
+            }
         }
+        return Ok(());
+    }
+    // Reversing each validated head edge makes root reachability equivalent
+    // to termination of the original head chain, including tails into cycles.
+    let mut children = vec![Vec::new(); a.len() + 1];
+    for (i, token) in a.iter().enumerate() {
+        children[token.head].push(i + 1);
+    }
+    let reachable = mova_algorithms::bfs::bfs(&children, 0)
+        .expect("validated heads produce valid reverse edges");
+    if let Some(i) = (1..=a.len()).find(|&i| reachable[i].is_none()) {
+        return Err(Bad::Cycle(i));
     }
     Ok(())
 }
 
 /// Words for the CoNLL 2018 metrics (`en::ud::Scores`).
 pub fn words(a: &Ann) -> Vec<en::ud::Word> {
-    a.iter().map(|t| en::ud::Word { upos: Some(t.upos), tag: Some(t.tag), feats: t.feats, lemma: t.lemma.clone(), head: t.head, rel: t.rel }).collect()
+    a.iter()
+        .map(|t| en::ud::Word {
+            upos: Some(t.upos),
+            tag: Some(t.tag),
+            feats: t.feats,
+            lemma: t.lemma.clone(),
+            head: t.head,
+            rel: t.rel,
+        })
+        .collect()
 }
 
 /// Disagreements between two annotations — for the Opus second look.
@@ -205,7 +273,10 @@ pub fn diff(a: &Ann, b: &Ann) -> Vec<String> {
             d.push(format!("LEMMA {} vs {}", x.lemma, y.lemma));
         }
         if x.head != y.head || x.rel != y.rel {
-            d.push(format!("HEAD/DEPREL {}/{} vs {}/{}", x.head, x.rel, y.head, y.rel));
+            d.push(format!(
+                "HEAD/DEPREL {}/{} vs {}/{}",
+                x.head, x.rel, y.head, y.rel
+            ));
         }
         if !d.is_empty() {
             out.push(format!("token {} «{}»: {}", i + 1, x.form, d.join("; ")));
@@ -219,7 +290,15 @@ mod tests {
     use super::*;
 
     fn t(form: &str, upos: UPos, tag: Tag, feats: &str, head: usize, rel: Rel) -> Tok {
-        Tok { form: form.into(), lemma: form.to_lowercase(), upos, tag, feats: Feats::parse(feats).0, head, rel }
+        Tok {
+            form: form.into(),
+            lemma: form.to_lowercase(),
+            upos,
+            tag,
+            feats: Feats::parse(feats).0,
+            head,
+            rel,
+        }
     }
 
     #[test]
@@ -227,8 +306,25 @@ mod tests {
         let reg = Registry::load();
         let forms: Vec<String> = ["It", "rains", "."].iter().map(|s| s.to_string()).collect();
         let ok = vec![
-            t("It", UPos::PRON, Tag::PRP, "Case=Nom|Gender=Neut|Number=Sing|Person=3|PronType=Prs", 2, Rel::Nsubj),
-            Tok { lemma: "rain".into(), ..t("rains", UPos::VERB, Tag::VBZ, "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin", 0, Rel::Root) },
+            t(
+                "It",
+                UPos::PRON,
+                Tag::PRP,
+                "Case=Nom|Gender=Neut|Number=Sing|Person=3|PronType=Prs",
+                2,
+                Rel::Nsubj,
+            ),
+            Tok {
+                lemma: "rain".into(),
+                ..t(
+                    "rains",
+                    UPos::VERB,
+                    Tag::VBZ,
+                    "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin",
+                    0,
+                    Rel::Root,
+                )
+            },
             t(".", UPos::PUNCT, Tag::Stop, "_", 2, Rel::Punct),
         ];
         assert_eq!(check(&ok, &forms, &reg), Ok(()));
@@ -246,22 +342,39 @@ mod tests {
         assert_eq!(check(&wrong, &forms, &reg), Err(Bad::Form(1)));
         let mut feat = ok.clone();
         feat[2].feats = Feats::parse("Tense=Past").0;
-        assert!(matches!(check(&feat, &forms, &reg), Err(Bad::Registry(3, _))));
+        assert!(matches!(
+            check(&feat, &forms, &reg),
+            Err(Bad::Registry(3, _))
+        ));
         // write → parse → the same
         let block = write_block("s1", &ok);
         let (_, lines) = split_blocks(&block).remove(0);
         assert_eq!(parse_block(&lines, &forms, &reg), Ok(ok.clone()));
         // det:poss → nmod:poss; another foreign subtype is rejected
         let its: Vec<String> = ["Its", "rain", "."].iter().map(|s| s.to_string()).collect();
-        let poss = |rel: &str| vec![
-            format!("1\tIts\tits\tPRON\tPRP$\tCase=Gen|Gender=Neut|Number=Sing|Person=3|Poss=Yes|PronType=Prs\t2\t{rel}\t_\t_"),
-            "2\train\train\tNOUN\tNN\tNumber=Sing\t0\troot\t_\t_".to_string(),
-            "3\t.\t.\tPUNCT\t.\t_\t2\tpunct\t_\t_".to_string(),
-        ];
-        assert_eq!(parse_block(&poss("det:poss"), &its, &reg).map(|a| a[0].rel), Ok(Rel::NmodPoss));
-        assert_eq!(parse_block(&poss("det:foo"), &its, &reg), Err(Bad::Rel(1, "det:foo".into())));
+        let poss = |rel: &str| {
+            vec![
+                format!(
+                    "1\tIts\tits\tPRON\tPRP$\tCase=Gen|Gender=Neut|Number=Sing|Person=3|Poss=Yes|PronType=Prs\t2\t{rel}\t_\t_"
+                ),
+                "2\train\train\tNOUN\tNN\tNumber=Sing\t0\troot\t_\t_".to_string(),
+                "3\t.\t.\tPUNCT\t.\t_\t2\tpunct\t_\t_".to_string(),
+            ]
+        };
+        assert_eq!(
+            parse_block(&poss("det:poss"), &its, &reg).map(|a| a[0].rel),
+            Ok(Rel::NmodPoss)
+        );
+        assert_eq!(
+            parse_block(&poss("det:foo"), &its, &reg),
+            Err(Bad::Rel(1, "det:foo".into()))
+        );
         assert_eq!(ewt_rel("obl:tmod"), Some("obl:unmarked"));
         assert_eq!(ewt_rel("nmod:npmod"), Some("nmod:unmarked"));
         assert_eq!(ewt_rel("obl"), None);
     }
 }
+
+#[cfg(test)]
+#[path = "ann.rs.groupant/checks.rs"]
+mod bfs_transfer_checks;

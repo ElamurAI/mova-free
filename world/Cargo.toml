@@ -7,6 +7,7 @@ publish = false
 description = "Mova story world (closed): entities as identities with immutable states (deltas, shared memory), registries, cursor, append-only mentions; a change language written by the big model (Opus) and executed by Rust with gates; answers to questions straight from the state."
 
 [dependencies]
+mova-teacher = { path = "../teacher" }
 # prag: LLM call (`prag::opus`), the closed set of speech acts (`prag::schema::Act`), database reading (`prag::data::duck_query`)
 prag = { path = "../prag" }
 # en: lexicon in code — lemmas of question words and past tense of verbs in answers (read-only)
@@ -15,17 +16,23 @@ en = { path = "../en" }
 math = { path = "../math" }
 # level 1 (global): values (predicates), states of trouble and relief, verb classes
 global = { path = "../global" }
+# add-on modules (docs/modules.md): installed dictionary layers under their own licences, `world modules`
+mova-modules = { path = "../tools/modules" }
 anyhow = "1.0.104"
 # the GPU parser (candle + CUDA), only in the GPU-enhanced build (`--features gpu`); the CPU-only build has no CUDA
 gparse = { path = "../gparse", optional = true }
 # CUDA kernels of the GPU-enhanced mode (`induce_gpu`: exact integer counting; cudarc through candle)
 candle-core = { version = "0.9", features = ["cuda"], optional = true }
 serde_json = "1.0.151"
+serde = { version = "1", features = ["derive"] }
+sha2 = "0.10"
 
 [features]
-# tera: the closed build (kept as an alias of worlds; the closed data lives in tera/ at the repo root)
-tera = ["worlds"]
+# peta: the closed build (worlds, plus the Wikipedia school's courses read from $MOVA_WIKISCHOOL at run time).
+# worlds compiles in the legacy manuals only where their folder exists (build.rs); without it, as on a public
+# checkout, both features build and carry no manuals. The default build uses neither.
+peta = ["worlds"]
 # the GPU-enhanced mode (docs/gpu-exec.md): MOVA_EXEC=gpu parses in batches on the GPU; without it, CPU only
 gpu = ["dep:gparse", "dep:candle-core"]
-# the legacy worlds (tera/world/legacy/worlds, closed): the central manuals of the brains — Mova learns in schools now
+# the legacy worlds (their folder is not in the public tree): the central manuals of the brains — Mova learns in schools now
 worlds = []

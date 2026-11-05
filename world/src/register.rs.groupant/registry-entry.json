@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p world corpus_models -- --test-threads=1; repeated debug/release; compiled controls; repeated syntax"
+  ],
+  "children": [],
+  "cost": "O(B+tokens log V+V log V), memory O(V+largest book+rows), where B bytes and V union keys. IO cost additional.",
+  "description": "Full file: corpus counting, pooled-prior ranking, thresholding and TSV/report output.",
+  "forward": [
+    "Readable UTF-8 books -> events::book_body -> alphabetic runs with original byte length>1 -> lowercase counts. Union keys: alpha=1000*(ya+yb)/(na+nb); la=ln((ya+alpha)/(na+1000-ya-alpha)), lb analogous; z=(la-lb)/sqrt(1/(ya+alpha)+1/(yb+alpha)). Filter z>=zmin and raw_count_a>=min, sort descending total_cmp(z) then key; print counts and rates."
+  ],
+  "id": "corpus-register",
+  "inverse": [
+    "U=(coherent maps,options,rows). Excludes row below z/count threshold, NaN z, outside-union key. Oracle native threshold/degenerate cases.",
+    "Output admits all coherent maps/totals and options satisfying score equations, retained counts/order and rejected tail predicates. Rounded TSV scores/rates expand fibers to formatting intervals; text/order unrecoverable. Oracle proposed finite fiber enumeration."
+  ],
+  "limitations": [
+    "Bounded synthetic native evidence only; IO/parser traces unexecuted.",
+    "Partial syntax; no general semantic proof."
+  ],
+  "source": "world/src/register.rs",
+  "state": "Bodies, token arrays, histograms, options and conditional IO traces."
+}

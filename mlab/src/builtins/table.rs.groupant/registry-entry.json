@@ -1,0 +1,34 @@
+{
+  "checks": [
+    "builtins::table::wave30::aggregation_join_and_options",
+    "Paired lexical syntax generation; bounded debug/release and compiled assertion controls in receipt"
+  ],
+  "children": [],
+  "cost": "Aggregation O(n) or O(n log n) for sorting statistics; groups O(kn log n); joins expected O(nr*k+nl*k+matches) plus sorted innerjoin output O(m log m). Moving median O(n*w log w), other windows O(n*w). File costs include I/O bytes and parsing. Pivot/import name normalization can inherit table::dedupe O(c³) collision comparisons for c names, separate from numeric aggregation.",
+  "description": "options: Register installs table/date/file entrypoints. opts consumes name/value pairs, lowercase ASCII, opt searches reversed so last wins. table consumes it.arg_names before validating VariableNames. summary drops numeric NaN for summaries and prints via it.out.\n\nsorting: Table sort resolves names/directions then sorted_rows; matrix sort interprets signed columns via abs as usize, copies real parts and class; second output is one-based original row positions.\n\ngrouping: agg filters NaNs, count counts original length, mode sorted runs strict greater chooses smallest tie. groupsummary appends GroupCount and method columns; grouptransform scatters group results into original rows. pivot groups row/column keys, count empty0, other empty NaN.\n\njoins: right_index stores nonmissing key rows in appearance order. innerjoin enumerates all matches then stable sorts by left keys. join rejects any duplicate right key before scanning left and requires every left row match. combine omits right keys, suffixes colliding names.\n\nmissing-windows: ismissing maps numeric NaN except char to logical mask; rmmissing removes missing vector cells or whole matrix/table rows. moving scalar even k uses kb=k/2,kf=k/2-1; endpoints shrink, pair widths max0 then cast.\n\neffects: read/write wrappers route through it.fs and contextualize errors. readtable validates file kind before read; readmatrix reads before delimiter validation. datenum accepts string/date components; JSON encodes through fileio; string converts NaN to missing.",
+  "forward": [
+    "options: Register installs table/date/file entrypoints. opts consumes name/value pairs, lowercase ASCII, opt searches reversed so last wins. table consumes it.arg_names before validating VariableNames. summary drops numeric NaN for summaries and prints via it.out.",
+    "sorting: Table sort resolves names/directions then sorted_rows; matrix sort interprets signed columns via abs as usize, copies real parts and class; second output is one-based original row positions.",
+    "grouping: agg filters NaNs, count counts original length, mode sorted runs strict greater chooses smallest tie. groupsummary appends GroupCount and method columns; grouptransform scatters group results into original rows. pivot groups row/column keys, count empty0, other empty NaN.",
+    "joins: right_index stores nonmissing key rows in appearance order. innerjoin enumerates all matches then stable sorts by left keys. join rejects any duplicate right key before scanning left and requires every left row match. combine omits right keys, suffixes colliding names.",
+    "missing-windows: ismissing maps numeric NaN except char to logical mask; rmmissing removes missing vector cells or whole matrix/table rows. moving scalar even k uses kb=k/2,kf=k/2-1; endpoints shrink, pair widths max0 then cast.",
+    "effects: read/write wrappers route through it.fs and contextualize errors. readtable validates file kind before read; readmatrix reads before delimiter validation. datenum accepts string/date components; JSON encodes through fileio; string converts NaN to missing."
+  ],
+  "id": "mlab-builtins-table",
+  "inverse": [
+    "options: A parsed option list admits differently cased option names; final opt value admits any earlier duplicates. Table names alone cannot recover arg_names history.",
+    "sorting: Output with permutation admits original row order via inverse permutation only when full data is retained; real-only matrix output cannot recover imaginary values.",
+    "grouping: Aggregate values admit many groups including any insertion of NaNs except count/numel/nummissing; summaries do not reconstruct individual rows.",
+    "joins: Joined values admit multiple original unmatched rows and duplicate multiplicities; explicit source indices absent, so inverse is a relation. strict join admits right rows unused by left.",
+    "missing-windows: Removed rows admit arbitrary inserted missing rows; a moving sum admits kernel nullspaces and boundary constraints, not unique pointwise inversion.",
+    "effects: Read output admits every file representation decoded to same table; write result empty does not reconstruct previous filesystem contents."
+  ],
+  "limitations": [
+    "Well-shaped values and finite practical windows; effects delegated to it.fs. Physical filesystem not exercised.",
+    "Partial lexical AST, no macro expansion or semantic proof",
+    "No executable numerical surrogate or global error bound",
+    "External frozen dataset/effect paths unexecuted"
+  ],
+  "source": "mlab/src/builtins/table.rs",
+  "state": "Interpreter argument names/output/filesystem, immutable Rc tables and copied result columns."
+}

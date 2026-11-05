@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline wildcard_matching::tests::",
+    "Twice per debug/release; identical normalized identities. Compiled per-source mutation and exact restoration; strict Clippy; narrow rustfmt; repeated syntax."
+  ],
+  "children": [],
+  "cost": "Finite exhaustive enumeration; exponential in fixture word length, with explicit caps in source. BWT oracle materializes n rotations; wildcard recursive oracle enumerates star partitions. No production cost or broad performance claim follows.",
+  "description": "wildcard_matching finite independent tests",
+  "forward": [
+    "Execute finite oracle, boundary, fiber and conditional-law assertions. Success reports agreement only on their enumerated observations.",
+    "Fixtures and expected results are deterministic. Independent reference construction avoids reusing the production state transition being tested."
+  ],
+  "id": "algorithm-wildcard-matching-tests",
+  "inverse": [
+    "Within finite tested observations, exclude suite acceptance if any expected value disagrees with its independently specified oracle or asserted conditional law. Unvisited cases are not excluded by finite testing.",
+    "The preimage of a passing test report includes every implementation agreeing on the observed fixtures, even implementations differing outside this domain. Failing reports identify a violated assertion, not a unique faulty program.",
+    "Recursively enumerate every possible consumed length of each star; compare to DP on binary text through length five and four-symbol patterns through length five. This oracle shares language semantics but no frontier machinery.",
+    "Pattern a*b on length-four binary texts accepts exactly those with first byte a and final byte b; ?*b* requires b after the first position. Several accepted texts witness nonunique Boolean preimages.",
+    "A compiled production mutation and a separate false test expectation each fail a named assertion; exact original bytes are restored and the selected tests pass. This establishes these controls are detectable, not complete mutation coverage."
+  ],
+  "limitations": [
+    "Partial syntax excludes macro expansion and semantic resolution. Finite enumeration is not a general proof; allocation exhaustion and throughput are untested. No executable approximation profile or downstream inference claim."
+  ],
+  "source": "algorithms/src/wildcard_matching/tests.rs",
+  "state": "Finite declared fixture executions with successful compilation and allocation."
+}

@@ -11,7 +11,7 @@
 use std::path::{Path, PathBuf};
 use std::process::{Command, Output};
 
-const SCHEMA: &str = include_str!("../../../db/schema.sql");
+const SCHEMA: &str = include_str!("../schema.sql");
 
 fn sent(id: &str, text: &str, newpar: bool, words: &[(&str, &str, &str)]) -> String {
     let mut s = String::new();
@@ -168,4 +168,21 @@ fn write(dir: &Path, name: &str, body: &str) -> String {
     let f = dir.join(name);
     std::fs::write(&f, body).unwrap();
     f.to_str().unwrap().to_string()
+}
+
+#[test]
+fn wave31_fixture_representation_without_database() {
+    let text = tales();
+    let doc = en::conllu::Doc::parse(&text).unwrap();
+    assert_eq!(doc.sents.len(), 4);
+    assert_eq!(
+        doc.sents
+            .iter()
+            .filter(|s| s.comments.iter().any(|c| c == "# newpar"))
+            .count(),
+        3
+    );
+    assert_eq!(doc.sents[2].sent.id, "gutenberg:1:tale-a:3");
+    assert_eq!(HEAD.trim_end().split('\t').count(), 8);
+    assert_eq!(doc.text(), text);
 }

@@ -1,0 +1,3 @@
+# Checks
+
+epoch::tests (fixture paper, fixture neighbourhood, fake terminal; 2026-11-05): unknown config fields refused at every level; the length gate keeps a short text out and asks nothing (control: a low minimum registers and asks); cited texts registered and a resume asks nothing; a citation to an unknown source refused; sol_asking becomes uncertain without a question; a limit stops the run and is final; epoch 2 reads and cites epoch 1 and saturates (control: a longer answer does not); two runs write the same text. Negative controls, red then restored: unknown citations accepted, re-asking after sol_asking, generated texts public, saturation off. `measure_epoch` (ignored) runs a real configuration with a reading fake terminal.

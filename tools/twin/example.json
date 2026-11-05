@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "family": "parser-repeat-pilot",
+  "context": {
+    "hardware": "REPLACE: GPU, driver, CPU and memory",
+    "source": "REPLACE: source revision",
+    "regime": "fresh process, cached OS data"
+  },
+  "executable": "/absolute/path/to/gparse",
+  "cwd": "/absolute/path/to/Mova",
+  "args": [
+    "annotate",
+    "/absolute/path/to/model",
+    "/absolute/path/to/corpus.conllu",
+    "{run}/annotation.conllu"
+  ],
+  "env": {
+    "GP_BATCH": "6000",
+    "GP_FUSED_SOFTMAX": "1",
+    "GP_GELU": "erf"
+  },
+  "axes": [],
+  "inputs": {
+    "cfg.txt": "/absolute/path/to/model/cfg.txt",
+    "model.safetensors": "/absolute/path/to/model/model.safetensors",
+    "words.txt": "/absolute/path/to/model/words.txt",
+    "xpos.txt": "/absolute/path/to/model/xpos.txt",
+    "upos.txt": "/absolute/path/to/model/upos.txt",
+    "rels.txt": "/absolute/path/to/model/rels.txt",
+    "corpus": "/absolute/path/to/corpus.conllu"
+  },
+  "feature_source": "constant repeat pilot; replace with scaled gparse plan features for batch comparisons",
+  "features": {
+    "intercept": 1
+  },
+  "prior": {
+    "intercept": 1
+  },
+  "ridge": 0.1,
+  "timeout_seconds": 120,
+  "outputs": [
+    {
+      "path": "annotation.conllu",
+      "contains": [
+        "\troot\t"
+      ],
+      "sha256": null
+    }
+  ]
+}

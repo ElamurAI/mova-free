@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "independent_dft compares both directions to separate trigonometric sum for all n=1..35; roundtrip covers primes/nonpowers and powers; impulse_boundary exercises n=16384; rejected_domains checks caps and real/imaginary nonfinite values.",
+    "Swapping the forward/inverse chirp sign compiles and fails independent_dft."
+  ],
+  "children": [],
+  "cost": "O(m log m) work/O(m) space, m<=32768. Three FFT calls; standard allocation behavior; kernel errors propagated.",
+  "description": "Finite fixture-to-assertion transition. independent_dft compares both directions to separate trigonometric sum for all n=1..35; roundtrip covers primes/nonpowers and powers; impulse_boundary exercises n=16384; rejected_domains checks caps and real/imaginary nonfinite values.",
+  "forward": [
+    "Finite fixture-to-assertion transition. independent_dft compares both directions to separate trigonometric sum for all n=1..35; roundtrip covers primes/nonpowers and powers; impulse_boundary exercises n=16384; rejected_domains checks caps and real/imaginary nonfinite values."
+  ],
+  "id": "algorithm-bluestein-fft-tests",
+  "inverse": [
+    "Pass has all implementations agreeing on checked fixture observations as preimages; behavior outside fixtures can differ. Fixed n full real-complex DFT is invertible using conjugate sign and 1/n; rounded arithmetic loses exact injectivity. Spectrum magnitude alone would have phase/shift ambiguity but API preserves complex spectrum. InvalidInput conflates empty, oversized and invalid-value preimages."
+  ],
+  "limitations": [
+    "Partial syntax without semantic proof",
+    "Finite numerical tests do not guarantee accuracy",
+    "No executable approximation profile or timing claim",
+    "Standard allocation exhaustion may abort; no callback effects"
+  ],
+  "source": "algorithms/src/bluestein_fft/tests.rs",
+  "state": "Bounded finite sample vectors, transform/QR scratch, tagged errors; test state comprises finite observations"
+}

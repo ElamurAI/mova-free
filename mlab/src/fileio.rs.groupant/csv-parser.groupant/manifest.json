@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Unterminated quoted input excludes a Record result; quotes in unquoted fields are retained rather than rejected.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Field text plus quoted flag admits CRLF/LF record-separator and leading-BOM variations; CR inside quoted payload is retained and is not interchangeable with LF. Coordinate metadata narrows but does not uniquely recover separators or doubled-quote encoding.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_invariant",
+        "path": "model.md",
+        "scope": "Field coordinates are Unicode scalar indices, one-based; each record retains start line and end column.",
+        "section": "state_invariant",
+        "status": "partial_source_derived_model",
+        "type": "state_invariant"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Closing quote followed by a non-delimiter/non-newline/non-CR fails immediately; lone CR behavior differs between quoted and unquoted paths.",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Empty lines skipped, trailing delimiter creates empty last field; text is Vec<char>, so indices are not UTF-8 bytes.",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "O(input characters + copied field bytes), O(input characters + field storage).",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 3469,
+      "start": 814
+    },
+    "description": "Strip leading BOM chars, skip blank LF/CRLF lines; each field records starting line/col, quoted strings decode doubled quotes and embedded LF before delimiter/end handling.",
+    "source_bytes_sha256": "c24bc7bf27206bea5ac6035ad2580ae6dd61a1f6708af90c047e4eb5cd1b72ba"
+  },
+  "id": "mlab-fileio-csv-parser",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../fileio.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "547a25932643243689a8ee9f5b0cc0d2cc85923d37edeff35c2d7833d8f488dd"
+  },
+  "status": "partial_source_bound_model"
+}

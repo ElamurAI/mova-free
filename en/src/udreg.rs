@@ -97,3 +97,31 @@ mod tests {
         assert!(r.deprels().len() >= 50 && r.auxiliaries().contains(&"will".to_string()));
     }
 }
+
+#[cfg(test)]
+mod wave27_tests {
+    use super::*;
+    #[test]
+    fn ordered_diagnostics_and_case() {
+        let r = Registry::load();
+        let e = r.check(UPos::AUX, Feats::parse("Case=Acc").0, Rel::Cop, "zzzzz");
+        assert_eq!(e.len(), 3);
+        assert!(e[0].starts_with("feature"));
+        assert!(e[1].starts_with("AUX"));
+        assert!(e[2].starts_with("cop"));
+        assert!(
+            r.check(UPos::AUX, Feats::default(), Rel::Cop, "BE")
+                .is_empty()
+        );
+        let a = r.auxiliaries();
+        assert!(a.windows(2).all(|x| x[0] < x[1]));
+        assert_eq!(
+            r.allowed(UPos::NOUN),
+            Feat::ALL
+                .iter()
+                .copied()
+                .filter(|f| r.feats.contains(&(UPos::NOUN, *f)))
+                .collect::<Vec<_>>()
+        );
+    }
+}

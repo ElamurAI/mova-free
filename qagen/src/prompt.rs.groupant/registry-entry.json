@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p qagen wave17_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "O(B+N+S) time and output space for rendered text B, N paragraphs, S sentences; context join adds O(context bytes) temporary allocation.",
+  "description": "F(paras,rule)=rules(rule) + separator + ordered paragraph blocks. Paragraph i receives P(i+1); local sentence k receives [k+1]. Context is emitted iff nonempty and there is no immediate same-document predecessor whose checked successor equals current para. Domain: finite supplied Para references, including all i64 paragraph values; observation: exact rendered UTF-8 bytes.",
+  "forward": [
+    "F(paras,rule)=rules(rule) + separator + ordered paragraph blocks. Paragraph i receives P(i+1); local sentence k receives [k+1]. Context is emitted iff nonempty and there is no immediate same-document predecessor whose checked successor equals current para. Domain: finite supplied Para references, including all i64 paragraph values; observation: exact rendered UTF-8 bytes."
+  ],
+  "id": "qagen-prompt",
+  "inverse": [
+    "Fibers contain Para sequences yielding equal rendered bytes. Book, block, words, dialogue, batch and sentence IDs can vary without effect. Hidden doc identifiers need only preserve adjacent equality decisions; suppressed context may vary while remaining nonempty. Delimiter-free trusted fields permit recovery of rendered title/author/paragraph/text, not omitted metadata."
+  ],
+  "limitations": [
+    "Finite synthetic checks only; no teacher/parser/data acquisition.",
+    "Partial syntax; macro bodies opaque."
+  ],
+  "source": "qagen/src/prompt.rs",
+  "state": "Original paragraph number is displayed but never replaces batch-local P index. Sentence IDs never replace local sentence coordinates. A predecessor in another document cannot suppress context. i64::MAX has no successor."
+}

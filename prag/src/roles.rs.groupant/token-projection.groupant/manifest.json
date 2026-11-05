@@ -1,0 +1,86 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-roles-token-projection-behavior-complement",
+        "operator": "Exclude pairs violating concrete fragment forward/invariant relation",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-roles-token-projection-reverse-reconstruction",
+        "operator": "Retain all compatible tagged inputs and intermediate states",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-roles-token-projection-coupling",
+        "operator": "Scoped intervention/coupling relation in referenced section",
+        "path": "model.md",
+        "section": "coupling",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 6408,
+      "start": 4752
+    },
+    "description": "Read supplied tree into event/speech frames. Choose first unused eligible predicate matching the first verb lemma token. For each filled slot choose closest nonpredicate form/lemma match; pronoun slots retain Ent.pron. Sort and deduplicate role tuples."
+  },
+  "domain": "Read supplied tree into event/speech frames. Choose first unused eligible predicate matching the first verb lemma token. For each filled slot choose closest nonpredicate form/lemma match; pronoun slots retain Ent.pron. Sort and deduplicate role tuples.",
+  "id": "prag-roles-token-projection",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../roles.rs",
+    "sha256": "30e3aba0c3fba51e326a90fb8da79fa28c009d58c10742100aa462a75d41a5df"
+  },
+  "state": "Output positions are 1-based; tuples sorted unique. Equal-distance ties choose earliest token. Missing lexical matches produce no tuple.",
+  "status": "partial_source_bound_model"
+}

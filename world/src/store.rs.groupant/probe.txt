@@ -1,0 +1,369 @@
+#![allow(dead_code)]
+use std::collections::BTreeMap;use std::path::{Path,PathBuf};use std::sync::Mutex;use anyhow::{Context,Result,bail};type UPos=u8;type Rel=u8;fn decode(r:&[u8])->(UPos,Rel,usize,u32){(r[0],r[1],u16::from_le_bytes([r[2],r[3]]) as usize,u32::from_le_bytes([r[5],r[6],r[7],0]))}
+fn fnv(bytes: &[u8], mut h: u64) -> u64 {
+    for b in bytes {
+        h ^= *b as u64;
+        h = h.wrapping_mul(0x100000001b3);
+    }
+    h
+}
+/// Write a file atomically: a temporary file in the same folder, then a rename — readers never see half a file.
+pub fn write_atomic(path: &Path, bytes: &[u8]) -> Result<()> {
+    let tmp = path.with_extension(format!("tmp-{}", std::process::id()));
+    std::fs::write(&tmp, bytes)?;
+    std::fs::rename(&tmp, path)?;
+    Ok(())
+}
+/// A branch reference (`<dir>/refs/<name>` → version hash).
+pub fn ref_get(dir: &Path, name: &str) -> Option<String> {
+    std::fs::read_to_string(dir.join("refs").join(name)).ok().map(|s| s.trim().to_string()).filter(|s| !s.is_empty())
+}
+pub fn ref_set(dir: &Path, name: &str, hash: &str) -> Result<()> {
+    std::fs::create_dir_all(dir.join("refs"))?;
+    write_atomic(&dir.join("refs").join(name), format!("{hash}\n").as_bytes())
+}
+/// A tree of a sentence in a version (following parents for sentences the version did not change).
+pub struct Store {
+    pub(crate) dir: PathBuf,
+    meta: Vec<u8>,
+    pub(crate) versions: Vec<(String, String)>,
+    main: Option<String>,
+    /// per version: the dictionary (loaded once) and the open trees file (read at positions, thread-safe)
+    cache: Mutex<BTreeMap<String, std::sync::Arc<(Vec<u8>, std::fs::File)>>>,
+    text_file: Mutex<Option<std::sync::Arc<std::fs::File>>>,
+}
+impl Store {
+    pub fn open(dir: &Path) -> Result<Store> {
+        let meta = std::fs::read(dir.join("meta.bin")).context("meta.bin")?;
+        let versions = std::fs::read_to_string(dir.join("versions.tsv")).context("versions.tsv")?.lines().filter_map(|l| {
+            let c: Vec<&str> = l.split('\t').collect();
+            (c.len() >= 2).then(|| (c[0].to_string(), c[1].to_string()))
+        }).collect();
+        Ok(Store { dir: dir.to_path_buf(), meta, versions, main: ref_get(dir, "main"), cache: Mutex::new(BTreeMap::new()), text_file: Mutex::new(None) })
+    }
+    pub fn len(&self) -> usize {
+        self.meta.len() / 24
+    }
+    /// The main branch (`refs/main`), else the last version — a reader takes it once and works on that snapshot.
+    pub fn latest(&self) -> Option<&str> {
+        self.main.as_deref().or_else(|| self.versions.last().map(|v| v.0.as_str()))
+    }
+    /// The dictionary and trees file of a version, loaded once per store handle (tried 02.10: re-reading a 345 MB
+    /// dictionary for every sentence stalled training).
+    fn version(&self, h: &str) -> Result<std::sync::Arc<(Vec<u8>, std::fs::File)>> {
+        let mut c = self.cache.lock().unwrap();
+        if let Some(v) = c.get(h) {
+            return Ok(v.clone());
+        }
+        let d = std::fs::read(self.dir.join(format!("dict-{h}.bin")))?;
+        let f = std::fs::File::open(self.dir.join(format!("trees-{h}.bin")))?;
+        let v = std::sync::Arc::new((d, f));
+        c.insert(h.to_string(), v.clone());
+        Ok(v)
+    }
+
+    /// Raw records of sentence `i` in version `hash`, following parents.
+    pub fn records(&self, hash: &str, i: usize) -> Result<Vec<[u8; 8]>> {
+        use std::os::unix::fs::FileExt;
+        let mut h = hash.to_string();
+        loop {
+            let v = self.version(&h)?;
+            let d = &v.0;
+            let n = d.len() / 16;
+            let at = |k: usize| u32::from_le_bytes(d[k * 16..k * 16 + 4].try_into().unwrap()) as usize;
+            let (mut lo, mut hi) = (0usize, n);
+            while lo < hi {
+                let mid = (lo + hi) / 2;
+                if at(mid) < i { lo = mid + 1 } else { hi = mid }
+            }
+            if lo < n && at(lo) == i {
+                let off = u64::from_le_bytes(d[lo * 16 + 4..lo * 16 + 12].try_into()?);
+                let len = u32::from_le_bytes(d[lo * 16 + 12..lo * 16 + 16].try_into()?) as usize;
+                let mut buf = vec![0u8; len];
+                v.1.read_exact_at(&mut buf, off)?;
+                return Ok(buf.chunks(8).map(|c| c.try_into().unwrap()).collect());
+            }
+            match self.versions.iter().find(|x| x.0 == h).map(|x| x.1.clone()) {
+                Some(p) if p != "-" => h = p,
+                _ => bail!("sentence {i} not in version {hash} or its parents"),
+            }
+        }
+    }
+
+    fn m(&self, i: usize) -> &[u8] {
+        &self.meta[i * 24..i * 24 + 24]
+    }
+    pub fn text(&self, i: usize) -> Result<String> {
+        use std::os::unix::fs::FileExt;
+        let m = self.m(i);
+        let off = u64::from_le_bytes(m[12..20].try_into()?);
+        let len = u32::from_le_bytes(m[20..24].try_into()?) as usize;
+        let f = {
+            let mut g = self.text_file.lock().unwrap();
+            if g.is_none() {
+                *g = Some(std::sync::Arc::new(std::fs::File::open(self.dir.join("text.bin"))?));
+            }
+            g.clone().unwrap()
+        };
+        let mut buf = vec![0u8; len];
+        f.read_exact_at(&mut buf, off)?;
+        Ok(String::from_utf8_lossy(&buf).to_string())
+    }
+    /// (book, paragraph, sentence in the paragraph)
+    pub fn place(&self, i: usize) -> (u32, u32, u16) {
+        let m = self.m(i);
+        (u32::from_le_bytes(m[0..4].try_into().unwrap()), u32::from_le_bytes(m[4..8].try_into().unwrap()), u16::from_le_bytes(m[8..10].try_into().unwrap()))
+    }
+    /// Tree records of sentence `i` in version `hash`: (upos, rel, head, lemma id) per token.
+    pub fn tree(&self, hash: &str, i: usize) -> Result<Vec<(UPos, Rel, usize, u32)>> {
+        Ok(self.records(hash, i)?.iter().map(|r| decode(r)).collect())
+    }
+}
+fn lemma_file(path: PathBuf) -> Vec<String> {
+    let mut v: Vec<String> = Vec::new();
+    if let Ok(t) = std::fs::read_to_string(path) {
+        for l in t.lines() {
+            if let Some((i, x)) = l.split_once('\t') {
+                let i: usize = i.parse().unwrap_or(0);
+                if v.len() <= i {
+                    v.resize(i + 1, String::new());
+                }
+                v[i] = x.to_string();
+            }
+        }
+    }
+    v
+}
+/// Sentence ids matching a query in a version (the engine of `query`, returned instead of printed).
+pub fn select(dir: &Path, q: &str, hash: &str) -> Result<Vec<u32>> {
+    let st = Store::open(dir)?;
+    let feats: BTreeMap<String, (usize, usize)> = std::fs::read_to_string(dir.join(format!("features-{hash}.tsv")))?.lines().filter_map(|l| {
+        let c: Vec<&str> = l.split('\t').collect();
+        (c.len() == 3).then(|| (c[0].to_string(), (c[1].parse().unwrap_or(0), c[2].parse().unwrap_or(0))))
+    }).collect();
+    let bin = std::fs::read(dir.join(format!("index-{hash}.bin")))?;
+    let posting = |f: &str| -> BTreeMap<u32, u8> {
+        feats.get(f).map(|&(off, n)| (0..n).map(|k| {
+            let b = &bin[off + k * 5..off + k * 5 + 5];
+            (u32::from_le_bytes(b[0..4].try_into().unwrap()), b[4])
+        }).collect()).unwrap_or_default()
+    };
+    let ok = |op: &str, have: u8, want: u8| match op { ">=" => have >= want, "<=" => have <= want, ">" => have > want, _ => have == want };
+    let mut cand: Vec<u32> = (0..st.len() as u32).collect();
+    for t in q.split_whitespace() {
+        // metadata terms are stable over versions: book=N, book<N, sample=K/SEED
+        if let Some(v) = t.strip_prefix("book=") {
+            let b: u32 = v.parse()?;
+            cand.retain(|&i| st.place(i as usize).0 == b);
+            continue;
+        }
+        if let Some(v) = t.strip_prefix("prefix=") {
+            let pct: f64 = v.trim_end_matches('%').parse()?;
+            let have: std::collections::BTreeSet<u32> = cand.iter().copied().collect();
+            // keep the shuffled order: a prefix walks blocks of many books
+            cand = prefix(dir, pct)?.into_iter().filter(|i| have.contains(i)).collect();
+            continue;
+        }
+        if let Some(v) = t.strip_prefix("sample=") {
+            let (k, seed) = v.split_once('/').unwrap_or((v, "1"));
+            let (k, seed): (usize, u64) = (k.parse()?, seed.parse()?);
+            let mut x = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
+            let mut keyed: Vec<(u64, u32)> = cand.iter().map(|&i| {
+                x ^= x << 13;
+                x ^= x >> 7;
+                x ^= x << 17;
+                (x ^ (i as u64).wrapping_mul(0xff51afd7ed558ccd), i)
+            }).collect();
+            keyed.sort();
+            cand = keyed.into_iter().take(k).map(|(_, i)| i).collect();
+            cand.sort();
+            continue;
+        }
+        let op = [">=", "<=", ">", "="].into_iter().find(|o| t.contains(o)).with_context(|| format!("term {t}: no operator"))?;
+        let (f, c) = t.split_once(op).unwrap();
+        let c: u8 = c.parse()?;
+        let p = posting(f);
+        cand.retain(|i| ok(op, p.get(i).copied().unwrap_or(0), c));
+    }
+    Ok(cand)
+}
+/// Does a query depend on the parse (tree features) or only on sentences (metadata, samples)?
+fn tree_dependent(q: &str) -> bool {
+    q.split_whitespace().any(|t| !t.starts_with("book=") && !t.starts_with("sample=") && !t.starts_with("prefix="))
+}
+/// Named sets (`<dir>/sets/<name>.tsv`): the query that defines the set, the model hash it was computed on (or
+/// "stable" for sets of sentences that do not depend on the parse), and the ids. A tree-dependent set computed on
+/// another model is invalid: its ids are recomputed from the query on load.
+pub fn set_save(dir: &Path, name: &str, q: &str, hash: &str) -> Result<usize> {
+    Ok(set_recompute(dir, name, q, hash)?.len())
+}
+/// Select once, then persist exactly the returned vector.
+fn set_recompute(dir: &Path, name: &str, q: &str, hash: &str) -> Result<Vec<u32>> {
+    let ids = select(dir, q, hash)?;
+    std::fs::create_dir_all(dir.join("sets"))?;
+    let base = if tree_dependent(q) { hash.to_string() } else { "stable".to_string() };
+    let stamp = if q.contains("prefix=") { format!("order:{}|{base}", order(dir, 400)?.0) } else { base };
+    let body = ids.iter().map(|i| i.to_string()).collect::<Vec<_>>().join("\n");
+    std::fs::write(dir.join("sets").join(format!("{name}.tsv")), format!("# query\t{q}\n# model\t{stamp}\n{body}\n"))?;
+    Ok(ids)
+}
+pub fn set_load(dir: &Path, name: &str, hash: &str) -> Result<Vec<u32>> {
+    let t = std::fs::read_to_string(dir.join("sets").join(format!("{name}.tsv"))).with_context(|| format!("set {name}"))?;
+    let q = t.lines().find_map(|l| l.strip_prefix("# query\t")).unwrap_or("").to_string();
+    let stamp = t.lines().find_map(|l| l.strip_prefix("# model\t")).unwrap_or("");
+    if let Some(rest) = stamp.strip_prefix("order:") {
+        let (k, base) = rest.split_once('|').unwrap_or((rest, "stable"));
+        if k != order(dir, 400)?.0 || (base != "stable" && base != hash) {
+            eprintln!("set {name}: the shuffled order or the model changed — recomputed from «{q}»");
+            return set_recompute(dir, name, &q, hash);
+        }
+        return Ok(t.lines().filter(|l| !l.starts_with('#')).filter_map(|l| l.parse().ok()).collect());
+    }
+    if stamp == "stable" || stamp == hash {
+        return Ok(t.lines().filter(|l| !l.starts_with('#')).filter_map(|l| l.parse().ok()).collect());
+    }
+    // Sampling couples candidates: changing one eligible sentence can change unchanged IDs' keys and rank.
+    // Legacy prefix sets without an order stamp also need reselection to preserve the query's output order.
+    if q.split_whitespace().any(|t| t.starts_with("sample=") || t.starts_with("prefix=")) {
+        eprintln!("set {name}: coupled query on a changed model — recomputed from «{q}»");
+        return set_recompute(dir, name, &q, hash);
+    }
+    // Pointwise queries can retain membership outside the changed-ID union, provided those deltas cover
+    // all feature changes. Selection still evaluates the full query; only the membership merge is restricted.
+    let st = Store::open(dir)?;
+    let mut chain = Vec::new();
+    let mut h = hash.to_string();
+    while h != stamp {
+        chain.push(h.clone());
+        match st.versions.iter().find(|v| v.0 == h).map(|v| v.1.clone()) {
+            Some(p) if p != "-" => h = p,
+            _ => {
+                eprintln!("set {name}: computed on model {stamp}, not an ancestor of {hash} — recomputed from its query «{q}»");
+                return set_recompute(dir, name, &q, hash);
+            }
+        }
+    }
+    let mut changed: std::collections::BTreeSet<u32> = Default::default();
+    for v in &chain {
+        let d = std::fs::read(dir.join(format!("dict-{v}.bin")))?;
+        for k in 0..d.len() / 16 {
+            changed.insert(u32::from_le_bytes(d[k * 16..k * 16 + 4].try_into()?));
+        }
+    }
+    let old: std::collections::BTreeSet<u32> = t.lines().filter(|l| !l.starts_with('#')).filter_map(|l| l.parse().ok()).collect();
+    let fresh: std::collections::BTreeSet<u32> = select(dir, &q, hash)?.into_iter().filter(|i| changed.contains(i)).collect();
+    let ids: Vec<u32> = old.iter().copied().filter(|i| !changed.contains(i)).chain(fresh).collect::<std::collections::BTreeSet<u32>>().into_iter().collect();
+    eprintln!("set {name}: carried over from {stamp} to {hash}; {} changed sentences checked again", changed.len());
+    std::fs::write(dir.join("sets").join(format!("{name}.tsv")), format!("# query\t{q}\n# model\t{hash}\n{}\n", ids.iter().map(|i| i.to_string()).collect::<Vec<_>>().join("\n")))?;
+    Ok(ids)
+}
+/// Blocks of about `size` sentences per book, cut at paragraph ends — chapter-sized pieces (tens of pages).
+fn blocks(st: &Store, size: usize) -> Vec<(u32, u32)> {
+    let mut out = Vec::new();
+    let n = st.len();
+    let mut start = 0usize;
+    for i in 0..n {
+        let (b, p, _) = st.place(i);
+        let next = (i + 1 < n).then(|| st.place(i + 1));
+        let book_ends = next.is_none_or(|(nb, _, _)| nb != b);
+        let para_ends = next.is_none_or(|(nb, np, _)| nb != b || np != p);
+        if book_ends || (i + 1 - start >= size && para_ends) {
+            out.push((start as u32, (i + 1 - start) as u32));
+            start = i + 1;
+        }
+    }
+    out
+}
+/// The order key: the corpus (sentence count, books file size, base version) and the day — a new shuffle every day
+/// and whenever the corpus changes, reproducible within a day.
+fn order_key(dir: &Path, st: &Store) -> String {
+    let day = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() / 86400).unwrap_or(0);
+    let books = std::fs::metadata(dir.join("books.tsv")).map(|m| m.len()).unwrap_or(0);
+    let base = st.versions.first().map(|v| v.0.clone()).unwrap_or_default();
+    format!("{:016x}", fnv(format!("{}|{books}|{base}|{day}", st.len()).as_bytes(), 0xcbf29ce484222325))
+}
+/// The shuffled block order (`<dir>/order.bin`: start u32, len u32 per block; `order.tsv`: key, blocks, size),
+/// rebuilt when the key changed.
+pub fn order(dir: &Path, size: usize) -> Result<(String, Vec<(u32, u32)>)> {
+    let st = Store::open(dir)?;
+    let key = order_key(dir, &st);
+    if let (Ok(head), Ok(bin)) = (std::fs::read_to_string(dir.join("order.tsv")), std::fs::read(dir.join("order.bin"))) {
+        if head.lines().next().and_then(|l| l.strip_prefix("key\t")) == Some(key.as_str()) {
+            let bl = bin.chunks(8).map(|c| (u32::from_le_bytes(c[0..4].try_into().unwrap()), u32::from_le_bytes(c[4..8].try_into().unwrap()))).collect();
+            return Ok((key, bl));
+        }
+    }
+    let mut bl = blocks(&st, size);
+    // Fisher–Yates with a xorshift seeded by the key
+    let mut x = u64::from_str_radix(&key, 16).unwrap_or(1) | 1;
+    for i in (1..bl.len()).rev() {
+        x ^= x << 13;
+        x ^= x >> 7;
+        x ^= x << 17;
+        bl.swap(i, (x % (i as u64 + 1)) as usize);
+    }
+    let mut bin = Vec::with_capacity(bl.len() * 8);
+    for (s, l) in &bl {
+        bin.extend_from_slice(&s.to_le_bytes());
+        bin.extend_from_slice(&l.to_le_bytes());
+    }
+    std::fs::write(dir.join("order.bin"), bin)?;
+    std::fs::write(dir.join("order.tsv"), format!("key\t{key}\nblocks\t{}\nsize\t{size}\n", bl.len()))?;
+    Ok((key, bl))
+}
+/// Sentence ids of the first `pct` percent of the shuffled order (by sentences), in that order.
+pub fn prefix(dir: &Path, pct: f64) -> Result<Vec<u32>> {
+    let st = Store::open(dir)?;
+    let (_, bl) = order(dir, 400)?;
+    let want = ((st.len() as f64) * pct / 100.0).ceil() as usize;
+    let mut out = Vec::with_capacity(want);
+    for (s, l) in bl {
+        if out.len() >= want {
+            break;
+        }
+        out.extend(s..s + l);
+    }
+    Ok(out)
+}
+fn main()->Result<()> {
+ let dir=std::env::temp_dir().join(format!("mova-store-groupant-{}",std::process::id()));
+ std::fs::create_dir(&dir)?;
+ struct Clean(PathBuf);impl Drop for Clean{fn drop(&mut self){let _=std::fs::remove_dir_all(&self.0);}}let _clean=Clean(dir.clone());
+ let put=|name:&str,data:&[u8]|std::fs::write(dir.join(name),data);
+ let mut checks=0;
+ macro_rules! check {($a:expr,$b:expr)=>{{assert_eq!($a,$b);checks+=1;}}}
+ ref_set(&dir,"main","a")?;check!(std::fs::read(dir.join("refs/main"))?,b"a\n");check!(ref_get(&dir,"main"),Some("a".into()));
+ put("refs/space",b" \n a\t ")?;check!(ref_get(&dir,"space"),Some("a".into()));put("refs/space",b" \n\t")?;check!(ref_get(&dir,"space"),None);check!(ref_get(&dir,"absent"),None);put("refs/space",&[255])?;check!(ref_get(&dir,"space"),None);
+ let target=dir.join("atomic.bin");write_atomic(&target,b"old")?;write_atomic(&target,b"replacement")?;check!(std::fs::read(&target)?,b"replacement");
+ let bad=dir.join("blocked.bin");std::fs::create_dir(&bad)?;check!(write_atomic(&bad,b"stage").is_err(),true);check!(std::fs::read(bad.with_extension(format!("tmp-{}",std::process::id())))?,b"stage");
+ check!(dir.join("a.bin").with_extension("tmp-PID"),dir.join("a.tsv").with_extension("tmp-PID"));
+ let places=[(0u32,1u32),(0,1),(0,2),(1,1),(1,1),(1,2)];let mut meta=Vec::new();
+ for (i,(b,p)) in places.iter().enumerate(){meta.extend(b.to_le_bytes());meta.extend(p.to_le_bytes());meta.extend((i as u16).to_le_bytes());meta.extend(1u16.to_le_bytes());meta.extend((i as u64).to_le_bytes());meta.extend(1u32.to_le_bytes());}
+ meta.extend([7,8,9]);put("meta.bin",&meta)?;put("text.bin",b"abcdef")?;put("versions.tsv",b"a\t-\nast\nb\ta\n")?;put("books.tsv",b"id\tpath\n")?;
+ let dictionary=|rows:&[(u32,u64,u32)]|{let mut d=vec![];for (id,off,len) in rows {d.extend(id.to_le_bytes());d.extend(off.to_le_bytes());d.extend(len.to_le_bytes());}d};
+ put("dict-a.bin",&dictionary(&[(0,0,8),(1,8,8),(2,16,0)]))?;put("trees-a.bin",&[1;16])?;
+ put("dict-b.bin",&dictionary(&[(1,0,8)]))?;put("trees-b.bin",&[2;8])?;
+ let st=Store::open(&dir)?;check!(st.len(),6);check!(st.latest(),Some("a"));ref_set(&dir,"main","b")?;check!(st.latest(),Some("a"));check!(Store::open(&dir)?.latest(),Some("b"));
+ check!(st.records("b",0)?,vec![[1;8]]);check!(st.records("b",1)?,vec![[2;8]]);check!(st.records("b",2)?,Vec::<[u8;8]>::new());check!(st.records("b",5).is_err(),true);check!(st.text(2)?,"c");check!(st.place(3),(1,1,3));
+ let mut bin=vec![];for (id,c) in [(0u32,1u8),(1,2),(2,3)] {bin.extend(id.to_le_bytes());bin.push(c);}for h in ["a","b"]{put(&format!("features-{h}.tsv"),b"pred\t0\t3\n")?;put(&format!("index-{h}.bin"),&bin)?;}
+ for c in 0u8..=4 {let expected:Vec<u32>=(0..6).filter(|i|if *i<3 {*i+1>=c as u32}else{c==0}).collect();check!(select(&dir,&format!("pred>={c}"),"a")?,expected);}
+ check!(select(&dir,"unknown>=1","a")?,Vec::<u32>::new());check!(select(&dir,"unknown=0","a")?,vec![0,1,2,3,4,5]);check!(select(&dir,"book<1","a").is_err(),true);
+ check!(select(&dir,"sample=99/2","a")?,vec![0,1,2,3,4,5]);
+ let mut witness=false;for seed in 0..100 {let a=select(&dir,&format!("sample=1/{seed} book=0"),"a")?;let b=select(&dir,&format!("book=0 sample=1/{seed}"),"a")?;if a!=b {witness=true;break;}}check!(witness,true);
+ for q in ["book=1","sample=2/1","prefix=1%",""]{check!(tree_dependent(q),false)}check!(tree_dependent("pred>=1"),true);
+ set_save(&dir,"stable","book=0","a")?;let before=std::fs::read(dir.join("sets/stable.tsv"))?;check!(set_load(&dir,"stable","b")?,vec![0,1,2]);check!(std::fs::read(dir.join("sets/stable.tsv"))?,before);
+ set_save(&dir,"same","pred>=2","a")?;check!(set_load(&dir,"same","a")?,vec![1,2]);
+ put("sets/carry.tsv",b"# query\tpred>=2\n# model\ta\n0\n1\ninvalid\n")?;check!(set_load(&dir,"carry","b")?,vec![0,1]);
+ put("sets/unrelated.tsv",b"# query\tpred>=2\n# model\tother\n5\n")?;check!(set_load(&dir,"unrelated","b")?,vec![1,2]);
+ let mut reduced=vec![];for (id,c) in [(0u32,1u8),(2,3)] {reduced.extend(id.to_le_bytes());reduced.push(c);}put("features-b.tsv",b"pred\t0\t2\n")?;put("index-b.bin",&reduced)?;
+ let mut sample_case=None;for seed in 0..100 {let q=format!("pred>=1 sample=1/{seed}");let old=select(&dir,&q,"a")?;let fresh=select(&dir,&q,"b")?;let expected:Vec<u32>=old.iter().copied().filter(|i|*i!=1).chain(fresh.iter().copied().filter(|i|*i==1)).collect();if expected!=fresh {sample_case=Some((q,expected,fresh));break;}}
+ check!(sample_case.is_some(),true);let (q,expected,fresh)=sample_case.unwrap();set_save(&dir,"sampled-carry",&q,"a")?;let carried=set_load(&dir,"sampled-carry","b")?;check!(&carried,&fresh);check!(expected!=fresh,true);
+ println!("sampled carry regression: query={q}; historical={expected:?}; repaired={carried:?}; full={fresh:?}");
+ check!(q,"pred>=1 sample=1/2");check!(&fresh,&vec![2]);check!(set_load(&dir,"sampled-carry","b")?,fresh.clone());
+ if std::env::args().any(|a|a=="--negative-sample-control"){assert_eq!(carried,expected,"false model: historical sampled carry remains valid");}
+ for size in [0,1,2,400]{let bl=blocks(&st,size);check!(bl.iter().map(|b|b.1).sum::<u32>(),6);let ids:Vec<_>=bl.iter().flat_map(|(s,l)|*s..s+l).collect();check!(ids,vec![0,1,2,3,4,5]);}check!(blocks(&st,1),vec![(0,2),(2,1),(3,2),(5,1)]);check!(blocks(&st,400),vec![(0,3),(3,3)]);
+ let (k,bl)=order(&dir,400)?;check!(order(&dir,1)?,(k,bl.clone()));let p=prefix(&dir,1.0)?;check!(p.len(),3);check!(prefix(&dir,0.0)?.len(),0);check!(prefix(&dir,100.0)?.len(),6);check!(prefix(&dir,150.0)?.len(),6);
+ if std::env::args().any(|a|a=="--negative-control"){assert_eq!(p.len(),1,"false model: prefix obeys exact sentence budget");}
+ put("lemma.tsv",b"2\tcat\nbad\tdog\n2\tfox\n")?;check!(lemma_file(dir.join("lemma.tsv")),vec!["dog".to_string(),String::new(),"fox".to_string()]);
+ println!("store probe: {checks} assertions passed; negative formula available");Ok(())
+}

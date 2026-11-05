@@ -1,0 +1,102 @@
+{
+  "children": [
+    {
+      "id": "roundtrip-volume-residual-literal-copy",
+      "path": "literal-copy.groupant"
+    },
+    {
+      "id": "roundtrip-volume-residual-gap-residual",
+      "path": "gap-residual.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "gap_coordinates",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "gap_coordinates",
+        "status": "partial_source_derived_model",
+        "type": "gap_coordinates"
+      },
+      {
+        "id": "utf8_copy",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "utf8_copy",
+        "status": "partial_source_derived_model",
+        "type": "utf8_copy"
+      },
+      {
+        "id": "history_tie",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "history_tie",
+        "status": "partial_source_derived_model",
+        "type": "history_tie"
+      },
+      {
+        "id": "mark_precondition",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "mark_precondition",
+        "status": "partial_source_derived_model",
+        "type": "mark_precondition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "roundtrip-volume-residual",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../vol.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "0e6fc39eafffdb765f32f972847334f79853e300c31411225a581b181adb5165"
+  },
+  "status": "partial_source_bound_model"
+}

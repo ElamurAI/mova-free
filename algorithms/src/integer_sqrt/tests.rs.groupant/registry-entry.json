@@ -1,0 +1,22 @@
+{
+  "id": "algorithm-integer-sqrt-tests",
+  "source": "algorithms/src/integer_sqrt/tests.rs",
+  "children": [],
+  "description": "integer_sqrt bounded oracle tests",
+  "state": "65,537 inputs 0..=65536, nine square-root values with square/neighbor cases, u64::MAX and 4,096 fixed-seed full-width inputs with adjacent monotonicity.",
+  "forward": [
+    "Accept exactly when all oracle assertions and metamorphic conditions succeed on this explicit finite fixture set: 65,537 inputs 0..=65536, nine square-root values with square/neighbor cases, u64::MAX and 4,096 fixed-seed full-width inputs with adjacent monotonicity."
+  ],
+  "inverse": [
+    "U is candidate implementations paired with pass/fail on the finite fixture set F. R(P,pass) iff all assertions succeed; R(P,fail) iff a terminating call/assertion panics or a mismatch occurs. U minus R comprises false passes despite failure and false failures despite all assertions holding. Harness crashes/nontermination are excluded.",
+    "A pass admits all implementations agreeing on F with arbitrary off-fixture behavior. A failure admits all faulty implementations or faulty oracles producing that mismatch/panic; no unique defect reconstruction."
+  ],
+  "cost": "Fixed finite work: 65,537 inputs 0..=65536, nine square-root values with square/neighbor cases, u64::MAX and 4,096 fixed-seed full-width inputs with adjacent monotonicity. No measured speed claim.",
+  "checks": [
+    "cargo test -p mova-algorithms --offline integer_sqrt::tests::",
+    "External compiled mutant rejected by exact single-test filter"
+  ],
+  "limitations": [
+    "Partial syntax omits expanded macros and semantic analysis; finite tests do not prove all inputs."
+  ]
+}

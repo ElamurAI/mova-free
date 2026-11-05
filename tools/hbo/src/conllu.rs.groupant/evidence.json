@@ -1,0 +1,51 @@
+{
+  "logs": [
+    {
+      "exit": 0,
+      "receipt": "debug-1-00.log",
+      "sha256": "492792dfd811a89f0e4d06b3fcd3ecdbc825b3f1ca994f6640df7d986f1e6aa8"
+    },
+    {
+      "exit": 0,
+      "receipt": "debug-2-00.log",
+      "sha256": "492792dfd811a89f0e4d06b3fcd3ecdbc825b3f1ca994f6640df7d986f1e6aa8"
+    },
+    {
+      "exit": 0,
+      "receipt": "release-1-00.log",
+      "sha256": "ff7af603ec6fce4df86e727958231532a9a5b395c61f4007452e94f8569a5734"
+    },
+    {
+      "exit": 0,
+      "receipt": "release-2-00.log",
+      "sha256": "4433ae52cb2b83263cbab7917b85c609dc468a65c5be2b035601f59a3b4f06ff"
+    },
+    {
+      "exit": 101,
+      "receipt": "mutant-conllu.log",
+      "sha256": "0fd3636a6eac067e9b53022857a10466c7ad87fa86a1646a92885cdb68f02fda"
+    },
+    {
+      "exit": 0,
+      "receipt": "restored-conllu.log",
+      "sha256": "8557d0bf963d8aa70bdfbd38b8635a3c0ab197fc5b88cd1ed1c6c71562f5cba9"
+    }
+  ],
+  "mutation": {
+    "kind": "compiled_source_behavior",
+    "new": "let mut id = 2;",
+    "old": "let mut id = 1;",
+    "original_sha256": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7",
+    "restoration_exact": true,
+    "restored_sha256": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7",
+    "source": "tools/hbo/src/conllu.rs",
+    "status": 101
+  },
+  "primary_test": "conllu::wave32::lossy_rows_ids_and_empty_tokens",
+  "production_prefix_preserved": true,
+  "schema": 1,
+  "scope": "Finite synthetic actual-code observations, no semantic correctness proof or percent surrogate",
+  "source": "tools/hbo/src/conllu.rs",
+  "source_sha256": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7",
+  "syntax_sha256": "3c8eaf786fbc4ca5e66d62fd11d66a1bf4faeb3b3df415556d88327c2c86f5d5"
+}

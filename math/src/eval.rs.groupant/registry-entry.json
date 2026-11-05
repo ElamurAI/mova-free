@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p math --lib eval::",
+    "paired syntax and compiled controls; external receipts"
+  ],
+  "children": [],
+  "cost": "O(N) traversal plus numeric costs; aggregate O(k log k); exact probability enumeration O(T*2^T) for T<=16. Trace size includes formatted intermediates; stack/allocation unbounded. Gate tolerance is policy, not universal numerical assurance.",
+  "description": "Quantity evaluation and independent answer gate",
+  "forward": [
+    "eval recursively produces Q and appends Ctx evidence. Exact pairs use Rat; mixed approximate pairs use f64. Aggregates convert to first operand units. answer uses fresh context then gate checks independent fcheck SI value and recorded booleans."
+  ],
+  "id": "math-eval",
+  "inverse": [
+    "Output Q admits many Expr/environment/trace antecedents and equivalent units. Fixed-scale exact conversion has unique inverse only when all arithmetic succeeds. Gate accepts SI-equivalent representations, not a unique syntax or provenance."
+  ],
+  "limitations": [
+    "Partial lexical projection; no semantic proof",
+    "No useful executable percentage surrogate",
+    "Bounded synthetic fixtures; resource/malformed-state gaps in models"
+  ],
+  "source": "math/src/eval.rs",
+  "state": "eval recursively produces Q and appends Ctx evidence. Exact pairs use Rat; mixed approximate pairs use f64. Aggregates convert to first operand units. answer uses fresh context then gate checks independent fcheck SI value and recorded booleans."
+}

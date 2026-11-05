@@ -218,3 +218,50 @@ fn cmd_corpus(args: &[String]) -> ExitCode {
         }
     }
 }
+
+#[cfg(test)]
+mod wave28_tests {
+    use super::*;
+
+    #[test]
+    fn parse_and_usage_exit_policy() {
+        assert_eq!(cmd_parse(&[]), ExitCode::from(2));
+        assert_eq!(cmd_parse(&["x".into(), "x+".into()]), ExitCode::SUCCESS);
+        assert_eq!(cmd_parse(&["{".into()]), ExitCode::FAILURE);
+        assert_eq!(cmd_parse(&[r"\unknownwave".into()]), ExitCode::SUCCESS);
+        assert_eq!(cmd_tex(&[]), ExitCode::from(2));
+        assert_eq!(
+            cmd_corpus(&["--fault".into(), "bad".into()]),
+            ExitCode::from(2)
+        );
+    }
+
+    #[test]
+    fn synthetic_tex_global_macros_and_read_failure() {
+        let dir = std::env::temp_dir().join(format!("mova-wave28-cli-{}", std::process::id()));
+        std::fs::create_dir(&dir).unwrap();
+        let preamble = dir.join("preamble.tex");
+        let body = dir.join("body.tex");
+        std::fs::write(&preamble, r"\newcommand{\foo}{x}").unwrap();
+        std::fs::write(&body, r"$\foo$ ${$").unwrap();
+        let args = vec![
+            body.display().to_string(),
+            preamble.display().to_string(),
+            "-v".into(),
+        ];
+        assert_eq!(cmd_tex(&args), ExitCode::SUCCESS);
+        assert_eq!(
+            cmd_parse(&[
+                r"\foo".into(),
+                "--macros".into(),
+                preamble.display().to_string()
+            ]),
+            ExitCode::SUCCESS
+        );
+        assert_eq!(
+            cmd_tex(&[dir.join("missing.tex").display().to_string()]),
+            ExitCode::FAILURE
+        );
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+}

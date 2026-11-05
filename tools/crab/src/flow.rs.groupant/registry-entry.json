@@ -1,0 +1,26 @@
+{
+  "id": "crab-flow",
+  "source": "tools/crab/src/flow.rs",
+  "children": [],
+  "description": "Config-declared work-flow probes of continuously running workers: input queue, backlog and quarantine stacks, progress and limit markers, latched with hysteresis into starved/clogged/stalled/limited plus a quarantine-rate anomaly, and one bounded decision per transition.",
+  "state": "run_root/flow/state.json (latches, last progress, samples, quarantine-rate windows and latches, Crab-made pause flag, hold) and append-only run_root/flow/journal.jsonl.",
+  "forward": [
+    "read(source) counts dir entries, JSONL lines, a JSON integer or equality, mtime or a sum; unknown is an error, never zero. assess: starved = input < low_water; clogged = stack > high_water until <= resume_at; stalled = input >= 1 and progress unchanged >= stall_seconds; limited = fresh tail matches a pattern; latch after hysteresis evaluations; decision precedence limited > clogged > starved > stalled; apply starts a stopped not-explicitly-stopped producer, creates/removes only Crab's own pause file, restarts once per stall by policy, or reports.",
+    "Stacks have a role: a backlog may pause its producer (clogged = backlog > high_water until <= resume_at); a quarantine (cumulative quarantined and finished counts) never pauses: the anomaly dquarantined/dfinished > max_rate over rate_window_seconds with >= min_finished finished is reported once per rise with an optional dominant reason. A pausing backlog named like a quarantine is refused at load. Load migration clears a Crab-paused clog whose recorded over-high-water stacks no longer pause, so the first evaluation removes Crab's own pause file. stable_facts feeds the council fingerprint."
+  ],
+  "inverse": [
+    "Excluded: killing in-flight work, starting an explicitly stopped producer, removing a foreign pause file, restarting without policy or during a limit hold, acting on unknown readings.",
+    "The journal recovers which values led to each transition and action; raw files between evaluations are not reconstructed.",
+    "Excluded: pausing on a quarantine stack; removing a pause file that is not exactly Crab's; migrating a clog whose over-list is unknown or still includes a pausing backlog."
+  ],
+  "cost": "Per evaluation and probe: bounded reads (<= 100000 dir entries, JSON <= 1 MiB, JSONL <= 256 MiB, tails <= 1 MiB, 4 newest entries per glob segment); measured 2026-11-04: ten live Fish/Eel probes in about 30 ms; one journal line per transition.",
+  "checks": [
+    "2026-11-04: 8 module tests and an angel integration test with a fake supervisor and real shell worker; red controls: starved boundary moved, hysteresis ignored, starved or clogged unable to show.",
+    "2026-11-04 (pool): cargo test --release, tools/nautilus 26 unit + 2 English tests (0.4 en.bin), tools/crab 120 lib tests; red controls each turned its test red and were restored.",
+    "2026-11-04 (quarantine role): 3 new module tests (strict validation, rate report never pauses, live t05 latch migration); red controls: quarantine counted in the clog, migration removed, the pausing-quarantine refusal removed; tools/crab 126 lib tests."
+  ],
+  "limitations": [
+    "Counts are claims of worker files under trusted configuration; rate assumes monotone progress counters; no acknowledgement of attention items; plan-aware starvation per pager is approximated by pending targets.",
+    "A quarantine reason is shown only when the worker writes one at a configured field; the Fish pagers write none yet."
+  ]
+}

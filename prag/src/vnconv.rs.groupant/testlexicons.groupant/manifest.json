@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "prag-vnconv-testlexicons-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "prag-vnconv-testlexicons-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "prag-vnconv-testlexicons-specialization",
+        "path": "model.md",
+        "section": "specialization",
+        "status": "partial_source_model",
+        "type": "license_destination"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 29648,
+      "start": 13872
+    },
+    "description": "PropBank folds predicate/roleset/role/alias/example events, emits rolesets on closes and collects unique class links/prepositions. NomBank folds NOMLEX sexps for NOM/NOMING/NOMLIKE and noun rolesets. sexps uses character tokens with lists, quoted escapes and semicolon comments. positions maps DET-POSS->poss, N-N-MOD->nn, PP PVAL->lowercase strings, preserving first occurrence. convert labels and writes their tables only under test."
+  },
+  "id": "prag-vnconv-testlexicons",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../vnconv.rs",
+    "sha256": "b5e9e5a2a3fc9359403585f2a0b1ffacc4ecb71a563d252d1ea334a76695ae52"
+  },
+  "status": "partial_source_bound_model"
+}

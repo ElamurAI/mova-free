@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "report::wave32::class_conservation_and_zero_denominator"
+  ],
+  "children": [],
+  "cost": "O(cells log classes) by_class aggregation, O(cells) groups; sorting residual classes O(C log C), lexicon clusters O(Vlog V), rendering O(output bytes). Five sequential writes may leave prefix on failure; no live write exercised.",
+  "description": "group maps all classes into six fixed task groups; by_class collapses layer coordinates, groups_of sums bits across residual references, per divides by max(n,1). write renders systems, block/world comparisons, delta diagnostics, examples and TSVs, then writes report.md, examples.md, numbers.tsv, lexicon.tsv, deltas.tsv sequentially.",
+  "forward": [
+    "group maps all classes into six fixed task groups; by_class collapses layer coordinates, groups_of sums bits across residual references, per divides by max(n,1). write renders systems, block/world comparisons, delta diagnostics, examples and TSVs, then writes report.md, examples.md, numbers.tsv, lexicon.tsv, deltas.tsv sequentially."
+  ],
+  "id": "translation-flow-report",
+  "inverse": [
+    "Zero denominator cannot divide by zero because per uses max1; absent direct cells display em dash even if direct gate counter is nonzero. Layer-collapsed report cannot distinguish equal class contributions from different layers.",
+    "A class total admits all layer partitions whose sum equals it. Rounded text numbers admit float intervals; TSV rows retain stage/class yet not original residual examples. Sequential output prefix is compatible with failure at any later write, not evidence of all writes completing."
+  ],
+  "limitations": [
+    "Source-derived effectful CLI/corpus paths only; no live model/annotator/training/filesystem/site run.",
+    "Finite synthetic helper checks and partial syntax; no universal proof or executable percent surrogate."
+  ],
+  "source": "tools/translate/src/report.rs",
+  "state": "Finite residuals for partial_cmp sorting; delta and shuffled-delta arrays index-compatible; counter additions representable. Missing delta matches intentionally yield NaN. Grouping preserves summed bits modulo floating addition order but loses layer identity."
+}

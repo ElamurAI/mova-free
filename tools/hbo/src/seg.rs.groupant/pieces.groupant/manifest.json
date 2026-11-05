@@ -1,0 +1,138 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Nonempty well-formed gold words; unit sums/usize and u32 counts representable. Valid cuts sum to units and exclude zero-length Cut. H consumes0; leading cut moves previous vowels. Probability domain positive table totals, finite host factor>=0, finite K>=0 with total+K>0. Public malformed states can violate premises.",
+        "evidence": "model.md#tests",
+        "id": "behavior_complement",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "H cannot consume a written unit; moved vowel does not move dagesh.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "subject_revision": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Nonempty well-formed gold words; unit sums/usize and u32 counts representable. Valid cuts sum to units and exclude zero-length Cut. H consumes0; leading cut moves previous vowels. Probability domain positive table totals, finite host factor>=0, finite K>=0 with total+K>0. Public malformed states can violate premises.",
+        "evidence": "model.md#tests",
+        "id": "reverse_reconstruction",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Output forms and H flags constrain input via NFC and vowel transfer, but original normalization spelling remains ambiguous.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "subject_revision": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Nonempty well-formed gold words; unit sums/usize and u32 counts representable. Valid cuts sum to units and exclude zero-length Cut. H consumes0; leading cut moves previous vowels. Probability domain positive table totals, finite host factor>=0, finite K>=0 with total+K>0. Public malformed states can violate premises.",
+        "evidence": "model.md#tests",
+        "id": "offset_advance",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Offset grows only by Cut lengths, not emitted output scalar counts.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "offset_advance",
+        "status": "partial_source_derived_model",
+        "subject_revision": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d",
+        "type": "offset_advance"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Nonempty well-formed gold words; unit sums/usize and u32 counts representable. Valid cuts sum to units and exclude zero-length Cut. H consumes0; leading cut moves previous vowels. Probability domain positive table totals, finite host factor>=0, finite K>=0 with total+K>0. Public malformed states can violate premises.",
+        "evidence": "model.md#tests",
+        "id": "lead_search",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Leading cut finds most recent non-H output, skipping any inserted articles.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "lead_search",
+        "status": "partial_source_derived_model",
+        "subject_revision": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d",
+        "type": "lead_search"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Nonempty well-formed gold words; unit sums/usize and u32 counts representable. Valid cuts sum to units and exclude zero-length Cut. H consumes0; leading cut moves previous vowels. Probability domain positive table totals, finite host factor>=0, finite K>=0 with total+K>0. Public malformed states can violate premises.",
+        "evidence": "model.md#tests",
+        "id": "slice_failure",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Oversized first cut truncates end; later start beyond units can panic. Safe callers must validate.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "slice_failure",
+        "status": "partial_source_derived_model",
+        "subject_revision": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d",
+        "type": "slice_failure"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Nonempty well-formed gold words; unit sums/usize and u32 counts representable. Valid cuts sum to units and exclude zero-length Cut. H consumes0; leading cut moves previous vowels. Probability domain positive table totals, finite host factor>=0, finite K>=0 with total+K>0. Public malformed states can violate premises.",
+        "evidence": "model.md#tests",
+        "id": "empty_spelling",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Empty ps with empty form passes letters count and cut concat; Cut(0) is explicitly rejected.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "empty_spelling",
+        "status": "partial_source_derived_model",
+        "subject_revision": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d",
+        "type": "empty_spelling"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 27488,
+      "start": 25350
+    },
+    "description": "Walk pieces with unit offset; H emits article; leading cuts move previous non-H vowel tail; spells verifies size then unpointed concatenation."
+  },
+  "id": "hbo-seg-pieces",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../seg.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d"
+  },
+  "status": "partial_source_bound_model"
+}

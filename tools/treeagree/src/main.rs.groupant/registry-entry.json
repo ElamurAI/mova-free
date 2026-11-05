@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named synthetic native tests; paired syntax projection"
+  ],
+  "children": [],
+  "cost": "n tokens/e edits: candidate cloning O(n) per trial, shape/punctuation O(n²), bundle lookup O(e*n); conservative O(e*(n²+e*n+registry)). Reporting adds output bytes and repeated kept scans O(n*e). CLI retains all sentences and witnesses in memory; filesystem failures can leave earlier writes.",
+  "description": "command dispatch selects agree/check/dispute paths; agree reads reference and lex then three witness files, requires sentence alignment, creates report directory and proposes only token-count-aligned sentences. apply clones candidates, tries individual edit, bundles pending head-path/root edits only after Cycle/Roots errors, then drops failed retag except PosAgree. kept edits sorted by position; output and two TSVs precede read-back diagnostics and agree.md.",
+  "forward": [
+    "command dispatch selects agree/check/dispute paths; agree reads reference and lex then three witness files, requires sentence alignment, creates report directory and proposes only token-count-aligned sentences. apply clones candidates, tries individual edit, bundles pending head-path/root edits only after Cycle/Roots errors, then drops failed retag except PosAgree. kept edits sorted by position; output and two TSVs precede read-back diagnostics and agree.md."
+  ],
+  "id": "treeagree-main",
+  "inverse": [
+    "Final heads and reports admit multiple ordered proposals and rejected histories; bundled edits lose trial history. MISC records selected old head/relation, not full previous arbitrary MISC or complete reversible state.",
+    "A failed no_worse trial cannot update working state; an isolated PosAgree cannot retry without retag. Token-count mismatch skips proposals but still contributes total word denominator."
+  ],
+  "limitations": [
+    "Partial source models and finite fixtures only. No corpus/model/network/site/release execution or universal proof."
+  ],
+  "source": "tools/treeagree/src/main.rs",
+  "state": "Bounded helper inputs and source-derived CLI state/effects; see catalog."
+}

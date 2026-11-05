@@ -1,0 +1,46 @@
+{
+  "compiled_mutant": "Multiply transformed sum by 0.5; analytic_oracle assertion fails.",
+  "date": "2026-10-30",
+  "evidence": [
+    {
+      "name": "debug1.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "debug2.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "release1.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "release2.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "clippy.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "mutant-tanh_sinh_quadrature.log",
+      "sha256": "498f88ba3f8470e9112a1f41cb5891d89f4d2ee7eb0d54e9ed7f6ee38a681f7e"
+    },
+    {
+      "name": "tanh_sinh_quadrature-mod.rs-syntax1.json",
+      "sha256": "016e3d65ff72d566d53d86538b30e86818b778b6c62cae17165a35d216476151"
+    },
+    {
+      "name": "tanh_sinh_quadrature-mod.rs-syntax2.json",
+      "sha256": "016e3d65ff72d566d53d86538b30e86818b778b6c62cae17165a35d216476151"
+    }
+  ],
+  "external_run": "$MOVA_DATA/runs/octopus-wave25-numerical-2026-10-30",
+  "limitations": [
+    "No timing or universal numerical accuracy claim"
+  ],
+  "repetitions": "15 focused tests twice debug and twice optimized release; normalized output identical; positive reruns after exact mutant restoration",
+  "source": "algorithms/src/tanh_sinh_quadrature/mod.rs",
+  "source_sha256": "38fe1375293f745583d0de0adb1b74347a7e501333f69995058fea4fb9e3ac16",
+  "syntax": "Two fresh projections byte-identical"
+}

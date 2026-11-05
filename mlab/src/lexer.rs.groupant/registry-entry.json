@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "lexer::wave30::context",
+    "Repeated debug/release named outcomes; compiled assertion mutant; exact restore; paired syntax"
+  ],
+  "children": [],
+  "cost": "O(C+token text) ordinary scan and O(C+T+depth) memory; line_rest allocates trimmed lines for block comments. No source-size cap.",
+  "description": "lex scans Unicode chars, maintains one-based line/char-column, whitespace-before flag and delimiter stack. Numbers normalize D exponent for parsing and imaginary suffix j/J/I to i spelling. Apostrophe after a value is Quote except whitespace in matrix/cell context, where it starts Str. Newline is emitted; ... consumes remainder and newline. EOF token always appended.",
+  "forward": [
+    "lex scans Unicode chars, maintains one-based line/char-column, whitespace-before flag and delimiter stack. Numbers normalize D exponent for parsing and imaginary suffix j/J/I to i spelling. Apostrophe after a value is Quote except whitespace in matrix/cell context, where it starts Str. Newline is emitted; ... consumes remainder and newline. EOF token always appended."
+  ],
+  "id": "mlab-lexer",
+  "inverse": [
+    "Accepted token sequences exclude treating [a 'x']'s spaced quote as transpose, or a' as a string opener. Unterminated strings exclude Ok; invalid characters exclude tokens past the error. Scanner does not reject unmatched delimiters or unterminated block-comment EOF; these are not lexer validation guarantees.",
+    "For tokens T, preimage is all Unicode strings whose contextual scan yields T including retained locations/space flags. Comments, quote escapes and normalized imaginary suffixes can collapse. Removing coordinate observations enlarges fibers further; token text is not an exact inverse source serializer."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no semantic proof or executable surrogate",
+    "UTF-8 strings, finite memory; no external effects. Mixed delimiter stack pops are permissive. Block marker recognition requires trimmed whole line at line start."
+  ],
+  "source": "mlab/src/lexer.rs",
+  "state": "UTF-8 strings, finite memory; no external effects. Mixed delimiter stack pops are permissive. Block marker recognition requires trimmed whole line at line start."
+}

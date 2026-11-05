@@ -1,0 +1,103 @@
+{
+  "children": [
+    {
+      "id": "onto-store-reader",
+      "path": "reader.groupant"
+    },
+    {
+      "id": "onto-store-shape",
+      "path": "shape.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical source projection; no expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Explicit domain in approximant and invariant; finite checks only",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Explicit domain in approximant and invariant; finite checks only",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "header_precedence",
+        "path": "model.md",
+        "scope": "Explicit domain in approximant and invariant; finite checks only",
+        "section": "header_precedence",
+        "status": "partial_source_derived_model",
+        "type": "header_precedence"
+      },
+      {
+        "id": "length_safety",
+        "path": "model.md",
+        "scope": "Explicit domain in approximant and invariant; finite checks only",
+        "section": "length_safety",
+        "status": "partial_source_derived_model",
+        "type": "length_safety"
+      },
+      {
+        "id": "csr_shape",
+        "path": "model.md",
+        "scope": "Explicit domain in approximant and invariant; finite checks only",
+        "section": "csr_shape",
+        "status": "partial_source_derived_model",
+        "type": "csr_shape"
+      },
+      {
+        "id": "effect_roundtrip",
+        "path": "model.md",
+        "scope": "Explicit domain in approximant and invariant; finite checks only",
+        "section": "effect_roundtrip",
+        "status": "partial_source_derived_model",
+        "type": "effect_roundtrip"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "onto-store",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../store.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "19eeabb5cd6e93adc2ace73ee61067765db1ead68aa6d38517648cdb00ad1823"
+  },
+  "status": "partial_source_bound_model"
+}

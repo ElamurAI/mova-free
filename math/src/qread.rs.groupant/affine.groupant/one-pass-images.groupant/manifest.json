@@ -1,0 +1,102 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "scope": "Shared parent syntax restricted to coverage byte interval; no semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "depth_intervention",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "depth_intervention",
+        "status": "partial_source_derived_model",
+        "type": "depth_intervention"
+      },
+      {
+        "id": "sorted_rounding_order",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "sorted_rounding_order",
+        "status": "partial_source_derived_model",
+        "type": "sorted_rounding_order"
+      },
+      {
+        "id": "unknown_leaf_cut",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "unknown_leaf_cut",
+        "status": "partial_source_derived_model",
+        "type": "unknown_leaf_cut"
+      },
+      {
+        "id": "unmapped_identity",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "unmapped_identity",
+        "status": "partial_source_derived_model",
+        "type": "unmapped_identity"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "Tests",
+      "status": "bounded_actual_helper_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 2220,
+      "start": 1744
+    },
+    "description": "Start at constant-only Lin. Visit original keys in sorted order. Replace key k by sol[k] scaled by its original coefficient if present, otherwise by var(k); each insertion passes through add pruning. Newly introduced keys are not revisited in the same call. unknowns returns keys below LEAF."
+  },
+  "id": "math-qread-affine-one-pass-images",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../qread.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "8389b8d58f68121743d6346e638601297c3725483f4b9fcd2eb8cd47ef2d028a"
+  },
+  "status": "partial_source_bound_model"
+}

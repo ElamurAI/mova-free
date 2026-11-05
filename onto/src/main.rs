@@ -600,7 +600,7 @@ fn cmd_wd_confirm(args: &[String]) -> Result<()> {
     let rows = wdvmm::pick_disputed(&std::fs::read_to_string(&src)?, n, lo, hi);
     let log = runs.join("vmm-calls.jsonl");
     let cwd = runs.join("vmm-cwd");
-    let mut out = format!("# onto v2: candidates from wd-candidates.tsv (confidence {lo}–{hi}) — second opinion of the LLM (claude-opus-5-5, effort high). Not truth: into the core only after a human.\n# concept\tsynset\tprop\tvalue\tsource\tconfidence\tvmm\twhy\n");
+    let mut out = format!("# onto v2: candidates from wd-candidates.tsv (confidence {lo}–{hi}) — second opinion of the LLM (Codex CLI; see codex-calls.jsonl for model and effort). Not truth: into the core only after a human.\n# concept\tsynset\tprop\tvalue\tsource\tconfidence\tvmm\twhy\n");
     let (mut cost, mut tally) = (0.0, std::collections::BTreeMap::<String, usize>::new());
     for (bi, ch) in rows.chunks(batch.max(1)).enumerate() {
         let (ans, c) = wdvmm::ask(&cwd, &log, cap, 1.5, &wdvmm::prompt(ch))?;
@@ -1042,4 +1042,89 @@ fn cmd_vmm(args: &[String]) -> Result<()> {
     let p = write(&format!("vmm-{tag}.md"), &md)?;
     println!("{md}\nreport {}", p.display());
     Ok(())
+}
+
+#[cfg(test)]
+mod wave29_tests {
+    use super::*;
+    pub(crate) fn graph() -> model::Graph {
+        use model::*;
+        let mut g = Graph::default();
+        let words = ["animal", "crow", "stone", "wing"];
+        g.word_off.push(0);
+        g.sense_off.push(0);
+        g.gloss_off.push(0);
+        g.name_off.push(0);
+        g.mem_off.push(0);
+        for (i, w) in words.iter().enumerate() {
+            g.words.push_str(w);
+            g.word_off.push(g.words.len() as u32);
+            g.senses.push(i as u32);
+            g.sense_off.push(g.senses.len() as u32);
+            g.src.push(Src::Oewn);
+            g.key.push(90000001 + i as u32);
+            g.pos.push(Pos::Noun);
+            g.lexfile
+                .push(lexfile_id(if i == 2 { "noun.object" } else { "noun.animal" }).unwrap());
+            g.flags.push(0);
+            g.ili.push(0);
+            g.gloss.push_str(w);
+            g.gloss_off.push(g.gloss.len() as u32);
+            g.name_off.push(0);
+            g.mem.push(i as u32);
+            g.mem_off.push(g.mem.len() as u32);
+        }
+        g.out_off = vec![0, 0, 1, 1, 2];
+        g.out = vec![
+            Edge {
+                rel: Rel::IsA,
+                to: 0,
+            },
+            Edge {
+                rel: Rel::PartOf,
+                to: 0,
+            },
+        ];
+        g.in_off = vec![0, 2, 2, 2, 2];
+        g.inn = vec![
+            Edge {
+                rel: Rel::IsA,
+                to: 1,
+            },
+            Edge {
+                rel: Rel::PartOf,
+                to: 3,
+            },
+        ];
+        store::check(&g).unwrap();
+        g
+    }
+    pub(crate) fn seed(id: &str, layer: u16, c: u32, value: bool) -> kb::Assert {
+        kb::Assert {
+            id: id.into(),
+            layer,
+            concept: c,
+            prop: kb::Prop::CanSpeak,
+            value,
+            strength: kb::Strength::Default,
+            source: "synthetic".into(),
+            note: String::new(),
+        }
+    }
+    pub(crate) fn temp(tag: &str) -> PathBuf {
+        let p = std::env::temp_dir().join(format!(
+            "mova-wave29-ontoquery-{}-{tag}",
+            std::process::id()
+        ));
+        std::fs::create_dir_all(&p).unwrap();
+        p
+    }
+    #[test]
+    fn option_first_and_dangling() {
+        let a = ["--n", "3", "--n", "9", "--dangling"].map(String::from);
+        assert_eq!(opt(&a, "--n"), Some("3"));
+        assert_eq!(opt(&a, "--dangling"), None);
+        let c = wd_cfg(&["--skip-wm".into()]).unwrap();
+        assert!(c.skip_wm && c.langs.is_none());
+    }
 }

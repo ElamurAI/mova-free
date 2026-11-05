@@ -175,7 +175,7 @@ pub fn run(cells: &Path, events: &Path, wikt: &Path, mwe: Option<&Path>, out: &P
     f.flush()?;
     // the level-1 data file (global/data/idioms.tsv): dictionary-confirmed kinds; corpus-only pairs → candidate
     let mut g = std::io::BufWriter::new(std::fs::File::create(out.join("global-idioms.tsv"))?);
-    writeln!(g, "# Verbal multiword expressions (docs/absurdity.md, world idioms): verb, object or particle, kind (idiom | light-verb | collocation | phrasal-verb | candidate — a corpus-only pair, not confirmed by a dictionary, never suppresses an alarm), corpus count, source.")?;
+    writeln!(g, "# Verbal multiword expressions (docs/knowledge.md#the-absurdity-matrix, world idioms): verb, object or particle, kind (idiom | light-verb | collocation | phrasal-verb | candidate — a corpus-only pair, not confirmed by a dictionary, never suppresses an alarm), corpus count, source.")?;
     writeln!(g, "# From 5.78 M sentences of public-domain books (syntax-aware PMI over dependency arcs) + the absurdity matrix + English Wiktionary entries + open/copyleft MWE resources (MAGPIE, PARSEME 1.3 EN, STREUSLE, SemEval-2022 Task 2, WordNet, ConceptNet).")?;
     writeln!(g, "# License: CC BY-SA 4.0 (derived from Wiktionary, STREUSLE, ConceptNet; MAGPIE and PARSEME annotations CC BY 4.0; WordNet licence); free, part of the open release.")?;
     let rank = |k: &str| match k { "phrasal-verb" => 0, "idiom" => 1, "light-verb" => 2, "collocation" => 3, _ => 4 };
@@ -203,4 +203,74 @@ pub fn run(cells: &Path, events: &Path, wikt: &Path, mwe: Option<&Path>, out: &P
     }
     println!("  phrasal-verb {}", pv.len());
     Ok(())
+}
+
+#[cfg(test)]
+mod wave8_models {
+    use super::*;
+
+    #[test]
+    fn dictionary_rank_matches_independent_first_minimum() {
+        let kinds = ["idiom", "verb-phrase", "phrase", "other"];
+        for a in 0..4 { for b in 0..4 { for c in 0..4 {
+            let ranks = [a, b, c];
+            let text = format!("title\tkind\tpos\tgloss\n{}", ranks.iter().enumerate()
+                .map(|(i, r)| format!("open fire\t{}\tVerb\tg{i}\n", kinds[*r])).collect::<String>());
+            let min = *ranks.iter().min().unwrap();
+            let first = ranks.iter().position(|r| *r == min).unwrap();
+            let result = wikt_pairs(&text);
+            assert_eq!(result[&("open".into(), "fire".into())].2, format!("g{first}"));
+        }}}
+    }
+
+    #[test]
+    fn dictionary_phrase_context_boundaries() {
+        let cases = [("kick the bucket", "Verb", true), ("kick a bucket", "Idiom", true),
+            ("kick the old bucket", "Phrase", false), ("Kick bucket", "Verb", false),
+            ("kick-bucket", "Verb", false), ("ice cream", "Noun", false),
+            ("kick  bucket", "Verb", false), ("kick bucket", "Phrase", true)];
+        for (title, pos, expected) in cases {
+            let text = format!("header\n{title}\tidiom\t{pos}\tgloss\n");
+            assert_eq!(!wikt_pairs(&text).is_empty(), expected, "{title}");
+        }
+        assert!(wikt_pairs("open fire\tidiom\tVerb\tgloss").is_empty(), "first line is always a header");
+    }
+
+    #[test]
+    fn merged_layer_eligibility_cartesian_boundary() {
+        for flag in ["open", "copyleft", "NC", "unknown", "reopened"] {
+            for kind in ["idiom", "LVC", "VPC", "other"] {
+                for title in ["give up", "give one up", "Give up", "give old up"] {
+                    let expected = matches!(flag, "open" | "copyleft" | "reopened")
+                        && kind != "other" && matches!(title, "give up" | "give one up");
+                    let row = format!("header\n{title}\t{kind}\tx\t1\tsynthetic\t{flag}\n");
+                    assert_eq!(!mwe_pairs(&row).is_empty(), expected, "{row}");
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn merged_layer_first_row_wins_even_against_idiom() {
+        let head = "header\n";
+        let lvc = "take place\tLVC\tx\t1\tfirst\topen\n";
+        let idiom = "take place\tidiom\tx\t1\tsecond\topen\n";
+        let key = ("take".into(), "place".into());
+        assert_eq!(mwe_pairs(&format!("{head}{lvc}{idiom}"))[&key].1, "light-verb");
+        assert_eq!(mwe_pairs(&format!("{head}{idiom}{lvc}"))[&key].1, "idiom");
+    }
+
+    #[test]
+    fn pair_projection_has_ambiguous_title_fiber() {
+        let mut keys = Vec::new();
+        for title in ["kick bucket", "kick the bucket", "kick a bucket", "kick one's bucket"] {
+            let map = wikt_pairs(&format!("header\n{title}\tidiom\tVerb\tfixture\n"));
+            assert_eq!(map.len(), 1);
+            keys.push(map.keys().next().unwrap().clone());
+            assert_eq!(map.values().next().unwrap().0, title);
+        }
+        assert!(keys.windows(2).all(|w| w[0] == w[1]));
+        // Only the key projection loses the title; the complete map value retains it.
+        assert_eq!(keys[0], ("kick".into(), "bucket".into()));
+    }
 }

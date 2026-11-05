@@ -1,0 +1,181 @@
+{
+  "children": [
+    "langseg-corpus",
+    "langseg-cues",
+    "langseg-engine",
+    "langseg-command",
+    "langseg-talmud",
+    "langseg-gates",
+    "macula-library",
+    "macula-converter",
+    "macula-pragmatics",
+    "macula-tanakh"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "Source inspection covers CLI effects, but actual live corpus, teacher, frozen assessments, production DB/model data, downloads and lesson workflows excluded. No parser completeness, language accuracy or universal safety inferred from finite checks. Existing audit-before-guard and transitive-invalid-head caveats retained.",
+        "domain": "Small synthetic strings/XML/arrays and tempfile model roundtrip under dedicated temp root. Scoring requires representable counts, column bounds, finite alpha>0 and nonnegative switch costs for objective model; rows nonempty10 fields, heads valid for tree/CoNLL-U helpers. Raw adversarial input outside those premises is not certified.",
+        "id": "behavior-complement",
+        "observation_scope": "Real joins: cue form/name->features->count/logp columns; tokenize byte spans->segments->talmud slices; MACULA Node0-based -> head1-based -> surface permutation -> emitted-row head mapping; macula html_text->tanakh NFC edition; read_sentence open_after->next open_before within book. Counterexamples: copying MACULA ordinal to Tanakh order misaligns books; treating Segment.end as talmud slice end loses punctuation; union of component complements is not complement of composed relation. L/M are tagged siblings only.",
+        "operator": "Under admitted states, L cannot emit neutral-only tokens or invalid path columns, M cannot choose Aramaic on majority tie, PD edition cannot admit wrong licence. The sibling universe is tagged transitions; neither path implies execution/effects of the other. These are partial source-derived exclusions, not exhaustive complements.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "Source inspection covers CLI effects, but actual live corpus, teacher, frozen assessments, production DB/model data, downloads and lesson workflows excluded. No parser completeness, language accuracy or universal safety inferred from finite checks. Existing audit-before-guard and transitive-invalid-head caveats retained.",
+        "domain": "Small synthetic strings/XML/arrays and tempfile model roundtrip under dedicated temp root. Scoring requires representable counts, column bounds, finite alpha>0 and nonnegative switch costs for objective model; rows nonempty10 fields, heads valid for tree/CoNLL-U helpers. Raw adversarial input outside those premises is not certified.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Real joins: cue form/name->features->count/logp columns; tokenize byte spans->segments->talmud slices; MACULA Node0-based -> head1-based -> surface permutation -> emitted-row head mapping; macula html_text->tanakh NFC edition; read_sentence open_after->next open_before within book. Counterexamples: copying MACULA ordinal to Tanakh order misaligns books; treating Segment.end as talmud slice end loses punctuation; union of component complements is not complement of composed relation. L/M are tagged siblings only.",
+        "operator": "Reverse each actual join by retaining compatible intermediates: segment label fibers of feature/count/score states; CoNLL-U fibers of group trees and permutations; cleaned verse fibers of markup and sparse input coordinates. Keep tag L/M and book code; dropped metadata and source order are ambiguous. Unique inverse only when original permutation/data retained.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "Source inspection covers CLI effects, but actual live corpus, teacher, frozen assessments, production DB/model data, downloads and lesson workflows excluded. No parser completeness, language accuracy or universal safety inferred from finite checks. Existing audit-before-guard and transitive-invalid-head caveats retained.",
+        "domain": "Small synthetic strings/XML/arrays and tempfile model roundtrip under dedicated temp root. Scoring requires representable counts, column bounds, finite alpha>0 and nonnegative switch costs for objective model; rows nonempty10 fields, heads valid for tree/CoNLL-U helpers. Raw adversarial input outside those premises is not certified.",
+        "id": "byte-coordinate",
+        "observation_scope": "Real joins: cue form/name->features->count/logp columns; tokenize byte spans->segments->talmud slices; MACULA Node0-based -> head1-based -> surface permutation -> emitted-row head mapping; macula html_text->tanakh NFC edition; read_sentence open_after->next open_before within book. Counterexamples: copying MACULA ordinal to Tanakh order misaligns books; treating Segment.end as talmud slice end loses punctuation; union of component complements is not complement of composed relation. L/M are tagged siblings only.",
+        "operator": "Token boundaries are UTF-8 source offsets; Segmenter spans last token end but talmud slices to next start/text length. Punctuation stays preceding segment; no leading-neutral recovery law.",
+        "path": "model.md",
+        "required": false,
+        "section": "byte-coordinate",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Source inspection covers CLI effects, but actual live corpus, teacher, frozen assessments, production DB/model data, downloads and lesson workflows excluded. No parser completeness, language accuracy or universal safety inferred from finite checks. Existing audit-before-guard and transitive-invalid-head caveats retained.",
+        "domain": "Small synthetic strings/XML/arrays and tempfile model roundtrip under dedicated temp root. Scoring requires representable counts, column bounds, finite alpha>0 and nonnegative switch costs for objective model; rows nonempty10 fields, heads valid for tree/CoNLL-U helpers. Raw adversarial input outside those premises is not certified.",
+        "id": "dependency-coordinate",
+        "observation_scope": "Real joins: cue form/name->features->count/logp columns; tokenize byte spans->segments->talmud slices; MACULA Node0-based -> head1-based -> surface permutation -> emitted-row head mapping; macula html_text->tanakh NFC edition; read_sentence open_after->next open_before within book. Counterexamples: copying MACULA ordinal to Tanakh order misaligns books; treating Segment.end as talmud slice end loses punctuation; union of component complements is not complement of composed relation. L/M are tagged siblings only.",
+        "operator": "Old word head h maps0->0 else p(h-1)+1, then emitted-row head first[h-1]+1. Valid heads and shared word sequence are required; interpreting Node0-based ids as heads is invalid.",
+        "path": "model.md",
+        "required": false,
+        "section": "dependency-coordinate",
+        "status": "partial_source_derived_model",
+        "type": "dependency_transport"
+      },
+      {
+        "assumptions": "Source inspection covers CLI effects, but actual live corpus, teacher, frozen assessments, production DB/model data, downloads and lesson workflows excluded. No parser completeness, language accuracy or universal safety inferred from finite checks. Existing audit-before-guard and transitive-invalid-head caveats retained.",
+        "domain": "Small synthetic strings/XML/arrays and tempfile model roundtrip under dedicated temp root. Scoring requires representable counts, column bounds, finite alpha>0 and nonnegative switch costs for objective model; rows nonempty10 fields, heads valid for tree/CoNLL-U helpers. Raw adversarial input outside those premises is not certified.",
+        "id": "book-code",
+        "observation_scope": "Real joins: cue form/name->features->count/logp columns; tokenize byte spans->segments->talmud slices; MACULA Node0-based -> head1-based -> surface permutation -> emitted-row head mapping; macula html_text->tanakh NFC edition; read_sentence open_after->next open_before within book. Counterexamples: copying MACULA ordinal to Tanakh order misaligns books; treating Segment.end as talmud slice end loses punctuation; union of component complements is not complement of composed relation. L/M are tagged siblings only.",
+        "operator": "MACULA library and Tanakh order differ, so cross-reader identity is book code plus chapter/verse, not integer ordinal. Missing/invalid coordinates map0 and unknown code39, creating noninjective fibers.",
+        "path": "model.md",
+        "required": false,
+        "section": "book-code",
+        "status": "partial_source_derived_model",
+        "type": "tagged_order_transport"
+      },
+      {
+        "assumptions": "Source inspection covers CLI effects, but actual live corpus, teacher, frozen assessments, production DB/model data, downloads and lesson workflows excluded. No parser completeness, language accuracy or universal safety inferred from finite checks. Existing audit-before-guard and transitive-invalid-head caveats retained.",
+        "domain": "Small synthetic strings/XML/arrays and tempfile model roundtrip under dedicated temp root. Scoring requires representable counts, column bounds, finite alpha>0 and nonnegative switch costs for objective model; rows nonempty10 fields, heads valid for tree/CoNLL-U helpers. Raw adversarial input outside those premises is not certified.",
+        "id": "speech-carry",
+        "observation_scope": "Real joins: cue form/name->features->count/logp columns; tokenize byte spans->segments->talmud slices; MACULA Node0-based -> head1-based -> surface permutation -> emitted-row head mapping; macula html_text->tanakh NFC edition; read_sentence open_after->next open_before within book. Counterexamples: copying MACULA ordinal to Tanakh order misaligns books; treating Segment.end as talmud slice end loses punctuation; union of component complements is not complement of composed relation. L/M are tagged siblings only.",
+        "operator": "Prag read_sentence(row,open,rules) produces next open; quote recognition precedes closure/carry/bare. Book boundary resets externally. Langseg has no caller relationship to this speech state.",
+        "path": "model.md",
+        "required": false,
+        "section": "speech-carry",
+        "status": "partial_source_derived_model",
+        "type": "state_transition"
+      },
+      {
+        "assumptions": "Source inspection covers CLI effects, but actual live corpus, teacher, frozen assessments, production DB/model data, downloads and lesson workflows excluded. No parser completeness, language accuracy or universal safety inferred from finite checks. Existing audit-before-guard and transitive-invalid-head caveats retained.",
+        "domain": "Small synthetic strings/XML/arrays and tempfile model roundtrip under dedicated temp root. Scoring requires representable counts, column bounds, finite alpha>0 and nonnegative switch costs for objective model; rows nonempty10 fields, heads valid for tree/CoNLL-U helpers. Raw adversarial input outside those premises is not certified.",
+        "id": "effect-boundary",
+        "observation_scope": "Real joins: cue form/name->features->count/logp columns; tokenize byte spans->segments->talmud slices; MACULA Node0-based -> head1-based -> surface permutation -> emitted-row head mapping; macula html_text->tanakh NFC edition; read_sentence open_after->next open_before within book. Counterexamples: copying MACULA ordinal to Tanakh order misaligns books; treating Segment.end as talmud slice end loses punctuation; union of component complements is not complement of composed relation. L/M are tagged siblings only.",
+        "operator": "Model save truncates before rows; CLI talmud writes original/English before optional map read; converter writes accumulated books/maps separately. No atomic rollback or no-read claim for audit guard. These effect traces are source-modeled, not executed.",
+        "path": "model.md",
+        "required": false,
+        "section": "effect-boundary",
+        "status": "partial_source_derived_model",
+        "type": "partial_effect_trace"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "hebrew-corpus-adapters",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "tools/langseg/src/corpus.rs",
+      "sha256": "ab5927cbc959808c4942d9bf0df5ca7fdf09556d5cc474748f46bf5a9d17af93"
+    },
+    {
+      "path": "tools/langseg/src/cues.rs",
+      "sha256": "189e1cfd017374c2fdccdf812e7640926d764625a3b795c3696fcb7fcdcfe692"
+    },
+    {
+      "path": "tools/langseg/src/lib.rs",
+      "sha256": "33431b9d2b514927e89b18661cd27b04b2b0029ea2d12b3b14fe0f0bd5c8240f"
+    },
+    {
+      "path": "tools/langseg/src/main.rs",
+      "sha256": "5208ab4aabcfb1c2bbbbfdeba0aa0ddc573eb4002896e635130f850e636bf09c"
+    },
+    {
+      "path": "tools/langseg/src/talmud.rs",
+      "sha256": "f2620e40bfcfdd3e6a608fd67027743ca31f2726a77b6a60c6b5fe226f36ad66"
+    },
+    {
+      "path": "tools/langseg/tests/gates.rs",
+      "sha256": "628b9a8245df91b2191dfb3f52db85f7b378b2e9b77bb4b2ebb71dd9dd206be3"
+    },
+    {
+      "path": "tools/macula/src/lib.rs",
+      "sha256": "ea8018f6b0ce67e3ac04f214e97f93607a087d606820b5adf89ed7ecdcd19202"
+    },
+    {
+      "path": "tools/macula/src/main.rs",
+      "sha256": "50f74dcd65d946303c336d39e507bfd19028f5ff8889a918d18ce54e47dd18d2"
+    },
+    {
+      "path": "tools/macula/src/prag.rs",
+      "sha256": "f08c04b0e5acc749ab22b1109a94c608345141e768738c862d56ba464d33942b"
+    },
+    {
+      "path": "tools/macula/src/tanakh.rs",
+      "sha256": "fc1c2896a6fcedfa57eb16ab4a690e3637e4fdde88b949c0b122df505e1fd053"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

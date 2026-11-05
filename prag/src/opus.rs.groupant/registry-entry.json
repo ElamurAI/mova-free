@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "cargo test -p prag --lib wave17_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "Projection fixed schema O(A+S+1), general default serde_json maps O(A+S+1+log(M+1)+log(U+1)) for outer/usage key counts M/U and fixed lookup-key lengths; storage O(A+S). Append O(record bytes), read O(file bytes); process/OS latency unbounded.",
+  "description": "Codex compatibility configuration, supplied accounting and JSONL journal.",
+  "forward": [
+    "External ask delegates to mova_teacher; supplied projection maps named usage fields; optional journal preserves order."
+  ],
+  "id": "prag-opus",
+  "inverse": [
+    "Default fibers admit absent/mistyped zero fields; journal fibers admit blank lines, whitespace and legacy default omission."
+  ],
+  "limitations": [
+    "No live process/teacher tests; no concurrency/crash durability guarantee; finite synthetic evidence only."
+  ],
+  "source": "prag/src/opus.rs",
+  "state": "Finite records round-trip under successful sequential I/O and valid newline-terminated prior contents."
+}

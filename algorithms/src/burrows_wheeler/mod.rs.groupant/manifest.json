@@ -1,0 +1,155 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "In the universe of text/result pairs, exclude altered byte multiplicities, wrong sorted-rotation last columns, and noncanonical primary rows. Inverse rejects out-of-range p before any reachability check, and rejects unreachable in-range (C,p) pairs. Source-derived excluded behavior is not a semantic proof.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "af429214a1f01bd496b53a02b74a132504afd6606c9b8e58df71a24159443a45",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "preimages",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "The full canonical pair (C,p) has exactly one input text when reachable, recovered by inverse; otherwise the fiber is empty. Projection to C alone retains ambiguity: abab and baba both produce bbaa, with primary rows 0 and 2. Neither column-only reconstruction nor accepting every LF cycle recovers the original.",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "af429214a1f01bd496b53a02b74a132504afd6606c9b8e58df71a24159443a45",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "periodic-ties",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "Equal rotations of a periodic text are ordered by original offset. If the least cyclic period is d (so d divides n), each equal-rotation class has n/d members; source offset zero is first in its class. For bbaa only primary 0 or 2 is canonical; 1 and 3 are rejected despite decoding periodic candidates.",
+        "path": "model.md",
+        "section": "periodic-ties",
+        "status": "partial_source_derived",
+        "subject_revision": "af429214a1f01bd496b53a02b74a132504afd6606c9b8e58df71a24159443a45",
+        "type": "equivalence_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "lf-occurrence",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "LF(i)=number of column bytes less than C[i] plus count of equal bytes strictly before i. Stable occurrence numbering gives a permutation; equal symbols alone do not identify which occurrence was meant. Following LF n times from p reconstructs a candidate, not reachability certification.",
+        "path": "model.md",
+        "section": "lf-occurrence",
+        "status": "partial_source_derived",
+        "subject_revision": "af429214a1f01bd496b53a02b74a132504afd6606c9b8e58df71a24159443a45",
+        "type": "state_preimage"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "doubling",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "At width w<n, sorting (rank[i],rank[(i+w) mod n]) refines cyclic prefixes to length 2w. Once width reaches n, order of those prefixes agrees with full rotations, including equality. Saturating doubling cannot stall before reaching valid slice length n.",
+        "path": "model.md",
+        "section": "doubling",
+        "status": "partial_source_derived",
+        "subject_revision": "af429214a1f01bd496b53a02b74a132504afd6606c9b8e58df71a24159443a45",
+        "type": "refinement_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "alphabet-relabel",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "For a strictly increasing map f of byte support, transform(f(T))=(f(C),p). Sorting equivalence and stable tie offsets survive; mere injectivity without byte-order preservation does not preserve row order.",
+        "path": "model.md",
+        "section": "alphabet-relabel",
+        "status": "partial_source_derived",
+        "subject_revision": "af429214a1f01bd496b53a02b74a132504afd6606c9b8e58df71a24159443a45",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "error-partition",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "For n=0, p=0 is the sole valid metadata and decodes empty. For n>0, p>=n gives InvalidPrimaryIndex. For remaining metadata, canonical retransformation equality chooses Ok(candidate) versus InvalidTransform. These precedence partitions cover every byte column and usize primary.",
+        "path": "model.md",
+        "section": "error-partition",
+        "status": "partial_source_derived",
+        "subject_revision": "af429214a1f01bd496b53a02b74a132504afd6606c9b8e58df71a24159443a45",
+        "type": "domain_partition"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "multiset",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "For each byte b, count_b(T)=count_b(C), since predecessor offsets form a permutation. This necessary condition does not certify a valid encoded pair. The inverse finite search oracle enumerates all possible input texts separately.",
+        "path": "model.md",
+        "section": "multiset",
+        "status": "partial_source_derived",
+        "subject_revision": "af429214a1f01bd496b53a02b74a132504afd6606c9b8e58df71a24159443a45",
+        "type": "conservation_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-burrows-wheeler",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "af429214a1f01bd496b53a02b74a132504afd6606c9b8e58df71a24159443a45"
+  },
+  "status": "partial_source_derived_instance"
+}

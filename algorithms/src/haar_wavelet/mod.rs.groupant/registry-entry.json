@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "direct_haar_basis uses independent block sums and half-block differences; reconstruction_energy observes sizes through 1024; sign_layout checks directed detail, singleton and cap; rejected_domains checks empty/nonpowers/nonfinite.",
+    "Replacing finest detail subtraction with addition compiles and fails direct_haar_basis."
+  ],
+  "children": [],
+  "cost": "O(n) arithmetic and O(n) result plus scratch; geometric level sum <2n. Standard allocator policy.",
+  "description": "Pair (a,b) -> ((a+b)/sqrt(2),(a-b)/sqrt(2)); recursively transform only average prefix. Inverse doubles prefix from 2 to n and interleaves sum/difference. Power-of-two n in 1..65536, finite |x|<=1e50.",
+  "forward": [
+    "Pair (a,b) -> ((a+b)/sqrt(2),(a-b)/sqrt(2)); recursively transform only average prefix. Inverse doubles prefix from 2 to n and interleaves sum/difference. Power-of-two n in 1..65536, finite |x|<=1e50."
+  ],
+  "id": "algorithm-haar-wavelet",
+  "inverse": [
+    "Known-length full coefficient vector uniquely specifies real samples through interleaving inverse; retaining only coarse average loses all details (e.g. [1,-1] and [0,0] have same coarse zero). Rounded coefficients do not guarantee bitwise recovery. Invalid-length error has many preimages."
+  ],
+  "limitations": [
+    "Partial syntax without semantic proof",
+    "Finite numerical tests do not guarantee accuracy",
+    "No executable approximation profile or timing claim",
+    "Standard allocation exhaustion may abort; no callback effects"
+  ],
+  "source": "algorithms/src/haar_wavelet/mod.rs",
+  "state": "Bounded finite sample vectors, transform/QR scratch, tagged errors; test state comprises finite observations"
+}

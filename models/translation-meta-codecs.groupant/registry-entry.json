@@ -1,0 +1,49 @@
+{
+  "checks": [
+    "meta::tests::the_logic_gate_on_merges",
+    "meta::tests::lexicon_tsv_back",
+    "meta::tests::lcs_and_gaps",
+    "meta::wave32::metadata_loss_and_lcs_ties",
+    "profile::tests::typography_of_quotes_and_possessives",
+    "profile::tests::the_logic_gate_on_overrides",
+    "profile::wave32::contexts_votes_and_ties",
+    "hebrew::wave32::gloss_chunks_and_owned_alignment",
+    "heb_enc::tests::hebrew_from_the_meta_world_and_back",
+    "ibm::tests::learns_a_toy_dictionary",
+    "ibm::wave32::zero_prior_and_normalization",
+    "fwt::tests::a_fronted_part_moves_after_its_root",
+    "fwt::tests::drops_and_inserts",
+    "logic::tests::every_kind_of_change_is_seen",
+    "logic::tests::contradictions_and_their_control",
+    "rules::tests::drop_reattaches_and_a_rule_that_fixes_gains",
+    "strong::tests::strong_words_and_tokens",
+    "strong::wave32::window_and_numeric_boundaries"
+  ],
+  "children": [
+    "translation-meta-fwt",
+    "translation-meta-heb_enc",
+    "translation-meta-hebrew",
+    "translation-meta-ibm",
+    "translation-meta-logic",
+    "translation-meta-meta",
+    "translation-meta-profile",
+    "translation-meta-rules",
+    "translation-meta-strong"
+  ],
+  "cost": "LCS O(nm); IBM I*sum target*(source+1)*log(row) plus rows; token transforms up to quadratic/cubic head and subtree scans; four-level context maps include key bytes. Real pipeline cost is sum along selected path, not all sibling helpers.",
+  "description": "Meta tokens and lexicon provide shared representation; profile and Hebrew encoder choose context chunks, IBM+Strong supply Hebrew ownership, Fw/Join/Reorder and Rule transform tokens, Logic compares mapped event facts. These are tagged paths, not one mandatory chain.",
+  "forward": [
+    "Meta tokens and lexicon provide shared representation; profile and Hebrew encoder choose context chunks, IBM+Strong supply Hebrew ownership, Fw/Join/Reorder and Rule transform tokens, Logic compares mapped event facts. These are tagged paths, not one mandatory chain.",
+    "Hebrew Reader train owns meta tokens through IBM then Strong override; owners feed HebEncoder train. meta MTok ctx_keys feed profile and HebEncoder; Fw/Rule remap their heads. Logic consumes event concepts via Lexicon and LCS. Strong is optional alignment input, not a translation oracle."
+  ],
+  "id": "translation-meta-codecs",
+  "inverse": [
+    "Valid head-remapping transforms do not retain deleted coordinates; exact residual gates do not entail exact normal translation. Logical-word equality does not imply equal propositions.",
+    "Compatible antecedents include lost surface spellings, metadata/switches, dropped tokens and hidden owner assignments; uniqueness requires full stored scripts and source-side parameters."
+  ],
+  "limitations": [
+    "Finite synthetic evidence only; no language accuracy or persistent learning claim",
+    "Source projection not expanded semantic AST; no certified percentage surrogate"
+  ],
+  "state": "Valid 1-based heads/root0 and finite representable counters; metadata projection and retained residuals remain explicit. Deterministic ordered maps and strict comparisons fix ties on admitted finite domains."
+}

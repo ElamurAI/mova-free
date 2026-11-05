@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "wave32::flags_parts_prepare_and_score_boundaries"
+  ],
+  "children": [],
+  "cost": "A args: flags O(A log A) map comparisons and copies; prepare O(B+normalization); score O(B+W log W) maps per sentence, O(W) pointers/map; filesystem commands retain full input/output text and vectors; split sorts F paths O(F log F).",
+  "description": "Argument slice routes commands. flags consumes '--name value' pairs with empty missing value and last duplicate overwrite. Part parses inclusive chapter bounds, invalid chapter text becomes whole-book. prepare normalizes FORM/text and chooses Type or UPOS as XPOS. score aligns matching unpointed pieces within token positions and maps dependency heads.",
+  "forward": [
+    "Argument slice routes commands. flags consumes '--name value' pairs with empty missing value and last duplicate overwrite. Part parses inclusive chapter bounds, invalid chapter text becomes whole-book. prepare normalizes FORM/text and chooses Type or UPOS as XPOS. score aligns matching unpointed pieces within token positions and maps dependency heads."
+  ],
+  "id": "hbo-cli",
+  "inverse": [
+    "flags cannot distinguish a flag-looking next token from a value; malformed chapter part does not reject. score cannot align partial pieces within a mismatched token; same sentence count alone cannot validate identities.",
+    "Flags map admits duplicate overwritten options and arbitrary order; Part(chapters=None) admits book-only and malformed chapter strings. Tally admits many tree pairs; equal counts/F1 are not recoverable trees or semantic equivalence."
+  ],
+  "limitations": [
+    "Finite supplied-input checks only; no corpus, training, external annotator, GPU, throughput or semantic-understanding claim. Allocation exhaustion and malformed arbitrary model arithmetic are not exhaustively exercised. No useful numerical surrogate is implemented; future caps may only be 1/2/5/10% with a declared metric."
+  ],
+  "source": "tools/hbo/src/main.rs",
+  "state": "Pure-helper domain representable usize tallies and u32 chapter ranges. CLI IO/training/corpus/annotator paths modeled statically only. Word positions are1-based, root0; malformed head parsed0. Token identity check uses piece count/forms, not written token form or sentence IDs."
+}

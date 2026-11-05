@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms knapsack_fptas::tests",
+    "Repeated debug/release, compiled production mutant and restored hashes; see model.md#tests"
+  ],
+  "children": [],
+  "cost": "O(n^3/epsilon) time and O(n^2/epsilon) cells; work=n*width+input length, an upper bound on DP cell visits plus input count, not exact CPU instructions. Multiple validation scans are constant factors. Checked usize/u128 dimensions; fallible reservation; no capacity-sized array.",
+  "description": "Deterministic executable assertions for knapsack_fptas; finite fixtures observe production outputs against independent masks or exact arithmetic. Passing is a finite evidence claim, not universal correctness.",
+  "forward": [
+    "Deterministic executable assertions for knapsack_fptas; finite fixtures observe production outputs against independent masks or exact arithmetic. Passing is a finite evidence claim, not universal correctness."
+  ],
+  "id": "algorithm-knapsack-fptas-tests",
+  "inverse": [
+    "All implementations producing the same finite assertion vector belong to one nonunique fiber. Original production and a mutant differing only on untested data may both pass; the compiled mutant (Force returned feasible objective to zero; named single-use assertion fails.) is separated by zero_weight_and_single_use. A pass vector cannot reconstruct source, runtime or behavior on unseen inputs."
+  ],
+  "limitations": [
+    "Partial syntax, not semantic proof",
+    "Finite oracles do not establish universal accuracy",
+    "No performance measurement or automatic substitution",
+    "Allocator failure not experimentally injected"
+  ],
+  "source": "algorithms/src/knapsack_fptas/tests.rs",
+  "state": "Named assertions and finite fixtures"
+}

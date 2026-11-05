@@ -1,0 +1,86 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-agree-tree-form-behavior-complement",
+        "operator": "Exclude pairs violating concrete fragment forward/invariant relation",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-agree-tree-form-reverse-reconstruction",
+        "operator": "Retain all compatible tagged inputs and intermediate states",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-agree-tree-form-intervention",
+        "operator": "Scoped intervention/coupling relation in referenced section",
+        "path": "model.md",
+        "section": "intervention",
+        "status": "partial_source_model",
+        "type": "counterfactual_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 6272,
+      "start": 4674
+    },
+    "description": "tree_form ignores comments, short rows, multiword and decimal IDs. Last punctuation ? or a raw trailing ? yields wh only when the first nonpunctuation row has a wh tag, otherwise q. A root VB with no direct subject/expletive, no earlier auxiliary, at most two permitted softeners yields imp before ! yields excl. Other forms yield decl."
+  },
+  "domain": "tree_form ignores comments, short rows, multiword and decimal IDs. Last punctuation ? or a raw trailing ? yields wh only when the first nonpunctuation row has a wh tag, otherwise q. A root VB with no direct subject/expletive, no earlier auxiliary, at most two permitted softeners yields imp before ! yields excl. Other forms yield decl.",
+  "id": "prag-agree-tree-form",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../agree.rs",
+    "sha256": "b50e6b91851fb5a19e9d540b2668f6025524b634522a028614be6676e7b9be46"
+  },
+  "state": "Subject/auxiliary relations refer to textual root ID; sparse numeric IDs are allowed. Question classification takes precedence over imperative, imperative over exclamation. This is an annotation heuristic, not proof of speech act.",
+  "status": "partial_source_bound_model"
+}

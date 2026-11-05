@@ -1,0 +1,108 @@
+{
+  "children": [
+    {
+      "id": "gparse-eisner-dynamic-program",
+      "path": "dynamic-program.groupant"
+    },
+    {
+      "id": "gparse-eisner-backtrace",
+      "path": "backtrace.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "evidence": {
+      "path": "model.md#evidence",
+      "status": "executed_finite_checks"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "max_plus",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "max_plus",
+        "status": "partial_source_derived_model",
+        "type": "max_plus"
+      },
+      {
+        "id": "tie_policy",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "tie_policy",
+        "status": "partial_source_derived_model",
+        "type": "tie_policy"
+      },
+      {
+        "id": "domain_boundary",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "domain_boundary",
+        "status": "partial_source_derived_model",
+        "type": "domain_boundary"
+      },
+      {
+        "id": "coordinate_transport",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "coordinate_transport",
+        "status": "partial_source_derived_model",
+        "type": "coordinate_transport"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "gparse-eisner",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../eisner.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "10e4a00f4c14c9132ed2c6c7a83692c73fb3c4f90352b94bfdcc9b5e998c1b47"
+  },
+  "status": "partial_source_bound_model"
+}

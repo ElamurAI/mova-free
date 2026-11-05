@@ -1,0 +1,158 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "No macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "benchmark": {
+      "path": "model.md#benchmark-wave20",
+      "status": "bounded_measured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete source-scoped relation; numerical and finite-evidence limitations retained",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "subject_revision": "591283fb09317b37ebe6aadf1d0e6704737909a9aa91fda410abaa827cfd4de3",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete source-scoped relation; numerical and finite-evidence limitations retained",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "subject_revision": "591283fb09317b37ebe6aadf1d0e6704737909a9aa91fda410abaa827cfd4de3",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "dual_recurrence",
+        "path": "model.md",
+        "scope": "Concrete source-scoped relation; numerical and finite-evidence limitations retained",
+        "section": "dual_recurrence",
+        "status": "partial_source_derived_model",
+        "subject_revision": "591283fb09317b37ebe6aadf1d0e6704737909a9aa91fda410abaa827cfd4de3",
+        "type": "dual_recurrence"
+      },
+      {
+        "id": "zero_argument_fiber",
+        "path": "model.md",
+        "scope": "Concrete source-scoped relation; numerical and finite-evidence limitations retained",
+        "section": "zero_argument_fiber",
+        "status": "partial_source_derived_model",
+        "subject_revision": "591283fb09317b37ebe6aadf1d0e6704737909a9aa91fda410abaa827cfd4de3",
+        "type": "zero_argument_fiber"
+      },
+      {
+        "id": "degree_cost",
+        "path": "model.md",
+        "scope": "Concrete source-scoped relation; numerical and finite-evidence limitations retained",
+        "section": "degree_cost",
+        "status": "partial_source_derived_model",
+        "subject_revision": "591283fb09317b37ebe6aadf1d0e6704737909a9aa91fda410abaa827cfd4de3",
+        "type": "degree_cost"
+      },
+      {
+        "id": "finite_pair_gate",
+        "path": "model.md",
+        "scope": "Concrete source-scoped relation; numerical and finite-evidence limitations retained",
+        "section": "finite_pair_gate",
+        "status": "partial_source_derived_model",
+        "subject_revision": "591283fb09317b37ebe6aadf1d0e6704737909a9aa91fda410abaa827cfd4de3",
+        "type": "finite_pair_gate"
+      },
+      {
+        "evidence": "model.md#wave20-evidence",
+        "id": "nonfinite_absorption",
+        "operator": "With finite validated inputs under ordinary IEEE-754, no traps or fast-math, nonfinite value cannot recover in v*x+c. A nonfinite derivative with finite value also cannot recover; if value later becomes nonfinite the final value gate rejects. Final finite pair therefore implies every previous pair finite. This is a scoped argument, not a Lean proof.",
+        "path": "model.md",
+        "section": "nonfinite_absorption",
+        "status": "partial_source_derived_model",
+        "subject_revision": "591283fb09317b37ebe6aadf1d0e6704737909a9aa91fda410abaa827cfd4de3",
+        "type": "ieee_absorption_relation"
+      },
+      {
+        "evidence": "model.md#wave20-evidence",
+        "id": "failure_work_relation",
+        "operator": "One final gate preserves Result variants and successful arithmetic order, but overflow may traverse remaining coefficients. Removing O(n) pair gates does not guarantee speed; input validation remains O(n).",
+        "path": "model.md",
+        "section": "failure_work_relation",
+        "status": "partial_source_derived_model",
+        "subject_revision": "591283fb09317b37ebe6aadf1d0e6704737909a9aa91fda410abaa827cfd4de3",
+        "type": "cost_observation_complement"
+      },
+      {
+        "assumptions": "Normal return and stated scalar/base domain; no allocation failure. See the referenced section for formula and counterexample.",
+        "counterexample": "Concrete source-level witnesses in referenced section and tools/correspondence/tests/bridges.rs digit_*",
+        "domain": "Listed exact small integer fixtures; broader transfers require every value intermediate exact and Ok",
+        "evidence_status": "source_derived_algebra_and_bounded_actual_api_checks",
+        "formula": "See the source-specific named section; no generic percentage metric is admitted.",
+        "id": "wave39-coefficient_order_transport",
+        "observation": "Projected value after reversed coefficients; errors/derivative not equated",
+        "path": "model.md",
+        "section": "coefficient_order_transport",
+        "status": "partial_source_derived_model",
+        "type": "coefficient_orientation_transport"
+      },
+      {
+        "assumptions": "Normal return and stated scalar/base domain; no allocation failure. See the referenced section for formula and counterexample.",
+        "counterexample": "Concrete source-level witnesses in referenced section and tools/correspondence/tests/bridges.rs digit_*",
+        "domain": "Listed exact small integer fixtures; broader transfers require every value intermediate exact and Ok",
+        "evidence_status": "source_derived_algebra_and_bounded_actual_api_checks",
+        "formula": "See the source-specific named section; no generic percentage metric is admitted.",
+        "id": "wave39-exact_intermediate_exclusion",
+        "observation": "Projected value after reversed coefficients; errors/derivative not equated",
+        "path": "model.md",
+        "section": "exact_intermediate_exclusion",
+        "status": "partial_source_derived_model",
+        "type": "rounded_intermediate_counterexample"
+      },
+      {
+        "assumptions": "Normal return and stated scalar/base domain; no allocation failure. See the referenced section for formula and counterexample.",
+        "counterexample": "Concrete source-level witnesses in referenced section and tools/correspondence/tests/bridges.rs digit_*",
+        "domain": "Listed exact small integer fixtures; broader transfers require every value intermediate exact and Ok",
+        "evidence_status": "source_derived_algebra_and_bounded_actual_api_checks",
+        "formula": "See the source-specific named section; no generic percentage metric is admitted.",
+        "id": "wave39-paired_result_boundary",
+        "observation": "Projected value after reversed coefficients; errors/derivative not equated",
+        "path": "model.md",
+        "section": "paired_result_boundary",
+        "status": "partial_source_derived_model",
+        "type": "paired_accumulator_failure_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#wave20-evidence",
+      "status": "focused_executed_full_pending"
+    }
+  },
+  "id": "algorithm-horner",
+  "kind": "groupant",
+  "registry": {
+    "node": "algorithm-horner",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "591283fb09317b37ebe6aadf1d0e6704737909a9aa91fda410abaa827cfd4de3"
+  },
+  "status": "partial_descriptive_instance"
+}

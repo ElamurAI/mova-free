@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "Direct real-source Rust tests and bounded probe; see sidecar model.md#evidence",
+    "mova-modelcheck groupants structural validation"
+  ],
+  "children": [],
+  "cost": "Cold correction O(sum_v m*len(v)) DP work plus trigrams; fixed vocabulary, unbounded distinct-query cache. Tokenization is linear in text size.",
+  "description": "Tokenize with separators, lowercase, rank corrections, context-gate them, then read digit/word spans and emit normalized text plus Found.",
+  "forward": [
+    "Tokenize with separators, lowercase, rank corrections, context-gate them, then read digit/word spans and emit normalized text plus Found."
+  ],
+  "id": "number-normalization",
+  "inverse": [
+    "U=bounded strings x (normalized text,Found vector); R=token/correct/read/render with fixed dictionary. Candidate inner bound of U minus R includes zero-token recognized spans, noncanonical ordinal suffixes in normalized output, or correction words outside vocabulary.",
+    "F^-1(y) retains all texts with normalize(x)=y; observing text alone admits fifty five and fifty-five for 55. Found narrows fibers but loses internal separators, so no unique reconstruction."
+  ],
+  "limitations": [
+    "Partial syntax only; generated dependencies not source-bound",
+    "Catalog proposed experiments are not executed",
+    "No whole-inference correctness claim"
+  ],
+  "source": "world/src/numbers.rs",
+  "state": "Tagged numeric inputs, fixed source tables/dictionary and correction cache"
+}

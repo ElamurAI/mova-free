@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "parse::tests (7 named tests); integration unbalanced_is_an_error_with_position and macros_newcommand_def_let_declareop",
+    "Two debug/two release selected runs; paired syntax"
+  ],
+  "children": [],
+  "cost": "Cost in source bytes B, expanded tokens T, body/argument copies C and tree N: O(B+T+C) plus delimiter matching and repeated nested operations; storage includes tokens, macro clones and tree; recursion bounded only along list depth.",
+  "description": "parse_with initializes local macro state and token stack. list consumes until stop kind, normalizes rows; top tables choose Aligned if any row has multiple cells else Gathered. Local macros shadow external before built-in dispatch, CmdRaw bypasses expansion. Unknown grouped arguments parse or become canonical Text on recoverable failure.",
+  "forward": [
+    "parse_with initializes local macro state and token stack. list consumes until stop kind, normalizes rows; top tables choose Aligned if any row has multiple cells else Gathered. Local macros shadow external before built-in dispatch, CmdRaw bypasses expansion. Unknown grouped arguments parse or become canonical Text on recoverable failure."
+  ],
+  "id": "latex-parse",
+  "inverse": [
+    "Accepted unmatched closers and duplicate scripts are excluded, but arbitrary TeX semantic validity is not established. MAX_TOKENS is a check before substitution, not a global peak allocation ceiling.",
+    "parse preimage includes comments, spacing, aliases, dropped presentation commands and macro programs with the same expanded normalized structure. Error preimage includes sources sharing first reached failure and byte offset; no unique original recoverability."
+  ],
+  "limitations": [
+    "Partial source models and finite tests, no semantic proof or expanded AST.",
+    "No useful executable percentage approximant metric established; future caps1/2/5/10% only.",
+    "No live VMM/API/corpus/GPU/full-school/held-out execution; allocation and extreme sizes untested."
+  ],
+  "source": "latex/src/parse.rs",
+  "state": "Depth threshold400; expansions10000; token threshold1000000 checked pre-expansion. primes saturate255; offsets u32 require representable lengths. Argument errors occur before duplicate sup/sub check."
+}

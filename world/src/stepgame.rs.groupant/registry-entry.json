@@ -1,0 +1,28 @@
+{
+  "checks": [
+    "stepgame::wave29_tests::lexical_ground_and_tie_boundaries",
+    "stepgame::wave29_tests::graph_first_path_and_text_reset",
+    "tests03::stepgame_lexical_reader_reads_new_phrasings",
+    "tests03::stepgame_phrasing_and_corrected_format"
+  ],
+  "children": [],
+  "cost": "Features O(B) allocated ngrams; score O(9F) expected hash operations; lexical worst O(T²) backward cue scanning; BFS O((V+E)logV) plus clones. Training O(epochs*N*F*9); stride not a permutation if gcd(N,7919)>1.",
+  "description": "load_txt resets at literal 1 and clones story on tabbed questions. JSON defaults absent fields, maps invalid numeric ids to zero, stably sorts numeric ids. read prioritizes perceptron for seen phrasing, otherwise lexical unless environment disables it. Scores tie by lowest class index. answer requires two distinct query agents, builds reciprocal edges, BFS from reference and projects displacement to sign class. train uses deterministic stride and integer accumulated weights; eval/contrast perform dataset/report effects. Equations: score_k=Σ_{f in feats}w[f,k], pred=min argmax_k score_k; p[q1]=0; vacant p[y]=p[x]+v_xy; label=LABELS[(sign p[q0].x, sign p[q0].y)]. lexical axes return None if both signs occur, otherwise first nonzero sign or zero; ground=a1 negates both axes.",
+  "forward": [
+    "load_txt resets at literal 1 and clones story on tabbed questions. JSON defaults absent fields, maps invalid numeric ids to zero, stably sorts numeric ids. read prioritizes perceptron for seen phrasing, otherwise lexical unless environment disables it. Scores tie by lowest class index. answer requires two distinct query agents, builds reciprocal edges, BFS from reference and projects displacement to sign class. train uses deterministic stride and integer accumulated weights; eval/contrast perform dataset/report effects. Equations: score_k=Σ_{f in feats}w[f,k], pred=min argmax_k score_k; p[q1]=0; vacant p[y]=p[x]+v_xy; label=LABELS[(sign p[q0].x, sign p[q0].y)]. lexical axes return None if both signs occur, otherwise first nonzero sign or zero; ground=a1 negates both axes.",
+    "LABELS order is tie order. Coordinates mean first agent relative second, not meters. Deduplicated single ASCII capital agents only. finish retains scaled sums, not divided average; avg is not a read switch."
+  ],
+  "id": "world-stepgame",
+  "inverse": [
+    "Exclude lexical vectors for clock tokens, conflicting signs on an axis or directionless text without sameness; exclude answer for invalid agent count or unreachable target. Contradictory cycles still return first path. Zero perceptron intentionally yields left, not abstention. C_answer includes (q,G,Some(label)) whenever |agents(q)|≠2 or q0∉Reach_G(q1). C_lex includes (s,Some(v)) whenever clock(s) or axis_conflict(s).",
+    "Left label admits every graph with first BFS displacement x<0,y=0; explanation narrows to exact d but never unique story. phrasing collapses letter renamings/punctuation/case. load_txt loses support fields and original numbers. Predicted class k admits weight states where k is smallest maximizing score. Pre(left)={ (R,I) | BFS_edges(R,I)(q1)[q0]=(x,0), x<0 }."
+  ],
+  "limitations": [
+    "Partial syntax projection only; no macro expansion or proof",
+    "No useful percentage surrogate for exact categorical/state/effect semantics; executable approximant unsupported",
+    "No dataset training, eval/contrast or GPU",
+    "No overflow/allocation fault injection"
+  ],
+  "source": "world/src/stepgame.rs",
+  "state": "Nine-class Reader weights/accumulators/timestamps, seen/suspect phrasings; text/JSON Items; reciprocal agent graph."
+}

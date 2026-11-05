@@ -1,0 +1,115 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional source relation; exact algebra only over explicitly admitted abstract domains",
+        "assumptions": "Inherited IDs must keep their parent meaning in the child lemma table. Valid dense unique canonical tables suffice; sparse/duplicate table construction and ID-width overflow remain separate risks. Csubj contributes structural subj but no lexical subj:lemma. Empty strings pass all(is_alphabetic) vacuously.",
+        "domain": "Finite valid records, tables and ID sets; specialized in operator",
+        "evidence": "../../model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "One identity, feature or pointwise carry transition",
+        "operator": "Universe: valid decoded trees, fixed lemma table and feature-count maps. Inner complement excludes subj:alice from a tree with no Nsubj/NsubjPass token resolving to alice; excludes counts above 255; excludes tag-only changes changing this feature map. This projection ignores tags and heads, so record inequality need not change any index feature.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; exact algebra only over explicitly admitted abstract domains",
+        "assumptions": "Inherited IDs must keep their parent meaning in the child lemma table. Valid dense unique canonical tables suffice; sparse/duplicate table construction and ID-width overflow remain separate risks. Csubj contributes structural subj but no lexical subj:lemma. Empty strings pass all(is_alphabetic) vacuously.",
+        "domain": "Finite valid records, tables and ID sets; specialized in operator",
+        "evidence": "../../model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "One identity, feature or pointwise carry transition",
+        "operator": "A feature map admits every token sequence whose structural and lexical counts saturate to those observations. Token order, heads and tags are generally free. Count 255 admits every unsaturated count at least 255. A missing lexical feature may mean no subject, nonalphabetic lemma, absent ID, or a different relation; no unique lexical tree follows.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; exact algebra only over explicitly admitted abstract domains",
+        "assumptions": "Inherited IDs must keep their parent meaning in the child lemma table. Valid dense unique canonical tables suffice; sparse/duplicate table construction and ID-width overflow remain separate risks. Csubj contributes structural subj but no lexical subj:lemma. Empty strings pass all(is_alphabetic) vacuously.",
+        "domain": "Finite valid records, tables and ID sets; specialized in operator",
+        "evidence": "../../model.md#tests",
+        "id": "table-extension",
+        "observation_scope": "One identity, feature or pointwise carry transition",
+        "operator": "If a child table agrees with the parent on every inherited ID, inherited records preserve lexical features. Agreement of numeric IDs alone is insufficient. Changed-ID completeness fails if a child reinterprets inherited IDs without listing those sentences; canonical dense table extension is an explicit condition, not a general file-format guarantee.",
+        "path": "model.md",
+        "section": "table-extension",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "dependency_preservation"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; exact algebra only over explicitly admitted abstract domains",
+        "assumptions": "Inherited IDs must keep their parent meaning in the child lemma table. Valid dense unique canonical tables suffice; sparse/duplicate table construction and ID-width overflow remain separate risks. Csubj contributes structural subj but no lexical subj:lemma. Empty strings pass all(is_alphabetic) vacuously.",
+        "domain": "Finite valid records, tables and ID sets; specialized in operator",
+        "evidence": "../../model.md#tests",
+        "id": "feature-quotient",
+        "observation_scope": "One identity, feature or pointwise carry transition",
+        "operator": "The feature map is coarser than stored semantic identity: changing a tag, a head, a non-subject lemma or a saturated excess count may preserve all postings. Therefore the delta dictionary can be a strict superset of feature-changing sentences. Such extra IDs preserve carry correctness but increase work.",
+        "path": "model.md",
+        "section": "feature-quotient",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "information_loss"
+      }
+    ],
+    "tests": {
+      "path": "../../model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 38758,
+      "start": 17886
+    },
+    "description": "world-store-lexical-projection",
+    "syntax_nodes": {
+      "node_ids": [
+        1853,
+        1917,
+        1988,
+        2059,
+        4333
+      ],
+      "path": "../../syntax.json"
+    }
+  },
+  "id": "world-store-lexical-projection",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../store.rs",
+    "sha256": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9"
+  },
+  "status": "partial_source_derived_instance"
+}

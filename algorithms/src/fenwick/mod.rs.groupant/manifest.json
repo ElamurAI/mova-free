@@ -1,0 +1,124 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-fenwick",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "37eeffaa126e78a1234dd215d7f3c2177500d352b3c82337dfcc5359ab345f85"
+  },
+  "registry": {
+    "path": "../../../../models/contracts.json",
+    "node": "algorithm-fenwick"
+  },
+  "status": "partial",
+  "components": {
+    "ast": {
+      "path": "ast.json",
+      "format": "rust_syntax_projection",
+      "status": "partial",
+      "scope": "Partial source syntax; macros opaque; no semantic resolution"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial"
+    },
+    "tests": {
+      "path": "model.md",
+      "section": "tests",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "descriptant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "algorithm-fenwick-behavior-complement",
+        "type": "behavior_complement",
+        "required": true,
+        "status": "partial_source_model",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "subject_revision": "algorithms/src/fenwick/mod.rs sha256:37eeffaa126e78a1234dd215d7f3c2177500d352b3c82337dfcc5359ab345f85",
+        "domain": "Lawful API inputs and invariant states; see section domain",
+        "observation_scope": "Single call or explicitly named update trace",
+        "operator": "Relation in model.md behavior-complement",
+        "approximation_semantics": "Conditional inner bound of U minus R",
+        "assumptions": "Successful allocation; trusted Rust semantics; lawful stable generic traits where applicable",
+        "evidence": "Four tests twice, direct reference checks, filtered compiled-source mutation failure; see tests section"
+      },
+      {
+        "id": "algorithm-fenwick-reverse-reconstruction",
+        "type": "reverse_reconstruction",
+        "required": true,
+        "status": "partial_source_model",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "subject_revision": "algorithms/src/fenwick/mod.rs sha256:37eeffaa126e78a1234dd215d7f3c2177500d352b3c82337dfcc5359ab345f85",
+        "domain": "Lawful API inputs and invariant states; see section domain",
+        "observation_scope": "Single call or explicitly named update trace",
+        "operator": "Relation in model.md reverse-reconstruction",
+        "approximation_semantics": "Set-valued preimage; no unique recovery unless stated",
+        "assumptions": "Successful allocation; trusted Rust semantics; lawful stable generic traits where applicable",
+        "evidence": "Four tests twice, direct reference checks, filtered compiled-source mutation failure; see tests section"
+      },
+      {
+        "id": "algorithm-fenwick-arithmetic",
+        "type": "bounded_arithmetic",
+        "required": false,
+        "status": "partial_source_model",
+        "path": "model.md",
+        "section": "arithmetic",
+        "subject_revision": "algorithms/src/fenwick/mod.rs sha256:37eeffaa126e78a1234dd215d7f3c2177500d352b3c82337dfcc5359ab345f85",
+        "domain": "Lawful API inputs and invariant states; see section domain",
+        "observation_scope": "Single call or explicitly named update trace",
+        "operator": "Relation in model.md arithmetic",
+        "approximation_semantics": "Scoped source relation and bounded executable correspondence",
+        "assumptions": "Successful allocation; trusted Rust semantics; lawful stable generic traits where applicable",
+        "evidence": "Four tests twice, direct reference checks, filtered compiled-source mutation failure; see tests section"
+      },
+      {
+        "id": "algorithm-fenwick-mutation-frame",
+        "type": "atomic_point_transition",
+        "required": false,
+        "status": "partial_source_model",
+        "path": "model.md",
+        "section": "mutation-frame",
+        "subject_revision": "algorithms/src/fenwick/mod.rs sha256:37eeffaa126e78a1234dd215d7f3c2177500d352b3c82337dfcc5359ab345f85",
+        "domain": "Lawful API inputs and invariant states; see section domain",
+        "observation_scope": "Single call or explicitly named update trace",
+        "operator": "Relation in model.md mutation-frame",
+        "approximation_semantics": "Scoped source relation and bounded executable correspondence",
+        "assumptions": "Successful allocation; trusted Rust semantics; lawful stable generic traits where applicable",
+        "evidence": "Four tests twice, direct reference checks, filtered compiled-source mutation failure; see tests section"
+      },
+      {
+        "id": "algorithm-fenwick-prefix-decomposition",
+        "type": "disjoint_block_partition",
+        "required": false,
+        "status": "partial_source_model",
+        "path": "model.md",
+        "section": "prefix-decomposition",
+        "subject_revision": "algorithms/src/fenwick/mod.rs sha256:37eeffaa126e78a1234dd215d7f3c2177500d352b3c82337dfcc5359ab345f85",
+        "domain": "Lawful API inputs and invariant states; see section domain",
+        "observation_scope": "Single call or explicitly named update trace",
+        "operator": "Relation in model.md prefix-decomposition",
+        "approximation_semantics": "Scoped source relation and bounded executable correspondence",
+        "assumptions": "Successful allocation; trusted Rust semantics; lawful stable generic traits where applicable",
+        "evidence": "Four tests twice, direct reference checks, filtered compiled-source mutation failure; see tests section"
+      }
+    ]
+  }
+}

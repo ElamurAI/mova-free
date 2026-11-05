@@ -1,0 +1,230 @@
+{
+  "children": [
+    "coref-score",
+    "coref-groupant-transfers",
+    "coreference-pipeline"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Native evidence is finite and revision-specific; ragged/nonfinite matrices, malformed partitions, numerical overflow and linguistic annotation quality are not newly established. Thresholds/caps and scratch reset semantics must match merged source. Integer objective equality does not imply assignment-vector equality under ties or equivalence on arbitrary fractional matrices. Real-arithmetic assignment optimality is a model target; general floating-point optimality is not established.",
+        "domain": "Finite well-formed mention spans with fixed Head or Exact policy and stable input order; matching keys partition work into independent groups. Assignment comparisons use rectangular finite matrices; cross-implementation integer observations additionally require exact representability and safe negation/conversion. Empty and negative rectangular cases are tagged separately.",
+        "evidence": "model.md",
+        "id": "coreference-observation-excluded-identity-changes",
+        "observation_scope": "The actual scoring pipeline joins mention identities to metric partition IDs. Greedy mention matching and global maximum assignment are distinct operations within the score module; replacing one with the other is invalid. Harness observations independently compare heap-sort total keys with stable greedy identities and compare integer maximum objectives with a negated-cost minimum-assignment oracle only on exactly representable integer matrices. No runtime call from match_mentions to Hungarian is introduced.",
+        "operator": "In U of tagged lawful matcher calls and complete output vectors, excluded observations include two predictions consuming one gold mention, a residual overlap pair displacing an available exact-span match, a zero-overlap residual pair being omitted while both sides remain free, and swapping equal-overlap ties against prediction/gold order. In the separate real-arithmetic assignment model, an objective below the maximum is excluded. For machine arithmetic, this epoch establishes preservation of the existing rounded observation and bounded exact-integer oracle results, not universal numerical optimality. Neither statement imposes maximum weight on greedy mention matching.",
+        "path": "model.md",
+        "section": "excluded-identity-changes",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Native evidence is finite and revision-specific; ragged/nonfinite matrices, malformed partitions, numerical overflow and linguistic annotation quality are not newly established. Thresholds/caps and scratch reset semantics must match merged source. Integer objective equality does not imply assignment-vector equality under ties or equivalence on arbitrary fractional matrices. Real-arithmetic assignment optimality is a model target; general floating-point optimality is not established.",
+        "domain": "Finite well-formed mention spans with fixed Head or Exact policy and stable input order; matching keys partition work into independent groups. Assignment comparisons use rectangular finite matrices; cross-implementation integer observations additionally require exact representability and safe negation/conversion. Empty and negative rectangular cases are tagged separately.",
+        "evidence": "model.md",
+        "id": "coreference-observation-compatible-spans-partitions",
+        "observation_scope": "The actual scoring pipeline joins mention identities to metric partition IDs. Greedy mention matching and global maximum assignment are distinct operations within the score module; replacing one with the other is invalid. Harness observations independently compare heap-sort total keys with stable greedy identities and compare integer maximum objectives with a negated-cost minimum-assignment oracle only on exactly representable integer matrices. No runtime call from match_mentions to Hungarian is introduced.",
+        "operator": "An observed match vector admits all mention lists and group keys whose exact-first and greedy phases produce those identities; arbitrary unmatched spans and many overlap magnitudes remain possible. A scalar metric or assignment objective admits multiple partitions, matrices and tied assignments. Preserve the operation tag, dimensions, matching policy and ordering as conditions; neither mention spans nor unique assignments are reconstructed.",
+        "path": "model.md",
+        "section": "compatible-spans-partitions",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Native evidence is finite and revision-specific; ragged/nonfinite matrices, malformed partitions, numerical overflow and linguistic annotation quality are not newly established. Thresholds/caps and scratch reset semantics must match merged source. Integer objective equality does not imply assignment-vector equality under ties or equivalence on arbitrary fractional matrices. Real-arithmetic assignment optimality is a model target; general floating-point optimality is not established.",
+        "domain": "Finite well-formed mention spans with fixed Head or Exact policy and stable input order; matching keys partition work into independent groups. Assignment comparisons use rectangular finite matrices; cross-implementation integer observations additionally require exact representability and safe negation/conversion. Empty and negative rectangular cases are tagged separately.",
+        "evidence": "model.md",
+        "id": "coreference-observation-exact-before-residual",
+        "observation_scope": "The actual scoring pipeline joins mention identities to metric partition IDs. Greedy mention matching and global maximum assignment are distinct operations within the score module; replacing one with the other is invalid. Harness observations independently compare heap-sort total keys with stable greedy identities and compare integer maximum objectives with a negated-cost minimum-assignment oracle only on exactly representable integer matrices. No runtime call from match_mentions to Hungarian is introduced.",
+        "operator": "Exact spans are consumed before residual edge construction. Residual indices refer to the remaining stable vectors, so removing duplicate exact spans must not reorder survivors or allow sorted edges to reuse them. The independent duplicate-span fixture observes the exact-first boundary and the residual continuation together.",
+        "path": "model.md",
+        "section": "exact-before-residual",
+        "status": "partial_source_model",
+        "type": "stage_priority"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Native evidence is finite and revision-specific; ragged/nonfinite matrices, malformed partitions, numerical overflow and linguistic annotation quality are not newly established. Thresholds/caps and scratch reset semantics must match merged source. Integer objective equality does not imply assignment-vector equality under ties or equivalence on arbitrary fractional matrices. Real-arithmetic assignment optimality is a model target; general floating-point optimality is not established.",
+        "domain": "Finite well-formed mention spans with fixed Head or Exact policy and stable input order; matching keys partition work into independent groups. Assignment comparisons use rectangular finite matrices; cross-implementation integer observations additionally require exact representability and safe negation/conversion. Empty and negative rectangular cases are tagged separately.",
+        "evidence": "model.md",
+        "id": "coreference-observation-total-key-ties",
+        "observation_scope": "The actual scoring pipeline joins mention identities to metric partition IDs. Greedy mention matching and global maximum assignment are distinct operations within the score module; replacing one with the other is invalid. Harness observations independently compare heap-sort total keys with stable greedy identities and compare integer maximum objectives with a negated-cost minimum-assignment oracle only on exactly representable integer matrices. No runtime call from match_mentions to Hungarian is introduced.",
+        "operator": "Sort keys are (Reverse(overlap), residual_prediction_index, residual_gold_index). Selecting an edge only when both endpoints are free reproduces repeated maximum-overlap scanning, including zero weights. Equal objectives alone do not constrain identities: the test compares actual stable match identities and separately inspects the ordering of unique total keys.",
+        "path": "model.md",
+        "section": "total-key-ties",
+        "status": "partial_source_model",
+        "type": "tie_order_preimage"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Native evidence is finite and revision-specific; ragged/nonfinite matrices, malformed partitions, numerical overflow and linguistic annotation quality are not newly established. Thresholds/caps and scratch reset semantics must match merged source. Integer objective equality does not imply assignment-vector equality under ties or equivalence on arbitrary fractional matrices. Real-arithmetic assignment optimality is a model target; general floating-point optimality is not established.",
+        "domain": "Finite well-formed mention spans with fixed Head or Exact policy and stable input order; matching keys partition work into independent groups. Assignment comparisons use rectangular finite matrices; cross-implementation integer observations additionally require exact representability and safe negation/conversion. Empty and negative rectangular cases are tagged separately.",
+        "evidence": "model.md",
+        "id": "coreference-observation-bounded-selector",
+        "observation_scope": "The actual scoring pipeline joins mention identities to metric partition IDs. Greedy mention matching and global maximum assignment are distinct operations within the score module; replacing one with the other is invalid. Harness observations independently compare heap-sort total keys with stable greedy identities and compare integer maximum objectives with a negated-cost minimum-assignment oracle only on exactly representable integer matrices. No runtime call from match_mentions to Hungarian is introduced.",
+        "operator": "Sorting is attempted only when min(P,G)>=128 and checked P*G<=262144. Multiplication overflow, excess edge count, small side or failed reservation returns to scanning before output mutation. Cost and allocation behavior are piecewise; source-local threshold and cap cases are required in addition to the independent supplied fixtures.",
+        "path": "model.md",
+        "section": "bounded-selector",
+        "status": "partial_source_model",
+        "type": "resource_fallback"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Native evidence is finite and revision-specific; ragged/nonfinite matrices, malformed partitions, numerical overflow and linguistic annotation quality are not newly established. Thresholds/caps and scratch reset semantics must match merged source. Integer objective equality does not imply assignment-vector equality under ties or equivalence on arbitrary fractional matrices. Real-arithmetic assignment optimality is a model target; general floating-point optimality is not established.",
+        "domain": "Finite well-formed mention spans with fixed Head or Exact policy and stable input order; matching keys partition work into independent groups. Assignment comparisons use rectangular finite matrices; cross-implementation integer observations additionally require exact representability and safe negation/conversion. Empty and negative rectangular cases are tagged separately.",
+        "evidence": "model.md",
+        "id": "coreference-observation-greedy-not-assignment",
+        "observation_scope": "The actual scoring pipeline joins mention identities to metric partition IDs. Greedy mention matching and global maximum assignment are distinct operations within the score module; replacing one with the other is invalid. Harness observations independently compare heap-sort total keys with stable greedy identities and compare integer maximum objectives with a negated-cost minimum-assignment oracle only on exactly representable integer matrices. No runtime call from match_mentions to Hungarian is introduced.",
+        "operator": "For a residual group containing [[5,4],[4,0]] and zero padding, greedy takes the leading 5 then 0 while global assignment can take 4+4. This rejected replacement is part of the model, even though assign_max is a legitimate separate metric component. Integer negation joins maximum and minimum assignment objectives only under exact numeric and rectangular shape obligations.",
+        "path": "model.md",
+        "section": "greedy-not-assignment",
+        "status": "partial_source_model",
+        "type": "policy_non_equivalence"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Native evidence is finite and revision-specific; ragged/nonfinite matrices, malformed partitions, numerical overflow and linguistic annotation quality are not newly established. Thresholds/caps and scratch reset semantics must match merged source. Integer objective equality does not imply assignment-vector equality under ties or equivalence on arbitrary fractional matrices. Real-arithmetic assignment optimality is a model target; general floating-point optimality is not established.",
+        "domain": "Finite well-formed mention spans with fixed Head or Exact policy and stable input order; matching keys partition work into independent groups. Assignment comparisons use rectangular finite matrices; cross-implementation integer observations additionally require exact representability and safe negation/conversion. Empty and negative rectangular cases are tagged separately.",
+        "evidence": "model.md",
+        "id": "coreference-observation-augmentation-reset",
+        "observation_scope": "The actual scoring pipeline joins mention identities to metric partition IDs. Greedy mention matching and global maximum assignment are distinct operations within the score module; replacing one with the other is invalid. Harness observations independently compare heap-sort total keys with stable greedy identities and compare integer maximum objectives with a negated-cost minimum-assignment oracle only on exactly representable integer matrices. No runtime call from match_mentions to Hungarian is introduced.",
+        "operator": "Hungarian scratch minima and visited flags must be reset at every augmentation; potentials and the partial matching retain their intended state. Reusing buffers without this split can leak a previous search into the next. Empty, rectangular/transposed, negative and repeated-call observations constrain this seam; no allocation-count or runtime gain is asserted without measurements.",
+        "path": "model.md",
+        "section": "augmentation-reset",
+        "status": "partial_source_model",
+        "type": "state_reset_obligation"
+      },
+      {
+        "assumptions": "No corpus/teacher/API/GPU actions. No production behavior edits; only inline tests added to existing main/tests files. Existing score.rs remains unchanged. Runtime control coverage excludes lib declarations and tests fixture source as independent production components.",
+        "domain": "Finite in-memory synthetic UTF-8 CoNLL-U with valid raw/index mappings and acyclic in-range trees, stable COREF_X/COREF_MD/PRAG_OFF snapshots. Native allocation/counter limits apply. Parser and malformed-input failure models explicitly distinguish weaker public/permissive adapters.",
+        "id": "wave27-coreference-pipeline-span-head-transport",
+        "operator": "MSpan=(span, span_head(tree,span)); OutMention=(span,detected_head,visible_cluster_ordinal,note). Equal spans need not imply identical heads across gold/predicted trees. retree requires equal sentence/word forms but can change head matching.",
+        "path": "model.md",
+        "section": "wave27-coreference-pipeline-span-head-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No corpus/teacher/API/GPU actions. No production behavior edits; only inline tests added to existing main/tests files. Existing score.rs remains unchanged. Runtime control coverage excludes lib declarations and tests fixture source as independent production components.",
+        "domain": "Finite in-memory synthetic UTF-8 CoNLL-U with valid raw/index mappings and acyclic in-range trees, stable COREF_X/COREF_MD/PRAG_OFF snapshots. Native allocation/counter limits apply. Parser and malformed-input failure models explicitly distinguish weaker public/permissive adapters.",
+        "id": "wave27-coreference-pipeline-partition-visibility",
+        "operator": "Let C partition [0,M). Visible output filters v(m,C)=!internal(m) && !(coord(m)&&|C|=1&&!override), drops empty projected clusters, then assigns consecutive ids. A group plus one invisible member has |C|=2 and may survive; filtering and singleton detection do not commute.",
+        "path": "model.md",
+        "section": "wave27-coreference-pipeline-partition-visibility",
+        "status": "partial_composition_model",
+        "type": "partition_projection"
+      },
+      {
+        "assumptions": "No corpus/teacher/API/GPU actions. No production behavior edits; only inline tests added to existing main/tests files. Existing score.rs remains unchanged. Runtime control coverage excludes lib declarations and tests fixture source as independent production components.",
+        "domain": "Finite in-memory synthetic UTF-8 CoNLL-U with valid raw/index mappings and acyclic in-range trees, stable COREF_X/COREF_MD/PRAG_OFF snapshots. Native allocation/counter limits apply. Parser and malformed-input failure models explicitly distinguish weaker public/permissive adapters.",
+        "id": "wave27-coreference-pipeline-failure-effects",
+        "operator": "CLI eval mkdir precedes read. run gold parse/self-check precede length check and report; diagnostic file write precedes leak check; CoNLL-U write precedes caller report-file write. Failure may leave earlier effects; there is no cross-file transaction.",
+        "path": "model.md",
+        "section": "wave27-coreference-pipeline-failure-effects",
+        "status": "partial_composition_model",
+        "type": "effect_order"
+      },
+      {
+        "assumptions": "No corpus/teacher/API/GPU actions. No production behavior edits; only inline tests added to existing main/tests files. Existing score.rs remains unchanged. Runtime control coverage excludes lib declarations and tests fixture source as independent production components.",
+        "domain": "Finite in-memory synthetic UTF-8 CoNLL-U with valid raw/index mappings and acyclic in-range trees, stable COREF_X/COREF_MD/PRAG_OFF snapshots. Native allocation/counter limits apply. Parser and malformed-input failure models explicitly distinguish weaker public/permissive adapters.",
+        "id": "wave27-coreference-pipeline-micro-metrics",
+        "operator": "Aggregate Counts=sum over aligned documents, then compute ratios/F1. Averaging per-document F1 is a different function. Empty denominators in scorer map0, whereas CLI mention-stat raw recall/precision can print NaN; do not unify their zero semantics.",
+        "path": "model.md",
+        "section": "wave27-coreference-pipeline-micro-metrics",
+        "status": "partial_composition_model",
+        "type": "aggregation_transport"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks (evidence)",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "coreference-observation",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "coref/src/corefud.rs",
+      "sha256": "4f7008569d0c56ee5955ddb7e05384ffcfe064846c09d728d7f77dbb32f0322f"
+    },
+    {
+      "path": "coref/src/doc.rs",
+      "sha256": "e3fa96e6122a91b90075c4d4839879349e99c1cfd5a03a99df49e236c8f3500a"
+    },
+    {
+      "path": "coref/src/eval.rs",
+      "sha256": "5682c8888142509fc2c9ea531f6eb5e003d4a80fac3c9e2db304b8e37ebb52ef"
+    },
+    {
+      "path": "coref/src/it.rs",
+      "sha256": "7eb98828a602c2ff87c48f3a356bba7b1c5883c3b7e6a84081d1ec8e03db5f62"
+    },
+    {
+      "path": "coref/src/lexicon.rs",
+      "sha256": "79adfd1260673619c2c887d71a6e532dbec4a6266873214717b519d2518c960b"
+    },
+    {
+      "path": "coref/src/lib.rs",
+      "sha256": "14c9c339d7bd5281755f0afbce6f8d9ae2716952c49953fa3fd32b8b8e33e3b3"
+    },
+    {
+      "path": "coref/src/main.rs",
+      "sha256": "e2ff8656a295c323b2a1db93a78d97508465a4a8344955d87401be1da227aeb7"
+    },
+    {
+      "path": "coref/src/mention.rs",
+      "sha256": "677dfa544ef4eb28424d2b67ceea4dd8d34af58c0dfa12eccd844500eccccd63"
+    },
+    {
+      "path": "coref/src/score.rs",
+      "sha256": "da0433c1ce72ec0e5bb3b99c522543b6f677e1cd255d2d5767a9818be200393b"
+    },
+    {
+      "path": "coref/src/sieve.rs",
+      "sha256": "65bf58746585d62a98389bf64fa27d828aedb9e9db6103d38c6b1641a37cad52"
+    },
+    {
+      "path": "coref/src/tests.rs",
+      "sha256": "41386cabb254786232e985da896b4425fd01cfaf1a8a77c3867b026bb95f022e"
+    },
+    {
+      "path": "coref/tests/groupant_transfers.rs",
+      "sha256": "3cc75d11f9c83c5fb6fe5a8f24586216cb4f7ee48c5e524a44a166100cce297f"
+    }
+  ],
+  "status": "partial_source_bound_model"
+}

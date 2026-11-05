@@ -1,0 +1,26 @@
+{
+  "id": "algorithm-dag-shortest-paths-tests",
+  "source": "algorithms/src/dag_shortest_paths/tests.rs",
+  "children": [],
+  "description": "dag_shortest_paths independent finite and metamorphic tests",
+  "state": "Deterministic finite fixture executions and assertion verdict vectors for the adjacent implementation; not an all-input proof.",
+  "cost": "Finite enumeration 4^6 DAGs at 4 sources, path oracle exponential in general but n=4 here; other fixtures linear in 2048. Symbolic suite cost, no timing claim.",
+  "forward": [
+    "Six tests: enumerate 4^6 four-vertex increasing-label DAGs with absent/-1/0/1 edges, every source and a fixed nontrivial relabeling, compare exhaustive path enumeration; then assert global ordered errors, i64 extrema widened to i128, duplicates and input preservation, potential transforms/nonunique fibers, and a 2048-vertex negative chain plus isolated vertex."
+  ],
+  "inverse": [
+    "In the universe of fixture/verdict pairs, excluded behavior contains a passing verdict when any encoded expected value differs, or a claim of universal correctness from these finite fixtures. The independent oracle enumerates paths rather than reproducing the production scheduling mechanism.",
+    "Given the all-pass assertion vector, recover all candidate implementations agreeing with the fixture map on exactly the executed inputs. This set includes the reference and implementations that fail on untested inputs; it does not identify unique source code. A failing oracle assertion constrains the preimage to implementations disagreeing on that concrete graph/source/output.",
+    "Every path in an increasing-label DAG terminates. Enumeration covers 4,096 graph codes and 16,384 graph/source comparisons, plus relabeled comparisons; arbitrary labels test the production topological dependency.",
+    "Replacing strict minimum comparison by maximum must disagree when two source paths have unequal sums; the exhaustive oracle assertion rejects this compiled mutation. Compilation success is required; compile failures do not count.",
+    "Fixtures sample graph semantics, source/endpoint priority, disconnected behavior and metamorphic identities. They do not exercise allocation failure or the defensive checked-distance overflow return. Repeatability means identical normalized named test outcomes across two debug and two release runs, not identical timings."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline --lib (debug and release, twice each)",
+    "Strict all-target Clippy, rustfmt check, two identical syntax projections, compiled production mutant assertion rejection."
+  ],
+  "limitations": [
+    "Finite observations are not a universal proof; syntax projection is partial.",
+    "Defensive arithmetic overflow branch is not exercised; no executable approximate profile attached."
+  ]
+}

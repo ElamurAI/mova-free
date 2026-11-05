@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "blocks::wave32::grouping_and_duplicate_id_projection",
+    "blocks::tests::book_chapters_give_the_file_back_and_runs_stay_whole",
+    "blocks::tests::a_chapter_without_headings_is_cut_at_paragraphs"
+  ],
+  "children": [],
+  "cost": "group O(total text bytes) word scans; concat O(copied text+pieces+blocks). like map O(C log C), lookups O(K log C) plus cloning. book_text O(bytes) typical, repeated chapter reconstruction and allocations can add copying. File adapters materialize files/maps; recursion has no explicit symlink cycle guard.",
+  "description": "group greedily emits contiguous ranges when group differs or w+n>max before current chapter; concat rebases Text indices by prior block count and uses first canon_sep. blocks maps each nonempty range to id/words/OR para_cut. like indexes ids last-wins, emits requested known ids in template order, omits empty matches. book_text scans keyword/caps headings after blank lines, preserves text and falls back to paragraph runs above HARD_MAX. Corpus adapters read and normalize records.",
+  "forward": [
+    "group greedily emits contiguous ranges when group differs or w+n>max before current chapter; concat rebases Text indices by prior block count and uses first canon_sep. blocks maps each nonempty range to id/words/OR para_cut. like indexes ids last-wins, emits requested known ids in template order, omits empty matches. book_text scans keyword/caps headings after blank lines, preserves text and falls back to paragraph runs above HARD_MAX. Corpus adapters read and normalize records."
+  ],
+  "id": "roundtrip-block-layout",
+  "inverse": [
+    "Valid grouping never crosses group boundary and never splits a chapter; it can exceed max for oversized singleton. concat does not invent separator bytes. Missing ids in like cannot create placeholders.",
+    "Given concatenated text alone, every compatible chapter partition, metadata labeling and separator choice remains possible. Given ranges and chapters, concat reconstructs bytes uniquely. like cannot recover omitted chapters or earlier duplicate-id entries."
+  ],
+  "limitations": [
+    "Partial source syntax and finite pure-code tests only; no model loading, live corpus/site/lesson workflows, full pipeline or persistent learning claim.",
+    "No executable percentage surrogate or semantic proof; explicit codec domains and resource limits apply."
+  ],
+  "source": "tools/roundtrip/src/blocks/mod.rs",
+  "state": "Well-indexed volumes, valid UTF-8, representable word sums and index offsets. File adapters require readable matching files; no external corpus used."
+}

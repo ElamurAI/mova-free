@@ -1,0 +1,39 @@
+{
+  "control": "control-probe: compiled source mutation failed with exit101; source restored byte-for-byte and15positive tests passed",
+  "kind": "finite_actual_code_checks",
+  "limitations": "Two early-failure tests only; successful retention path and process isolation remain unexecuted/delegated; no surrogate.",
+  "logs": [
+    {
+      "exit": 0,
+      "label": "final-debug1",
+      "sha256": "b943ad3dd14bb19ff8102bc1c21c1f368f0d264f0ace8186a0ae7b87240e25f5"
+    },
+    {
+      "exit": 0,
+      "label": "final-debug2",
+      "sha256": "fac6f0fc7241faa89d615875477abb359b8d597ee4a70096997802af9a35ff93"
+    },
+    {
+      "exit": 0,
+      "label": "final-release1",
+      "sha256": "9e7f61a15fbb424bf929d9d20b8e7e1b15d4d04903fb2df25f43e79a9b9804f0"
+    },
+    {
+      "exit": 0,
+      "label": "final-release2",
+      "sha256": "0b11339ddd6132bea81dea8f16d9a594b3e4be2ab16760e42531a2f39719be1a"
+    }
+  ],
+  "profiles": [
+    "final-debug1",
+    "final-debug2",
+    "final-release1",
+    "final-release2"
+  ],
+  "source": "world/examples/retention_probe.rs",
+  "source_sha256": "0c83df4c221af39fa86e068aee0ca4e1688efd03062a2551195e154495732cb3",
+  "tests": [
+    "wave29_worldlearn::arity_gate_precedes_input_reads",
+    "wave29_worldlearn::malformed_training_precedes_missing_exam_and_state_write"
+  ]
+}

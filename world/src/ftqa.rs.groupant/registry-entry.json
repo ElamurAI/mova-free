@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p world --lib ftqa::wave9_models -- --test-threads=1"
+  ],
+  "cost": "For L input bytes CSV is O(L) output storage. Reconstruction scans rows for each distinct story and uses repeated linear section membership/search. With K known sections and L summary bytes, a conservative decomposition bound is O(K*L^2) plus copying; orphan insertion reruns decomposition and shifts vectors. Sentence splitting is linear except bounded lookahead and repeated current-quote word counts. No measured timing bound.",
+  "description": "CSV, tale reconstruction, sentence boundaries and QA interchange.",
+  "forward": [
+    "csv folds character/quote state into ordered fields; read_rows checks the exact nine-column header and locality tokens. reconstruct groups stories by first occurrence, normalizes local sections, greedily splits summaries by longest prefix and inserts unknown chunks of at least five words. Qa numbers restart per story. text_of splits punctuation/quotes, then story_tsv/qa_tsv serialize. read_qa delegates unchanged decoding to a pure private helper.",
+    "main import calls read_rows -> reconstruct -> text_of -> TSV writers, preserving source-order story identity and shifted section indices. main measurement uses read_qa and read_story before report::eval_tale. The pure decode helper preserves path-derived story names and original read_qa errors. Tests exercise CSV/reconstruction/text/QA serialization joins without filesystem import or answering."
+  ],
+  "id": "world-ftqa",
+  "inverse": [
+    "Universe: text/rows/output triples with finite strings. Inner absent relation excludes success for an unclosed CSV quote, a wrong exact header, invalid CSV locality, wrong QA column count or unparsable u16 ID. It does not exclude all malformed RFC CSV: quotes inside nonempty unquoted fields and post-quote text are tolerated. Named header/decode tests witness boundaries.",
+    "For observed decoded rows retain every CSV text yielding those rows, including quoted/unquoted spellings and CR outside quotes. For reconstructed sections retain all whitespace spellings and duplicate local rows compatible with the observed question list. Output-only sections lose question/answer metadata. Native three-whitespace reconstruction fiber is complete only over those spellings."
+  ],
+  "limitations": [
+    "Finite synthetic evidence; source inspection is separate from runtime proof.",
+    "No held-out evaluation, live parser, teacher, full import transaction or throughput claim.",
+    "Partial syntax; public structs admit states outside generated-state invariants. See specialized models for permissive input boundaries."
+  ],
+  "source": "world/src/ftqa.rs",
+  "state": "For nonempty known matches each decompose iteration consumes positive bytes. Empty normalized local sections cannot match; an empty local question still refuses. Accepted read_rows has exactly nine fields and locality in {local,summary}. In the practical domain of at most 65535 sections, generated section IDs are one-based; public decoder permits zero and duplicates."
+}

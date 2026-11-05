@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms l1_ball_projection::tests"
+  ],
+  "children": [],
+  "cost": "Bounded finite tests: isotonic 625 length4 vectors times 8 partitions; simplex 125 length3 vectors times 3 radii and 7 supports; L1 625 length4 vectors times 4 radii; soft 201 scalar inputs times 4 thresholds times 241 candidate objectives. Boundary allocation fixtures have 1,000,001 elements. Oracle work is test-only, not production complexity.",
+  "description": "Independent finite optimization oracles and domain checks",
+  "forward": [
+    "Run deterministic finite grids and boundary/fiber fixtures. Independent partition/support enumeration or KKT/subgradient stationarity compares production outputs to the mathematical model. Success is conjunction of named assertions; no universal numerical theorem follows."
+  ],
+  "id": "algorithm-l1-ball-projection-tests",
+  "inverse": [
+    "Typed complement, normal-cone or subgradient fibers and specialized views in model.md"
+  ],
+  "limitations": [
+    "Finite observations do not certify universal f64 accuracy",
+    "Allocation refusal unforced",
+    "Partial source syntax; executable surrogate absent"
+  ],
+  "source": "algorithms/src/l1_ball_projection/tests.rs",
+  "state": "Deterministic, finite validation and explicit resource/arithmetic limits"
+}

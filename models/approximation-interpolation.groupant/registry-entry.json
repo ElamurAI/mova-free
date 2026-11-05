@@ -1,0 +1,34 @@
+{
+  "checks": [
+    "barycentric_bezier_and_gauss_join_polynomial_identity",
+    "monotone_cubic_romberg_and_gauss_join_affine_integral"
+  ],
+  "children": [
+    "algorithm-barycentric-lagrange",
+    "algorithm-barycentric-lagrange-tests",
+    "algorithm-monotone-cubic",
+    "algorithm-monotone-cubic-tests",
+    "algorithm-bernstein-de-casteljau",
+    "algorithm-bernstein-de-casteljau-tests",
+    "algorithm-gauss-legendre",
+    "algorithm-gauss-legendre-tests",
+    "algorithm-romberg-integration",
+    "algorithm-romberg-integration-tests"
+  ],
+  "cost": "Barycentric O(n²) evaluation, monotone cubic O(n), de Casteljau O(n²); Gauss<=5 callbacks; Romberg<=20 levels and explicit evaluation budget. Finite allocation/stack limits retained.",
+  "description": "Evaluate interpolation polynomials and shape-preserving cubics, Bernstein curves and bounded quadrature.",
+  "forward": [
+    "Evaluate interpolation polynomials and shape-preserving cubics, Bernstein curves and bounded quadrature.",
+    "A fixed polynomial can be represented by Lagrange nodes and Bernstein controls; quadrature integrates resulting callback. Affine monotone cubic equals the line, providing an independent exact real integral."
+  ],
+  "id": "approximation-interpolation",
+  "inverse": [
+    "For the real target, exclude a Lagrange polynomial failing its nodal equations, a Bernstein evaluation outside the control convex hull for t in[0,1], and shape-preserving cubic segments with overshoot contrary to their slope construction. Conditional Gauss polynomial exactness excludes wrong integrals only for the stated degree premise in real arithmetic. Native f64 results are not required to satisfy those identities bit-for-bit: their complement contains wrong rounded recurrences, wrong basis/interval coordinates, incorrect knot return values, excess callbacks or inaccurate status bookkeeping. Romberg estimated_error=0 does not exclude a nonzero true integral error; unknown off-sample function behavior remains allowed.",
+    "At fixed distinct nodes and fixed degree<n, a complete set of real nodal ordinates identifies the interpolation polynomial, but one evaluated ordinate leaves an affine coefficient fiber. At Bernstein t=0 only the first control is observed and all later controls remain free; at interior t, perturbations of controls whose Bernstein-weighted sum is zero retain the value. Monotone sample data do not identify the true between-node function. For quadrature samples x_j, f and f+h with h(x_j)=0 have the same sampled execution but may have different integrals; h can be a scaled squared product of (x-x_j). Native rounded equality may enlarge these fibers, and callback budget/status do not restore unsampled information."
+  ],
+  "limitations": [
+    "Polynomial/basis identities are real arithmetic. Shape preservation does not bound error against unknown original function. Romberg diagonal differences can miss unsampled structure and are heuristic.",
+    "Finite tests and source-derived models are not a universal proof."
+  ],
+  "state": "Node domain/spacing and basis coordinates remain explicit; no extrapolation for interpolators; quadrature errors and statuses remain distinct from true-integral certificates."
+}

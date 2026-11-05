@@ -1,0 +1,70 @@
+{
+  "model": "/ABSOLUTE/PATH/en.bin",
+  "model_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "ledger": "/ABSOLUTE/PATH/seaspider/ledger",
+  "followup_queue": "/ABSOLUTE/PATH/seaspider/review",
+  "capabilities": {
+    "fetch": {
+      "handler": "seaspider",
+      "parameters": {"operation": "fetch"},
+      "intent": {
+        "request_predicates": ["fetch", "download", "grab", "crawl", "retrieve", "read", "visit"],
+        "observations": ["fetch", "download", "grab", "crawl", "retrieve", "read", "visit"],
+        "entities": ["spider", "movabot"],
+        "addressee": true
+      },
+      "slots": [{"name": "urls", "kinds": ["url"], "min": 1, "max": 16}]
+    },
+    "robots": {
+      "handler": "seaspider",
+      "parameters": {"operation": "robots"},
+      "intent": {
+        "observes": true,
+        "request_predicates": ["fetch", "download", "grab", "crawl", "retrieve", "read", "visit", "access"],
+        "observations": ["allow", "permit", "robots", "access",
+                         "fetch", "download", "grab", "crawl", "retrieve", "read", "visit"],
+        "native_lemma_observations": ["can", "may"],
+        "subordinate_predicates": ["may"],
+        "entities": ["spider", "movabot"],
+        "addressee": true
+      },
+      "slots": [{"name": "target", "kinds": ["url", "host"], "min": 1, "max": 1}]
+    },
+    "stats": {
+      "handler": "seaspider",
+      "parameters": {"operation": "stats"},
+      "intent": {
+        "observes": true,
+        "request_predicates": ["store", "keep", "count"],
+        "observations": ["store", "keep", "many", "count", "number",
+                         "fetch", "download", "grab", "crawl", "retrieve", "read", "visit"],
+        "entities": ["spider", "movabot"],
+        "addressee": true
+      },
+      "slots": [{"name": "host", "kinds": ["host"], "min": 0, "max": 1}]
+    },
+    "page": {
+      "handler": "seaspider",
+      "parameters": {"operation": "page"},
+      "intent": {
+        "observes": true,
+        "request_predicates": ["get", "find", "see", "say", "contain", "learn", "tell", "show", "know"],
+        "observations": ["get", "find", "say", "contain", "learn", "about", "know"],
+        "entities": ["spider", "movabot"],
+        "addressee": true
+      },
+      "slots": [{"name": "url", "kinds": ["url"], "min": 1, "max": 1}]
+    },
+    "status": {
+      "handler": "seaspider",
+      "parameters": {"operation": "status"},
+      "intent": {
+        "observes": true,
+        "request_predicates": ["run", "go", "work", "show", "tell"],
+        "observations": ["status", "progress", "busy", "queue", "job", "run", "work", "idle"],
+        "entities": ["spider", "movabot"],
+        "addressee": true
+      }
+    }
+  }
+}

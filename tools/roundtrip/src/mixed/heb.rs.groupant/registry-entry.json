@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "mixed::heb::tests::tokens_come_back",
+    "mixed::heb::tests::script_gives_the_tree_back"
+  ],
+  "children": [],
+  "cost": "NFC/token passes O(B) plus search costs; map lookup O(log L) times key lengths; tree O(W log W); frames align O(W*R*lemma_bytes) time and O(W+R+patch_bytes) space; read repeatedly scans children, at most quadratic; realize quote lookup can be quadratic.",
+  "description": "tokens_up/down retain wrap, NFC deviations by whitespace-run ordinal, noncanonical (sentence,token) gaps and tail. Lookup selects maximum count then smallest form with full/tag/lemma backoff. tree_encode/decode retains form overrides, boundary XORs and written overrides. frames_encode aligns consonant lemmas then two head/relation passes; apply remaps one-based heads and patches zero-based Take coordinates.",
+  "forward": [
+    "tokens_up/down retain wrap, NFC deviations by whitespace-run ordinal, noncanonical (sentence,token) gaps and tail. Lookup selects maximum count then smallest form with full/tag/lemma backoff. tree_encode/decode retains form overrides, boundary XORs and written overrides. frames_encode aligns consonant lemmas then two head/relation passes; apply remaps one-based heads and patches zero-based Take coordinates."
+  ],
+  "id": "rt-mixed-heb",
+  "inverse": [
+    "Without residual, excluded claim: arbitrary original spacing, accents or missing forms are recovered. With generated residual valid domains exclude altered original token/tree bytes.",
+    "Token output alone admits all wrap/gap/NFC antecedents; (tokens,R1) reconstructs original text. Generated R3 plus fixed realized words recovers target words, but not unique parsed source forms."
+  ],
+  "limitations": [
+    "Finite synthetic helper evidence only; live corpora, parser/model loading, full orchestration and filesystem failure races excluded.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/roundtrip/src/mixed/heb.rs",
+  "state": "Valid UTF-8; words/forms lengths agree; positive group sizes sum to words; heads are zero or in range; generated scripts use unique valid Take indices. Residual metrics are finite nonnegative estimates, not compressed byte lengths."
+}

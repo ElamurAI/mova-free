@@ -1,0 +1,98 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical projection only; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "fsa_transition",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "fsa_transition",
+        "status": "partial_source_derived_model",
+        "type": "fsa_transition"
+      },
+      {
+        "id": "split_precedence",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "split_precedence",
+        "status": "partial_source_derived_model",
+        "type": "split_precedence"
+      },
+      {
+        "id": "spacing_relation",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "spacing_relation",
+        "status": "partial_source_derived_model",
+        "type": "spacing_relation"
+      },
+      {
+        "id": "lexicon_ties",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "lexicon_ties",
+        "status": "partial_source_derived_model",
+        "type": "lexicon_ties"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 17765,
+      "start": 12995
+    },
+    "description": "FSA tokens feed period handling and push_word, then merge_punct. Each split gives only the last piece the inherited spacing flag. Lexical whole-hyphen preference outranks explicit split and prefix/global defaults.",
+    "source_bytes_sha256": "4bb760ea83635fcb7ebe67c8e67346dd30f42ebf44c2d485ba8a33a8e71341c6"
+  },
+  "id": "en-tok-postprocess",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../tok.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "c2eb1deea8b49057093095295581bd31002205421aa8061aeef1ddca88fa1f8c"
+  },
+  "status": "partial_source_bound_model"
+}

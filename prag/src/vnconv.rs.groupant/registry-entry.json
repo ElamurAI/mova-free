@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p prag --lib vnconv::wave15_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "Let B be total supplied bytes, E events, R emitted row bytes, and W WordNet tokens. XML scanning O(B), materialized events O(B), retained classes and rows O(B+R); repeated string joins may copy intermediate restriction strings. WordNet uses ordered maps O(W log S) plus candidate scans and frame sorting. External IO is additional and unmeasured.",
+  "description": "For ordered supplied documents D, V(D)=render(fold append_verbnet over D). A directory wrapper sorts XML filenames, accumulates raw UTF-8 checksum, and invokes exactly these functions. WordNet nominal rows N(index,noun,verb) project first eligible derivational senses. convert routes VerbNet to out and PropBank/NomBank to test; nominals writes permissive rows to out. Only the pure supplied-input paths are executed here.",
+  "forward": [
+    "For ordered supplied documents D, V(D)=render(fold append_verbnet over D). A directory wrapper sorts XML filenames, accumulates raw UTF-8 checksum, and invokes exactly these functions. WordNet nominal rows N(index,noun,verb) project first eligible derivational senses. convert routes VerbNet to out and PropBank/NomBank to test; nominals writes permissive rows to out. Only the pure supplied-input paths are executed here."
+  ],
+  "id": "prag-vnconv",
+  "inverse": [
+    "V^-1(y)={D:V(D)=y} and N^-1(y)={(i,n,v):N(i,n,v)=y}. Preserve all candidate documents, intermediate events and lexical maps satisfying the projection. Comments, ignored fields, unused senses, whitespace and alternative entity spellings create nonunique fibers. The FNV accumulator cannot reconstruct document boundaries."
+  ],
+  "limitations": [
+    "Small XML subset; finite supplied-input fixtures only.",
+    "Filesystem and test-only corpus conversion unexecuted; no semantic proof."
+  ],
+  "source": "prag/src/vnconv.rs",
+  "state": "Class parent indices refer to the active per-document stack; no stack or partial frame crosses documents. Class rows precede their own frames. External license declarations and checksum provenance are preserved text, not independently certified provenance. File writes are sequential, not transactional."
+}

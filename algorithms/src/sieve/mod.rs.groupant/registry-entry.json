@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline --lib sieve::tests:: (debug and release, twice each, six tests)",
+    "Compiled production mutation rejected by a new relation test; strict all-target Clippy passes; partial syntax regenerated twice."
+  ],
+  "children": [],
+  "cost": "O(n log log n) marking time plus O(n) initialization/count/output scan for n>=3; O(n) auxiliary flags plus O(pi(n)) output words. Symbolic cost; no timing claim.",
+  "description": "sieve exact std-only implementation",
+  "forward": [
+    "For n<2 return an empty vector. Otherwise check n+1 and byte-storage representability. On successful fallible reservations, return exactly the increasing primes <=n by Eratosthenes marking from p squared. SizeOverflow denotes checked count/byte capacity failure; AllocationFailed denotes a reported try_reserve_exact error. Output reservation is fallible as well as flags reservation."
+  ],
+  "id": "algorithm-sieve",
+  "inverse": [
+    "In U of limits, allocator traces and candidate results, U minus R includes successful vectors with composites, omissions, duplicates, descending order or values above n; success after deterministic size rejection; and typed allocation failure without a reported reserve failure. Abort/nontermination is outside the modeled terminating Result universe.",
+    "A successful vector P admits all representable limits n for which P is exactly the inclusive prime prefix and allocation succeeds. Empty P admits n=0,1. For a nonempty prime prefix ending at p, limits range from p through one below the next prime, intersected with capacity constraints. Error observations retain size-rejection or allocator-failure antecedents; AllocationFailed does not identify a unique limit.",
+    "For any successfully returned prime prefix at n and each composite v in [2,n], a least divisor d>1 is prime, d<=v/d, and d occurs in the prefix while v does not. Conversely a proper factor 1<d<v with d dividing v certifies exclusion. Values 0 and 1 have separate nonprime reasons; absence alone at a limit smaller than v does not certify compositeness.",
+    "Let P be a complete increasing prime prefix ending at p and q its next prime. A successful sieve(n)=P iff p<=n<q, intersected with size representability and successful reservations. This requires prefix completeness: an arbitrary sorted list of primes ending at p need not have any antecedent. Empty P admits exactly n=0,1. At machine boundaries express next prime mathematically and intersect with usize; allocator traces remain part of the antecedent.",
+    "For n>=2 deterministic gates require n+1<=isize::MAX for u8 flags and pi(n)*size_of(usize)<=isize::MAX for output; arithmetic multiplication/addition must be representable. Passing gates is not a success guarantee: either try_reserve_exact may report AllocationFailed. SizeOverflow and AllocationFailed are distinct observations; a reported allocation error does not reconstruct the failing reservation or n uniquely. The private reserve helper checks count bytes before allocation and preserves an existing vector on deterministic rejection; its production callers start empty."
+  ],
+  "limitations": [
+    "Partial syntax omits macro expansion and semantics; bounded tests are not a proof.",
+    "No executable approximate profile attached; this algorithm is exact."
+  ],
+  "source": "algorithms/src/sieve/mod.rs",
+  "state": "usize limits paired with Result<Vec<usize>,SieveError>, with allocator outcome as latent state."
+}

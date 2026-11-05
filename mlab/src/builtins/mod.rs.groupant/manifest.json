@@ -1,0 +1,100 @@
+{
+  "children": [
+    {
+      "id": "mlab-builtins-mod-dimensions",
+      "path": "dimensions.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "names excludes hash iteration nondeterminism in its returned order. scalar_arg excludes rejecting a nonempty nonscalar solely for its size. NaN dimension excludes a successful dims_args result.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Registry snapshot admits arbitrary overwritten registrations and insertion permutations with same final bindings. Dimensions admit fractional/negative antecedents after floor/clamp and arbitrary skipped char arguments.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_invariant",
+        "path": "model.md",
+        "scope": "get copies a function pointer and does not mutate registry. Invalid missing argument fails before type extraction; no matrix product allocation occurs in dims_args itself.",
+        "section": "state_invariant",
+        "status": "partial_source_derived_model",
+        "type": "state_invariant"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "NaN checked before float-to-usize conversion; +Inf saturates usize. Single-array trailing dimensions compare raw floats to one, multiargument trailing dimensions compare converted usize values.",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "A single scalar dimension means square, no numeric arguments means 1x1, empty dimension vector means 0x0. default_dim chooses rows unless rows==1; dim_arg absent/empty/char yields None.",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "Expected O(1) map lookup/insert, sorted names O(K log K); dims extraction O(arguments + trailing dimensions). Casting and downstream shape multiplication are not overflow certificates.",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "mlab-builtins-mod",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "5e593db042fb0f9c24284b0dfff423735d458b3b3f9a4d5fe269c2ea32af1770"
+  },
+  "status": "partial_source_bound_model"
+}

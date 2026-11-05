@@ -1,0 +1,93 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "streaming-hash",
+        "path": "model.md",
+        "section": "streaming-hash",
+        "status": "partial_source_derived_model",
+        "type": "chunk_invariance"
+      },
+      {
+        "id": "absence-boundary",
+        "path": "model.md",
+        "section": "absence-boundary",
+        "status": "partial_source_derived_model",
+        "type": "metadata_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_execution"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 3551,
+      "start": 384
+    },
+    "description": "Construct a sorted dependency map and hash its JSON; optional file absence is an explicit sentinel, while required file/read failures propagate.",
+    "syntax_nodes": {
+      "node_ids": [
+        6,
+        16,
+        73,
+        95,
+        302
+      ],
+      "path": "../syntax.json"
+    }
+  },
+  "id": "parse-cache-identity",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../parsecache.rs",
+    "sha256": "6545414761854d33b7b41f8a864a7f4c59eebeaee721eef68772bb4a7a652479"
+  },
+  "status": "partial_source_derived_instance"
+}

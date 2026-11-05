@@ -1,0 +1,164 @@
+{
+  "children": [
+    "roundtrip-class",
+    "roundtrip-frames",
+    "roundtrip-lib",
+    "roundtrip-main",
+    "roundtrip-pipeline",
+    "roundtrip-report",
+    "roundtrip-tests",
+    "roundtrip-tree",
+    "roundtrip-world"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "No Annotator/model loading, live corpus, teacher, GPU or complete CLI pipeline execution. Final trailing token spacing false for R2 reconstruction. Invalid arbitrary scripts/graphs are outside exact law.",
+        "domain": "Small synthetic valid rooted trees, finite frames with sentence-local valid links and bounded allocations; nonoverflowing indices/counters, stable empty override environment.",
+        "id": "behavior-complement",
+        "observation_scope": "Real joins are pipeline -> frames/tree/world/tally, main -> pipeline/report, tests -> synthetic layer APIs. class supplies labels/costs. lib exposes API/path; reporting and path assembly are tagged independent from codec reconstruction. Root owns volume/mixed sibling joins.",
+        "operator": "Exact_ok cannot follow an earlier retained representation mismatch; normal mode cannot recover omitted residual fields by assertion. No persistence/learning effects are performed by pure residual helpers.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "No Annotator/model loading, live corpus, teacher, GPU or complete CLI pipeline execution. Final trailing token spacing false for R2 reconstruction. Invalid arbitrary scripts/graphs are outside exact law.",
+        "domain": "Small synthetic valid rooted trees, finite frames with sentence-local valid links and bounded allocations; nonoverflowing indices/counters, stable empty override environment.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Real joins are pipeline -> frames/tree/world/tally, main -> pipeline/report, tests -> synthetic layer APIs. class supplies labels/costs. lib exposes API/path; reporting and path assembly are tagged independent from codec reconstruction. Root owns volume/mixed sibling joins.",
+        "operator": "Encoder-produced residuals with stable state give compatible original sentence/tree/frame witnesses; tally and normal text admit many antecedents.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "No Annotator/model loading, live corpus, teacher, GPU or complete CLI pipeline execution. Final trailing token spacing false for R2 reconstruction. Invalid arbitrary scripts/graphs are outside exact law.",
+        "domain": "Small synthetic valid rooted trees, finite frames with sentence-local valid links and bounded allocations; nonoverflowing indices/counters, stable empty override environment.",
+        "id": "head-coordinate-transport",
+        "observation_scope": "Real joins are pipeline -> frames/tree/world/tally, main -> pipeline/report, tests -> synthetic layer APIs. class supplies labels/costs. lib exposes API/path; reporting and path assembly are tagged independent from codec reconstruction. Root owns volume/mixed sibling joins.",
+        "operator": "R3 maps zero-based realized origins to one-based parsed heads; R4 maps local frame links to global indices then kept-event coordinates and back.",
+        "path": "model.md",
+        "required": false,
+        "section": "head-coordinate-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No Annotator/model loading, live corpus, teacher, GPU or complete CLI pipeline execution. Final trailing token spacing false for R2 reconstruction. Invalid arbitrary scripts/graphs are outside exact law.",
+        "domain": "Small synthetic valid rooted trees, finite frames with sentence-local valid links and bounded allocations; nonoverflowing indices/counters, stable empty override environment.",
+        "id": "decoder-state",
+        "observation_scope": "Real joins are pipeline -> frames/tree/world/tally, main -> pipeline/report, tests -> synthetic layer APIs. class supplies labels/costs. lib exposes API/path; reporting and path assembly are tagged independent from codec reconstruction. Root owns volume/mixed sibling joins.",
+        "operator": "Realizer seen ids and off flags must match encode/decode passes; same output alone does not recover state.",
+        "path": "model.md",
+        "required": false,
+        "section": "decoder-state",
+        "status": "partial_source_derived_model",
+        "type": "state_compatibility"
+      },
+      {
+        "assumptions": "No Annotator/model loading, live corpus, teacher, GPU or complete CLI pipeline execution. Final trailing token spacing false for R2 reconstruction. Invalid arbitrary scripts/graphs are outside exact law.",
+        "domain": "Small synthetic valid rooted trees, finite frames with sentence-local valid links and bounded allocations; nonoverflowing indices/counters, stable empty override environment.",
+        "id": "empty-sentences",
+        "observation_scope": "Real joins are pipeline -> frames/tree/world/tally, main -> pipeline/report, tests -> synthetic layer APIs. class supplies labels/costs. lib exposes API/path; reporting and path assembly are tagged independent from codec reconstruction. Root owns volume/mixed sibling joins.",
+        "operator": "R4 empties plus XOR starts and nsents restore the original partition, while pipeline Unit changes reset groups.",
+        "path": "model.md",
+        "required": false,
+        "section": "empty-sentences",
+        "status": "partial_source_derived_model",
+        "type": "partition_reconstruction"
+      },
+      {
+        "assumptions": "No Annotator/model loading, live corpus, teacher, GPU or complete CLI pipeline execution. Final trailing token spacing false for R2 reconstruction. Invalid arbitrary scripts/graphs are outside exact law.",
+        "domain": "Small synthetic valid rooted trees, finite frames with sentence-local valid links and bounded allocations; nonoverflowing indices/counters, stable empty override environment.",
+        "id": "diagnostic-cost",
+        "observation_scope": "Real joins are pipeline -> frames/tree/world/tally, main -> pipeline/report, tests -> synthetic layer APIs. class supplies labels/costs. lib exposes API/path; reporting and path assembly are tagged independent from codec reconstruction. Root owns volume/mixed sibling joins.",
+        "operator": "Diagnostic bits and equal-set averages are not actual compressed byte lengths or semantic-quality percentages.",
+        "path": "model.md",
+        "required": false,
+        "section": "diagnostic-cost",
+        "status": "partial_source_derived_model",
+        "type": "metric_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "roundtrip-layer-residuals",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "tools/roundtrip/src/class.rs",
+      "sha256": "1b8466551077c2f42748e0d08084307cc8bbaff3f62fbe2597eced4b75221f36"
+    },
+    {
+      "path": "tools/roundtrip/src/frames.rs",
+      "sha256": "d9eb1c251975ecedf6f5becc0b7567e5140cdfae1acbc83a74d2fb71f95bd391"
+    },
+    {
+      "path": "tools/roundtrip/src/lib.rs",
+      "sha256": "366f25c83a674bd1917578e2c985b4c0585f02a1d3fa53e4101c7e9d0a895606"
+    },
+    {
+      "path": "tools/roundtrip/src/main.rs",
+      "sha256": "00f4bbcd3c873394f1a661e52a0dc3360dc8f4f368d9f33113d3f6c6ac2e4109"
+    },
+    {
+      "path": "tools/roundtrip/src/pipeline.rs",
+      "sha256": "88be3b618dd828411c1e6633432af60ba9fa905429b55cff88fbc31b5ae721da"
+    },
+    {
+      "path": "tools/roundtrip/src/report.rs",
+      "sha256": "ad92d6e8baee2f83f1fb90c2fcb7ca638e9312a525c7e3c37857525dd9584899"
+    },
+    {
+      "path": "tools/roundtrip/src/tests.rs",
+      "sha256": "7d1dbfa26a29fb87a9562f16de3dfbe0542e87b7db28ef675a358a9471f3153c"
+    },
+    {
+      "path": "tools/roundtrip/src/tree.rs",
+      "sha256": "3db953874807575403c8d2857006e1932cc72df16fa615b64c5b9e7eceae8da7"
+    },
+    {
+      "path": "tools/roundtrip/src/world.rs",
+      "sha256": "46d4429a5127b1a462d90e5d350a0f440d440a6781edeab42a01d3bf124a3675"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

@@ -1,0 +1,34 @@
+[package]
+name = "mova-hard-cases"
+version = "0.1.0"
+edition = "2021"
+description = "Closes the loop between reading failures and learning: the one hard-cases list fed to the Fish as a priority lane, validated annotations harvested for the Eel, the list re-checked with each new gparse model and the before/after measured on a fixed sample"
+license = "LicenseRef-Elamur-Cosmic"
+
+[workspace]
+
+[lib]
+name = "hard_cases"
+path = "src/lib.rs"
+
+[[bin]]
+name = "mova-hard-cases"
+path = "src/main.rs"
+
+[dependencies]
+mova-hard-case-list = { path = "../hard-case-list" }
+annotation-review-worker = { path = "../fish" }
+mova-fish-batch = { path = "../fish-batch" }
+mova-eel = { path = "../eel" }
+en = { path = "../../en" }
+prag = { path = "../../prag" }
+world = { path = "../../world" }
+roundtrip = { path = "../roundtrip" }
+anyhow = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+libc = "0.2"
+
+[profile.release]
+opt-level = 3

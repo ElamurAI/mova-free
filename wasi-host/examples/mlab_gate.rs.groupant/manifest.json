@@ -1,0 +1,99 @@
+{
+  "children": [
+    {
+      "id": "wasi-gate-scenarios",
+      "path": "wasi-gate-scenarios.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Source syntax only; no macro expansion/type resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "wasi-mlab-gate",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "wasi-mlab-gate",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "argument_selection",
+        "path": "model.md",
+        "scope": "wasi-mlab-gate",
+        "section": "argument_selection",
+        "status": "partial_source_derived_model",
+        "type": "argument_selection"
+      },
+      {
+        "id": "external_reference",
+        "path": "model.md",
+        "scope": "wasi-mlab-gate",
+        "section": "external_reference",
+        "status": "partial_source_derived_model",
+        "type": "external_reference"
+      },
+      {
+        "id": "comparison_projection",
+        "path": "model.md",
+        "scope": "wasi-mlab-gate",
+        "section": "comparison_projection",
+        "status": "partial_source_derived_model",
+        "type": "comparison_projection"
+      },
+      {
+        "id": "empty_suite",
+        "path": "model.md",
+        "scope": "wasi-mlab-gate",
+        "section": "empty_suite",
+        "status": "partial_source_derived_model",
+        "type": "empty_suite"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "compile_and_source_review"
+    }
+  },
+  "id": "wasi-mlab-gate",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mlab_gate.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "a7947069ab507ffd5ad7b71ae9146bca16e08b827af78bc5961993c788b699b8"
+  },
+  "status": "partial_source_bound_model"
+}

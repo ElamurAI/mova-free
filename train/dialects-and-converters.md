@@ -24,8 +24,8 @@ language of the grammar-check seeds (`en/src/expert.rs`) and adds `from`, `to` a
     Person from the subject.
 - **Choice rule:** take what is more consistent and more informative *and* can be converted back to
   the standard without loss. A lossy convention can be an export target, never the base.
-- Each decision is a seed in `dialects/mova/seeds/*.md`, summarized in
-  [dialect-mova.md](../docs/dialect-mova.md).
+- Each decision is a seed in `dialects/mova/seeds.md`, summarized in
+  [dialect-mova.md](../docs/seeds/dialect-mova.md).
 
 ## Layout
 

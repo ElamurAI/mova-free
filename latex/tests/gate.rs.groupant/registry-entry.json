@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "7 integration tests via --test gate with document and soup skipped",
+    "Two debug/two release selected runs; paired syntax"
+  ],
+  "children": [],
+  "cost": "Selected tests linear in total fixture parsing/printing cost; loop witnesses bounded by parser expansion guards. Optional soup30000 has fixed PRNG but skipped here.",
+  "description": "SUITE parses each fixture, rejects unknowns, checks structural round trip and canonical fixed point. Golden LaTeX/text compare exact strings; unknown spans checked against source slices; malformed fixtures check error kind and position; macro fixtures compare expanded trees and loop rejection.",
+  "forward": [
+    "SUITE parses each fixture, rejects unknowns, checks structural round trip and canonical fixed point. Golden LaTeX/text compare exact strings; unknown spans checked against source slices; malformed fixtures check error kind and position; macro fixtures compare expanded trees and loop rejection."
+  ],
+  "id": "latex-test-gate",
+  "inverse": [
+    "The harness excludes passing when a chosen fixture violates expected output, but does not exclude all unseen parser/printer faults. Corruption test requires some applicable defect to turn red and explicitly accepts an unaffected fraction fault.",
+    "A successful test transcript has many compatible implementations; fixtures constrain outputs only at their cases. Failing assertion identifies a violated observation, not a unique bug or original input beyond logged fixture."
+  ],
+  "limitations": [
+    "Partial source models and finite tests, no semantic proof or expanded AST.",
+    "No useful executable percentage approximant metric established; future caps1/2/5/10% only.",
+    "No live VMM/API/corpus/GPU/full-school/held-out execution; allocation and extreme sizes untested."
+  ],
+  "source": "latex/tests/gate.rs",
+  "state": "Only selected synthetic tests executed; document sample and random soup not run. No live VMM/API, corpus, GPU or external effects."
+}

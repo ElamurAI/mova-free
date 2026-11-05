@@ -1,0 +1,224 @@
+{
+  "children": [
+    "number-normalization",
+    "value-judgment",
+    "world-triggers",
+    "world-lang",
+    "world-meanings",
+    "world-mwe",
+    "world-wordnet",
+    "world-domains",
+    "world-dictstore"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child syntax projections do not compose into semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "branch-local-cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "excluded-tagged-observations",
+        "path": "model.md",
+        "scope": "U contains tagged number/text, value/command, command-parser and trigger observations with candidate outputs under fixed dependencies. R is the disjoint union of the child relations on their stated domains. Actual joins additionally preserve shared program, state and dependency identity. Candidate inner U minus R excludes changed operation tags, a cardinal from quantity on standalone seventh, a judgment from an absent rule, and help justified only by harm first recorded in the same set command.",
+        "section": "excluded-tagged-observations",
+        "status": "partial_source_derived",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "compatible-texts-and-traces",
+        "path": "model.md",
+        "scope": "For (b,y), retain all inputs and dependency configurations satisfying R_b(x,y). Spelling loss, overwritten fields, hidden histories and absent rules prevent unique reconstruction. Value preimages use prior-command harm; mercy requires the current agent in that prior harm history.",
+        "section": "compatible-texts-and-traces",
+        "status": "partial_source_derived",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "prior-command-coupling",
+        "path": "model.md",
+        "scope": "For external agent a and target x freeze h=(x in H0) and s=(a in H0[x]) before scanning a set. Relief can add help only with h and no previous helped pair; mercy also requires s. New harm can support later commands. Ordered keys fix explanation representatives; duplicates stay last-write.",
+        "section": "prior-command-coupling",
+        "status": "partial_source_derived",
+        "type": "command_snapshot"
+      },
+      {
+        "id": "seed-and-gap-boundary",
+        "path": "model.md",
+        "scope": "Values consult global catalogs; numbers consult source tables and English correction dictionaries. File hashes do not bind every dependency. gaps and Found are observations/proposals, not persisted learning receipts.",
+        "section": "seed-and-gap-boundary",
+        "status": "partial_source_derived",
+        "type": "dependency_obligation"
+      },
+      {
+        "id": "separate-input-languages",
+        "path": "model.md",
+        "scope": "Normalization takes prose; judgment takes commands. Neither locally calls the other. A serial composition requires an encoder preserving quoting, IDs, names, lines and final assignments. This parent selects a branch.",
+        "section": "separate-input-languages",
+        "status": "partial_source_derived",
+        "type": "composition_boundary"
+      },
+      {
+        "id": "observation-quotients",
+        "path": "model.md",
+        "scope": "Quantity, text plus Found, full ordered judgments and principle membership are distinct projections. Canonical traversal fixes current value order but not injectivity: projecting details loses hidden history, overwritten assignments and explanation fields.",
+        "section": "observation-quotients",
+        "status": "partial_source_derived",
+        "type": "information_loss_partition"
+      },
+      {
+        "id": "bounded-domain-meet",
+        "path": "model.md",
+        "scope": "Numeric overflow/renderer bounds and catalog assumptions remain local. A joint model also needs an encoder. The value fix neither validates narrative facts nor resolves lifetime-harm policy or cross-field contradictions.",
+        "section": "bounded-domain-meet",
+        "status": "partial_source_derived",
+        "type": "precondition_composition"
+      },
+      {
+        "id": "branch-local-cost",
+        "path": "model.md",
+        "scope": "Selected cost is dispatch plus reached work. Ordered field parsing costs O(B+K log K) comparisons with string costs; goal updates O(log G); prior-harmer snapshot scans one history list. Other scans remain potentially superlinear. Nested views overlap.",
+        "section": "branch-local-cost",
+        "status": "partial_source_derived",
+        "type": "resource_decomposition"
+      },
+      {
+        "id": "command-language-gates",
+        "path": "model.md",
+        "scope": "Parser rejection and runtime command validation are separate gates; identical lexical input does not imply an identical mutable-world transition.",
+        "section": "command-language-gates",
+        "status": "partial_source_correspondence",
+        "type": "parser_runtime_boundary"
+      },
+      {
+        "id": "trigger-observation-tags",
+        "path": "model.md",
+        "scope": "Fixed-time numerical trigger observations remain separate from live clock/activation IO effects.",
+        "section": "trigger-observation-tags",
+        "status": "partial_source_correspondence",
+        "type": "clock_numeric_observation_boundary"
+      },
+      {
+        "id": "dictionary-record-preimages",
+        "path": "model.md",
+        "scope": "Normalized dictionary keys and overwritten duplicate rows admit multiple source records.",
+        "section": "dictionary-record-preimages",
+        "status": "partial_source_correspondence",
+        "type": "record_override_preimage"
+      },
+      {
+        "id": "dictionary-cache-snapshot",
+        "path": "model.md",
+        "scope": "Compiled and once-observed lexical layers are dependency state; a model source hash does not bind all runtime overlays.",
+        "section": "dictionary-cache-snapshot",
+        "status": "partial_source_correspondence",
+        "type": "first_observation_state"
+      },
+      {
+        "id": "expression-token-identity",
+        "path": "model.md",
+        "scope": "MWE token IDs map to the same dense coordinates used by arcs and expression sets. A credited match needs distinct shared tokens and a shared VERB. Greedy order remains; these constraints do not establish maximum matching or linguistic truth. Dictionary snapshots and tag conventions remain domain inputs.",
+        "section": "expression-token-identity",
+        "status": "partial_source_correspondence",
+        "type": "dependency_token_identity"
+      },
+      {
+        "id": "wordnet-bounded-hypernyms",
+        "path": "model.md",
+        "scope": "WordNet traverses synset identities breadth-first and returns a deterministic prefix of at most 40 distinct member labels. Labels can collapse different synsets; missing records and first-use snapshots remain explicit. Bounded graph fixtures do not validate external dictionary accuracy or cache refresh.",
+        "section": "wordnet-bounded-hypernyms",
+        "status": "partial_source_correspondence",
+        "type": "lexical_graph_truncation"
+      },
+      {
+        "id": "partial-domain-configuration",
+        "path": "model.md",
+        "scope": "Absent or nonfinite domain overrides use shipped defaults. Explicit finite zero and off-grid values retain their meanings. Empty annotations under the empty override map remain consistent with shipped defaults. Tuning callers supply complete maps and explicit zero ablations. Lexical snapshots and thresholds remain inputs; these checks establish neither learned optimality nor held-out accuracy.",
+        "section": "partial-domain-configuration",
+        "status": "partial_source_correspondence",
+        "type": "finite_override_completion"
+      },
+      {
+        "id": "lexical-semantics-wave12-expression-report-identity",
+        "path": "model.md",
+        "scope": "Three casing variants of take place yield nonempty lexical readings. Original surfaces survive lens means and domains_with report projection with the same snapshot. This checks a real cross-subtree call, not lexical truth or general domain-classification accuracy.",
+        "section": "lexical-semantics-wave12-expression-report-identity",
+        "status": "partial_source_model",
+        "type": "lexical_surface_transport"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "scoped_child_evidence"
+    }
+  },
+  "id": "lexical-semantics",
+  "kind": "groupant_group",
+  "registry": {
+    "node": "lexical-semantics",
+    "path": "../contracts.json"
+  },
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "world/src/dictstore.rs",
+      "sha256": "211c1fefa10df9fc9a807aae8782c2eccdc644560ebd4cdedef5e833c963db27"
+    },
+    {
+      "path": "world/src/domains.rs",
+      "sha256": "5ecf532157570f301d76768ab9473a2bfe497eb054fc7a0bf676dc2a8e89767b"
+    },
+    {
+      "path": "world/src/lang.rs",
+      "sha256": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe"
+    },
+    {
+      "path": "world/src/meanings.rs",
+      "sha256": "0caafb3b10779a1ed3a5ace1939686a5d6a94c66d6f0d0b3119397fddfb3184b"
+    },
+    {
+      "path": "world/src/mwe.rs",
+      "sha256": "859883d4e16f6ed8cffba16cab81246f81f7c20c9fa3534190b91ea0fd21ed29"
+    },
+    {
+      "path": "world/src/numbers.rs",
+      "sha256": "41e5c848b76cd85ba99f84746d76099707d968957fb1b8774e8a35def2b23ec6"
+    },
+    {
+      "path": "world/src/triggers.rs",
+      "sha256": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2"
+    },
+    {
+      "path": "world/src/values.rs",
+      "sha256": "b885d25364939e38e130ff598a24a46efd21f500ba51e27cd4465ceddb56f064"
+    },
+    {
+      "path": "world/src/wordnet.rs",
+      "sha256": "e8dbeac7b6cb80d09870f57ce7372cef48c48b79638451f59d857b1f0e4c3597"
+    }
+  ],
+  "status": "partial_source_derived"
+}

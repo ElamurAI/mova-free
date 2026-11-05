@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "wave33::xml_ids_text_and_empty_page"
+  ],
+  "children": [],
+  "cost": "O(index bytes until found + sum decoded stream sizes per requested occurrence); repeated same stream not cached. Memory index line plus full decoded stream and output text.",
+  "description": "Sorted index files scanned until all unique requested titles found; matching index record yields paired XML file and offset. For each original requested title decode one bz2 stream, parse exact title's first text, print ids/body; missing titles count and exit1 after other outputs.",
+  "forward": [
+    "Sorted index files scanned until all unique requested titles found; matching index record yields paired XML file and offset. For each original requested title decode one bz2 stream, parse exact title's first text, print ids/body; missing titles count and exit1 after other outputs."
+  ],
+  "id": "wikt-page-text-command",
+  "inverse": [
+    "Exact title mismatch cannot return page text; missing paired XML fails before opening index stream; unknown entity errors at unescape.",
+    "Page projection admits XML with arbitrary contributor metadata/unused fields; index lookup offset+file admits many index page ids because that field is ignored."
+  ],
+  "limitations": [
+    "Paired index naming conventions, valid seek offsets/bzip2 streams and UTF-8 XML text; quick_xml end-name check disabled. Filesystem/index scanning and compressed helper execution remain gaps in current pure checks.",
+    "Partial syntax and bounded synthetic helper checks; no command/corpus/model/download effects, universal proof or percentage surrogate."
+  ],
+  "source": "tools/wikt-page/src/main.rs",
+  "state": "Index title keys deduplicate search, but original request duplicates repeat decode/output. read_stream single BzDecoder stops at stream end. find_page first page/revision id avoids contributor id and returns at text before full page validation."
+}

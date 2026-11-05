@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "wave33_tests::synthetic_extraction_preserves_current_lossiness executes actual run with bounded /bin/sh emitting literal stdout/stderr and exit 7 under temp MOVA_ROOT. No benchmark CLI or frozen benchmark."
+  ],
+  "children": [],
+  "cost": "Per run O(captured bytes×picks + command cost), captures output in memory. Main reads and rewrites entire old TSV O(history bytes); timing excludes no child work but includes process wait.",
+  "description": "run launches requested root-relative command with supplied args/env, concatenates lossy stdout then stderr, selects first trimmed-prefix line and digit/dot token by index, defaults ?, adds rounded elapsed seconds. Main invokes fixed benchmarks and appends TSV, adding header when latest header differs.",
+  "forward": [
+    "run launches requested root-relative command with supplied args/env, concatenates lossy stdout then stderr, selects first trimmed-prefix line and digit/dot token by index, defaults ?, adds rounded elapsed seconds. Main invokes fixed benchmarks and appends TSV, adding header when latest header differs."
+  ],
+  "id": "bench-main",
+  "inverse": [
+    "Metric strings admit many stdout/stderr texts and child statuses. Minus/exponent loss makes -3.5 and 3.5 compatible; first-prefix selection hides all later matching rows.",
+    "Missing prefix/index yields ?, not numeric zero. Nonzero child exit is not excluded from Ok metrics; treating metrics as successful benchmark status would be wrong."
+  ],
+  "limitations": [
+    "Partial syntax, bounded synthetic helper coverage; no live teacher, corpus, model, lesson or benchmark CLI. No numerical approximation budget claimed."
+  ],
+  "source": "tools/bench/src/main.rs",
+  "state": "run ignores nonzero child exit status. Numeric lexer drops sign and splits exponent; values remain strings. Main quick only excludes GSM8K, not other expensive/frozen paths; main never executed here."
+}

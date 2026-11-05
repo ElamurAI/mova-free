@@ -1,0 +1,35 @@
+{
+  "checks": [
+    "15 source-local tests; five compiled mutation controls",
+    "composition_wave25: interpolation_polynomial_and_spline_affine_join, quadrature_analytic_join",
+    "Full library: 782 checks twice debug and twice release; see model.md"
+  ],
+  "children": [
+    "algorithm-neville-interpolation",
+    "algorithm-neville-interpolation-tests",
+    "algorithm-newton-divided-differences",
+    "algorithm-newton-divided-differences-tests",
+    "algorithm-natural-cubic-spline",
+    "algorithm-natural-cubic-spline-tests",
+    "algorithm-adaptive-trapezoid",
+    "algorithm-adaptive-trapezoid-tests",
+    "algorithm-tanh-sinh-quadrature",
+    "algorithm-tanh-sinh-quadrature-tests"
+  ],
+  "cost": "Neville O(n²) per query/O(n) space; Newton O(n²) build then O(n) per query/O(n) space; natural spline O(n) build/storage and O(log n) query. Both quadratures O(evaluations) arithmetic work plus geometry checks/O(1) space, excluding callback cost; tanh-sinh uses transcendental transforms and recomputes all level samples. Interpolation has no hard count cap beyond finite allocated input; quadrature uses usize budget with checked doubling.",
+  "description": "Evaluate nodal interpolation via Neville and reusable Newton coefficients, construct/evaluate natural cubic splines, and integrate callbacks with global dyadic trapezoid or fixed-window tanh-sinh refinement. Numeric values, estimators, statuses and callback traces remain distinct observations.",
+  "forward": [
+    "Evaluate nodal interpolation via Neville and reusable Newton coefficients, construct/evaluate natural cubic splines, and integrate callbacks with global dyadic trapezoid or fixed-window tanh-sinh refinement. Numeric values, estimators, statuses and callback traces remain distinct observations.",
+    "All five are std-only with no production intermodule dependencies. Neville and Newton share the unique degree<n real interpolation polynomial for identical nodes/ordinates. Natural spline shares affine data but is generally a different function for curved data. A validated interpolator can be wrapped as a deterministic quadrature callback only on a compatible query interval and with explicit handling of its Result errors."
+  ],
+  "id": "interpolation-quadrature",
+  "inverse": [
+    "Exclude invalid node/order success, wrong rounded divided-difference or triangular recurrence, nonfinite successful results, spline extrapolation success and wrong knot value. For quadrature exclude calls on invalid input, calls beyond budget, partial-level estimates presented as complete, or an EstimatedTolerance status inconsistent with the computed consecutive-level criterion. Real polynomial reproduction does not require bitwise equality across distinct f64 algorithms.",
+    "At fixed distinct nodes, complete real Newton coefficients identify the nodal polynomial; one query value leaves a large affine ordinate fiber. At q=0, functions x and0 both yield0. Natural curvature data alone loses the affine component. For quadrature a callback perturbation vanishing on every visited point gives the same execution while potentially changing the integral; rounded observations may merge additional inputs."
+  ],
+  "limitations": [
+    "Polynomial and spline identities concern real arithmetic, not bitwise f64 agreement. Conditioning, cancellation and unsampled behavior remain unbounded. Deterministic callback is required to interpret repeated samples as one function; callback panic/resource cost and allocator failure are outside Result contracts. Tanh-sinh window [-3,3] omits tails.",
+    "Finite tests and source-derived models are not a universal proof."
+  ],
+  "state": "Interpolation preserves its specified node/basis recurrence; spline uses zero endpoint second derivatives and closed-domain queries. Quadrature never exceeds caller budget, commits only complete levels, and labels consecutive-level differences as estimates rather than true-error bounds."
+}

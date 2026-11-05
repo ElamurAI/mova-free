@@ -1,0 +1,40 @@
+# Flags: rules kept in their jurisdiction's own column but left out of the reference by default (judge --flagged).
+# A rule is flagged when a word of its text names a status that sets a party apart (slave or free, gender,
+# religion or people, foreigner), or when its penalty is one the main human-rights instruments forbid or work to
+# abolish: corporal and mutilating punishment (ICCPR art. 7, the Convention against Torture), cruel modes of
+# execution, and the death penalty (the ICCPR's Second Optional Protocol, ECHR Protocol 13). Words, not judgments:
+# a flag says where to look, and errs on the side of flagging.
+pattern	kind	where	reason
+slave	status	text	slave or free
+bondman	status	text	slave or free
+bondmen	status	text	slave or free
+bondwoman	status	text	slave or free
+bondmaid	status	text	slave or free
+handmaid	status	text	slave or free
+maidservant	status	text	slave or free
+manservant	status	text	slave or free
+hebrew servant	status	text	slave or free
+freed man	status	text	slave or free
+free-born	status	text	slave or free
+his equal	status	text	social class
+stranger	status	text	foreigner
+foreigner	status	text	foreigner
+gentile	status	text	religion or people
+heathen	status	text	religion or people
+woman	status	text	gender
+wife	status	text	gender
+daughter	status	text	gender
+virgin	status	text	gender
+death	penalty	penalty	the death penalty
+die	penalty	penalty	the death penalty
+be killed	penalty	penalty	the death penalty
+stone	penalty	penalty	cruel execution
+thrown into	penalty	penalty	cruel execution
+burn	penalty	penalty	cruel execution
+drown	penalty	penalty	cruel execution
+stripes	penalty	penalty	corporal punishment
+flog	penalty	penalty	corporal punishment
+scourge	penalty	penalty	corporal punishment
+eye	penalty	penalty	mutilation (talion)
+teeth	penalty	penalty	mutilation (talion)
+tooth	penalty	penalty	mutilation (talion)

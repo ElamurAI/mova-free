@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "cargo test -p world --lib --offline query_finite",
+    "cargo test -p world --lib --offline --release query_finite",
+    "mova-modelcheck groupants; model.md#finite-evidence"
+  ],
+  "children": [],
+  "cost": "For D replayed deltas, M mentions, E events, C cursors, K characters and L output bytes: state/history O(D+L), attention O(M+K log K), context adds O(E+C) and O(E) references. diff adds sorting and quadratic vector membership for set deltas. Resolve replays relevant entities and compares words/alternatives. Label recursion/ancestry cost depends on structure; cycles excluded.",
+  "description": "Immutable queries project snapshots, histories, labels, resolution and attention/context. state_at/holder_at delegate replay to Entity. qa.rs calls context_at/where_at/holder_at; md.rs renders context. Text-to-frame extraction is not performed here.",
+  "forward": [
+    "Immutable queries project snapshots, histories, labels, resolution and attention/context. state_at/holder_at delegate replay to Entity. qa.rs calls context_at/where_at/holder_at; md.rs renders context. Text-to-frame extraction is not performed here."
+  ],
+  "id": "world-query",
+  "inverse": [
+    "U is (finite well-formed W, query q, typed return y) for terminating immutable calls; R is y=Q(W,q). Inner bound of U minus R: state_at returning a version absent from the entity, attention containing zero-count/non-character IDs, diff returning Some for zero/out-of-range endpoints.",
+    "Q^-1(y)={(W,q):Q(W,q)=y}; retain every compatible unobserved state, mention and event. Strings lose provenance; bounded-world enumeration is a proposed oracle, not unique recovery."
+  ],
+  "limitations": [
+    "Partial syntax only; semantic AST absent.",
+    "Source-derived catalogs are not general verification; external dependency gaps remain.",
+    "397 finite native rows; no whole-world verification or semantic AST."
+  ],
+  "source": "world/src/query.rs",
+  "state": "Inputs, dependency state, observations and effects; adjacent groupant defines scope."
+}

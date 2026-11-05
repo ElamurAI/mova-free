@@ -1,0 +1,76 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "scope": "Whole-source partial syntax artifact; coverage.syntax_nodes selects this fragment's nodes. No expanded or semantic AST.",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "excluded-traces",
+        "path": "model.md",
+        "required": true,
+        "scope": "Explicit inner approximation of U \\ R; see model universe and assumptions.",
+        "section": "Behavior complement",
+        "status": "partial_source_derived",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "compatible-antecedents",
+        "path": "model.md",
+        "required": true,
+        "scope": "B(work,observed weights) contains all ordered visit branch sequences and input states compatible with those counts and vectors. Totals lose exercise attribution; P=0 and E=0 can both yield zero counters. Observations do not uniquely recover answers or lesson seeds.",
+        "section": "Reverse reconstruction",
+        "status": "partial_source_derived",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "trace-correspondence",
+        "path": "model.md",
+        "required": false,
+        "scope": "The target relation equates every ordered weight vector to reuse=false recomputation for the same exercise order. It requires fixed evaluator dependencies and that Inert answers cannot update reference state; equal final scores alone are weaker.",
+        "section": "Specialized relation",
+        "status": "partial_source_derived",
+        "type": "trace_correspondence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "references_only"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4321,
+      "start": 2247
+    },
+    "description": "learn_lesson_with function, excluding the surrounding impl closing brace.",
+    "syntax_nodes": {
+      "node_ids": [
+        215
+      ],
+      "path": "../../syntax.json"
+    }
+  },
+  "id": "learning-memo-execution-ordered-visits",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../learning.rs",
+    "sha256": "27a2ad1ec4a2548c007ea360fb817b65843a89a8424910de9ba2b54534459c05"
+  },
+  "status": "partial_source_derived"
+}

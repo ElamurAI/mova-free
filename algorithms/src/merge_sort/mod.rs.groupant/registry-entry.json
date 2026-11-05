@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "rustc --test --crate-name mova_algorithm_merge_sort algorithms/src/merge_sort/mod.rs; run binary twice",
+    "Independent source mutant must fail",
+    "mova-modelcheck syntax and groupants structural checks"
+  ],
+  "children": [],
+  "cost": "T(n)=T(floor(n/2))+T(ceil(n/2))+O(n), hence O(n log(n+1)) comparisons/clone work. One n-element scratch allocation and O(log(n+1)) stack. Clone/comparison costs assumed bounded; element-owned allocations are excluded. No timing measured.",
+  "description": "Repository-owned merge_sort implementation and finite oracle; adjacent source-bound groupant.",
+  "forward": [
+    "S(A) is the unique ascending permutation of input occurrences in which equal-key occurrences retain their original relative order. Recursively sort the two halves, then merge by selecting the left head on equality.",
+    "Invariant: Each merge prefix is sorted and contains exactly the consumed left/right occurrences; within each half encounter order is preserved. i and j count consumed positions and stay in bounds. Recursion halves length until less than two."
+  ],
+  "id": "algorithm-merge-sort",
+  "inverse": [
+    "U consists of pairs (A,B) of finite occurrence sequences. R(A,B) means B is the stable ascending permutation. U minus R includes changed length/multiplicity, descending adjacent keys, or reversal of equal-key identities. Under lawful comparison/clone these exhaust unsuccessful output candidates; bounded evidence is not general proof.",
+    "For fixed sorted B, the preimage contains every permutation A of B's occurrences preserving the order of each equal-key subsequence seen in B. Distinct-key interleavings remain ambiguous. Unsorted B has empty preimage."
+  ],
+  "limitations": [
+    "Scope is successful calls on lawful generic implementations where applicable. Partial syntax omits macro expansion, cfg resolution and semantic typing. Finite oracles do not establish all inputs or full Mova integration."
+  ],
+  "source": "algorithms/src/merge_sort/mod.rs",
+  "state": "Finite slices with lawful Ord and value-preserving Clone; terminating successful calls without user-code panic or allocation failure; distinguish occurrence identities."
+}

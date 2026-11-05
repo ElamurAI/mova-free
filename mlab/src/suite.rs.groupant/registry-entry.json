@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "wave30_synthetic_suite_boundaries",
+    "wave30_synthetic_gate_fail_fast"
+  ],
+  "children": [],
+  "cost": "Parse/check O(input/output plus expectation bytes) with retained copies. Runs sum program costs with fresh state; gate executes twice per scenario until mismatch and retains one mismatch. Arbitrary programs can loop indefinitely; no timeout.",
+  "description": "Line-oriented scenario parser, exact/prefix first-mismatch comparator, fresh-interpreter runner and output-only tree/VM equivalence gate.",
+  "forward": [
+    "parse maps ### headers/code/---/expectations to Scenario values; finish removes trailing blank code and adds newline. check strips one final newline and compares max(expected,got) lines. run_fs maps scenarios to fresh Interp+FS; vm_gate stops at first byte-different tree/VM output."
+  ],
+  "id": "mlab-suite",
+  "inverse": [
+    "Scenario preimages differ in ignored preamble, extra header fields, ignored expectation lines and trailing code blanks. Outcome pass=true restricts output by exact/prefix expectations but never identifies program semantics. Equal VM/tree output admits shared bugs."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no macro expansion or semantic resolution. Finite synthetic CPU checks are not a proof. Frozen suites, corpus, teacher, GPU, allocation exhaustion and host IO failure injection were not run. No useful executable percent surrogate for categorical control/effects; unsupported gap, no 1/2/5/10% claim."
+  ],
+  "source": "mlab/src/suite.rs",
+  "state": "First_diff is 1-based earliest differing line; absent lines are <end>. Scenarios do not share default workspace/FS. Gate total counts only executed prefix and fully_native uses static fallback==0 and dyn_runs==0."
+}

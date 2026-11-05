@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p en --lib model::wave27::bounded_contract",
+    "Paired partial syntax; debug/release repeated outcomes; see receipt"
+  ],
+  "children": [],
+  "cost": "encode includes delegated tokenizer/tagger/parser plus O(n*L) local symbol linear search (L local heap length), string work. decode adds linearizer cost only when generative. adapt allocates base+weight*pseudo tokens, then linearizer training. u16 head cast and usize allocations lack checked bounds.",
+  "description": "train_with filters tagged sentences and trains layers; beam>1 chooses12 beam epochs, else10 greedy. encode tokenizes/tags/parses, morphology-encodes each node, interns symbols, repairs article representation and extracts positional capitalization/mood. decode uses original indices or linearizer order, regenerates articles based on next emitted form, applies first capitalization, then detokenizes. adapt re-trains only lin on base plus weight repeated pseudo sentences.",
+  "forward": [
+    "train_with filters tagged sentences and trains layers; beam>1 chooses12 beam epochs, else10 greedy. encode tokenizes/tags/parses, morphology-encodes each node, interns symbols, repairs article representation and extracts positional capitalization/mood. decode uses original indices or linearizer order, regenerates articles based on next emitted form, applies first capitalization, then detokenizes. adapt re-trains only lin on base plus weight repeated pseudo sentences."
+  ],
+  "id": "en-model",
+  "inverse": [
+    "Given Graph g and model M, compatible source texts are those encoding to g; local heap and raw cases constrain strings but whitespace normalization can yield multiple antecedents. decode(g,true) is a canonical reconstruction, not a universal byte-inverse. Serialized Model state cannot identify training order/history uniquely.",
+    "Raw article escapes cannot undergo a/an regeneration. Graph local symbols cannot reconstruct omitted arbitrary whitespace; lossless means stored token/order/space information. Encode head cast to u16 can truncate beyond65535. adapt leaves parser/tagger/base unchanged but may replace lin even at weight0."
+  ],
+  "limitations": [
+    "Partial source-bound model, not full proof. No useful executable percentage surrogate established for these categorical decisions/effects; budgets1/2/5/10% require a future observation metric. No corpus/API/GPU/teacher, allocation fault injection, adversarial size exhaustion or broad accuracy claim."
+  ],
+  "source": "en/src/model.rs",
+  "state": "Model combines Lexicon,PTagger,Morph,Parser,Linearizer and retained base sentences. Graph has ordered GNodes, local string heap, question and positional capitalization bits."
+}

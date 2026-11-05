@@ -1,0 +1,141 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "1..512 vertices, <=131072 edges, i64 weights, valid zero-based root; Option<i128> minimum outward tree objective.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Exclude suboptimal totals, None on feasible inputs, acceptance of invalid coordinates, and arithmetic wrapping.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "202ccbfbbcf91d24bb4f78d1b79d2819f1dbc4e5f5d7d9a320cf9785e8ad382b",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "1..512 vertices, <=131072 edges, i64 weights, valid zero-based root; Option<i128> minimum outward tree objective.",
+        "evidence": "model.md#evidence",
+        "id": "preimages",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "For Some(w), compatible graphs have a root-reaching branching of weight w and none cheaper. Internal edges/loops and tied trees are unrecoverable from the scalar. None reconstructs graphs with a nonroot component unreachable from root.",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "202ccbfbbcf91d24bb4f78d1b79d2819f1dbc4e5f5d7d9a320cf9785e8ad382b",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "1..512 vertices, <=131072 edges, i64 weights, valid zero-based root; Option<i128> minimum outward tree objective.",
+        "evidence": "model.md#evidence",
+        "id": "transition",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Each cycle contraction maps entering choices by subtracting the chosen incoming cost.",
+        "path": "model.md",
+        "section": "transition",
+        "status": "partial_source_derived",
+        "subject_revision": "202ccbfbbcf91d24bb4f78d1b79d2819f1dbc4e5f5d7d9a320cf9785e8ad382b",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "1..512 vertices, <=131072 edges, i64 weights, valid zero-based root; Option<i128> minimum outward tree objective.",
+        "evidence": "model.md#evidence",
+        "id": "order",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Adding edges cannot increase a feasible optimum; it can repair infeasibility.",
+        "path": "model.md",
+        "section": "order",
+        "status": "partial_source_derived",
+        "subject_revision": "202ccbfbbcf91d24bb4f78d1b79d2819f1dbc4e5f5d7d9a320cf9785e8ad382b",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "1..512 vertices, <=131072 edges, i64 weights, valid zero-based root; Option<i128> minimum outward tree objective.",
+        "evidence": "model.md#evidence",
+        "id": "coordinate",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Adding k to every nonloop edge shifts any feasible objective by (V-1)k when representable.",
+        "path": "model.md",
+        "section": "coordinate",
+        "status": "partial_source_derived",
+        "subject_revision": "202ccbfbbcf91d24bb4f78d1b79d2819f1dbc4e5f5d7d9a320cf9785e8ad382b",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "1..512 vertices, <=131072 edges, i64 weights, valid zero-based root; Option<i128> minimum outward tree objective.",
+        "evidence": "model.md#evidence",
+        "id": "fiber",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Permuting vertices and root preserves objective; edge ordering only chooses tied contraction paths.",
+        "path": "model.md",
+        "section": "fiber",
+        "status": "partial_source_derived",
+        "subject_revision": "202ccbfbbcf91d24bb4f78d1b79d2819f1dbc4e5f5d7d9a320cf9785e8ad382b",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "1..512 vertices, <=131072 edges, i64 weights, valid zero-based root; Option<i128> minimum outward tree objective.",
+        "evidence": "model.md#evidence",
+        "id": "errors",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Public size caps precede input-order validation, then arithmetic/search. Exact cover budget exhaustion is not infeasibility; closure capacity overflow is not infeasibility. Bounded index arithmetic cannot overflow. Checked i128 arborescence arithmetic remains defensive. Allocation failure is process-level, not returned; no callbacks or external writes. Empty cases and deterministic ties follow API docs.",
+        "path": "model.md",
+        "section": "errors",
+        "status": "partial_source_derived",
+        "subject_revision": "202ccbfbbcf91d24bb4f78d1b79d2819f1dbc4e5f5d7d9a320cf9785e8ad382b",
+        "type": "error_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-minimum-arborescence",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "202ccbfbbcf91d24bb4f78d1b79d2819f1dbc4e5f5d7d9a320cf9785e8ad382b"
+  },
+  "status": "partial_source_derived_instance"
+}

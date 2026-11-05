@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "19 exact native tests twice debug/release; repeated syntax; three compiled source mutants"
+  ],
+  "children": [],
+  "cost": "Matching scales with rule clauses*facts*term scans plus condition scans and sort O(R log R). For n<=16 matches, p points, g global combinations, count O(2^n*g*E), E includes n*p plus text. Tipping explores sum_{k<=depth} products of k point-alternative counts, allocates a whole level before 200000 cutoff; cap16 does not bound p or arithmetic.",
+  "description": "Case facts to capped rule matches, choice lattice, evaluation and bounded tip search.",
+  "forward": [
+    "Match defendant anchors by highest Cover with first tie; build condition/exception points and discard completed duties; rank/cap16/reindex; append disputes, precedence and suspension. Evaluate blocked/local eligibility, dispute winners, principle key and optional suspension. Count weighted firing masks times global assignments; tipping enumerates distinct-point alternative sets."
+  ],
+  "id": "court-lattice",
+  "inverse": [
+    "In generated valid lattices, excluded traces include blocked rule firing, negated forbidden act conviction from that rule, completed duty retained, and suspension outside2..max. No bounds are claimed for malformed externally assembled Lattice assignments.",
+    "For observed verdict v, compatible antecedents are all admitted (j,case,defendant,assignment) with evaluate(lattice(...),assignment).0=v. Counts aggregate assignments and erase case/rule distinctions; representative stored assignment is one witness, never a unique inverse.",
+    "Anchor ties use first clause/fact order. Cap sorts descending weight then Cover then ascending original order, truncates16, restores body order, rewrites each local point.rule. Weak discarded rules cannot contribute later counts.",
+    "Condition group chooses maximal Status (OR); exception group minimal Status (AND), with opposite-word and explicit sure-negation early failures. Unmet<Unknown<Broad<Met ordering means unknown can dominate unmet inside OR.",
+    "For unblocked rule with k local binary points: one assignment fires and2^k-1 fail. Blocked rule contributes2^k only to nonfiring mask; unblocked k0 cannot fail. Multiply by global Cartesian choices; require shifts/products fit.",
+    "Distinct verdicts maximize selected principle key; strict > preserves first tie. Dispute elimination precedes this. Tipping starts honest even keep0, then distinct-point sets by depth/order; unreachable within depth differs from absent from full counts."
+  ],
+  "limitations": [
+    "Partial source-derived models and finite correspondence only",
+    "No live parser/corpus/frozen gold or protocol filesystem effects; no percentage surrogate"
+  ],
+  "source": "yom-hadin/src/court.rs",
+  "state": "Finite synthetic rule/case states; valid indices, bounded paths, successful allocations. No legal authority claim."
+}

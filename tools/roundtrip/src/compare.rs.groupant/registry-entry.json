@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "compare::wave32_tests::lossy_rows_and_before_domain",
+    "compare::wave37_tests::unknown_residual_layers_are_unique_and_ordered"
+  ],
+  "children": [],
+  "cost": "Read O(file bytes), ordered maps O(rows log keys), set-vector membership can be quadratic; residual-key sorting O(K log K) comparisons and O(K) retained keys with variable string-copy/comparison costs; output O(rendered bytes).",
+  "description": "Compare residual/normal TSV snapshots with permissive numeric parsing, before-domain sets, a full residual-key union ordered by (known-layer priority, class, layer), changed-row thresholds and known-layer totals.",
+  "forward": [
+    "Read residual(a), residual(b), normal(a), normal(b) in that failure order. Numeric parse failure becomes zero while NaN parses. Residual duplicate keys are last-wins; normal first rows fix totals and later rows add class counts.",
+    "Enumerate before-domain sets; sort the full residual-key union by (known-layer priority or 9, class, layer), once per key. Unknown layers follow class then layer order. Emit abs change >= 0.05 and known-layer totals excluding meta."
+  ],
+  "id": "rt-mixed-compare",
+  "inverse": [
+    "Within admitted successful reads, exclude repeated residual full keys or residual changed-row order violating (priority, class, layer). After-only sets and unmatched after normal starts are omitted.",
+    "Rounded output admits many TSV antecedents; overwritten duplicate rows and ignored short rows are unrecoverable. A single emitted key does not identify the number or order of original rows."
+  ],
+  "limitations": [
+    "Finite synthetic helper evidence only; live corpora, parser/model loading, full orchestration and filesystem failure races excluded.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/roundtrip/src/compare.rs",
+  "state": "Owned temporary TSVs with admitted residual/normal rows of at least seven/eight columns; unrestricted layer strings. Meaningful ratios require finite nonnegative metrics, but parsing accepts nonfinite values."
+}

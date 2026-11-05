@@ -1,0 +1,119 @@
+{
+  "children": [
+    {
+      "id": "global-catalog-expression-matching",
+      "path": "matching.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "scoped_specification"
+    },
+    "ast": {
+      "scope": "Source byte ranges only. include! OUT_DIR/global.rs and include_str! OUT_DIR/expressions.tsv are not expanded or source-bound by this sidecar.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "scoped_specification"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariants",
+      "status": "scoped_specification"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Expression rows, lazy exact-phrase index, register mapping and greedy sentence matching.",
+        "evidence": "expression_tests::real_meanings_and_domains; proposed malformed-row fixture.",
+        "id": "nonbehavior",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "With fixed included TSV bytes, U is the tagged union of direct phrase lookups returning expression slices and token requests returning ExprMatch records; R is lazy row parsing and greedy matching. An inner approximant C to U minus R contains parsed rows originating from fewer than four columns. For ExprMatch outputs it additionally contains spans longer than six words, unresolved [[ glosses and unlabeled singleton readings. These matcher restrictions do not apply to direct expression() lookup slices, which return indexed rows. This is a scoped specification, not a certified runtime complement.",
+        "path": "model.md",
+        "scope": "Expression rows, lazy exact-phrase index, register mapping and greedy sentence matching.",
+        "section": "nonbehavior",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Expression rows, lazy exact-phrase index, register mapping and greedy sentence matching.",
+        "evidence": "Proposed finite tokens/rows fiber enumeration.",
+        "id": "antecedents",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "An expression match (span,entry,domains) admits every token sequence generating its literal or one-position generalized candidate and surviving longer/earlier matches. Observation loses original capitalization, which candidate variant matched, unchosen rows and unused extra TSV columns; retain these alternatives.",
+        "path": "model.md",
+        "scope": "Expression rows, lazy exact-phrase index, register mapping and greedy sentence matching.",
+        "section": "antecedents",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Expression rows, lazy exact-phrase index, register mapping and greedy sentence matching.",
+        "evidence": "Proposed duplicate-phrase and case-sensitive direct-lookup fixture.",
+        "id": "row-index",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "For each non-comment line with >=4 tab columns, append one row under column zero; register/variety default empty. Duplicate phrases preserve file row order. Exact expression lookup does no lowercasing itself; no caller input normalization is inferred.",
+        "path": "model.md",
+        "scope": "Expression rows, lazy exact-phrase index, register mapping and greedy sentence matching.",
+        "section": "row-index",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "ordered_multimap"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Expression rows, lazy exact-phrase index, register mapping and greedy sentence matching.",
+        "evidence": "Proposed mismatched-gloss and unknown-variety fixtures.",
+        "id": "label-projection",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "Register labels affect domains only when their attached gloss equals the row meaning. Known register groups map to slang/formal/humor/hidden-meaning. Variety labels matching the main meaning map to fixed recognized names, with every other spelling mapping to variety:Wales. Sorted deduplication forgets label multiplicity and order.",
+        "path": "model.md",
+        "scope": "Expression rows, lazy exact-phrase index, register mapping and greedy sentence matching.",
+        "section": "label-projection",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "lossy_mapping"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "existing_test_references"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 31551,
+      "start": 23148
+    },
+    "description": "Expression rows, lazy exact-phrase index, register mapping and greedy sentence matching."
+  },
+  "id": "global-catalog-expression-catalog",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../lib.rs",
+    "sha256": "f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907"
+  },
+  "status": "partial"
+}

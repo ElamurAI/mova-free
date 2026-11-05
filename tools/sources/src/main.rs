@@ -619,3 +619,88 @@ fn derive_names(res: &Resource, use_save_as: bool) -> Vec<String> {
     }
     names
 }
+#[cfg(test)]
+mod wave33_tests {
+    use super::*;
+    fn root(tag: &str) -> std::path::PathBuf {
+        let p =
+            std::env::temp_dir().join(format!("mova-wave33-sources-{tag}-{}", std::process::id()));
+        fs::create_dir_all(&p).unwrap();
+        p
+    }
+    #[test]
+    fn bibliography_row_load_plan_check_join() {
+        let root = root("join");
+        let entries =
+            bib::parse("@misc{k,title={Synthetic},year={2016},url={https://aclanthology.org/id/}}");
+        let mut v = bib::row(&entries[0], "safe", "topic", 1);
+        v["files"][0]["size"] = serde_json::json!(4);
+        let manifest = root.join("manifest.jsonl");
+        fs::write(&manifest, format!("{v}\n")).unwrap();
+        let paths = vec![manifest.to_string_lossy().into_owned()];
+        let p = load(&paths).unwrap();
+        assert_eq!(p[0].names, vec!["id.pdf"]);
+        let raw = root.join("raw");
+        let queues = root.join("queues");
+        plan(&raw, &queues, &paths).unwrap();
+        assert!(
+            fs::read_to_string(queues.join("curl-aclanthology.org.cfg"))
+                .unwrap()
+                .contains("id.pdf")
+        );
+        fs::write(raw.join("safe/id.pdf"), b"%PDF").unwrap();
+        check(&raw.join("safe/id.pdf"), &p[0].res.files[0]).unwrap();
+        plan(&raw, &queues, &paths).unwrap();
+        assert!(!queues.join("curl-aclanthology.org.cfg").exists());
+        fs::remove_dir_all(root).unwrap();
+    }
+    #[test]
+    fn check_size_then_digest_then_magic() {
+        let root = root("check");
+        let p = root.join("bad.pdf");
+        fs::write(&p, b"abc").unwrap();
+        let mut f: FileRef =
+            serde_json::from_str(r#"{"url":"fixture","size":4,"md5":"wrong"}"#).unwrap();
+        assert!(check(&p, &f).unwrap_err().to_string().starts_with("size "));
+        f.size = serde_json::json!(3);
+        assert!(check(&p, &f).unwrap_err().to_string().starts_with("md5 "));
+        f.md5 = Some("multipart-2".into());
+        assert!(
+            check(&p, &f)
+                .unwrap_err()
+                .to_string()
+                .starts_with("signature ")
+        );
+        let unknown = root.join("plain");
+        fs::write(&unknown, b"abc").unwrap();
+        check(&unknown, &f).unwrap();
+        fs::remove_dir_all(root).unwrap();
+    }
+    #[test]
+    fn merge_subset_and_first_partial_owner() {
+        let root = root("merge");
+        let input = root.join("input.jsonl");
+        let output = root.join("output.jsonl");
+        fs::write(
+            &input,
+            concat!(
+                "{\"slug\":\"small\",\"files\":[{\"url\":\"a\"}]}\n",
+                "{\"slug\":\"large\",\"files\":[{\"url\":\"a\"},{\"url\":\"b\"}]}\n",
+                "{\"slug\":\"partial\",\"files\":[{\"url\":\"b\"},{\"url\":\"c\"}]}\n",
+                "{\"slug\":\"manual\",\"files\":[]}\n"
+            ),
+        )
+        .unwrap();
+        merge(&output, &[input.to_string_lossy().into_owned()]).unwrap();
+        let rows: Vec<Value> = fs::read_to_string(&output)
+            .unwrap()
+            .lines()
+            .map(|l| serde_json::from_str(l).unwrap())
+            .collect();
+        assert_eq!(rows.len(), 3);
+        assert_eq!(rows[0]["slug"], "large");
+        assert_eq!(rows[1]["files"], serde_json::json!([{"url":"c"}]));
+        assert_eq!(rows[2]["slug"], "manual");
+        fs::remove_dir_all(root).unwrap();
+    }
+}

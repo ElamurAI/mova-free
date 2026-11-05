@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "ok=false excludes export_dir calls but allows journal output. Nonmem with transfer flags excludes make_fs.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Successful run observations are compatible with repeated shadowed flags; skipped export message constrains ok=false but not original script cause.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_invariant",
+        "path": "model.md",
+        "scope": "Creation/import precedes interpreter execution; journal is after export attempts and can be absent if export errors.",
+        "section": "state_invariant",
+        "status": "partial_source_derived_model",
+        "type": "state_invariant"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "limits parse fails before transfer mode check; make_fs errors yield exit2; finish_fs errors also yield exit2 even after successful script.",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "flag_values consumes adjacent windows, so dangling flags absent; imports/exports split first colon and default virtual root /.",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "O(argument scans plus delegated import/run/export/journal work); host writes not transactional.",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4210,
+      "start": 1329
+    },
+    "description": "Build FsOpts, open backend and import memory roots, run code, export only if ok, then write journal; return status based on config/finalization versus interpreter.",
+    "source_bytes_sha256": "5db62a03d36a15026f96e51c2e5a9a0b20030729c2a675b308ac8bc3a684c94a"
+  },
+  "id": "mlab-main-filesystem-lifecycle",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../main.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "b378db9adacc941133989b5ae41704694f01a38870bc24b36a637f251c6ea03f"
+  },
+  "status": "partial_source_bound_model"
+}

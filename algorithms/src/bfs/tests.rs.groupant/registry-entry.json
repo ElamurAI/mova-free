@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "rustc --edition 2024 --test algorithms/src/bfs/mod.rs",
+    "two runs; strict Clippy; filtered new-test compiled mutant"
+  ],
+  "cost": "New oracle work O(sum V^3), all-source production O(sum V(V+E)), oracle memory O(V^2). Bounds: 40 graphs <=20 vertices, 32 <=16, one 2048 chain.",
+  "description": "Five bfs tests with independent oracle and transformations.",
+  "forward": [
+    "Two original tests plus 40 generated graphs with 4..20 vertices, 32 duplicate/reordered graphs with 5..16 vertices, all sources, a 2048-vertex chain and a competing-frontier fixture. Seeds 0xb15120261029 and 0xb15220261029; generated diagnostics include case/source.",
+    "Floyd-Warshall initializes diagonal zero, arcs one and other entries n+1. Each k applies D[u,v]=min(D[u,v],D[u,k]+D[k,v]); entries >n become None. It shares no FIFO discovery control flow with production. Explicit chain and competing-frontier expected vectors add independent fixtures."
+  ],
+  "id": "algorithm-bfs-tests",
+  "inverse": [
+    "Universe U is deterministic terminating candidate return tables on the fixed fixture schedule crossed with five test verdicts. R maps each table to exact assertion verdicts. C=U minus R excludes passing when any assertion disagrees with expected values and failing when all executed assertions pass. This is exact at assertion-specification level, partial for actual runners; compilation failure, timeout and resource failure are outside U.",
+    "Pre(y) retains ALL candidate return tables giving observed verdict vector y. Passing constrains only checked calls; all untested inputs remain free. A failure retains every compatible first failing assertion and earlier passing return. No unique implementation or source reconstruction follows."
+  ],
+  "limitations": [
+    "Finite evidence, not unrestricted proof.",
+    "Partial syntax excludes macro expansion and semantic resolution."
+  ],
+  "source": "algorithms/src/bfs/tests.rs",
+  "state": "Fixed fixture schedule, candidate returns and verdicts."
+}

@@ -1,0 +1,22 @@
+{
+  "id": "octopus-question-frame",
+  "source": "tools/octopus/src/frame.rs",
+  "children": [],
+  "description": "The deputy's own question frame (mood, subject, verb) from the native UD parse, with a subject-as-root repair for present polar questions.",
+  "state": "Pure function of one sentence's native words.",
+  "forward": [
+    "mood from the first words; subject/verb from root, nsubj, acl/amod/xcomp or compound; repaired flag.",
+    "repair_imperative: no VERB/AUX/nsubj, first word NOUN/NN base form, a configured request predicate, heading no det/amod/nummod/case/nmod:poss -> VERB/VB root, old root its obj; read_repairing marks the frame repaired. Compound subject under a polar predicate includes nested premodifiers (2026-11-05)."
+  ],
+  "inverse": [
+    "A frame names a set of compatible sentences, not the text."
+  ],
+  "cost": "O(n) over at most 160 words.",
+  "checks": [
+    "2026-11-04: frame unit tests on real native parses with negative controls; repair removal turns frame and native deputy tests red.",
+    "2026-11-05: imperative repair unit tests on the en.bin 2483516a parse with five negative controls; native deputy test plans \"Show Crab's (recent) reports.\"; removing the repair turns one unit and two native tests red (restored)."
+  ],
+  "limitations": [
+    "No embedded questions, coordination, passive or non-inverted questions; a frame is not a parse-quality verdict."
+  ]
+}

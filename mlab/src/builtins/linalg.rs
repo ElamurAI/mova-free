@@ -956,3 +956,25 @@ mod tests {
         assert!(frob_rel(&lu, &pa) < 1e-14, "P·A ≠ L·U: {:?} vs {:?}", pa.re, lu.re);
     }
 }
+
+#[cfg(test)]
+mod wave30_tests {
+    use super::*;
+    #[test]
+    fn transport_and_rectangular_solve() {
+        let a = Mat::new(3, 2, vec![1.0, 0.0, 1.0, 0.0, 1.0, 1.0]);
+        assert_eq!(from_faer(view(&a)).re, a.re);
+        let b = Mat::col(vec![2.0, 3.0, 5.0]);
+        let x = lstsq_qr(&a, &b).unwrap();
+        assert!((x.re[0] - 2.0).abs() < 1e-12 && (x.re[1] - 3.0).abs() < 1e-12);
+        let s = lstsq_svd(&a, &b).unwrap();
+        assert!(frob_rel(&s, &x) < 1e-12);
+        assert!(lstsq_qr(&Mat::zeros(3, 2), &b).is_none());
+        assert_eq!(perm_sign(&[1, 0, 2]), -1.0);
+        assert_eq!(norm_inf(&a), 2.0);
+        assert_eq!(
+            lstsq_svd(&Mat::zeros(0, 2), &Mat::zeros(0, 1)).unwrap().re,
+            vec![0.0, 0.0]
+        );
+    }
+}

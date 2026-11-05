@@ -1,0 +1,30 @@
+{
+  "checks": [
+    "derive::tests::rules_parse",
+    "derive::tests::derived_words_of_papers",
+    "derive::tests::conservative",
+    "derive::tests::steps_compose_back",
+    "derive::tests::spelling",
+    "derive::tests::suffix_before_prefix",
+    "derive::tests::deterministic"
+  ],
+  "children": [],
+  "cost": "Per unknown word: memoised recursion over (string, depth) with R rules (~80), each cut O(len) and <= 9 stem candidates; dictionary probes O(1) expected; worst case O(R^DEPTH) bounded by distinct suffixes of the word in the memo. Rules parsed once (OnceLock).",
+  "description": "Derived words: a form the dictionary does not know read as a known open-class word with productive affixes (prefix, suffix, inflection on a derived word, British spelling variant); rules are seed data (```derive blocks), spelling by join.",
+  "forward": [
+    "parse reads ```derive lines (prefix/suffix/inflect/variant with options after=, except=, block=, start=, nostart=, part=) into Rules in seed order. go(w, depth) memoised: a dictionary word of an open class with >=4 letters (>=5 when UD lacks it) is a base with its dictionary tags; else each rule cuts its affix: variant rewrites the British ending and recurses; prefix (optional hyphen) recurses on the rest (shortest stem, start/nostart, except, block by rival prefix + rest in the dictionary) and keeps the stem tags of its classes (part= maps participles); suffix/inflection try stems(rest) and keep a stem s only when join(s, affix) contains w, s ends in after= and not in except=, no rival block suffix makes a dictionary word, the stem base-class matches, and an inflection only on a derived stem. Analyses sorted by (steps, prefix-final). a word of the lexicon extension is also a base below the form (its classes added to a dictionary word's). analyses() is empty for dictionary and extension words (derivations() still explains an extension word) and Early Modern endings (morph::ending_verb). tags() unions the tags of analyses of the best rank; hint() is tags unless EN_DERIVE_TAGS=0."
+  ],
+  "id": "en-derive",
+  "inverse": [
+    "compose(stem, rule) = prefix + stem (or with hyphen), the British ending for a variant, join(stem, affix) for suffix/inflection: every step word is in compose(step.stem, step.rule) (test steps_compose_back). The reverse of go is many-valued: one form has several analyses (downsampled = down- + sampled = downsample + -ed); the analysis does not recover meaning or the lexical bracketing, only compatible stems.",
+    "No analysis for: a dictionary word; a non-ASCII-lowercase/hyphen string; a bottom word of a closed class, a proper noun, shorter than 4 letters, or of 4 letters known only from AGID; a prefix rest shorter than the rule minimum or with a second hyphen; a spelling join does not give back (misspellings happyness, noticable, arguement, basicly); a blocked rival (unpossible, readible, inpossible, foregetting); an inflection on a dictionary word; more than 4 steps; an EModE ending on a known verb (biteth)."
+  ],
+  "limitations": [
+    "The dictionary (AGID) lacks many non-comparable adjectives (directional, objective, lateral only as NN); the lexicon extension (en-lexext) adds their JJ reading to a base, so bidirectional is JJ; a base neither has keeps its dictionary tags",
+    "Rare false analyses of names and misspellings remain (poppler = popple + -er, spooner, unlogical)",
+    "Compounds (treebank) are out of scope; irregular derivatives (grammatical, artificial) come from the lexicon extension, not from rules",
+    "No meaning is derived; glosses are explanations only"
+  ],
+  "source": "en/src/derive.rs",
+  "state": "Compiled seed texts, OnceLock rule table, built-in dictionary; EN_DERIVE_TAGS read once."
+}

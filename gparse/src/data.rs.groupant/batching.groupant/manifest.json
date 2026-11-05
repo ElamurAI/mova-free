@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "row_address",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "row_address",
+        "status": "partial_source_derived_model",
+        "type": "row_address"
+      },
+      {
+        "id": "drop_state",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "drop_state",
+        "status": "partial_source_derived_model",
+        "type": "drop_state"
+      },
+      {
+        "id": "plan_order",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "plan_order",
+        "status": "partial_source_derived_model",
+        "type": "plan_order"
+      },
+      {
+        "id": "role_precedence",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "role_precedence",
+        "status": "partial_source_derived_model",
+        "type": "role_precedence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "partial_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 15415,
+      "start": 9736
+    },
+    "description": "batch_prag allocates BT input/mask and BT² roles, adds root and gathers real rows; planner sorts and flushes before oversized additions.",
+    "source_bytes_sha256": "dd187de0199ff9a87ffe48acdb23bcd5bdc3a7c044c6fc0a36c8f9ca0c8b4a10"
+  },
+  "id": "gparse-data-batching",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../data.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "f115aeb0613b1ac5c59ff58216cbdc2bb795bf30eb4ace96d9ac2cf0ae29a942"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline max_flow::tests::",
+    "Debug and release twice normalized; strict Clippy; syntax twice; isolated compiled production mutation rejected at assertion."
+  ],
+  "children": [],
+  "cost": "Exhaustive domain 2^12 graphs times at most 2^4 cuts and E edges; bounded production calls and explicit numeric fixtures. No measured performance claim.",
+  "description": "max_flow tests.rs exact algorithm and bounded contract",
+  "forward": [
+    "Run named exhaustive, boundary and metamorphic tests; each successful test is conjunction of its explicit Rust assertions. The suite executes production methods directly and independent reference predicates."
+  ],
+  "id": "algorithm-max-flow-tests",
+  "inverse": [
+    "For fixed finite fixtures, U consists of candidate terminating implementations paired with claimed pass/fail outcomes. R pairs each with conjunction of actual assertions. U minus R contains false pass and false failure claims. Unexercised inputs are unconstrained; a passing suite is not universal correctness.",
+    "A passing transcript admits every implementation satisfying the finite assertions, including implementations wrong outside the observed domain. A failing assertion restricts antecedents to implementations violating that exact predicate, without uniquely locating the defect."
+  ],
+  "limitations": [
+    "Finite evidence is not proof; allocation failures outside Result; partial syntax only; no executable lossy approximants."
+  ],
+  "source": "algorithms/src/max_flow/tests.rs",
+  "state": "Finite typed inputs, sufficient allocation; explicit Result errors."
+}

@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "validated_fix_prompt_gate_and_lemma_join",
+    "explicit_fix_anchor_ids_join_verbatim_and_lemma",
+    "malformed_contexts_are_rejected_before_lemma_callbacks"
+  ],
+  "children": [],
+  "cost": "Three constant-size fixtures, one paragraph/two sentences/one item; lemma calls bounded by one answer plus listed anchors after validation; allocation and normalization costs remain. No live service timing.",
+  "description": "3 bounded native joins and 5 typed source-bound views.",
+  "forward": [
+    "Three synthetic joins compose real Fixes validation, prompt numbering, repair gating, anchor-ID mapping, span checking and injected lemma classification. They preserve admitted behavior and exclude invalid preflight side effects without teacher/model execution."
+  ],
+  "id": "question-generation-composition-wave20",
+  "inverse": [
+    "Admissible repair outputs retain item and paragraph identity, valid one-based anchors, gate-approved spans or preserved implicit answers. Its complement includes dropped/misaligned items, out-of-range anchors, invalid UTF-8 slicing, callback effects before invalid-input rejection and explicit outputs failing the span relation. Synthetic checks cover only selected branches.",
+    "A repaired explicit span identifies compatible sentences/anchors but not a unique old answer; implicit output preserves the chosen old answer and anchors but loses generating prompt provenance. Lemma coverage is many-to-one in forms, order and content labels. Validation errors retain many malformed antecedents; no inverse dataset reconstruction."
+  ],
+  "limitations": [
+    "Named finite joins pass twice per profile; syntax remains partial and domain premises remain explicit.",
+    "Finite checks do not establish general proof or unique antecedents.",
+    "No live parser, corpus, teacher, GPU, adoption or throughput experiment."
+  ],
+  "source": "qagen/tests/groupant_wave20.rs",
+  "state": "One-based local anchors map to the same paragraph's sentence IDs. Explicit spans and implicit preserved answers retain distinct meanings. Stub callback counts are exact work observations, not real model throughput."
+}

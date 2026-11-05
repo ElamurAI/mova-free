@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p en --lib lexgen::wave27_tests",
+    "Repeated debug/release named outcomes and paired partial syntax"
+  ],
+  "children": [],
+  "cost": "O(bytes+U log U+A log A+output); retained rows/heap linear; two sequential buffered files.",
+  "description": "AGID/UD TSV generator retaining old lemma positions",
+  "forward": [
+    "UD lowercased form triples aggregate first occurrence; skip missing tag/underscore. AGID first clean else first dirty, doubtful header no reverse; 3 verb fields copy past-part. Old heap kept; append UD frequency desc/lexical then AGID lexical. Lemmas flush before forms create/flush."
+  ],
+  "id": "en-lexgen",
+  "inverse": [
+    "Outputs admit input changes preserving counts/first occurrence; old heap prefix retained but flags recomputed; failures admit partially written files."
+  ],
+  "limitations": [
+    "No atomicity; absent AGID fails before writes; duplicate old heap rows retained, last ID wins; no TSV escaping or u32 index cap.",
+    "No executable percent surrogate: no demonstrated useful metric preserving categorical/effect semantics; permitted future caps 1/2/5/10%, no production substitution.",
+    "Partial source-bound modeling, no corpus/API/GPU, allocation faults or exhaustive numerical checks."
+  ],
+  "source": "en/src/lexgen.rs",
+  "state": "AGID/UD TSV generator retaining old lemma positions"
+}

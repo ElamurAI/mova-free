@@ -1,0 +1,88 @@
+{
+  "children": [
+    "mova-modules-lib",
+    "mova-modules-torrent",
+    "mova-modules-command",
+    "mova-modules-fetch",
+    "mova-modules-oewn"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "status": "not_materialized"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "add-on-modules-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "add-on-modules-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "add-on-modules-licence-flow",
+        "path": "model.md",
+        "section": "licence-flow",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_native_evidence"
+    }
+  },
+  "id": "add-on-modules",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "tools/modules/src/fetch.rs",
+      "sha256": "ae1f136b5e4350069574fc0cc14882f7b5714718c0a6c713c161dfc85b27883e"
+    },
+    {
+      "path": "tools/modules/src/lib.rs",
+      "sha256": "2136a592745a0caf7a58b4e3a65c35e03056d9d3da6a2a005569b6090bee8af9"
+    },
+    {
+      "path": "tools/modules/src/main.rs",
+      "sha256": "657e45204ffe9a424d6c3e0521f0729c90d00521f8c99e840ade9b575acde1c5"
+    },
+    {
+      "path": "tools/modules/src/oewn.rs",
+      "sha256": "8d73e0b4b8ebba150efd2834246c533467d5bd9ed38659ca31da8f86dff22166"
+    },
+    {
+      "path": "tools/modules/src/torrent.rs",
+      "sha256": "eda41c12a40d54d7c23e8d0b0777f18326eb4fcba3462bbf264eec255502ecfc"
+    }
+  ],
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p world --lib wordnet::wave10_models -- --test-threads=1",
+    "Repeated debug/release, finite oracles and compiled production control; see model.md#evidence."
+  ],
+  "children": [],
+  "cost": "For B JSON bytes, V synsets, E hypernym edges, S sense references and maximum per-synset hypernym/member lengths H/M, a conservative load bound is O(B+(V+E+S)log V+S*(H log V+M)), ignoring string widths. Ancestry is O((V+E)log V+40E) for reached graph, memory O(V+E); the output cap does not cap graph work when many labels duplicate. No timing claim.",
+  "description": "WordNet JSON snapshot projection, lexical candidates and bounded ancestry.",
+  "forward": [
+    "load sorts JSON paths and builds synsets plus lemma/POS entries, then projects senses and up links. Public wordnet lazily caches either the loaded maps or empty fallback forever. Queries derive lowercase candidate forms and use POS-specific senses; ancestry follows synset IDs breadth-first and emits at most 40 distinct first-member labels."
+  ],
+  "id": "world-wordnet",
+  "inverse": [
+    "Behavior complement first: inner excluded relation under fixed declared scope.",
+    "Reverse reconstruction second: all compatible antecedents, generally nonunique."
+  ],
+  "limitations": [
+    "Partial syntax only; no semantic AST or general correctness proof.",
+    "No live global dictionary, parser, teacher, corpus, GPU or full-school evidence."
+  ],
+  "source": "world/src/wordnet.rs",
+  "state": "Sorted supplied JSON files, owned WordNet maps, process OnceLock snapshot, suffix/stem dependency and query strings."
+}

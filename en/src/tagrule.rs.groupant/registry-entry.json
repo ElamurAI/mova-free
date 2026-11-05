@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "tagrule::tests::so_of_purpose"
+  ],
+  "children": [],
+  "cost": "O(n) per sentence with constant work per word (lowercasing up to five neighbours).",
+  "description": "Modern English context tag rules given to the tagger before it tags: R1 so of purpose → IN.",
+  "forward": [
+    "so_purpose(words, i): «so» at i > 0, the previous word not punctuation or a coordinator, the next word not «that»; a subject pronoun at i+1 puts the modal at i+2, a determiner/possessive at i+1 and an alphabetic word at i+2 put it at i+3; the modal is can or could and the word after it is not a negation. force(words)[i] = Some(IN) when R1 holds, else None."
+  ],
+  "id": "en-tagrule",
+  "inverse": [
+    "R(force = Some(IN) at i) is every sentence with the R1 context at i; force = None maps back to any sentence without it. The tag does not recover whether the treebank would write SCONJ: EWT 2.18 train has 18 SCONJ/mark and 4 ADV/advmod in this context.",
+    "Never fires on: «so» first in the sentence, after a comma or coordinator, before «that»; a bare noun subject (so wolves can); modals will, would, may, might, must; a negated can/could; «so» of degree (so tired)."
+  ],
+  "limitations": [
+    "The rule tags; the parser decides mark vs advmod; in-memory ud-eval and parse-eval do not apply forced tags",
+    "A bare noun subject and so + will are left to the model"
+  ],
+  "source": "en/src/tagrule.rs",
+  "state": "None (pure functions over the sentence)."
+}

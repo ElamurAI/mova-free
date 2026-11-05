@@ -86,7 +86,7 @@ fn src_bits(s: &str) -> u8 {
 
 fn main() {
     let data = Path::new("data");
-    for f in ["data/lemmas.tsv", "data/forms.tsv", "data/consts.txt", "src/hash.rs"] {
+    for f in ["data/lemmas.tsv", "data/forms.tsv", "data/consts.txt", "data/lexicon-ext.tsv", "data/acronyms.tsv", "src/hash.rs"] {
         println!("cargo:rerun-if-changed={f}");
     }
     let read = |p: &str| std::fs::read_to_string(data.join(p)).unwrap_or_default();
@@ -250,9 +250,166 @@ fn main() {
     std::fs::write(out.join("lexicon.bin"), &blob).expect("lexicon.bin");
     std::fs::write(out.join("lexicon_layout.rs"), layout).expect("layout");
     std::fs::write(out.join("words.rs"), words).expect("words.rs");
+
+    // the lexicon extension (`lexext.rs`): a separate blob, so the dictionary's fingerprint, and with it every
+    // trained model, stays as it is
+    let ext_txt = read("lexicon-ext.tsv");
+    let acr_txt = read("acronyms.tsv");
+    let (ext, ext_layout) = extension(&ext_txt, &acr_txt);
+    std::fs::write(out.join("lexext.bin"), ext).expect("lexext.bin");
+    std::fs::write(out.join("lexext_layout.rs"), ext_layout).expect("lexext layout");
+}
+
+/// Source letters of the extension → bits: OEWN, SPECIALIST, Census surnames, Mova's own, the Names Corpus.
+fn ext_src(s: &str) -> u8 {
+    s.split(',').map(|x| match x.chars().next() {
+        Some('o') => 1,
+        Some('s') => 2,
+        Some('c') => 4,
+        Some('m') => 8,
+        Some('k') => 16,
+        _ => 0,
+    }).fold(0, |a, b| a | b)
+}
+
+/// Strings section: `<P>_STR` bytes, `<P>_OFF` offsets (n+1), `N_<P>`; when `indexed`, also the open-addressing
+/// index `<P>_IDX` and `<P>_MASK`.
+fn strings(blob: &mut Vec<u8>, layout: &mut String, p: &str, keys: &[&str], indexed: bool) {
+    sec(&format!("{p}_STR"), blob, layout);
+    let base = blob.len() as u32;
+    let mut offs = vec![0u32];
+    for k in keys {
+        blob.extend_from_slice(k.as_bytes());
+        offs.push(blob.len() as u32 - base);
+    }
+    pad4(blob);
+    sec(&format!("{p}_OFF"), blob, layout);
+    for o in offs {
+        put32(blob, o);
+    }
+    writeln!(layout, "pub const N_{p}: usize = {};", keys.len()).unwrap();
+    if !indexed {
+        return;
+    }
+    let ix = index(keys);
+    sec(&format!("{p}_IDX"), blob, layout);
+    for s in &ix {
+        put32(blob, *s);
+    }
+    writeln!(layout, "const {p}_MASK: usize = {};", ix.len() - 1).unwrap();
+}
+
+/// Groups section: `<P>_GOFF` (n+1 record offsets) and `<P>_REC` (8-byte records: tag, src, 0, 0, id).
+fn groups(blob: &mut Vec<u8>, layout: &mut String, p: &str, g: &[Vec<(u8, u8, u32)>]) {
+    sec(&format!("{p}_GOFF"), blob, layout);
+    let mut n = 0u32;
+    put32(blob, 0);
+    for x in g {
+        n += x.len() as u32;
+        put32(blob, n);
+    }
+    sec(&format!("{p}_REC"), blob, layout);
+    for x in g {
+        for &(tag, src, id) in x {
+            blob.extend_from_slice(&[tag, src, 0, 0]);
+            put32(blob, id);
+        }
+    }
+}
+
+/// `lexicon-ext.tsv` (form, tag, lemma or `=`, sources) and `acronyms.tsv` (acronym, expansion, source) → blob and
+/// layout: forms (XF) with their analyses (tag, sources, lemma), lemmas (XL), lower-case lemmas (XP) with their
+/// paradigms (tag, form), acronyms (XA) with their expansions (XE: «expansion\tsource»).
+fn extension(ext: &str, acr: &str) -> (Vec<u8>, String) {
+    let mut forms: Vec<&str> = Vec::new();
+    let mut fid: HashMap<&str, u32> = HashMap::new();
+    let mut lemmas: Vec<&str> = Vec::new();
+    let mut lid: HashMap<&str, u32> = HashMap::new();
+    let mut plow: Vec<String> = Vec::new();
+    let mut pid: HashMap<String, u32> = HashMap::new();
+    let mut ana: Vec<Vec<(u8, u8, u32)>> = Vec::new();
+    let mut par: Vec<Vec<(u8, u8, u32)>> = Vec::new();
+    for line in ext.lines().filter(|l| !l.starts_with('#') && !l.is_empty()) {
+        let c: Vec<&str> = line.split('\t').collect();
+        assert!(c.len() >= 4, "lexicon-ext.tsv: bad line {line}");
+        let tag = TAGS.iter().position(|t| *t == c[1]).unwrap_or_else(|| panic!("lexicon-ext.tsv: unknown tag {}", c[1])) as u8;
+        let lemma = if c[2] == "=" { c[0] } else { c[2] };
+        let src = ext_src(c[3]);
+        let f = *fid.entry(c[0]).or_insert_with(|| {
+            forms.push(c[0]);
+            ana.push(Vec::new());
+            forms.len() as u32 - 1
+        });
+        let l = *lid.entry(lemma).or_insert_with(|| {
+            lemmas.push(lemma);
+            lemmas.len() as u32 - 1
+        });
+        ana[f as usize].push((tag, src, l));
+        let low = lemma.to_lowercase();
+        let p = match pid.get(&low) {
+            Some(&p) => p,
+            None => {
+                plow.push(low.clone());
+                par.push(Vec::new());
+                pid.insert(low, plow.len() as u32 - 1);
+                plow.len() as u32 - 1
+            }
+        };
+        par[p as usize].push((tag, src, f));
+    }
+    let mut akeys: Vec<&str> = Vec::new();
+    let mut aid: HashMap<&str, u32> = HashMap::new();
+    let mut exps: Vec<String> = Vec::new();
+    let mut ag: Vec<Vec<(u8, u8, u32)>> = Vec::new();
+    for line in acr.lines().filter(|l| !l.starts_with('#') && !l.is_empty()) {
+        let c: Vec<&str> = line.split('\t').collect();
+        assert!(c.len() >= 3, "acronyms.tsv: bad line {line}");
+        let a = *aid.entry(c[0]).or_insert_with(|| {
+            akeys.push(c[0]);
+            ag.push(Vec::new());
+            akeys.len() as u32 - 1
+        });
+        exps.push(format!("{}\t{}", c[1], c[2]));
+        ag[a as usize].push((0, ext_src(c[2]), exps.len() as u32 - 1));
+    }
+    let mut blob = Vec::new();
+    let mut layout = String::new();
+    strings(&mut blob, &mut layout, "XF", &forms, true);
+    strings(&mut blob, &mut layout, "XL", &lemmas, false);
+    let pl: Vec<&str> = plow.iter().map(String::as_str).collect();
+    strings(&mut blob, &mut layout, "XP", &pl, true);
+    strings(&mut blob, &mut layout, "XA", &akeys, true);
+    let ex: Vec<&str> = exps.iter().map(String::as_str).collect();
+    strings(&mut blob, &mut layout, "XE", &ex, false);
+    groups(&mut blob, &mut layout, "XF", &ana);
+    groups(&mut blob, &mut layout, "XP", &par);
+    groups(&mut blob, &mut layout, "XA", &ag);
+    (blob, layout)
 }
 
 /// Start of a blob section — a constant in layout.
 fn sec(name: &str, blob: &[u8], layout: &mut String) {
     writeln!(layout, "const {name}: usize = {};", blob.len()).unwrap();
+}
+
+#[cfg(test)]
+mod wave27 {
+    use super::*;
+    #[test]
+    fn index_and_record_layout() {
+        assert_eq!(index(&[]), [0, 0]);
+        let mut s: Vec<_> = index(&["alpha", "beta", "alpha"])
+            .into_iter()
+            .filter(|&x| x != 0)
+            .collect();
+        s.sort();
+        assert_eq!(s, [1, 2, 3]);
+        let mut b = Vec::new();
+        put32(&mut b, 0x12345678);
+        b.push(9);
+        pad4(&mut b);
+        assert_eq!(b, [0x78, 0x56, 0x34, 0x12, 9, 0, 0, 0]);
+        assert_eq!(src_bits("uua?rb"), 15);
+        assert_eq!(src_bits("xyz"), 0);
+    }
 }

@@ -1,0 +1,126 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "For a pre-state and key, candidate return/state pairs are excluded if membership is wrong, hit root differs from requested key, miss root differs from last visited node, or inorder set/parent structure changes incorrectly. Empty access returning true or creating a root is excluded. A new-key capacity error that mutates shape is excluded.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "44739bc86ee3edbeb84ad2cb2fd94df5e738b428dc0010db04d56aa95f82607c",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "An observed root after access admits all predecessor BSTs whose search ends at that key plus appropriate queries; multiple shapes and access histories can converge on the same root and inorder set. On a miss the resulting root identifies last visited key, not the absent query or original shape. Duplicate insertion false implies prior membership but loses earlier shape.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "44739bc86ee3edbeb84ad2cb2fd94df5e738b428dc0010db04d56aa95f82607c",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "access_state",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "Both hits and misses modify shape by splaying. locate itself is observational; access uses its last visited node. Empty access returns false and leaves None. Observation methods keys/root never call splay.",
+        "path": "model.md",
+        "section": "access_state",
+        "status": "partial_relational_specification",
+        "subject_revision": "44739bc86ee3edbeb84ad2cb2fd94df5e738b428dc0010db04d56aa95f82607c",
+        "type": "access_state"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "double_rotation",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "If child-parent and parent-grandparent orientations match, rotate parent then child (zig-zig); otherwise child twice (zig-zag). With no grandparent use a single zig. These are standard splay cases, not merely move-to-root single rotations.",
+        "path": "model.md",
+        "section": "double_rotation",
+        "status": "partial_relational_specification",
+        "subject_revision": "44739bc86ee3edbeb84ad2cb2fd94df5e738b428dc0010db04d56aa95f82607c",
+        "type": "double_rotation"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "amortization_scope",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "A single operation can traverse all nodes. The logarithmic statement concerns total actual cost plus potential changes over sequences and an initial-potential term, assumes unit-cost comparisons/index operations, and excludes outputting all keys and allocator costs.",
+        "path": "model.md",
+        "section": "amortization_scope",
+        "status": "partial_relational_specification",
+        "subject_revision": "44739bc86ee3edbeb84ad2cb2fd94df5e738b428dc0010db04d56aa95f82607c",
+        "type": "amortization_scope"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "capacity_precedence",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "Duplicate lookup succeeds before cap check and splays even at4096 keys. A new key at capacity errors without splaying the last visited node. Arbitrary full-width i64 keys are compared without arithmetic; allocator errors are not recoverable.",
+        "path": "model.md",
+        "section": "capacity_precedence",
+        "status": "partial_relational_specification",
+        "subject_revision": "44739bc86ee3edbeb84ad2cb2fd94df5e738b428dc0010db04d56aa95f82607c",
+        "type": "capacity_precedence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-splay-tree",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "44739bc86ee3edbeb84ad2cb2fd94df5e738b428dc0010db04d56aa95f82607c"
+  },
+  "status": "partial_source_derived_instance"
+}

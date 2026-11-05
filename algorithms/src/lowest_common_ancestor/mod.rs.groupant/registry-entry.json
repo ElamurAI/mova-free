@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline lowest_common_ancestor::tests::",
+    "Debug and release twice normalized; strict Clippy; syntax twice; isolated compiled production mutation rejected at assertion."
+  ],
+  "children": [],
+  "cost": "O(n log(n+1)) preprocessing time and space for n>0, O(1) for empty construction. Each parent enters a path once; doubling has floor(log2 n)+1 rows. Query O(log(n+1)) time and O(1) extra space. Iterative construction has no depth-dependent call stack.",
+  "description": "lowest_common_ancestor mod.rs exact algorithm and bounded contract",
+  "forward": [
+    "Validate parent bounds in vertex order; traverse parent chains from increasing starts with unvisited/gray/black states. Gray encounter reports Cycle at that vertex. Reverse each completed path to assign root and depth; build up[k][v]=up[k-1][up[k-1][v]] with absorbing roots. Query validates a then b, returns None across roots, otherwise lifts deeper endpoint by depth difference and lifts both from largest power down before returning shared parent."
+  ],
+  "id": "algorithm-lowest-common-ancestor",
+  "inverse": [
+    "Let X be finite parent arrays or constructed forests with query pairs, Y the corresponding typed Result observations, and U=X times Y under sufficient allocation. R follows Forward validation and query rules. U minus R includes acceptance of cycles/out-of-range parents, wrong first errors, nondeep common ancestors and Some results across trees. Source-derived relation; finite tests do not prove all behavior.",
+    "For observed query result Some(c), compatible validated parent forests have c on both ancestor chains and no proper descendant of c common to both. None means distinct roots. Error observations constrain first invalid index or deterministic cycle entry. These fibers generally contain many forests; a result never uniquely reconstructs parents. Construction internals are not exposed."
+  ],
+  "limitations": [
+    "Finite evidence is not proof; allocation failures outside Result; partial syntax only; no executable lossy approximants."
+  ],
+  "source": "algorithms/src/lowest_common_ancestor/mod.rs",
+  "state": "Finite typed inputs, sufficient allocation; explicit Result errors."
+}

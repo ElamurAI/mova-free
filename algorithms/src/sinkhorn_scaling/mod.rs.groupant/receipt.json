@@ -1,0 +1,32 @@
+{
+  "clippy": "strict all targets passed",
+  "clippy_log_sha256": "51a1a9eda9c8265a7a8b3db8ccfaca9dd4c6e4aed9d9c1650653c6306c37f377",
+  "date": "2026-10-30",
+  "evidence": "$MOVA_DATA/runs/octopus-wave26-probability-2026-10-30/",
+  "limitations": [
+    "Finite oracle coverage, no universal f64 error guarantee",
+    "No timing or full-school measurements",
+    "Partial syntax only; no macro expansion or semantic proof",
+    "No executable surrogate or generic percentage certificate"
+  ],
+  "mutant": {
+    "change": "let scale = 1.0 + 0.0 * rows[i] / row.iter().sum::<f64>();",
+    "compiled": true,
+    "failed_assertion": "rank_one_oracle",
+    "log_sha256": "51ef2e69fab0faab9c226e6487263d2341a92b9dac40243548028493ae152d57",
+    "restored_positive_sha256": "fcb14ca670386fff88409e329cacf6f7d2f0eb2cedd573e0848496f9060c28e0",
+    "source_bytes_restored": true
+  },
+  "native_module_tests": 3,
+  "normalized_outcomes_sha256": "893584da1b2f434a8c96b92df59b1b32fa45864c9c2271078789e434399d063e",
+  "paired_syntax_sha256": "7d097037105fb2d52bcceb8ec1d88d58a8cb055ceca3191ca58bbe99bc007b57",
+  "profiles": [
+    "debug1",
+    "debug2",
+    "release1",
+    "release2"
+  ],
+  "source": "algorithms/src/sinkhorn_scaling/mod.rs",
+  "source_sha256": "12b6b9db55fb94e762a27bc6d1e79740e28f6c5cefc78ee26a7e26265c88979d",
+  "whole_library_tests": 708
+}

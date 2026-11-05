@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "default_fs_is_memory_and_invisible_outside",
+    "fs_limits_fire_with_clear_errors",
+    "cli_import_export_journal",
+    "cli_dir_mode_reads_and_writes_inside_root_only"
+  ],
+  "children": [],
+  "cost": "Bounded fixture cost plus interpreter and spawned CLI startup; no performance claim. Unselected suite loops would scale by scenario count and backend pairs.",
+  "description": "VFS parity, isolation, limits and CLI tests with temporary directory guards; frozen suite tests exist but were not selected.",
+  "forward": [
+    "scratch creates PID/tag directory, Scratch Drop removes it; run_with creates captured interpreter with supplied backend and vm flag. Selected tests exercise memory invisibility, configured limits and CLI import/export/journal or rooted temp backend."
+  ],
+  "id": "mlab-tests-fs",
+  "inverse": [
+    "A memory write excludes creation of the corresponding host probe in the selected isolation assertion. Failed script excludes exported file in CLI fixture. Unselected frozen parity functions supply no epoch runtime evidence.",
+    "Passing fixture assertions admits many implementations beyond exercised cases; captured output alone cannot recover filesystem effect trace, so tests also inspect paths/journal."
+  ],
+  "limitations": [
+    "Partial source-bound model, not semantic proof",
+    "No executable percentage surrogate",
+    "Finite synthetic fixtures only; frozen suites/external measurement unexecuted"
+  ],
+  "source": "mlab/tests/fs.rs",
+  "state": "CLI helper returns status code or -1, stdout and stderr strings. No claim that empty stderr alone proves success; fixtures assert explicit code."
+}

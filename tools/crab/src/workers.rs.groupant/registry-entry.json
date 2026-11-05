@@ -1,0 +1,23 @@
+{
+  "id": "crab-workers",
+  "source": "tools/crab/src/workers.rs",
+  "children": [],
+  "description": "Crab supervision of trusted configured workers: boot autostart, verified adoption, unadopted-conflict reports and explicit takeover restart, crash restart with backoff, explicit graceful stop, GPU-gated start.",
+  "state": "Per-worker state file (identity, counters, 32 events), GPU gate record, live child handles.",
+  "forward": [
+    "boot: adopt (pid, starttime, argv suffix) or autostart unless stopped; tick: reap, restart after 5..300 s doubling backoff, escalate marker -> SIGTERM -> SIGKILL, run nvidia-smi/probe gate before any gpu spawn.",
+    "Unadopted conflict: the recorded identity stays in the state file; start/autostart over a live one does nothing and reports it; an explicit restart stops it through the ordinary stop path and starts the configured argv; a gone one is cleared, journaled and started normally."
+  ],
+  "inverse": [
+    "Excluded: unconfigured spawn, blind gpu start, restart after explicit stop or marker, adoption across start-time mismatch, a signal or a duplicate start over a live unadopted conflict without an explicit restart.",
+    "State files keep bounded history; exit history and request order are not uniquely recoverable."
+  ],
+  "cost": "O(workers) /proc reads or try_wait per tick; writes only on transitions; no blocking waits.",
+  "checks": [
+    "2026-11-03: 7 module + 2 angel fixtures with fake shell workers and fake nvidia-smi; red controls for gate bypass, start-time check and prompt admission; 87 tests twice.",
+    "2026-11-04: +3 conflict fixtures (live report and takeover restart, dead conflict cleared by start and tick, takeover stop across a Crab restart); 5 red controls; 123+5 tests twice."
+  ],
+  "limitations": [
+    "Cooperative same-user processes; no English messaging to workers; running is not health; the GPU check is not memory admission."
+  ]
+}

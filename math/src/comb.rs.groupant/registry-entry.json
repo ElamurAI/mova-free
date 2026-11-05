@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p math --lib -- comb::wave28",
+    "18 selected tests twice debug/twice release; seven compiled mutants and restored positives"
+  ],
+  "children": [],
+  "cost": "Product trees O(n) big multiplies/O(log n) recursion; binomial O(min(k,n-k)) nonnegative case after guards. StirlingII O(nk)/O(k) storage, I/Bell O(n²)/O(n). Pentagonal O(n sqrt n)/O(n); coin/distinct O(n²)/O(n), partitions_k O(nk) time/space. Fibonacci O(log n) growing-width steps, derangements O(n). Legendre sieve O(n log log n) plus exponentiation, bit costs additional.",
+  "description": "factorial uses balanced range products with empty product1; binomial applies negative-k zero and C(n,k)=(-1)^k C(k-n-1,k) for negative n, then product ratios. Legendre checks use nt sieve. Stirling II descends j with j*S(i-1,j)+S(i-1,j-1), I uses (i-1)*c(i-1,j)+c(i-1,j-1). Bell triangle, signed pentagonal partitions, coin DP, descending distinct/ascending odd-part counts, derangements seeds(1,0), and Fibonacci doubling (a(2b-a),a²+b²) produce Z values with alternate checks.",
+  "forward": [
+    "factorial uses balanced range products with empty product1; binomial applies negative-k zero and C(n,k)=(-1)^k C(k-n-1,k) for negative n, then product ratios. Legendre checks use nt sieve. Stirling II descends j with j*S(i-1,j)+S(i-1,j-1), I uses (i-1)*c(i-1,j)+c(i-1,j-1). Bell triangle, signed pentagonal partitions, coin DP, descending distinct/ascending odd-part counts, derangements seeds(1,0), and Fibonacci doubling (a(2b-a),a²+b²) produce Z values with alternate checks."
+  ],
+  "id": "math-comb",
+  "inverse": [
+    "A Z count has many compatible function/index antecedents: 0!=1!=1, D0=D2=1. Known function and admitted domain constrain recurrence fibers but generally do not invert uniquely. Cassini alone admits more pairs than intended Fibonacci values; unavailable checks impose no value constraint."
+  ],
+  "limitations": [
+    "Partial lexical syntax/source-derived model, no proof",
+    "No executable percentage surrogate; float diagnostics have no global certificate",
+    "Factorial and selected product work cap1e6; Stirling n<=3000, Bell<=2000/check<=400, partitions<=200000/DP<=3000, partitions_k/distinct<=5000, derangements<=100000/sum<=3000. binomial converts k before k>n/symmetry; Stirling n gate precedes k>n. Catalan unchecked2*n,n+1 and direct helper dimensions lack universal machine-overflow protection. Big values still require allocation."
+  ],
+  "source": "math/src/comb.rs",
+  "state": "Factorial and selected product work cap1e6; Stirling n<=3000, Bell<=2000/check<=400, partitions<=200000/DP<=3000, partitions_k/distinct<=5000, derangements<=100000/sum<=3000. binomial converts k before k>n/symmetry; Stirling n gate precedes k>n. Catalan unchecked2*n,n+1 and direct helper dimensions lack universal machine-overflow protection. Big values still require allocation."
+}

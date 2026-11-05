@@ -156,7 +156,7 @@ Files are walked in sorted path order.
    ```sh
    $W babi-probe "Mary sprinted to the attic." "Where is Mary?"
    ```
-   Output (translated):
+   Output:
    ```
    Mary sprinted to the attic. → Some("verb «sprint» has no class at the global level")
    ? Where is Mary? → ("?", "where mary is — unknown")
@@ -270,14 +270,13 @@ Output formats:
   version (YN 143, FR 77, with FB and CO also reduced). The total is therefore **not** comparable with
   results on the original 510-question test. Compare only per type, under matching rules.
 
-Results at the time of writing, from the project's committed architecture notes. These runs reproduce them:
+Results for release 0.4 (2026-10-16; the full table is in the [README](../README.md#measured)). These runs
+reproduce them:
 
-- **bAbI (1k):** test 99.8%, 20/20 tasks at ≥95%; train 99.7%. The contrast set first scored 74.6%. That
-  exposed parser faults and two vocabulary gaps (hurry, abandon). After the fixes it scores 99.7%, and the
-  original was unchanged.
-- **StepGame:** 96.3% on the full test (k=1 98.2% → k=10 94.7%). Two contradictory templates were found;
-  without them every k scores 98.0-99.6%, and 11,553 questions are excluded by name.
-- **SpartQA-human:** 59.3% on the test (majority baseline 34.9%): YN 60.1%, FB 67.1%, CO 58.2%, FR 50.6%.
+- **bAbI (1k):** test 99.4%, 19 of 20 tasks at ≥95% (task 18: 92.3%); contrast set 99.4%, 19 of 20.
+- **StepGame:** 96.3% on the full test (k=1 98.2% → k=10 94.7%). The reader flags two contradictory
+  templates; without them every k scores 98.0-99.6%, and 11,553 questions are excluded by name.
+- **SpartQA-human:** YN 75.5%, FR 63.6% (majority baseline 34.9%).
 
 Runtime is seconds: about 14 s for the bAbI test, about 8 s for StepGame, and under 1 s for SpartQA.
 

@@ -1,0 +1,86 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-invariants-spread-behavior-complement",
+        "operator": "Exclude pairs violating concrete fragment forward/invariant relation",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-invariants-spread-reverse-reconstruction",
+        "operator": "Retain all compatible tagged inputs and intermediate states",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-invariants-spread-intervention",
+        "operator": "Scoped intervention/coupling relation in referenced section",
+        "path": "model.md",
+        "section": "intervention",
+        "status": "partial_source_model",
+        "type": "counterfactual_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 6907,
+      "start": 5349
+    },
+    "description": "Spread adds only VerbNet frames with nonempty signature to (verb,signature)->class->ordered (sentence ID, one-based row) lists. counts returns populated groups and groups with multiple distinct class keys. hits selects largest occurrence count, ties to lexicographically smallest class, and emits every losing occurrence in group/class order and insertion order inside each class."
+  },
+  "domain": "Spread adds only VerbNet frames with nonempty signature to (verb,signature)->class->ordered (sentence ID, one-based row) lists. counts returns populated groups and groups with multiple distinct class keys. hits selects largest occurrence count, ties to lexicographically smallest class, and emits every losing occurrence in group/class order and insertion order inside each class.",
+  "id": "prag-invariants-spread",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../invariants.rs",
+    "sha256": "64ddcdabea1704fc3216d06f5f299ec06171dc4432b7f5c9b7d4b7c4a4fbf190"
+  },
+  "state": "No denominator divides counts: plurality counts occurrences, including duplicate add calls/IDs. Empty class remains a class when signature is nonempty. Single-class groups emit no hits. Different verb or signature yields independent groups; no global winner.",
+  "status": "partial_source_bound_model"
+}

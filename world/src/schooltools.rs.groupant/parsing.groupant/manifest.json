@@ -1,0 +1,98 @@
+{
+  "children": [
+    {
+      "id": "world-schooltools-parsing-key-fields",
+      "path": "key-fields.groupant"
+    },
+    {
+      "id": "world-schooltools-parsing-marked-answer",
+      "path": "marked-answer.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#wave34-composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-schooltools-parsing-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-schooltools-parsing-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-schooltools-parsing-unicode-length",
+        "path": "model.md",
+        "section": "unicode-length",
+        "status": "partial_source_model",
+        "type": "observation_relation"
+      },
+      {
+        "id": "world-schooltools-parsing-normalization-idempotence",
+        "path": "model.md",
+        "section": "normalization-idempotence",
+        "status": "partial_source_model",
+        "type": "identity_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4558,
+      "start": 3048
+    },
+    "description": "Split recognized keys at first colon and values at every bar, trimming fields. canon moves exactly one marked option to the front after question, dropping all initial stars and then initial whitespace; otherwise copies fields."
+  },
+  "historical_composition": {
+    "path": "model.md",
+    "section": "composition",
+    "status": "partial_source_model"
+  },
+  "id": "world-schooltools-parsing",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../schooltools.rs",
+    "sha256": "69490a8577d28eda24da4a4357f1eb59ef56982a1f5d1895fac9f0987c43bf2f"
+  },
+  "status": "partial_source_bound_model"
+}

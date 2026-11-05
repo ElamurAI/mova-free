@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "19 exact native tests twice debug/release; repeated syntax; three compiled source mutants"
+  ],
+  "children": [],
+  "cost": "No runtime operations from the declarations; compile cost depends on dependent modules and toolchain and is unmeasured.",
+  "description": "Public module declaration boundary for the rule-processing crate.",
+  "forward": [
+    "Compiling the crate exposes absurd,court,extract,juris,measure,report,rule modules under yomhadin. Runtime behavior is delegated to those definitions."
+  ],
+  "id": "court-library",
+  "inverse": [
+    "The module declaration unit itself cannot parse a case, write a protocol or select a verdict; such traces require a caller into another module. This is a syntactic exclusion, not whole-library nonbehavior.",
+    "From the exported module-name set, compatible source antecedents include arbitrary module bodies and documentation with the same public declarations. Export names do not reconstruct signatures or implementation.",
+    "Each of seven pub mod declarations admits external name lookup; changing one to private breaks callers using that path. Integration tests are actual compile evidence for used paths only.",
+    "Rust resolves modules at compile time relative to src/lib.rs. No runtime module discovery occurs, and declaration order is not execution order.",
+    "Integration callers use rule::Rule with juris::Jurisdiction and court::Case, then report/absurd/measure/extract functions. Shared type identity comes from one crate compilation, not string matching module labels.",
+    "Partial syntax lists declaration items but does not expand modules, infer types or prove their effects. Compiling selected tests checks referenced APIs without a universal public API compatibility claim."
+  ],
+  "limitations": [
+    "Partial source-derived models and finite correspondence only",
+    "No live parser/corpus/frozen gold or protocol filesystem effects; no percentage surrogate"
+  ],
+  "source": "yom-hadin/src/lib.rs",
+  "state": "Finite synthetic rule/case states; valid indices, bounded paths, successful allocations. No legal authority claim."
+}

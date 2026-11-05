@@ -1,0 +1,32 @@
+{
+  "clippy": "strict all targets passed",
+  "clippy_log_sha256": "e48fdcbc229e1b97d87c9359a9b2eba2660460760256fd3ad0c3bb9f87875bb2",
+  "date": "2026-10-30",
+  "evidence": "$MOVA_DATA/runs/octopus-wave20-interpolation-2026-10-30/",
+  "limitations": [
+    "Finite absolute-tolerance observations, no general machine error guarantee",
+    "No certified executable surrogate",
+    "No timing benchmark or throughput claim"
+  ],
+  "mutant": {
+    "change": "halve quadrature result",
+    "compiled": true,
+    "failed_assertion": "gauss_legendre::tests::polynomial_oracle",
+    "log_sha256": "2df9c781ba8bdc4682d4ae45ea26b544ea0b77cc0311e06eb1fdbebd98e465ea",
+    "restored_positive_sha256": "14c3f142c10a5e19517a043e9fc39e1f511e97eb610b234623cd1f18b92d3bf3",
+    "source_bytes_restored": true
+  },
+  "native_module_tests": 2,
+  "normalized_outcomes_sha256": "7310f78ab4c8a4183faaa86b4a8df0da4e70df5c509183a01f8fce0ac5258202",
+  "paired_syntax_sha256": "cde021298ccbc40cbfad4155603759b492fe1c62bc02bd17268ad920862a199a",
+  "profiles": [
+    "debug1",
+    "debug2",
+    "release1",
+    "release2"
+  ],
+  "source": "algorithms/src/gauss_legendre/mod.rs",
+  "source_sha256": "53fa7745a40bcc2fd135bbe253c17807601fad1530b855efba8fb7e9474399e4",
+  "syntax_scope": "partial lexical Rust projection, no macro expansion or semantic proof",
+  "whole_library_tests": 560
+}

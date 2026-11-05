@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "wave31::cli_rejections_precede_database_effects"
+  ],
+  "children": [],
+  "cost": "O(argument and optional params bytes + manifest bytes) parsing; loader, glob, SQL and report costs compose sequentially. Whole corpus and tales costs are unbounded here and were not run.",
+  "description": "Database CLI dispatch and option adapters",
+  "forward": [
+    "main collects args, checks minimum arity, creates a Duck handle and dispatches commands by name/arity. load_cmd parses source/dialect and value-bearing options, then loads files sequentially. prag_cmd/qa_cmd collect allowed flags in BTreeMap with last duplicate winning, parse optional JSON params and call loaders. init checks existence before parent creation; verify prints notes/failures then exits 1 for zero files or any bad result."
+  ],
+  "id": "db-src-main",
+  "inverse": [
+    "Missing commands, invalid load source/docs/match, unknown options and missing values cannot reach a successful loader dispatch. init cannot overwrite an already existing path. BrokenPipe from export stdout is explicitly admitted as success.",
+    "A parsed prag/qa option map corresponds to all flag sequences with the same final values, including overwritten duplicates. Defaults make omitted flags compatible with explicit default values; printed run count cannot uniquely recover CLI flags or DB state.",
+    "tales requires at least six args, export at least three, sql exactly three; unrelated extra args on some other commands are ignored by dispatch. This is a source-derived command-language partition.",
+    "prag requires run then source before params file parsing; qa defaults source opus and tool qagen source. Last duplicate flag wins in ordered map, but file errors precede invoking load.",
+    "Existence rejection occurs before create_dir_all and exec. If schema exec succeeds but schema_version fails, init returns an error with a created database potentially present.",
+    "corpus validates each six-column row and globs before loading that row's files; previously loaded files persist when a later row fails. No cross-manifest transaction is implied."
+  ],
+  "limitations": [
+    "Finite helper/fixture evidence only; no DuckDB integration or SQL semantics",
+    "Partial syntax projection; no macro expansion or full semantic proof",
+    "No executable approximate profile or speedup claim"
+  ],
+  "source": "tools/db/src/main.rs",
+  "state": "Unknown flag or missing option value returns before loader calls. Constructing Duck alone has no DB effect. Existing init target is left untouched. Corpus order is manifest order and matching/load failures stop later entries, without rolling back earlier files."
+}

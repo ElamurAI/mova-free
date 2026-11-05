@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "anchor_order",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "anchor_order",
+        "status": "partial_source_derived_model",
+        "type": "anchor_order"
+      },
+      {
+        "id": "gap_partition",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "gap_partition",
+        "status": "partial_source_derived_model",
+        "type": "gap_partition"
+      },
+      {
+        "id": "score_width",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "score_width",
+        "status": "partial_source_derived_model",
+        "type": "score_width"
+      },
+      {
+        "id": "empty_boundary",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "empty_boundary",
+        "status": "partial_source_derived_model",
+        "type": "empty_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_native_receipts"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 3690,
+      "start": 2498
+    },
+    "description": "Suffix DP D(i,j)=1+D(i+1,j+1) on equality else max skip. Trace advances both on equality, source on skip tie. gaps emits nonempty open intervals between anchors and sentinel."
+  },
+  "id": "translation-meta-meta-lcs",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../meta.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "706841e2ffb22744366da30f546d3db048fa8d5b80ace22ab06f8c2d18c3ac1f"
+  },
+  "status": "partial_source_bound_model"
+}

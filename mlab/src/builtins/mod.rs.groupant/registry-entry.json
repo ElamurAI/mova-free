@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "builtins::wave30_tests::registry_and_dimensions"
+  ],
+  "children": [],
+  "cost": "Expected O(1) map lookup/insert, sorted names O(K log K); dims extraction O(arguments + trailing dimensions). Casting and downstream shape multiplication are not overflow certificates.",
+  "description": "Builtin registry and shared value/shape extraction adapters used by numerical and I/O modules.",
+  "forward": [
+    "register overwrites a name's function; names sorts keys; with_defaults registers eleven modules in fixed order. scalar_arg returns first real element if nonempty. dims_args ignores char values, floors positive sizes, clamps nonpositive to zero and requires trailing dimensions equal one."
+  ],
+  "id": "mlab-builtins-mod",
+  "inverse": [
+    "names excludes hash iteration nondeterminism in its returned order. scalar_arg excludes rejecting a nonempty nonscalar solely for its size. NaN dimension excludes a successful dims_args result.",
+    "Registry snapshot admits arbitrary overwritten registrations and insertion permutations with same final bindings. Dimensions admit fractional/negative antecedents after floor/clamp and arbitrary skipped char arguments."
+  ],
+  "limitations": [
+    "Partial source-bound model, not semantic proof",
+    "No executable percentage surrogate",
+    "Finite synthetic fixtures only; frozen suites/external measurement unexecuted"
+  ],
+  "source": "mlab/src/builtins/mod.rs",
+  "state": "A single scalar dimension means square, no numeric arguments means 1x1, empty dimension vector means 0x0. default_dim chooses rows unless rows==1; dim_arg absent/empty/char yields None."
+}

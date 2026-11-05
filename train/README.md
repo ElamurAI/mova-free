@@ -1,13 +1,12 @@
 # Training and rebuilding Mova
 
-**Get the data first:** `train/get-corpus.sh` downloads the open Mova corpus (tales, summaries, questions, treebanks, math scripts) from [research.elamur.ai](https://research.elamur.ai/corpus/), checks its SHA-256 and unpacks it into `corpus/open/`. The guides below assume it is there.
+**Get the data first:** `train/get-corpus.sh 0.4` downloads the open Mova corpus 0.4 (books, treebanks, dictionary, math scripts, contrast sets; see [corpus/open](../corpus/open/README.md)) from `research.elamur.ai/download/0/0.4/`, checks its SHA-256 and unpacks it into `corpus/open/`. The guides below assume that layout. The current corpus, 0.5, comes with `train/get-corpus.sh` (or `mova fetch 0.5 corpus`), see [releases/0.5-files.md](../releases/0.5-files.md).
 
-
-Mova is a small language model written in Rust. You can see how it works. Most of what it knows is
-written as plain markdown "seeds" and compiled into Rust tables. The rest is learned from open data
-by deterministic table and Markov models. No neural network is involved. Retraining Mova means
-editing seeds, retraining tables, and measuring honestly. These guides cover all three. Each guide
-is written for two readers: a person, and an AI coding agent working in this repository.
+Mova is a Hybrid Combinatorial–Operational System written in Rust, with a Combinatorial Small Language Model at its core. These guides focus
+on readable Markdown seeds, compiled Rust tables and the CPU learning path.
+The optional neural GPU parser has its own [training guide](../docs/training.md).
+Retraining combines seed edits, learned parameters and measurements. Each guide
+is written for a person and an AI coding agent working in this repository.
 
 ## Gist
 
@@ -21,11 +20,9 @@ is written for two readers: a person, and an AI coding agent working in this rep
 
 ## The big picture: three levels
 
-| level | what it holds | when it changes | where |
-| --- | --- | --- | --- |
-| 1. Global | principles and values, concepts, shortcuts between concepts ("fall -> accelerate -> impact -> pain -> harm"), verb classes, relation properties, the exact arithmetic core | only on a new build that passes the gates | `global` (seeds -> `build.rs` -> `OUT_DIR/global.rs`) |
-| 2. Domain modules | the full depth of one field: grammar of English, word problems, story worlds, LaTeX, code | only on a new build | `en`, `math`, `world`, `latex`, ... |
-| 3. Context | the state of the current document, task or dialogue: entities, quantities, events, who holds what | lives only while the task runs | the readers inside `world`, `math`, `prag`, ... |
+Knowledge sits on three levels: global (seeds compiled into `global`), domain modules (`en`, `math`, `world`,
+`latex`, ...) and the context of the current task (the readers inside `world`, `math`, `prag`, ...). The levels are
+described in [docs/architecture.md](../docs/architecture.md#three-levels-of-logic).
 
 The key rule: **the context level never invents knowledge.** Level 3 combines facts from the text
 with links from level 1. When it cannot explain a step that way, it reports a **gap**, such as "verb
@@ -54,16 +51,10 @@ global/seeds/**/*.md  --(global/build.rs)-->  OUT_DIR/global.rs
 
 ## Determinism
 
-Mova must produce the same output for the same input every time. A gain that the next run cannot
-reproduce does not count.
-
-- In anything that searches, ranks or breaks ties, iterate over `BTreeMap`/`BTreeSet` or sorted
-  vectors. The standard `HashMap` iterates in random order. Once, an apparent accuracy jump turned
-  out to be nothing but `HashMap` order noise.
-- **Run twice before you claim a gain.** Run the baseline twice and get the same number. Run the
-  change twice and get the same number. Only then compare. Byte-identical outputs are the best check
-  (`cmp run1.txt run2.txt`).
-- Keep the test split untouched. Tune on train/valid. Report the test score once.
+Mova must produce the same output for the same input every time; a gain that the next run cannot reproduce does not
+count. Use `BTreeMap`/`BTreeSet` or sorted vectors wherever order decides anything, run the baseline and the change
+twice each (`cmp run1.txt run2.txt`) before comparing, and report the test score once. The rules are in
+[docs/training.md](../docs/training.md#changing-the-source-code).
 
 ## Every judgment explained
 
@@ -124,5 +115,5 @@ assert!(global::consequences("An apple lies on the table.").is_empty());
 - `world`, `math`, `prag`, `qagen`, `coref` and `layers` depend on `en` and `global` through
   path dependencies. A change to a seed or to `en` changes their behaviour too. Re-measure the
   modules you care about.
-- Data and trained models keep the licenses of their sources (`LICENSE-DATA.md`). Register the
+- Data and trained models keep the licenses of their sources ([licence/DATA.md](../licence/DATA.md)). Register the
   license of any training data you add (see [retrain-the-parser.md](retrain-the-parser.md)).

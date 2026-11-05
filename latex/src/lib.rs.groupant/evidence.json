@@ -1,0 +1,56 @@
+{
+  "command": "cargo test -p latex --features math --doc; cargo check -p latex --no-default-features",
+  "control": {
+    "kind": "none",
+    "reason": "reexport root has compile visibility and delegated doc composition only"
+  },
+  "date": "2026-10-31",
+  "expected_test_names": [
+    "latex/src/lib.rs - (line 6)"
+  ],
+  "limitations": [
+    "Finite synthetic actual-code checks, not proof",
+    "Frozen DATA and sha256 subprocess unexecuted",
+    "Strict Clippy blocked by 14 pre-existing lints in unchanged library code"
+  ],
+  "receipts": [
+    {
+      "exit": 0,
+      "log": "debug-1-docs.log",
+      "log_sha256": "5cb9147e800d8d44fceb1110d6a13971763f111918efa2173d75eafbbed9a767",
+      "named_outcomes": "debug-1-docs.names",
+      "outcomes_sha256": "c09860c4d4739501184fbd5a6d790ca63c2df5821e0bd5435a83112286096d4b",
+      "profile": "debug",
+      "repetition": 1
+    },
+    {
+      "exit": 0,
+      "log": "debug-2-docs.log",
+      "log_sha256": "6b68dc2af786a44db39ff9fde6879ac46732ebb3c828d36f47f56e08f7ebd74d",
+      "named_outcomes": "debug-2-docs.names",
+      "outcomes_sha256": "c09860c4d4739501184fbd5a6d790ca63c2df5821e0bd5435a83112286096d4b",
+      "profile": "debug",
+      "repetition": 2
+    },
+    {
+      "exit": 0,
+      "log": "release-1-docs.log",
+      "log_sha256": "f7b4fc8f530e61325509f11854307fbd1a2c956c1214e3923b72affff86627b3",
+      "named_outcomes": "release-1-docs.names",
+      "outcomes_sha256": "c09860c4d4739501184fbd5a6d790ca63c2df5821e0bd5435a83112286096d4b",
+      "profile": "release",
+      "repetition": 1
+    },
+    {
+      "exit": 0,
+      "log": "release-2-docs.log",
+      "log_sha256": "f7b4fc8f530e61325509f11854307fbd1a2c956c1214e3923b72affff86627b3",
+      "named_outcomes": "release-2-docs.names",
+      "outcomes_sha256": "c09860c4d4739501184fbd5a6d790ca63c2df5821e0bd5435a83112286096d4b",
+      "profile": "release",
+      "repetition": 2
+    }
+  ],
+  "source": "latex/src/lib.rs",
+  "source_sha256": "edd5e24bb4706ffec37b501da5336a0fbad877c95fa3fe2b65e825a3970cf066"
+}

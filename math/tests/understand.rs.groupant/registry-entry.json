@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "cargo test -p math --lib wave28 -- --test-threads=1",
+    "cargo test -p math --test understand wave28_missing_path_skips_before_model_load -- --exact --test-threads=1",
+    "Same selected scope twice debug/release; seven compiled assertion controls and byte restoration"
+  ],
+  "children": [],
+  "cost": "Metadata check and diagnostic; synthetic test adds directory create/remove. Full original model/annotation/frozen-fixture costs unexecuted.",
+  "description": "Model-gated English fixtures and bounded missing-path guard.",
+  "forward": [
+    "load resolves path then load_path existence check; missing returns None before Annotator load; present invokes loader and expect. Original tests return on None; frozen TSV read occurs only after successful load."
+  ],
+  "id": "math-tests-understand",
+  "inverse": [
+    "None compatible with absent paths and other exists=false causes; output cannot recover model state or parsed text."
+  ],
+  "limitations": [
+    "Partial source-derived model and lexical AST only",
+    "No model loading, annotated English, corpus/frozen suite, teacher, GPU or large training",
+    "No executable percent surrogate or universal accuracy guarantee",
+    "Only bounded helper branches executed; malformed structures and resource failures untested"
+  ],
+  "source": "math/tests/understand.rs",
+  "state": "Original passing early-return tests are skips, not semantic evidence. New test creates fresh empty temp dir, asserts absent child then removes; no environment mutation."
+}

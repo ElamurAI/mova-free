@@ -84,3 +84,33 @@ impl fmt::Display for Error {
 }
 
 impl std::error::Error for Error {}
+#[cfg(test)]
+mod wave27_tests {
+    use super::*;
+    #[test]
+    fn codes_preserve_categories_not_payloads() {
+        let cases = [
+            (Error::Overflow("x"), "ERR:overflow"),
+            (Error::DivZero, "ERR:div0"),
+            (
+                Error::Dim {
+                    op: "x",
+                    a: Dim::L,
+                    b: Dim::M,
+                },
+                "ERR:dim",
+            ),
+            (Error::Temp(TempMisuse::AddPoints), "ERR:temp"),
+            (Error::Domain("x"), "ERR:domain"),
+            (Error::CheckFailed("x".into()), "ERR:check"),
+            (Error::NotUnderstood("x".into()), "NU"),
+        ];
+        for (error, code) in cases {
+            assert_eq!(error.code(), code);
+        }
+        let a = Error::Domain("negative");
+        let b = Error::Domain("zero");
+        assert_eq!(a.code(), b.code());
+        assert_ne!(a.to_string(), b.to_string());
+    }
+}

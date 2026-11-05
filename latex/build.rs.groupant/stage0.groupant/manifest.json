@@ -1,0 +1,82 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "identifier_language",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "identifier_language",
+        "status": "partial_source_derived_model",
+        "type": "identifier_language"
+      },
+      {
+        "id": "validation_order",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "validation_order",
+        "status": "partial_source_derived_model",
+        "type": "validation_order"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 2877,
+      "start": 2715
+    },
+    "description": "is_ident(s) = first(s).is_ascii_uppercase() AND every remaining scalar is_ascii_alphanumeric(). Empty has no first scalar and returns false.",
+    "source_bytes_sha256": "c1c05d3c3cc60c8f84669f0c2801e8e09095a6e46702eb17fdba7338bc6c50ef"
+  },
+  "id": "latex-build-stage0",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../build.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "39a1feed1af329d1fb109ab5a2483512ad3e46419a0c2d0bd608921a78357808"
+  },
+  "status": "partial_source_bound_model"
+}

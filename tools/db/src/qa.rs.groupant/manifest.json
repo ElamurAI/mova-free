@@ -1,0 +1,99 @@
+{
+  "children": [
+    {
+      "id": "db-src-qa-question-parser",
+      "path": "question-parser.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Source-bound partial syntax; no macro expansion or semantic analysis",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source file, partial semantics",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source file, partial semantics",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "anchor_coordinate_join",
+        "path": "model.md",
+        "scope": "Source file, partial semantics",
+        "section": "anchor_coordinate_join",
+        "status": "partial_source_derived_model",
+        "type": "anchor_coordinate_join"
+      },
+      {
+        "id": "replacement_history",
+        "path": "model.md",
+        "scope": "Source file, partial semantics",
+        "section": "replacement_history",
+        "status": "partial_source_derived_model",
+        "type": "replacement_history"
+      },
+      {
+        "id": "parser_failure_precedence",
+        "path": "model.md",
+        "scope": "Source file, partial semantics",
+        "section": "parser_failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "parser_failure_precedence"
+      },
+      {
+        "id": "commit_accounting",
+        "path": "model.md",
+        "scope": "Source file, partial semantics",
+        "section": "commit_accounting",
+        "status": "partial_source_derived_model",
+        "type": "commit_accounting"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_checks_partial_scope"
+    }
+  },
+  "id": "db-src-qa",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../qa.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "94da9edd7288165780ac86beff687333d29ff3b4bdc783f1cb631fafbe7c531e"
+  },
+  "status": "partial_source_bound_model"
+}

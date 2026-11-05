@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named tests in native-commands.json; paired source syntax"
+  ],
+  "children": [],
+  "cost": "Spec parse O(bytes). run_set uses max(threads,1) workers and O(volume count) result slots, plus pipeline cost; tally merges sequentially by index. CLI I/O proportional to read/write bytes; allocations and thread creation can fail/panic.",
+  "description": "Parses command and options; mixed/blocks/site-learn delegate early. volumes splits kind colon, final @ stride and then dispatches readers. run creates out directory before model load, processes sets and sequentially writes report/examples/residual/normal. run_set schedules atomic indices and merges stored results in input order.",
+  "forward": [
+    "Parses command and options; mixed/blocks/site-learn delegate early. volumes splits kind colon, final @ stride and then dispatches readers. run creates out directory before model load, processes sets and sequentially writes report/examples/residual/normal. run_set schedules atomic indices and merges stored results in input order."
+  ],
+  "id": "roundtrip-main",
+  "inverse": [
+    "For a report, compatible argv/model/volume histories include many tokenizations and inputs; aggregation cannot recover originals. Invalid-spec error identifies a failure partition, not unique spec. Successful argv path is not a reversible filesystem transaction.",
+    "An invalid stride prevents unknown-kind dispatch and all volume readers. Successful model load does not imply later writes all succeed; no rollback protects already written reports. No actual CLI load/run is executed here."
+  ],
+  "limitations": [
+    "No annotator/model loading, live corpus, full suite, teacher, GPU or persistent-learning evidence. No executable percentage surrogate: categorical codecs/effects need a useful metric before future caps 1/2/5/10%."
+  ],
+  "source": "tools/roundtrip/src/main.rs",
+  "state": "Layer representations, diagnostic residuals and fixed environment state; see scoped catalog."
+}

@@ -1,0 +1,234 @@
+{
+  "children": [
+    {
+      "id": "learning-memo-accounting",
+      "path": "accounting.groupant"
+    },
+    {
+      "id": "learning-memo-execution",
+      "path": "execution.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#core-model",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "selected source syntax; macros opaque, no expansion/resolution/type inference",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#core-model",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#core-model",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "absent-cache-traces",
+        "path": "model.md",
+        "required": true,
+        "scope": "U contains finite normal helper-call traces with fixed world/options, valid indices and nonoverflowing counters. Candidate inner bound on U minus actual R: reuse of Empty; evaluation/observation with zero passes; or work counters not summing to P*E. Source-derived, not a proved full complement.",
+        "section": "absent-cache-traces",
+        "status": "partial_source_derived",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "compatible-learning-inputs",
+        "path": "model.md",
+        "required": true,
+        "scope": "B(y) contains all initial weights, ordered exercises, pass counts and evaluator outcomes whose trace yields observed final weights/work counts y. It preserves ambiguity; counts cannot recover a unique lesson or initial state.",
+        "section": "compatible-learning-inputs",
+        "status": "partial_source_derived",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "ask-block-equivalence",
+        "path": "model.md",
+        "required": false,
+        "scope": "For fixed ask, w~v iff their VIAS.len()*NF block is equal. A Scored memo accepts its stored block class. Equal answers additionally assume stable world/options and evaluator dependence on that block.",
+        "section": "ask-block-equivalence",
+        "status": "partial_source_derived",
+        "type": "weight_subspace_quotient"
+      },
+      {
+        "id": "inert-antecedents",
+        "path": "model.md",
+        "required": false,
+        "scope": "For valid right index, Inert iff !understood OR count.is_some OR correct option has no best support. Correctness alone does not imply inertness.",
+        "section": "inert-antecedents",
+        "status": "partial_source_derived",
+        "type": "eligibility_preimage"
+      },
+      {
+        "id": "correct-answer-instability",
+        "path": "model.md",
+        "required": false,
+        "scope": "An understood, non-count answer with supported correct option remains Scored even when currently correct. Changing its block can change the winner; the stored correct choice must not bypass invalidation.",
+        "section": "correct-answer-instability",
+        "status": "partial_source_derived",
+        "type": "decision_counterfactual"
+      },
+      {
+        "id": "preupdate-snapshot",
+        "path": "model.md",
+        "required": false,
+        "scope": "The stored block precedes learn_answer. A later lookup is valid exactly when its current block equals that snapshot; a changing update invalidates its own memo.",
+        "section": "preupdate-snapshot",
+        "status": "partial_source_derived",
+        "type": "version_precondition"
+      },
+      {
+        "id": "ordered-reference-equivalence",
+        "path": "model.md",
+        "required": false,
+        "scope": "The target is equality of every ordered weight vector between cached and recomputed paths, under the shared evaluator contract. This is stronger than equal final scores.",
+        "section": "ordered-reference-equivalence",
+        "status": "partial_source_derived",
+        "type": "trace_correspondence"
+      },
+      {
+        "id": "work-counter-simplex",
+        "path": "model.md",
+        "required": false,
+        "scope": "At normal return, e+r+i=P*E with all counters nonnegative and nonoverflowing. Many branch decompositions share this total; it cannot identify reused questions.",
+        "section": "work-counter-simplex",
+        "status": "partial_source_derived",
+        "type": "resource_accounting"
+      },
+      {
+        "id": "zero-pass-boundary",
+        "path": "model.md",
+        "required": false,
+        "scope": "Within learn_lesson_with, P=0 returns default work before preparation/evaluation/observation/timing. Outer learn_lesson still calls enabled first, so environment initialization is not excluded.",
+        "section": "zero-pass-boundary",
+        "status": "partial_source_derived",
+        "type": "execution_complement"
+      },
+      {
+        "id": "empty-exercise-fiber",
+        "path": "model.md",
+        "required": false,
+        "scope": "With E=0 and P>0, counters and observer/evaluator calls are zero, but enabled timing may append P durations. Zero counters do not reconstruct P.",
+        "section": "empty-exercise-fiber",
+        "status": "partial_source_derived",
+        "type": "empty_domain_projection"
+      },
+      {
+        "id": "call-local-reset",
+        "path": "model.md",
+        "required": false,
+        "scope": "Each call creates Empty memos; inert conclusions from earlier facts cannot survive a new call. First pass evaluates every exercise in a nonempty call.",
+        "section": "call-local-reset",
+        "status": "partial_source_derived",
+        "type": "lifetime_boundary"
+      },
+      {
+        "id": "exercise-order-counterfactual",
+        "path": "model.md",
+        "required": false,
+        "scope": "Permutation may change learned trajectories. Cached execution must match recomputation for that same order; order invariance is not claimed.",
+        "section": "exercise-order-counterfactual",
+        "status": "partial_source_derived",
+        "type": "ordered_update_relation"
+      },
+      {
+        "id": "shuffle-seed-preimage",
+        "path": "model.md",
+        "required": false,
+        "scope": "Seed=((lesson.n as u64)<<20) OR ((index as u64)<<1). Without range bounds the encoding is noninjective through bit overlap/truncation; fixed options and seed do not identify a unique lesson.",
+        "section": "shuffle-seed-preimage",
+        "status": "partial_source_derived",
+        "type": "seed_encoding_preimage"
+      },
+      {
+        "id": "reuse-switch-observation",
+        "path": "model.md",
+        "required": false,
+        "scope": "OnceLock reads MOVA_LEARN_REUSE once: exact 0 disables, other values or lookup error enable. Later changes cannot replace that decision; direct helper calls bypass it.",
+        "section": "reuse-switch-observation",
+        "status": "partial_source_derived",
+        "type": "configuration_latch"
+      },
+      {
+        "id": "timing-information-loss",
+        "path": "model.md",
+        "required": false,
+        "scope": "pass_ns records per-pass elapsed time when enabled, not separate evaluator costs. u128 nanoseconds are cast to u64; no unbounded-duration preservation is asserted.",
+        "section": "timing-information-loss",
+        "status": "partial_source_derived",
+        "type": "timing_projection"
+      },
+      {
+        "id": "work-aggregation-preimage",
+        "path": "model.md",
+        "required": false,
+        "scope": "LearnWork::add sums counts and zero-padded pass vectors; the result loses partition attribution. Preimages include all compatible summand pairs, assuming no overflow.",
+        "section": "work-aggregation-preimage",
+        "status": "partial_source_derived",
+        "type": "aggregation_preimage"
+      },
+      {
+        "id": "memo-memory-budget",
+        "path": "model.md",
+        "required": false,
+        "scope": "At most E memo slots exist. Scored stores a block and Answer; prepared options also consume space. Memo/preparation storage is O(E*(W+Answer footprint+option footprint)); enabled pass timing adds O(P) retained memory. This is not O(W) total.",
+        "section": "memo-memory-budget",
+        "status": "partial_source_derived",
+        "type": "resource_bound"
+      },
+      {
+        "id": "evaluation-cost-preimage",
+        "path": "model.md",
+        "required": false,
+        "scope": "Model preparation plus validity probes, evaluated*C_eval and reached update costs. Reuse removes evaluations while adding comparisons/snapshots; lower evaluated count alone is not a speedup.",
+        "section": "evaluation-cost-preimage",
+        "status": "partial_source_derived",
+        "type": "cost_approximation"
+      },
+      {
+        "id": "world-change-countermodel",
+        "path": "model.md",
+        "required": false,
+        "scope": "Block equality is insufficient if an evaluator reads changing world/options or other weight blocks. Such behavior is excluded by lifetime/dependency assumptions, not detected by Memo::valid.",
+        "section": "world-change-countermodel",
+        "status": "partial_source_derived",
+        "type": "assumption_counterexample"
+      },
+      {
+        "id": "inert-update-exclusion",
+        "path": "model.md",
+        "required": false,
+        "scope": "Skipping learn_answer for Inert is equivalent only if unsupported/count/no-correct-support answers cannot update relevant reference state. This is a learner dependency obligation.",
+        "section": "inert-update-exclusion",
+        "status": "partial_source_derived",
+        "type": "dependency_complement"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_checks_executed"
+    }
+  },
+  "id": "learning-memo",
+  "kind": "groupant",
+  "registry": {
+    "node": "learning-memo",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../learning.rs",
+    "sha256": "27a2ad1ec4a2548c007ea360fb817b65843a89a8424910de9ba2b54534459c05"
+  },
+  "status": "partial_with_bounded_correspondence"
+}

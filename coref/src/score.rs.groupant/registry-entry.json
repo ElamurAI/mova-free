@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p coref --lib score::",
+    "cargo test -p coref --lib --release score::"
+  ],
+  "children": [],
+  "cost": "Bounded residual O(PG log(PG)) vs legacy O(PG min(P,G)); assignment O(r²c), two augmentation-scratch allocations plus O(rows*columns) transpose time/storage when original rows>columns.",
+  "description": "Coreference metrics with bounded exact greedy priority transfer and Hungarian scratch reuse.",
+  "forward": [
+    "Match exact spans, then stable greedy overlap; score matched partitions and maximum assignment."
+  ],
+  "id": "coref-score",
+  "inverse": [
+    "Many span/partition antecedents share match vectors and scalar metrics; no unique inverse."
+  ],
+  "limitations": [
+    "Finite synthetic evidence; partial source-bound syntax.",
+    "Nonfinite/ragged assignment and malformed partition semantics not newly established."
+  ],
+  "source": "coref/src/score.rs",
+  "state": "Supplied spans, matching policy, partitions and regular finite assignment matrices."
+}

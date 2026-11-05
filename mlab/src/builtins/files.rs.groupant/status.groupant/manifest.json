@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "For n=1 status excludes a message result; existing mkdir at n=0 excludes returned status and emits a warning.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "status(true,msg,2) admits existing mkdir when msg is Directory already exists., or fresh successful operations when msg is empty; n cannot be recovered beyond the >1 partition.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_invariant",
+        "path": "model.md",
+        "scope": "Successful existing mkdir preserves the directory and signals its existence; recursive rmdir is a branch on exact string s.",
+        "section": "state_invariant",
+        "status": "partial_source_derived_model",
+        "type": "state_invariant"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Path conversion fails before trait operation; mkdir may join parent/name before stat. Trait failures branch on nargout.",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Boolean status is Value::boolean; requested outputs greater than two do not create extra values.",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "O(path/message bytes + delegated stat/create/remove costs).",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 3426,
+      "start": 1502
+    },
+    "description": "status(ok,msg,n) always constructs one boolean and appends msg iff n>1; mkdir/rmdir callers choose empty result, status or MError by n and trait result.",
+    "source_bytes_sha256": "44632f47d76b502b05e03ad2c488fe89eca678ae693a123da83767e70170ef00"
+  },
+  "id": "mlab-builtins-files-status",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../files.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "c66336a9d4bf2e948158e64f1b02e1f9b80bfc42949cb019fd11d3f70c66cfd4"
+  },
+  "status": "partial_source_bound_model"
+}

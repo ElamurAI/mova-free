@@ -1,0 +1,152 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "source_derived_partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "source_derived_partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "source_derived_partial"
+    },
+    "obernants": [
+      {
+        "assumptions": [
+          "Stable bounded inputs and exclusive owned output parent.",
+          "Finite native evidence does not establish universal semantic compatibility."
+        ],
+        "domain": "The explicit source-bound domain in model.md.",
+        "id": "module-overlay-library-behavior-complement",
+        "observation": "Result, structured receipt/status and declared filesystem observations.",
+        "path": "model.md",
+        "revision": "3cf810a72ea4673d56f15eed40b0f82699beea0a7ea54376db9fd2ddfae8ca13",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "subject": "tools/module-overlay/src/lib.rs",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": [
+          "Stable bounded inputs and exclusive owned output parent.",
+          "Finite native evidence does not establish universal semantic compatibility."
+        ],
+        "domain": "The explicit source-bound domain in model.md.",
+        "id": "module-overlay-library-reverse-reconstruction",
+        "observation": "Result, structured receipt/status and declared filesystem observations.",
+        "path": "model.md",
+        "revision": "3cf810a72ea4673d56f15eed40b0f82699beea0a7ea54376db9fd2ddfae8ca13",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "subject": "tools/module-overlay/src/lib.rs",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": [
+          "Stable bounded inputs and exclusive owned output parent.",
+          "Finite native evidence does not establish universal semantic compatibility."
+        ],
+        "domain": "The explicit source-bound domain in model.md.",
+        "id": "module-overlay-library-base-drift-partition",
+        "observation": "Result, structured receipt/status and declared filesystem observations.",
+        "path": "model.md",
+        "revision": "3cf810a72ea4673d56f15eed40b0f82699beea0a7ea54376db9fd2ddfae8ca13",
+        "section": "base-drift-partition",
+        "status": "partial_source_model",
+        "subject": "tools/module-overlay/src/lib.rs",
+        "type": "base_drift_partition"
+      },
+      {
+        "assumptions": [
+          "Stable bounded inputs and exclusive owned output parent.",
+          "Finite native evidence does not establish universal semantic compatibility."
+        ],
+        "domain": "The explicit source-bound domain in model.md.",
+        "id": "module-overlay-library-model-freshness-partition",
+        "observation": "Result, structured receipt/status and declared filesystem observations.",
+        "path": "model.md",
+        "revision": "3cf810a72ea4673d56f15eed40b0f82699beea0a7ea54376db9fd2ddfae8ca13",
+        "section": "model-freshness-partition",
+        "status": "partial_source_model",
+        "subject": "tools/module-overlay/src/lib.rs",
+        "type": "model_freshness_partition"
+      },
+      {
+        "assumptions": [
+          "Stable bounded inputs and exclusive owned output parent.",
+          "Finite native evidence does not establish universal semantic compatibility."
+        ],
+        "domain": "The explicit source-bound domain in model.md.",
+        "id": "module-overlay-library-side-effect-boundary",
+        "observation": "Result, structured receipt/status and declared filesystem observations.",
+        "path": "model.md",
+        "revision": "3cf810a72ea4673d56f15eed40b0f82699beea0a7ea54376db9fd2ddfae8ca13",
+        "section": "side-effect-boundary",
+        "status": "partial_source_model",
+        "subject": "tools/module-overlay/src/lib.rs",
+        "type": "effect_prefix_boundary"
+      },
+      {
+        "assumptions": [
+          "Stable inputs, ordinary successful IO, exclusive output ownership and fixed target contents/modes.",
+          "Equality of commitments is not a mathematical proof of equal bytes; native checks also use literal known bytes."
+        ],
+        "domain": "Admissible bounded stable literal-content/executable maps on fixed path set P, fixed Replace targets T and replacement observations K; no Add/topology changes.",
+        "id": "masked-drift-preimage",
+        "observation": "Composed permitted source map, excluding the receipt and ignored filesystem state.",
+        "operator": "If O restricted to T equals K, F_K inverse(O) consists of admissible B agreeing with O outside T; otherwise empty. Overwritten originals remain free within bounds. Final source equality cannot reconstruct them.",
+        "path": "model.md",
+        "revision": "3cf810a72ea4673d56f15eed40b0f82699beea0a7ea54376db9fd2ddfae8ca13",
+        "section": "masked-drift-preimage",
+        "status": "declared_projection_identity_source_derived_with_finite_native_checks",
+        "subject": "tools/module-overlay/src/lib.rs",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": [
+          "Expected commitments are trusted; the manifest must change on explicit rebinding.",
+          "No inference of semantic/API compatibility from a byte result."
+        ],
+        "domain": "Valid old expected snapshot and manifest, fixed replacement content and target-only base drift.",
+        "id": "output-equality-admission-exclusion",
+        "observation": "Drift report, stage error/output existence and provenance receipt in addition to the projected source map.",
+        "operator": "Equal F_K(B) and F_K(S) does not imply old-base admission. Changed target commitments still produce incompatible drift and no stage output; rebind may preserve output but changes provenance.",
+        "path": "model.md",
+        "revision": "3cf810a72ea4673d56f15eed40b0f82699beea0a7ea54376db9fd2ddfae8ca13",
+        "section": "output-equality-admission-exclusion",
+        "status": "source_derived_with_native_counterexample_and_rejected_gate_mutation",
+        "subject": "tools/module-overlay/src/lib.rs",
+        "type": "observation_exclusion"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_native_evidence"
+    }
+  },
+  "id": "module-overlay-library",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../lib.rs",
+    "sha256": "3cf810a72ea4673d56f15eed40b0f82699beea0a7ea54376db9fd2ddfae8ca13"
+  },
+  "status": "partial_source_bound_model"
+}

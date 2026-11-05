@@ -1,0 +1,86 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-invariants-unsaid-anchors-behavior-complement",
+        "operator": "Exclude pairs violating concrete fragment forward/invariant relation",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-invariants-unsaid-anchors-reverse-reconstruction",
+        "operator": "Retain all compatible tagged inputs and intermediate states",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-invariants-unsaid-anchors-intervention",
+        "operator": "Scoped intervention/coupling relation in referenced section",
+        "path": "model.md",
+        "section": "intervention",
+        "status": "partial_source_model",
+        "type": "counterfactual_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 5155,
+      "start": 3874
+    },
+    "description": "With a frame-aligned predicate anchor, inspect direct children unused by any anchored role. For each unsaid slot in order, Agent matches passive OblAgent or nonpassive-subject Nsubj; Patient matches NsubjPass or non-time Obj; Recipient matches Iobj. First matching child emits a hit. Other slots abstain. Missing anchors/predicates suppress only this check."
+  },
+  "domain": "With a frame-aligned predicate anchor, inspect direct children unused by any anchored role. For each unsaid slot in order, Agent matches passive OblAgent or nonpassive-subject Nsubj; Patient matches NsubjPass or non-time Obj; Recipient matches Iobj. First matching child emits a hit. Other slots abstain. Missing anchors/predicates suppress only this check.",
+  "id": "prag-invariants-unsaid-anchors",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../invariants.rs",
+    "sha256": "64ddcdabea1704fc3216d06f5f299ec06171dc4432b7f5c9b7d4b7c4a4fbf190"
+  },
+  "state": "Predicate/role token indices are zero-based, hits are one-based frame rows. Token use excludes the dependent regardless of which role consumed it. Frame order and anchor order must agree. Valid Tree cached children and anchor indices are premises; malformed public state can panic and is not silently repaired.",
+  "status": "partial_source_bound_model"
+}

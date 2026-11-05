@@ -1,0 +1,124 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-sparse-table-tests",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "aa3d756affd6f7db9f4f1eafe0964340929b0f1d5abea727927a4ab0bc27aa22"
+  },
+  "registry": {
+    "path": "../../../../models/contracts.json",
+    "node": "algorithm-sparse-table-tests"
+  },
+  "status": "partial",
+  "components": {
+    "ast": {
+      "path": "ast.json",
+      "format": "rust_syntax_projection",
+      "status": "partial",
+      "scope": "Partial source syntax; macros opaque; no semantic resolution"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial"
+    },
+    "tests": {
+      "path": "model.md",
+      "section": "tests",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "descriptant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "algorithm-sparse-table-tests-behavior-complement",
+        "type": "behavior_complement",
+        "required": true,
+        "status": "partial_source_model",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "subject_revision": "algorithms/src/sparse_table/tests.rs sha256:aa3d756affd6f7db9f4f1eafe0964340929b0f1d5abea727927a4ab0bc27aa22",
+        "domain": "Compiled implementation and bounded deterministic oracle domain",
+        "observation_scope": "Finite verdicts and exact sampled observations",
+        "operator": "Relation in model.md behavior-complement",
+        "approximation_semantics": "Conditional inner bound of U minus R",
+        "assumptions": "Successful allocation; trusted Rust semantics; lawful stable generic traits where applicable",
+        "evidence": "Four tests twice, direct reference checks, filtered compiled-source mutation failure; see tests section"
+      },
+      {
+        "id": "algorithm-sparse-table-tests-reverse-reconstruction",
+        "type": "reverse_reconstruction",
+        "required": true,
+        "status": "partial_source_model",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "subject_revision": "algorithms/src/sparse_table/tests.rs sha256:aa3d756affd6f7db9f4f1eafe0964340929b0f1d5abea727927a4ab0bc27aa22",
+        "domain": "Compiled implementation and bounded deterministic oracle domain",
+        "observation_scope": "Finite verdicts and exact sampled observations",
+        "operator": "Relation in model.md reverse-reconstruction",
+        "approximation_semantics": "Set-valued preimage; no unique recovery unless stated",
+        "assumptions": "Successful allocation; trusted Rust semantics; lawful stable generic traits where applicable",
+        "evidence": "Four tests twice, direct reference checks, filtered compiled-source mutation failure; see tests section"
+      },
+      {
+        "id": "algorithm-sparse-table-tests-independent-oracle",
+        "type": "direct_reference_relation",
+        "required": false,
+        "status": "partial_source_model",
+        "path": "model.md",
+        "section": "independent-oracle",
+        "subject_revision": "algorithms/src/sparse_table/tests.rs sha256:aa3d756affd6f7db9f4f1eafe0964340929b0f1d5abea727927a4ab0bc27aa22",
+        "domain": "Compiled implementation and bounded deterministic oracle domain",
+        "observation_scope": "Finite verdicts and exact sampled observations",
+        "operator": "Relation in model.md independent-oracle",
+        "approximation_semantics": "Scoped source relation and bounded executable correspondence",
+        "assumptions": "Successful allocation; trusted Rust semantics; lawful stable generic traits where applicable",
+        "evidence": "Four tests twice, direct reference checks, filtered compiled-source mutation failure; see tests section"
+      },
+      {
+        "id": "algorithm-sparse-table-tests-operation-obligations",
+        "type": "query_identity_frame",
+        "required": false,
+        "status": "partial_source_model",
+        "path": "model.md",
+        "section": "operation-obligations",
+        "subject_revision": "algorithms/src/sparse_table/tests.rs sha256:aa3d756affd6f7db9f4f1eafe0964340929b0f1d5abea727927a4ab0bc27aa22",
+        "domain": "Compiled implementation and bounded deterministic oracle domain",
+        "observation_scope": "Finite verdicts and exact sampled observations",
+        "operator": "Relation in model.md operation-obligations",
+        "approximation_semantics": "Scoped source relation and bounded executable correspondence",
+        "assumptions": "Successful allocation; trusted Rust semantics; lawful stable generic traits where applicable",
+        "evidence": "Four tests twice, direct reference checks, filtered compiled-source mutation failure; see tests section"
+      },
+      {
+        "id": "algorithm-sparse-table-tests-bounded-coverage",
+        "type": "bounded_coverage_cost",
+        "required": false,
+        "status": "partial_source_model",
+        "path": "model.md",
+        "section": "bounded-coverage",
+        "subject_revision": "algorithms/src/sparse_table/tests.rs sha256:aa3d756affd6f7db9f4f1eafe0964340929b0f1d5abea727927a4ab0bc27aa22",
+        "domain": "Compiled implementation and bounded deterministic oracle domain",
+        "observation_scope": "Finite verdicts and exact sampled observations",
+        "operator": "Relation in model.md bounded-coverage",
+        "approximation_semantics": "Scoped source relation and bounded executable correspondence",
+        "assumptions": "Successful allocation; trusted Rust semantics; lawful stable generic traits where applicable",
+        "evidence": "Four tests twice, direct reference checks, filtered compiled-source mutation failure; see tests section"
+      }
+    ]
+  }
+}

@@ -75,3 +75,12 @@ fn vmm_calc_negative_control() {
     let (_, red) = run(&bad);
     assert_eq!(red.len(), 2, "{red:?}");
 }
+
+#[test]
+fn wave28_synthetic_rows() {
+    let (n, red) = run("# synthetic\na\t1+2\t3\nb\t1/0\tERR\nc\t2*3\t7\n");
+    assert_eq!(n, 3);
+    assert_eq!(red.len(), 1);
+    assert_eq!(red[0].0, "c");
+    assert_eq!(red[0].3, "6");
+}

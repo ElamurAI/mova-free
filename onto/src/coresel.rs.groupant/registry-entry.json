@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test --offline --locked -p onto --bin onto -- --exact --test-threads=1 coresel::wave29::applicability_and_provenance",
+    "Paired source syntax; repeated bounded debug/release tests; mapped compiled controls"
+  ],
+  "children": [],
+  "cost": "O(input bytes+C*11+candidate scans+sum A log A) expected hashes; full output retained. parse_source repeatedly scans prefixes.",
+  "description": "Per core and field: nonapplicable→n/a; risk any none dominates, else non-dash acts→known else unknown. Other fields require same lemma/property/synset; yes accepts, no rejects, refine>=0.7 accepts, absent verdict>=0.7 accepts. Numeric accepts sort yes/refine/confident then descending total_cmp confidence and truncate one; values dedup raw string.",
+  "forward": [
+    "Per core and field: nonapplicable→n/a; risk any none dominates, else non-dash acts→known else unknown. Other fields require same lemma/property/synset; yes accepts, no rejects, refine>=0.7 accepts, absent verdict>=0.7 accepts. Numeric accepts sort yes/refine/confident then descending total_cmp confidence and truncate one; values dedup raw string."
+  ],
+  "id": "onto-coresel",
+  "inverse": [
+    "Selected numeric result admits rejected and lower-ranked candidates; stable ties constrain first winner only. Unknown admits no candidates, explicit no, low/NaN confidence or blocked verdict."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no semantic proof",
+    "Categorical/structural/effect semantics lack executable percent surrogate",
+    "Only selected synthetic branches tested; external effects unexecuted"
+  ],
+  "source": "onto/src/coresel.rs",
+  "state": "Core/FIELDS order preserved; risk none dominates. Imported numeric/risk strings may still fail compilation gate. Output written after construction, not atomic. Only helper execution claimed."
+}

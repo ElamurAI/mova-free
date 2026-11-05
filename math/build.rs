@@ -52,3 +52,15 @@ fn main() {
     let dir = std::env::var("OUT_DIR").unwrap();
     std::fs::write(format!("{dir}/lexicon.rs"), out).unwrap();
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn fraction_syntax() {
+        assert_eq!(frac("-3/4"), (-3, 4));
+        assert_eq!(frac("9"), (9, 1));
+        assert_eq!(frac("1/0"), (1, 0));
+        assert!(std::panic::catch_unwind(|| frac("x")).is_err());
+    }
+}

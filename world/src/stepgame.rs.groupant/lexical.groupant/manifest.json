@@ -1,0 +1,103 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical projection, no macro expansion or name/type resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Exact source byte scope below",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Exact source byte scope below",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "intensifier",
+        "path": "model.md",
+        "scope": "Exact source byte scope below",
+        "section": "intensifier",
+        "status": "partial_source_derived_model",
+        "type": "intensifier"
+      },
+      {
+        "id": "ground_negation",
+        "path": "model.md",
+        "scope": "Exact source byte scope below",
+        "section": "ground_negation",
+        "status": "partial_source_derived_model",
+        "type": "ground_negation"
+      },
+      {
+        "id": "sameness",
+        "path": "model.md",
+        "scope": "Exact source byte scope below",
+        "section": "sameness",
+        "status": "partial_source_derived_model",
+        "type": "sameness"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Exact source byte scope below",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_checks_partial_scope"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 11036,
+      "start": 6920
+    },
+    "description": "Reject clock; collect direction signs except intensifier right; reject conflicting axis signs; zero direction needs sameness. Ground chosen unique cue then has/have subject then a2; negate if ground is a1. Axis relation A(X)=None if (∃x>0)∧(∃x<0), else first(X) or0; lexical(s)=σ·(A(horizontal),A(vertical)), σ=+1 for ground=a2 else−1, after clock/zero-cue guards.",
+    "source_bytes_sha256": "78e973688f038fc6087285a5e21f64b5de9527ca12109b6e7097b2f2392e923c"
+  },
+  "id": "world-stepgame-lexical",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../stepgame.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "56231f07cd9c54f128a36166199f7007415f0c52f5dbd5275dee1ee9f6d6783f"
+  },
+  "status": "partial_source_bound_model"
+}

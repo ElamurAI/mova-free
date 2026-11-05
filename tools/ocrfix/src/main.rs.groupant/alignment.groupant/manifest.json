@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "ocrfix-text-command-alignment-behavior_complement",
+        "path": "model.md",
+        "scope": "Finite char slices with n,m and DP increments fitting u32 and allocation capacity.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "ocrfix-text-command-alignment-reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Finite char slices with n,m and DP increments fitting u32 and allocation capacity.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "ocrfix-text-command-alignment-length_conservation",
+        "path": "model.md",
+        "scope": "Finite char slices with n,m and DP increments fitting u32 and allocation capacity.",
+        "section": "length_conservation",
+        "status": "partial_source_derived_model",
+        "type": "length_conservation"
+      },
+      {
+        "id": "ocrfix-text-command-alignment-tie_priority",
+        "path": "model.md",
+        "scope": "Finite char slices with n,m and DP increments fitting u32 and allocation capacity.",
+        "section": "tie_priority",
+        "status": "partial_source_derived_model",
+        "type": "tie_priority"
+      },
+      {
+        "id": "ocrfix-text-command-alignment-substitution_histogram",
+        "path": "model.md",
+        "scope": "Finite char slices with n,m and DP increments fitting u32 and allocation capacity.",
+        "section": "substitution_histogram",
+        "status": "partial_source_derived_model",
+        "type": "substitution_histogram"
+      },
+      {
+        "id": "ocrfix-text-command-alignment-resource_boundary",
+        "path": "model.md",
+        "scope": "Finite char slices with n,m and DP increments fitting u32 and allocation capacity.",
+        "section": "resource_boundary",
+        "status": "partial_source_derived_model",
+        "type": "resource_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 18433,
+      "start": 17281
+    },
+    "description": "Initialize d[i,0]=i,d[0,j]=j; d[i,j]=min(diag+mismatch,up+1,left+1). Backtrace diagonal if equal, else deletion if equal, else insertion; accumulate gt->hyp substitution multiset."
+  },
+  "id": "ocrfix-text-command-alignment",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../main.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "c0912bb251c79fa61d4601c1a4d5954189ea77b73a96302504f6841b8cca3ab8"
+  },
+  "status": "partial_source_bound_model"
+}

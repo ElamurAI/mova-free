@@ -1,0 +1,17 @@
+{
+  "workers": [
+    {
+      "name": "whales",
+      "argv": ["/ABSOLUTE/PATH/whale-english/bin/mova-whale", "serve",
+               "/ABSOLUTE/PATH/whale-english/animal.json",
+               "/ABSOLUTE/PATH/whale-english/deputy.json",
+               "/ABSOLUTE/PATH/whale-english/sock/whale.sock"],
+      "cwd": "/ABSOLUTE/PATH/whale-english",
+      "log": "/ABSOLUTE/PATH/whale-english/serve.log",
+      "autostart": false,
+      "stop_marker": "/ABSOLUTE/PATH/whale-english/sock/STOP",
+      "stop_grace_seconds": 1900,
+      "restart": true
+    }
+  ]
+}

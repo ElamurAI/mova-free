@@ -147,3 +147,15 @@ fn main() {
     s.push_str("];\n");
     std::fs::write(&out, s).unwrap();
 }
+
+#[cfg(test)]
+mod wave29 {
+    use super::*;
+    #[test]
+    fn generated_literal_helpers() {
+        assert_eq!(camel("red_fox--animal"), "RedFoxAnimal");
+        assert_eq!(lit("a\n\"b"), "\"a\\n\\\"b\"");
+        assert_eq!(fnum("1.25", "mean"), "1.25");
+        assert!(std::panic::catch_unwind(|| fnum("bad", "mean")).is_err());
+    }
+}

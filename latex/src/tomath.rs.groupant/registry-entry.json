@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p latex --features math --test bridge"
+  ],
+  "children": [],
+  "cost": "Ordinary rows linear plus recursive conversion, nested group scans potentially quadratic. Output/error rendering allocates; O(depth) stack; Rat cost delegated.",
+  "description": "to_expr rejects top-level relations before sequence; P applies additive/multiplicative/unary/script precedence and function juxtaposition. to_relation validates/splits supported relation symbols before operands. Irreducible integer fractions become Rat, reducible remain Div. from_expr emits wrapping; roundtrip compares fold_literals after emit/print/parse/convert.",
+  "forward": [
+    "to_expr rejects top-level relations before sequence; P applies additive/multiplicative/unary/script precedence and function juxtaposition. to_relation validates/splits supported relation symbols before operands. Irreducible integer fractions become Rat, reducible remain Div. from_expr emits wrapping; roundtrip compares fold_literals after emit/print/parse/convert."
+  ],
+  "id": "latex-tomath",
+  "inverse": [
+    "Expr preimage includes alternative grouping, decimal/fraction forms, fonted Euler e. from_expr chosen presentation, not total inverse. fold_literals maps integer Div(p,q) with p>=0 and q>1 to Rat when Rat construction succeeds and its normalized numerator still equals p; this includes Div(0,2) mapping to zero despite reducibility. Nested operation shape otherwise remains.",
+    "Unsupported variables/functions/scripts/constructs categorized, relation precheck preempts malformed operand. No solving/evaluation/definedness guarantee: 1/0 can structurally roundtrip while numeric evaluator rejects. Scripts missing sup can panic via unwrap for manual AST."
+  ],
+  "limitations": [
+    "Partial source-derived model and finite synthetic checks",
+    "No universal proof or executable percentage surrogate",
+    "No live corpus, frozen VMM, teacher/API, training or GPU execution"
+  ],
+  "source": "latex/src/tomath.rs",
+  "state": "Supported tested trees preserve ordered arithmetic modulo fold; sub/div left associative, unparenthesized function stops at next function. Rat explicit parse/neg overflow errors delegated; abs extreme and arbitrary constructors unproved."
+}

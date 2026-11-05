@@ -1,0 +1,94 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Parent projection restricted to[6714,8091)",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "sampling_coordinates",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "sampling_coordinates",
+        "status": "partial_source_derived_model",
+        "type": "sampling_coordinates"
+      },
+      {
+        "id": "metric_zero",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "metric_zero",
+        "status": "partial_source_derived_model",
+        "type": "metric_zero"
+      },
+      {
+        "id": "availability_filter",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "availability_filter",
+        "status": "partial_source_derived_model",
+        "type": "availability_filter"
+      },
+      {
+        "id": "assurance_limit",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "assurance_limit",
+        "status": "partial_source_derived_model",
+        "type": "assurance_limit"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 8091,
+      "start": 6714
+    },
+    "description": "check_derivative substitutes eight fixed coordinates, central h=1e-5 max(|p|,1). Unsupported/nonfinite skip, >=3 with scaled discrepancy<=1e-5 accepts. Passing is finite agreement, not global identity or nonsingularity; use parent calc approximation subset.",
+    "source_bytes_sha256": "8434827cbe03072ca437229d1842de7cfeff2d1c151b8298bc86affe413f1b2d"
+  },
+  "id": "math-deriv-numerical-check",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../deriv.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "0ea96ef4d7df85aa6e234618664e368c594bef2280d7689b5a989da4d31c1f48"
+  },
+  "status": "partial_source_bound_model"
+}

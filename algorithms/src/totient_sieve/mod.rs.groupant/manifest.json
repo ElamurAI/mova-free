@@ -1,0 +1,126 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "Universe usize x Result<table,error>. Wrong lengths, wrong conventions and entries unequal to coprime counts are excluded for accepted n. For n>MAX_N all results except LimitExceeded carrying the requested n and MAX_N are excluded. This is a source-derived specification target, not a proof.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "beea59a6e9d685e2b414cc4eca4fddb21d0087f7b9957d592763f085ec680ef6",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "Full successful table length recovers n uniquely. Scalar phi alone has ambiguous fibers: phi(3)=phi(4)=phi(6)=2. Error payload recovers n; projected error tag retains all n>MAX_N.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "beea59a6e9d685e2b414cc4eca4fddb21d0087f7b9957d592763f085ec680ef6",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "coprime_oracle",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "GCD counting independently checks each n=1..2048 without prime-factor elimination.",
+        "path": "model.md",
+        "section": "coprime_oracle",
+        "status": "partial_relational_specification",
+        "subject_revision": "beea59a6e9d685e2b414cc4eca4fddb21d0087f7b9957d592763f085ec680ef6",
+        "type": "coprime_oracle"
+      },
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "divisor_identity",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "For n>=1, sum_{d|n} phi(d)=n; tests check n<=512, partitioning integers by gcd.",
+        "path": "model.md",
+        "section": "divisor_identity",
+        "status": "partial_relational_specification",
+        "subject_revision": "beea59a6e9d685e2b414cc4eca4fddb21d0087f7b9957d592763f085ec680ef6",
+        "type": "divisor_identity"
+      },
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "resource_partition",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "n=0,1 and MAX_N accepted; phi(MAX_N)=400000. MAX_N+1 and usize::MAX rejected before allocation.",
+        "path": "model.md",
+        "section": "resource_partition",
+        "status": "partial_relational_specification",
+        "subject_revision": "beea59a6e9d685e2b414cc4eca4fddb21d0087f7b9957d592763f085ec680ef6",
+        "type": "resource_partition"
+      },
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "prime_update",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "phi(p)=p identifies prime p>=2. Omitting subtraction compiles and fails exhaustive_gcd_oracle.",
+        "path": "model.md",
+        "section": "prime_update",
+        "status": "partial_relational_specification",
+        "subject_revision": "beea59a6e9d685e2b414cc4eca4fddb21d0087f7b9957d592763f085ec680ef6",
+        "type": "prime_update"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-totient-sieve",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "beea59a6e9d685e2b414cc4eca4fddb21d0087f7b9957d592763f085ec680ef6"
+  },
+  "status": "partial_source_derived_instance"
+}

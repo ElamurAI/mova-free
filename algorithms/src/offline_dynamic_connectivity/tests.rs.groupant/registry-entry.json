@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms offline_dynamic_connectivity::tests"
+  ],
+  "children": [],
+  "cost": "4096 timelines with six toggles, 60 post-toggle queries and one initial component query each. BFS rebuild scans all e edges per dequeued vertex, O(n+n*e), under tiny fixed n; cap fixtures allocate up to 2^18 timeline entries. No timing benchmark.",
+  "description": "offline_dynamic_connectivity tests.rs: exact structure and independent oracle",
+  "forward": [
+    "Execute all 4^6 edge-toggle sequences over three vertices (including a self-loop), querying all nine ordered pairs and component count after each toggle. Rebuild active-edge BFS labels independently per query. Add lifecycle, empty-domain, rollback and cap witnesses."
+  ],
+  "id": "algorithm-offline-dynamic-connectivity-tests",
+  "inverse": [
+    "Concrete behavior complement and ambiguous reverse reconstruction in adjacent model.md"
+  ],
+  "limitations": [
+    "Finite observations are not a proof; std allocation failure not injected; partial syntax has opaque macros and no semantic AST"
+  ],
+  "source": "algorithms/src/offline_dynamic_connectivity/tests.rs",
+  "state": "Bounded deterministic supplied-input observations"
+}

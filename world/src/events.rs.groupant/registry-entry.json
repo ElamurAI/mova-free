@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p world corpus_models -- --test-threads=1; repeated debug/release; compiled controls; repeated syntax"
+  ],
+  "children": [],
+  "cost": "W words: repeated scans, including nested oblique-case scans, O(W^3) worst-case; O(W) events. B occurrences and D distinct keys: O(B log D+D log D) plus parser, IO and string bytes; postings O(B). Workers=max(1,threads).",
+  "description": "Full file: Event/show, noun/events, body/sentences, BookStats/book_stats, top/book_json, run/show.",
+  "forward": [
+    "Text -> book_body -> sentences -> tokenizer/annotator/repair -> ordered events. Counts sum occurrences; postings retain original sentence index even when tokenization is empty. JSON summarizes; run pools successful books and writes canonical rows. show selects indexed sentence or '?'. IO behavior is conditional."
+  ],
+  "id": "corpus-events",
+  "inverse": [
+    "U=(words,events). Inner complement includes emission at non-VERB/non-copular-ADJ, emission without agent or patient Option, and pronouns becoming noun roles. Oracle: native role fixtures.",
+    "For O, retain all arrays W with exactly O from eligible predicates in array order, first relation match then noun admission. Ignored forms/tags/features can vary. Earlier matching children cannot be inserted freely. Oracle proposed: form/tag metamorphism."
+  ],
+  "limitations": [
+    "Bounded synthetic native evidence only; IO/parser traces unexecuted.",
+    "Partial syntax; no general semantic proof."
+  ],
+  "source": "world/src/events.rs",
+  "state": "Bodies, token arrays, histograms, options and conditional IO traces."
+}

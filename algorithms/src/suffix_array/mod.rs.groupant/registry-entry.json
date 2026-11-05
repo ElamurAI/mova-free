@@ -1,0 +1,29 @@
+{
+  "id": "algorithm-suffix-array",
+  "source": "algorithms/src/suffix_array/mod.rs",
+  "children": [],
+  "description": "suffix_array exact implementation",
+  "state": "Finite byte slices and ordinary terminating executions with successful allocation.",
+  "cost": "Comparison-sort doubling takes O(n log² n) time and O(n) auxiliary storage. No timing measurement or optimized linear-sort construction claim.",
+  "forward": [
+    "Return the unique permutation of offsets 0..n whose nonempty suffixes increase lexicographically by unsigned byte order. Prefix-doubling pairs refine ranks until distinct; exclude the empty suffix.",
+    "Ranks encode equal truncated prefixes and their lexicographic order. Each offset appears once; absent second ranks sort before actual ranks. Unique ranks imply complete suffix order. Index addition is checked."
+  ],
+  "inverse": [
+    "Exclude omitted, repeated or out-of-range offsets, the empty suffix n, or adjacent offsets whose suffixes are in descending order. Input bytes remain unchanged.",
+    "For a fixed permutation A of 0..n, compatible byte texts are precisely length-n texts whose adjacent suffixes T[A[j]..] are strictly lexicographically increasing. Several texts satisfy these constraints; A alone does not recover bytes.",
+    "Observe rank ordering and equality, not the initial literal numeric byte ranks. At width k, equal ranks mean equal length-k truncated suffix prefixes and rank order matches their lexicographic order. Any byte text with the same ordered prefix equivalence classes is compatible with this rank observation.",
+    "Sorting pairs (rank_i, optional rank_{i+k}) orders length-2k truncated prefixes; None is less than every present rank. Assigning consecutive ranks preserves pair equality and strict ordering.",
+    "A strictly increasing map on the input byte support preserves the suffix array. Injectivity without monotonicity is insufficient, and wrapping maps violate the premise.",
+    "Prepending a byte strictly below every input byte produces array [0] followed by every original offset increased by one. The empty input gives [0].",
+    "For n=3, output [2,1,0] admits exactly nonincreasing triples; over three byte values there are ten compatible triples. Equal-value and strictly decreasing texts can yield the same suffix order.",
+    "Each round doubles represented prefix length unless all n ranks are unique and returns. Width>=n distinguishes suffix lengths even for constant bytes. checked_add handles absent tails; saturating doubling cannot prevent termination for valid byte slices."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline suffix_array::tests::",
+    "Debug/release twice; strict Clippy; rustfmt; source syntax twice; compiled mutant."
+  ],
+  "limitations": [
+    "Partial syntax omits semantic resolution and macro expansion. Finite evidence is not proof. Allocation exhaustion untested; no executable approximation profile or downstream wiring claim."
+  ]
+}

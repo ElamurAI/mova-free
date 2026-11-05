@@ -1,0 +1,109 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "domain",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_derived"
+    },
+    "obernants": [
+      {
+        "assumptions": [
+          "Trusted cooperative filesystem and operator configuration.",
+          "Finite tests do not establish universal or semantic correctness."
+        ],
+        "domain": "Explicit domain in corresponding model.md section.",
+        "id": "behavior-complement",
+        "observation": "Declared process/admission/artifact observations.",
+        "operator": "Declared source-bound rejected behavior and effects in model.md.",
+        "path": "model.md",
+        "revision": "efa4999f912d55bf751049705f661191050edfecd6f8bb708dda7e81e2e60943",
+        "section": "behavior-complement",
+        "status": "source_derived_with_finite_checks",
+        "subject": "tools/fish-priority/src/lib.rs",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": [
+          "Trusted cooperative filesystem and operator configuration.",
+          "Finite tests do not establish universal or semantic correctness."
+        ],
+        "domain": "Explicit domain in corresponding model.md section.",
+        "id": "reverse-reconstruction",
+        "observation": "Declared process/admission/artifact observations.",
+        "operator": "Compatible pinned antecedents retain nonunique histories and unknown truth.",
+        "path": "model.md",
+        "revision": "efa4999f912d55bf751049705f661191050edfecd6f8bb708dda7e81e2e60943",
+        "section": "reverse-reconstruction",
+        "status": "source_derived_with_finite_checks",
+        "subject": "tools/fish-priority/src/lib.rs",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": [
+          "Trusted cooperative filesystem and operator configuration.",
+          "Finite tests do not establish universal or semantic correctness."
+        ],
+        "domain": "Explicit domain in corresponding model.md section.",
+        "id": "boundary-exclusion",
+        "observation": "Declared process/admission/artifact observations.",
+        "operator": "Nonquiescent ordinary work admits owned pauses only, no callback.",
+        "path": "model.md",
+        "revision": "efa4999f912d55bf751049705f661191050edfecd6f8bb708dda7e81e2e60943",
+        "section": "boundary-exclusion",
+        "status": "source_derived_with_finite_checks",
+        "subject": "tools/fish-priority/src/lib.rs",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": [
+          "Trusted cooperative filesystem and operator configuration.",
+          "Finite tests do not establish universal or semantic correctness."
+        ],
+        "domain": "Explicit domain in corresponding model.md section.",
+        "id": "uncertainty-partition",
+        "observation": "Declared process/admission/artifact observations.",
+        "operator": "Reservation without receipt blocks replay even when its case disappears.",
+        "path": "model.md",
+        "revision": "efa4999f912d55bf751049705f661191050edfecd6f8bb708dda7e81e2e60943",
+        "section": "uncertainty-partition",
+        "status": "source_derived_with_finite_checks",
+        "subject": "tools/fish-priority/src/lib.rs",
+        "type": "error_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "finite_checks"
+    }
+  },
+  "id": "fish-priority-engine",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../lib.rs",
+    "sha256": "efa4999f912d55bf751049705f661191050edfecd6f8bb708dda7e81e2e60943"
+  },
+  "status": "partial_source_bound_model"
+}

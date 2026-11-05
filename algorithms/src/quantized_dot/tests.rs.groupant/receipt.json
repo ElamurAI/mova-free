@@ -1,0 +1,80 @@
+{
+  "compiled_mutant": "Disable certificate rejection; unsupported5% result violates named boundary assertion.",
+  "date": "2026-10-30",
+  "evidence": [
+    {
+      "name": "debug1.log",
+      "sha256": "aecd91847bc3985ad3bb0c7cebfdaa47017c720964b1ddf4b5d2100132756afb"
+    },
+    {
+      "name": "debug2.log",
+      "sha256": "4bc170304b26db026e4375dc5ee6faca3540f1c2366a35f5fda927fbd3765a43"
+    },
+    {
+      "name": "release1.log",
+      "sha256": "bcb085385d894775dd9be7eade4ef639dcdf8a8c0afffe2f7a7e0f94fb8e094d"
+    },
+    {
+      "name": "release2.log",
+      "sha256": "f9378cdfa7fcb95bf8ead9d9ec905ea6994ab45872330cae84ce464d929d2d0c"
+    },
+    {
+      "name": "debug1.log.normalized",
+      "sha256": "37a4bdc6750280f56dcf1c96fe8d41ba806fc75e57da018e7081fd69bcdefe71"
+    },
+    {
+      "name": "debug2.log.normalized",
+      "sha256": "37a4bdc6750280f56dcf1c96fe8d41ba806fc75e57da018e7081fd69bcdefe71"
+    },
+    {
+      "name": "release1.log.normalized",
+      "sha256": "37a4bdc6750280f56dcf1c96fe8d41ba806fc75e57da018e7081fd69bcdefe71"
+    },
+    {
+      "name": "release2.log.normalized",
+      "sha256": "37a4bdc6750280f56dcf1c96fe8d41ba806fc75e57da018e7081fd69bcdefe71"
+    },
+    {
+      "name": "clippy.log",
+      "sha256": "f1cd85b55d97a65b95a4656bfc90e41dd8897f8b063d2af8d013851a3788f7e9"
+    },
+    {
+      "name": "mutations.log",
+      "sha256": "3e5d388a92c7573d0c40b270d6dcac60e10f18a601f0eba296936c5919784a81"
+    },
+    {
+      "name": "mutant-quantized_dot.log",
+      "sha256": "84d77f0031bcc9fb319eac26f368591bbb4933b8ab17d075edbb4cd017688c07"
+    },
+    {
+      "name": "restored-quantized_dot.log",
+      "sha256": "8f40c6ab21f0727eec00251a8a793a340d5bcae5730da72d280efd0d96a66ee3"
+    },
+    {
+      "name": "quantized_dot-tests.rs-syntax1.json",
+      "sha256": "65351881aa020c183880c9aa4bda9bcd069838d8aae71a289897a3eff149dcfc"
+    },
+    {
+      "name": "quantized_dot-tests.rs-syntax2.json",
+      "sha256": "65351881aa020c183880c9aa4bda9bcd069838d8aae71a289897a3eff149dcfc"
+    },
+    {
+      "name": "isolated-check1.json",
+      "sha256": "3079cdac6c3235036ca79774cffb8d12665aab4244952546f13f2d4d36215e34"
+    },
+    {
+      "name": "isolated-check2.json",
+      "sha256": "3079cdac6c3235036ca79774cffb8d12665aab4244952546f13f2d4d36215e34"
+    }
+  ],
+  "external_run": "$MOVA_DATA/runs/octopus-wave19-approx-2026-10-30",
+  "limitations": [
+    "Finite evidence not semantic proof",
+    "No measured speedup"
+  ],
+  "native_tests_per_module": 3,
+  "repetitions": "twice debug and twice release; equal normalized502test outcomes",
+  "source": "algorithms/src/quantized_dot/tests.rs",
+  "source_sha256": "1c8d36000e8b7236183612e5eb877fabb6f5c0063bdf07f6e16ab9b3864a7e81",
+  "structure": "Eight copied source leaves under temporary validation root checked twice. Paired partial syntax and leaf structural reports identical. Parent wiring and its missing temporary group model remain explicit integration work."
+}

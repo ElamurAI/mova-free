@@ -1,0 +1,10 @@
+{
+ "id":"algorithm-palindromic-tree","source":"algorithms/src/palindromic_tree/mod.rs","children":[],
+ "description":"Distinct byte palindrome tree with overlapping counts and first witnesses.",
+ "state":"Immutable byte input; deterministic local algorithm state or finite oracle fixtures.",
+ "cost":"O(n log 256) time with amortized suffix-link traversal; O(n) nodes, sparse edges and returned entries; MAX_LEN=1_000_000.",
+ "forward":["Maintain roots of lengths -1 and 0 and the longest suffix node. Follow suffix links until the current byte extends a palindrome. Reuse or create its transition, assigning the longest proper palindromic suffix. Count the current suffix once per position, then propagate counts in reverse discovery order. Export nonempty nodes with original byte ranges and suffix indexes."],
+ "inverse":["behavior_complement first and ambiguous reverse_reconstruction second; see adjacent model.md"],
+ "checks":["cargo test --offline -p mova-algorithms --lib palindromic_tree::tests","Compiled implementation and oracle controls; repeated source syntax"],
+ "limitations":["Finite correspondence only; allocation failures not injected; no semantic AST or universal proof."]
+}

@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "id": "algorithm-subset-convolution",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "00210af867219bff46c19bff74dd3b076a789bc7883023cb366d702f0401760e"
+  },
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "00210af867219bff46c19bff74dd3b076a789bc7883023cb366d702f0401760e",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "At validated a,b, any candidate y with y[S] unequal to sum_{T subset S}a[T]b[S xor T] modulo p, or residue>=p, is excluded. Shape-invalid input paired with Ok is excluded.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "00210af867219bff46c19bff74dd3b076a789bc7883023cb366d702f0401760e",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "For observed y retain pairs satisfying every subset convolution equation. Zero a with any b maps to zero; for fixed a with a[0] nonzero the triangular equations uniquely recover b. Raw residue representatives remain ambiguous.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "rank_filter",
+        "type": "rank_filter",
+        "path": "model.md",
+        "section": "rank_filter",
+        "status": "partial_relational_specification",
+        "subject_revision": "00210af867219bff46c19bff74dd3b076a789bc7883023cb366d702f0401760e",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "After Mobius inversion, evaluating rank=popcount(S) removes overlapping pairs because |A|+|B|=|A union B| iff A and B are disjoint.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "zeta_inversion",
+        "type": "zeta_inversion",
+        "path": "model.md",
+        "section": "zeta_inversion",
+        "status": "partial_relational_specification",
+        "subject_revision": "00210af867219bff46c19bff74dd3b076a789bc7883023cb366d702f0401760e",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Each bit update adds the lower subset; reverse Mobius subtracts it. In the field these transforms are inverse linear maps over ranked arrays.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "arithmetic_bound",
+        "type": "arithmetic_bound",
+        "path": "model.md",
+        "section": "arithmetic_bound",
+        "status": "partial_relational_specification",
+        "subject_revision": "00210af867219bff46c19bff74dd3b076a789bc7883023cb366d702f0401760e",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Inputs reduce modulo998244353; each product<(p-1)^2<2^60 and each accumulated reduced sum<2p. No checked overflow is needed within the validated size domain.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "validation_order",
+        "type": "validation_order",
+        "path": "model.md",
+        "section": "validation_order",
+        "status": "partial_relational_specification",
+        "subject_revision": "00210af867219bff46c19bff74dd3b076a789bc7883023cb366d702f0401760e",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Either length>4096 returns TooLarge before equal/power2 shape checks. d<=12. Three ranked tables use O(d2^d) elements; allocations use std policy.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  }
+}

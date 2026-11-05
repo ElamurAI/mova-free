@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p world --lib school::school_tree::wave9_models -- --test-threads=1"
+  ],
+  "cost": "n words: kids O(n), is_pred O(n). clauses O(n^2) predicate discovery plus n walks of <=n steps with linear predicate membership, conservative O(n^3); groups O(n) storage. subject<=4 child scans; counted may nest case_of in kids, O(n^2). Full fold repeats scans and lexical/parser calls. Relation closure clones relations and scans holdings; every successful step appends a previously missing actor, bounded by finite endpoint set under safe arithmetic. No measured full-reader cost.",
+  "description": "For supplied aligned words/lowercase forms, predicates are roots or Conj/Advcl/Parataxis words with verb POS or own Nsubj/Cop/Expl. clauses assigns nonpunctuation tokens to first ancestor predicate within len steps, drops subordinate cc, sorts groups by first member. subject inspects at most four predicates via Conj parents. counted follows exact Nummod to allowed noun/proper, optionally redirects measure to first of-marked child. Full read_tree is an ordered normalization/parser/question/sentence/clause fold followed by relation closure, numeric settlement, thing carry and price conversion; only a partial source model covers that fold.",
+  "forward": [
+    "For supplied aligned words/lowercase forms, predicates are roots or Conj/Advcl/Parataxis words with verb POS or own Nsubj/Cop/Expl. clauses assigns nonpunctuation tokens to first ancestor predicate within len steps, drops subordinate cc, sorts groups by first member. subject inspects at most four predicates via Conj parents. counted follows exact Nummod to allowed noun/proper, optionally redirects measure to first of-marked child. Full read_tree is an ordered normalization/parser/question/sentence/clause fold followed by relation closure, numeric settlement, thing carry and price conversion; only a partial source model covers that fold.",
+    "school::read_tree calls this module. TSent::new invokes frames::parse_words; on/resolve_pronouns/school_norm/number_word/MEASURES and MOVA_TREE_NOUNS affect behavior. Native tests inject Word arrays then call actual clauses/subject/passive/counted/case_of. No parser normalization or Reading fold is executed. Shared last subject/event, per-unit state and numeric provenance prevent inferring whole-fold correctness from independent features."
+  ],
+  "id": "world-school-tree",
+  "inverse": [
+    "Universe: aligned supplied Word arrays with valid query indices and finite feature results. Inner complement excludes punctuation clause members, duplicate membership, Some head on invalid head number, passive=true absent exact passive child, and counted Some on non-Nummod query. Finite graph and feature tests falsify violations in supplied domains; arbitrary parsed language remains outside.",
+    "Retain all supplied trees with observed feature projection y. Same heads/rels/POS and different ordinary forms often have same clauses/subject; native sam/holds and lee/gives witness ambiguity. Outputs cannot reconstruct lemmas, punctuation, dropped cycles or source text. Graph comparison is complete only over fixed four labels and 6^4 head arrays; no unrestricted inverse search."
+  ],
+  "limitations": [
+    "Partial source inspection plus bounded native synthetic checks, not universal proof or task-quality evidence. No live parser, lexical database, teacher, learning, held-out data, hot-state or persistence operation executed. Partial syntax omits macro expansion and semantic AST. No percentage approximant or overall speed guarantee."
+  ],
+  "source": "world/src/school_tree.rs",
+  "state": "Aligned arrays and valid queried positions required. Clause member indices ascend, never duplicate across groups, and omit punctuation. Cycles without predicates drop their tokens after bounded traversal. head returns None for zero/out-of-range. subject returns first discovered subject/expletive within four inspected predicates. Exact relation subtype matters for passive and counted. No general answer-correctness or arithmetic-safety invariant."
+}

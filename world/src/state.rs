@@ -88,10 +88,11 @@ fn apply(a: &[String], ops: &[String]) -> Vec<String> {
     for op in ops {
         if let Some(n) = op.strip_prefix('=') {
             let n: usize = n.parse().unwrap_or(0);
-            out.extend_from_slice(&a[i.min(a.len())..(i + n).min(a.len())]);
-            i += n;
+            let end = i + n.min(a.len() - i);
+            out.extend_from_slice(&a[i..end]);
+            i = end;
         } else if let Some(n) = op.strip_prefix('-') {
-            i += n.parse::<usize>().unwrap_or(0);
+            i += n.parse::<usize>().unwrap_or(0).min(a.len() - i);
         } else if let Some(x) = op.strip_prefix('+') {
             out.push(x.to_string());
         }
@@ -120,16 +121,33 @@ fn set_current(id: &str) -> Result<()> {
     crate::store::write_atomic(&states().join("current"), format!("{id}\n").as_bytes())
 }
 
+/// Resolve the leaf-to-root path before reading any delta; malformed cycles fail.
+fn ancestry_path(id: &str, t: &BTreeMap<String, (String, u64, String, String)>) -> std::result::Result<Vec<String>, String> {
+    ancestry_walk(id, t, false)
+}
+
+fn ancestry_walk(id: &str, t: &BTreeMap<String, (String, u64, String, String)>, allow_missing: bool) -> std::result::Result<Vec<String>, String> {
+    let mut path = Vec::new();
+    let mut seen = std::collections::BTreeSet::new();
+    let mut x = id.to_string();
+    while x != "origin" {
+        if !seen.insert(x.clone()) {
+            return Err(format!("cycle in state ancestry at {x}"));
+        }
+        path.push(x.clone());
+        let Some((p, _, _, _)) = t.get(&x) else {
+            if allow_missing { break; }
+            return Err(format!("no state {x}"));
+        };
+        x = p.clone();
+    }
+    Ok(path)
+}
+
 /// Materialise a state: apply the deltas from the original along its path.
 fn materialise(id: &str) -> Result<BTreeMap<String, Vec<String>>> {
     let t = tree();
-    let mut path = Vec::new();
-    let mut x = id.to_string();
-    while x != "origin" {
-        let (p, _, _, _) = t.get(&x).with_context(|| format!("no state {x}"))?;
-        path.push(x.clone());
-        x = p.clone();
-    }
+    let path = ancestry_path(id, &t).map_err(anyhow::Error::msg)?;
     let mut files: BTreeMap<String, Vec<String>> = FILES.iter().map(|f| (f.to_string(), Vec::new())).collect();
     for s in path.iter().rev() {
         let d = std::fs::read_to_string(states().join(format!("{s}.delta")))?;
@@ -580,12 +598,7 @@ pub fn become_new(note: &str) -> Result<()> {
 /// The story of the current self: letters along the path from the original, reports, recent transitions.
 pub fn story() -> Result<String> {
     let t = tree();
-    let mut path = Vec::new();
-    let mut x = current();
-    while x != "origin" {
-        path.push(x.clone());
-        x = t.get(&x).map(|v| v.0.clone()).unwrap_or_else(|| "origin".into());
-    }
+    let path = ancestry_walk(&current(), &t, true).map_err(anyhow::Error::msg)?;
     let mut out = String::new();
     for id in path.iter().rev() {
         let note = t.get(id).map(|v| v.3.clone()).unwrap_or_default();
@@ -943,47 +956,47 @@ pub fn manual_body(manual: &str) -> String {
     format!("I was given a manual of {} KB: {words} words in {} parts.\nIts parts are: {}.", manual.len() / 1024, parts.len(), parts.join("; "))
 }
 
-/// Without the legacy worlds (the default, and mova-free): Mova learns in schools, not from worlds.
-#[cfg(not(feature = "worlds"))]
+/// Without the legacy worlds (the default, and any checkout without their folder; see `build.rs`): Mova learns in schools, not from worlds.
+#[cfg(not(mova_legacy_worlds))]
 pub const CENTRAL_MANUALS: &[(&str, &str, &str)] = &[];
 
-/// The central worlds every brain carries (legacy: `tera/world/legacy/worlds`, closed, feature `worlds`) (a topic id — its folder of sources, its world book —, its name in the brain,
+/// The central worlds every brain carries (legacy: feature `worlds` and their folder present, `cfg(mova_legacy_worlds)` from `build.rs`) (a topic id — its folder of sources, its world book —, its name in the brain,
 /// and the manual written for it); thematic worlds are not here.
-#[cfg(feature = "worlds")]
+#[cfg(mova_legacy_worlds)]
 pub const CENTRAL_MANUALS: &[(&str, &str, &str)] = &[
-    ("self", "Mova herself", include_str!("../../tera/world/legacy/worlds/self-manual.md")),
-    ("everyday", "the everyday world", include_str!("../../tera/world/legacy/worlds/everyday-manual.md")),
-    ("time", "time", include_str!("../../tera/world/legacy/worlds/time-manual.md")),
-    ("mathematics", "mathematics", include_str!("../../tera/world/legacy/worlds/math-manual.md")),
-    ("physics", "physics", include_str!("../../tera/world/legacy/worlds/physics-manual.md")),
-    ("chemistry", "chemistry", include_str!("../../tera/world/legacy/worlds/chemistry-manual.md")),
-    ("philosophy", "philosophy", include_str!("../../tera/world/legacy/worlds/philosophy-manual.md")),
-    ("logic", "logic", include_str!("../../tera/world/legacy/worlds/logic-manual.md")),
-    ("language", "language", include_str!("../../tera/world/legacy/worlds/language-manual.md")),
-    ("art-literature", "art and literature", include_str!("../../tera/world/legacy/worlds/art-literature-manual.md")),
-    ("geography", "space and geography", include_str!("../../tera/world/legacy/worlds/geography-manual.md")),
-    ("cosmos", "the cosmos", include_str!("../../tera/world/legacy/worlds/cosmos-manual.md")),
-    ("biology", "biology", include_str!("../../tera/world/legacy/worlds/biology-manual.md")),
-    ("body-health", "the human body, health and medicine", include_str!("../../tera/world/legacy/worlds/body-health-manual.md")),
-    ("mind", "the mind and psychology", include_str!("../../tera/world/legacy/worlds/mind-manual.md")),
-    ("life-death", "life and the fear of death", include_str!("../../tera/world/legacy/worlds/life-death-manual.md")),
-    ("religion", "God and religion", include_str!("../../tera/world/legacy/worlds/religion-manual.md")),
-    ("ethics", "ethics, morality and love", include_str!("../../tera/world/legacy/worlds/ethics-manual.md")),
-    ("civilization", "humanity and civilization", include_str!("../../tera/world/legacy/worlds/civilization-manual.md")),
-    ("economics", "money and economics", include_str!("../../tera/world/legacy/worlds/economics-manual.md")),
-    ("business", "business and hyperscalers", include_str!("../../tera/world/legacy/worlds/business-manual.md")),
-    ("calm", "calm and egolessness", include_str!("../../tera/world/legacy/worlds/calm-manual.md")),
-    ("history", "history", include_str!("../../tera/world/legacy/worlds/history-manual.md")),
-    ("technology", "technology and engineering", include_str!("../../tera/world/legacy/worlds/technology-manual.md")),
-    ("programming", "programming and computing", include_str!("../../tera/world/legacy/worlds/programming-manual.md")),
-    ("rust", "Rust", include_str!("../../tera/world/legacy/worlds/rust-manual.md")),
-    ("linux", "Linux on Debian", include_str!("../../tera/world/legacy/worlds/linux-manual.md")),
-    ("algorithms", "algorithms in programming", include_str!("../../tera/world/legacy/worlds/algorithms-manual.md")),
-    ("complang", "computational linguistics", include_str!("../../tera/world/legacy/worlds/complang-manual.md")),
-    ("learn-rust", "learning to program in Rust", include_str!("../../tera/world/legacy/worlds/learn-rust-manual.md")),
-    ("ai", "artificial intelligence", include_str!("../../tera/world/legacy/worlds/ai-manual.md")),
-    ("ai-news", "AI news, events and scandals", include_str!("../../tera/world/legacy/worlds/ai-news-manual.md")),
-    ("hardware", "microelectronics, processors, graphics cards and assembly", include_str!("../../tera/world/legacy/worlds/hardware-manual.md")),
+    ("self", "Mova herself", include_str!("../../peta/world/legacy/worlds/self-manual.md")),
+    ("everyday", "the everyday world", include_str!("../../peta/world/legacy/worlds/everyday-manual.md")),
+    ("time", "time", include_str!("../../peta/world/legacy/worlds/time-manual.md")),
+    ("mathematics", "mathematics", include_str!("../../peta/world/legacy/worlds/math-manual.md")),
+    ("physics", "physics", include_str!("../../peta/world/legacy/worlds/physics-manual.md")),
+    ("chemistry", "chemistry", include_str!("../../peta/world/legacy/worlds/chemistry-manual.md")),
+    ("philosophy", "philosophy", include_str!("../../peta/world/legacy/worlds/philosophy-manual.md")),
+    ("logic", "logic", include_str!("../../peta/world/legacy/worlds/logic-manual.md")),
+    ("language", "language", include_str!("../../peta/world/legacy/worlds/language-manual.md")),
+    ("art-literature", "art and literature", include_str!("../../peta/world/legacy/worlds/art-literature-manual.md")),
+    ("geography", "space and geography", include_str!("../../peta/world/legacy/worlds/geography-manual.md")),
+    ("cosmos", "the cosmos", include_str!("../../peta/world/legacy/worlds/cosmos-manual.md")),
+    ("biology", "biology", include_str!("../../peta/world/legacy/worlds/biology-manual.md")),
+    ("body-health", "the human body, health and medicine", include_str!("../../peta/world/legacy/worlds/body-health-manual.md")),
+    ("mind", "the mind and psychology", include_str!("../../peta/world/legacy/worlds/mind-manual.md")),
+    ("life-death", "life and the fear of death", include_str!("../../peta/world/legacy/worlds/life-death-manual.md")),
+    ("religion", "God and religion", include_str!("../../peta/world/legacy/worlds/religion-manual.md")),
+    ("ethics", "ethics, morality and love", include_str!("../../peta/world/legacy/worlds/ethics-manual.md")),
+    ("civilization", "humanity and civilization", include_str!("../../peta/world/legacy/worlds/civilization-manual.md")),
+    ("economics", "money and economics", include_str!("../../peta/world/legacy/worlds/economics-manual.md")),
+    ("business", "business and hyperscalers", include_str!("../../peta/world/legacy/worlds/business-manual.md")),
+    ("calm", "calm and egolessness", include_str!("../../peta/world/legacy/worlds/calm-manual.md")),
+    ("history", "history", include_str!("../../peta/world/legacy/worlds/history-manual.md")),
+    ("technology", "technology and engineering", include_str!("../../peta/world/legacy/worlds/technology-manual.md")),
+    ("programming", "programming and computing", include_str!("../../peta/world/legacy/worlds/programming-manual.md")),
+    ("rust", "Rust", include_str!("../../peta/world/legacy/worlds/rust-manual.md")),
+    ("linux", "Linux on Debian", include_str!("../../peta/world/legacy/worlds/linux-manual.md")),
+    ("algorithms", "algorithms in programming", include_str!("../../peta/world/legacy/worlds/algorithms-manual.md")),
+    ("complang", "computational linguistics", include_str!("../../peta/world/legacy/worlds/complang-manual.md")),
+    ("learn-rust", "learning to program in Rust", include_str!("../../peta/world/legacy/worlds/learn-rust-manual.md")),
+    ("ai", "artificial intelligence", include_str!("../../peta/world/legacy/worlds/ai-manual.md")),
+    ("ai-news", "AI news, events and scandals", include_str!("../../peta/world/legacy/worlds/ai-news-manual.md")),
+    ("hardware", "microelectronics, processors, graphics cards and assembly", include_str!("../../peta/world/legacy/worlds/hardware-manual.md")),
 ];
 
 /// The base brain: who I am, then the generated sections.
@@ -1131,12 +1144,7 @@ pub fn parent_of(id: &str) -> String {
 /// The most recent state not on the path of `id` (another branch), if any.
 pub fn other_branch(id: &str) -> Option<String> {
     let t = tree();
-    let mut path = std::collections::BTreeSet::new();
-    let mut x = id.to_string();
-    while x != "origin" {
-        path.insert(x.clone());
-        x = t.get(&x).map(|v| v.0.clone()).unwrap_or_else(|| "origin".into());
-    }
+    let path: std::collections::BTreeSet<_> = ancestry_walk(id, &t, true).ok()?.into_iter().collect();
     t.iter().filter(|(k, _)| !path.contains(*k) && *k != id).max_by_key(|(_, v)| v.1).map(|(k, _)| k.clone())
 }
 
@@ -1171,4 +1179,94 @@ pub fn state_rules(id: &str) -> Vec<String> {
         materialise(id).ok().and_then(|m| m.get("rules-induced.tsv").cloned()).unwrap_or_default()
     };
     lines.into_iter().filter(|l| !l.starts_with('#') && !l.trim().is_empty()).map(|l| l.splitn(2, '\t').nth(1).unwrap_or("").to_string()).collect()
+}
+
+#[cfg(test)]
+mod bounded_state_tests {
+    use super::{ancestry_path, ancestry_walk, apply, diff};
+    use std::collections::BTreeMap;
+
+    fn words(n: usize) -> Vec<Vec<String>> {
+        (0..=n).flat_map(|len| (0..1usize << len).map(move |bits|
+            (0..len).map(|i| if bits & (1 << i) == 0 { "a" } else { "b" }.to_string()).collect())).collect()
+    }
+
+    // Enumerate subsequences independently of the production dynamic program.
+    fn lcs(a: &[String], b: &[String]) -> usize {
+        (0..1usize << a.len()).filter_map(|bits| {
+            let sub: Vec<_> = a.iter().enumerate().filter(|(i, _)| bits & (1 << i) != 0).map(|(_, x)| x).collect();
+            let mut cursor = 0;
+            for x in b { if sub.get(cursor) == Some(&x) { cursor += 1; } }
+            (cursor == sub.len()).then_some(sub.len())
+        }).max().unwrap()
+    }
+
+    #[test]
+    fn delta_roundtrip_and_minimum_edit_oracle() {
+        for a in words(4) { for b in words(4) {
+            let ops = diff(&a, &b);
+            assert_eq!(apply(&a, &ops), b);
+            let edits: usize = ops.iter().map(|s| if s.starts_with('+') { 1 }
+                else if let Some(n) = s.strip_prefix('-') { n.parse().unwrap() } else { 0 }).sum();
+            assert_eq!(edits, a.len() + b.len() - 2 * lcs(&a, &b));
+        }}
+    }
+
+    // Iterator consumption is independent of cursor arithmetic.
+    fn iterator_apply(a: &[String], ops: &[String]) -> Vec<String> {
+        let mut remaining = a.iter();
+        let mut output = Vec::new();
+        for op in ops {
+            if let Some(n) = op.strip_prefix('=') {
+                output.extend(remaining.by_ref().take(n.parse().unwrap_or(0)).cloned());
+            } else if let Some(n) = op.strip_prefix('-') {
+                remaining.by_ref().take(n.parse().unwrap_or(0)).for_each(drop);
+            } else if let Some(s) = op.strip_prefix('+') { output.push(s.to_string()); }
+        }
+        output
+    }
+
+    #[test]
+    fn tolerant_delta_overflow_and_malformed_oracle() {
+        let tokens = ["=0".into(), "=1".into(), "=9".into(), format!("={}", usize::MAX),
+            "-1".into(), format!("-{}", usize::MAX), "=bad".into(), "-bad".into(),
+            "+".into(), "+x".into(), "?".into()];
+        for a in words(2) { for x in &tokens { for y in &tokens { for z in &tokens {
+            let ops = vec![x.clone(), y.clone(), z.clone()];
+            assert_eq!(apply(&a, &ops), iterator_apply(&a, &ops));
+        }}}}
+    }
+
+    #[test]
+    fn ancestry_finite_graph_oracle() {
+        let names = ["a", "b", "c", "origin", "missing"];
+        for code in 0..125 {
+            let mut t = BTreeMap::new();
+            let mut digits = code;
+            for name in &names[..3] {
+                t.insert(name.to_string(), (names[digits % 5].to_string(), 0, String::new(), String::new()));
+                digits /= 5;
+            }
+            for start in names {
+                let mut x = start;
+                let mut expected = Vec::new();
+                // Pigeonhole bound provides an independent termination oracle.
+                for _ in 0..4 {
+                    if x == "origin" { break; }
+                    expected.push(x.to_string());
+                    let Some(row) = t.get(x) else { break; };
+                    x = &row.0;
+                }
+                let got = ancestry_path(start, &t);
+                if x == "origin" { assert_eq!(got.unwrap(), expected); }
+                else { assert!(got.is_err()); }
+                let permissive = ancestry_walk(start, &t, true);
+                if x == "origin" || !t.contains_key(x) { assert_eq!(permissive.unwrap(), expected); }
+                else { assert!(permissive.is_err()); }
+            }
+        }
+        let t = BTreeMap::from([("a".into(), ("a".into(), 0, String::new(), String::new()))]);
+        assert_eq!(ancestry_path("a", &t).unwrap_err(), "cycle in state ancestry at a");
+        assert_eq!(ancestry_path("missing", &t).unwrap_err(), "no state missing");
+    }
 }

@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named synthetic native tests; paired syntax projection"
+  ],
+  "children": [],
+  "cost": "n tokens: next_conj traverses descendants by repeated full scans and set membership, O(n²) on acyclic trees; called per token gives conservative O(n³). Lex lookups add ordered-map/string costs. Domain requires all witness lengths n, valid heads and acyclic conjunction structure.",
+  "description": "propose scans one-based positions, skips frozen tokens, selects first matching if/else rule R1..R7, then attaches POS fix or emits R8 when both witness base relations match draft. First matched branch can return None and suppress later rules. spaCy pobj head lifts one level. POS fix requires matching witness UPOS/XPOS and Lex evidence; moving head retains draft relation subtype when bases agree.",
+  "forward": [
+    "propose scans one-based positions, skips frozen tokens, selects first matching if/else rule R1..R7, then attaches POS fix or emits R8 when both witness base relations match draft. First matched branch can return None and suppress later rules. spaCy pobj head lifts one level. POS fix requires matching witness UPOS/XPOS and Lex evidence; moving head retains draft relation subtype when bases agree."
+  ],
+  "id": "treeagree-rules",
+  "inverse": [
+    "An Edit identifies a compatible priority branch and evidence constraints, not exact witnesses: unrelated tokens, subtype spellings and optional lex observations can vary. Missing edits may be frozen, no evidence, or an earlier matched branch returning None.",
+    "Frozen X/Flat/FlatForeign/Fixed/Goeswith/Reparandum tokens never receive proposals. A Strong head move needs both UD witnesses and optional third head agreement; None third witness prevents it."
+  ],
+  "limitations": [
+    "Partial source models and finite fixtures only. No corpus/model/network/site/release execution or universal proof."
+  ],
+  "source": "tools/treeagree/src/rules.rs",
+  "state": "Bounded helper inputs and source-derived CLI state/effects; see catalog."
+}

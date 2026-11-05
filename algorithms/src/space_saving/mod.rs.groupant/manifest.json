@@ -1,0 +1,139 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "No macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "descriptant",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Inner excluded relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-space-saving-behavior-complement",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/space_saving/mod.rs sha256:f1acc5b7bfafc39bca27359c4cfdbea5810f35943c606eee73838ddc7dacc0f9",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Set-valued compatible antecedents",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-space-saving-reverse-reconstruction",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/space_saving/mod.rs sha256:f1acc5b7bfafc39bca27359c4cfdbea5810f35943c606eee73838ddc7dacc0f9",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped conditional relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-space-saving-estimate-mass",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md estimate-mass",
+        "path": "model.md",
+        "required": false,
+        "section": "estimate-mass",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/space_saving/mod.rs sha256:f1acc5b7bfafc39bca27359c4cfdbea5810f35943c606eee73838ddc7dacc0f9",
+        "type": "estimate_conservation"
+      },
+      {
+        "approximation_semantics": "Scoped conditional relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-space-saving-minimum-envelope",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md minimum-envelope",
+        "path": "model.md",
+        "required": false,
+        "section": "minimum-envelope",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/space_saving/mod.rs sha256:f1acc5b7bfafc39bca27359c4cfdbea5810f35943c606eee73838ddc7dacc0f9",
+        "type": "additive_frequency_certificate"
+      },
+      {
+        "approximation_semantics": "Scoped conditional relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-space-saving-tie-order",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md tie-order",
+        "path": "model.md",
+        "required": false,
+        "section": "tie-order",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/space_saving/mod.rs sha256:f1acc5b7bfafc39bca27359c4cfdbea5810f35943c606eee73838ddc7dacc0f9",
+        "type": "deterministic_argmin"
+      },
+      {
+        "approximation_semantics": "Scoped conditional relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-space-saving-atomic-count",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md atomic-count",
+        "path": "model.md",
+        "required": false,
+        "section": "atomic-count",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/space_saving/mod.rs sha256:f1acc5b7bfafc39bca27359c4cfdbea5810f35943c606eee73838ddc7dacc0f9",
+        "type": "checked_transition"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "tests",
+      "status": "partial"
+    }
+  },
+  "id": "algorithm-space-saving",
+  "kind": "groupant",
+  "registry": {
+    "node": "algorithm-space-saving",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "f1acc5b7bfafc39bca27359c4cfdbea5810f35943c606eee73838ddc7dacc0f9"
+  },
+  "status": "partial"
+}

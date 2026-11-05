@@ -1,0 +1,112 @@
+{
+  "children": [
+    {
+      "id": "math-calc-parser-lex-normalization",
+      "path": "lex-normalization.groupant"
+    },
+    {
+      "id": "math-calc-parser-power-association",
+      "path": "power-association.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Parent projection restricted to[6098,17753)",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "binding_precedence",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "binding_precedence",
+        "status": "partial_source_derived_model",
+        "type": "binding_precedence"
+      },
+      {
+        "id": "comparison_expansion",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "comparison_expansion",
+        "status": "partial_source_derived_model",
+        "type": "comparison_expansion"
+      },
+      {
+        "id": "equation_projection",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "equation_projection",
+        "status": "partial_source_derived_model",
+        "type": "equation_projection"
+      },
+      {
+        "id": "lexical_failure",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "lexical_failure",
+        "status": "partial_source_derived_model",
+        "type": "lexical_failure"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 17753,
+      "start": 6098
+    },
+    "description": "lex/P normalize aliases, implicit multiplication and precedence; power associates right. Comparison chains expand at most two comparisons. parse_equation extracts top equality or appends0. Preimages include whitespace/aliases, no raw-byte inversion. O(B) token storage, uncapped nesting.",
+    "source_bytes_sha256": "b450c738b1b90cd6f0efca867d61ce443d0d30c1a1db1cf30f9e47dcd10c7aaa"
+  },
+  "id": "math-calc-parser",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../calc.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e"
+  },
+  "status": "partial_source_bound_model"
+}

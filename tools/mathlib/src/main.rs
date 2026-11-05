@@ -116,3 +116,49 @@ fn main() -> Result<()> {
         _ => bail!("usage: mathlib oai|parse|sql|fetch|gcs-list|books-fetch|books-pdf|books … (see the header of src/main.rs)"),
     }
 }
+
+#[cfg(test)]
+mod wave33 {
+    use super::*;
+    #[test]
+    fn argument_partition_and_numeric_failure() {
+        let a: Vec<String> = [
+            "x",
+            "--expect-pdf",
+            "--max-bytes",
+            "1_024",
+            "y",
+            "--compact-src",
+        ]
+        .into_iter()
+        .map(str::to_owned)
+        .collect();
+        assert_eq!(positional(&a), ["x", "y"]);
+        assert_eq!(num(&a, "--max-bytes", 0).unwrap(), 1024);
+        assert_eq!(num(&a, "--missing", 9).unwrap(), 9);
+        let bad: Vec<String> = ["--n", "oops", "--n", "3"]
+            .into_iter()
+            .map(str::to_owned)
+            .collect();
+        assert!(num(&bad, "--n", 0).is_err());
+        assert_eq!(flag(&bad, "--n"), Some("oops"));
+        assert!(positional(&["--unknown".into(), "lost".into()]).is_empty());
+    }
+    #[test]
+    fn license_and_token_representation_joins() {
+        assert_eq!(
+            raw::License::parse("https://creativecommons.org/licenses/by/4.0/").code(),
+            "cc-by-4.0"
+        );
+        assert_eq!(
+            raw::License::parse("https://unknown.invalid/by/4.0/").class(),
+            raw::Class::Other
+        );
+        assert_eq!(books::BookLicense::parse("CC BY-SA").code(), "cc-by-sa");
+        assert_eq!(http::encode("a&b%2F"), "a%26b%252F");
+        assert_eq!(
+            robots::split_url("HTTPS://H/x?q=1#f"),
+            ("https".into(), "h".into(), "/x?q=1".into())
+        );
+    }
+}

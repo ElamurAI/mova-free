@@ -1,5 +1,8 @@
 # Mova corpus 0.4
 
+> Historical: this describes the 0.4 corpus. For the current release run `target/release/mova fetch 0.5 corpus`
+> (see [releases/0.5-files.md](../../releases/0.5-files.md)); the 0.5 archive has its own README.
+
 **Licence: CC BY-SA 4.0** (https://creativecommons.org/licenses/by-sa/4.0/), for the whole corpus, as for Mova's
 trained models. The code of Mova is under the Elamur Cosmic License (see the repository).
 
@@ -13,7 +16,7 @@ trained models. The code of Mova is under the Elamur Cosmic License (see the rep
 
 Each folder's README says where its data comes from and credits the original sources.
 
-**Download:** `train/get-corpus.sh` (or [corpus-0.4.tar.gz](https://research.elamur.ai/download/0/0.4/corpus-0.4.tar.gz),
+**Download:** `train/get-corpus.sh 0.4` (or [corpus-0.4.tar.gz](https://research.elamur.ai/download/0/0.4/corpus-0.4.tar.gz),
 unpacked with `tar xzf corpus-0.4.tar.gz --strip-components=1 -C corpus/open`). The data is not stored in git; this
 folder holds the descriptions.
 

@@ -1,0 +1,87 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Source-bound syntax; no macro expansion, resolution or semantic proof.",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Quiescent operator-owned evidence and bounded files",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Rollback snapshot and content-bound policy",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "selected_vote_override",
+        "type": "partial_exclusion",
+        "path": "model.md",
+        "section": "selected_vote_override",
+        "scope": "Whole selected revisions after legacy voting under validated policy",
+        "status": "partial_source_derived_model"
+      },
+      {
+        "id": "train_partition_preimage",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "train_partition_preimage",
+        "scope": "Single reviewed DB train eligibility fibers minus ID exclusions",
+        "status": "partial_source_derived_model"
+      },
+      {
+        "id": "transaction_prefix_partition",
+        "type": "error_partition",
+        "path": "model.md",
+        "section": "transaction_prefix_partition",
+        "scope": "Seven individually atomic rename trace positions under quiescence",
+        "status": "partial_source_derived_model"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_or_representation"
+    }
+  },
+  "id": "cycle-reviewed",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../reviewed.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "021da8acb42f724b07246581acbcb4ad76837930cadc0ca88a70f848ab976055"
+  },
+  "status": "partial_source_bound_model"
+}

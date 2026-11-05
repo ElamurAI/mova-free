@@ -1,0 +1,34 @@
+{
+  "checks": [
+    "factor_triangular_and_stationary_solvers_join_spd_system",
+    "qr_and_constrained_optimizers_join_known_quadratic"
+  ],
+  "children": [
+    "algorithm-cholesky",
+    "algorithm-cholesky-tests",
+    "algorithm-triangular-solve",
+    "algorithm-triangular-solve-tests",
+    "algorithm-householder-qr",
+    "algorithm-householder-qr-tests",
+    "algorithm-gauss-seidel",
+    "algorithm-gauss-seidel-tests",
+    "algorithm-jacobi-iteration",
+    "algorithm-jacobi-iteration-tests"
+  ],
+  "cost": "Cholesky O(n³), triangular O(n²), QR O(m*n²), stationary O(k*n²); O(m*n+n²) inputs/work; n<=64,m<=128,iterations<=10000.",
+  "description": "Factor bounded symmetric systems, solve triangular systems, minimize linear least squares and iterate linear solves with fresh residuals.",
+  "forward": [
+    "Factor bounded symmetric systems, solve triangular systems, minimize linear least squares and iterate linear solves with fresh residuals.",
+    "Cholesky A=L*Lᵀ transports b through lower and upper solves. QR normal equations transport least squares to a quadratic. Stationary solvers share Ax=b but not trajectories."
+  ],
+  "id": "numerical-linear-algebra",
+  "inverse": [
+    "At the real-model level, exclude nontriangular Cholesky factors or A!=L*Lᵀ, triangular solutions with T*x!=b, and least-squares candidates with Aᵀ(A*x-b)!=0. These exact exclusions describe targets, not an exact-equality acceptance test for f64 outputs. The native relation excludes reports differing from rounded factor/solve transitions, incorrect recomputed reconstruction/primal/normal residuals, or a stationary Converged status when its computed residual exceeds tolerance. A small native residual does not exclude large coordinate error on ill-conditioned inputs; numerical rank is not certified by unpivoted QR.",
+    "For fixed real triangular T and observed x, compatible right sides satisfy b=T*x; allowing T to vary gives many systems with the same solution. For fixed full-column-rank A, the real QR least-squares fiber for x is b=A*x+z with Aᵀz=0, so nonzero orthogonal residuals remain compatible. A real positive-diagonal Cholesky factor uniquely determines A=L*Lᵀ, while rounded native factor/report fibers can include neighboring matrices. Stationary output plus residual/status leaves many initial vectors, budgets and systems compatible; native antecedents must reproduce the rounded execution, not merely these real identities."
+  ],
+  "limitations": [
+    "Positive pivots in floating arithmetic do not certify spectral conditioning. Unpivoted QR rejects exact zero encountered pivots only. Stationary convergence requires matrix properties not inferred from finite success.",
+    "Finite tests and source-derived models are not a universal proof."
+  ],
+  "state": "Dimensions and coordinates agree; residual, reconstruction residual and normal residual are different observations; explicit errors/statuses retained."
+}

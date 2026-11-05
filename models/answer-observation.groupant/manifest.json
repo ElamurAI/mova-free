@@ -1,0 +1,225 @@
+{
+  "children": [
+    "world-reader",
+    "world-ans",
+    "world-qud",
+    "world-sense",
+    "world-ftqa",
+    "world-report",
+    "world-rreport",
+    "world-qa",
+    "world-qa3"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_derived"
+    },
+    "ast": {
+      "scope": "Child partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_derived"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_derived"
+    },
+    "obernants": [
+      {
+        "id": "answer-observation-behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "answer-observation-reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "answer-observation-anchor-identity",
+        "path": "model.md",
+        "required": false,
+        "section": "anchor-identity",
+        "status": "partial_source_derived",
+        "type": "interface_obligation"
+      },
+      {
+        "id": "answer-observation-score-confidence",
+        "path": "model.md",
+        "required": false,
+        "section": "score-confidence",
+        "status": "partial_source_derived",
+        "type": "constraint_relation"
+      },
+      {
+        "id": "answer-observation-coverage-multiset",
+        "path": "model.md",
+        "required": false,
+        "section": "coverage-multiset",
+        "status": "partial_source_derived",
+        "type": "encoding_relation"
+      },
+      {
+        "id": "answer-observation-section-policy",
+        "path": "model.md",
+        "required": false,
+        "section": "section-policy",
+        "status": "partial_source_derived",
+        "type": "priority_relation"
+      },
+      {
+        "id": "answer-observation-arbitration-source",
+        "path": "model.md",
+        "required": false,
+        "section": "arbitration-source",
+        "status": "partial_source_derived",
+        "type": "priority_relation"
+      },
+      {
+        "id": "answer-observation-lexical-who-coupling",
+        "path": "model.md",
+        "required": false,
+        "section": "lexical-who-coupling",
+        "status": "partial_source_derived",
+        "type": "dependency_relation"
+      },
+      {
+        "id": "answer-observation-selective-stack-transition",
+        "path": "model.md",
+        "required": false,
+        "section": "selective-stack-transition",
+        "status": "partial_source_derived",
+        "type": "state_transition"
+      },
+      {
+        "id": "answer-observation-observation-loss",
+        "path": "model.md",
+        "required": false,
+        "section": "observation-loss",
+        "status": "partial_source_derived",
+        "type": "information_loss"
+      },
+      {
+        "id": "qa-record-metric-join",
+        "path": "model.md",
+        "scope": "QA record identity, section scope, answer-source tag and references survive the input-to-measurement join.",
+        "section": "qa-record-metric-join",
+        "status": "partial_source_correspondence",
+        "type": "metric_input_identity"
+      },
+      {
+        "id": "question-order-fibers",
+        "path": "model.md",
+        "scope": "First-seen story order and within-story question numbering are not recoverable from an aggregate score alone.",
+        "section": "question-order-fibers",
+        "status": "partial_source_correspondence",
+        "type": "ordered_identifier_preimage"
+      },
+      {
+        "id": "metric-denominators",
+        "path": "model.md",
+        "scope": "All-question and answered-only averages retain distinct denominators; unrecognized categories need explicit accounting.",
+        "section": "metric-denominators",
+        "status": "partial_source_correspondence",
+        "type": "projection_denominator_boundary"
+      },
+      {
+        "id": "positional-answer-identity",
+        "path": "model.md",
+        "scope": "rreport requires equal question/answer counts before scoring. Equal counts are necessary, not sufficient: caller ordering must retain question identity. Answering, rounded metrics and verdicts are separate observations. Native mismatches reject before scoring; supplied aggregate fixtures do not certify nonempty answering.",
+        "section": "positional-answer-identity",
+        "status": "partial_source_correspondence",
+        "type": "cardinality_identity_gate"
+      },
+      {
+        "id": "answer-observation-wave12-state-grade-provenance",
+        "path": "model.md",
+        "scope": "Construct Ada in Hall through typed commands. Parsed questions yield one hit, one miss, one ordinary abstention and one separately counted honest control. Invalid-first-query fallback agrees with the direct answer and preserves observed location history. Natural-language question understanding is outside this check.",
+        "section": "answer-observation-wave12-state-grade-provenance",
+        "status": "partial_source_model",
+        "type": "answer_provenance_denominator"
+      },
+      {
+        "id": "answer-observation-wave12-narrative-query-order",
+        "path": "model.md",
+        "scope": "A three-event chain queried in permuted order retains E1,E2,E3 and anchors 1,2,3 through QA3 sort and grading; reversed expectation fails. Literal grading agrees with QA, while expected none intentionally differs. Missing events and empty sort abstain. Arbitrary narrative metadata remains outside the fixture.",
+        "section": "answer-observation-wave12-narrative-query-order",
+        "status": "partial_source_model",
+        "type": "temporal_anchor_transport"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_derived"
+    }
+  },
+  "id": "answer-observation",
+  "kind": "groupant_group",
+  "registry": {
+    "node": "answer-observation",
+    "path": "../contracts.json"
+  },
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "world/src/ans.rs",
+      "sha256": "d8d94c891e347d2b640744b20c4662dc35064368e7d4d9253c4954b4297e1e09"
+    },
+    {
+      "path": "world/src/ftqa.rs",
+      "sha256": "df08ab40304e843e455d7a778207cde257e87ea224c59e922693774c359364aa"
+    },
+    {
+      "path": "world/src/qa.rs",
+      "sha256": "1ce10a355698f5cc3c37ca7f8d1dacbacf8b74264c9c7c38a563aed1e4f678a5"
+    },
+    {
+      "path": "world/src/qa3.rs",
+      "sha256": "63bb16a3727128a4763e15e7c5c009e171ad04d2ab0d7861a395425e06d1bb2c"
+    },
+    {
+      "path": "world/src/qud.rs",
+      "sha256": "68ab6b4d5bfabd85537f076f949432157e9f61d6bfbc65f94fc4d722c374b74f"
+    },
+    {
+      "path": "world/src/reader.rs",
+      "sha256": "383aeebdc514654bdeeba383bfe6b5c00d6c799ba65f06f29621da0392dfaf1b"
+    },
+    {
+      "path": "world/src/report.rs",
+      "sha256": "73053fdec39edc3c16980b73db6418c477bcb60b9fa93a708aff431950e69825"
+    },
+    {
+      "path": "world/src/rreport.rs",
+      "sha256": "9dd22e3b675f299416cf07f73ef4e45c30718cd6bfc662d78f73ee3ddc48837d"
+    },
+    {
+      "path": "world/src/sense.rs",
+      "sha256": "32033a19e1ffaf797f7eabb7a82bc564ddcf3146db700bbb4000ee6eec91a0a8"
+    }
+  ],
+  "status": "partial_source_bound_instance"
+}

@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p prag --lib rules::wave15_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "F frames, T tokens, S sites, Q quote edges, A rule atoms, H emitted atoms: site scan O(F+T+F log F); atoms rebuilds frame_at O(F log F), can scan F+Q and ancestry T. Rule envelope O(S*(F log F+F+Q+T+A*H)+action costs); apply_at clones O(Read bytes). No speed claim.",
+  "description": "For supplied aligned Read R and Rule q, H=[s in sites(R) | kind-compatible(s,q) and q.atoms subset atoms(R,s,q.action)]. apply_rule snapshots H, folds actions over the changing Read in H order, collecting Drop indices, and remaps deletions last. Output is final Read and successful-site count. Multiple rules compose in supplied file order. active has process-global override and first-load cache; only its pure select_rules path is executed here.",
+  "forward": [
+    "For supplied aligned Read R and Rule q, H=[s in sites(R) | kind-compatible(s,q) and q.atoms subset atoms(R,s,q.action)]. apply_rule snapshots H, folds actions over the changing Read in H order, collecting Drop indices, and remaps deletions last. Output is final Read and successful-site count. Multiple rules compose in supplied file order. active has process-global override and first-load cache; only its pure select_rules path is executed here."
+  ],
+  "id": "prag-rules",
+  "inverse": [
+    "B(final,count) contains all compatible (R,q) satisfying the forward fold. Fixed AgentNone maps otherwise equal reads with agents alpha and beta to identical agent=None output/count1. Drop loses entire removed frames. Reverse composition must preserve shared hit snapshot and remapping."
+  ],
+  "limitations": [
+    "Partial supplied-input semantics; external acquisition unexecuted.",
+    "Public atoms/drop_frames retain valid-input preconditions; token/lexical/full action traces unexecuted."
+  ],
+  "source": "prag/src/rules.rs",
+  "state": "Frame coordinates and predicate pairs remain aligned on valid transitions. apply_at rejects missing/wrong-kind sites and mismatched frames/pred before cloning. Count is successful sites, not changed fields. Tests do not call active/set_override or lexical acquisition."
+}

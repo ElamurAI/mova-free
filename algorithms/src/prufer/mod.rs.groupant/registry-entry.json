@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --lib prufer --offline"
+  ],
+  "children": [],
+  "cost": "O(n log(n+1)) time for ordered duplicate checking, heap operations and output sort; O(n) storage. n<=1000000 checked before allocation. Encoding adjacency scans total O(n): each removed vertex scans its own adjacency once. Rejected wrong lengths avoid unbounded edge processing.",
+  "description": "For a labeled undirected tree, encode repeatedly removes the smallest live leaf and emits its neighbor until two remain. Decode counts occurrences, sets degree(v)=1+occ(v), repeatedly joins the smallest degree-one vertex to the next code symbol, then joins final leaves. Sort normalized output edges. Empty codes are disambiguated by explicit n=0,1,2.",
+  "forward": [
+    "For a labeled undirected tree, encode repeatedly removes the smallest live leaf and emits its neighbor until two remain. Decode counts occurrences, sets degree(v)=1+occ(v), repeatedly joins the smallest degree-one vertex to the next code symbol, then joins final leaves. Sort normalized output edges. Empty codes are disambiguated by explicit n=0,1,2."
+  ],
+  "id": "algorithm-prufer",
+  "inverse": [
+    "For n>=2 fixed n, the valid code identifies one undirected labeled tree; encoding forgets edge order and endpoint orientation, so its concrete edge-list fiber contains all permutations and orientations of that tree. Decode with fixed n has one compatible word. Without n, [] also represents the distinct n=0,1,2 conventions; omitting n loses that distinction."
+  ],
+  "limitations": [
+    "Finite oracle coverage is not proof.",
+    "Partial syntax leaves macros opaque; no performance claim."
+  ],
+  "source": "algorithms/src/prufer/mod.rs",
+  "state": "On n>=2, degree(v)=1+occ(v) initially in decoding; each step consumes a leaf and one occurrence while maintaining the live-tree degree sum. Encoding validates n-1 distinct loopless edges and acyclicity, which implies connectivity for n>0. Codes have length max(n-2,0). n=0/1 encode/decode empty edges."
+}

@@ -1,0 +1,22 @@
+{
+  "id": "algorithm-integer-sqrt",
+  "source": "algorithms/src/integer_sqrt/mod.rs",
+  "children": [],
+  "description": "integer_sqrt std-only implementation",
+  "state": "All u64 input/output pairs.",
+  "forward": [
+    "For every u64 n, return r satisfying r^2<=n<(r+1)^2. Powers in this formula are mathematical integers."
+  ],
+  "inverse": [
+    "U=u64 x u64; R(n,r) iff r^2<=n<(r+1)^2. U minus R contains exactly candidates violating either inequality. Evaluate candidate squares mathematically, including invalid large r; exact target with bounded evidence.",
+    "Observed r<=u32::MAX admits all n in [r^2,min((r+1)^2-1,u64::MAX)]; other r admit none. Many inputs share a root, except zero."
+  ],
+  "cost": "At most 33 iterations, constant space; no allocations or floating point.",
+  "checks": [
+    "cargo test -p mova-algorithms --offline integer_sqrt::tests::",
+    "External compiled mutant rejected by exact single-test filter"
+  ],
+  "limitations": [
+    "Partial syntax omits expanded macros and semantic analysis; finite tests do not prove all inputs."
+  ]
+}

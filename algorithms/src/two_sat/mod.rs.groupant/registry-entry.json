@@ -1,0 +1,31 @@
+{
+  "id": "algorithm-two-sat",
+  "source": "algorithms/src/two_sat/mod.rs",
+  "children": [
+    
+  ],
+  "description": "two_sat original exact algorithm",
+  "state": "A usize variable count and finite list of disjunction pairs Literal{variable,positive}; literals must address the declared variables. Observations are ordered validation errors, None, or a complete Boolean assignment. Allocations succeed; input immutable.",
+  "cost": "For V variables and C clauses the implication graph has 2V nodes and 2C arcs. Existing SCC sorting plus condensation heap sort yields O(V+C+V log(V+1)) time and O(V+C) auxiliary storage. Duplicate arcs remain counted; no deduplication cost hidden.",
+  "forward": [
+    "Reject doubled variable-count overflow then first out-of-range literal in clause order, left before right. Encode negative literal 2v, positive 2v+1; each (a OR b) adds NOT a -> b and NOT b -> a. Reuse canonical SCC partition, reject any variable sharing its negation's SCC, build condensation and reuse lexicographic topological sort. Assign v true exactly when rank(SCC(positive v)) exceeds rank(SCC(negative v))."
+  ],
+  "inverse": [
+    "In the declared input/result universe exclude accepted invalid literals, wrapped node count, incomplete assignments, any returned assignment falsifying a clause, and None for a formula with a satisfying assignment. Deterministic tie-rule violations are also excluded even if the returned assignment satisfies the formula; this source-derived relation is not inferred merely from negative tests.",
+    "For output Some(a), compatible formulas on |a| variables satisfy every clause under a and have the canonical SCC/condensation rank inequalities selecting exactly a. The satisfaction condition alone is an outer preimage approximation, since some satisfying assignments are not selected. None corresponds to formulas with a variable and its negation mutually reachable. Error preimages recover count overflow or the first invalid literal position and payload. Duplicate clauses supply distinct full-output antecedents.",
+    "If a variable and its negation lie in one SCC there are implication paths in both directions. Each satisfying valuation must preserve truth along implications, so either truth choice contradicts the opposite endpoint. This is a mathematical certificate relation; the API returns None without exposing the actual paths.",
+    "The SCC helper sorts components by minimum vertex, not topological order. Map every implication through its component owner, omit self arcs, preserve duplicates, and obtain topological ranks through the existing DAG helper. Assignment correctness depends on this wiring; SCC child correctness alone does not establish the solver.",
+    "Permuting or duplicating clauses preserves the implication reachability and canonical SCCs. Condensation arc multiplicity/order cannot alter smallest-ready-vertex topological choice, hence the exact assignment is unchanged. Validation errors are excluded from this relation because clause indices and first-fault ordering can change.",
+    "Complementing any chosen subset of variable polarities maps satisfying assignments bijectively by flipping the same bits. Satisfiability is invariant. The solver's selected assignment need not transform identically, because numeric component tie breaking is not equivariant; only the transformed witness's feasibility is asserted.",
+    "Adding clauses can only remove satisfying valuations. Unsatisfiability is upward closed under valid clause additions. A newly returned assignment, if any, satisfies the old formula; assignment identity is not preserved in general.",
+    "Zero variables with no clauses yields the empty assignment; variables with no clauses are all true under the canonical numeric rank tie rule. A repeated literal is a unit clause. Opposite unit clauses force None. Tautologies impose no truth constraint, though a deterministic selected witness remains governed by ranks."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline --lib (debug/release twice)",
+    "Focused rustfmt, strict all-target Clippy, repeated syntax, compiled production mutant"
+  ],
+  "limitations": [
+    "Finite correspondence only; partial syntax; no general proof or approximate profile",
+    "Allocation failure and u128 exhaustion are not exercised"
+  ]
+}

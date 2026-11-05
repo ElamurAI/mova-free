@@ -1,0 +1,98 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Source syntax only; no macro expansion/type resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "wasi-path-open",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "wasi-path-open",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "creation_precedence",
+        "path": "model.md",
+        "scope": "wasi-path-open",
+        "section": "creation_precedence",
+        "status": "partial_source_derived_model",
+        "type": "creation_precedence"
+      },
+      {
+        "id": "late_failure",
+        "path": "model.md",
+        "scope": "wasi-path-open",
+        "section": "late_failure",
+        "status": "partial_source_derived_model",
+        "type": "late_failure"
+      },
+      {
+        "id": "directory_rights",
+        "path": "model.md",
+        "scope": "wasi-path-open",
+        "section": "directory_rights",
+        "status": "partial_source_derived_model",
+        "type": "directory_rights"
+      },
+      {
+        "id": "time_flags",
+        "path": "model.md",
+        "scope": "wasi-path-open",
+        "section": "time_flags",
+        "status": "partial_source_derived_model",
+        "type": "time_flags"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 21901,
+      "start": 18841
+    },
+    "description": "path_open resolves follow||creat, then symlink/EXCL/missing checks, optional create, kind/access/truncate, journals Open, allocates descriptor and stores fd. set_times prioritizes NOW bit8 over explicit bit4, otherwise stat only.",
+    "source_bytes_sha256": "66184881759b90e038f7b2ac7422047fba3488739854760d682c4013211e3ac6"
+  },
+  "id": "wasi-path-open",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../lib.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "91213ce9038107912c2dd707c3a6639a2d723cdfceb02981a166a6853800248e"
+  },
+  "status": "partial_source_bound_model"
+}

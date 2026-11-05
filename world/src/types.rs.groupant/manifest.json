@@ -1,0 +1,177 @@
+{
+  "children": [
+    {
+      "id": "world-types-identity",
+      "path": "identity.groupant"
+    },
+    {
+      "id": "world-types-closed",
+      "path": "closed.groupant"
+    },
+    {
+      "id": "world-types-fields",
+      "path": "fields.groupant"
+    },
+    {
+      "id": "world-types-values",
+      "path": "values.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "scope": "U is the disjoint union over public pure operations of (operation, finite typed input, typed normal-return outcome). R is the union of graphs below. Target U minus R forbids accepting C0, returning duplicate normalized tags, or key_ok(O,Gender)=true. Source-derived exact target, not a proven complement; allocation aborts and formatter sink failure excluded.",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "scope": "For operation o and result y recover all x with R(o,x,y). None from Id::parse has all rejected strings; None from V::tags has only empty input. Position short display hides coordinates, names hide variants. Preserve operation identity and every compatible antecedent.",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "id-language",
+        "path": "model.md",
+        "scope": "Id::parse accepts exactly [LOCREPBFK][1-9][0-9]{0,5}. Strings are UTF-8 with no trimming, sign, lowercase registry, zero or leading zero. n is decimal value.",
+        "section": "id-language",
+        "status": "partial_source_derived_model",
+        "type": "admission_language"
+      },
+      {
+        "id": "id-roundtrip",
+        "path": "model.md",
+        "scope": "parse(display(id))=Some(id) exactly when 1<=n<=999999. Id::new and public fields admit every u32 including 0 and larger numbers. Display is injective on all Id values; parse does not validate construction.",
+        "section": "id-roundtrip",
+        "status": "partial_source_derived_model",
+        "type": "partial_roundtrip"
+      },
+      {
+        "id": "sref-display",
+        "path": "model.md",
+        "scope": "SRef displays id@ver for all u32 versions; equality compares both fields. This file supplies no SRef parser and does not establish entity/version existence.",
+        "section": "sref-display",
+        "status": "partial_source_derived_model",
+        "type": "product_encoding"
+      },
+      {
+        "id": "position-fiber",
+        "path": "model.md",
+        "scope": "TextPos short display is ^s followed by sent; each fiber has 65536 squared chapter/para pairs. long displays all three coordinates injectively; default is zero despite the one-based sentence comment.",
+        "section": "position-fiber",
+        "status": "partial_source_derived_model",
+        "type": "information_loss"
+      },
+      {
+        "id": "closed-membership",
+        "path": "model.md",
+        "scope": "For fixed static Closed c, tag(s) succeeds exactly for an equal c.all entry; comparison is case-sensitive. Error contains c.what and debug s. Tag equality uses string contents, losing Closed provenance.",
+        "section": "closed-membership",
+        "status": "partial_source_derived_model",
+        "type": "admission_relation"
+      },
+      {
+        "id": "closed-list",
+        "path": "model.md",
+        "scope": "Closed::list joins entries by one space, preserving order and duplicates, not vertical bars. Public custom Closed permits spaces and empty entries, so general list recovery is ambiguous.",
+        "section": "closed-list",
+        "status": "partial_source_derived_model",
+        "type": "serialization_fiber"
+      },
+      {
+        "id": "field-names",
+        "path": "model.md",
+        "scope": "Field::name(status) fiber is {Status,Stage}; other names have singleton fibers. SetF::Children is places. key(status) chooses Status/Words, never Stage.",
+        "section": "field-names",
+        "status": "partial_source_derived_model",
+        "type": "name_fiber"
+      },
+      {
+        "id": "key-alias",
+        "path": "model.md",
+        "scope": "17 spellings are accepted: name gender age mother father trait feeling sleep freedom life goal belief status num at to in. Last three share At/Place; unknown strings return None. This is not an inverse of Field::name.",
+        "section": "key-alias",
+        "status": "partial_source_derived_model",
+        "type": "dispatch_fiber"
+      },
+      {
+        "id": "key-permission",
+        "path": "model.md",
+        "scope": "C accepts every Field; O accepts Name,Trait,Status,At,Num; L accepts Name,Trait,Status,At; all other registries reject. Combined admission is key(s)=Some(f,d) AND key_ok(reg,f); C permissiveness does not supply absent spellings.",
+        "section": "key-permission",
+        "status": "partial_source_derived_model",
+        "type": "permission_projection"
+      },
+      {
+        "id": "tag-normalization",
+        "path": "model.md",
+        "scope": "V::tags sorts and deduplicates; empty -> None, singleton support -> Tag, larger support -> sorted Tags. For output support S, inverse is every finite sequence with support exactly S. Direct public V::Tags bypasses canonicality.",
+        "section": "tag-normalization",
+        "status": "partial_source_derived_model",
+        "type": "normalization_fiber"
+      },
+      {
+        "id": "value-display",
+        "path": "model.md",
+        "scope": "Words joins commas, Tags joins tag strings, Text wraps guillemets without escaping. Arbitrary comma-bearing Words lose segmentation; Words([happy]) collides with Tag(happy). Unknown Val and Known(Words([?])) both display ?. tag_list clones Tags, makes singleton Tag, otherwise empty.",
+        "section": "value-display",
+        "status": "partial_source_derived_model",
+        "type": "serialization_fiber"
+      },
+      {
+        "id": "word-boundary",
+        "path": "model.md",
+        "scope": "is_word accepts 1..32 ASCII bytes with initial lowercase letter and remaining lowercase/digit/_/-. TEXT_MAX_WORDS=25 is merely declared here; no text word-count enforcement occurs.",
+        "section": "word-boundary",
+        "status": "partial_source_derived_model",
+        "type": "lexical_predicate"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "coverage_recorded"
+    }
+  },
+  "id": "world-types",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../types.rs",
+    "sha256": "ac2d47f390463744e9b5d2e7b0a005352b62368e4e5d68bb1348a173a5c90037"
+  },
+  "status": "partial_source_derived_instance"
+}

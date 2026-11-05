@@ -1,0 +1,78 @@
+{
+  "bounded_tests": 9,
+  "clippy": "Pre-existing en/build.rs:51 manual_is_multiple_of blocks strict -D warnings; exit101",
+  "compiled_controls": 3,
+  "date": "2026-10-31",
+  "evidence": "$MOVA_DATA/runs/octopus-wave27-structure-2026-10-31",
+  "logs": [
+    {
+      "exit": 0,
+      "label": "debug1",
+      "sha256": "90c8f255e0292cce6c45dacb7e664644c6c0588f9dcae00553244b0daa4c7386"
+    },
+    {
+      "exit": 0,
+      "label": "debug2",
+      "sha256": "c41b964094d135d07019f96ec7428c4a9d6caa26f782ec1b41b1d8845783fb72"
+    },
+    {
+      "exit": 0,
+      "label": "release1",
+      "sha256": "0523f2a0dc8bacd6c3425bdfeab3a75bc947f5dc410cabc24ed4ca4996c0b27d"
+    },
+    {
+      "exit": 0,
+      "label": "release2",
+      "sha256": "bd4be79d1d95c94a32c997cb9503022eb40f40618a46fa7ac79d5844a9101755"
+    },
+    {
+      "exit": 101,
+      "label": "mutant-construct",
+      "sha256": "571bab37f6e856560d73b1c304e3f197f11ae4f9882ce0116981f9dd08f94151"
+    },
+    {
+      "exit": 0,
+      "label": "restored-construct",
+      "sha256": "8cece97d0c4b640acc51fc91ab7da1053f62f23ef9962537207bd22f400d412d"
+    },
+    {
+      "exit": 101,
+      "label": "mutant-parse",
+      "sha256": "113e8c3f155d25e122a7268dbe1cb3b1074e8944d7c0880652c6f49635c47f45"
+    },
+    {
+      "exit": 0,
+      "label": "restored-parse",
+      "sha256": "f4dd7fdedd4991a7867416bfcc475a407d6d7263a38a7607d0df0b16e070df7d"
+    },
+    {
+      "exit": 101,
+      "label": "mutant-store",
+      "sha256": "ee585a3e69ed7c3bd932d44ffe61c9c4de1159ec0c09b10c341cae8c7fb88795"
+    },
+    {
+      "exit": 0,
+      "label": "restored-store",
+      "sha256": "03c3cbd9fb863810a53cef7c7b301650a7b436c8f7ae6700813855062701f3eb"
+    },
+    {
+      "exit": 101,
+      "label": "preflight",
+      "sha256": "4ee1fe9b55f68d1bf1855f7fde76e5860c70f5b835a4723addbbb5d2613fc5e0"
+    },
+    {
+      "exit": 101,
+      "label": "clippy",
+      "sha256": "0eec1a3d9097a32b03d764add19ead74092a43f781fcd25214a7e2944d6814bb"
+    }
+  ],
+  "normalized_sha256": "ac60904b0360076ee32f8038d274a8ba530f5fa5fd17632c9db1762074245d1b",
+  "restored_exact": true,
+  "source": "en/src/store.rs",
+  "source_control": true,
+  "source_sha256": "4d2334d78a3ae22bd7c9da897ba94b29024bb1690a9bb3d3ac1d7139a4446810",
+  "status": "bounded tests and receipts external; no full semantic proof",
+  "syntax_equal": true,
+  "syntax_sha256": "a21d98522102ee84b598ab25df6f5015380c2a449ddefc0e3f28aeb10dc4b15f",
+  "test": "store::wave27::bounded_contract"
+}

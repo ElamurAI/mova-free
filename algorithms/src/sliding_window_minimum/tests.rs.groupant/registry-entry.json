@@ -1,0 +1,28 @@
+{
+  "checks": [
+    "sliding_window_minimum::tests: seven tests in debug and release, repeated outcomes",
+    "Three added source-level correspondence tests and explicit missing-premise counterexamples",
+    "Compiled production mutation rejected by a new test",
+    "Strict crate Clippy with all targets; formatting; repeated source-bound syntax"
+  ],
+  "cost": "Finite exponential enumeration in maximum length with polynomial range/update scans; maximum lengths are fixed in source. No runtime or all-input proof claim.",
+  "description": "Run deterministic finite fixtures and independently scan candidate minima; assertions pass exactly when every declared equality and negative control holds. All 9,841 ternary arrays of lengths 0..8, every width 0..n+1 plus usize::MAX; independent per-window scans compare exact indices. Increasing, decreasing, equal, expired and extreme-value cases and shift metamorphism included. Compiled mutant changing suffix comparison > to >= was rejected by expiration_and_equal_values_preserve_leftmost_ties (exit 101): equal array width 2 produced [1,2,3] instead of [0,1,2]. Deep relation epoch adds scoped decomposition, transport/state and reconstruction constraints with explicit tie premises.",
+  "forward": [
+    "Run deterministic finite fixtures and independently scan candidate minima; assertions pass exactly when every declared equality and negative control holds. All 9,841 ternary arrays of lengths 0..8, every width 0..n+1 plus usize::MAX; independent per-window scans compare exact indices. Increasing, decreasing, equal, expired and extreme-value cases and shift metamorphism included. Compiled mutant changing suffix comparison > to >= was rejected by expiration_and_equal_values_preserve_leftmost_ties (exit 101): equal array width 2 produced [1,2,3] instead of [0,1,2]."
+  ],
+  "id": "algorithm-sliding-window-minimum-tests",
+  "inverse": [
+    "In the universe of implementations and test outcomes, any passing implementation that disagrees with an asserted sampled oracle equality is excluded, assuming faithful assertions. Unsampled bugs may still pass.",
+    "A pass reconstructs the set of implementations agreeing on all sampled observations; a failure reconstructs those violating at least one assertion. Neither observation uniquely recovers implementation or universal correctness.",
+    "Passing requires the declared production observations to satisfy their decomposition, transport, containment, simultaneous-fiber and order relations on every enumerated fixture. Premises are checked separately by explicit counterexamples. Relations may miss correlated errors, so independent scan checks remain necessary.",
+    "Observation of the non-strict order-collapse counterexample excludes extending strict order-embedding claims to merely monotone maps. Index-only observations retain ambiguous value preimages. Passing these assertions constrains the claims on these concrete inputs; it does not establish their maximal domains.",
+    "The finite test suite partitions implementations into accepted and rejected sets. The recorded compiled production mutant belongs to the rejected set at a named correspondence assertion. This is sensitivity to that defect, not completeness for all defects or a general proof of the model."
+  ],
+  "limitations": [
+    "Finite evidence is not all-input proof.",
+    "Partial syntax projection omits macro expansion and semantic resolution.",
+    "No lossy approximant profile."
+  ],
+  "source": "algorithms/src/sliding_window_minimum/tests.rs",
+  "state": "Enumeration visits every ternary code once per length. Reference scans share no tree/deque logic. Inputs are checked unchanged; each complete window is compared with an independent linear scan. Tests depend on standard assertions and the implementation under test."
+}

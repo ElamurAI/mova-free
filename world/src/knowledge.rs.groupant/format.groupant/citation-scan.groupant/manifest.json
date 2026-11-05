@@ -1,0 +1,107 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "source_derived_partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "scope": "Shared partial syntax; byte_range is the exact local scope; semantic AST absent.",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "prospective_source_cost"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "source_derived_partial"
+    },
+    "obernants": [
+      {
+        "id": "school-citation-scan-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Citation scanner and unread-suffix state",
+        "section": "behavior-complement",
+        "status": "source_derived_inner_bound",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "school-citation-scan-preimage",
+        "path": "model.md",
+        "required": true,
+        "scope": "Citation scanner and unread-suffix state",
+        "section": "reverse-reconstruction",
+        "status": "partial_relational_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "school-citation-scan-recognizer",
+        "path": "model.md",
+        "required": false,
+        "scope": "Citation scanner and unread-suffix state",
+        "section": "recognizer",
+        "status": "source_derived_partial",
+        "type": "lexical_admissibility"
+      },
+      {
+        "id": "school-citation-scan-suffix-progress",
+        "path": "model.md",
+        "required": false,
+        "scope": "Citation scanner and unread-suffix state",
+        "section": "suffix-progress",
+        "status": "source_derived_partial",
+        "type": "termination_measure"
+      },
+      {
+        "id": "school-citation-scan-nested-parentheses",
+        "path": "model.md",
+        "required": false,
+        "scope": "Citation scanner and unread-suffix state",
+        "section": "nested-parentheses",
+        "status": "source_derived_partial",
+        "type": "delimiter_projection"
+      },
+      {
+        "id": "school-citation-scan-whitespace-loss",
+        "path": "model.md",
+        "required": false,
+        "scope": "Citation scanner and unread-suffix state",
+        "section": "whitespace-loss",
+        "status": "source_derived_partial",
+        "type": "information_loss"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_named_actual_code"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 6853,
+      "start": 5933
+    },
+    "description": "Citation scanner and unread-suffix state"
+  },
+  "id": "school-citation-scan",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../knowledge.rs",
+    "sha256": "20c352e3bf2ef465d1b00f8851d6a2a6b768906088af2e0265538b6da3df8898"
+  },
+  "status": "partial_source_bound_model"
+}

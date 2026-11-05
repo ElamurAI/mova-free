@@ -1,0 +1,17 @@
+fn reference(records:&[[u8;8]], words:&[en::annotate::Word], lemmas:&[String])->bool {
+ if records.len()!=words.len(){return false}
+ let old:Vec<_>=records.iter().map(|r|decode(r)).collect();
+ old.iter().zip(words).zip(records).all(|((o,w),r)|o.0==w.upos&&o.1==w.rel&&o.2==w.head&&decode_tag(r)==w.tag&&lemmas.get(o.3 as usize).is_some_and(|l|l==&w.lemma.to_lowercase()))
+}
+fn main(){use std::{hint::black_box,time::Instant};let which=std::env::args().nth(1).unwrap();let run:fn(&[[u8;8]],&[en::annotate::Word],&[String])->bool=match which.as_str(){"reference"=>reference,"candidate"=>same_stored_tree,_=>panic!("reference or candidate")};
+println!("n\tcase\tcalls\twall_ms\taccepted");
+for n in [8usize,128]{for kind in ["ascii","unicode","late-change"] {
+ let lemma=if kind=="unicode"{"ÉCOLE"}else{"cat"};let lemmas=vec![lemma.to_lowercase()];
+ let word=en::annotate::Word{form:String::from("token"),lemma:lemma.into(),upos:UPos::NOUN,tag:en::gram::Tag::NN,feats:Default::default(),head:0,rel:Rel::Nsubj};let mut words=vec![word;n];if kind=="late-change"{words[n-1].lemma=String::from("dog");}
+ let mut record=[0u8;8];record[0]=UPos::ALL.iter().position(|x|*x==UPos::NOUN).unwrap() as u8;record[1]=Rel::ALL.iter().position(|x|*x==Rel::Nsubj).unwrap() as u8;record[4]=en::gram::Tag::ALL.iter().position(|x|*x==en::gram::Tag::NN).unwrap() as u8;let records=vec![record;n];let expected=kind!="late-change";
+ assert_eq!(reference(&records,&words,&lemmas),expected);assert_eq!(same_stored_tree(&records,&words,&lemmas),expected);
+ for _ in 0..1000{assert_eq!(black_box(run(black_box(&records),black_box(&words),black_box(&lemmas))),expected);}
+ let start=Instant::now();let mut accepted=0usize;for _ in 0..20000 {accepted+=black_box(run(black_box(&records),black_box(&words),black_box(&lemmas))) as usize;}let elapsed=start.elapsed();assert_eq!(accepted,if expected{20000}else{0});
+ println!("{n}\t{kind}\t20000\t{:.6}\t{accepted}",elapsed.as_secs_f64()*1000.0);
+}}
+}

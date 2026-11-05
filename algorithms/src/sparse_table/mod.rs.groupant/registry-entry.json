@@ -1,0 +1,24 @@
+{
+  "id": "algorithm-sparse-table",
+  "source": "algorithms/src/sparse_table/mod.rs",
+  "description": "Immutable generic range minima with leftmost tie identity.",
+  "state": "(owned values, power-of-two argmin rows)",
+  "forward": [
+    "Build stable power-of-two minima; combine two covering blocks."
+  ],
+  "inverse": [
+    "Complement and compatible-input preimages are defined separately in model.md.",
+    "Finite observations retain ambiguity outside their declared scope."
+  ],
+  "cost": "O(n log(n+1)) indices/comparisons and n clones; O(1) query index work.",
+  "checks": [
+    "sparse_table::tests (four tests twice)",
+    "rustfmt --check and Clippy -D warnings",
+    "Filtered compiled-source mutant rejected, exit 101"
+  ],
+  "limitations": [
+    "Bounded evidence is not all-input proof.",
+    "Allocation failure is outside the result model.",
+    "Partial AST omits macro expansion and semantic resolution."
+  ]
+}

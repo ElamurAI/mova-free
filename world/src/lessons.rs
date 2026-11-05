@@ -1,4 +1,4 @@
-//! Lessons as data (`world/data/school/lessons/*.lesson`): a teacher's lesson written in a few lines — its words,
+//! Lessons as data (`courses/lessons/*.lesson` of the school data): a teacher's lesson written in a few lines — its words,
 //! the little world it draws (names, things, numbers within bounds, conditions), the answer as an expression of that
 //! world, the phrasings of its exercises and, apart, the phrasings only its test uses. The teacher computes every
 //! answer from the expression, never from the text, so a lesson is right by construction when its phrasing says what
@@ -55,7 +55,7 @@ const THINGS: [&str; 16] = ["apples", "pencils", "stickers", "marbles", "books",
 const ITEMS: [&str; 10] = ["pencil", "apple", "sticker", "book", "cookie", "card", "toy", "notebook", "ball", "cup"];
 
 fn dir() -> std::path::PathBuf {
-    std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("data").join("school").join("lessons")
+    crate::knowledge::courses_root().join("lessons")
 }
 
 /// Every lesson of the folder, by number.
@@ -135,7 +135,7 @@ fn tokens(e: &str) -> Vec<String> {
     out
 }
 
-/// Evaluate an expression over whole numbers; None when a division is not exact or a name is unknown.
+/// Evaluate an expression over whole numbers; None on invalid syntax, unknown names, inexact division or i64 overflow.
 pub fn eval(e: &str, env: &BTreeMap<String, i64>) -> Option<i64> {
     let t = tokens(e);
     let mut i = 0;
@@ -165,20 +165,20 @@ fn expr(t: &[String], i: &mut usize, env: &BTreeMap<String, i64>, min: u8) -> Op
         *i += 1;
         let rhs = expr(t, i, env, p + 1)?;
         lhs = match op.as_str() {
-            "+" => lhs + rhs,
-            "-" => lhs - rhs,
-            "*" => lhs * rhs,
+            "+" => lhs.checked_add(rhs)?,
+            "-" => lhs.checked_sub(rhs)?,
+            "*" => lhs.checked_mul(rhs)?,
             "/" => {
-                if rhs == 0 || lhs % rhs != 0 {
+                if lhs.checked_rem(rhs)? != 0 {
                     return None;
                 }
-                lhs / rhs
+                lhs.checked_div(rhs)?
             }
             "%" => {
                 if rhs == 0 {
                     return None;
                 }
-                lhs % rhs
+                lhs.checked_rem(rhs)?
             }
             "==" => (lhs == rhs) as i64,
             "!=" => (lhs != rhs) as i64,
@@ -205,7 +205,7 @@ fn atom(t: &[String], i: &mut usize, env: &BTreeMap<String, i64>) -> Option<i64>
                 v
             })
         }
-        "-" => atom(t, i, env).map(|v| -v),
+        "-" => atom(t, i, env).and_then(i64::checked_neg),
         _ => tok.parse().ok().or_else(|| env.get(&tok).copied()),
     }
 }
@@ -222,8 +222,10 @@ impl Rng {
         self.0 ^= self.0 << 17;
         self.0
     }
-    fn range(&mut self, lo: i64, hi: i64) -> i64 {
-        lo + (self.next() % (hi - lo + 1).max(1) as u64) as i64
+    fn range(&mut self, lo: i64, hi: i64) -> Option<i64> {
+        if lo > hi { return None; }
+        let width = (hi as i128 - lo as i128 + 1) as u128;
+        Some((lo as i128 + (self.next() as u128 % width) as i128) as i64)
     }
 }
 
@@ -292,6 +294,7 @@ fn articles(text: &str) -> String {
 impl Lesson {
     /// One problem from the given templates, drawn until its conditions hold (at most 2000 draws).
     pub fn draw(&self, rng: &mut Rng, templates: &[String], k: usize) -> Option<Drawn> {
+        if templates.is_empty() { return None; }
         for _ in 0..2000 {
             let mut words: BTreeMap<String, String> = BTreeMap::new();
             let mut nums: BTreeMap<String, i64> = BTreeMap::new();
@@ -300,6 +303,7 @@ impl Lesson {
                 match kind.as_str() {
                     "name" => {
                         let free: Vec<&str> = NAMES.iter().copied().filter(|x| !used.contains(x)).collect();
+                        if free.is_empty() { return None; }
                         let w = free[(rng.next() % free.len() as u64) as usize];
                         used.push(w);
                         words.insert(n.clone(), w.into());
@@ -312,7 +316,7 @@ impl Lesson {
                     }
                     range => {
                         let (lo, hi) = range.split_once("..")?;
-                        nums.insert(n.clone(), rng.range(lo.parse().ok()?, hi.parse().ok()?));
+                        nums.insert(n.clone(), rng.range(lo.parse().ok()?, hi.parse().ok()?)?);
                     }
                 }
             }
@@ -342,12 +346,12 @@ impl Lesson {
 
     /// The exercises (cycling through their phrasings) and the test (through the test's own).
     pub fn exercises(&self, count: usize) -> Vec<Drawn> {
-        let mut rng = Rng(0xE7E7_0000 + self.n as u64);
+        let mut rng = Rng(0xE7E7_0000u64.wrapping_add(self.n as u64));
         (0..count).filter_map(|k| self.draw(&mut rng, &self.exercises, k)).collect()
     }
 
     pub fn test(&self, count: usize) -> Vec<Drawn> {
-        let mut rng = Rng(0x7E57_0000 + self.n as u64);
+        let mut rng = Rng(0x7E57_0000u64.wrapping_add(self.n as u64));
         (0..count).filter_map(|k| self.draw(&mut rng, &self.tests, k)).collect()
     }
 
@@ -356,7 +360,7 @@ impl Lesson {
         if self.exams.is_empty() {
             return vec![];
         }
-        let mut rng = Rng(0xE8A3_0000 + self.n as u64);
+        let mut rng = Rng(0xE8A3_0000u64.wrapping_add(self.n as u64));
         (0..count).filter_map(|k| self.draw(&mut rng, &self.exams, k)).collect()
     }
 }
@@ -427,5 +431,107 @@ mod tests {
         assert_eq!(e.len(), 30);
         assert!(e.iter().all(|d| d.answer > 0));
         assert!(e[0].text.contains("packs"));
+    }
+}
+
+#[cfg(test)]
+mod wave12_models {
+    use super::*;
+
+    fn fixture(extra: &str) -> Lesson {
+        parse(&format!("lesson: 7\nanswer: 8\nexercise: EX {{n}}\ntest: TEST {{n}}\nexam: EXAM {{n}}\n{extra}"), "supplied").unwrap()
+    }
+
+    #[test]
+    fn arithmetic_finite_oracle() {
+        let env = BTreeMap::new();
+        for a in -9i64..=9 {
+            for b in -9i64..=9 {
+                for (op, expected) in [
+                    ("+", Some(a + b)), ("-", Some(a - b)), ("*", Some(a * b)),
+                    ("/", if b != 0 && a % b == 0 { Some(a / b) } else { None }),
+                    ("%", if b != 0 { Some(a % b) } else { None }),
+                    ("<", Some(i64::from(a < b))), ("&&", Some(i64::from(a != 0 && b != 0))),
+                ] {
+                    assert_eq!(eval(&format!("({a}) {op} ({b})"), &env), expected, "{a} {op} {b}");
+                }
+            }
+        }
+        assert_eq!(eval("2 + 3 * 4", &env), Some(14));
+        assert_eq!(eval("18 / 3 / 2", &env), Some(3));
+        // Eager Boolean evaluation is deliberate, including invalid RHS.
+        for bad in ["", "1 2", "(1", "1)", "unknown", "0 && (1 / 0)", "1 || missing"] {
+            assert_eq!(eval(bad, &env), None);
+        }
+    }
+
+    #[test]
+    fn arithmetic_overflow_is_failure() {
+        let env = [("lo".into(), i64::MIN), ("hi".into(), i64::MAX)].into();
+        for expr in ["hi + 1", "lo - 1", "hi * 2", "-lo", "lo / -1", "lo % -1"] {
+            assert_eq!(eval(expr, &env), None, "{expr}");
+        }
+        assert_eq!(eval("lo + hi", &env), Some(-1));
+    }
+
+    #[test]
+    fn draw_empty_templates_fail() {
+        let l = fixture("vars: n=8..8");
+        let mut rng = Rng(1);
+        assert!(l.draw(&mut rng, &[], 0).is_none());
+        assert_eq!(rng.0, 1);
+    }
+
+    #[test]
+    fn draw_name_exhaustion_fails() {
+        let vars = (0..17).map(|i| format!("a{i}=name")).collect::<Vec<_>>().join(" ");
+        assert!(fixture(&format!("vars: {vars}")).draw(&mut Rng(1), &["ok".into()], 0).is_none());
+    }
+
+    #[test]
+    fn range_extremes_and_reversal() {
+        let reversed = fixture("vars: n=9..8");
+        assert!(reversed.exercises(1).is_empty());
+    }
+
+    #[test]
+    fn full_width_range() {
+        let full = fixture("vars: n=-9223372036854775808..9223372036854775807");
+        let d = full.draw(&mut Rng(0), &["{n}".into()], 0).unwrap();
+        assert_eq!(d.text, i64::MIN.to_string());
+    }
+
+    #[test]
+    fn seed_wrap_is_deterministic() {
+        let mut l = fixture("vars: n=8..8");
+        l.n = usize::MAX;
+        assert_eq!(l.exercises(1).len(), 1);
+        assert_eq!(l.test(1).len(), 1);
+        assert_eq!(l.exam(1).len(), 1);
+    }
+
+    #[test]
+    fn partitions_substitution_and_bounded_rejection() {
+        let l = fixture("vars: n=8..8\nlet: m = n + 2\nneed: m == 10");
+        for (prefix, batch) in [("EX ", l.exercises(4)), ("TEST ", l.test(4)), ("EXAM ", l.exam(4))] {
+            assert_eq!(batch.len(), 4);
+            assert!(batch.iter().all(|d| d.text == format!("{prefix}8") && d.answer == 8));
+        }
+        let a = l.exercises(4);
+        let b = l.exercises(4);
+        assert_eq!(a.iter().map(|x| (&x.text, x.answer)).collect::<Vec<_>>(),
+                   b.iter().map(|x| (&x.text, x.answer)).collect::<Vec<_>>());
+        let words = [("a".into(), "Anna".into())].into();
+        let nums = [("n".into(), 8)].into();
+        assert_eq!(fill("{a.He} has a {n} and {n.words}, {n.ord}.", &words, &nums),
+                   Some("She has an 8 and eight, 8th.".into()));
+        for bad in ["{missing}", "{n.bad}", "{n"] { assert!(fill(bad, &words, &nums).is_none()); }
+        let mut rng = Rng(3);
+        assert!(fixture("vars: n=8..8\nneed: 0").draw(&mut rng, &["ok".into()], 0).is_none());
+        let mut expected = Rng(3);
+        for _ in 0..2000 { expected.next(); }
+        assert_eq!(rng.0, expected.0);
+        assert!(parse("lesson: 1\nanswer: 1\nexercise: x", "x").is_err());
+        assert!(parse("lesson: 1\nanswer: 1\nexercise: x\ntest: y\nbogus: z", "x").is_err());
     }
 }

@@ -1,4 +1,4 @@
-//! Three levels of SLM (small language model) logic (`docs/design-three-levels.md`):
+//! Three levels of SLM (small language model) logic (`docs/architecture.md#three-levels-of-logic`):
 //! 1. **Global** — principles and values, the exact core (mathematics; later physics, chemistry), world structure,
 //!    shortcuts and links. Compiled, always on.
 //! 2. **Domain modules** — the full power of one field; plugged in when the context calls for them.
@@ -247,5 +247,51 @@ mod tests {
     fn garbage_is_not_math() {
         let mut c = Context::default();
         assert_eq!(c.route(&Query::new("12 + + apples")).by, Route::Escalate);
+    }
+}
+
+#[cfg(test)]
+mod wave30_tests {
+    use super::*;
+
+    struct Fixed(&'static str, f64, bool);
+    impl Domain for Fixed {
+        fn id(&self) -> &str {
+            self.0
+        }
+        fn version(&self) -> &str {
+            "synthetic"
+        }
+        fn access(&self) -> Access {
+            Access::Public
+        }
+        fn covers(&self, _: &Query, _: &Context) -> (f64, String) {
+            (self.1, "fixed".into())
+        }
+        fn solve(&self, _: &Query, _: &Context) -> Option<Answer> {
+            self.2.then(|| Answer {
+                value: self.0.into(),
+                by: Route::Domain(self.0.into()),
+                why: vec![],
+            })
+        }
+    }
+
+    #[test]
+    fn finite_ties_declines_and_threshold() {
+        let mut c = Context::default();
+        c.register(Box::new(Fixed("decline", 0.9, false)));
+        c.register(Box::new(Fixed("first", 0.5, true)));
+        c.register(Box::new(Fixed("second", 0.5, true)));
+        let q = Query::new("synthetic routing request");
+        assert_eq!(c.route(&q).by, Route::Domain("first".into()));
+        c.threshold = 0.5001;
+        assert_eq!(c.route(&q).by, Route::Escalate);
+        assert_eq!(c.log.len(), 5);
+        assert_eq!(
+            Query::new("EXPLAIN: 2+3").mode,
+            Mode::Explain(Why::UserAsked)
+        );
+        assert_eq!(c.route(&Query::new("2+3")).by, Route::Global("math"));
     }
 }

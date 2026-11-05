@@ -1,0 +1,98 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Source-bound syntax; no macro expansion, resolution or semantic proof.",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "duplicate_index",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "duplicate_index",
+        "status": "partial_source_derived_model",
+        "type": "duplicate_index"
+      },
+      {
+        "id": "rename_boundary",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "rename_boundary",
+        "status": "partial_source_derived_model",
+        "type": "rename_boundary"
+      },
+      {
+        "id": "validated_input_snapshot",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "validated_input_snapshot",
+        "status": "partial_source_derived_model",
+        "type": "validated_input_snapshot"
+      },
+      {
+        "id": "timestamp_scope",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "timestamp_scope",
+        "status": "partial_source_derived_model",
+        "type": "timestamp_scope"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_or_representation"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "start": 3026,
+      "end": 5607
+    },
+    "description": "Validate policy and one incoming snapshot; merge current by id, rename current, append the same snapshot to history, append event log.",
+    "source_bytes_sha256": "fa14247c3af6113b855e8ea39c980ae02c982442be53d39a3ff62acd5be8c2a1"
+  },
+  "id": "cycle-db-commit",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../db.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "46ace8ee692107b0fa7d933778036f4d884a3a081023f2c143236cdfdb0cb8c7"
+  },
+  "status": "partial_source_bound_model"
+}

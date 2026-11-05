@@ -1,0 +1,112 @@
+{
+  "children": [
+    {
+      "id": "gparse-model-configuration",
+      "path": "configuration.groupant"
+    },
+    {
+      "id": "gparse-model-attention",
+      "path": "attention.groupant"
+    },
+    {
+      "id": "gparse-model-heads",
+      "path": "heads.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "evidence": {
+      "path": "model.md#evidence",
+      "status": "executed_finite_checks"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "gradient_transport",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "gradient_transport",
+        "status": "partial_source_derived_model",
+        "type": "gradient_transport"
+      },
+      {
+        "id": "configuration_precedence",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "configuration_precedence",
+        "status": "partial_source_derived_model",
+        "type": "configuration_precedence"
+      },
+      {
+        "id": "tensor_coordinates",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "tensor_coordinates",
+        "status": "partial_source_derived_model",
+        "type": "tensor_coordinates"
+      },
+      {
+        "id": "finite_arithmetic",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "finite_arithmetic",
+        "status": "partial_source_derived_model",
+        "type": "finite_arithmetic"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "gparse-model",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../model.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "a380c81aa11433fd9e4efcfaad81abfd55fe79b896d628ee1368f8de8081c941"
+  },
+  "status": "partial_source_bound_model"
+}

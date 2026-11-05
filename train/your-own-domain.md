@@ -152,8 +152,8 @@ flavour, convert them first (see [dialects-and-converters.md](dialects-and-conve
 ### 7. Measure honestly
 
 1. **Determinism.** Run the baseline twice and the change twice. Each pair must be byte-identical
-   (`cmp`). Use `BTreeMap`/`BTreeSet` or sorted vectors anywhere order can affect the result. An
-   earlier "gain" in this project turned out to be `HashMap` order noise.
+   (`cmp`). Use `BTreeMap`/`BTreeSet` or sorted vectors anywhere order can affect the result:
+   `HashMap` order noise can look like a gain.
 2. **Paired comparison on the same items.** Do not compare two accuracies from different runs on
    different subsets. Keep a per-item result file (`id<TAB>1|0`) for both systems on the same test
    set, then count the items the change fixed and the items it broke:

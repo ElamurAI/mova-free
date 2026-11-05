@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "wave31::empty_ties_and_switch_objective",
+    "script_runs_and_transliteration",
+    "classifier_learns_and_shuffled_labels_fail",
+    "viterbi_cuts_a_planted_sentence_and_only_with_a_finite_switch",
+    "deterministic_and_model_round_trip"
+  ],
+  "children": [],
+  "cost": "B bytes,n tokens,F features,V vocabulary,K=8: tokenizer O(B²) worst-case on repeated unmatched '<' because suffix.find scans, ordinary bounded markup O(B). Feature lookup O(F log V), model O(VK), Viterbi O(nK) time/space, explanation aggregation/sort O(F log F). No timing claim.",
+  "description": "tokenize produces UTF-8 script/italic spans; runs coalesces scripts and translit_mask propagates strong signs over same italic id. Features PCAMW feed per-group smoothed counts. classify sums Hebrew scores. segment Viterbi uses quarter switch across sentence punctuation, coalesces path columns and aggregates explanation log odds.",
+  "forward": [
+    "tokenize produces UTF-8 script/italic spans; runs coalesces scripts and translit_mask propagates strong signs over same italic id. Features PCAMW feed per-group smoothed counts. classify sums Hebrew scores. segment Viterbi uses quarter switch across sentence punctuation, coalesces path columns and aggregates explanation log odds."
+  ],
+  "id": "langseg-engine",
+  "inverse": [
+    "No neutral-only token or out-of-range path column appears for admitted finite input. Missing model features contribute0; tied argmax cannot choose higher equal index. Supplied-model APIs consult no teacher/corpus.",
+    "Labels admit score vectors in argmax cells and feature multisets yielding them. Segments admit all score/path states with same optimum/ties; dropped neutral ends and stripped points unrecoverable. TSV recovers rounded values, not original floats."
+  ],
+  "limitations": [
+    "No exhaustive nonfinite/overflow audit, corpus accuracy, surrogate percentage or throughput claim.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/langseg/src/lib.rs",
+  "state": "HEB fixes8 columns; argmax lowest-index tie, Viterbi stay wins equality. Empty classification Hbo, neutral-only segmentation empty. Columns<K, representable u32 counts, positive finite alpha, finite nonnegative cost define mathematical scoring domain. Save rounds to4 decimals; load is permissive."
+}

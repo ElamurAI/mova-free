@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p en --lib morph::wave27_tests",
+    "Repeated debug/release named outcomes and paired partial syntax"
+  ],
+  "children": [],
+  "cost": "Record scans/string candidates; tree adjacency O(n), conjunction walks up to quadratic or cyclic nontermination; u32 sums unchecked.",
+  "description": "Dictionary/rule morphology, case escape codec and tree agreement",
+  "forward": [
+    "Apostrophe normalize, archaic, UD max count later tie, base, REV slot/first, rule reproduction/known priorities. Inflect UD/base/first AGID/suffix. Encode AsIs,Title,Upper(len>1),Raw. Tree one-based heads, first subject.",
+    "known_form = dictionary or derive::analyses; lemmatize prefers a derived candidate (derive::derived_as) that reinflects after the known one (2026-11-04)."
+  ],
+  "id": "en-morph",
+  "inverse": [
+    "decode(encode(f,t),t)=f for terminating calls; decode preimages include Raw and inflection/case equivalents; lemma alone many-to-one."
+  ],
+  "limitations": [
+    "No general lemma/inflect inverse. Tree arrays aligned and conjunction ancestry acyclic required; non-self cycles may loop. Rules not linguistic proof.",
+    "No executable percent surrogate: no demonstrated useful metric preserving categorical/effect semantics; permitted future caps 1/2/5/10%, no production substitution.",
+    "Partial source-bound modeling, no corpus/API/GPU, allocation faults or exhaustive numerical checks."
+  ],
+  "source": "en/src/morph.rs",
+  "state": "Dictionary/rule morphology, case escape codec and tree agreement"
+}

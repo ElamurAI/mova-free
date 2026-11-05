@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms monotone_cubic::tests",
+    "Repeated debug/release profiles and compiled mutation receipts in model.md#tests"
+  ],
+  "children": [],
+  "cost": "Finite fixture loops plus repeated native runner; production cost: O(n) validation plus partition lookup O(log n); only neighboring secants/slopes evaluated; O(1) stack, no allocation/callback.",
+  "description": "Finite independent and adversarial tests for monotone_cubic. Production domain: Sorted 2..64 nodes in [-1,1], gaps >=1e-8, finite |y|<=1e100, hull query. Interior derivative is weighted harmonic mean of adjacent secants when nonzero and same sign, zero otherwise. Endpoint uses one-sided derivative then sign/3*secant clipping. Cubic Hermite basis evaluates the selected segment. Size, nonfinite, domain, spacing then arithmetic precedence. Two nodes give linear interpolation; exact node returns stored y.",
+  "forward": [
+    "Finite independent and adversarial tests for monotone_cubic. Production domain: Sorted 2..64 nodes in [-1,1], gaps >=1e-8, finite |y|<=1e100, hull query. Interior derivative is weighted harmonic mean of adjacent secants when nonzero and same sign, zero otherwise. Endpoint uses one-sided derivative then sign/3*secant clipping. Cubic Hermite basis evaluates the selected segment. Size, nonfinite, domain, spacing then arithmetic precedence. Two nodes give linear interpolation; exact node returns stored y."
+  ],
+  "id": "algorithm-monotone-cubic-tests",
+  "inverse": [
+    "The all-pass observation admits both production and implementations differing only at unsampled queries. This nonunique observation fiber is broader than production preimages: For two nodes, midpoint of [0,2] and [-1,3] is1 with identical x=[0,1]; one query cannot recover endpoint values or slopes."
+  ],
+  "limitations": [
+    "Partial syntax is not semantic proof",
+    "Finite polynomial/shape checks do not establish universal f64 accuracy",
+    "No certified cheaper executable surrogate; numerical percentage profiles unsupported",
+    "No speed claim, callback panic recovery or allocator experiment"
+  ],
+  "source": "algorithms/src/monotone_cubic/tests.rs",
+  "state": "Validated bounded f64 inputs, stack recurrence, explicit validation errors and iterative statuses where applicable"
+}

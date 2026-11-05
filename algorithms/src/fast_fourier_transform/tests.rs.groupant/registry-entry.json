@@ -1,0 +1,21 @@
+{
+  "id": "algorithm-fast-fourier-transform-tests",
+  "source": "algorithms/src/fast_fourier_transform/tests.rs",
+  "children": [],
+  "description": "Original bounded algebra algorithm with independent finite checks",
+  "state": "Deterministic values and explicit validation",
+  "cost": "Finite fixture suite",
+  "forward": [
+    "Execute independent oracle and boundary assertions"
+  ],
+  "inverse": [
+    "A successful run excludes any exercised mismatch between production and independent oracle, accepted invalid fixture, or failure of a named residual/dimension assertion. It does not exclude defects outside the finite fixture set.",
+    "An observed passing transcript admits all production programs agreeing on exercised observations, including programs wrong on unseen inputs. The original and any implementation with identical fixture outputs are indistinguishable by this harness."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms fast_fourier_transform::tests"
+  ],
+  "limitations": [
+    "Partial syntax; finite tests do not prove universal correctness; no allocator failure injection; no executable surrogate"
+  ]
+}

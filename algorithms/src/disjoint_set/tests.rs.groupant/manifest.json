@@ -1,0 +1,124 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-disjoint-set-tests",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "1804d924f4a654c84d681f954c5cd630fc5c6e4501417e629b5823e556609a7e"
+  },
+  "registry": {
+    "path": "../../../../models/contracts.json",
+    "node": "algorithm-disjoint-set-tests"
+  },
+  "status": "partial",
+  "components": {
+    "ast": {
+      "status": "partial",
+      "format": "rust_syntax_projection",
+      "path": "ast.json",
+      "scope": "Partial syntax; macro bodies opaque; no semantic resolution"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial"
+    },
+    "tests": {
+      "path": "model.md",
+      "section": "tests",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "descriptant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "algorithm-disjoint-set-tests-behavior-complement",
+        "type": "behavior_complement",
+        "required": true,
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "bounded_empirical",
+        "subject_revision": "algorithms/src/disjoint_set/tests.rs sha256:1804d924f4a654c84d681f954c5cd630fc5c6e4501417e629b5823e556609a7e",
+        "domain": "Compiled DSU implementation and fixed finite operation histories defined in model.md",
+        "observation_scope": "Finite harness verdict and per-step state/return observations",
+        "operator": "See model.md behavior-complement",
+        "approximation_semantics": "Conditional inner bound of U minus R",
+        "assumptions": "Trusted compiler and assertions; successful allocation; no external interruption",
+        "evidence": "Ten tests pass twice; compiled no-compression mutant rejected by new balanced test"
+      },
+      {
+        "id": "algorithm-disjoint-set-tests-reverse-reconstruction",
+        "type": "reverse_reconstruction",
+        "required": true,
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "bounded_empirical",
+        "subject_revision": "algorithms/src/disjoint_set/tests.rs sha256:1804d924f4a654c84d681f954c5cd630fc5c6e4501417e629b5823e556609a7e",
+        "domain": "Compiled DSU implementation and fixed finite operation histories defined in model.md",
+        "observation_scope": "Finite harness verdict and per-step state/return observations",
+        "operator": "See model.md reverse-reconstruction",
+        "approximation_semantics": "Declarative many-to-one preimage, not unique diagnosis",
+        "assumptions": "Trusted compiler and assertions; successful allocation; no external interruption",
+        "evidence": "Ten tests pass twice; compiled no-compression mutant rejected by new balanced test"
+      },
+      {
+        "id": "algorithm-disjoint-set-tests-state-oracle",
+        "type": "independent_state_oracle",
+        "required": false,
+        "path": "model.md",
+        "section": "state-oracle",
+        "status": "bounded_empirical",
+        "subject_revision": "algorithms/src/disjoint_set/tests.rs sha256:1804d924f4a654c84d681f954c5cd630fc5c6e4501417e629b5823e556609a7e",
+        "domain": "Compiled DSU implementation and fixed finite operation histories defined in model.md",
+        "observation_scope": "Finite harness verdict and per-step state/return observations",
+        "operator": "See model.md state-oracle",
+        "approximation_semantics": "Bounded correspondence; larger unsampled histories remain unknown",
+        "assumptions": "Trusted compiler and assertions; successful allocation; no external interruption",
+        "evidence": "Ten tests pass twice; compiled no-compression mutant rejected by new balanced test"
+      },
+      {
+        "id": "algorithm-disjoint-set-tests-history-obligations",
+        "type": "operation_history_relation",
+        "required": false,
+        "path": "model.md",
+        "section": "history-obligations",
+        "status": "bounded_empirical",
+        "subject_revision": "algorithms/src/disjoint_set/tests.rs sha256:1804d924f4a654c84d681f954c5cd630fc5c6e4501417e629b5823e556609a7e",
+        "domain": "Compiled DSU implementation and fixed finite operation histories defined in model.md",
+        "observation_scope": "Finite harness verdict and per-step state/return observations",
+        "operator": "See model.md history-obligations",
+        "approximation_semantics": "Bounded correspondence; larger unsampled histories remain unknown",
+        "assumptions": "Trusted compiler and assertions; successful allocation; no external interruption",
+        "evidence": "Ten tests pass twice; compiled no-compression mutant rejected by new balanced test"
+      },
+      {
+        "id": "algorithm-disjoint-set-tests-bounded-coverage",
+        "type": "bounded_coverage_cost",
+        "required": false,
+        "path": "model.md",
+        "section": "bounded-coverage",
+        "status": "bounded_empirical",
+        "subject_revision": "algorithms/src/disjoint_set/tests.rs sha256:1804d924f4a654c84d681f954c5cd630fc5c6e4501417e629b5823e556609a7e",
+        "domain": "Compiled DSU implementation and fixed finite operation histories defined in model.md",
+        "observation_scope": "Finite harness verdict and per-step state/return observations",
+        "operator": "See model.md bounded-coverage",
+        "approximation_semantics": "Bounded correspondence; larger unsampled histories remain unknown",
+        "assumptions": "Trusted compiler and assertions; successful allocation; no external interruption",
+        "evidence": "Ten tests pass twice; compiled no-compression mutant rejected by new balanced test"
+      }
+    ]
+  }
+}

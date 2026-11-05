@@ -1,0 +1,98 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Source syntax only; no macro expansion/type resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "wasi-memory",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "wasi-memory",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "zero_coordinates",
+        "path": "model.md",
+        "scope": "wasi-memory",
+        "section": "zero_coordinates",
+        "status": "partial_source_derived_model",
+        "type": "zero_coordinates"
+      },
+      {
+        "id": "fault_precedence",
+        "path": "model.md",
+        "scope": "wasi-memory",
+        "section": "fault_precedence",
+        "status": "partial_source_derived_model",
+        "type": "fault_precedence"
+      },
+      {
+        "id": "byte_layout",
+        "path": "model.md",
+        "scope": "wasi-memory",
+        "section": "byte_layout",
+        "status": "partial_source_derived_model",
+        "type": "byte_layout"
+      },
+      {
+        "id": "integer_boundary",
+        "path": "model.md",
+        "scope": "wasi-memory",
+        "section": "integer_boundary",
+        "status": "partial_source_derived_model",
+        "type": "integer_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4771,
+      "start": 2819
+    },
+    "description": "range accepts [ptr,ptr+len) only with checked end<=memory length. off checks u32 overflow. iovs rejects n>1024 before coordinates, then reads n pairs of LE u32; get_str validates UTF8 after copying. filestat emits64 bytes with fixed offsets.",
+    "source_bytes_sha256": "ff718b2bb739ae0d637665a9023de69821511997caeb84ac23beaa6815f63a0b"
+  },
+  "id": "wasi-memory",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../lib.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "91213ce9038107912c2dd707c3a6639a2d723cdfceb02981a166a6853800248e"
+  },
+  "status": "partial_source_bound_model"
+}

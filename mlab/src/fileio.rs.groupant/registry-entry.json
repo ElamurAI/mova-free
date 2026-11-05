@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "fileio::wave30_tests::csv_inference_and_json_loss"
+  ],
+  "children": [],
+  "cost": "CSV O(B+cells) time/storage. JSON character parsing O(B), error position rescans prefix; key union and per-column row lookups can require O(rows*keys^2). json_text copies child strings at each nesting level: cumulative work is the sum of serialized subtree sizes, bounded by O(depth * output bytes), plus table/cell work. A depth-D singleton-array chain can require O(D^2) copying for O(D) output; recursion depth is unchecked.",
+  "description": "CSV and JSON parsers, inferred table columns and matrix/value serialization without filesystem effects.",
+  "forward": [
+    "CSV scans Unicode chars after leading BOMs, tracks line/column, decodes quoted fields and validates table width before inference. Numeric inference precedes boolean/date/text and quoted-present forces text. JSON parser preserves object member sequence; table conversion unions first-seen keys, picks first duplicate and fills missing null. Writers emit canonical bytes."
+  ],
+  "id": "mlab-fileio",
+  "inverse": [
+    "Quoted numeric CSV fields exclude numeric inference for their column; entirely missing column excludes text inference. J::Num and numeric-class nonfinite JSON serialization excludes numeric literals and becomes null; logical-class values instead use x!=0, so logical NaN serializes true. Successful parse_json excludes trailing nonwhitespace.",
+    "Canonical tables admit many CSV antecedents differing quoting, headers sanitized/deduped and numeric spelling. JSON table preimages include absent versus null and later duplicate keys. Vector JSON cannot reconstruct row versus column orientation or complex imaginary data."
+  ],
+  "limitations": [
+    "Partial source-bound model, not semantic proof",
+    "No executable percentage surrogate",
+    "Finite synthetic fixtures only; frozen suites/external measurement unexecuted"
+  ],
+  "source": "mlab/src/fileio.rs",
+  "state": "Numeric/date NaN table cells serialize empty CSV; write_matrix emits literal NaN through num_text. Numeric-class nonfinite JSON values become null, while logical-class values use nonzero truth, so logical NaN becomes true. Booleans with missing values become numeric; dates encode day values. Empty table CSV is newline and JSON is [] newline; read_matrix skips at most one nonnumeric header."
+}

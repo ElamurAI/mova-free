@@ -1,0 +1,103 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "No macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#model",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete relation in linked section; partial model and finite observations",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete relation in linked section; partial model and finite observations",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "tie_policy",
+        "path": "model.md",
+        "scope": "Concrete relation in linked section; partial model and finite observations",
+        "section": "tie_policy",
+        "status": "partial_source_derived_model",
+        "type": "tie_policy"
+      },
+      {
+        "id": "log_semiring",
+        "path": "model.md",
+        "scope": "Concrete relation in linked section; partial model and finite observations",
+        "section": "log_semiring",
+        "status": "partial_source_derived_model",
+        "type": "log_semiring"
+      },
+      {
+        "id": "backpointer_witness",
+        "path": "model.md",
+        "scope": "Concrete relation in linked section; partial model and finite observations",
+        "section": "backpointer_witness",
+        "status": "partial_source_derived_model",
+        "type": "backpointer_witness"
+      },
+      {
+        "id": "validation_resources",
+        "path": "model.md",
+        "scope": "Concrete relation in linked section; partial model and finite observations",
+        "section": "validation_resources",
+        "status": "partial_source_derived_model",
+        "type": "validation_resources"
+      },
+      {
+        "approximation_semantics": "Source-derived operation-domain and cost relation; no timing measurement or numerical approximation guarantee.",
+        "assumptions": "Fixed source, ordinary Rust execution, borrowed slices and declared dimensions.",
+        "domain": "Empty emissions, 1..64 states, initial vector and square transition matrix, including explicit value-validation counterexamples.",
+        "evidence": "Current source inspection in model.md#descriptant; existing model.md#tests evidence unchanged. No new runtime verification claimed for this specialization.",
+        "id": "empty_validation_frontier",
+        "observation_scope": "One source-defined invocation or explicitly bounded trace in the linked section; source reasoning only.",
+        "operator": "Empty successful output follows shape/value/row-sum checks; validated matrix work is O(n²) despite zero recurrence steps, with O(1) auxiliary storage.",
+        "path": "model.md",
+        "section": "empty_validation_frontier",
+        "status": "partial_source_derived_model",
+        "subject_revision": "b3969bd160adfbcc34ff5151979c2f70df341ecdec08636684320c5010bcb9c4",
+        "type": "empty_horizon_validation_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "id": "algorithm-viterbi",
+  "kind": "groupant",
+  "registry": {
+    "node": "algorithm-viterbi",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "b3969bd160adfbcc34ff5151979c2f70df341ecdec08636684320c5010bcb9c4"
+  },
+  "status": "partial_descriptive_instance"
+}

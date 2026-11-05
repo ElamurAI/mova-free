@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline knapsack::tests",
+    "Independent bounded oracle and rejected source mutation; see adjacent model.md#tests."
+  ],
+  "cost": "O((items+1)*(capacity+1)) time and O(capacity+1) row storage, conditional on successful allocation.",
+  "description": "Exact 0/1 capacity optimization including zero-weight items.",
+  "forward": [
+    "Return max sum of values over subsets with total weight<=capacity; every item may be used once, including weight zero."
+  ],
+  "id": "algorithm-knapsack",
+  "inverse": [
+    "The adjacent behavior_complement models excluded input/output pairs in an explicit universe.",
+    "reverse_reconstruction retains all compatible inputs; optimization, equality and output projection lose information."
+  ],
+  "limitations": [
+    "Finite checks are not universal proof.",
+    "Partial source syntax omits expansion and semantic resolution."
+  ],
+  "source": "algorithms/src/knapsack/mod.rs",
+  "state": "Finite items of usize weight and u64 value, usize capacity, supported usize<=64 target; u128 optimum or typed dimension/allocation error."
+}

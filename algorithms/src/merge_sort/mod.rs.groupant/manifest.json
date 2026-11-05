@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-merge-sort",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "547dcc7a7b33ac493fb1b186aa90e21ce960b03e8103c60d5dab1f9f9a4b6154"
+  },
+  "components": {
+    "ast": {
+      "path": "syntax.json",
+      "status": "partial",
+      "format": "rust_syntax_projection"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived_bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived_bounded_checked"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#test-extraction",
+      "status": "bounded_evidence"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "547dcc7a7b33ac493fb1b186aa90e21ce960b03e8103c60d5dab1f9f9a4b6154",
+        "domain": "Finite slices with lawful Ord and value-preserving Clone; terminating successful calls without user-code panic or allocation failure; distinguish occurrence identities.",
+        "observation_scope": "Input/output transition for one successful call; no trace or panic contract.",
+        "operator": "U consists of pairs (A,B) of finite occurrence sequences. R(A,B) means B is the stable ascending permutation. U minus R includes changed length/multiplicity, descending adjacent keys, or reversal of equal-key identities. Under lawful comparison/clone these exhaust unsuccessful output candidates; bounded evidence is not general proof.",
+        "approximation_semantics": "Conditional source-derived relation; bounded correspondence only, prospective details explicitly identified.",
+        "assumptions": "Finite slices with lawful Ord and value-preserving Clone; terminating successful calls without user-code panic or allocation failure; distinguish occurrence identities.",
+        "evidence": "model.md#test-extraction"
+      },
+      {
+        "id": "antecedents",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "547dcc7a7b33ac493fb1b186aa90e21ce960b03e8103c60d5dab1f9f9a4b6154",
+        "domain": "Finite slices with lawful Ord and value-preserving Clone; terminating successful calls without user-code panic or allocation failure; distinguish occurrence identities.",
+        "observation_scope": "Input/output transition for one successful call; no trace or panic contract.",
+        "operator": "For fixed sorted B, the preimage contains every permutation A of B's occurrences preserving the order of each equal-key subsequence seen in B. Distinct-key interleavings remain ambiguous. Unsorted B has empty preimage.",
+        "approximation_semantics": "Conditional source-derived relation; bounded correspondence only, prospective details explicitly identified.",
+        "assumptions": "Finite slices with lawful Ord and value-preserving Clone; terminating successful calls without user-code panic or allocation failure; distinguish occurrence identities.",
+        "evidence": "model.md#test-extraction"
+      },
+      {
+        "id": "equal_key_order",
+        "type": "stability_projection",
+        "path": "model.md",
+        "section": "equal_key_order",
+        "status": "partial_source_derived_model",
+        "subject_revision": "547dcc7a7b33ac493fb1b186aa90e21ce960b03e8103c60d5dab1f9f9a4b6154",
+        "domain": "Finite slices with lawful Ord and value-preserving Clone; terminating successful calls without user-code panic or allocation failure; distinguish occurrence identities.",
+        "observation_scope": "Input/output transition for one successful call; no trace or panic contract.",
+        "operator": "Fix key q. Filtering S(A) to occurrences with key q yields precisely filter(A,key=q), retaining identity order. Independent bucket oracle builds all such subsequences in ascending key order.",
+        "approximation_semantics": "Conditional source-derived relation; bounded correspondence only, prospective details explicitly identified.",
+        "assumptions": "Finite slices with lawful Ord and value-preserving Clone; terminating successful calls without user-code panic or allocation failure; distinguish occurrence identities.",
+        "evidence": "model.md#test-extraction"
+      },
+      {
+        "id": "tie_policy",
+        "type": "counterfactual_boundary",
+        "path": "model.md",
+        "section": "tie_policy",
+        "status": "partial_source_derived_model",
+        "subject_revision": "547dcc7a7b33ac493fb1b186aa90e21ce960b03e8103c60d5dab1f9f9a4b6154",
+        "domain": "Finite slices with lawful Ord and value-preserving Clone; terminating successful calls without user-code panic or allocation failure; distinguish occurrence identities.",
+        "observation_scope": "Input/output transition for one successful call; no trace or panic contract.",
+        "operator": "Change <= to < at merge ties. Sorted key output remains possible, but equal-key items can cross from right before left. Two equal keys with distinct identities witness the divergence; the stability oracle rejects this mutant.",
+        "approximation_semantics": "Conditional source-derived relation; bounded correspondence only, prospective details explicitly identified.",
+        "assumptions": "Finite slices with lawful Ord and value-preserving Clone; terminating successful calls without user-code panic or allocation failure; distinguish occurrence identities.",
+        "evidence": "model.md#test-extraction"
+      },
+      {
+        "id": "idempotence",
+        "type": "fixed_point",
+        "path": "model.md",
+        "section": "idempotence",
+        "status": "partial_source_derived_model",
+        "subject_revision": "547dcc7a7b33ac493fb1b186aa90e21ce960b03e8103c60d5dab1f9f9a4b6154",
+        "domain": "Finite slices with lawful Ord and value-preserving Clone; terminating successful calls without user-code panic or allocation failure; distinguish occurrence identities.",
+        "observation_scope": "Input/output transition for one successful call; no trace or panic contract.",
+        "operator": "For stable sorted B, S(B)=B by occurrence identity. For arbitrary A, S(S(A))=S(A). Domain holds key and identity fixed. Direct two-call oracle is prospective; bounded bucket equality provides evidence for the premise and single-call relation.",
+        "approximation_semantics": "Conditional source-derived relation; bounded correspondence only, prospective details explicitly identified.",
+        "assumptions": "Finite slices with lawful Ord and value-preserving Clone; terminating successful calls without user-code panic or allocation failure; distinguish occurrence identities.",
+        "evidence": "model.md#test-extraction"
+      }
+    ]
+  },
+  "children": []
+}

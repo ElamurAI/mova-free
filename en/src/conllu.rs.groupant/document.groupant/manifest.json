@@ -1,0 +1,94 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-bound policy relation, not semantic proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-bound policy relation, not semantic proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "round_trip",
+        "path": "model.md",
+        "scope": "Source-bound policy relation, not semantic proof",
+        "section": "round_trip",
+        "status": "partial_source_derived_model",
+        "type": "round_trip"
+      },
+      {
+        "id": "strict_lexical_layer",
+        "path": "model.md",
+        "scope": "Source-bound policy relation, not semantic proof",
+        "section": "strict_lexical_layer",
+        "status": "partial_source_derived_model",
+        "type": "strict_lexical_layer"
+      },
+      {
+        "id": "comment_only_zero",
+        "path": "model.md",
+        "scope": "Source-bound policy relation, not semantic proof",
+        "section": "comment_only_zero",
+        "status": "partial_source_derived_model",
+        "type": "comment_only_zero"
+      },
+      {
+        "id": "raw_vs_derived",
+        "path": "model.md",
+        "scope": "Source-bound policy relation, not semantic proof",
+        "section": "raw_vs_derived",
+        "status": "partial_source_derived_model",
+        "type": "raw_vs_derived"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 15067,
+      "start": 11051
+    },
+    "description": "Doc::read reads UTF-8 then calls parse with path context. parse tracks leading blanks, per-sentence blank counts, final newline and exact raw comments/ten columns; CR is rejected and comments after rows fail. After complete lexical scanning, refresh each sentence, then derive global layer flags. text joins retained lines/tabs/LF without consulting derived tokens.",
+    "source_bytes_sha256": "14894bf237a2d8f33de68df5247d12f84677a172793b3e4e876ed7cc147a682f"
+  },
+  "id": "en-conllu-document",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../conllu.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "0fab6c3718ad36dfdb49c751e91eaa291f5831efd71274ee0611ba79593227ca"
+  },
+  "status": "partial_source_bound_model"
+}

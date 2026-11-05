@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "wave30_synthetic_selection_helpers"
+  ],
+  "children": [],
+  "cost": "Helper scans O(text bytes) plus accumulated prefix copies; external traversal and per-block subprocess limit ten seconds are unexecuted effects. Output memory grows with report rows.",
+  "description": "External Octave test extraction, lexical scope filter and subprocess report harness; only synthetic extraction helpers run here.",
+  "forward": [
+    "files recursively sorts candidate m/cc paths. blocks collects column-zero %! directives with shared initialization and accumulated functions; calls/assigned approximate builtin scope. Ignored measurement launches timeout per selected block and classifies hang/crash/error/assert/pass."
+  ],
+  "id": "mlab-tests-octave-ext",
+  "inverse": [
+    "Non-column-zero %! excludes extraction. Unknown directives exclude ordinary test output. Calls filter excludes double-quoted text but does not exclude all comments or single-quoted strings; it is no parser proof.",
+    "Same blocks admit arbitrary non-%! implementation text and ignored directives; same call-name set admits many syntactic forms. Report status cannot reconstruct process stderr, only truncated first-error detail survives."
+  ],
+  "limitations": [
+    "Partial source-bound model, not semantic proof",
+    "No executable percentage surrogate",
+    "Finite synthetic fixtures only; frozen suites/external measurement unexecuted"
+  ],
+  "source": "mlab/tests/octave_ext.rs",
+  "state": "Scope names use HashSet membership; files sorted before processing. Expected-error pattern/id is stripped without matching actual error text."
+}

@@ -72,11 +72,27 @@ fn shape(w: &str) -> u64 {
 }
 
 /// Mask of tags the in-code dictionary gives the form (0 — form not in the dictionary).
-fn dict_mask(w: &str) -> u64 {
+/// A form the dictionary does not know gets the tags of its derivation when `derive` (`crate::derive::hint`:
+/// *unsupervised* — those of *supervised*), so the feature is one the model has weights for.
+fn dict_mask(w: &str, derive: bool) -> u64 {
     let mut m = 0u64;
-    if let Some(f) = dict::form(&w.to_lowercase()) {
+    let low = w.to_lowercase();
+    if let Some(f) = dict::form(&low) {
         for r in dict::analyses(f) {
             m |= 1 << r.tag.idx();
+        }
+    } else {
+        // a form of the lexicon extension: its tags as written (`lexext::hint`: *GPU*, *Zhang* NNP); else a derivation's
+        let ext = crate::lexext::hint(w, !derive);
+        let tags = if !ext.is_empty() {
+            ext
+        } else if derive {
+            crate::derive::hint(&low)
+        } else {
+            vec![]
+        };
+        for t in tags {
+            m |= 1 << t.idx();
         }
     }
     m
@@ -100,10 +116,13 @@ fn chars_key(kind: u64, cs: &[char]) -> u64 {
 fn prep(words: &[&str]) -> Vec<W> {
     words
         .iter()
-        .map(|w| {
+        .enumerate()
+        .map(|(i, w)| {
             let n = norm(w);
             let cs: Vec<char> = n.chars().collect();
-            W { norm: str_key(&n), suf3: chars_key(3, &cs[cs.len().saturating_sub(3)..]), mask: dict_mask(w), shape: shape(w) }
+            // a capitalised word inside the sentence is more likely a name than a derived word («Synder» ≠ synd + -er)
+            let derive = i == 0 || !w.chars().next().is_some_and(char::is_uppercase);
+            W { norm: str_key(&n), suf3: chars_key(3, &cs[cs.len().saturating_sub(3)..]), mask: dict_mask(w, derive), shape: shape(w) }
         })
         .collect()
 }
@@ -389,6 +408,16 @@ impl PTagger {
 
     /// The same with document context (`None` — same as `tag`).
     pub fn tag_ctx(&self, words: &[&str], ctx: Option<&Ctx>) -> Vec<Tag> {
+        self.tag_inner(words, ctx, &[])
+    }
+
+    /// The same with some tags given (`forced[i]` — the tag of word `i`, `None` — the tagger chooses): a closed table
+    /// (`crate::emode`) knows them; the beam keeps them, so the neighbours are tagged in their light.
+    pub fn tag_forced(&self, words: &[&str], forced: &[Option<Tag>]) -> Vec<Tag> {
+        self.tag_inner(words, None, forced)
+    }
+
+    fn tag_inner(&self, words: &[&str], ctx: Option<&Ctx>, forced: &[Option<Tag>]) -> Vec<Tag> {
         let cx = ctx.map_or_else(Codes::default, |c| Codes::of(c, words.len()));
         let ws = prep(words);
         let mut feats = Vec::with_capacity(40);
@@ -398,8 +427,8 @@ impl PTagger {
         for i in 0..words.len() {
             let mut next: Vec<(f32, usize, usize, usize)> = Vec::new();
             for &(sc, p1, p2, h) in &beam {
-                let cands: Vec<(usize, f32)> = match self.known.get(words[i]) {
-                    Some(&t) => vec![(t as usize, 0.0)],
+                let cands: Vec<(usize, f32)> = match forced.get(i).copied().flatten().map(|t| t as u8).or_else(|| self.known.get(words[i]).copied()) {
+                    Some(t) => vec![(t as usize, 0.0)],
                     None => {
                         let s = self.local(words, &ws, i, p1, p2, &cx, &mut feats);
                         let mut v: Vec<(usize, f32)> = (0..NT).filter(|&t| s[t] > f32::NEG_INFINITY).map(|t| (t, s[t])).collect();
@@ -497,5 +526,30 @@ mod tests {
         // negative control: training on wrong tags gives wrong tags
         let bad: Vec<Sentence> = (0..30).map(|_| sent(&[("The", NN), ("dog", DT), ("runs", Stop), (".", VBZ)])).collect();
         assert_ne!(PTagger::train(&bad, 5).tag(&["The", "dog", "runs", "."]), vec![DT, NN, VBZ, Stop]);
+    }
+}
+
+#[cfg(test)]
+mod wave27_tests {
+    use super::*;
+    #[test]
+    fn forced_tags_override_seen_and_zero_beam() {
+        let mut t = PTagger::train(&[], 0);
+        t.beam = 0;
+        assert_eq!(
+            t.tag_forced(&["q", "r"], &[Some(Tag::NN), Some(Tag::VB)]),
+            vec![Tag::NN, Tag::VB]
+        );
+        assert!(t.tag(&[]).is_empty());
+        assert!(jackknife(&[], 0, 0).is_empty());
+        assert_eq!(norm("A12"), "a00");
+        assert_eq!(shape("ABC123"), shape("Z9"));
+        let mut s = [0.0; NT];
+        let mut seen = [false; NT];
+        seen[1] = true;
+        seen[2] = true;
+        assert_eq!(best(&s, &seen), 1);
+        s[2] = 1.0;
+        assert_eq!(best(&s, &seen), 2);
     }
 }

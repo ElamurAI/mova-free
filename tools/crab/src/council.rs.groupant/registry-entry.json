@@ -1,0 +1,23 @@
+{
+  "id": "crab-council",
+  "source": "tools/crab/src/council.rs",
+  "children": [],
+  "description": "Event-driven council of named consultant Dolphins over Crab's supervision digest (rounds on fact changes or after the longest interval, quorum of idle members, member timeout), typed verdict parsing, deterministic combination and the Octopus's attention queue with fingerprint merging.",
+  "state": "run_root/council/{state.json, journal.jsonl, refusals.jsonl}; run_root/attention/{attention.jsonl, state.json, attention.md}.",
+  "forward": [
+    "tick: a compact skip unless the stable-facts fingerprint changed and min_spacing passed, or period passed; below quorum idle members a skip; else the same bounded digest is queued to each idle member (busy ones absent); close when all asked answered or after member_timeout (silent ones timed out): parse first line VERDICT none|octopus|action:<allowed>:<probe>|capacity:<kind>:<more|fewer>:<n>; combine over the answers (fewer than quorum -> expired attention item): all none -> journal, identical allowed action -> execute through flow bounds, otherwise attention item. Attention items are fingerprinted by source and facts; repeats merge (count, first/last time) and only new fingerprints are appended."
+  ],
+  "inverse": [
+    "Excluded: executing a capacity verdict, a one-sided or disagreeing action, any malformed or unknown verdict, any text beyond the typed first line.",
+    "The journal recovers each round's verdicts, reasons (bounded) and answer hashes; the answers' full texts stay in the consult reports.",
+    "Excluded: a round on unchanged facts before the longest interval; overwriting a busy member's task; combining fewer than quorum (>= 2) answers; appending a repeat of a known attention fingerprint."
+  ],
+  "cost": "At most one consult-queue entry per member per min_spacing (>= 60 s), one per period (>= 600 s) on unchanged facts; one digest composition and fingerprint per check_seconds; a digest <= max_task_bytes; attention state <= 512 fingerprints.",
+  "checks": [
+    "2026-11-04: 3 module tests with a fake pod; red controls: disagreement executed, capacity executed, malformed read as none.",
+    "2026-11-04 (event-driven council): 4 new or rewritten module tests (event gating and compact skips, quorum with a busy and a silent member, attention merge, legacy seeding); red controls: merge removed, event gating removed, quorum as all members, member timeout as two periods; tools/crab 126 lib tests."
+  ],
+  "limitations": [
+    "Advice quality is not assessed; members' independence holds only through the digest Crab sends; live Dolphin terminals are not exercised by these tests."
+  ]
+}

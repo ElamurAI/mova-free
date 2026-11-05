@@ -45,7 +45,7 @@ fn main() -> Result<()> {
     std::fs::create_dir_all(&dir)?;
     let records = dir.join("records.jsonl");
     let calls = dir.join("calls.jsonl");
-    let cap: f64 = std::env::var("MATH2_CAP").ok().and_then(|s| s.parse().ok()).unwrap_or(15.0); // design: "cheap skeleton" — wave cap $15
+    let cap: f64 = std::env::var("MATH2_CAP").ok().and_then(|s| s.parse().ok()).unwrap_or(15.0); // design: "cheap skeleton" — a wave cap
     match cmd.as_str() {
         "prep" => {
             let raw = mova_data().join("raw/mathsolve");
@@ -1160,4 +1160,21 @@ fn main() -> Result<()> {
         _ => bail!("unknown command {cmd}"),
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn first_flag() {
+        let a = vec![
+            "--batch".into(),
+            "3".into(),
+            "--batch".into(),
+            "9".into(),
+            "--par".into(),
+        ];
+        assert_eq!(flag(&a, "--batch"), Some("3".into()));
+        assert_eq!(flag(&a, "--par"), None);
+    }
 }

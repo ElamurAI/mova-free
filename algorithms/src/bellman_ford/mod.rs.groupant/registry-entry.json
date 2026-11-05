@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline bellman_ford::tests::",
+    "Compiled external mutant rejected by exact named test.",
+    "Debug and release focused runs twice; strict all-target Clippy; isolated compiled mutation; source syntax twice."
+  ],
+  "children": [],
+  "cost": "Validation O(V+E), then at most V rounds each cloning V entries and inspecting V+E data: O(V(V+E)) time, O(V) auxiliary space. Costs include an empty-edge graph. No timing claim.",
+  "description": "bellman_ford exact implementation",
+  "forward": [
+    "Reject an invalid source first, then the first invalid endpoint in row/edge order. On valid graphs return None exactly at unreachable vertices and Some of the minimum walk weight elsewhere, unless a source-reachable negative cycle exists, which returns ReachableNegativeCycle. All signed i64 edge weights, duplicates, loops and disconnected components are supported. i128 checked addition returns DistanceOverflow if representation fails; on current <=64-bit usize targets at most V edges per synchronous round fit i128.",
+    "2026-10-30 deep graph epoch: see specialized relations in adjacent model.md and six deterministic source tests."
+  ],
+  "id": "algorithm-bellman-ford",
+  "inverse": [
+    "Let X be allocated finite adjacency vectors with i64 weights and usize sources, and Y the typed Result<Vec<Option<i128>>,BellmanFordError> observation space, excluding allocation failure and nontermination. Let R subset X times Y be the graph of the Forward relation including source-before-edge validation and first checked-overflow precedence. Define U=X times Y and behavior_complement=U minus R. Thus every input has its unique permitted observation in R; all other typed observations are in the complement. The shortest-walk characterization assumes representable synchronous sums (guaranteed on current <=64-bit usize targets). Finite negative fixtures check selected memberships, not this whole universe.",
+    "Given successful vector d, compatible antecedents are all validated graphs and valid sources whose reachable minimum walk weights equal d and have no reachable negative cycle. Many graphs fit the same d: unused edges may change while preserving minima. InvalidSource recovers source>=V; InvalidEdge recovers a valid source and first offending edge; ReachableNegativeCycle recovers existence and source reachability, not its unique vertices. DistanceOverflow describes first failed checked sum."
+  ],
+  "limitations": [
+    "Partial syntax has no macro expansion or type resolution. Bounded evidence is not proof. Allocation failures are outside the Result contract. No approximate executable profiles."
+  ],
+  "source": "algorithms/src/bellman_ford/mod.rs",
+  "state": "Finite allocated adjacency vectors and typed result observations, ordinary terminating Rust execution."
+}

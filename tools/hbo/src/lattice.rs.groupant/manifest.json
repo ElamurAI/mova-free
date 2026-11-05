@@ -1,0 +1,140 @@
+{
+  "children": [
+    {
+      "id": "hbo-lattice-selection",
+      "path": "selection.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "k>=1 when any nonpunctuation token exists, valid token index and nonempty cut outputs, base present for every alternative. Finite scores/lambda/mu and finite operations for ordered gain meaning; word counts representable as i64 for gains. Integer comments refer to sentence/token positions, not sent_id.",
+        "evidence": "model.md#tests",
+        "id": "behavior_complement",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "With finite gains<=0 no token leaves base; equal positive gains cannot replace first winner. variants never creates a simultaneous two-token alternative; independent final choices are not guaranteed jointly parser-optimal.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "subject_revision": "eeec78ace6a0dadfcff75205bc3718b223cf89d05fc8df94ea2884272f033fbf",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "k>=1 when any nonpunctuation token exists, valid token index and nonempty cut outputs, base present for every alternative. Finite scores/lambda/mu and finite operations for ordered gain meaning; word counts representable as i64 for gains. Integer comments refer to sentence/token positions, not sent_id.",
+        "evidence": "model.md#tests",
+        "id": "reverse_reconstruction",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Choice(label,gain) admits all score/logshare/word-count tuples satisfying g=alt-base+lambda*lr+mu*delta and dominance inequalities. Empty choice conflates absent alternatives and nonpositive/NaN gains; parsed trees cannot be recovered.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "subject_revision": "eeec78ace6a0dadfcff75205bc3718b223cf89d05fc8df94ea2884272f033fbf",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "k>=1 when any nonpunctuation token exists, valid token index and nonempty cut outputs, base present for every alternative. Finite scores/lambda/mu and finite operations for ordered gain meaning; word counts representable as i64 for gains. Integer comments refer to sentence/token positions, not sent_id.",
+        "evidence": "model.md#tests",
+        "id": "reading_cardinality",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Base plus one changed token per eligible alternative gives V=1+sum max(C_i-1,0). Punctuation (including empty-word tokens by all()) has no alternatives and is cloned. k0 causes base-index panic on nonpunctuation.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "reading_cardinality",
+        "status": "partial_source_derived_model",
+        "subject_revision": "eeec78ace6a0dadfcff75205bc3718b223cf89d05fc8df94ea2884272f033fbf",
+        "type": "reading_cardinality"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "k>=1 when any nonpunctuation token exists, valid token index and nonempty cut outputs, base present for every alternative. Finite scores/lambda/mu and finite operations for ordered gain meaning; word counts representable as i64 for gains. Integer comments refer to sentence/token positions, not sent_id.",
+        "evidence": "model.md#tests",
+        "id": "gain_ties",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "gain=score_alt-score_base+lambda*lr+mu*(words_alt-words_base); strict >0 and strict > incumbent retain first equal winner. Missing alternative score substitutes f64::MIN; NaN comparisons are false, not a valid probability policy.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "gain_ties",
+        "status": "partial_source_derived_model",
+        "subject_revision": "eeec78ace6a0dadfcff75205bc3718b223cf89d05fc8df94ea2884272f033fbf",
+        "type": "gain_ties"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "k>=1 when any nonpunctuation token exists, valid token index and nonempty cut outputs, base present for every alternative. Finite scores/lambda/mu and finite operations for ordered gain meaning; word counts representable as i64 for gains. Integer comments refer to sentence/token positions, not sent_id.",
+        "evidence": "model.md#tests",
+        "id": "failure_precedence",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "First pass rejects any missing lattice comment and base missing gp_score; second pass indexes base and panics if absent. gains instead skips missing joins/scores. Duplicate bases last-wins.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "subject_revision": "eeec78ace6a0dadfcff75205bc3718b223cf89d05fc8df94ea2884272f033fbf",
+        "type": "failure_precedence"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "k>=1 when any nonpunctuation token exists, valid token index and nonempty cut outputs, base present for every alternative. Finite scores/lambda/mu and finite operations for ordered gain meaning; word counts representable as i64 for gains. Integer comments refer to sentence/token positions, not sent_id.",
+        "evidence": "model.md#tests",
+        "id": "apply_coordinate",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Choice keys index input sentence/token positions. Chosen labels are permissively parsed; apply appends '|Lattice=label:gain' to first cut word and preserves only sent_id/text comments. A choice is not validated against retained candidates.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "apply_coordinate",
+        "status": "partial_source_derived_model",
+        "subject_revision": "eeec78ace6a0dadfcff75205bc3718b223cf89d05fc8df94ea2884272f033fbf",
+        "type": "apply_coordinate"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "hbo-lattice",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../lattice.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "eeec78ace6a0dadfcff75205bc3718b223cf89d05fc8df94ea2884272f033fbf"
+  },
+  "status": "partial_source_bound_model"
+}

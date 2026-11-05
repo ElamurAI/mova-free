@@ -1,0 +1,23 @@
+{
+  "id": "correspondence-cli",
+  "source": "tools/correspondence/src/main.rs",
+  "children": [],
+  "description": "CLI for bounded correspondence scans and create-new JSON reports.",
+  "state": "Repository revision, registry ownership tree, typed relation catalogue, bounded deterministic report.",
+  "cost": "Scanner cost plus serialized report bytes and fsync.",
+  "forward": [
+    "CLI for bounded correspondence scans and create-new JSON reports.",
+    "Deterministic report preserves absent formulas and finite assurance scope."
+  ],
+  "inverse": [
+    "Behavior exclusions and reverse preimages are separately modeled in the adjacent sidecar."
+  ],
+  "checks": [
+    "cargo test -p mova-correspondence --bin mova-correspondence",
+    "Repeated small inventory scan and existing-output negative control"
+  ],
+  "limitations": [
+    "Hash bindings do not establish source/formula semantic correspondence.",
+    "Symbol and section annotations are unresolved; finite models cannot imply universal equivalence."
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "failed-ledger",
+        "path": "model.md",
+        "section": "failed-ledger",
+        "status": "partial_source_derived_model",
+        "type": "failure_state"
+      },
+      {
+        "id": "order-and-clone",
+        "path": "model.md",
+        "section": "order-and-clone",
+        "status": "partial_source_derived_model",
+        "type": "output_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_execution"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 6324,
+      "start": 5254
+    },
+    "description": "Compute missing by pre-call membership with refresh override; increment counters; invoke parser once iff missing nonempty; reject partial results; insert in occurrence order and return final-map clones.",
+    "syntax_nodes": {
+      "node_ids": [
+        495
+      ],
+      "path": "../syntax.json"
+    }
+  },
+  "id": "parse-cache-batch",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../parsecache.rs",
+    "sha256": "6545414761854d33b7b41f8a864a7f4c59eebeaee721eef68772bb4a7a652479"
+  },
+  "status": "partial_source_derived_instance"
+}

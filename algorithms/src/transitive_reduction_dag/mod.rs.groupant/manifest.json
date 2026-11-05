@@ -1,0 +1,128 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Let R be the deterministic relation specified by Forward including validation precedence and tie rules, X the declared input type and Y its Result type. Behavior complement is (X times Y) minus R. Specifically outputs violating Warshall after k permits intermediate vertices through k. Reduction keeps precisely original edges with no alternate path; all original reachability remains. are excluded; a valid-input Err or a wrong successful witness is excluded. Resource, cycle and structural rejections are determined before algorithmic output.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "58125a7da360e46fdcf8bb5b9f613f5c24ea808e44c576488abbfacebb512da7",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_inputs",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Given DAG H already transitively reduced, every graph formed by adding any subset of H's reachable pairs reduces to H. Duplicate input edges also collapse. Cyclic Error recovers any directed cycle, without a unique witness.",
+        "path": "model.md",
+        "section": "compatible_inputs",
+        "status": "partial_source_derived",
+        "subject_revision": "58125a7da360e46fdcf8bb5b9f613f5c24ea808e44c576488abbfacebb512da7",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "essential_edge",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Edge (u,v) is retained iff deleting it from the normalized input destroys u-to-v reachability. This characterizes unique DAG reduction.",
+        "path": "model.md",
+        "section": "essential_edge",
+        "status": "partial_source_derived",
+        "subject_revision": "58125a7da360e46fdcf8bb5b9f613f5c24ea808e44c576488abbfacebb512da7",
+        "type": "deletion_certificate"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "closure_fiber",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "For fixed reduced H, H and its transitive closure and every intermediate graph share the same reduction. On chain 0->1->2, adding 0->2 illustrates the nonunique fiber.",
+        "path": "model.md",
+        "section": "closure_fiber",
+        "status": "partial_source_derived",
+        "subject_revision": "58125a7da360e46fdcf8bb5b9f613f5c24ea808e44c576488abbfacebb512da7",
+        "type": "constructive_preimage"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "idempotence",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Reduction R satisfies reduction(R)=R. Every retained edge is essential in R.",
+        "path": "model.md",
+        "section": "idempotence",
+        "status": "partial_source_derived",
+        "subject_revision": "58125a7da360e46fdcf8bb5b9f613f5c24ea808e44c576488abbfacebb512da7",
+        "type": "fixed_point"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "representation",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Input row order and duplicate count do not affect sorted output. A self-loop always causes Cycle; empty graph returns empty.",
+        "path": "model.md",
+        "section": "representation",
+        "status": "partial_source_derived",
+        "subject_revision": "58125a7da360e46fdcf8bb5b9f613f5c24ea808e44c576488abbfacebb512da7",
+        "type": "representation_invariance"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "sha256": "12fed2b9f36e25a660a393e300bcfdbf1a85e7029eb59f9ec9cd566bcf2af92a",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-transitive-reduction-dag",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "58125a7da360e46fdcf8bb5b9f613f5c24ea808e44c576488abbfacebb512da7"
+  },
+  "status": "partial_source_derived_instance"
+}

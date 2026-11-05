@@ -1,0 +1,50 @@
+{
+  "checks": [
+    "books::tests::book_licenses",
+    "books::tests::topics_and_hosts",
+    "books::tests::aim_list_parses",
+    "fetch::tests::compacts_sources",
+    "fetch::tests::ext_and_licenses",
+    "http::tests::encodes_and_dates",
+    "oai::tests::tokens_and_errors",
+    "raw::tests::licenses_sizes_dates",
+    "raw::tests::parses_record",
+    "duck::wave33::substitution_order_and_quotes",
+    "wave33::argument_partition_and_numeric_failure",
+    "wave33::license_and_token_representation_joins",
+    "robots::wave33::tie_specificity_and_literal_pattern",
+    "robots::wave33::delay_and_url_without_dns",
+    "oai::wave33::state_resume_and_stop_without_requests",
+    "fetch::wave33::list_signature_hash_and_existing",
+    "http::wave33::byte_codecs_and_civil_boundaries"
+  ],
+  "children": [
+    "mathlib-books",
+    "mathlib-duck",
+    "mathlib-fetch",
+    "mathlib-gcs",
+    "mathlib-http",
+    "mathlib-main",
+    "mathlib-oai",
+    "mathlib-raw",
+    "mathlib-robots"
+  ],
+  "cost": "Sum only costs of reached route/helpers, preserving shared cached pages/host rules. Parsing linear in bytes plus id/page sorts; archive work follows decompressed size, not compressed bound. Network/process/disk/sleep costs remain unmeasured. No speedup or approximate percentage accuracy claim.",
+  "description": "main dispatches tagged routes. OAI -> compressed pages -> raw catalog is a file-format join, not one runtime call; raw license code -> fetch allowed is an exact string-policy bridge. books catalogs produce distinct textbook codes accepted by fetch. HTTP encode joins OAI/GCS query construction; fetch joins robots Gate and HTTP bounded download, then manifest serialization. Duck SQL transport remains an independent command route.",
+  "forward": [
+    "main dispatches tagged routes. OAI -> compressed pages -> raw catalog is a file-format join, not one runtime call; raw license code -> fetch allowed is an exact string-policy bridge. books catalogs produce distinct textbook codes accepted by fetch. HTTP encode joins OAI/GCS query construction; fetch joins robots Gate and HTTP bounded download, then manifest serialization. Duck SQL transport remains an independent command route.",
+    "Real joins: raw::License::code and books::BookLicense::code match fetch's finite allowed strings; raw inputs match OAI gzip page naming; HTTP encode transports literal token bytes; robots uses Polite and fetch invokes Gate before downloading. Counterexample: GCS JSON numeric size becomes zero; it is not raw KB format. Book build's DNS means offline TSV construction is not a pure parser. SQL filling is sequential substitution, not DB semantics."
+  ],
+  "id": "math-library-ingestion",
+  "inverse": [
+    "Inner exclusions: invalid fetch list/license prevents download setup; terminal OAI token prevents request; unknown raw license host cannot map Open. Across tagged paths these exclusions apply only to the selected route and preconditions, not every caller.",
+    "Final manifest admits many source catalogs, request histories and discarded archive payloads. Recover compatible Item/Done and raw/book code antecedents, retaining lossy normalization and merge fibers; no unique end-to-end inverse."
+  ],
+  "limitations": [
+    "Seventeen exact tests run twice in debug and release; tests are bounded helpers and temp state/archive cases, not complete ingestion workflows.",
+    "GCS list and Duck process are compile/source evidence only. HTTP fetch/download and robots DNS/check routes are not executed.",
+    "No executable surrogate: categorical decisions and effect ordering lack an approved useful numeric error metric; future caps remain 1/2/5/10%.",
+    "Potential malformed AIM slicing, invalid crawl-delay Duration panic, slug containment, mixed-format manifest ordering and crash recovery remain explicit unverified or source-derived limitations; no production repair made."
+  ],
+  "state": "Only explicitly selected routes execute; no automatic OAI-to-fetch pipeline exists. License labels preserve distinct raw/book domains until code transport. State files, raw pages and download manifests commit at different times; no composition-wide atomicity. Existing files precede STOP/cap checks in fetch. Catalog build can invoke DNS."
+}

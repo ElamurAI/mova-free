@@ -1,0 +1,112 @@
+{
+  "children": [
+    {
+      "id": "gparse-cli-score",
+      "path": "score.groupant"
+    },
+    {
+      "id": "gparse-cli-training",
+      "path": "training.groupant"
+    },
+    {
+      "id": "gparse-cli-annotation",
+      "path": "annotation.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "evidence": {
+      "path": "model.md#evidence",
+      "status": "executed_finite_checks"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "checkpoint_selection",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "checkpoint_selection",
+        "status": "partial_source_derived_model",
+        "type": "checkpoint_selection"
+      },
+      {
+        "id": "schedule_state",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "schedule_state",
+        "status": "partial_source_derived_model",
+        "type": "schedule_state"
+      },
+      {
+        "id": "metric_projection",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence only",
+        "section": "metric_projection",
+        "status": "partial_source_derived_model",
+        "type": "metric_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "gparse-cli",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../main.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "e42b84f188b56efd06083ab570a50c7c152896916d0b48aa4c369a6ef831dc91"
+  },
+  "status": "partial_source_bound_model"
+}

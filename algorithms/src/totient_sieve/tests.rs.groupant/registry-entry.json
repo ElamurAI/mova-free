@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms totient_sieve::tests"
+  ],
+  "children": [],
+  "cost": "O(n log log n) arithmetic and O(n) storage. GCD oracle through2048 has O(N^2 log N) upper bound. Allocation failure follows Vec policy.",
+  "description": "Finite executable observation: Return inclusive phi table, phi(0)=0, phi(1)=1; phi(k) counts integers1..k coprime to k. Initialize phi(k)=k, then for each prime p eliminate its factor by phi(multiple)-=phi(multiple)/p. Reject n>1000000 before allocation. Reference: Hardy and Wright, An Introduction to the Theory of Numbers, chapter V, Euler's function and its product formula. Assertions check independent arithmetic oracles, boundaries and identities; passing fixtures do not establish untested behavior.",
+  "forward": [
+    "Return inclusive phi table, phi(0)=0, phi(1)=1; phi(k) counts integers1..k coprime to k. Initialize phi(k)=k, then for each prime p eliminate its factor by phi(multiple)-=phi(multiple)/p. Reject n>1000000 before allocation. Reference: Hardy and Wright, An Introduction to the Theory of Numbers, chapter V, Euler's function and its product formula."
+  ],
+  "id": "algorithm-totient-sieve-tests",
+  "inverse": [
+    "Concrete complement and ambiguous output fibers in adjacent model.md"
+  ],
+  "limitations": [
+    "Finite oracle coverage; no semantic AST or formal proof; allocator failure follows Vec policy"
+  ],
+  "source": "algorithms/src/totient_sieve/tests.rs",
+  "state": "Entries equal k times product(1-1/p) over processed prime divisors; updates divide exactly. 0<=phi(k)<=k; cap bounds indices."
+}

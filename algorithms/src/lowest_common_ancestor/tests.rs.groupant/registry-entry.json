@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline lowest_common_ancestor::tests::",
+    "Debug and release twice normalized; strict Clippy; syntax twice; isolated compiled production mutation rejected at assertion."
+  ],
+  "children": [],
+  "cost": "Parent function enumeration sum(n=1..5)(n+1)^n; chain/intersection oracle polynomial in bounded n, plus O(100000 log100000) long-chain preprocessing. No timing claim.",
+  "description": "lowest_common_ancestor tests.rs exact algorithm and bounded contract",
+  "forward": [
+    "Run named exhaustive, boundary and metamorphic tests; each successful test is conjunction of its explicit Rust assertions. The suite executes production methods directly and independent reference predicates."
+  ],
+  "id": "algorithm-lowest-common-ancestor-tests",
+  "inverse": [
+    "For fixed finite fixtures, U consists of candidate terminating implementations paired with claimed pass/fail outcomes. R pairs each with conjunction of actual assertions. U minus R contains false pass and false failure claims. Unexercised inputs are unconstrained; a passing suite is not universal correctness.",
+    "A passing transcript admits every implementation satisfying the finite assertions, including implementations wrong outside the observed domain. A failing assertion restricts antecedents to implementations violating that exact predicate, without uniquely locating the defect."
+  ],
+  "limitations": [
+    "Finite evidence is not proof; allocation failures outside Result; partial syntax only; no executable lossy approximants."
+  ],
+  "source": "algorithms/src/lowest_common_ancestor/tests.rs",
+  "state": "Finite typed inputs, sufficient allocation; explicit Result errors."
+}

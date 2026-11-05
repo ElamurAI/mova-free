@@ -1,0 +1,102 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "scope": "Shared parent syntax restricted to coverage byte interval; no semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "exponent_admission",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "exponent_admission",
+        "status": "partial_source_derived_model",
+        "type": "exponent_admission"
+      },
+      {
+        "id": "unicode_coordinates",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "unicode_coordinates",
+        "status": "partial_source_derived_model",
+        "type": "unicode_coordinates"
+      },
+      {
+        "id": "numeric_validation_split",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "numeric_validation_split",
+        "status": "partial_source_derived_model",
+        "type": "numeric_validation_split"
+      },
+      {
+        "id": "symbol_precedence",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "symbol_precedence",
+        "status": "partial_source_derived_model",
+        "type": "symbol_precedence"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "Tests",
+      "status": "bounded_actual_helper_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 9052,
+      "start": 6237
+    },
+    "description": "State (character vector, cursor, tokens) advances left to right. Numeric runs admit digits and dots, then an optional well-formed exponent suffix. Alphabetic/underscore starts identifiers; bracket/equality/multiplication/minus specials precede the ordered symbol table. Unknown characters return Err with no token vector. Recognized aliases collapse to canonical Sym tokens."
+  },
+  "id": "math-calc-parser-lex-normalization",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../calc.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e"
+  },
+  "status": "partial_source_bound_model"
+}

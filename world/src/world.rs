@@ -1370,3 +1370,330 @@ pub fn run_mode(text: Text, lines: &[Line], v3: bool) -> Run {
     let uncovered = (1..=w.text.sents.len() as u16).filter(|s| !covered.contains(s)).collect();
     Run { world: w, accepted, rejects, uncovered }
 }
+#[cfg(test)]
+mod wave7_world {
+    use super::*;
+    fn id(reg: Reg, n: u32) -> Id {
+        Id::new(reg, n)
+    }
+    fn text() -> Text {
+        Text {
+            doc: 0,
+            title: "fixture".into(),
+            sents: vec![(1, "one".into()), (1, "two".into()), (2, "three".into())],
+        }
+    }
+    fn local() -> World {
+        let mut w = World::new(text());
+        w.story = None;
+        w
+    }
+    fn line(cmd: Cmd, anchors: &[u16]) -> Line {
+        Line {
+            no: 1,
+            raw: "memory fixture".into(),
+            cmd,
+            anchors: anchors.to_vec(),
+        }
+    }
+    fn cursor(time: Option<&str>) -> Cmd {
+        Cmd::Cursor {
+            chapter: None,
+            para: None,
+            sent: None,
+            at: None,
+            time: time.map(str::to_owned),
+        }
+    }
+    #[test]
+    fn exhaustive_delta_prefixes_against_last_write_oracle() {
+        let object = id(Reg::O, 1);
+        let alphabet = [
+            Delta::Set(Field::Name, Val::Known(V::Text("a".into()))),
+            Delta::Set(Field::Name, Val::Known(V::Text("b".into()))),
+            Delta::Set(Field::Name, Val::Unknown),
+            Delta::Add(SetF::Items, object),
+            Delta::Del(SetF::Items, object),
+        ];
+        for code in 0usize..625 {
+            let mut digits = code;
+            let sequence: Vec<_> = (0..4)
+                .map(|_| {
+                    let d = alphabet[digits % 5].clone();
+                    digits /= 5;
+                    d
+                })
+                .collect();
+            let e = Entity {
+                id: id(Reg::C, 1),
+                mentions: vec![],
+                states: sequence
+                    .iter()
+                    .enumerate()
+                    .map(|(i, d)| State {
+                        ver: i as u32 + 1,
+                        delta: vec![d.clone()],
+                        cause: None,
+                        by: "fixture",
+                        line: i,
+                        pos: TextPos {
+                            chapter: 1,
+                            para: 1,
+                            sent: i as u16 + 1,
+                        },
+                        note: None,
+                    })
+                    .collect(),
+            };
+            for prefix in 0..=4 {
+                let prior = &sequence[..prefix];
+                let last_field = prior.iter().rposition(|d| matches!(d, Delta::Set(_, _)));
+                let expected = last_field
+                    .map(|i| match &prior[i] {
+                        Delta::Set(_, v) => v.clone(),
+                        _ => unreachable!(),
+                    })
+                    .unwrap_or(Val::Unknown);
+                let present = prior
+                    .iter()
+                    .rev()
+                    .find_map(|d| match d {
+                        Delta::Add(_, _) => Some(true),
+                        Delta::Del(_, _) => Some(false),
+                        _ => None,
+                    })
+                    .unwrap_or(false);
+                let snap = e.snap(prefix as u32);
+                assert_eq!(snap.get(Field::Name), expected);
+                assert_eq!(
+                    snap.ids(SetF::Items),
+                    if present { vec![object] } else { vec![] }
+                );
+                assert_eq!(snap.sets().count(), usize::from(present));
+                assert_eq!(
+                    e.set_by(Field::Name, prefix as u32).map(|s| s.ver),
+                    last_field.map(|i| i as u32 + 1)
+                );
+                assert_eq!(
+                    e.ver_at(prefix as u16),
+                    if prefix == 0 {
+                        None
+                    } else {
+                        Some(prefix as u32)
+                    }
+                );
+            }
+            assert_eq!(e.snap(99), e.now());
+            assert!(e.state(0).is_none());
+            assert!(e.state(5).is_none());
+        }
+    }
+    #[test]
+    fn failed_post_gate_rolls_back_and_move_preserves_history() {
+        let (l, c, o) = (id(Reg::L, 1), id(Reg::C, 1), id(Reg::O, 1));
+        let mut w = local();
+        w.inject(
+            l,
+            vec![Delta::Add(SetF::Chars, c), Delta::Add(SetF::Objects, o)],
+        );
+        w.inject(c, vec![Delta::Set(Field::At, Val::Known(V::Id(l)))]);
+        w.inject(o, vec![Delta::Set(Field::At, Val::Known(V::Id(l)))]);
+        assert!(w.check_links().is_ok());
+        let before = format!("{w:?}");
+        let err = w
+            .apply(&line(
+                Cmd::Have {
+                    who: c,
+                    what: o,
+                    cause: None,
+                },
+                &[1],
+            ))
+            .unwrap_err();
+        assert_eq!(err.gate, Gate::Link);
+        assert_eq!(format!("{w:?}"), before);
+        w.apply(&line(
+            Cmd::Move {
+                who: o,
+                to: c,
+                cause: None,
+            },
+            &[1],
+        ))
+        .unwrap();
+        assert!(w.check_links().is_ok());
+        assert_eq!(w.now(o).unwrap().id(Field::At), Some(c));
+        assert!(!w.now(l).unwrap().has(SetF::Objects, o));
+        assert!(w.now(c).unwrap().has(SetF::Items, o));
+        assert_eq!(w.ent(o).unwrap().snap(1).id(Field::At), Some(l));
+        let latest = w.ent(o).unwrap().latest();
+        w.apply(&line(
+            Cmd::Move {
+                who: o,
+                to: c,
+                cause: None,
+            },
+            &[2],
+        ))
+        .unwrap();
+        assert_eq!(w.ent(o).unwrap().latest(), latest);
+        assert_eq!(
+            w.ent(o)
+                .unwrap()
+                .mentions()
+                .iter()
+                .map(|p| p.sent)
+                .collect::<Vec<_>>(),
+            vec![1, 2]
+        );
+    }
+    #[test]
+    fn anchor_matrix_and_cursor_validation() {
+        let mut w = local();
+        w.pos.sent = 2;
+        for a in 0..=4 {
+            for b in 0..=4 {
+                let result = w.position(&line(Cmd::Mention { ids: vec![] }, &[a, b]));
+                let admitted = (1..=3).contains(&a) && (1..=3).contains(&b) && a.max(b) >= 2;
+                assert_eq!(result.is_ok(), admitted);
+                if let Ok(pos) = result {
+                    assert_eq!(pos.sent, a.max(b));
+                    assert_eq!(pos.para, if pos.sent == 3 { 2 } else { 1 });
+                }
+            }
+        }
+        assert_eq!(
+            w.position(&line(cursor(None), &[])).unwrap_err().gate,
+            Gate::Anchor
+        );
+        let mut cmd = cursor(None);
+        if let Cmd::Cursor { para, .. } = &mut cmd {
+            *para = Some(2);
+        }
+        assert_eq!(w.position(&line(cmd, &[2])).unwrap_err().gate, Gate::Anchor);
+    }
+    #[test]
+    fn cursor_inheritance_and_ordered_mentions() {
+        let mut w = local();
+        let c = id(Reg::C, 1);
+        w.inject(c, vec![]);
+        w.apply(&line(Cmd::Mention { ids: vec![c, c] }, &[2, 1, 2]))
+            .unwrap();
+        assert_eq!(
+            w.ent(c)
+                .unwrap()
+                .mentions()
+                .iter()
+                .map(|p| p.sent)
+                .collect::<Vec<_>>(),
+            vec![1, 2]
+        );
+        assert!(w.cursor().is_empty());
+        w.apply(&line(cursor(Some("morning")), &[2])).unwrap();
+        w.apply(&line(cursor(None), &[3])).unwrap();
+        assert_eq!(w.cursor().len(), 2);
+        assert_eq!(w.cursor()[1].time.as_deref(), Some("morning"));
+        assert_eq!(
+            w.cursor()[1].pos,
+            TextPos {
+                chapter: 1,
+                para: 2,
+                sent: 3
+            }
+        );
+    }
+    #[test]
+    fn spatial_chain_and_registry_projection() {
+        let mut w = local();
+        let ls = [id(Reg::L, 1), id(Reg::L, 2), id(Reg::L, 3)];
+        w.inject(ls[0], vec![]);
+        w.inject(
+            ls[1],
+            vec![Delta::Set(Field::Parent, Val::Known(V::Id(ls[0])))],
+        );
+        w.inject(
+            ls[2],
+            vec![Delta::Set(Field::Parent, Val::Known(V::Id(ls[1])))],
+        );
+        assert_eq!(w.ancestors(ls[2]), vec![ls[1], ls[0]]);
+        for a in 0..3 {
+            for b in 0..3 {
+                assert!(w.near(Some(ls[a]), Some(ls[b])));
+            }
+        }
+        assert!(w.near(None, Some(id(Reg::L, 99))));
+        let (c, o) = (id(Reg::C, 2), id(Reg::O, 3));
+        w.inject(c, vec![Delta::Set(Field::At, Val::Known(V::Id(ls[2])))]);
+        w.inject(o, vec![Delta::Set(Field::At, Val::Known(V::Id(c)))]);
+        assert_eq!(w.place(o), Some(ls[2]));
+        assert_eq!(w.place(id(Reg::L, 99)), Some(id(Reg::L, 99)));
+        w.inject(o, vec![Delta::Set(Field::PartOf, Val::Known(V::Id(o)))]);
+        assert_eq!(w.place(o), None);
+        assert_eq!(
+            w.next_free(),
+            vec![
+                (Reg::L, 4),
+                (Reg::O, 4),
+                (Reg::C, 3),
+                (Reg::R, 1),
+                (Reg::E, 1),
+                (Reg::P, 1),
+                (Reg::B, 1)
+            ]
+        );
+        assert_eq!(w.ents(Reg::L).map(|e| e.id).collect::<Vec<_>>(), ls);
+    }
+    #[test]
+    fn event_references_are_frozen_and_rejected_lines_cover_anchors() {
+        let mut w = local();
+        let c = id(Reg::C, 1);
+        w.inject(c, vec![]);
+        let ev = id(Reg::E, 1);
+        let cmd = Cmd::Event {
+            id: ev,
+            verb: "walk".into(),
+            roles: vec![(Role::Agent, c), (Role::Agent, c)],
+            why: None,
+            how: None,
+            x: Ev2::default(),
+        };
+        w.apply(&line(cmd, &[1])).unwrap();
+        w.inject(
+            c,
+            vec![Delta::Set(Field::Name, Val::Known(V::Text("later".into())))],
+        );
+        let event = w.event(ev).unwrap();
+        assert_eq!(event.all(Role::Agent), vec![SRef { id: c, ver: 1 }; 2]);
+        assert_eq!(event.role(Role::Agent), Some(SRef { id: c, ver: 1 }));
+        assert!(event.has(Role::Agent, &[c]));
+        assert!(event.happened());
+        let mut negative = event.clone();
+        negative.x.neg = true;
+        assert!(!negative.happened());
+        let result = run(
+            text(),
+            &[
+                line(Cmd::Mention { ids: vec![c] }, &[1]),
+                line(cursor(None), &[2]),
+            ],
+        );
+        assert_eq!(result.accepted, 1);
+        assert_eq!(result.rejects.len(), 1);
+        assert_eq!(result.uncovered, vec![3]);
+        // Actual deterministic change-language parser -> root executor -> history join.
+        let program = "loc L1 type=room ^s1\nloc L2 type=room here=0 ^s1\nchar C1 type=human at=L1 ^s1\nmove C1 to=L2 ^s2\nmove C1 to=L9 ^s3";
+        let (parsed, format_errors) = crate::lang::parse_all(program);
+        assert!(format_errors.is_empty());
+        let joined = run(text(), &parsed);
+        assert_eq!(joined.accepted, 4);
+        assert_eq!(joined.rejects.len(), 1);
+        assert_eq!(joined.rejects[0].1.gate, Gate::Ref);
+        assert!(joined.uncovered.is_empty());
+        let character = joined.world.ent(c).unwrap();
+        assert_eq!(character.latest(), 2);
+        assert_eq!(character.snap(1).id(Field::At), Some(id(Reg::L, 1)));
+        assert_eq!(character.now().id(Field::At), Some(id(Reg::L, 2)));
+        assert!(joined.world.check_links().is_ok());
+        assert_eq!(joined.world.pos.sent, 2);
+    }
+}

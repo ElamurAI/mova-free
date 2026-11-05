@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "builtins::elem::wave30_tests::complex_mapping_contract: principal complex roots, shape, gamma pole and positive integer."
+  ],
+  "children": [],
+  "cost": "O(N) unary/binary cells plus map2 broadcasting; primes O(n log log n) time/O(n) memory, trial division O(sqrt(n)) per integer, combinations O(k*C(n,k)) output. Casts and dimension overflow lack resource limits.",
+  "description": "register installs unary/binary numeric closures. sqrt/log/log2/log10 promote negative real arrays to complex; exp/sin/cos preserve complex mathematics. Rounding maps each part then narrows. complex explicitly retains imaginary storage even when zero. Number-theory closures operate on f64/cast integers, not an arbitrary-precision integer domain.",
+  "forward": [
+    "register installs unary/binary numeric closures. sqrt/log/log2/log10 promote negative real arrays to complex; exp/sin/cos preserve complex mathematics. Rounding maps each part then narrows. complex explicitly retains imaginary storage even when zero. Number-theory closures operate on f64/cast integers, not an arbitrary-precision integer domain."
+  ],
+  "id": "mlab-numerics-elem",
+  "inverse": [
+    "Preimage of abs(r) contains all complex cells of modulus r; rounding fibers contain intervals. sqrt on its finite principal branch has antecedent z=w*w only with branch restrictions; gamma poles and many floating outputs are noninjective. Retained dimensions constrain compatible matrix antecedents but do not identify their values."
+  ],
+  "limitations": [
+    "Partial source model; finite synthetic tests only",
+    "No executable surrogate, global numerical proof or resource-failure guarantee"
+  ],
+  "source": "mlab/src/builtins/elem.rs",
+  "state": "Matrix shape, real/optional imaginary vectors, Class and function arguments"
+}

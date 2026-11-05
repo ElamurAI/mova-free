@@ -1,0 +1,126 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional source relation; exact finite algebra where declared, otherwise candidate inner complement or ambiguous converse",
+        "assumptions": "Fixed corpus, indexes, order state and successful I/O; acyclic ancestry; unforgeable stamp is not assumed",
+        "domain": "Finite valid stores and ID vectors; precise specialization in operator",
+        "evidence": "../../model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "One ordered selection or saved-set load transition",
+        "operator": "Universe: valid acyclic stores, successful calls, valid query and saved-stamp state paired with returned IDs and rewritten bytes. Candidate inner complement: a stale sampled tree set taking the ancestor delta-merge branch; a current or stable non-order stamp rewriting on load; an order stamp ignoring a changed key. These exclusions depend on branch priority, not merely the final vector. Oracle: repaired witness, stamp fixtures and source branch inspection.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; exact finite algebra where declared, otherwise candidate inner complement or ambiguous converse",
+        "assumptions": "Fixed corpus, indexes, order state and successful I/O; acyclic ancestry; unforgeable stamp is not assumed",
+        "domain": "Finite valid stores and ID vectors; precise specialization in operator",
+        "evidence": "../../model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "One ordered selection or saved-set load transition",
+        "operator": "Fix query, target version and filesystem dependencies. The preimage of returned Y is the union of admitted saved files over all stamp branches: current/stable parsed rows equal Y; invalidated sampling/order/unrelated branches have select(target)=Y; pointwise ancestor branch satisfies O minus C = Y minus C and F intersect C = Y intersect C. Values O intersect C are unconstrained. Branch evidence cannot be recovered from IDs alone; saved bytes and writes refine this fiber.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; exact finite algebra where declared, otherwise candidate inner complement or ambiguous converse",
+        "assumptions": "Fixed corpus, indexes, order state and successful I/O; acyclic ancestry; unforgeable stamp is not assumed",
+        "domain": "Finite valid stores and ID vectors; precise specialization in operator",
+        "evidence": "../../model.md#tests",
+        "id": "carry-equivalence",
+        "observation_scope": "One ordered selection or saved-set load transition",
+        "operator": "For sets O,F,C, M=(O\\C) union (F intersect C). Exactly M=F iff O\\C=F\\C. SampleCarry.lean proves this for arbitrary sets, equivalently symmetric difference of O and F is contained in C, and proves the complete compatible-predecessor relation. Its independent false universal equality control fails. This is an abstract proof, not verified Rust correspondence. Exhaustive finite oracle enumerates every triple over four IDs and every candidate output; it checks equality, complement and reverse fibers. This algebra is exact for the merge operator, not a proof that production dictionaries cover all relevant feature deltas.",
+        "path": "model.md",
+        "section": "carry-equivalence",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "membership_transfer"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; exact finite algebra where declared, otherwise candidate inner complement or ambiguous converse",
+        "assumptions": "Fixed corpus, indexes, order state and successful I/O; acyclic ancestry; unforgeable stamp is not assumed",
+        "domain": "Finite valid stores and ID vectors; precise specialization in operator",
+        "evidence": "../../model.md#tests",
+        "id": "invalidation",
+        "observation_scope": "One ordered selection or saved-set load transition",
+        "operator": "Priority is order-stamp handling, then stable/current shortcut, then stale sampled/prefix recomputation, then ancestor discovery and pointwise merge or unrelated recomputation. Recompute discards old membership, including duplicates and stale omissions. A stable stamp is trusted even if manually paired with a tree query; malformed saved-state authentication is outside this repair. Exact source and fixture checks bind the policy.",
+        "path": "model.md",
+        "section": "invalidation",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "policy_partition"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; exact finite algebra where declared, otherwise candidate inner complement or ambiguous converse",
+        "assumptions": "Fixed corpus, indexes, order state and successful I/O; acyclic ancestry; unforgeable stamp is not assumed",
+        "domain": "Finite valid stores and ID vectors; precise specialization in operator",
+        "evidence": "../../model.md#tests",
+        "id": "cost",
+        "observation_scope": "One ordered selection or saved-set load transition",
+        "operator": "Recompute selects once, then persists and returns that same vector. For stale sampled queries full selection costs O(n log n) ranking per sample term; it avoids ancestor dictionary scanning. Bounded calibration is recorded separately in current-evidence.md; it does not establish a general speedup. Pointwise ancestor carry still computes full selection then restricts merge to changed IDs. Refreshed prefix stamps use the shared recompute path. Cache, I/O and repeated sampling terms are held explicit.",
+        "path": "model.md",
+        "section": "cost (catalog)",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "resource_preimage"
+      }
+    ],
+    "tests": {
+      "path": "../../model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 30489,
+      "start": 26630
+    },
+    "description": "world-store-carry",
+    "syntax_nodes": {
+      "node_ids": [
+        3050,
+        3141
+      ],
+      "path": "../../syntax.json"
+    }
+  },
+  "id": "world-store-carry",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../store.rs",
+    "sha256": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9"
+  },
+  "status": "partial_source_derived_instance"
+}

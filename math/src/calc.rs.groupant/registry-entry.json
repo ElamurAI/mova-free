@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "Wave34: five exact calc helper checks twice debug/twice release; see adjacent model.md#wave34-evidence",
+    "Three compiled production mutants across the math slice reject; byte-exact restoration and named positive reruns pass",
+    "Two fresh syntax projections byte-identical per source"
+  ],
+  "children": [],
+  "cost": "Fixed-table lexing O(B), token/recursive parse O(B) storage. vars dedup can be O(N²). Evaluation includes reached big arithmetic/callee work, inclusive span and duplicate flat_args work; ticks are not wall-clock bounds. Sort/median O(k log k), unique O(k²). Fingerprint power O(log exponent), factorial O(residue argument) capped2e6. Resource/stack failures unbounded.",
+  "description": "parse normalizes symbols/aliases and builds E with precedence or < and < comparison < add < mul/mod < unary < right-associated power < postfix. Unknown f(x) is multiplication. eval returns V or String while updating Env vars/subs/steps/approx. Exact Q arithmetic switches to R for nonexact powers/transcendentals. And/or/if are lazy. Inclusive ranged forms restore bound variables on normal exit, but errors retain the current binding. Ordinary calls evaluate arguments before arity and flat_args/fact/at can evaluate again. CRT writes crt_modulus. independent prefers integer residue modulo 2^61-1 then finite f64 tolerance 1e-9 max(1,|result|). Wave34 adds five nested source scopes under existing parents with distinct numeric/grammar/provenance relations.",
+  "forward": [
+    "parse normalizes symbols/aliases and builds E with precedence or < and < comparison < add < mul/mod < unary < right-associated power < postfix. Unknown f(x) is multiplication. eval returns V or String while updating Env vars/subs/steps/approx. Exact Q arithmetic switches to R for nonexact powers/transcendentals. And/or/if are lazy. Inclusive ranged forms restore bound variables on normal exit, but errors retain the current binding. Ordinary calls evaluate arguments before arity and flat_args/fact/at can evaluate again. CRT writes crt_modulus. independent prefers integer residue modulo 2^61-1 then finite f64 tolerance 1e-9 max(1,|result|)."
+  ],
+  "id": "math-calc",
+  "inverse": [
+    "The preimage of (V,Env') includes all E and entry environments reaching that value and ordered effect trace. 1+2 and 3 share an exact result; parsing collapses aliases/whitespace. Fingerprints recover only residue classes. Ranged output and capped traces cannot recover original binding/history, and failure retains prefix effects."
+  ],
+  "limitations": [
+    "Partial lexical syntax/source-derived model, no proof",
+    "No executable percentage surrogate; float diagnostics have no global certificate",
+    "Public E/V admit arbitrary f64; real() rejects nonfinite outputs but variable reads and negation do not. Counter additions/i64 MIN abs lack total overflow proof. Literal reads do not tick; deadlines sample only when steps divisible by4096. Mixed comparison tolerance need not be transitive. Empty sum/product=0/1, forall=true, exists=false, list/filter=[]; first/extrema error. Notes cap200. Pure arithmetic and Env effects, no external I/O."
+  ],
+  "source": "math/src/calc.rs",
+  "state": "Public E/V admit arbitrary f64; real() rejects nonfinite outputs but variable reads and negation do not. Counter additions/i64 MIN abs lack total overflow proof. Literal reads do not tick; deadlines sample only when steps divisible by4096. Mixed comparison tolerance need not be transitive. Empty sum/product=0/1, forall=true, exists=false, list/filter=[]; first/extrema error. Notes cap200. Pure arithmetic and Env effects, no external I/O."
+}

@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "Selected onto wave29_tests / hs::t:: actual-code tests; repeated debug/release and compiled controls"
+  ],
+  "children": [],
+  "cost": "O(B) read/hash plus O(E) entities; coverage ordered maps O(E log E),400 sample cap; question scans entities/assertions plus query traversal.",
+  "description": "Ordered read_world hashes UTF8 content before line extraction and keeps first filename/tale for duplicate content; char/obj/loc require type. map_class tries exact lookup, hyphen spellings, then final head; first context lexfile match else first sense. answer_question selects first tale entity, optionally a same-lexfile visible seed sense, then delegates query.",
+  "forward": [
+    "T(class)=min{tier | lookup_tier(class) nonempty}; choose(F,ctx)=first{c∈F.senses:lf(c)=ctx} or F.senses[0]. Dedup(files)=first occurrence per SHA256(contents)."
+  ],
+  "id": "onto-bridge",
+  "inverse": [
+    "Duplicate-content later files cannot add entities; missing type cannot emit Ent; exact lookup success excludes Head even when head context matches.",
+    "Ent preimages allow arbitrary ignored lines/fields; mapped Cid admits every exact/variant/head string consistent with earlier-tier failures. Verdict alone cannot reconstruct entity/tale."
+  ],
+  "limitations": [
+    "Partial lexical AST, no semantic proof",
+    "No live teacher/corpus/model/DB execution",
+    "No validated executable percentage surrogate",
+    "Synthetic finite tests do not cover all public malformed states"
+  ],
+  "source": "onto/src/bridge.rs",
+  "state": "Read-only; tier precedes context fitness; duplicate filename/content order matters."
+}

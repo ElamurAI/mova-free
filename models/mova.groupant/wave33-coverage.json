@@ -1,0 +1,404 @@
+{
+  "base": "1d16752b51b7a4cecc878d0a4f1b1693c45269f2",
+  "before": {
+    "fragments": 789,
+    "groups": 74,
+    "models": 10085,
+    "nodes": 1716,
+    "sources": 853,
+    "syntax": 843,
+    "types": 3550
+  },
+  "current": {
+    "fragments": 841,
+    "groups": 79,
+    "models": 10693,
+    "nodes": 1812,
+    "sources": 892,
+    "syntax": 884,
+    "types": 3895
+  },
+  "date": "2026-10-31",
+  "existing_improvement_sources": [
+    "tools/modelcheck/src/lib.rs",
+    "tools/modelcheck/src/main.rs",
+    "tools/modelcheck/src/syntax.rs"
+  ],
+  "existing_sources_improved": 3,
+  "legacy_sources_added": 39,
+  "new_fragments": 52,
+  "new_groups": 5,
+  "new_rust_sources": 0,
+  "new_scoped_groupants_in_existing_sources": 11,
+  "new_typed_models": 608,
+  "pending_sources": 83,
+  "registered_sources": 892,
+  "schema": 1,
+  "sources": [
+    {
+      "baseline_source_sha256": "c45e71334ccd3618e9fad4d6117ac8048db42001ffea61d02fa6d4121d1e5060",
+      "group": "math-library-ingestion",
+      "id": "mathlib-books",
+      "sidecar": "tools/mathlib/src/books.rs.groupant",
+      "source": "tools/mathlib/src/books.rs",
+      "source_sha256": "c45e71334ccd3618e9fad4d6117ac8048db42001ffea61d02fa6d4121d1e5060",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "8b223d90463cc558dc6f0eaa1823ea09733744bf6a38b28b8e87e205b7526ad9",
+      "group": "math-library-ingestion",
+      "id": "mathlib-duck",
+      "sidecar": "tools/mathlib/src/duck.rs.groupant",
+      "source": "tools/mathlib/src/duck.rs",
+      "source_sha256": "9f7321a7f368a542a2a9cb3bd2c79adf590517f4d6a0c7b88c7adf254bac7946",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "c4b8b9d04e6d82a5fb3dc166b023992fae7cabe385434d856dbdbf5cd37f2ba8",
+      "group": "math-library-ingestion",
+      "id": "mathlib-fetch",
+      "sidecar": "tools/mathlib/src/fetch.rs.groupant",
+      "source": "tools/mathlib/src/fetch.rs",
+      "source_sha256": "9a892fd61299338f640f9d8d08471ef7f09cac19235ad80b90d894a12489996d",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "1c497d6224bcd2c1561bb1f524542f7e8d27ed6dc398b82e81a61bbd320821e8",
+      "group": "math-library-ingestion",
+      "id": "mathlib-gcs",
+      "sidecar": "tools/mathlib/src/gcs.rs.groupant",
+      "source": "tools/mathlib/src/gcs.rs",
+      "source_sha256": "1c497d6224bcd2c1561bb1f524542f7e8d27ed6dc398b82e81a61bbd320821e8",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "58f83081f88291998fb175b7e47a562456a7cfb9704cbb6c888910049be9a4ba",
+      "group": "math-library-ingestion",
+      "id": "mathlib-http",
+      "sidecar": "tools/mathlib/src/http.rs.groupant",
+      "source": "tools/mathlib/src/http.rs",
+      "source_sha256": "3df63f2ba1d7bcdb4f0bf02fa7c7a1f0feb5817d22f7409456945ccf6a57aa32",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "4d7075b6e70117f40daeeb89f4154992df6f66d418a904f93a7034c3df41af4e",
+      "group": "math-library-ingestion",
+      "id": "mathlib-main",
+      "sidecar": "tools/mathlib/src/main.rs.groupant",
+      "source": "tools/mathlib/src/main.rs",
+      "source_sha256": "b350b04af0e7b74d484cab2bef3f8858eb76a9cf89fea724e18e3130028d2508",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "fe06e0908e764c81583a90751f52df0c9d98a7ff8ddf2cba1c8f59de6ae19ff0",
+      "group": "math-library-ingestion",
+      "id": "mathlib-oai",
+      "sidecar": "tools/mathlib/src/oai.rs.groupant",
+      "source": "tools/mathlib/src/oai.rs",
+      "source_sha256": "bad99249391507309f3ac75c270b7c802490e1b6ae7f6ffb54460d8790404846",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "7d08c4e6f06ecd7eabc2c57092405b6d010841ad384398c17f96e1438c098790",
+      "group": "math-library-ingestion",
+      "id": "mathlib-raw",
+      "sidecar": "tools/mathlib/src/raw.rs.groupant",
+      "source": "tools/mathlib/src/raw.rs",
+      "source_sha256": "7d08c4e6f06ecd7eabc2c57092405b6d010841ad384398c17f96e1438c098790",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "066210e554a35f4e024204ce43f1bdf6370ae2984dd7a31128d7d85d4a996af7",
+      "group": "math-library-ingestion",
+      "id": "mathlib-robots",
+      "sidecar": "tools/mathlib/src/robots.rs.groupant",
+      "source": "tools/mathlib/src/robots.rs",
+      "source_sha256": "84539710d111a1045385202e26b845b3894fbd8883804cbcbdf39135d6d22897",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "4e7b2faef824448b23534bf455ab2a00bb3f6f1ee7a6870e1855bee5e7d3ccc7",
+      "group": "cycle-teacher-diagnostics",
+      "id": "teacher-live-tests",
+      "sidecar": "teacher/tests/live.rs.groupant",
+      "source": "teacher/tests/live.rs",
+      "source_sha256": "4e7b2faef824448b23534bf455ab2a00bb3f6f1ee7a6870e1855bee5e7d3ccc7",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "76fddc73fc0e1e64bcca964b59596f4ff3c7bc90cfb9d03694b9c556b7762d8a",
+      "group": "cycle-teacher-diagnostics",
+      "id": "cycle-build",
+      "sidecar": "tools/cycle/build.rs.groupant",
+      "source": "tools/cycle/build.rs",
+      "source_sha256": "76fddc73fc0e1e64bcca964b59596f4ff3c7bc90cfb9d03694b9c556b7762d8a",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "ed55cb9d8b2c9d0a7350c16f18fd856646e789432650d65417f57dd6bcc15a2e",
+      "group": "cycle-teacher-diagnostics",
+      "id": "cycle-db",
+      "sidecar": "tools/cycle/src/db.rs.groupant",
+      "source": "tools/cycle/src/db.rs",
+      "source_sha256": "6e155183ac239e219e11a9cd529077fbc7330b0e52eccafe78cf1e094549874c",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "f52f71364e968d66c12b6eddb8325526f5ff8be547cda6555e324bee16afb9c0",
+      "group": "cycle-teacher-diagnostics",
+      "id": "cycle-main",
+      "sidecar": "tools/cycle/src/main.rs.groupant",
+      "source": "tools/cycle/src/main.rs",
+      "source_sha256": "f52f71364e968d66c12b6eddb8325526f5ff8be547cda6555e324bee16afb9c0",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "2769c9cc072ea13f270c553d30faf2f28a1af9929df80630b8f6b3c222ba703f",
+      "group": "cycle-teacher-diagnostics",
+      "id": "cycle-pipeline",
+      "sidecar": "tools/cycle/src/pipeline.rs.groupant",
+      "source": "tools/cycle/src/pipeline.rs",
+      "source_sha256": "4f0ff3886899f07a77ccc5f38511ce17fb666bb25da3c30c9070f897a0c3f99e",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "7b8e425d6afcd7ade9fb13a1a6e31d4af44e86f2a567f2d3b247070ca1586dd6",
+      "group": "cycle-teacher-diagnostics",
+      "id": "jobs-main",
+      "sidecar": "tools/jobs/src/main.rs.groupant",
+      "source": "tools/jobs/src/main.rs",
+      "source_sha256": "ddb2e9ecf8ef78a1d13ce00030932ef2703746e56c52f29c33fc428366f20a29",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "6ddaa8fafbe3c12e1907c483be36441f1d5dc3c7bc7b0495d7fec3a4bb9823b5",
+      "group": "cycle-teacher-diagnostics",
+      "id": "bench-main",
+      "sidecar": "tools/bench/src/main.rs.groupant",
+      "source": "tools/bench/src/main.rs",
+      "source_sha256": "7a5aff2d66b34bbe237903eefacc2f794692b2b28ca50dfb0595422fd443326e",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "14a0b553a86f78d23e5e4d7883295357c4d49e58913f602131c3b852b0a08511",
+      "group": "cycle-teacher-diagnostics",
+      "id": "enrich-lesson-smoke",
+      "sidecar": "tools/enrich/examples/lesson_smoke.rs.groupant",
+      "source": "tools/enrich/examples/lesson_smoke.rs",
+      "source_sha256": "14a0b553a86f78d23e5e4d7883295357c4d49e58913f602131c3b852b0a08511",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "cdc737ccddf5645b0273733f6c6b9acda530a84d544917d1ba080628a8d14ac9",
+      "group": "cycle-teacher-diagnostics",
+      "id": "twin-ledger-tests",
+      "sidecar": "tools/twin/tests/ledger.rs.groupant",
+      "source": "tools/twin/tests/ledger.rs",
+      "source_sha256": "cdc737ccddf5645b0273733f6c6b9acda530a84d544917d1ba080628a8d14ac9",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "1c2bb1e172fd4dfcc5ea465d577e94607347635f93f1deb0aae3e5e648a43ff2",
+      "group": "treebank-comparison-tools",
+      "id": "treeagree-dispute",
+      "sidecar": "tools/treeagree/src/dispute.rs.groupant",
+      "source": "tools/treeagree/src/dispute.rs",
+      "source_sha256": "1c2bb1e172fd4dfcc5ea465d577e94607347635f93f1deb0aae3e5e648a43ff2",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "fadc15525d579f8681612a25d06356fed2156f8f7054b54e61ffc07c5a590032",
+      "group": "treebank-comparison-tools",
+      "id": "treeagree-main",
+      "sidecar": "tools/treeagree/src/main.rs.groupant",
+      "source": "tools/treeagree/src/main.rs",
+      "source_sha256": "fadc15525d579f8681612a25d06356fed2156f8f7054b54e61ffc07c5a590032",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "1f33a4afa995261fb36eb9c29a0ab8fd1b624501e49713acaad28ece769f8120",
+      "group": "treebank-comparison-tools",
+      "id": "treeagree-rules",
+      "sidecar": "tools/treeagree/src/rules.rs.groupant",
+      "source": "tools/treeagree/src/rules.rs",
+      "source_sha256": "1f33a4afa995261fb36eb9c29a0ab8fd1b624501e49713acaad28ece769f8120",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "6e034fd13c47961fb03e46caddbd17d7ec53d236af64ea9cb2a46bdc3834f8fd",
+      "group": "treebank-comparison-tools",
+      "id": "treeagree-tree",
+      "sidecar": "tools/treeagree/src/tree.rs.groupant",
+      "source": "tools/treeagree/src/tree.rs",
+      "source_sha256": "6e034fd13c47961fb03e46caddbd17d7ec53d236af64ea9cb2a46bdc3834f8fd",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "53dbfe76f976d18ae8968d6579f89a8630a4220f519bfc791454262f615029eb",
+      "group": "treebank-comparison-tools",
+      "id": "treebanks-main",
+      "sidecar": "tools/treebanks/src/main.rs.groupant",
+      "source": "tools/treebanks/src/main.rs",
+      "source_sha256": "2b8c709aa686031227a14bc8c4661402851293e65cb77760b071fa627034cd08",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "c5a5a281432502fb19e16e2351cd5876f307fe244a19a15076495c6ad84213d5",
+      "group": "treebank-comparison-tools",
+      "id": "treebanks-readme",
+      "sidecar": "tools/treebanks/src/readme.rs.groupant",
+      "source": "tools/treebanks/src/readme.rs",
+      "source_sha256": "c5a5a281432502fb19e16e2351cd5876f307fe244a19a15076495c6ad84213d5",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "478c68b66f1dd86a691861bb26d634ffce9dd47aef7572e437a7fa1cc6e95db5",
+      "group": "treebank-comparison-tools",
+      "id": "treebanks-refs",
+      "sidecar": "tools/treebanks/src/refs.rs.groupant",
+      "source": "tools/treebanks/src/refs.rs",
+      "source_sha256": "478c68b66f1dd86a691861bb26d634ffce9dd47aef7572e437a7fa1cc6e95db5",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "1289179eb56289fb511ddca068d7230a21e21abd3d9e1b3e0daf5160de29fb82",
+      "group": "treebank-comparison-tools",
+      "id": "treebanks-release",
+      "sidecar": "tools/treebanks/src/release.rs.groupant",
+      "source": "tools/treebanks/src/release.rs",
+      "source_sha256": "1289179eb56289fb511ddca068d7230a21e21abd3d9e1b3e0daf5160de29fb82",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "1d5101cda9ced92075a30cb2fd999239fc136ec6c5d315230f18c4c0fa15403a",
+      "group": "treebank-comparison-tools",
+      "id": "treebanks-render",
+      "sidecar": "tools/treebanks/src/render.rs.groupant",
+      "source": "tools/treebanks/src/render.rs",
+      "source_sha256": "1d5101cda9ced92075a30cb2fd999239fc136ec6c5d315230f18c4c0fa15403a",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "cd39e162f6c30ce8a77f997f12532dde9fd1dd1319cb274c5ab5192ae3b59da2",
+      "group": "treebank-comparison-tools",
+      "id": "parsecmp-main",
+      "sidecar": "tools/parsecmp/src/main.rs.groupant",
+      "source": "tools/parsecmp/src/main.rs",
+      "source_sha256": "8d5c1b3d4b13c46e7f0b31fad87b1197b29574d987a2ea1c89ed012961a9a9e7",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "aa0ba3ab5a6b15964b153bf621682fa0e6fb89a2ecc981d13c15b0c48d516948",
+      "group": "text-corpus-tools",
+      "id": "gutenberg-text-command",
+      "sidecar": "tools/gutenberg/src/main.rs.groupant",
+      "source": "tools/gutenberg/src/main.rs",
+      "source_sha256": "cc6e3c082c5ad468c3a1894250cdc0c8e5dbb97e91fd56f1db678683de8d65b2",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "b7a38f55d15f5322cce523296e1fd2becdbd5082acd55b0942ba556fa1cde48d",
+      "group": "text-corpus-tools",
+      "id": "kaggle-text-command",
+      "sidecar": "tools/kaggle/src/main.rs.groupant",
+      "source": "tools/kaggle/src/main.rs",
+      "source_sha256": "c6ae7a7a7d1de14c13347e0b611d2b563e935ade8e8237facab03ac8b566f727",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "c36ea20260c4a9e136e4bbf8daf181061997839d78a273743622fe8b1b6e6317",
+      "group": "text-corpus-tools",
+      "id": "ocrfix-text-command",
+      "sidecar": "tools/ocrfix/src/main.rs.groupant",
+      "source": "tools/ocrfix/src/main.rs",
+      "source_sha256": "c0912bb251c79fa61d4601c1a4d5954189ea77b73a96302504f6841b8cca3ab8",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "472ad2e582e68d4cddbc104537659874000ff1b9c6dca75c64e0e2d735372698",
+      "group": "text-corpus-tools",
+      "id": "school-sents-text-command",
+      "sidecar": "tools/school-sents/src/main.rs.groupant",
+      "source": "tools/school-sents/src/main.rs",
+      "source_sha256": "c181de82933278ce4fe7521ccdc4603e6ea8dec527dfd53a0dd018bfe01e4117",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "b519a4dafd74a5ce444d8642d7698efb2279e209776cf5facb31bcba48fa2ea2",
+      "group": "text-corpus-tools",
+      "id": "wikt-count-text-command",
+      "sidecar": "tools/wikt-count/src/main.rs.groupant",
+      "source": "tools/wikt-count/src/main.rs",
+      "source_sha256": "3bc0ca359e1fc99a47f77f46f997519a0959a5b970d5a7dc5937ea452ff89098",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "70cbd02a9284cbc216134822f8a7fd46240ac1126d417828eaa03338d2d4bdf1",
+      "group": "text-corpus-tools",
+      "id": "wikt-idioms-text-command",
+      "sidecar": "tools/wikt-idioms/src/main.rs.groupant",
+      "source": "tools/wikt-idioms/src/main.rs",
+      "source_sha256": "d6ad8c11764fbe1068df26bd6484965acb7eed4634aa8ba728b338d2771aa62c",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "f5ed229d5133ff6d93baa36e0d4286d3526b5d759d60f9b1c54d83746b6f45c3",
+      "group": "text-corpus-tools",
+      "id": "wikt-page-text-command",
+      "sidecar": "tools/wikt-page/src/main.rs.groupant",
+      "source": "tools/wikt-page/src/main.rs",
+      "source_sha256": "49d0a8b4e3c68dd205f36dff233d3c1dbeb0dd40a4644f1331287a07ef6f329d",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "4c6c081128a8799bc155d14b14373e1e1894da3d86a8b54bc8a5847458d21a76",
+      "group": "bibliography-value-tools",
+      "id": "sources-bibliography",
+      "sidecar": "tools/sources/src/bib.rs.groupant",
+      "source": "tools/sources/src/bib.rs",
+      "source_sha256": "f69148b263980e1c77c3bdce482aa408c0a5d18bd51ac484f3b616e4b5e94912",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "fbdce69ce6b9669fde51605a3a943850e7ee6f272c4e16d0de01ae53f3fda1eb",
+      "group": "bibliography-value-tools",
+      "id": "sources-library",
+      "sidecar": "tools/sources/src/lib.rs.groupant",
+      "source": "tools/sources/src/lib.rs",
+      "source_sha256": "80f75f0645a8019237585f6c58fcce8939b694fb6e6859d7119c938dd56808d1",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "ce8f476cafe48e58006939718d5e5f522983bf0cedb1855beaaab4312c773290",
+      "group": "bibliography-value-tools",
+      "id": "sources-cli",
+      "sidecar": "tools/sources/src/main.rs.groupant",
+      "source": "tools/sources/src/main.rs",
+      "source_sha256": "ab9078516428f79dd451d22832ba0ec8628e8ae3a11405bd961aade337da8f08",
+      "status": "partial_source_derived_model"
+    },
+    {
+      "baseline_source_sha256": "7c9901df0de706f3112b8ba0fc2b04fa63b2c0cb2c88300f4494d0c066cdc69b",
+      "group": "bibliography-value-tools",
+      "id": "value-cli",
+      "sidecar": "tools/value/src/main.rs.groupant",
+      "source": "tools/value/src/main.rs",
+      "source_sha256": "dd78d961585fd888be765c431ac1e385d84ef23213b7d9007016b2bb72f649c9",
+      "status": "partial_source_derived_model"
+    }
+  ],
+  "validation": {
+    "assertion_controls_rejected": 0,
+    "external_join_tests": 6,
+    "fresh_syntax_pairs": 42,
+    "full_system_verification": false,
+    "integrated_control_bindings": 35,
+    "integration_repetitions_per_profile": 1,
+    "join_repetitions_per_profile": 2,
+    "native_target_qualified_outcomes": 106,
+    "production_changes": 3,
+    "source_mutations_rejected": 35,
+    "structural_controls_rejected": 2,
+    "worker_repetitions_per_profile": 2
+  }
+}

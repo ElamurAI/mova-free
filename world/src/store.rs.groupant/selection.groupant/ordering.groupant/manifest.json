@@ -1,0 +1,111 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional source relation; exact finite algebra where declared, otherwise candidate inner complement or ambiguous converse",
+        "assumptions": "Fixed corpus, indexes, order state and successful I/O; acyclic ancestry; unforgeable stamp is not assumed",
+        "domain": "Finite valid stores and ID vectors; precise specialization in operator",
+        "evidence": "../../model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "One ordered selection or saved-set load transition",
+        "operator": "Universe: valid finite query terms x ordered ID vectors, with fixed index and prefix order. Inner complement excludes execution that samples the final filtered candidates when sample is textually before that filter. Terms act left to right. Output observations alone may coincide; trace interpretation preserves the stage-order constraint.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; exact finite algebra where declared, otherwise candidate inner complement or ambiguous converse",
+        "assumptions": "Fixed corpus, indexes, order state and successful I/O; acyclic ancestry; unforgeable stamp is not assumed",
+        "domain": "Finite valid stores and ID vectors; precise specialization in operator",
+        "evidence": "../../model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "One ordered selection or saved-set load transition",
+        "operator": "For ordered stages T1 through Tm, preimages retain all intermediate vectors Cj with C0=0..n, Cj=Tj(Cj-1), Cm=Y, plus every fixed-input index satisfying those constraints. Reverse composition runs the converse relations in reverse stage order. It cannot replace sample and filter with an unordered conjunction.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; exact finite algebra where declared, otherwise candidate inner complement or ambiguous converse",
+        "assumptions": "Fixed corpus, indexes, order state and successful I/O; acyclic ancestry; unforgeable stamp is not assumed",
+        "domain": "Finite valid stores and ID vectors; precise specialization in operator",
+        "evidence": "../../model.md#tests",
+        "id": "noncommutation",
+        "observation_scope": "One ordered selection or saved-set load transition",
+        "operator": "A pointwise filter P preserves order. Sample S sorts selected IDs and depends on current candidates. In general S(P(C)) differs from P(S(C)); after-sample filtering may reduce cardinality below k. Prefix Q replaces candidate order with a global block-prefix intersection and thus can also change later positional sample ranks. Oracle: existing two-book source fixture and standalone six-ID ordering oracle enumerate 262144 old/new-mask, k, seed cases; legacy carry fails in 40928 feature-before-sample cases and zero sample-before-feature cases. The standalone model is not production execution; prefix-specific correspondence remains prospective.",
+        "path": "model.md",
+        "section": "noncommutation",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "operator_order"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; exact finite algebra where declared, otherwise candidate inner complement or ambiguous converse",
+        "assumptions": "Fixed corpus, indexes, order state and successful I/O; acyclic ancestry; unforgeable stamp is not assumed",
+        "domain": "Finite valid stores and ID vectors; precise specialization in operator",
+        "evidence": "../../model.md#tests",
+        "id": "scope-of-conservatism",
+        "observation_scope": "One ordered selection or saved-set load transition",
+        "operator": "Sampling before all tree terms can be version-independent if metadata/corpus/order remain fixed, and subsequent pointwise changes are covered by C. The repaired policy may still reselect any stale sampled tree query: a conservative sufficient condition avoiding fragile reordering analysis. No general commutativity or minimal invalidation claim.",
+        "path": "model.md",
+        "section": "scope-of-conservatism",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "policy_scope"
+      }
+    ],
+    "tests": {
+      "path": "../../model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 25941,
+      "start": 23187
+    },
+    "description": "world-store-query-order",
+    "syntax_nodes": {
+      "node_ids": [
+        2551
+      ],
+      "path": "../../syntax.json"
+    }
+  },
+  "id": "world-store-query-order",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../store.rs",
+    "sha256": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9"
+  },
+  "status": "partial_source_derived_instance"
+}

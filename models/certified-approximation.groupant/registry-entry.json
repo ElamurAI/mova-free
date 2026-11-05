@@ -1,0 +1,32 @@
+{
+  "checks": [
+    "fptas_objectives_join_exhaustive_subset_fibers",
+    "rational_certificates_join_polynomials_and_compensated_products"
+  ],
+  "children": [
+    "algorithm-knapsack-fptas",
+    "algorithm-knapsack-fptas-tests",
+    "algorithm-subset-sum-fptas",
+    "algorithm-subset-sum-fptas-tests",
+    "algorithm-piecewise-linear",
+    "algorithm-piecewise-linear-tests",
+    "algorithm-quantized-dot",
+    "algorithm-quantized-dot-tests"
+  ],
+  "cost": "Knapsack value scaling O(n^3/epsilon); trimmed subset list O(n*L*log L), L=O(n*log(target)/epsilon) in the mathematical model. Interpolation validates O(n) then searches O(log n); dot O(n). Work and allocation limits apply.",
+  "description": "Compute bounded-loss feasible objectives, exact rational interpolation and quantized integer dot observations with distinct certificates.",
+  "forward": [
+    "Compute bounded-loss feasible objectives, exact rational interpolation and quantized integer dot observations with distinct certificates.",
+    "Embedding subset values as equal knapsack weights/profits preserves the exact optimum. The two approximate outputs may differ while satisfying their own loss bounds. Conditional absolute interpolation error transports through a known Lipschitz map; dot L1 normalization does not imply relative scalar error under cancellation."
+  ],
+  "id": "certified-approximation",
+  "inverse": [
+    "Exclude infeasible or over-optimal FPTAS outputs, violated declared loss bounds, extrapolated interpolation, and true dot errors outside the absolute certificate. Exclude promotion of caller curvature to checked fact and promotion of L1-normalized dot error to cancellation-relative error.",
+    "Objective certificates admit many item lists and optimal subsets. One interpolated ordinate admits many functions through the supplied knots; dot values admit sign/permutation and cancellation fibers. Reconstruct only constraints retained by the certificate, not unique original inputs."
+  ],
+  "limitations": [
+    "Curvature bound is a caller premise, not inferred from knots. Overflow, work limits and allocation failures do not count as small approximation errors. Integer certificates do not provide a shared parent percentage or universal speed gain.",
+    "Finite tests and source-derived models are not a universal proof."
+  ],
+  "state": "Feasibility, objective loss, conditional interpolation error and dot absolute/L1 error remain separately typed. Unsupported percentages and resource/arithmetic errors are categorical."
+}

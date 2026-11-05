@@ -1,0 +1,79 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "domain": "Tagged finite API inputs and matching output schema in model.md forward; exact source revision and fixed dependency premises.",
+        "id": "prag-lens-behavior-complement",
+        "operator": "C_inner={(x,y): not J(x,y)} over declared domain; concrete forward/invariant exclusions",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "domain": "Tagged finite API inputs and matching output schema in model.md forward; exact source revision and fixed dependency premises.",
+        "id": "prag-lens-reverse-reconstruction",
+        "operator": "Converse/preimage relation retaining all compatible tagged inputs, states and intermediates",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "domain": "Tagged finite API inputs and matching output schema in model.md forward; exact source revision and fixed dependency premises.",
+        "id": "prag-lens-coupling",
+        "operator": "Scoped intervention/coupling relation in referenced section",
+        "path": "model.md",
+        "section": "coupling",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "domain": "Domain X is tagged calls Lens(W;E) or Means(L), with finite supplied Word sequence W, fixed compiled expression snapshot E and arbitrary finite Reading/Lens values L. No live lexical learning occurs. Let M=expressions_in_sentence(lower(forms W),lower(lemmas W);E). Lens maps each match m in M order to (join(original forms W[m.start..m.end],space),phrase,kind,meaning,register); its domains are sorted unique union of m.domains. Means selects readings whose phrase contains ASCII space, renders text + ' = ' + meaning stripped of every trailing period, joins with '; ', or returns '-' when selection is empty.",
+  "id": "prag-lens",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../lens.rs",
+    "sha256": "a84730ba30aaee9f91a8581f16544d5769a824f59b7a6ba43470d8aa6a641603"
+  },
+  "state": "For Lens calls, reading count/order equal M count/order; text uses original surfaces, and domains=sort(unique(union domains(M))). For Means calls, only selected readings contribute, in order with multiplicity; empty selection yields '-'. Source-matcher span validity is a dependency premise.",
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "prag-model-gain-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "prag-model-gain-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "prag-model-gain-specialization",
+        "path": "model.md",
+        "section": "specialization",
+        "status": "partial_source_model",
+        "type": "observation_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4746,
+      "start": 3162
+    },
+    "description": "For aligned rows/labels, construct per-value class histogram h[v,c] and totals a[c]. H(a)=-sum p log2 p with zero terms omitted. In ascending numeric value order compute Q=sum_v n_v/N H(h_v), S=-sum_v n_v/N log2(n_v/N). Return 0 if S<=1e-12, otherwise max(0,(H(a)-Q)/S). Empty input returns zero through the no-partition branch. weights applies this independently at each slot. freq and argmax_tie select maximum (count,prior,-class)."
+  },
+  "id": "prag-model-gain",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../model.rs",
+    "sha256": "e18c587fd1f87b18c7e0118e0009b16fb469e26ba9cd0edf26b097226130ee25"
+  },
+  "status": "partial_source_bound_model"
+}

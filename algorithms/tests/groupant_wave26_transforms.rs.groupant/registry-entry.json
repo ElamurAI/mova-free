@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "Three tests twice debug and twice release, normalized pass records identical; Goertzel production imaginary-sign mutant compiled and failed selected_spectrum_matches_bluestein_and_direct_dft, restored exact source and all three positives pass. Strict focused Clippy and formatting pass; paired source syntax byte-identical."
+  ],
+  "children": [],
+  "cost": "Bounded O(sum n²) direct transforms and oracle work, local QR; vectors<=128",
+  "description": "Three integration tests run public APIs on bounded finite fixtures: orthogonal_composition_parseval_and_roundtrip checks individual Haar/DCT Parseval and DCT(Haar(x)) inversion; selected_spectrum_matches_bluestein_and_direct_dft checks requested Goertzel bins against Bluestein and independent negative-phase DFT sums; smoothing_matches_polynomials_and_unscaled_qr checks shifted-window smoothing against known polynomial values and independently formed unscaled QR. Invalid input assertions preserve distinct empty/shape/value policies.",
+  "forward": [
+    "Three integration tests run public APIs on bounded finite fixtures: orthogonal_composition_parseval_and_roundtrip checks individual Haar/DCT Parseval and DCT(Haar(x)) inversion; selected_spectrum_matches_bluestein_and_direct_dft checks requested Goertzel bins against Bluestein and independent negative-phase DFT sums; smoothing_matches_polynomials_and_unscaled_qr checks shifted-window smoothing against known polynomial values and independently formed unscaled QR. Invalid input assertions preserve distinct empty/shape/value policies."
+  ],
+  "id": "algorithm-groupant-wave26-transforms",
+  "inverse": [
+    "Pass identifies the equivalence class of implementations satisfying the finite asserted observations within tolerances. Many implementations differ off-grid or outside fixtures and still pass; implementations differing within tolerance can also pass. A failed assertion identifies at least one violated observed relation, not a unique faulty kernel or source repair. Full transform inversion requires all coefficients and second-call domain admissibility; selected bins and local smoothing generally have ambiguous preimages."
+  ],
+  "limitations": [
+    "Finite numeric tolerances do not prove all inputs",
+    "No timing or generic accuracy certificate",
+    "Allocator exhaustion untested; no callbacks"
+  ],
+  "source": "algorithms/tests/groupant_wave26_transforms.rs",
+  "state": "Finite inputs, public kernel outputs and assertion outcomes"
+}

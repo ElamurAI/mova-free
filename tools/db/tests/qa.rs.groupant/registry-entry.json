@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "qa::wave31_fixture_representation_without_database"
+  ],
+  "children": [],
+  "cost": "Synthetic fixture construction/parse O(text bytes); legacy sequence adds bounded CLI/SQL calls and temp files, dependency currently absent.",
+  "description": "QA migration and replacement fixture",
+  "forward": [
+    "sent/tales construct four CoNLL blocks across two tale IDs and three paragraph boundaries. Legacy integration initializes v2, observes missing qa failure, migrates twice to v4, loads three questions, checks anchor joins, rejects invalid coordinates/types/empty answers/duplicates, then replacement linkage and current view. Executed new check validates fixture shape only."
+  ],
+  "id": "db-tests-qa",
+  "inverse": [
+    "Fixture check cannot pass if it observes other than four parsed sentences or three newpar comments. This does not exclude a wrong SQL anchor join or migration implementation.",
+    "Given four fixture blocks and paragraph count, many possible row annotations are compatible; exact Doc::text comparison additionally binds fixture bytes. Legacy query output leaves timestamps and unused DB columns ambiguous.",
+    "Tale-a IDs 1 and 2 share first paragraph, ID3 starts second; tale-b ID1 starts another. Helper text creates the boundary observations consumed by loader, not DB paragraph numbering itself.",
+    "Legacy test truncates SCHEMA before migrate:v3 to build v2, then requires two idempotent migrate outputs v4. Version-string assertions alone would not establish schema equivalence.",
+    "Legacy fixture asserts reciprocal old/new IDs, current view excludes old qid1, all-pairs keeps four. Count and link checks are distinct from parser representation tests.",
+    "Legacy negative domains include unknown doc, missing/wrong/ambiguous coordinates, closed-set/answer constraints and repeated question keys; new check leaves all SQL branches explicit gaps."
+  ],
+  "limitations": [
+    "Finite helper/fixture evidence only; no DuckDB integration or SQL semantics",
+    "Partial syntax projection; no macro expansion or full semantic proof",
+    "No executable approximate profile or speedup claim"
+  ],
+  "source": "tools/db/tests/qa.rs",
+  "state": "Fixture sentence IDs and paragraph comments are explicit but not a proof of syntactic annotation gates. Replacing old qid1 with new qid4 is a legacy SQL expectation; no SQL was executed for this wave."
+}

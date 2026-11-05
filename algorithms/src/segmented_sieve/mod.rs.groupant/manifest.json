@@ -1,0 +1,127 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "Inclusive u64 intervals and Result<Vec<u64>,SieveError>; accepted low<=high<=10^12 with width<=10^6.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One normal terminating call.",
+        "operator": "Excluded successful outputs contain any composite, omit a prime in the interval, include values outside the interval, or have duplicate/unsorted values. Rejected-domain success and wrong validation precedence are excluded.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "9c069e4fe604cba89bb44dd5278f86664de60489a8d72d736a1af1b14c14c434",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "Inclusive u64 intervals and Result<Vec<u64>,SieveError>; accepted low<=high<=10^12 with width<=10^6.",
+        "evidence": "model.md#evidence",
+        "id": "interval_fibers",
+        "observation_scope": "One normal terminating call.",
+        "operator": "For a nonempty output list, compatible accepted intervals contain all those primes and no additional primes. Their endpoints can move in adjacent composite gaps. Empty outputs reconstruct prime-free accepted intervals, not a unique interval: [14,16] and [24,28]. Error fibers follow reversed/high/width precedence.",
+        "path": "model.md",
+        "section": "interval_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "9c069e4fe604cba89bb44dd5278f86664de60489a8d72d736a1af1b14c14c434",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "Inclusive u64 intervals and Result<Vec<u64>,SieveError>; accepted low<=high<=10^12 with width<=10^6.",
+        "evidence": "model.md#evidence",
+        "id": "partition",
+        "observation_scope": "One normal terminating call.",
+        "operator": "Splitting an accepted [l,r] at k with l<=k<r gives output([l,k]) concatenated with output([k+1,r]); both subintervals satisfy caps. No deduplication is needed.",
+        "path": "model.md",
+        "section": "partition",
+        "status": "partial_source_derived",
+        "subject_revision": "9c069e4fe604cba89bb44dd5278f86664de60489a8d72d736a1af1b14c14c434",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "Inclusive u64 intervals and Result<Vec<u64>,SieveError>; accepted low<=high<=10^12 with width<=10^6.",
+        "evidence": "model.md#evidence",
+        "id": "square_frontier",
+        "observation_scope": "One normal terminating call.",
+        "operator": "At p*p for a prime p the new base divisor must be included. Integer sqrt ensures perfect-square endpoints are marked correctly without floating rounding. p itself survives because marking starts at p*p.",
+        "path": "model.md",
+        "section": "square_frontier",
+        "status": "partial_source_derived",
+        "subject_revision": "9c069e4fe604cba89bb44dd5278f86664de60489a8d72d736a1af1b14c14c434",
+        "type": "boundary_specialization"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "Inclusive u64 intervals and Result<Vec<u64>,SieveError>; accepted low<=high<=10^12 with width<=10^6.",
+        "evidence": "model.md#evidence",
+        "id": "composite_witness",
+        "observation_scope": "One normal terminating call.",
+        "operator": "Every removed value >=2 is a multiple k*p with k>=p for a discovered base prime p. Every surviving value >=2 has no prime divisor <=sqrt(high), proving primality on the stated domain.",
+        "path": "model.md",
+        "section": "composite_witness",
+        "status": "partial_source_derived",
+        "subject_revision": "9c069e4fe604cba89bb44dd5278f86664de60489a8d72d736a1af1b14c14c434",
+        "type": "certificate_relation"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "Inclusive u64 intervals and Result<Vec<u64>,SieveError>; accepted low<=high<=10^12 with width<=10^6.",
+        "evidence": "model.md#evidence",
+        "id": "resource_preflight",
+        "observation_scope": "One normal terminating call.",
+        "operator": "Reversed order wins before high cap before width cap; no allocation occurs before these checks. Caps limit base and segment flags to 1000001 and 1000000 entries; output length<=width. This is not a recoverable allocator-failure guarantee.",
+        "path": "model.md",
+        "section": "resource_preflight",
+        "status": "partial_source_derived",
+        "subject_revision": "9c069e4fe604cba89bb44dd5278f86664de60489a8d72d736a1af1b14c14c434",
+        "type": "resource_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-segmented-sieve",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "9c069e4fe604cba89bb44dd5278f86664de60489a8d72d736a1af1b14c14c434"
+  },
+  "status": "partial_source_derived_instance"
+}

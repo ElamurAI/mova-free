@@ -88,3 +88,13 @@ fn prag_layer_and_negative_controls() {
     assert_eq!(query(&base, "SELECT (means IS NULL) || ' ' || tool || ' ' || (trace->'act'->'why'->0->>0) FROM prag_labels WHERE source = 'rust'"), "true rust w1=can");
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+#[test]
+fn wave31_fixture_representation_without_database() {
+    let doc = en::conllu::Doc::parse(TEXT).unwrap();
+    assert_eq!(doc.sents.len(), 2);
+    assert_eq!(doc.sents[0].sent.id, "tatoeba:1");
+    assert_eq!(doc.sents[1].rows.len(), 2);
+    assert_eq!(doc.text(), TEXT);
+    assert_eq!(HEAD.trim_end().split('\t').count(), 9);
+}

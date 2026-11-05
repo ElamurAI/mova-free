@@ -1,0 +1,94 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Parent projection restricted to[2922,5197)",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "pivot_selection",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "pivot_selection",
+        "status": "partial_source_derived_model",
+        "type": "pivot_selection"
+      },
+      {
+        "id": "rank_classification",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "rank_classification",
+        "status": "partial_source_derived_model",
+        "type": "rank_classification"
+      },
+      {
+        "id": "shape_precedence",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "shape_precedence",
+        "status": "partial_source_derived_model",
+        "type": "shape_precedence"
+      },
+      {
+        "id": "arithmetic_cost",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "arithmetic_cost",
+        "status": "partial_source_derived_model",
+        "type": "arithmetic_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 5197,
+      "start": 2922
+    },
+    "description": "gauss classifies rank with first nonzero pivots and free-zero particular solutions on rectangular matched data. check_solution rejects count then width mismatches before exact substitution; empty equations accept arbitrary x. Ax=b and rank constrain inverse fibers. Shape scan O(m), elimination rational cubic-scale work.",
+    "source_bytes_sha256": "ee2dc550c1ed59f4c95e0decbc66e9d08d56df67154bbdee9af37fecf17fdb9e"
+  },
+  "id": "math-linsys-elimination",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../linsys.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "dd9f5f6f6c55e4f91db8f8be82b3a0472be600f245de26372c417224d22fdc2b"
+  },
+  "status": "partial_source_bound_model"
+}

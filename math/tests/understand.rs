@@ -10,11 +10,15 @@ use math::understand::{model, Understander};
 
 fn load() -> Option<Understander> {
     let p = PathBuf::from(std::env::var("MATH_EN_MODEL").unwrap_or_else(|_| model()));
+    load_path(&p)
+}
+
+fn load_path(p: &std::path::Path) -> Option<Understander> {
     if !p.exists() {
         eprintln!("no model {} — end-to-end tests skipped", p.display());
         return None;
     }
-    Some(Understander::load(&p).expect("en model"))
+    Some(Understander::load(p).expect("en model"))
 }
 
 fn ans(u: &Understander, q: &str) -> Result<String, Error> {
@@ -74,4 +78,12 @@ fn frozen_suite_has_no_wrong_answers() {
     for r in rep.rows.iter().filter(|r| r.want == "NU" || r.want.starts_with("ERR:")) {
         assert_eq!(r.verdict, Verdict::Hit, "negative control is not red: {} {}", r.id, r.got);
     }
+}
+
+#[test]
+fn wave28_missing_path_skips_before_model_load() {
+    let dir = std::env::temp_dir().join(format!("mova-wave28-missing-{}", std::process::id()));
+    std::fs::create_dir(&dir).unwrap();
+    assert!(load_path(&dir.join("absent.bin")).is_none());
+    std::fs::remove_dir(dir).unwrap();
 }

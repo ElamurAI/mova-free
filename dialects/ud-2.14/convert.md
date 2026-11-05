@@ -17,7 +17,9 @@ Where the rules come from — the English UD documentation: `_en/dep/obl-tmod.md
 
 The rules do not touch DEPS. In a treebank with an enhanced graph, DEPS stay in the source dialect.
 
-## Check: ud-2.14 → mova → ud-2.14 (`en convert-check`, 26.09.2026)
+## Check: ud-2.14 → mova → ud-2.14 (`en convert-check`)
+
+Measured 2026-09-26.
 
 ```
 en convert-check dialects/ud-2.14 ud-2.14 <files>

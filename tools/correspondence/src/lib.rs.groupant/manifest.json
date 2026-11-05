@@ -1,0 +1,73 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived_bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Source-bound selected Rust syntax; macro expansion and semantic extraction absent",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived_bounded_checked"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact finite-model complement; source correspondence remains separate.",
+        "assumptions": "Validated finite AST and explicit full rectangle.",
+        "domain": "Declared finite named endpoint rectangle with at most64 coordinates per endpoint.",
+        "evidence": "model.md",
+        "id": "nonbehavior",
+        "observation_scope": "Exact relation membership in declared finite atom model, not Rust behavior.",
+        "operator": "U minus R, U is inferred domain times codomain.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4d753f189a133e65659c5bb86a522bdd42036768d1faaab258641d9ee7e9767c",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Complete relative to finite table only; unseen real inputs unknown.",
+        "assumptions": "Declared atom relation, finite scope, no claim of injectivity.",
+        "domain": "Declared finite named endpoint sorts with validated source relation.",
+        "evidence": "model.md",
+        "id": "antecedents",
+        "observation_scope": "Compatible antecedents within exact declared finite table.",
+        "operator": "Converse transposes membership and endpoint types.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4d753f189a133e65659c5bb86a522bdd42036768d1faaab258641d9ee7e9767c",
+        "type": "reverse_reconstruction"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "Checks",
+      "status": "bounded_evidence"
+    }
+  },
+  "id": "correspondence-core",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../lib.rs",
+    "sha256": "4d753f189a133e65659c5bb86a522bdd42036768d1faaab258641d9ee7e9767c"
+  },
+  "status": "partial_source_derived_instance"
+}

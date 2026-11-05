@@ -1,0 +1,34 @@
+{
+  "checks": [
+    "Selected library/gate/build tests twice debug/release, matching sorted outcomes",
+    "Four compiled assertion-failing mutants and restored positives",
+    "Eight paired syntax projections"
+  ],
+  "children": [
+    "latex-build",
+    "latex-ast",
+    "latex-lex",
+    "latex-macros",
+    "latex-parse",
+    "latex-print",
+    "latex-table",
+    "latex-test-gate"
+  ],
+  "cost": "Build O(B+V²+E) expected hash work; lex O(B); parse cost depends on expanded tokens and substitution copies, not input bytes alone. LaTeX O(nodes+output); text nested temporary copies conservatively O(depth*output+nodes). No speed claim.",
+  "description": "Ordered command rows compile to enums/lookups. Lex(source)->positioned tokens; scan(preamble)->macro map; parse_with(tokens,map)->Result<Node,Error>; print(Node)->canonical bytes; gate compares reparsed Node modulo Span. Text is a separate lossy projection.",
+  "forward": [
+    "Ordered command rows compile to enums/lookups. Lex(source)->positioned tokens; scan(preamble)->macro map; parse_with(tokens,map)->Result<Node,Error>; print(Node)->canonical bytes; gate compares reparsed Node modulo Span. Text is a separate lossy projection.",
+    "Generated enum order must match canonical arrays. Stack reversal preserves expansion order. Printer relax adapters prevent unknown swallowing groups and aligned swallowing brackets; optional rbrack and trailing-row compensation preserve parser structure. Span quotient cannot validate original coordinates."
+  ],
+  "id": "formula-syntax",
+  "inverse": [
+    "Exclude tuples violating byte coordinates, local-first expansion, stop errors and supported fixture canonicalization; no universal arbitrary-AST contract.",
+    "Canonical tree preimages contain aliases, whitespace/comments, dropped styles and macro programs. Original coordinates/definitions are not uniquely recoverable."
+  ],
+  "limitations": [
+    "Partial source models and finite tests, no semantic proof or expanded AST.",
+    "No useful executable percentage approximant metric established; future caps1/2/5/10% only.",
+    "No live VMM/API/corpus/GPU/full-school/held-out execution; allocation and extreme sizes untested."
+  ],
+  "state": "Local macros shadow document definitions, CmdRaw preserves captured built-ins. Normalized parser trees retain unknown names and presentation structure; coordinates are outside equality."
+}

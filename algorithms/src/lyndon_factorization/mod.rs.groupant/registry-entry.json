@@ -1,0 +1,10 @@
+{
+ "id":"algorithm-lyndon-factorization","source":"algorithms/src/lyndon_factorization/mod.rs","children":[],
+ "description":"Duval factorization into nonincreasing byte Lyndon factors.",
+ "state":"Immutable byte input; deterministic local algorithm state or finite oracle fixtures.",
+ "cost":"O(n) byte comparisons and O(k) returned ranges, O(1) auxiliary words; no policy cap; Vec allocation semantics.",
+ "forward":["At each unprocessed start compare scan and matched positions. Strict increase resets matched to start; equality advances it. On descent or EOF, period=scan-matched and emit period-length factors while start<=matched. Returned factors cover the input in order and are lexicographically nonincreasing Lyndon words."],
+ "inverse":["behavior_complement first and ambiguous reverse_reconstruction second; see adjacent model.md"],
+ "checks":["cargo test --offline -p mova-algorithms --lib lyndon_factorization::tests","Compiled implementation and oracle controls; repeated source syntax"],
+ "limitations":["Finite correspondence only; allocation failures not injected; no semantic AST or universal proof."]
+}

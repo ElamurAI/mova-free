@@ -1,0 +1,159 @@
+{
+  "children": [
+    "latex-build",
+    "latex-ast",
+    "latex-lex",
+    "latex-macros",
+    "latex-parse",
+    "latex-print",
+    "latex-table",
+    "latex-test-gate"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "Generated include matches command table. No semantic TeX engine, precedence inference or live effects. Build compile evidence does not inject write/read failures.",
+        "domain": "Finite valid UTF-8, representable u32 positions, available memory/filesystem. Roundtrip restricted to normalized supported parser trees, not arbitrary public AST.",
+        "id": "behavior-complement",
+        "observation_scope": "Generated enum order must match canonical arrays. Stack reversal preserves expansion order. Printer relax adapters prevent unknown swallowing groups and aligned swallowing brackets; optional rbrack and trailing-row compensation preserve parser structure. Span quotient cannot validate original coordinates.",
+        "operator": "Exclude tuples violating byte coordinates, local-first expansion, stop errors and supported fixture canonicalization; no universal arbitrary-AST contract.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "Generated include matches command table. No semantic TeX engine, precedence inference or live effects. Build compile evidence does not inject write/read failures.",
+        "domain": "Finite valid UTF-8, representable u32 positions, available memory/filesystem. Roundtrip restricted to normalized supported parser trees, not arbitrary public AST.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Generated enum order must match canonical arrays. Stack reversal preserves expansion order. Printer relax adapters prevent unknown swallowing groups and aligned swallowing brackets; optional rbrack and trailing-row compensation preserve parser structure. Span quotient cannot validate original coordinates.",
+        "operator": "Canonical tree preimages contain aliases, whitespace/comments, dropped styles and macro programs. Original coordinates/definitions are not uniquely recoverable.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "Generated include matches command table. No semantic TeX engine, precedence inference or live effects. Build compile evidence does not inject write/read failures.",
+        "domain": "Finite valid UTF-8, representable u32 positions, available memory/filesystem. Roundtrip restricted to normalized supported parser trees, not arbitrary public AST.",
+        "id": "table-transport",
+        "observation_scope": "Generated enum order must match canonical arrays. Stack reversal preserves expansion order. Printer relax adapters prevent unknown swallowing groups and aligned swallowing brackets; optional rbrack and trailing-row compensation preserve parser structure. Span quotient cannot validate original coordinates.",
+        "operator": "Ordered build rows induce discriminants/arrays and lookup Entry joins parser dispatch.",
+        "path": "model.md",
+        "required": false,
+        "section": "table-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Generated include matches command table. No semantic TeX engine, precedence inference or live effects. Build compile evidence does not inject write/read failures.",
+        "domain": "Finite valid UTF-8, representable u32 positions, available memory/filesystem. Roundtrip restricted to normalized supported parser trees, not arbitrary public AST.",
+        "id": "marker-discipline",
+        "observation_scope": "Generated enum order must match canonical arrays. Stack reversal preserves expansion order. Printer relax adapters prevent unknown swallowing groups and aligned swallowing brackets; optional rbrack and trailing-row compensation preserve parser structure. Span quotient cannot validate original coordinates.",
+        "operator": "End markers delimit parser substreams. Stream group_tokens/opt_tokens and macros collect_until explicitly restore End on their failure paths. Macro match_pattern literal matching consumes the next token before comparison and can consume End on mismatch; read_let can likewise consume an invalid End target. No universal scan-failure preservation law is claimed.",
+        "path": "model.md",
+        "required": false,
+        "section": "marker-discipline",
+        "status": "partial_source_derived_model",
+        "type": "substream_boundary"
+      },
+      {
+        "assumptions": "Generated include matches command table. No semantic TeX engine, precedence inference or live effects. Build compile evidence does not inject write/read failures.",
+        "domain": "Finite valid UTF-8, representable u32 positions, available memory/filesystem. Roundtrip restricted to normalized supported parser trees, not arbitrary public AST.",
+        "id": "canonical-adapters",
+        "observation_scope": "Generated enum order must match canonical arrays. Stack reversal preserves expansion order. Printer relax adapters prevent unknown swallowing groups and aligned swallowing brackets; optional rbrack and trailing-row compensation preserve parser structure. Span quotient cannot validate original coordinates.",
+        "operator": "relax, rbrack and row compensation preserve parsing boundaries.",
+        "path": "model.md",
+        "required": false,
+        "section": "canonical-adapters",
+        "status": "partial_source_derived_model",
+        "type": "roundtrip_adapter"
+      },
+      {
+        "assumptions": "Generated include matches command table. No semantic TeX engine, precedence inference or live effects. Build compile evidence does not inject write/read failures.",
+        "domain": "Finite valid UTF-8, representable u32 positions, available memory/filesystem. Roundtrip restricted to normalized supported parser trees, not arbitrary public AST.",
+        "id": "resource-guards",
+        "observation_scope": "Generated enum order must match canonical arrays. Stack reversal preserves expansion order. Printer relax adapters prevent unknown swallowing groups and aligned swallowing brackets; optional rbrack and trailing-row compensation preserve parser structure. Span quotient cannot validate original coordinates.",
+        "operator": "Depth and expansion thresholds are local; pre-expansion token check does not bound peak substituted vector.",
+        "path": "model.md",
+        "required": false,
+        "section": "resource-guards",
+        "status": "partial_source_derived_model",
+        "type": "resource_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "formula-syntax",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "latex/build.rs",
+      "sha256": "39a1feed1af329d1fb109ab5a2483512ad3e46419a0c2d0bd608921a78357808"
+    },
+    {
+      "path": "latex/src/ast.rs",
+      "sha256": "88786b90964d7ee3438883e97716def3e8076003e6739a53f1232bd9e4cf8599"
+    },
+    {
+      "path": "latex/src/lex.rs",
+      "sha256": "65c9e2c47772827ade022d41d5bf4ab4f54c0d3a7b9505ec137f0df8c4c4c922"
+    },
+    {
+      "path": "latex/src/macros.rs",
+      "sha256": "4253c16fd5f46f05dd9e527d4b097d906594f20e8fa54caa014288da5aa48c96"
+    },
+    {
+      "path": "latex/src/parse.rs",
+      "sha256": "f463a4a8e13c770287eeeb57c59e74732daac90bf64f57302870d1ea86cc5f47"
+    },
+    {
+      "path": "latex/src/print.rs",
+      "sha256": "a6cb2d3ea7b54e4ff73a7bd80b29109f46422add22741da603027e4e93fd6a95"
+    },
+    {
+      "path": "latex/src/table.rs",
+      "sha256": "37b46b94914c5c1561de4158af4f053c8eaf2b6eeb4411b55b3a3ffcf668bdc1"
+    },
+    {
+      "path": "latex/tests/gate.rs",
+      "sha256": "710172ffe064b1fe0f860e92867b863919b0b6188d2b31ed326c50a6f72ebca3"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

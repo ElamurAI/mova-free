@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p world --lib report::wave9_models -- --test-threads=1"
+  ],
+  "cost": "N rows and total text bytes L: aggregation O(N log G + L), formatting linear in emitted bytes, sampling scans N once per seven attributes and sorts each slice O(N log N) overall with repeated key allocation. Manual lookup O(N log V), verdict decoding O(L + V log V). eval_tale cost includes external answer/baseline/scoring dependencies; no measured speed claim.",
+  "description": "Measurement aggregation, deterministic sampling and manual verdict presentation.",
+  "forward": [
+    "eval_tale obtains state answer, anchor fallback and baseline then scores; Agg sums supplied r_slm/r_anchor/r_base and separately sums state-source r_slm. report folds rows into fixed attribute order plus ordered maps for explicitness/story/first-space intent. sample ranks eligible identities by salted wrapping FNV/finalizer. read_verdicts skips malformed rows, overwrites duplicate keys; manual_md averages only matched recognized-type rows.",
+    "main loads persisted worlds and Qa, calls eval_tale, rows_tsv, tale_md, sample/report, then read_verdicts/manual_md. Tests construct Row directly and exercise aggregation/format/sample/verdict joins; they do not execute World answering. Native Qa roundtrip tests elsewhere preserve input identity but do not prove full assessment wiring."
+  ],
+  "id": "world-report",
+  "inverse": [
+    "Universe: finite Row sequences, initial default Agg, outputs. Inner absent relation excludes answered>n, changes to answered sum from Src::None, or NaN for the empty default aggregate line. Arbitrary public Agg values and nonfinite score fields are outside these invariants.",
+    "For a numeric/printed aggregate keep all ordered row lists with matching counts and sums, subject to state membership. Permutations, identities and answers are lost. Nine pairs from {0,.5,1} have five sum fibers of sizes 1,2,3,2,1. Rounded output merges additional nearby sums."
+  ],
+  "limitations": [
+    "Finite synthetic evidence; source inspection is separate from runtime proof.",
+    "No held-out evaluation, live parser, teacher, full import transaction or throughput claim.",
+    "Partial syntax; public structs admit states outside generated-state invariants. See specialized models for permissive input boundaries."
+  ],
+  "source": "world/src/report.rs",
+  "state": "For Agg built from add, 0<=answered<=n; zero denominators use max(1). Only source determines answered membership; score fields are trusted and may be inconsistent with source. Manual scores are trusted rather than masked when Src::None. Unknown attributes contribute to all totals but lack a displayed attribute slice."
+}

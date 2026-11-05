@@ -1,0 +1,170 @@
+{
+  "children": [
+    {
+      "id": "twin-ingestion",
+      "path": "ingestion.groupant"
+    },
+    {
+      "id": "twin-execution",
+      "path": "execution.groupant"
+    },
+    {
+      "id": "twin-persistence",
+      "path": "persistence.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "No syntax projection, macro expansion or semantic AST; byte ranges bind the reviewed snapshot only.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "mathematical-twin-cli-behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Mathematical twin CLI",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "mathematical-twin-cli-reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "Mathematical twin CLI",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "mathematical-twin-cli-spec-admission",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin CLI",
+        "section": "spec-admission",
+        "status": "partial_source_model",
+        "type": "admission_relation"
+      },
+      {
+        "id": "mathematical-twin-cli-cohort-equivalence",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin CLI",
+        "section": "cohort-equivalence",
+        "status": "partial_source_model",
+        "type": "equivalence_relation"
+      },
+      {
+        "id": "mathematical-twin-cli-fingerprint-tree",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin CLI",
+        "section": "fingerprint-tree",
+        "status": "partial_source_model",
+        "type": "content_projection"
+      },
+      {
+        "id": "mathematical-twin-cli-parent-replay",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin CLI",
+        "section": "parent-replay",
+        "status": "partial_source_model",
+        "type": "reconstruction_constraint"
+      },
+      {
+        "id": "mathematical-twin-cli-predict-passivity",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin CLI",
+        "section": "predict-passivity",
+        "status": "partial_source_model",
+        "type": "effect_projection"
+      },
+      {
+        "id": "mathematical-twin-cli-execution-isolation",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin CLI",
+        "section": "execution-isolation",
+        "status": "partial_source_model",
+        "type": "process_relation"
+      },
+      {
+        "id": "mathematical-twin-cli-acceptance-projection",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin CLI",
+        "section": "acceptance-projection",
+        "status": "partial_source_model",
+        "type": "acceptance_relation"
+      },
+      {
+        "id": "mathematical-twin-cli-durability-order",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin CLI",
+        "section": "durability-order",
+        "status": "partial_source_model",
+        "type": "trace_order_relation"
+      },
+      {
+        "id": "mathematical-twin-cli-model-comparison",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin CLI",
+        "section": "model-comparison",
+        "status": "partial_source_model",
+        "type": "tolerance_relation"
+      },
+      {
+        "id": "mathematical-twin-cli-report-projection",
+        "path": "model.md",
+        "required": false,
+        "scope": "Mathematical twin CLI",
+        "section": "report-projection",
+        "status": "partial_source_model",
+        "type": "information_loss_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks (catalog)",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "id": "mathematical-twin-cli",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../main.rs",
+    "sha256": "01f907c5df2d09277026ffba9a9e1660c1a729159986e0232cefc423aa87b1cb"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "algorithm-longest-common-subsequence-tests",
+  "source": "algorithms/src/longest_common_subsequence/tests.rs",
+  "children": [],
+  "description": "longest_common_subsequence independent oracle and relational checks",
+  "state": "Finite inputs and ordinary execution including documented failure branches.",
+  "cost": "Bounded exponential test oracle; suitable only for small fixtures. Production cost is modeled separately.",
+  "forward": [
+    "Execute deterministic finite fixtures with independent exponential oracle and production-linked relational assertions. Passing supports only the observed domain."
+  ],
+  "inverse": [
+    "A passing outcome excludes observed disagreements on enumerated fixtures and oracle comparisons; untested behaviors remain admitted. This relation describes exclusions within the finite observation universe.",
+    "A passing report admits all implementations agreeing on these fixtures, including incorrect ones elsewhere. A failed assertion constrains a mismatch at its fixture, not unique source reconstruction.",
+    "Enumerate all subsequences by bitmask and scan the second input; compare 63 squared binary-word pairs through length five. The oracle does not share the rolling recurrence.",
+    "Tests observe symmetry, identity, simultaneous reversal, common fresh-symbol append, one-sided bounds, generic values and a nonunique preimage counterexample.",
+    "Changing the equality recurrence from diagonal+1 to diagonal is a compiled production fault that the independent oracle must reject. Other faults remain unproven."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline",
+    "Repeated debug/release outcomes; strict Clippy; compiled production mutant; syntax twice"
+  ],
+  "limitations": [
+    "Partial syntax does not expand macros or resolve semantic types. Finite evidence is not proof; allocator exhaustion untested. Exact implementation has no executable approximate profile; no substitution or numerical error budget claimed."
+  ]
+}

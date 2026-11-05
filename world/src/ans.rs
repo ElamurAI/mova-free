@@ -1323,3 +1323,153 @@ pub fn rouge_l(hyp: &str, reference: &str) -> f64 {
 pub fn rouge_q(hyp: &str, q: &Qa) -> f64 {
     [&q.a1, &q.a2].iter().filter(|r| !r.trim().is_empty()).map(|r| rouge_l(hyp, r)).fold(0.0, f64::max)
 }
+
+#[cfg(test)]
+mod wave8_models {
+    use super::*;
+    fn frame() -> Frame {
+        Frame { wh: "why".into(), intent: Intent::Why, fut: false, neg: false,
+            passive: false, subj: vec![], verb: Some("dance".into()), rest: vec![],
+            rel: None, anchor: vec![], about: vec![] }
+    }
+    fn world() -> World {
+        World::new(crate::world::Text { doc: 0, title: String::new(),
+            sents: vec![(1, "first".into()), (2, "second".into()), (4, "third".into())] })
+    }
+    fn event(n: u16) -> Event {
+        Event { id: Id::new(Reg::E, n as u32), verb: "dance".into(), roles: vec![],
+            why: None, how: None, speech: None, x: Default::default(), anchors: vec![n],
+            pos: TextPos { chapter: 1, para: 1, sent: n }, line: 1, world: 0,
+            branch: BRANCH.tag("real").unwrap() }
+    }
+    #[test]
+    fn score_precedence_and_fibers() {
+        let q = vec![vec!["x".into()]];
+        let mut fiber = Vec::new();
+        for mask in 0..8 {
+            let field = |bit| if mask & bit != 0 { q.clone() } else { vec![] };
+            let ew = EvWords { verb: field(1), who: field(2), text: field(4) };
+            let expected = if mask & 1 != 0 { 3.0 } else if mask & 2 != 0 { 1.5 } else if mask & 4 != 0 { 1.0 } else { 0.0 };
+            assert_eq!(score_words(&q, &ew), (expected, mask & 1 != 0));
+            if score_words(&q, &ew).0 == 3.0 { fiber.push(mask); }
+        }
+        assert_eq!(fiber, vec![1, 3, 5, 7]);
+    }
+    #[test]
+    fn ranking_sections_ties_and_relaxed_fallback() {
+        let mut w = world();
+        w.events = vec![event(3), event(2), event(1)];
+        let ids = |v: Vec<Hit<'_>>| v.iter().map(|h| h.e.pos.sent).collect::<Vec<_>>();
+        assert_eq!(ids(find_events(&w, &toks("dance"), &[], None, &[1], true)), vec![1, 2, 3]);
+        assert_eq!(ids(find_events(&w, &toks("dance"), &[], None, &[], true)), vec![1, 2, 3]);
+        for e in &mut w.events { e.why = Some("silver lantern".into()); }
+        assert!(find_events_min(&w, &toks("silver lantern"), &[], None, &[1], true, 1.0).is_empty());
+        assert_eq!(ids(find_events(&w, &toks("silver lantern"), &[], None, &[1], true)), vec![1, 2, 3]);
+        assert!(find_events(&w, &toks("silver"), &[], None, &[1], true).is_empty());
+    }
+    #[test]
+    fn supplied_frame_why_precedence_and_anchor_only_failure() {
+        let mut w = world();
+        let mut e = event(1);
+        e.why = Some("7 reasons".into());
+        e.how = Some("because music".into());
+        w.events.push(e);
+        let f = frame();
+        let a = why(&w, &f, &[], &toks("dance"), &[1], None);
+        assert_eq!((a.src, a.text.as_str()), (Src::State, "seven reasons"));
+        w.events[0].why = None;
+        assert_eq!(why(&w, &f, &[], &toks("dance"), &[1], None).text, "because music");
+        w.events[0].how = None;
+        let a = why(&w, &f, &[], &toks("dance"), &[1], None);
+        assert_eq!((a.src, a.text.as_str(), a.anchor), (Src::None, "", Some((1, "first".into()))));
+    }
+    #[test]
+    fn answer_projection_and_section_boundaries() {
+        let f = frame();
+        let a = ans(&f, "0  20 21 7, 007".into(), "note".into(), None);
+        assert_eq!(a.text, "zero  twenty 21 7, seven");
+        assert_eq!(none(&f, "missing", Some((1, "fallback".into()))).text, "");
+        assert_eq!(sec_span(&world(), &[9]), (1, 3));
+        assert_eq!(sec_span(&world(), &[2]), (2, 2));
+        assert_eq!(toks("King's ÉLAN 42"), vec!["king", "s", "lan", "42"]);
+    }
+    #[test]
+    fn lcs_matches_subsequence_oracle() {
+        fn seq(code: usize, n: usize) -> Vec<String> {
+            (0..n).map(|i| if code & (1 << i) == 0 { "a" } else { "b" }.into()).collect()
+        }
+        for n in 0..=4 { for m in 0..=4 { for a in 0..1 << n { for b in 0..1 << m {
+            let (x, y) = (seq(a, n), seq(b, m));
+            let expected = (0usize..1 << n).filter_map(|mask| {
+                let sub: Vec<_> = x.iter().enumerate().filter(|(i, _)| mask & (1 << i) != 0).map(|(_, x)| x).collect();
+                let mut i = 0;
+                for v in &y { if i < sub.len() && v == sub[i] { i += 1; } }
+                (i == sub.len()).then_some(i)
+            }).max().unwrap();
+            assert_eq!(lcs(&x, &y), expected);
+        }}}}
+        assert_eq!(rouge_l("", ""), 0.0);
+        assert!((rouge_l("a b", "a") - 2.0 / 3.0).abs() < 1e-12);
+    }
+}
+
+#[cfg(test)]
+mod wave34_models {
+    use super::*;
+
+    #[test]
+    fn participant_rescue_requires_total_four() {
+        let mut w = World::new(crate::world::Text {
+            doc: 0,
+            title: String::new(),
+            sents: vec![(1, "synthetic".into())],
+        });
+        let id = Id::new(Reg::C, 1);
+        let mut e = Event {
+            id: Id::new(Reg::E, 1),
+            verb: "dance".into(),
+            roles: vec![],
+            why: None,
+            how: None,
+            speech: None,
+            x: Default::default(),
+            anchors: vec![1],
+            pos: TextPos {
+                chapter: 1,
+                para: 1,
+                sent: 1,
+            },
+            line: 1,
+            world: 0,
+            branch: BRANCH.tag("real").unwrap(),
+        };
+        // Missing entities are legal here: role membership alone supplies support,
+        // while ev_words sees no name/class/type evidence.
+        e.roles.push((Role::Agent, SRef { id, ver: 0 }));
+        w.events.push(e);
+        assert_eq!(
+            find_events_min(&w, &[], &[id], Some(Role::Agent), &[1], false, 1.0).len(),
+            1
+        );
+        assert_eq!(
+            find_events_min(&w, &[], &[id], None, &[1], false, 1.0).len(),
+            1
+        );
+        assert!(find_events_min(&w, &[], &[id], None, &[], false, 1.0).is_empty());
+        assert!(find_events_min(&w, &[], &[], None, &[1], false, 1.0).is_empty());
+        assert!(find_events_min(&w, &[], &[id], Some(Role::Agent), &[1], true, 1.0).is_empty());
+    }
+
+    #[test]
+    fn number_rendering_spacing_and_fibers() {
+        for spelling in ["7", "007", "+7", "seven"] {
+            assert_eq!(num_words(spelling), "seven");
+        }
+        assert_eq!(
+            num_words("20 21 -1 7, 7\t8  0"),
+            "twenty 21 -1 7, 7\t8  zero"
+        );
+        assert_eq!(num_words(""), "");
+        assert_eq!(num_words("  "), "  ");
+    }
+}

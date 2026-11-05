@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "Repeated debug and release normalized outcomes",
+    "Independent finite references and compiled mutant control",
+    "Two identical syntax projections"
+  ],
+  "children": [],
+  "cost": "O(1) update/merge/query and memory; no input history stored",
+  "description": "Welford updates and Chan merge",
+  "forward": [
+    "See model.md forward and invariant"
+  ],
+  "id": "algorithm-streaming-moments",
+  "inverse": [
+    "Distinct complement and reconstruction relations in model.md"
+  ],
+  "limitations": [
+    "Finite evidence not universal proof",
+    "Partial syntax not semantic AST",
+    "No standalone executable surrogate",
+    "No whole-pipeline composed error bound"
+  ],
+  "source": "algorithms/src/streaming_moments/mod.rs",
+  "state": "Accepted n<=2^53, f64 mean and unnormalized M2"
+}

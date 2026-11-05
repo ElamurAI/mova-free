@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "complete_split",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "complete_split",
+        "status": "partial_source_derived_model",
+        "type": "complete_split"
+      },
+      {
+        "id": "edge_write",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "edge_write",
+        "status": "partial_source_derived_model",
+        "type": "edge_write"
+      },
+      {
+        "id": "termination_domain",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "termination_domain",
+        "status": "partial_source_derived_model",
+        "type": "termination_domain"
+      },
+      {
+        "id": "root_projection",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "root_projection",
+        "status": "partial_source_derived_model",
+        "type": "root_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "partial_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 3181,
+      "start": 2300
+    },
+    "description": "Stack expands complete to incomplete spans and writes one parent for each dependent then strips root slot.",
+    "source_bytes_sha256": "d6750aa166b7fbc7e29db64f0fb264b7b443fa1e2b36a26c31b2ec777f9982c4"
+  },
+  "id": "gparse-eisner-backtrace",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../eisner.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "10e4a00f4c14c9132ed2c6c7a83692c73fb3c4f90352b94bfdcc9b5e998c1b47"
+  },
+  "status": "partial_source_bound_model"
+}

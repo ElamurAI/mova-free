@@ -1,0 +1,28 @@
+{
+  "checks": [
+    "Twice debug/release; compiled production mutant and restoration",
+    "Strict all-target Clippy; twice-identical syntax"
+  ],
+  "children": [],
+  "cost": "Dinic O(V^2 E) time, O(V+E) memory.",
+  "description": "maximum_weight_closure exact algorithm",
+  "forward": [
+    "Build source-positive, negative-sink, implication arcs with capacity P+1; reuse Dinic; residual source side maximizes closed weight P-flow."
+  ],
+  "id": "algorithm-maximum-weight-closure",
+  "inverse": [
+    "Exclude nonclosed selected sets, unsorted coordinates, wrong weight or suboptimal closure and wrapping capacity totals.",
+    "Compatible instances make the selected set closed and globally optimal with the reported sum; exact preimages also require residual tie choice. Many weight distributions share a sum and zero-weight disconnected vertices may be absent.",
+    "Cut capacity equals P minus selected weight for every implication-respecting source side.",
+    "Implication cycles require all-or-none selection within each strongly connected component.",
+    "Increasing one vertex weight cannot lower optimum, though selected witness can change.",
+    "Duplicate implications and self implications preserve objective; no universal witness uniqueness is claimed.",
+    "Public size caps precede input-order validation, then arithmetic/search. Exact cover budget exhaustion is not infeasibility; closure capacity overflow is not infeasibility. Bounded index arithmetic cannot overflow. Checked i128 arborescence arithmetic remains defensive. Allocation failure is process-level, not returned; no callbacks or external writes. Empty cases and deterministic ties follow API docs."
+  ],
+  "limitations": [
+    "Finite evidence and partial syntax only",
+    "No allocation-failure coverage or numerical surrogate"
+  ],
+  "source": "algorithms/src/maximum_weight_closure/mod.rs",
+  "state": "<=512 i64 weights, <=131072 zero-based implications; positive sum plus one fits u64; sorted selected coordinates and i128 weight."
+}

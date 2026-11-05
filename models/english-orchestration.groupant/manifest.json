@@ -1,0 +1,159 @@
+{
+  "children": [
+    "en-build",
+    "en-ctx",
+    "en-ctxeval",
+    "en-diag",
+    "en-emode",
+    "en-lib",
+    "en-license",
+    "en-main"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "No corpus, teacher, API, GPU, held-out or training run. Existing compiled dictionary/registry tables participate only where safe tests call ordinary functions; dictionary-sensitive early-return tests excluded. u32 narrowing, allocation failure, arbitrary malformed heads and environment OnceLock alternate modes remain gaps.",
+        "domain": "Bounded synthetic strings, valid aligned token arrays and in-range heads for geometry; valid System shapes with >=1 baseline and seeds, bootstrap B>=1 for comparison. Effects limited in tests to isolated temporary synthetic build/fold/report files. Real training/model/corpus paths are source-derived only.",
+        "id": "behavior-complement",
+        "observation_scope": "main imports en modules declared by lib; license gate is only on train dispatcher, not a general evaluation gate. ctxeval consumes ctx::gold and ctx::Rng plus ud::Scores. diag calls parse baseline/kbest/constrained and uses gram enums. emode force/fix connect to annotation/tagger and embedded registry/dictionary; build output binary indices must match dict consumers (not independently validated here). Shape agreement by ID/token count does not prove form identity or valid trees.",
+        "operator": "Across train dispatch, exclude model training/saving when any path first fails commercial_gate; across folds k<2 exclude input read and directory writes; across test_ctx None exclude path reads. Within aligned reports exclude independent baseline/treatment bootstrap draws. These scoped exclusions do not forbid partial output after later I/O failures.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "No corpus, teacher, API, GPU, held-out or training run. Existing compiled dictionary/registry tables participate only where safe tests call ordinary functions; dictionary-sensitive early-return tests excluded. u32 narrowing, allocation failure, arbitrary malformed heads and environment OnceLock alternate modes remain gaps.",
+        "domain": "Bounded synthetic strings, valid aligned token arrays and in-range heads for geometry; valid System shapes with >=1 baseline and seeds, bootstrap B>=1 for comparison. Effects limited in tests to isolated temporary synthetic build/fold/report files. Real training/model/corpus paths are source-derived only.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "main imports en modules declared by lib; license gate is only on train dispatcher, not a general evaluation gate. ctxeval consumes ctx::gold and ctx::Rng plus ud::Scores. diag calls parse baseline/kbest/constrained and uses gram enums. emode force/fix connect to annotation/tagger and embedded registry/dictionary; build output binary indices must match dict consumers (not independently validated here). Shape agreement by ID/token count does not prove form identity or valid trees.",
+        "operator": "Given accepted gate and rendered report, compatible antecedents are all path lists mapping to admitted sources and aligned gold/system runs producing the rounded means/intervals/group counts. They include arbitrary directory spellings, different per-seed outcomes with equal aggregates, erased annotation features and omitted examples. No unique reconstruction from report/gate result; feature ablations and constant/hash collisions further merge antecedents.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "No corpus, teacher, API, GPU, held-out or training run. Existing compiled dictionary/registry tables participate only where safe tests call ordinary functions; dictionary-sensitive early-return tests excluded. u32 narrowing, allocation failure, arbitrary malformed heads and environment OnceLock alternate modes remain gaps.",
+        "domain": "Bounded synthetic strings, valid aligned token arrays and in-range heads for geometry; valid System shapes with >=1 baseline and seeds, bootstrap B>=1 for comparison. Effects limited in tests to isolated temporary synthetic build/fold/report files. Real training/model/corpus paths are source-derived only.",
+        "id": "context-transport",
+        "observation_scope": "main imports en modules declared by lib; license gate is only on train dispatcher, not a general evaluation gate. ctxeval consumes ctx::gold and ctx::Rng plus ud::Scores. diag calls parse baseline/kbest/constrained and uses gram enums. emode force/fix connect to annotation/tagger and embedded registry/dictionary; build output binary indices must match dict consumers (not independently validated here). Shape agreement by ID/token count does not prove form identity or valid trees.",
+        "operator": "Doc nonempty sentence order→Ctx/docs; train_ctx filters tagged sentences and offsets document IDs; test_ctx validates pass1 IDs/counts; masking occurs after derivation/shuffle. ctxeval System loader checks IDs/counts but not forms. Crossing these adapters requires explicit order alignment, not just equal lengths.",
+        "path": "model.md",
+        "required": false,
+        "section": "context-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No corpus, teacher, API, GPU, held-out or training run. Existing compiled dictionary/registry tables participate only where safe tests call ordinary functions; dictionary-sensitive early-return tests excluded. u32 narrowing, allocation failure, arbitrary malformed heads and environment OnceLock alternate modes remain gaps.",
+        "domain": "Bounded synthetic strings, valid aligned token arrays and in-range heads for geometry; valid System shapes with >=1 baseline and seeds, bootstrap B>=1 for comparison. Effects limited in tests to isolated temporary synthetic build/fold/report files. Real training/model/corpus paths are source-derived only.",
+        "id": "effect-prefix",
+        "observation_scope": "main imports en modules declared by lib; license gate is only on train dispatcher, not a general evaluation gate. ctxeval consumes ctx::gold and ctx::Rng plus ud::Scores. diag calls parse baseline/kbest/constrained and uses gram enums. emode force/fix connect to annotation/tagger and embedded registry/dictionary; build output binary indices must match dict consumers (not independently validated here). Shape agreement by ID/token count does not prove form identity or valid trees.",
+        "operator": "Build reads then writes lexicon/layout/words sequentially; folds creates dir then fold/rest files; train saves before reload comparison; conversion streams completed files before later failure. A failure may retain prefixes and no rollback is modeled.",
+        "path": "model.md",
+        "required": false,
+        "section": "effect-prefix",
+        "status": "partial_source_derived_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "No corpus, teacher, API, GPU, held-out or training run. Existing compiled dictionary/registry tables participate only where safe tests call ordinary functions; dictionary-sensitive early-return tests excluded. u32 narrowing, allocation failure, arbitrary malformed heads and environment OnceLock alternate modes remain gaps.",
+        "domain": "Bounded synthetic strings, valid aligned token arrays and in-range heads for geometry; valid System shapes with >=1 baseline and seeds, bootstrap B>=1 for comparison. Effects limited in tests to isolated temporary synthetic build/fold/report files. Real training/model/corpus paths are source-derived only.",
+        "id": "coordinate-join",
+        "observation_scope": "main imports en modules declared by lib; license gate is only on train dispatcher, not a general evaluation gate. ctxeval consumes ctx::gold and ctx::Rng plus ud::Scores. diag calls parse baseline/kbest/constrained and uses gram enums. emode force/fix connect to annotation/tagger and embedded registry/dictionary; build output binary indices must match dict consumers (not independently validated here). Shape agreement by ID/token count does not prove form identity or valid trees.",
+        "operator": "Token vector index i maps head ID i+1; zero is root. Context entity features use zero/no-layer, one/outside, >=2 encoded type/status. Build offsets distinguish byte offsets from record counts and symbol IDs; none are interchangeable.",
+        "path": "model.md",
+        "required": false,
+        "section": "coordinate-join",
+        "status": "partial_source_derived_model",
+        "type": "coordinate_system"
+      },
+      {
+        "assumptions": "No corpus, teacher, API, GPU, held-out or training run. Existing compiled dictionary/registry tables participate only where safe tests call ordinary functions; dictionary-sensitive early-return tests excluded. u32 narrowing, allocation failure, arbitrary malformed heads and environment OnceLock alternate modes remain gaps.",
+        "domain": "Bounded synthetic strings, valid aligned token arrays and in-range heads for geometry; valid System shapes with >=1 baseline and seeds, bootstrap B>=1 for comparison. Effects limited in tests to isolated temporary synthetic build/fold/report files. Real training/model/corpus paths are source-derived only.",
+        "id": "uncertainty-join",
+        "observation_scope": "main imports en modules declared by lib; license gate is only on train dispatcher, not a general evaluation gate. ctxeval consumes ctx::gold and ctx::Rng plus ud::Scores. diag calls parse baseline/kbest/constrained and uses gram enums. emode force/fix connect to annotation/tagger and embedded registry/dictionary; build output binary indices must match dict consumers (not independently validated here). Shape agreement by ID/token count does not prove form identity or valid trees.",
+        "operator": "Compile visibility of lib is not execution evidence. Fourteen finite tests and seven mutants falsify selected contracts only; unknown live paths and unsupported percentage approximants remain explicit. Bootstrap intervals are sampling summaries, not proofs of real-task improvement.",
+        "path": "model.md",
+        "required": false,
+        "section": "uncertainty-join",
+        "status": "partial_source_derived_model",
+        "type": "assurance_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "english-orchestration",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "en/build.rs",
+      "sha256": "6c8ce60b686eb4ac731a465101bfc9686c3ab9fc6d17653b727491feea90eed4"
+    },
+    {
+      "path": "en/src/ctx.rs",
+      "sha256": "cd100311e41164aaa46aab97e11eeb9db8824116b86cac8c8dfb0c99738db866"
+    },
+    {
+      "path": "en/src/ctxeval.rs",
+      "sha256": "2e98fd4b87374f490a6badcdf692b631fb87272eefde557cb992c01fa8d1e6f2"
+    },
+    {
+      "path": "en/src/diag.rs",
+      "sha256": "34b32869e6f62b108683c7452b3826e17fecd420778524774b3ff0e80ede7e54"
+    },
+    {
+      "path": "en/src/emode.rs",
+      "sha256": "24160c6ab62e3a72b91c13b8dc10a1dbd870e237890858aaf229692d32e70023"
+    },
+    {
+      "path": "en/src/lib.rs",
+      "sha256": "06d8305d3c0a2b2b4b248694164d116e09d1547efd1227b1686c7352a119f570"
+    },
+    {
+      "path": "en/src/license.rs",
+      "sha256": "58e9af2e31af469b412dfbc6f900bd7f0dbbe853becc4f934b9ac9781aa628e1"
+    },
+    {
+      "path": "en/src/main.rs",
+      "sha256": "a843b9d343aa90e8c2a9d6efc1b25d4b67089a21f1012857e6cee43b13acf8fc"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

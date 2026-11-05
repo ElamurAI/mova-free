@@ -1,0 +1,38 @@
+{
+  "checks": [
+    "30 exact native test names twice debug/twice release with identical sorted outcomes; native-commands.json",
+    "6 compiled source-behavior mutants red, exact byte/hash restore, focused green; mutation-results.json",
+    "10 syntax projections generated twice and byte compared",
+    "10 source leaves,10 fragments,120 typed views with explicit cost components"
+  ],
+  "children": [
+    "langseg-corpus",
+    "langseg-cues",
+    "langseg-engine",
+    "langseg-command",
+    "langseg-talmud",
+    "langseg-gates",
+    "macula-library",
+    "macula-converter",
+    "macula-pragmatics",
+    "macula-tanakh"
+  ],
+  "cost": "Add only reached sibling paths; do not sum independent commands or overlapping fragments as serial stages. Langseg tokenizer O(B²) worst-case unmatched '<', ordinary bounded markup O(B), scoring O(F log V), Viterbi O(nK),K8. Corpus cleaner bounded60 lookahead O(B), registry quota can rescan O(rows*E). Macula repeated scans/ancestor walks O(n²) and depth-dependent subtree traversal; joins O(R log V), output/storage proportional to bytes. No end-to-end timing or speedup inferred.",
+  "description": "Tagged product L+M: L performs tokenize->features(cues)->Counts/Model->Segmenter, corpus::clean->talmud::original and Segmenter->talmud::segments. M performs XML->Sent->tree->check->surface_order->conllu; main shares library consonants/keys and dispatches prag/tanakh. Prag consumes supplied10-column rows plus prior speech state. Tanakh edition composes library html_text with NFC. No runtime L->M call asserted.",
+  "forward": [
+    "Tagged product L+M: L performs tokenize->features(cues)->Counts/Model->Segmenter, corpus::clean->talmud::original and Segmenter->talmud::segments. M performs XML->Sent->tree->check->surface_order->conllu; main shares library consonants/keys and dispatches prag/tanakh. Prag consumes supplied10-column rows plus prior speech state. Tanakh edition composes library html_text with NFC. No runtime L->M call asserted.",
+    "Real joins: cue form/name->features->count/logp columns; tokenize byte spans->segments->talmud slices; MACULA Node0-based -> head1-based -> surface permutation -> emitted-row head mapping; macula html_text->tanakh NFC edition; read_sentence open_after->next open_before within book. Counterexamples: copying MACULA ordinal to Tanakh order misaligns books; treating Segment.end as talmud slice end loses punctuation; union of component complements is not complement of composed relation. L/M are tagged siblings only."
+  ],
+  "id": "hebrew-corpus-adapters",
+  "inverse": [
+    "Under admitted states, L cannot emit neutral-only tokens or invalid path columns, M cannot choose Aramaic on majority tie, PD edition cannot admit wrong licence. The sibling universe is tagged transitions; neither path implies execution/effects of the other. These are partial source-derived exclusions, not exhaustive complements.",
+    "Reverse each actual join by retaining compatible intermediates: segment label fibers of feature/count/score states; CoNLL-U fibers of group trees and permutations; cleaned verse fibers of markup and sparse input coordinates. Keep tag L/M and book code; dropped metadata and source order are ambiguous. Unique inverse only when original permutation/data retained."
+  ],
+  "limitations": [
+    "Finite synthetic correspondence only; source-bound syntax not semantic AST proof",
+    "No new Rust approximant percentage or production substitution",
+    "Filesystem ingestion/output/teacher branches unexecuted; only model roundtrip temp I/O",
+    "Known malformed input/nonfinite and concurrency failure cases remain partial"
+  ],
+  "state": "Preserve UTF-8 byte coordinates in langseg until explicit text copying, column order HEB,1-based MACULA head transport through both permutations/row expansion, sparse1-based verse coordinates and tagged book-code identity. Both model families are lossy: labels/text cannot recover erased markup/groupings. Valid nonempty row/tree, finite signed scores and finite nonnegative switch costs are explicit."
+}

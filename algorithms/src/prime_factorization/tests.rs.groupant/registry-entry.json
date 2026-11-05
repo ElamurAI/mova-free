@@ -1,0 +1,25 @@
+{
+  "id": "algorithm-prime-factorization-tests",
+  "source": "algorithms/src/prime_factorization/tests.rs",
+  "children": [],
+  "description": "prime_factorization finite verification harness",
+  "state": "Five tests: independent divisor/primality oracle n=1..2048; zero/one and eight prime squares; u64::MAX known factors, powers of two e=1..63 and 3^40; reconstruction/canonical certificates n=1..4096; valuation addition for 4096 pairs a,b=1..64.",
+  "cost": "Bounded finite divisor/residue enumeration.",
+  "forward": [
+    "Report pass iff all fixed finite assertions hold; otherwise fail. Five tests: independent divisor/primality oracle n=1..2048; zero/one and eight prime squares; u64::MAX known factors, powers of two e=1..63 and 3^40; reconstruction/canonical certificates n=1..4096; valuation addition for 4096 pairs a,b=1..64."
+  ],
+  "inverse": [
+    "Over terminating candidate implementations paired with pass/fail, excluded observations comprise pass with any failed assertion and fail with every assertion satisfied. Aborts/nontermination are outside this binary domain.",
+    "A pass reconstructs all implementations agreeing with every finite fixture, leaving arbitrary off-fixture behavior. Failure reconstructs implementations or faulty oracle premises causing the mismatch, never uniquely identifies a defect.",
+    "Enumerate every candidate divisor of the original bounded n, certify prime by checking all smaller divisors, then determine valuation by powers dividing the original n. This uses neither shrinking remainder nor sqrt termination. Additional product/canonical certificates and multiplication relations test other observations.",
+    "Change trial boundary <= to <. This compiled production-source mutant loses the exponent of 2 at n=4 and is rejected by zero_one_and_prime_squares.",
+    "Single-thread repeated debug/release runs preserve normalized test records, excluding timestamps, build progress and elapsed time. This is finite evidence, not universal equivalence."
+  ],
+  "checks": [
+    "Debug/release twice, strict Clippy, fmt, production mutation and repeated partial syntax."
+  ],
+  "limitations": [
+    "Finite evidence not universal proof.",
+    "Macro expansion and semantic AST analysis absent."
+  ]
+}

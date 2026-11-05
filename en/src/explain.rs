@@ -210,3 +210,22 @@ pub fn explain(model: &Model, text: &str) -> Explained {
 pub fn tag_names() -> Vec<&'static str> {
     Tag::ALL.iter().map(|t| t.name()).collect()
 }
+
+#[cfg(test)]
+mod wave27 {
+    use super::*;
+    #[test]
+    fn bounded_contract() {
+        let doc =
+            crate::conllu::Doc::parse("1\tcat\tcat\tNOUN\tNN\tNumber=Sing\t0\troot\t_\t_\n\n")
+                .unwrap();
+        let m = Model::train_with(vec![doc.sents[0].sent.clone(); 2], 1);
+        let e = explain(&m, "cat");
+        assert_eq!(e.words.len(), 1);
+        assert_eq!(e.graph.len(), 1);
+        assert_eq!(e.tree.len(), 1);
+        assert_eq!(e.lossless, "cat");
+        assert_eq!(e.steps.len(), 2);
+        assert_eq!(src_letters(dict::UD | dict::REV), "ur");
+    }
+}

@@ -1,0 +1,131 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "benchmark": {
+      "path": "model.md#benchmark-wave18",
+      "status": "bounded_measured_evidence"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "No false or omitted offsets are allowed. Matching does not decode Unicode, fold case, or remove overlapping occurrences.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "59243a65cbe79def72d53aa7e6a929fdb4bc53bab1b5736cde5217e6d481acef",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "preimages",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "For fixed pattern and offsets, the fiber consists of texts with exactly those occurrences and no others. Empty offsets generally admit many texts; even one match does not recover bytes outside the matched intervals.",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "59243a65cbe79def72d53aa7e6a929fdb4bc53bab1b5736cde5217e6d481acef",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "critical-cut",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "A cut and period retain patterns whose maximal suffix in one of two opposing byte orders attains that cut with the recorded period. They do not uniquely recover a pattern.",
+        "path": "model.md",
+        "section": "critical-cut",
+        "status": "partial_source_derived",
+        "subject_revision": "59243a65cbe79def72d53aa7e6a929fdb4bc53bab1b5736cde5217e6d481acef",
+        "type": "state_preimage"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "periodic-memory",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "If the critical prefix equals the prefix displaced by period, a successful right-half scan permits retaining m-period bytes after shifting. Memory is cleared on a right-half mismatch.",
+        "path": "model.md",
+        "section": "periodic-memory",
+        "status": "partial_source_derived",
+        "subject_revision": "59243a65cbe79def72d53aa7e6a929fdb4bc53bab1b5736cde5217e6d481acef",
+        "type": "refinement_relation"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "empty-long",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "Empty pattern has n+1 matches, including the end boundary. A longer nonempty pattern has no matches; these cases bypass factorization.",
+        "path": "model.md",
+        "section": "empty-long",
+        "status": "partial_source_derived",
+        "subject_revision": "59243a65cbe79def72d53aa7e6a929fdb4bc53bab1b5736cde5217e6d481acef",
+        "type": "domain_partition"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "byte-renaming",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "Any bijection of byte values preserves occurrence offsets although it may change the critical factorization and intermediate shifts.",
+        "path": "model.md",
+        "section": "byte-renaming",
+        "status": "partial_source_derived",
+        "subject_revision": "59243a65cbe79def72d53aa7e6a929fdb4bc53bab1b5736cde5217e6d481acef",
+        "type": "metamorphic_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-two-way-matching",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "59243a65cbe79def72d53aa7e6a929fdb4bc53bab1b5736cde5217e6d481acef"
+  },
+  "status": "partial_source_derived_instance"
+}

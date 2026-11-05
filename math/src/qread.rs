@@ -1988,3 +1988,134 @@ mod tests {
         check("During the break 12 kids go to camp and the rest stay home. The town has 30 kids in all. How many kids stayed home?", Some(18.0));
     }
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn affine_provenance_and_gate_order() {
+        let mut w = QWorld::default();
+        let a = w.leaf(8.0);
+        let b = w.leaf(3.0);
+        let e = a.add(&b, -1.0);
+        assert!(a.add(&a, -1.0).x.is_empty());
+        w.expr = Some(e.clone());
+        assert_eq!(abstain(&w, Some(5.0)), None);
+        assert_eq!(abstain(&w, None), Some("no answer"));
+        w.unread.push(99.0);
+        assert_eq!(abstain(&w, Some(0.0)), Some("unread numbers"));
+        w.unread.clear();
+        assert_eq!(abstain(&w, Some(0.0)), Some("answer not positive"));
+        assert_eq!(abstain(&w, Some(0.5)), Some("not a whole number"));
+        w.expr = Some(a.scale(2.0));
+        assert_eq!(abstain(&w, Some(16.0)), Some("a number used twice"));
+        let zero = w.leaf(0.0);
+        assert!(w.compound(&a, &zero, false).is_none());
+        assert!(w.closed(&Lin::var(0)).is_none());
+        let sol = BTreeMap::from([(0, e)]);
+        assert_eq!(Lin::var(0).subst(&sol).x.len(), 2);
+    }
+    #[test]
+    fn empty_query_and_compound_provenance() {
+        let (v, w) = answer_parsed(vec![], vec![]);
+        assert_eq!(v, None);
+        assert_eq!(abstain(&w, v), Some("no answer"));
+        let mut w = QWorld::default();
+        let a = w.leaf(4.0);
+        let b = w.leaf(3.0);
+        let c = w.compound(&a, &b, true).unwrap();
+        w.expr = Some(c);
+        assert_eq!(w.leaves.last(), Some(&12.0));
+        assert_eq!(abstain(&w, Some(12.0)), None);
+    }
+}
+#[cfg(test)]
+mod wave34 {
+    use super::*;
+    fn event(t: usize, kind: Kind, val: Lin) -> Ev {
+        Ev {
+            t,
+            owner: "a".into(),
+            thing: "coin".into(),
+            head: "coin".into(),
+            unit: "coin".into(),
+            val,
+            kind,
+            verb: "have".into(),
+            class: "have".into(),
+            ord: None,
+            other: None,
+            ctx: vec![],
+            derived: false,
+            outside: false,
+        }
+    }
+    #[test]
+    fn sparse_projection_and_single_substitution() {
+        let a = Lin::var(0);
+        assert!(a.scale(1e-12).x.is_empty());
+        assert_eq!(a.scale(2e-12).x[&0], 2e-12);
+        assert_eq!(Lin::k(1e-13).scale(1.0).c, 1e-13);
+        let sol = BTreeMap::from([(0, Lin::var(1)), (1, Lin::var(LEAF))]);
+        let once = a.subst(&sol);
+        assert_eq!(once, Lin::var(1));
+        assert_eq!(once.subst(&sol), Lin::var(LEAF));
+        assert_eq!(
+            Lin::var(LEAF - 1).unknowns().collect::<Vec<_>>(),
+            vec![LEAF - 1]
+        );
+        assert_eq!(Lin::var(LEAF).unknowns().count(), 0);
+    }
+    #[test]
+    fn state_fold_and_ordered_solver() {
+        let mut w = QWorld::default();
+        let a = w.leaf(9.0);
+        let b = w.leaf(4.0);
+        w.evs = vec![
+            event(0, Kind::Set, a.clone()),
+            event(1, Kind::Sub, b.clone()),
+            event(2, Kind::Set, b.clone()),
+        ];
+        assert_eq!(w.state(Some("a"), &|_| true, 1), Some(a.add(&b, -1.0)));
+        assert_eq!(w.state(Some("a"), &|_| true, 2), Some(a.clone()));
+        w.evs[1].outside = true;
+        assert_eq!(w.state(None, &|_| true, 1), Some(a.clone()));
+        w.evs = vec![
+            event(0, Kind::Set, Lin::var(0)),
+            event(1, Kind::Is, a.clone()),
+        ];
+        assert_eq!(w.solve().get(&0), Some(&a));
+        w.evs[0].val = Lin::var(0).add(&Lin::var(1), 1.0);
+        assert!(w.solve().is_empty());
+        w.evs = vec![event(0, Kind::Add, b), event(2, Kind::Is, a)];
+        assert!(
+            w.state(Some("a"), &|_| true, 0)
+                .unwrap()
+                .x
+                .contains_key(&1000)
+        );
+    }
+    #[test]
+    fn provenance_partitions_and_required_occurrences() {
+        let mut w = QWorld::default();
+        let a = w.leaf(4.0);
+        let b = w.leaf(3.0);
+        let p = w.compound(&a, &b, true).unwrap();
+        w.expr = Some(p.add(&a, -1.0));
+        assert_eq!(abstain(&w, Some(8.0)), Some("a number used twice"));
+        w.all_used = true;
+        assert_eq!(abstain(&w, Some(8.0)), None);
+        let c = w.leaf(2.0);
+        assert_eq!(
+            abstain(&w, Some(8.0)),
+            Some("a number of the question unused")
+        );
+        w.q_leaf0 = w.nums;
+        assert_eq!(
+            abstain(&w, Some(8.0)),
+            Some("a number unused in a two-step reading")
+        );
+        w.expr = Some(w.expr.as_ref().unwrap().add(&c, 1.0));
+        assert_eq!(abstain(&w, Some(10.0)), None);
+    }
+}

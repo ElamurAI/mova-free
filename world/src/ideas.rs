@@ -122,3 +122,41 @@ pub fn main_args(args: &[String]) -> Result<()> {
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod wave28_dialogue {
+    use super::*;
+    #[test]
+    fn isolated_tsv_update_and_rank() {
+        // The test writes the ideas file of the hot root, so it runs only on an explicit fresh one
+        // (MOVA_HOT_ROOT=<tmp>/wave28-dialogue-<id>, --test-threads=1); never on the shared default.
+        let Some(root) = std::env::var_os("MOVA_HOT_ROOT").map(std::path::PathBuf::from) else {
+            eprintln!("skipped wave28_dialogue::isolated_tsv_update_and_rank: MOVA_HOT_ROOT is not set (needs a fresh wave28-dialogue-* directory)");
+            return;
+        };
+        assert!(
+            root.file_name()
+                .unwrap()
+                .to_string_lossy()
+                .starts_with("wave28-dialogue-")
+        );
+        std::fs::create_dir_all(&root).unwrap();
+        std::fs::write(
+            path(),
+            "# fixture\ninvalid\nbad\theld\tapple\te\told\toriginal\n2\tprinciple\tapple\te\t\tp\n",
+        )
+        .unwrap();
+        assert_eq!(read().len(), 2);
+        assert_eq!(read()[0].time, 0);
+        assert_eq!(related("apple", 2)[0].kind, "held");
+        assert!(related("the", 4).is_empty());
+        record("held", "apple", "new\tevidence", "next", "replacement");
+        let all = read();
+        assert_eq!(all.len(), 2);
+        assert_eq!(all[0].source, "original");
+        assert_eq!(all[0].evidence, "new evidence");
+        assert_eq!(carried_over("next").len(), 0);
+        assert_eq!(carried_over("other").len(), 1);
+        std::fs::remove_file(path()).unwrap();
+    }
+}

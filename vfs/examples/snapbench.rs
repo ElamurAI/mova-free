@@ -51,3 +51,18 @@ fn main() {
         println!("{n}\t{mb:.1}\t{}\t{}\t{}\t{}\t{}", fmt(snap), fmt(rest), fmt(lesson), fmt(first), fmt(deep));
     }
 }
+
+#[cfg(test)]
+mod wave31 {
+    use super::*;
+    #[test]
+    fn bounded_helpers() {
+        let mut calls = 0;
+        let elapsed = per_op(3, || calls += 1);
+        assert_eq!(calls, 3);
+        assert!(elapsed.is_finite() && elapsed >= 0.0);
+        assert_eq!(fmt(0.0), "0 ns");
+        assert_eq!(fmt(1e-6), "1.0 µs");
+        assert_eq!(fmt(1e-3), "1.00 ms");
+    }
+}

@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms li_chao_tree::tests"
+  ],
+  "children": [],
+  "cost": "15625 triples, 234375 exact query comparisons, plus 2^20 identical insertions and accepted/rejected coordinate cap fixtures. Finite bounded test cost; no timing benchmark.",
+  "description": "li_chao_tree tests.rs: exact structure and independent oracle",
+  "forward": [
+    "Execute all 25^3 ordered triples of slopes/intercepts in -2..=2. After each insertion query five coordinates and compare literal enumeration of all inserted lines, retaining earliest ID. Add MIN/MAX, duplicate-coordinate, empty/unknown, cap and tie fixtures."
+  ],
+  "id": "algorithm-li-chao-tree-tests",
+  "inverse": [
+    "Concrete behavior complement and ambiguous reverse reconstruction in adjacent model.md"
+  ],
+  "limitations": [
+    "Finite observations are not a proof; std allocation failure not injected; partial syntax has opaque macros and no semantic AST"
+  ],
+  "source": "algorithms/src/li_chao_tree/tests.rs",
+  "state": "Bounded deterministic supplied-input observations"
+}

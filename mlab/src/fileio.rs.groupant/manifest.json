@@ -1,0 +1,104 @@
+{
+  "children": [
+    {
+      "id": "mlab-fileio-csv-parser",
+      "path": "csv-parser.groupant"
+    },
+    {
+      "id": "mlab-fileio-json-table",
+      "path": "json-table.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Quoted numeric CSV fields exclude numeric inference for their column; entirely missing column excludes text inference. J::Num and numeric-class nonfinite JSON serialization excludes numeric literals and becomes null; logical-class values instead use x!=0, so logical NaN serializes true. Successful parse_json excludes trailing nonwhitespace.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Canonical tables admit many CSV antecedents differing quoting, headers sanitized/deduped and numeric spelling. JSON table preimages include absent versus null and later duplicate keys. Vector JSON cannot reconstruct row versus column orientation or complex imaginary data.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_invariant",
+        "path": "model.md",
+        "scope": "CSV coordinates are one-based Unicode-scalar columns and decoded line counts. Matrix output uses row order over column-major storage. Parsing allocates values but performs no host/VFS effects.",
+        "section": "state_invariant",
+        "status": "partial_source_derived_model",
+        "type": "state_invariant"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "CSV syntax errors precede table width errors; quoted unterminated error reports field origin, unexpected postquote reports current location. JSON parser is permissive f64 grammar rather than strict RFC number validator; recursion/allocation unbounded.",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Numeric/date NaN table cells serialize empty CSV; write_matrix emits literal NaN through num_text. Numeric-class nonfinite JSON values become null, while logical-class values use nonzero truth, so logical NaN becomes true. Booleans with missing values become numeric; dates encode day values. Empty table CSV is newline and JSON is [] newline; read_matrix skips at most one nonnumeric header.",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "CSV O(B+cells) time/storage. JSON character parsing O(B), error position rescans prefix; key union and per-column row lookups can require O(rows*keys^2). json_text copies child strings at each nesting level: cumulative work is the sum of serialized subtree sizes, bounded by O(depth * output bytes), plus table/cell work. A depth-D singleton-array chain can require O(D^2) copying for O(D) output; recursion depth is unchecked.",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "mlab-fileio",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../fileio.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "547a25932643243689a8ee9f5b0cc0d2cc85923d37edeff35c2d7833d8f488dd"
+  },
+  "status": "partial_source_bound_model"
+}

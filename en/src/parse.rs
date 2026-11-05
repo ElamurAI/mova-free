@@ -172,7 +172,45 @@ struct Config {
     rc: Vec<Option<usize>>,
     nl: Vec<u8>,
     nr: Vec<u8>,
+    /// subcategorisation frame filled so far: bits of the attached core dependents (`sub_bit`)
+    sub: Vec<u8>,
 }
+
+/// Collins (2003) subcategorisation: which obligatory dependents a head already has.
+fn sub_bit(l: Rel) -> u8 {
+    match l {
+        Rel::Nsubj | Rel::NsubjPass | Rel::NsubjOuter | Rel::Csubj | Rel::CsubjPass | Rel::CsubjOuter | Rel::Expl => 1,
+        Rel::Obj => 2,
+        Rel::Iobj => 4,
+        Rel::Ccomp => 8,
+        Rel::Xcomp => 16,
+        Rel::Cop => 32,
+        _ => 0,
+    }
+}
+
+/// Parser feature groups beyond the base templates. The kept ones are on by default (`KEPT`); `EN_PX` overrides the
+/// set for ablations (`EN_PX=none`, `EN_PX=conj,subcat`). Read once. A model must be parsed with the groups it was
+/// trained with; a model trained without a group parses the same with it on, as the group's keys have no weights.
+fn px() -> u32 {
+    static PX: std::sync::OnceLock<u32> = std::sync::OnceLock::new();
+    *PX.get_or_init(|| {
+        let Ok(v) = std::env::var("EN_PX") else { return KEPT };
+        v.split(',').map(|x| match x.trim() {
+            "conj" => PX_CONJ,
+            "dist" => PX_DIST,
+            "subcat" => PX_SUB,
+            _ => 0,
+        }).fold(0, |a, b| a | b)
+    })
+}
+/// Conjunct symmetry (Ficler & Goldberg 2017), kept 2026-10-18.
+const PX_CONJ: u32 = 1;
+const KEPT: u32 = PX_CONJ | PX_DIST | PX_SUB;
+/// Collins (2003) distance: verbs and punctuation between s1 and s0 (and between head and dependent); kept 2026-10-18.
+const PX_DIST: u32 = 2;
+/// Collins (2003) subcategorisation: core dependents already attached to s0, s1 and the label head; kept 2026-10-18.
+const PX_SUB: u32 = 4;
 
 impl Config {
     fn new(n: usize) -> Self {
@@ -186,6 +224,7 @@ impl Config {
             rc: vec![None; n + 1],
             nl: vec![0; n + 1],
             nr: vec![0; n + 1],
+            sub: vec![0; n + 1],
         }
     }
     fn terminal(&self) -> bool {
@@ -202,6 +241,7 @@ impl Config {
     fn attach(&mut self, h: usize, d: usize, l: Rel) {
         self.head[d] = Some(h);
         self.label[d] = l;
+        self.sub[h] |= sub_bit(l);
         if d < h {
             self.nl[h] = self.nl[h].saturating_add(1);
             if self.lc[h].is_none_or(|x| d < x) {
@@ -270,6 +310,26 @@ struct Sent {
     t: Vec<u64>,
     cx: Vec<(u64, u64)>,
     ent: Vec<u64>,
+    /// per position: suffix-3 hash, capitalised; prefix counts of verbs, punctuation, CC (index i = before word i)
+    suf: Vec<u64>,
+    cap: Vec<bool>,
+    /// coarse tag: the first two letters of the PTB tag (NN/NNS/NNP → NN, VB* → VB)
+    ct: Vec<u64>,
+    nvb: Vec<u32>,
+    npu: Vec<u32>,
+    ncc: Vec<u32>,
+}
+
+impl Sent {
+    /// Counts of (verbs, punctuation, coordinators) strictly between positions a and b.
+    fn between(&self, a: usize, b: usize) -> (u64, u64, u64) {
+        let (lo, hi) = (a.min(b), a.max(b));
+        if hi <= lo + 1 {
+            return (0, 0, 0);
+        }
+        let d = |v: &[u32]| (v[hi] - v[lo + 1]) as u64;
+        (d(&self.nvb), d(&self.npu), d(&self.ncc))
+    }
 }
 
 impl Sent {
@@ -301,6 +361,37 @@ impl Sent {
     }
 }
 
+/// Forced arcs for constrained decoding: `arc[d]` = (head, relation) that word `d` must get (index 0 — root, unused).
+pub struct Cons {
+    arc: Vec<Option<(usize, Rel)>>,
+    /// forced children of each word
+    kids: Vec<u16>,
+}
+
+impl Cons {
+    /// `arc` for words 1..n (index 0 is ignored).
+    pub fn new(arc: Vec<Option<(usize, Rel)>>) -> Cons {
+        let mut kids = vec![0u16; arc.len()];
+        for &(h, _) in arc.iter().skip(1).flatten() {
+            kids[h] += 1;
+        }
+        Cons { arc, kids }
+    }
+
+    /// An arc action is allowed if it gives a forced word its forced head, and removes from the stack only a word whose
+    /// forced children are all attached (after that it can take no more children).
+    fn allows(&self, c: &Config, a: Act) -> bool {
+        if a == Act::Shift {
+            return true;
+        }
+        let (h, d) = c.arc(a);
+        if self.arc[d].is_some_and(|(g, _)| g != h) {
+            return false;
+        }
+        self.kids[d] == 0 || (1..=c.n).filter(|&i| c.head[i] == Some(d) && self.arc[i].is_some_and(|(g, _)| g == d)).count() == self.kids[d] as usize
+    }
+}
+
 /// Parse step (for explanation): stack and buffer front before the action, weight sums of the three actions (SHIFT, LEFT,
 /// RIGHT), chosen action, created arc.
 #[derive(Clone, Debug)]
@@ -320,7 +411,24 @@ impl Parser {
         t.extend(tags.iter().map(|&x| tcode(x)));
         let cx = ctx.map_or_else(Codes::default, |c| Codes::of(c, words.len()));
         let ent = if cx.ent.is_empty() { Vec::new() } else { std::iter::once(0).chain(cx.ent.iter().copied()).collect() };
-        Sent { w, t, cx: cx.sent, ent }
+        let mut suf = vec![ROOT];
+        let mut cap = vec![false];
+        let mut ct = vec![ROOT];
+        let (mut nvb, mut npu, mut ncc) = (vec![0u32; words.len() + 2], vec![0u32; words.len() + 2], vec![0u32; words.len() + 2]);
+        for (i, (wd, &tg)) in words.iter().zip(tags).enumerate() {
+            let lw = wd.to_lowercase();
+            let cs: Vec<char> = lw.chars().collect();
+            let tail: String = cs[cs.len().saturating_sub(3)..].iter().collect();
+            suf.push(crate::hash::str_key(&tail));
+            cap.push(wd.chars().next().is_some_and(char::is_uppercase));
+            ct.push(crate::hash::str_key(&tg.name().chars().take(2).collect::<String>()));
+            // prefix[k] = count among words 1..k-1 (position k = word k)
+            let p = i + 1;
+            nvb[p + 1] = nvb[p] + (tg.is_verb() || tg == Tag::MD) as u32;
+            npu[p + 1] = npu[p] + matches!(tg, Tag::Comma | Tag::Stop | Tag::Colon | Tag::HYPH | Tag::NFP | Tag::LRB | Tag::RRB | Tag::LQuote | Tag::RQuote | Tag::DQuote) as u32;
+            ncc[p + 1] = ncc[p] + (tg == Tag::CC) as u32;
+        }
+        Sent { w, t, cx: cx.sent, ent, suf, cap, ct, nvb, npu, ncc }
     }
 
     fn feats(s: &Sent, c: &Config) -> Vec<u64> {
@@ -373,6 +481,31 @@ impl Parser {
             key(&[32, w(s0), v0.0, v0.1]),
             key(&[33, t(s0), t(s1), t(b0), t(b1)]),
         ];
+        let px = px();
+        if px != 0 {
+            if let (Some(a), Some(b)) = (s1, s0) {
+                if px & PX_DIST != 0 {
+                    // Collins 2003: verbs and punctuation between the two candidate words
+                    let (vb, pu, _) = s.between(a, b);
+                    f.push(key(&[34, t(s0), t(s1), vb.min(2), pu.min(2)]));
+                    f.push(key(&[35, t(s0), dist, vb.min(2)]));
+                }
+                if px & PX_CONJ != 0 {
+                    // Ficler & Goldberg 2017: are the two words alike, as conjuncts are, and is there a coordinator between
+                    let (_, _, cc) = s.between(a, b);
+                    let sym = (s.t[a] == s.t[b]) as u64 | ((s.ct[a] == s.ct[b]) as u64) << 1 | ((s.suf[a] == s.suf[b]) as u64) << 2 | ((s.cap[a] == s.cap[b]) as u64) << 3;
+                    f.push(key(&[36, sym, cc.min(1)]));
+                    f.push(key(&[37, t(s0), sym, cc.min(1)]));
+                }
+            }
+            if px & PX_SUB != 0 {
+                let sb = |x: Option<usize>| x.map_or(0, |i| c.sub[i] as u64);
+                f.push(key(&[38, t(s0), sb(s0)]));
+                f.push(key(&[39, t(s1), sb(s1)]));
+                f.push(key(&[40, w(s0), sb(s0)]));
+                f.push(key(&[41, t(s0), t(s1), sb(s0), sb(s1)]));
+            }
+        }
         if !s.cx.is_empty() || !s.ent.is_empty() {
             s.ctx_feats(s0, b0, &mut f);
         }
@@ -399,6 +532,21 @@ impl Parser {
             key(&[111, dir, ht, dt, c.nl[head] as u64, c.nr[head] as u64]),
             key(&[112, dir, hw, dw]),
         ];
+        let px = px();
+        if px & PX_DIST != 0 {
+            let (vb, pu, _) = s.between(head, dep);
+            f.push(key(&[113, dir, ht, dt, vb.min(2), pu.min(2)]));
+        }
+        if px & PX_CONJ != 0 {
+            let (_, _, cc) = s.between(head, dep);
+            let sym = (s.t[head] == s.t[dep]) as u64 | ((s.ct[head] == s.ct[dep]) as u64) << 1 | ((s.suf[head] == s.suf[dep]) as u64) << 2 | ((s.cap[head] == s.cap[dep]) as u64) << 3;
+            f.push(key(&[114, dir, sym, cc.min(1)]));
+            f.push(key(&[115, dir, dt, sym, lab(c.lc[dep])]));
+        }
+        if px & PX_SUB != 0 {
+            f.push(key(&[116, dir, ht, dt, c.sub[head] as u64]));
+            f.push(key(&[117, dir, hw, c.sub[head] as u64]));
+        }
         if !s.cx.is_empty() || !s.ent.is_empty() {
             s.ctx_label_feats(head, dep, dir, &mut f);
         }
@@ -611,10 +759,11 @@ impl Parser {
     /// Beam step: each hypothesis × each allowed action, the best `beam` remain. `gold` is the
     /// gold-path action at this step (during training): the gold hypothesis takes the gold label.
     fn step(&self, sent: &Sent, beam: &[Item], gold: Option<(Act, Rel)>) -> Vec<Item> {
-        self.step_w(sent, beam, gold, self.beam)
+        self.step_w(sent, beam, gold, self.beam, None)
     }
 
-    fn step_w(&self, sent: &Sent, beam: &[Item], gold: Option<(Act, Rel)>, width: usize) -> Vec<Item> {
+    /// `cons` — forced arcs (constrained decoding, `Cons`); `None` everywhere except diagnostics.
+    fn step_w(&self, sent: &Sent, beam: &[Item], gold: Option<(Act, Rel)>, width: usize, cons: Option<&Cons>) -> Vec<Item> {
         let mut cand: Vec<(f32, usize, Act)> = Vec::with_capacity(beam.len() * 3);
         for (bi, it) in beam.iter().enumerate() {
             if it.c.terminal() {
@@ -622,7 +771,7 @@ impl Parser {
             }
             let sc = self.types.scores(&Self::feats(sent, &it.c));
             for a in ACTS {
-                if it.c.valid(a) {
+                if it.c.valid(a) && cons.is_none_or(|k| k.allows(&it.c, a)) {
                     cand.push((it.score + sc[a as usize], bi, a));
                 }
             }
@@ -640,7 +789,10 @@ impl Parser {
                     (_, true, Some((_, gl))) => gl,
                     _ => {
                         let (hd, dp) = src.c.arc(a);
-                        self.best_label(&Self::label_feats(sent, &src.c, hd, dp))
+                        match cons.and_then(|k| k.arc[dp]) {
+                            Some((_, r)) => r,
+                            None => self.best_label(&Self::label_feats(sent, &src.c, hd, dp)),
+                        }
                     }
                 };
                 let mut c = src.c.clone();
@@ -716,7 +868,7 @@ impl Parser {
         let sent = self.sent(words, tags, None);
         let mut beam = vec![Item { c: Config::new(n), score: 0.0, path: Vec::new(), gold: false }];
         while beam.iter().any(|it| !it.c.terminal()) {
-            let next = self.step_w(&sent, &beam, None, k);
+            let next = self.step_w(&sent, &beam, None, k, None);
             if next.is_empty() {
                 break;
             }
@@ -732,8 +884,23 @@ impl Parser {
         out
     }
 
-    /// Path (action, label) of the best beam hypothesis.
+    /// Constrained decoding (Ng & Curran 2015): a beam of width `width` in which the arcs of `cons` are forced —
+    /// head and label. `None` if every hypothesis dies (the forced arcs cannot all be built, e.g. they cross).
+    pub fn parse_constrained(&self, words: &[&str], tags: &[Tag], cons: &Cons, width: usize) -> Option<Vec<(usize, Rel)>> {
+        let n = words.len();
+        let sent = self.sent(words, tags, None);
+        let mut beam = vec![Item { c: Config::new(n), score: 0.0, path: Vec::new(), gold: false }];
+        while beam.iter().any(|it| !it.c.terminal()) {
+            beam = self.step_w(&sent, &beam, None, width, Some(cons));
+            if beam.is_empty() {
+                return None;
+            }
+        }
+        let c = &beam[0].c;
+        Some((1..=n).map(|i| (c.head[i].unwrap_or(0), c.label[i])).collect())
+    }
 
+    /// Path (action, label) of the best beam hypothesis.
     fn beam_path(&self, sent: &Sent, n: usize) -> Vec<(Act, Rel)> {
         let mut beam = vec![Item { c: Config::new(n), score: 0.0, path: Vec::new(), gold: false }];
         while beam.iter().any(|it| !it.c.terminal()) {
@@ -765,5 +932,28 @@ impl Parser {
             c.apply(a, l);
         }
         (1..=n).map(|i| (c.head[i].unwrap_or(0), c.label[i])).collect()
+    }
+}
+
+#[cfg(test)]
+mod wave27 {
+    use super::*;
+    #[test]
+    fn bounded_contract() {
+        let p = Parser::train(&[], 0);
+        let (tree, steps) = p.parse_steps(&["a", "b"], &[Tag::NN, Tag::NN]);
+        assert_eq!(tree.len(), 2);
+        assert_eq!(steps.len(), 4);
+        assert_eq!(tree.iter().filter(|x| x.0 == 0).count(), 1);
+        let mut c = Config::new(2);
+        c.apply(Act::Shift, Rel::Dep);
+        assert!(!c.valid(Act::Right));
+        assert!(!c.valid(Act::Left));
+        let cons = Cons::new(vec![None, Some((2, Rel::Nsubj)), Some((0, Rel::Root))]);
+        assert_eq!(
+            p.parse_constrained(&["a", "b"], &[Tag::NN, Tag::NN], &cons, 8),
+            Some(vec![(2, Rel::Nsubj), (0, Rel::Root)])
+        );
+        assert_eq!(p.parse_kbest(&[], &[], 0).len(), 1);
     }
 }

@@ -1,0 +1,164 @@
+{
+  "children": [
+    "onto-bridge",
+    "onto-describe",
+    "onto-hs",
+    "onto-hsmap",
+    "onto-kb",
+    "onto-main",
+    "onto-pron",
+    "onto-query",
+    "onto-store"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "No live CSV/model/prior/teacher/corpus/DB effects executed. Native env ONTO_PRIOR points to isolated missing fixture; tested one-sense query avoids global prior path. main tested opt/wd_cfg only. Build/judge/confirm/load_kb live paths remain model-only; trusted malformed TSV/public graph may panic outside stated domain.",
+        "domain": "Finite synthetic checked four-node graph, sorted unique words/synset keys, valid Cids/CSR/UTF8, one-sense queries, valid short HS code strings, finite representable rationals, colon depth<=255, valid Kb layer parents, temp local files only. Layer-chain visibility assumes leak_all_layers=false. Multi-sense ranking additionally assumes finite scores; executed fixtures use one sense.",
+        "id": "behavior-complement",
+        "observation_scope": "Graph Builder.finish (ontocore)→store.check/unpack→Kb.new is real CSR boundary. Kb.prop→query.prop_of→bridge.answer_question/pron.info/describe.describe preserves Known/Unknown/Undetermined distinctions except pron Tri merges latter two with reason. hs::parse main feature/NP→hsmap candidates/pick/isa_verdict→Kb ancestors/query.parts_of. Core SynMap last duplicate vs Graph first duplicate is invalid adapter unless keys unique. Bound.overlaps requires callers align attr/base/basis; hsmap shared gate checks attr/base but not basis, so cross-basis comparison is an explicit limitation.",
+        "operator": "When leak_all_layers=false: Visible-layer composition excludes fable seed effects on real queries; no-seed excludes Boolean property answer. Bridge exact tier excludes lower-tier replacement. Snapshot malformed remaining-length claim excludes accepted Graph/panic under cursor invariant. Meronym no-witness excludes No while IsA no-witness permits No.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "No live CSV/model/prior/teacher/corpus/DB effects executed. Native env ONTO_PRIOR points to isolated missing fixture; tested one-sense query avoids global prior path. main tested opt/wd_cfg only. Build/judge/confirm/load_kb live paths remain model-only; trusted malformed TSV/public graph may panic outside stated domain.",
+        "domain": "Finite synthetic checked four-node graph, sorted unique words/synset keys, valid Cids/CSR/UTF8, one-sense queries, valid short HS code strings, finite representable rationals, colon depth<=255, valid Kb layer parents, temp local files only. Layer-chain visibility assumes leak_all_layers=false. Multi-sense ranking additionally assumes finite scores; executed fixtures use one sense.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Graph Builder.finish (ontocore)→store.check/unpack→Kb.new is real CSR boundary. Kb.prop→query.prop_of→bridge.answer_question/pron.info/describe.describe preserves Known/Unknown/Undetermined distinctions except pron Tri merges latter two with reason. hs::parse main feature/NP→hsmap candidates/pick/isa_verdict→Kb ancestors/query.parts_of. Core SynMap last duplicate vs Graph first duplicate is invalid adapter unless keys unique. Bound.overlaps requires callers align attr/base/basis; hsmap shared gate checks attr/base but not basis, so cross-basis comparison is an explicit limitation.",
+        "operator": "For checked g, unpack(pack(g))=g; Graph does not reconstruct file path. Answer preimage is set of graphs/seeds/sense choices with identical selected proofs and verdict, admitting invisible layers/ignored alternatives. Parsed/derivative tables have many token/description antecedents due normalization/dedup and caps.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "No live CSV/model/prior/teacher/corpus/DB effects executed. Native env ONTO_PRIOR points to isolated missing fixture; tested one-sense query avoids global prior path. main tested opt/wd_cfg only. Build/judge/confirm/load_kb live paths remain model-only; trusted malformed TSV/public graph may panic outside stated domain.",
+        "domain": "Finite synthetic checked four-node graph, sorted unique words/synset keys, valid Cids/CSR/UTF8, one-sense queries, valid short HS code strings, finite representable rationals, colon depth<=255, valid Kb layer parents, temp local files only. Layer-chain visibility assumes leak_all_layers=false. Multi-sense ranking additionally assumes finite scores; executed fixtures use one sense.",
+        "id": "layer-proof-transport",
+        "observation_scope": "Graph Builder.finish (ontocore)→store.check/unpack→Kb.new is real CSR boundary. Kb.prop→query.prop_of→bridge.answer_question/pron.info/describe.describe preserves Known/Unknown/Undetermined distinctions except pron Tri merges latter two with reason. hs::parse main feature/NP→hsmap candidates/pick/isa_verdict→Kb ancestors/query.parts_of. Core SynMap last duplicate vs Graph first duplicate is invalid adapter unless keys unique. Bound.overlaps requires callers align attr/base/basis; hsmap shared gate checks attr/base but not basis, so cross-basis comparison is an explicit limitation.",
+        "operator": "Known(value,win,chain,beaten,l)→query Yes/No plus seed/chain text; pron maps value to Tri and persona; describe counts only noncharacter applicable-known props. Undetermined and Unknown both map Tri Unknown but why differs.",
+        "path": "model.md",
+        "required": false,
+        "section": "layer-proof-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No live CSV/model/prior/teacher/corpus/DB effects executed. Native env ONTO_PRIOR points to isolated missing fixture; tested one-sense query avoids global prior path. main tested opt/wd_cfg only. Build/judge/confirm/load_kb live paths remain model-only; trusted malformed TSV/public graph may panic outside stated domain.",
+        "domain": "Finite synthetic checked four-node graph, sorted unique words/synset keys, valid Cids/CSR/UTF8, one-sense queries, valid short HS code strings, finite representable rationals, colon depth<=255, valid Kb layer parents, temp local files only. Layer-chain visibility assumes leak_all_layers=false. Multi-sense ranking additionally assumes finite scores; executed fixtures use one sense.",
+        "id": "unit-gate-join",
+        "observation_scope": "Graph Builder.finish (ontocore)→store.check/unpack→Kb.new is real CSR boundary. Kb.prop→query.prop_of→bridge.answer_question/pron.info/describe.describe preserves Known/Unknown/Undetermined distinctions except pron Tri merges latter two with reason. hs::parse main feature/NP→hsmap candidates/pick/isa_verdict→Kb ancestors/query.parts_of. Core SynMap last duplicate vs Graph first duplicate is invalid adapter unless keys unique. Bound.overlaps requires callers align attr/base/basis; hsmap shared gate checks attr/base but not basis, so cross-basis comparison is an explicit limitation.",
+        "operator": "Rat endpoint values already in base units before hsmap compares shared attr/base intervals. Numeric overlap formula is dimensionless; basis compatibility is not checked by current hsmap shared predicate.",
+        "path": "model.md",
+        "required": false,
+        "section": "unit-gate-join",
+        "status": "partial_source_derived_model",
+        "type": "dimension_transport"
+      },
+      {
+        "assumptions": "No live CSV/model/prior/teacher/corpus/DB effects executed. Native env ONTO_PRIOR points to isolated missing fixture; tested one-sense query avoids global prior path. main tested opt/wd_cfg only. Build/judge/confirm/load_kb live paths remain model-only; trusted malformed TSV/public graph may panic outside stated domain.",
+        "domain": "Finite synthetic checked four-node graph, sorted unique words/synset keys, valid Cids/CSR/UTF8, one-sense queries, valid short HS code strings, finite representable rationals, colon depth<=255, valid Kb layer parents, temp local files only. Layer-chain visibility assumes leak_all_layers=false. Multi-sense ranking additionally assumes finite scores; executed fixtures use one sense.",
+        "id": "snapshot-cursor",
+        "observation_scope": "Graph Builder.finish (ontocore)→store.check/unpack→Kb.new is real CSR boundary. Kb.prop→query.prop_of→bridge.answer_question/pron.info/describe.describe preserves Known/Unknown/Undetermined distinctions except pron Tri merges latter two with reason. hs::parse main feature/NP→hsmap candidates/pick/isa_verdict→Kb ancestors/query.parts_of. Core SynMap last duplicate vs Graph first duplicate is invalid adapter unless keys unique. Bound.overlaps requires callers align attr/base/basis; hsmap shared gate checks attr/base but not basis, so cross-basis comparison is an explicit limitation.",
+        "operator": "p0=0≤B; guarded n≤B-p yields p'=p+n≤B, establishing safe addition/slicing. Typed enum and shape checks then feed Kb but do not establish graph DAG/CSR inverse semantics.",
+        "path": "model.md",
+        "required": false,
+        "section": "snapshot-cursor",
+        "status": "partial_source_derived_model",
+        "type": "resource_boundary"
+      },
+      {
+        "assumptions": "No live CSV/model/prior/teacher/corpus/DB effects executed. Native env ONTO_PRIOR points to isolated missing fixture; tested one-sense query avoids global prior path. main tested opt/wd_cfg only. Build/judge/confirm/load_kb live paths remain model-only; trusted malformed TSV/public graph may panic outside stated domain.",
+        "domain": "Finite synthetic checked four-node graph, sorted unique words/synset keys, valid Cids/CSR/UTF8, one-sense queries, valid short HS code strings, finite representable rationals, colon depth<=255, valid Kb layer parents, temp local files only. Layer-chain visibility assumes leak_all_layers=false. Multi-sense ranking additionally assumes finite scores; executed fixtures use one sense.",
+        "id": "hs-selection",
+        "observation_scope": "Graph Builder.finish (ontocore)→store.check/unpack→Kb.new is real CSR boundary. Kb.prop→query.prop_of→bridge.answer_question/pron.info/describe.describe preserves Known/Unknown/Undetermined distinctions except pron Tri merges latter two with reason. hs::parse main feature/NP→hsmap candidates/pick/isa_verdict→Kb ancestors/query.parts_of. Core SynMap last duplicate vs Graph first duplicate is invalid adapter unless keys unique. Bound.overlaps requires callers align attr/base/basis; hsmap shared gate checks attr/base but not basis, so cross-basis comparison is an explicit limitation.",
+        "operator": "hs main=first deepest Item else Head; hsmap matches original kind/level/NP then compounds candidate phrases. State key live/food separates confirmations; first accepted Q vs last confirmation rules cannot be interchanged.",
+        "path": "model.md",
+        "required": false,
+        "section": "hs-selection",
+        "status": "partial_source_derived_model",
+        "type": "ordered_selection"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "ontology-query-state",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "onto/src/bridge.rs",
+      "sha256": "b9df59904a00c9ad8cd343a4baf01f7b54eee6d7fa8da28988cd41e669f92a8c"
+    },
+    {
+      "path": "onto/src/describe.rs",
+      "sha256": "b1e054a392c1f8b6d8cf0fdc4c97aeb767018e73fefde26c490e73e27eb6fb02"
+    },
+    {
+      "path": "onto/src/hs.rs",
+      "sha256": "92e3961f025bb2d04ce2b0f7f19cb1e33a1da7d8fe0d0d5f6ed106d1e81d305d"
+    },
+    {
+      "path": "onto/src/hsmap.rs",
+      "sha256": "7ae1e9362cb8f9ce0d9e2472d73252ca5385c689dd7efad9657265f6ae553a68"
+    },
+    {
+      "path": "onto/src/kb.rs",
+      "sha256": "8b200aa63ee08b6668a9e0b5c4adc78e8fd520a0139e133a8b860bd97e385cf1"
+    },
+    {
+      "path": "onto/src/main.rs",
+      "sha256": "5c2c10af94c4e04b46786bee61fc2f26667931d666d3414f5015a48806ace855"
+    },
+    {
+      "path": "onto/src/pron.rs",
+      "sha256": "58269d22bbd6e6362d382e15ea169cb0cdb51debfa12014a2f229d22b07996ac"
+    },
+    {
+      "path": "onto/src/query.rs",
+      "sha256": "c1e3d46ec350cc30a83d1584167a7c1393836fa6b1eea69eed68942ffd2854b5"
+    },
+    {
+      "path": "onto/src/store.rs",
+      "sha256": "19eeabb5cd6e93adc2ace73ee61067765db1ead68aa6d38517648cdb00ad1823"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

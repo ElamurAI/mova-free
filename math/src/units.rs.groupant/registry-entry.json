@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p math --lib units::",
+    "paired syntax and compiled controls; external receipts"
+  ],
+  "children": [],
+  "cost": "Mono mul O(a+b+ab) including cloning, scanning and retention, dim/scale O(k) plus rational powers; table lookup bounded finite. i8 arithmetic is unchecked: debug panic/release wrapping possible outside exponent domain.",
+  "description": "Exact SI factors and affine temperature coordinates",
+  "forward": [
+    "Dim stores length/mass/time/temperature i8 exponents. Mono public ordered Vec merges first matching units and removes zeros. factor checks dimensions then source.scale/target.scale. Scale computes K=(x+offset)*delta_factor and inverse K/factor-offset."
+  ],
+  "id": "math-units",
+  "inverse": [
+    "For fixed factors, conversion antecedent x=y*f_to/f_from subject to Rat representability. Fixed scale inverse x=K/f-offset is unique arithmetically. Dimension vectors have many monomial antecedents and lose unit/order information."
+  ],
+  "limitations": [
+    "Partial lexical projection; no semantic proof",
+    "No useful executable percentage surrogate",
+    "Bounded synthetic fixtures; resource/malformed-state gaps in models"
+  ],
+  "source": "math/src/units.rs",
+  "state": "Dim stores length/mass/time/temperature i8 exponents. Mono public ordered Vec merges first matching units and removes zeros. factor checks dimensions then source.scale/target.scale. Scale computes K=(x+offset)*delta_factor and inverse K/factor-offset."
+}

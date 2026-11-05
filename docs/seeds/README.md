@@ -16,4 +16,4 @@ Grammar seeds in `en/seeds` carry ```` ```rule ```` blocks that the rule engine 
 
 The pages were written for release 0.3 (2026-10-03). The grammar pages cover every seed in their folders as of 2026-10-15. On the global page, `measures`, `selection` and `homographs` were added on 2026-10-15.
 
-Related: [../absurdity.md](../absurdity.md) (the absurdity matrix), [../induce.md](../induce.md) (rules the model induces itself), [../selfplay.md](../selfplay.md), [../derive.md](../derive.md), [../pragmatics-expressions.md](../pragmatics-expressions.md).
+Related: [../knowledge.md](../knowledge.md) (the absurdity matrix), [../training.md](../training.md) (rules the model induces itself), [../training.md](../training.md), [../english.md](../english.md), [../pragmatics.md](../pragmatics.md).

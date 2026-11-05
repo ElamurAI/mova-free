@@ -1,0 +1,85 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-rerank-selection-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-rerank-selection-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-rerank-selection-coupling",
+        "path": "model.md",
+        "section": "coupling",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      },
+      {
+        "id": "world-rerank-selection-observation-fiber",
+        "path": "model.md",
+        "section": "observation-fiber",
+        "status": "partial_source_model",
+        "type": "information_loss"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 2988,
+      "start": 754
+    },
+    "description": "For finite nonnegative lambda choose the first maximum parser_score-lambda*penalty. Positive infinity uses lexicographic (-penalty,score). Empty candidates return sentinel zero. Reject NaN score/lambda, negative lambda and negative/nonfinite penalties before ordering; infinite parser scores remain admissible."
+  },
+  "id": "world-rerank-selection",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../rerank.rs",
+    "sha256": "7734d1b33c02f022a5f4f2b420d3bece2e4456a9af4887b804c0b8b312f4908a"
+  },
+  "status": "partial_source_bound_model"
+}

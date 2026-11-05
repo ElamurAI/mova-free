@@ -1,0 +1,28 @@
+{
+  "checks": [
+    "tales::tests::sentence_bounds",
+    "tales::tests::split_by_contents"
+  ],
+  "children": [],
+  "cost": "body/paragraphs/sentences linear in materialized bytes/tokens; heading search may revisit normalization and scan up to O(headings*lines*line length). CoNLL assembly allocates full output; annotation training/inference and DB loading are additional opaque costs.",
+  "description": "Synthetic book segmentation and corpus orchestration",
+  "forward": [
+    "body selects lines between first ordered Gutenberg markers and removes CR endings. split removes illustration lines, uses TOC minimum-indent entries with normalized ignores and ordered blank-surrounded matching headings, or title/start/end single section, then normalized skip. paragraphs collapse whitespace and label head/lg/p. sentences emits half-open token spans after terminal/closers unless next starts lowercase/internal punctuation. run trains annotator, writes all CoNLL files/index then loads sequentially."
+  ],
+  "id": "db-src-tales",
+  "inverse": [
+    "Missing/out-of-order Gutenberg markers cannot produce body. Missing TOC entries/start/end or empty retained tale cannot return split success. A terminal followed by lowercase cannot alone force a boundary under the current rule.",
+    "Paragraph output admits all original line/whitespace layouts that collapse identically and satisfy block classification. Sentence span output constrains terminal/closer and following-character predicates, not token lexical identities. Raw book, removed illustrations and skipped sections are not recoverable.",
+    "Only minimum indent TOC items survive before ignore filtering; headings must appear in TOC order surrounded by blanks. Case/curly single quote/whitespace normalization creates equivalence classes, not fuzzy matching.",
+    "A one-line all-uppercase alphabetic paragraph is head; otherwise multiple wholly indented lines are lg; all remaining are p. Classification uses pre-collapse line count/indentation, so equal output text can have different block labels.",
+    "At terminal index i, j advances through terminal/closer run. If next is lowercase or ,;:-–— then no split, otherwise emit [start,j). Final residual suffix is emitted once.",
+    "run creates output directory before training, writes per-book files and index before DB loads. Later failure leaves earlier files and possibly loaded books. It is not an all-books transaction and was not invoked."
+  ],
+  "limitations": [
+    "Finite helper/fixture evidence only; no DuckDB integration or SQL semantics",
+    "Partial syntax projection; no macro expansion or full semantic proof",
+    "No executable approximate profile or speedup claim"
+  ],
+  "source": "tools/db/src/tales.rs",
+  "state": "Sentence spans partition token indices in order for nonempty tokens; empty list yields no spans. Paragraph text loses original whitespace. conllu disambiguates equal slugs with -n, emits document metadata on first actual sentence and paragraph markers per tokenized paragraph; real annotator/corpus execution is outside evidence."
+}

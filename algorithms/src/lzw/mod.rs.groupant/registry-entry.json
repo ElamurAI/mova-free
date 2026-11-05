@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms lzw::tests"
+  ],
+  "children": [],
+  "cost": "algorithms/src/lzw/mod.rs.groupant/model.md#approximant",
+  "description": "Original bounded byte lzw algorithm",
+  "forward": [
+    "algorithms/src/lzw/mod.rs.groupant/model.md#approximant"
+  ],
+  "id": "algorithm-lzw",
+  "inverse": [
+    "algorithms/src/lzw/mod.rs.groupant/model.md: behavior_complement then reverse_reconstruction"
+  ],
+  "limitations": [
+    "Partial syntax and finite observations; no universal percentage bound or allocator-failure injection"
+  ],
+  "source": "algorithms/src/lzw/mod.rs",
+  "state": "Deterministic byte traversal; no callbacks; allocation failure environmental"
+}

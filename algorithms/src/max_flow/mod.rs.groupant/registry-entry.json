@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline max_flow::tests::",
+    "Debug and release twice normalized; strict Clippy; syntax twice; isolated compiled production mutation rejected at assertion."
+  ],
+  "children": [],
+  "cost": "O(V+E) memory. O(V+E+VE(V+E)) conservative time: Edmonds-Karp has O(VE) augmentations; full BFS and array initialization cost O(V+E) each. The additive term covers E=0. No runtime timing claim or capacity-dependent iteration count.",
+  "description": "max_flow mod.rs exact algorithm and bounded contract",
+  "forward": [
+    "Validate source then sink bounds, distinct terminals, then all edges in original order. Build a separate forward/reverse pair per edge (reverse index xor 1), preserving loops and duplicates. Repeated full FIFO BFS in insertion order selects shortest residual paths. Augment by path minimum; on no path return u128 total, reverse residuals in original order and final reachable vertices. Exact selected output depends on ordered input, not merely optimality."
+  ],
+  "id": "algorithm-max-flow",
+  "inverse": [
+    "Let X be ordered finite graphs with usize terminals and u64 capacities, Y typed Result<Flow,Error>, and U=X times Y under sufficient allocation. R is the exact deterministic relation in Forward, including validation precedence. U minus R excludes wrong validation, infeasible/nonmaximum certificates, and alternate feasible optima not chosen by the specified traversal. This is a source-derived exact target with only bounded correspondence evidence, not a proof.",
+    "For a successful (value,flows,cut), compatible inputs must have matching lengths, capacities at least flows, conservation at every nonterminal, net terminal flow equal value, and cut capacity equal value. These are necessary filters; the complete preimage additionally requires Forward to select exactly those flows and cut. Capacities and ordered graphs are generally not uniquely recovered. Error preimages follow the first failing validation or checked arithmetic site."
+  ],
+  "limitations": [
+    "Finite evidence is not proof; allocation failures outside Result; partial syntax only; no executable lossy approximants."
+  ],
+  "source": "algorithms/src/max_flow/mod.rs",
+  "state": "Finite typed inputs, sufficient allocation; explicit Result errors."
+}

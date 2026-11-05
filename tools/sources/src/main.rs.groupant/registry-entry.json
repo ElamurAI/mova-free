@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "tests::names_and_hosts",
+    "path_tests::disambiguated_names",
+    "script_tests::script_names",
+    "wave33_tests::bibliography_row_load_plan_check_join",
+    "wave33_tests::check_size_then_digest_then_magic",
+    "wave33_tests::merge_subset_and_first_partial_owner"
+  ],
+  "children": [],
+  "cost": "M rows,F files,U URL bytes,S disk bytes: naming O(F²+U), directory walk O(entries), hash O(S) and 1 MiB buffer; merge O(M²F) expected hashing. Long path_name remove(0) can be quadratic.",
+  "description": "Dispatch selects plan/verify/merge/bib. load filters before uniqueness/name checks. plan writes provenance, migrates matching-size files, queues remaining by host, deletes old curl configs then writes new. check orders metadata/size, MD5, SHA1, magic. merge resolves slug precedence, subsets then partial ownership.",
+  "forward": [
+    "Dispatch selects plan/verify/merge/bib. load filters before uniqueness/name checks. plan writes provenance, migrates matching-size files, queues remaining by host, deletes old curl configs then writes new. check orders metadata/size, MD5, SHA1, magic. merge resolves slug precedence, subsets then partial ownership."
+  ],
+  "id": "sources-cli",
+  "inverse": [
+    "Rejected load excludes plan writes. plan never invokes curl. check size failure cannot reach successful digest/magic stages.",
+    "Queue pairs admit many manifests with different metadata/already-present/skipped files. Merge output admits arbitrary dropped duplicate/subset rows; no unique inverse."
+  ],
+  "limitations": [
+    "Partial syntax and finite fixtures, not universal semantic proof.",
+    "Value full workflow, arbitrary manifests and external IO failures are not exercised."
+  ],
+  "source": "tools/sources/src/main.rs",
+  "state": "Bounded JSONL with confined safe slugs/names and representable u64 sums. Arbitrary slug confinement is not validated by production. Unknown size accepts any existing length; queue omission is not content verification. Effects nontransactional."
+}

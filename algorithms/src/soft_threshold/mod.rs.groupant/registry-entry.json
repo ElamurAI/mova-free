@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms soft_threshold::tests"
+  ],
+  "children": [],
+  "cost": "O(n) validation and coordinate writes, O(n) result storage, cap n<=1,000,000. No convergence loop or optimization iteration budget required.",
+  "description": "Finite f64 convex projection/proximal kernel",
+  "forward": [
+    "Coordinatewise y=sign(x)*max(|x|-lambda,0), the real proximal minimizer of 0.5||y-x||2^2+lambda||y||1. The f64 subtraction is rounded; all finite scalar differences remain finite because both operands are nonnegative before subtraction."
+  ],
+  "id": "algorithm-soft-threshold",
+  "inverse": [
+    "Typed complement, normal-cone or subgradient fibers and specialized views in model.md"
+  ],
+  "limitations": [
+    "Finite observations do not certify universal f64 accuracy",
+    "Allocation refusal unforced",
+    "Partial source syntax; executable surrogate absent"
+  ],
+  "source": "algorithms/src/soft_threshold/mod.rs",
+  "state": "Deterministic, finite validation and explicit resource/arithmetic limits"
+}

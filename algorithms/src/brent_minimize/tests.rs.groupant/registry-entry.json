@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms brent_minimize::tests"
+  ],
+  "children": [],
+  "cost": "algorithms/src/brent_minimize/tests.rs.groupant/model.md#approximant",
+  "description": "brent_minimize finite checks with bounded domain and numerical termination observations",
+  "forward": [
+    "algorithms/src/brent_minimize/tests.rs.groupant/model.md#approximant"
+  ],
+  "id": "algorithm-brent-minimize-tests",
+  "inverse": [
+    "algorithms/src/brent_minimize/tests.rs.groupant/model.md: behavior_complement then reverse_reconstruction"
+  ],
+  "limitations": [
+    "Partial syntax and finite observations; no universal relative solution bound, callback proof or allocator-failure injection"
+  ],
+  "source": "algorithms/src/brent_minimize/tests.rs",
+  "state": "Deterministic fixed traversal and deterministic callback premise; allocation failures environmental"
+}

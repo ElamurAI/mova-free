@@ -1,0 +1,35 @@
+// Compile with rustc --edition=2024 --crate-name cache_probe_driver probe-driver.txt -o DRIVER.
+// DRIVER REPO TARGET/debug/deps NEW_OUTPUT_DIR; output directory must not exist.
+// Only runtime mutation is in the generated external negative-control harness.
+use std::{fs,path::{Path,PathBuf},process::Command};
+fn rlib(deps:&Path,name:&str)->PathBuf {
+    let mut paths:Vec<_>=fs::read_dir(deps).unwrap().map(|x|x.unwrap().path()).filter(|p|p.file_name().unwrap().to_str().unwrap().starts_with(&format!("lib{name}-")) && p.extension().is_some_and(|x|x=="rlib")).collect();paths.sort();assert_eq!(paths.len(),1,"use a fresh separate target for {name}");paths.remove(0)
+}
+fn main(){
+    let args:Vec<_>=std::env::args().collect();assert_eq!(args.len(),4);let repo=Path::new(&args[1]);let deps=Path::new(&args[2]);let out=Path::new(&args[3]);fs::create_dir(out).unwrap();
+    let source=repo.join("world/src/parsecache.rs");let digest=Command::new("sha256sum").arg(&source).output().unwrap();assert!(digest.status.success());assert_eq!(String::from_utf8(digest.stdout).unwrap().split_whitespace().next().unwrap(),"6545414761854d33b7b41f8a864a7f4c59eebeaee721eef68772bb4a7a652479");
+    let actual=fs::read_to_string(&source).unwrap();let actual=actual.lines().map(|line|line.strip_prefix("//!").map(|s|format!("//{s}")).unwrap_or_else(||line.into())).collect::<Vec<_>>().join("\n");
+    let store=fs::read_to_string(repo.join("world/src/store.rs")).unwrap();let a=store.find("pub fn write_atomic(").unwrap();let b=a+store[a..].find("\n}\n").unwrap()+2;let atomic=&store[a..b];
+    let probe=fs::read_to_string(repo.join("world/src/parsecache.rs.groupant/probe.txt")).unwrap();
+    let stubs=r#"
+mod exec {
+    #[derive(Debug,PartialEq,Eq)] pub enum Mode {Cpu,Gpu}
+    pub fn mode()->Mode {panic!("identity mode must not be called by this probe")}
+    pub fn parse_many(_: &[String])->anyhow::Result<Vec<Vec<en::annotate::Word>>> {panic!("real parser must not run")}
+}
+mod tree {pub fn model_path()->std::path::PathBuf {panic!("real model path must not be read")}}
+"#;
+    for negative in [false,true] {
+        let tag=if negative{"negative"}else{"positive"};let code=if negative {let from="self.refresh || !self.trees.contains_key(*t)";assert_eq!(actual.matches(from).count(),1);actual.replace(from,"self.refresh && !self.trees.contains_key(*t)")}else{actual.clone()};
+        let harness=format!("#![allow(dead_code)]\n{stubs}\nmod store {{use std::path::Path;use anyhow::Result;\n{atomic}\n}}\nmod parsecache {{\n{code}\n{probe}\n}}\n");let file=out.join(format!("{tag}.rs"));fs::write(&file,harness).unwrap();let bin=out.join(tag);
+        let mut cmd=Command::new("rustc");cmd.arg("--edition=2024").arg("--test").arg(&file).arg("-o").arg(&bin).arg("-L").arg(format!("dependency={}",deps.display()));
+        for name in ["en","serde","serde_json","sha2","anyhow"]{cmd.arg("--extern").arg(format!("{name}={}",rlib(deps,name).display()));}
+        let compile=cmd.output().unwrap();fs::write(out.join(format!("{tag}-compile.log")),[compile.stdout,compile.stderr].concat()).unwrap();assert!(compile.status.success(),"harness compilation failed: {tag}");
+        for run in 0..if negative{1}else{2} {
+            let root=out.join(format!("{tag}-cache-{run}"));fs::create_dir(&root).unwrap();let mut run_cmd=Command::new(&bin);run_cmd.env("PARSECACHE_PROBE_ROOT",&root).env("TMPDIR",&root).args(["--test-threads=1","--nocapture"]);
+            if negative {run_cmd.args(["--exact","parsecache::transition_tests::bounded_batch_relation_and_complement"]);}
+            let result=run_cmd.output().unwrap();let log=[result.stdout,result.stderr].concat();fs::write(out.join(format!("{tag}-{run}.log")),&log).unwrap();assert_eq!(result.status.success(),!negative,"unexpected {tag} outcome");
+            println!("{tag} run {run}: expected status observed");
+        }
+    }
+}

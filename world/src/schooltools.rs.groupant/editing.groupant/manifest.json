@@ -1,0 +1,98 @@
+{
+  "children": [
+    {
+      "id": "world-schooltools-editing-edit-sequence",
+      "path": "edit-sequence.groupant"
+    },
+    {
+      "id": "world-schooltools-editing-restore-selection",
+      "path": "restore-selection.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#wave34-composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-schooltools-editing-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-schooltools-editing-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-schooltools-editing-refusal-fiber",
+        "path": "model.md",
+        "section": "refusal-fiber",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-schooltools-editing-fixture-boundary",
+        "path": "model.md",
+        "section": "fixture-boundary",
+        "status": "partial_source_model",
+        "type": "test_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 26600,
+      "start": 19190
+    },
+    "description": "Pure apply_edits keeps newline structure, matches old option after stripping star prefix, rejects ambiguous/missing/forbidden replacements, rebuilds line preserving indentation and CR. read_edits groups validated rows by resolved file. edit writes successful file buffers unless dry; snapshot copies sequentially; restore checks line-count and index domain before write."
+  },
+  "historical_composition": {
+    "path": "model.md",
+    "section": "composition",
+    "status": "partial_source_model"
+  },
+  "id": "world-schooltools-editing",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../schooltools.rs",
+    "sha256": "69490a8577d28eda24da4a4357f1eb59ef56982a1f5d1895fac9f0987c43bf2f"
+  },
+  "status": "partial_source_bound_model"
+}

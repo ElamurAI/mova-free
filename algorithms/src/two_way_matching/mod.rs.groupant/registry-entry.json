@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline two_way_matching::tests::; twice debug and twice release",
+    "Binary pairs: 511 texts through length 8 times 127 patterns through length 6 = 64,897 independent window comparisons. Long periodic and nonperiodic cases, overlaps, empty boundaries and every byte. Mutation adds one to returned offsets; exhaustive_offsets fails."
+  ],
+  "children": [],
+  "cost": "O(n+m+z) byte comparisons and output work; O(1) scratch excluding z offsets. Slice lengths fit isize, and shift/index sums are at most n+m, hence fit usize. Output allocation may panic/abort; no output budget.",
+  "description": "two_way_matching exact byte algorithm",
+  "forward": [
+    "Return the ascending set {i | text[i..i+m]=pattern}; for m=0 return all n+1 byte boundaries. Critical factorization plus periodic memory implements Crochemore-Perrin (JACM 38, 1991).",
+    "Both ordered maximal suffix scans choose a critical cut. Right-half mismatch advances past impossible starts; after a complete right match, the left half certifies the candidate. A periodic shift retains only the prefix guaranteed by the pattern period."
+  ],
+  "id": "algorithm-two-way-matching",
+  "inverse": [
+    "No false or omitted offsets are allowed. Matching does not decode Unicode, fold case, or remove overlapping occurrences.",
+    "For fixed pattern and offsets, the fiber consists of texts with exactly those occurrences and no others. Empty offsets generally admit many texts; even one match does not recover bytes outside the matched intervals.",
+    "A cut and period retain patterns whose maximal suffix in one of two opposing byte orders attains that cut with the recorded period. They do not uniquely recover a pattern.",
+    "If the critical prefix equals the prefix displaced by period, a successful right-half scan permits retaining m-period bytes after shifting. Memory is cleared on a right-half mismatch.",
+    "Empty pattern has n+1 matches, including the end boundary. A longer nonempty pattern has no matches; these cases bypass factorization.",
+    "Any bijection of byte values preserves occurrence offsets although it may change the critical factorization and intermediate shifts."
+  ],
+  "limitations": [
+    "Partial Rust syntax projection excludes macro expansion and semantic resolution. Finite tests do not prove general correctness or linear cost. No executable approximation profile: outputs are discrete exact objects and no useful certified surrogate metric is proposed."
+  ],
+  "source": "algorithms/src/two_way_matching/mod.rs",
+  "state": "Finite byte inputs with explicitly documented limits and allocation outcomes."
+}

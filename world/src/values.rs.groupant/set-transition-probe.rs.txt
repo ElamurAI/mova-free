@@ -1,0 +1,116 @@
+// Direct-source oracle for command-start history policy; compile with rustc --test.
+#[path = "../values.rs"]
+mod values;
+use values::Judgment;
+type Observation = (String, String, String, bool, String, usize);
+fn obs(j: &Judgment) -> Observation {
+    (j.principle.into(), j.name.into(), j.agent.clone(), j.violated, j.because.clone(), j.line)
+}
+fn expected(rule: &str, agent: &str, violated: bool, because: String, line: usize) -> Observation {
+    let p = global::principle_by_rule(rule).expect("oracle requires compiled principle");
+    (p.id.into(), p.name.into(), agent.into(), violated, because, line)
+}
+fn event(lines: &mut Vec<String>, id: &str, agent: &str) {
+    lines.push(format!("event {id} verb=catch agent={agent}"));
+}
+fn harm(lines: &mut Vec<String>, target: &str, agent: &str, id: &str) {
+    event(lines, id, agent);
+    lines.push(format!("set {target} freedom=captive cause={id}"));
+}
+fn help(lines: &mut Vec<String>, target: &str, agent: &str, id: &str) {
+    event(lines, id, agent);
+    lines.push(format!("set {target} freedom=free cause={id}"));
+}
+#[test]
+fn finite_command_snapshot_oracle() {
+    assert!(global::state_is("harm_state", "captive"));
+    assert!(!global::state_is("relief_state", "captive"));
+    assert!(global::state_is("relief_state", "free"));
+    assert!(!global::state_is("harm_state", "free"));
+    assert!(!global::state_is("harm_state", "oracle_unclassified"));
+    assert!(!global::state_is("relief_state", "oracle_unclassified"));
+    let mut histories = 0;
+    let mut cases = 0;
+    let mut positive_patterns = std::collections::BTreeSet::new();
+    for history in 0..3 { // none, other only, current agent
+        for helped in [false, true] {
+            if history == 0 && helped { continue; } // unreachable from public commands
+            for reverse in [false, true] {
+                histories += 1;
+                for left in 0..4 { // absent, neutral, harm, relief
+                    for right in 0..4 {
+                        for gate in 0..4 { // missing cause, noncharacter agent, self, external
+                            let mut baseline = None;
+                            for reversed in [false, true] {
+                                let mut lines = Vec::new();
+                                if history != 0 {
+                                    harm(&mut lines, "C2", if history == 1 {"C3"} else {"C1"}, "EH");
+                                }
+                                if helped { help(&mut lines, "C2", "C1", "EP"); }
+                                if reverse {
+                                    harm(&mut lines, "C1", "C3", "ERH");
+                                    help(&mut lines, "C1", "C2", "ERP");
+                                }
+                                let agent = match gate { 1 => "O1", 2 => "C2", _ => "C1" };
+                                if gate != 0 { event(&mut lines, "ET", agent); }
+                                let event_line = lines.len();
+                                let final_line = event_line + 1;
+                                let mut fields = Vec::new();
+                                for (key, kind) in [("freedom",left), ("status",right)] {
+                                    let value = match kind { 0 => continue, 1 => "oracle_unclassified", 2 => "captive", _ => "free" };
+                                    fields.push(format!("{key}={value}"));
+                                }
+                                if reversed { fields.reverse(); }
+                                lines.push(format!("set C2 cause=ET {}", fields.join(" ")));
+                                let text = lines.join("\n");
+                                let got: Vec<_> = values::judge(&text).iter().filter(|j| j.line == final_line).map(obs).collect();
+                                let eligible = gate == 3;
+                                let first_harm = if left == 2 {Some("freedom")} else if right == 2 {Some("status")} else {None};
+                                let first_relief = if left == 3 {Some("freedom")} else if right == 3 {Some("status")} else {None};
+                                let do_harm = eligible && history != 2 && first_harm.is_some();
+                                let do_help = eligible && history != 0 && !helped && first_relief.is_some();
+                                let do_mercy = do_help && history == 2;
+                                let do_reciprocity = do_help && reverse;
+                                let mut want = Vec::new();
+                                // Independent observations: two closed-form groups, ordered by literal key.
+                                let mut groups: Vec<(&str,Vec<Observation>)> = Vec::new();
+                                if do_harm {
+                                    let key = first_harm.unwrap();
+                                    groups.push((key,vec![expected("cause_harm_state", "C1", true,
+                                        format!("C1 → C2 {key}=captive (event \"catch\", line {event_line})"), final_line)]));
+                                }
+                                if do_help {
+                                    let key = first_relief.unwrap();
+                                    let mut help_group = vec![expected("relieve_harm_state","C1",false,
+                                        format!("C1 removed harm from C2: {key}=free (event \"catch\")"),final_line)];
+                                    if do_mercy {
+                                        help_group.push(expected("spare_enemy","C1",false,
+                                            "C1 had harmed C2 himself, and later showed mercy".into(),final_line));
+                                    }
+                                    if do_reciprocity {
+                                        help_group.push(expected("reciprocate","C1",false,
+                                            "C1 repaid with kindness C2, who had helped him earlier".into(),final_line));
+                                    }
+                                    groups.push((key,help_group));
+                                }
+                                groups.sort_by_key(|(key,_)| *key);
+                                for (_,group) in groups { want.extend(group); }
+                                if std::env::var_os("FALSE_SNAPSHOT").is_some() && eligible && history == 0 && first_harm.is_some() && first_relief.is_some() {
+                                    want.push(expected("relieve_harm_state","C1",false,"false same-command help".into(),final_line));
+                                }
+                                assert_eq!(got,want,"history={history} helped={helped} reverse={reverse} left={left} right={right} gate={gate} reversed={reversed}");
+                                if let Some(ref old) = baseline { assert_eq!(old,&got); }
+                                baseline = Some(got);
+                                positive_patterns.insert((do_harm,do_help,do_mercy,do_reciprocity));
+                                cases += 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    assert_eq!(histories,10);
+    assert_eq!(cases,1280);
+    println!("histories={histories}; assignments=16; gates=4; token_orders=2; cases={cases}; output_bit_patterns={}",positive_patterns.len());
+}

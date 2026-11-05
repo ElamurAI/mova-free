@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p world --lib lessons:: -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "Parse linear bytes; each draw at most 2000 bounded attempts plus expression/render work.",
+  "description": "Deterministic lesson parsing, exact expression evaluation, substitution and partitioned draws.",
+  "forward": [
+    "Parse fields and retain partition containers.",
+    "Join derived numeric state with answer and template; checked arithmetic failures reject draws."
+  ],
+  "id": "world-lessons",
+  "inverse": [
+    "Converse retains all compatible syntax, maps, seeds and failed attempts; output is noninjective."
+  ],
+  "limitations": [
+    "Finite native oracles; partial syntax, opaque macros.",
+    "No live parser/teacher/course, filesystem, retained-state or general termination proof.",
+    "Unbounded recursive input and external number formatting remain outside checked domain."
+  ],
+  "source": "world/src/lessons.rs",
+  "state": "Supplied finite text/maps/seeds; bounded recursion and number-helper domain; filesystem and live learning excluded."
+}

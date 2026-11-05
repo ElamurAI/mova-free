@@ -1,0 +1,42 @@
+fn main()->Result<()> {
+ let dir=std::env::temp_dir().join(format!("mova-store-groupant-{}",std::process::id()));
+ std::fs::create_dir(&dir)?;
+ struct Clean(PathBuf);impl Drop for Clean{fn drop(&mut self){let _=std::fs::remove_dir_all(&self.0);}}let _clean=Clean(dir.clone());
+ let put=|name:&str,data:&[u8]|std::fs::write(dir.join(name),data);
+ let mut checks=0;
+ macro_rules! check {($a:expr,$b:expr)=>{{assert_eq!($a,$b);checks+=1;}}}
+ ref_set(&dir,"main","a")?;check!(std::fs::read(dir.join("refs/main"))?,b"a\n");check!(ref_get(&dir,"main"),Some("a".into()));
+ put("refs/space",b" \n a\t ")?;check!(ref_get(&dir,"space"),Some("a".into()));put("refs/space",b" \n\t")?;check!(ref_get(&dir,"space"),None);check!(ref_get(&dir,"absent"),None);put("refs/space",&[255])?;check!(ref_get(&dir,"space"),None);
+ let target=dir.join("atomic.bin");write_atomic(&target,b"old")?;write_atomic(&target,b"replacement")?;check!(std::fs::read(&target)?,b"replacement");
+ let bad=dir.join("blocked.bin");std::fs::create_dir(&bad)?;check!(write_atomic(&bad,b"stage").is_err(),true);check!(std::fs::read(bad.with_extension(format!("tmp-{}",std::process::id())))?,b"stage");
+ check!(dir.join("a.bin").with_extension("tmp-PID"),dir.join("a.tsv").with_extension("tmp-PID"));
+ let places=[(0u32,1u32),(0,1),(0,2),(1,1),(1,1),(1,2)];let mut meta=Vec::new();
+ for (i,(b,p)) in places.iter().enumerate(){meta.extend(b.to_le_bytes());meta.extend(p.to_le_bytes());meta.extend((i as u16).to_le_bytes());meta.extend(1u16.to_le_bytes());meta.extend((i as u64).to_le_bytes());meta.extend(1u32.to_le_bytes());}
+ meta.extend([7,8,9]);put("meta.bin",&meta)?;put("text.bin",b"abcdef")?;put("versions.tsv",b"a\t-\nast\nb\ta\n")?;put("books.tsv",b"id\tpath\n")?;
+ let dictionary=|rows:&[(u32,u64,u32)]|{let mut d=vec![];for (id,off,len) in rows {d.extend(id.to_le_bytes());d.extend(off.to_le_bytes());d.extend(len.to_le_bytes());}d};
+ put("dict-a.bin",&dictionary(&[(0,0,8),(1,8,8),(2,16,0)]))?;put("trees-a.bin",&[1;16])?;
+ put("dict-b.bin",&dictionary(&[(1,0,8)]))?;put("trees-b.bin",&[2;8])?;
+ let st=Store::open(&dir)?;check!(st.len(),6);check!(st.latest(),Some("a"));ref_set(&dir,"main","b")?;check!(st.latest(),Some("a"));check!(Store::open(&dir)?.latest(),Some("b"));
+ check!(st.records("b",0)?,vec![[1;8]]);check!(st.records("b",1)?,vec![[2;8]]);check!(st.records("b",2)?,Vec::<[u8;8]>::new());check!(st.records("b",5).is_err(),true);check!(st.text(2)?,"c");check!(st.place(3),(1,1,3));
+ let mut bin=vec![];for (id,c) in [(0u32,1u8),(1,2),(2,3)] {bin.extend(id.to_le_bytes());bin.push(c);}for h in ["a","b"]{put(&format!("features-{h}.tsv"),b"pred\t0\t3\n")?;put(&format!("index-{h}.bin"),&bin)?;}
+ for c in 0u8..=4 {let expected:Vec<u32>=(0..6).filter(|i|if *i<3 {*i+1>=c as u32}else{c==0}).collect();check!(select(&dir,&format!("pred>={c}"),"a")?,expected);}
+ check!(select(&dir,"unknown>=1","a")?,Vec::<u32>::new());check!(select(&dir,"unknown=0","a")?,vec![0,1,2,3,4,5]);check!(select(&dir,"book<1","a").is_err(),true);
+ check!(select(&dir,"sample=99/2","a")?,vec![0,1,2,3,4,5]);
+ let mut witness=false;for seed in 0..100 {let a=select(&dir,&format!("sample=1/{seed} book=0"),"a")?;let b=select(&dir,&format!("book=0 sample=1/{seed}"),"a")?;if a!=b {witness=true;break;}}check!(witness,true);
+ for q in ["book=1","sample=2/1","prefix=1%",""]{check!(tree_dependent(q),false)}check!(tree_dependent("pred>=1"),true);
+ set_save(&dir,"stable","book=0","a")?;let before=std::fs::read(dir.join("sets/stable.tsv"))?;check!(set_load(&dir,"stable","b")?,vec![0,1,2]);check!(std::fs::read(dir.join("sets/stable.tsv"))?,before);
+ set_save(&dir,"same","pred>=2","a")?;check!(set_load(&dir,"same","a")?,vec![1,2]);
+ put("sets/carry.tsv",b"# query\tpred>=2\n# model\ta\n0\n1\ninvalid\n")?;check!(set_load(&dir,"carry","b")?,vec![0,1]);
+ put("sets/unrelated.tsv",b"# query\tpred>=2\n# model\tother\n5\n")?;check!(set_load(&dir,"unrelated","b")?,vec![1,2]);
+ let mut reduced=vec![];for (id,c) in [(0u32,1u8),(2,3)] {reduced.extend(id.to_le_bytes());reduced.push(c);}put("features-b.tsv",b"pred\t0\t2\n")?;put("index-b.bin",&reduced)?;
+ let mut sample_case=None;for seed in 0..100 {let q=format!("pred>=1 sample=1/{seed}");let old=select(&dir,&q,"a")?;let fresh=select(&dir,&q,"b")?;let expected:Vec<u32>=old.iter().copied().filter(|i|*i!=1).chain(fresh.iter().copied().filter(|i|*i==1)).collect();if expected!=fresh {sample_case=Some((q,expected,fresh));break;}}
+ check!(sample_case.is_some(),true);let (q,expected,fresh)=sample_case.unwrap();set_save(&dir,"sampled-carry",&q,"a")?;let carried=set_load(&dir,"sampled-carry","b")?;check!(&carried,&fresh);check!(expected!=fresh,true);
+ println!("sampled carry regression: query={q}; historical={expected:?}; repaired={carried:?}; full={fresh:?}");
+ check!(q,"pred>=1 sample=1/2");check!(&fresh,&vec![2]);check!(set_load(&dir,"sampled-carry","b")?,fresh.clone());
+ if std::env::args().any(|a|a=="--negative-sample-control"){assert_eq!(carried,expected,"false model: historical sampled carry remains valid");}
+ for size in [0,1,2,400]{let bl=blocks(&st,size);check!(bl.iter().map(|b|b.1).sum::<u32>(),6);let ids:Vec<_>=bl.iter().flat_map(|(s,l)|*s..s+l).collect();check!(ids,vec![0,1,2,3,4,5]);}check!(blocks(&st,1),vec![(0,2),(2,1),(3,2),(5,1)]);check!(blocks(&st,400),vec![(0,3),(3,3)]);
+ let (k,bl)=order(&dir,400)?;check!(order(&dir,1)?,(k,bl.clone()));let p=prefix(&dir,1.0)?;check!(p.len(),3);check!(prefix(&dir,0.0)?.len(),0);check!(prefix(&dir,100.0)?.len(),6);check!(prefix(&dir,150.0)?.len(),6);
+ if std::env::args().any(|a|a=="--negative-control"){assert_eq!(p.len(),1,"false model: prefix obeys exact sentence budget");}
+ put("lemma.tsv",b"2\tcat\nbad\tdog\n2\tfox\n")?;check!(lemma_file(dir.join("lemma.tsv")),vec!["dog".to_string(),String::new(),"fox".to_string()]);
+ println!("store probe: {checks} assertions passed; negative formula available");Ok(())
+}

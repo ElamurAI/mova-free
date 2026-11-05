@@ -1,0 +1,98 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Source syntax only; no macro expansion/type resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "wasi-freshness",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "wasi-freshness",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "empty_tree",
+        "path": "model.md",
+        "scope": "wasi-freshness",
+        "section": "empty_tree",
+        "status": "partial_source_derived_model",
+        "type": "empty_tree"
+      },
+      {
+        "id": "timestamp_ties",
+        "path": "model.md",
+        "scope": "wasi-freshness",
+        "section": "timestamp_ties",
+        "status": "partial_source_derived_model",
+        "type": "timestamp_ties"
+      },
+      {
+        "id": "error_partition",
+        "path": "model.md",
+        "scope": "wasi-freshness",
+        "section": "error_partition",
+        "status": "partial_source_derived_model",
+        "type": "error_partition"
+      },
+      {
+        "id": "isolated_oracle",
+        "path": "model.md",
+        "scope": "wasi-freshness",
+        "section": "isolated_oracle",
+        "status": "partial_source_derived_model",
+        "type": "isolated_oracle"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 2057,
+      "start": 1210
+    },
+    "description": "newest_mtime recursively computes max of leaf modified times starting UNIX_EPOCH; directories contribute recursive leaves, not directory timestamp. read_dir errors unwrap; entry errors are flattened away. wasm_path checks metadata and two source trees then returns artifact path.",
+    "source_bytes_sha256": "8f7722b5c902120f2119c2f1cb67a34809a1c21b69da7300a928843af9f45df3"
+  },
+  "id": "wasi-freshness",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../mlab.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "e3b35b1a315b6d995fd3cb8e590209d9f57141b89d9def132cd733f31d8f2db8"
+  },
+  "status": "partial_source_bound_model"
+}

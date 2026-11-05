@@ -1,0 +1,21 @@
+{
+  "id": "crab-consult-queue",
+  "source": "tools/crab/src/consult_queue.rs",
+  "children": [],
+  "description": "Durable queue of consultations for named Dolphins (Octopus asks and Crab's own triggers), urgent-first delivery order, hourly-bounded deduplicated triggers and advice records that are evidence, never actions.",
+  "state": "run_root/consult-queue/<id>.json entries (dolphin, state waiting/sent/dispatch_failed/answered, priority, origin, trigger, task) and run_root/consult-advice/<id>.json records.",
+  "forward": [
+    "enqueue validates bounded plain text (<= 12000 bytes), origin octopus or crab-with-trigger, <= 64 waiting; ids carry creation time; waiting_for(d) orders urgent first then id; trigger admits a new key while fewer than max_per_hour Crab entries exist in the last hour, task cut to max_task_bytes; record_advice binds the report path, size and hash with actions_taken [] and marks the entry answered."
+  ],
+  "inverse": [
+    "Excluded: unbounded or control-character tasks, crab entries without a trigger, a second entry for one trigger key, more than max_per_hour Crab entries per hour, any executed advice.",
+    "Entries and records recover the delivery history per Dolphin; report contents beyond their hash are not reconstructed."
+  ],
+  "cost": "Each call lists the queue directory (<= 4096 entries, each <= 64 KiB); enqueue writes one file; tick work is linear in entries.",
+  "checks": [
+    "2026-11-04: 3 module tests (order and bounds, trigger dedupe/hour bound/size bound, composed tasks) and 2 angel integration tests on private tmux servers (urgent first, busy waits, refusal trigger, advice record with no action; four Dolphins routed by name, unpinned Copilot refused); red controls: advice executed, all consultations routed to the first Dolphin."
+  ],
+  "limitations": [
+    "Single Crab writer assumed (Crab's lease); delivery depends on the terminal idle profile; advice quality is not assessed."
+  ]
+}

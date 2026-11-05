@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "macros::tests::scans_definitions; macros::tests::delimited_def",
+    "Two debug/two release selected runs; paired syntax"
+  ],
+  "children": [],
+  "cost": "O(B) lex plus definition bodies retained; expected hash lookup. Delimited scan O(T*L), where L delimiter length; cloning captured macros proportional to body/pattern/default sizes.",
+  "description": "scan visits definition commands in token order, updates hash table on success, counts ignored provides as defined, counts malformed readers as skipped. let clones existing macro or captures CmdRaw. read_def validates body before sequential parameter numbers. match_pattern greedily consumes literal delimiters at brace depth zero.",
+  "forward": [
+    "scan visits definition commands in token order, updates hash table on success, counts ignored provides as defined, counts malformed readers as skipped. let clones existing macro or captures CmdRaw. read_def validates body before sequential parameter numbers. match_pattern greedily consumes literal delimiters at brace depth zero."
+  ],
+  "id": "latex-macros",
+  "inverse": [
+    "providecommand cannot overwrite an existing definition. Failed pattern matching does not promise rollback. HashMap names does not promise sorted iteration.",
+    "Final macro table admits arbitrary overwritten definitions and ignored provides; scan stats constrain success/error counts but not unique source. let copy retains the captured old meaning despite later redefinition."
+  ],
+  "limitations": [
+    "Partial source models and finite tests, no semantic proof or expanded AST.",
+    "No useful executable percentage approximant metric established; future caps1/2/5/10% only.",
+    "No live VMM/API/corpus/GPU/full-school/held-out execution; allocation and extreme sizes untested."
+  ],
+  "source": "latex/src/macros.rs",
+  "state": "nargs accepted0..9 for newcommand; default read only when nargs>0. Malformed input consumed progressively. Source lifetimes own borrowed names/tokens."
+}

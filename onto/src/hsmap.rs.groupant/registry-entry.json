@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "Selected onto wave29_tests / hs::t:: actual-code tests; repeated debug/release and compiled controls"
+  ],
+  "children": [],
+  "cost": "Scoring O(S), WSD delegated; two mapped passes plus quadratic neighbour pairs per heading and feature scans; retains all rows/descriptions/output. No resource bound.",
+  "description": "Candidates search longest NP and spelling variants, shorter preference-fit can override first nonfit. pick=WSD+state+chapter with >1e-9 replacement threshold. Build pass1 chapter distribution/pass2 scoring and constrained confirmations; ordered IsA fallback gates; sequential TSV derivative writes. judge/confirm invoke teacher and remain unexecuted.",
+  "forward": [
+    "s(c)=WSD(c)+W_HS·1[lf(c)∈prefer]+W_CHAP·chapter_share(lf(c)); b_{i+1}=i if s_i>s_b+1e-9 else b. Qmap(s)=first accepted numeric row; Confirm(k)=last row."
+  ],
+  "id": "onto-hsmap",
+  "inverse": [
+    "Unaccepted Q cannot load; later accepted duplicate cannot replace first. Confirmation outside candidates cannot override. Direct ancestry excludes weaker fallback verdict.",
+    "Pick preimage is score vectors selecting c under scan threshold with reported second/margin. TSV loses source text, dedup levels/bounds; loader histories not recoverable."
+  ],
+  "limitations": [
+    "Partial lexical AST, no semantic proof",
+    "No live teacher/corpus/model/DB execution",
+    "No validated executable percentage surrogate",
+    "Synthetic finite tests do not cover all public malformed states"
+  ],
+  "source": "onto/src/hsmap.rs",
+  "state": "Picks stay in supplied senses; confirmed c can retain old margin/why metadata. Tables trusted and may panic malformed; writes nontransactional."
+}

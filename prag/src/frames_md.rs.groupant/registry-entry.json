@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p prag --lib wave14_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "English O(sum entity subtree bytes across recursive ancestors + output + oblique/role lookup work); chain copying can be quadratic. Hebrew O(B+W log W+VW+P log W+output) for bytes B, words W, verbs V and participant IDs P.",
+  "description": "English/Hebrew supplied-frame Markdown transport",
+  "forward": [
+    "English scans non-Bare frames in order and renders ten columns with original one-based indices. Hebrew projects accepted CoNLL-U fields, joins normalized MIds, and renders six columns. Empty inputs produce the respective no-frame note. These observations are bytes, not linguistic truth.",
+    "English composes phrase, ent, TAM and escaping. Hebrew composes hwords with hebrew_table. Inspected roundtrip site_code::tables removes the exact trailing note; its Hebrew sites call hwords then hebrew_table. External caller execution is not claimed."
+  ],
+  "id": "prag-frames-md",
+  "inverse": [
+    "Universe: finite supplied frame/word vectors paired with proposed bytes. Excluded families include a Bare frame rendered as its own row, dense renumbering after skipped Bare frames, a Hebrew row without nonempty Frame metadata and an earlier duplicate MId winning a participant lookup. These are source-derived inner exclusions, not exhaustive absent behavior.",
+    "For output y retain every vector whose rendered projections yield y. Varying English src/cause/next/quote fields alone leaves y unchanged. Hebrew accent removal, rejected CoNLL-U lines and overwritten MIds create additional fibers. Empty notes admit arbitrary Bare-only or frameless vectors. No original parse is uniquely recoverable."
+  ],
+  "limitations": [
+    "Finite supplied inputs; no live parser, teacher, corpus, journal-backed tune or GPU.",
+    "Partial syntax; macros opaque and semantic AST absent.",
+    "Unvalidated numeric/resource domains and effect boundaries remain explicit in scoped models."
+  ],
+  "source": "prag/src/frames_md.rs",
+  "state": "Inputs are unchanged; visible English coordinates retain original indices. Escaping does not remove line breaks; complete Markdown sanitation is not guaranteed."
+}

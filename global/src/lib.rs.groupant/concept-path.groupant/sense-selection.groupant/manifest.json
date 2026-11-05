@@ -1,0 +1,109 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "scoped_specification"
+    },
+    "ast": {
+      "scope": "Source byte ranges only. include! OUT_DIR/global.rs and include_str! OUT_DIR/expressions.tsv are not expanded or source-bound by this sidecar.",
+      "status": "not_materialized"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariants",
+      "status": "scoped_specification"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Exact concept lookup, ordered senses and cue-scored sense selection.",
+        "evidence": "sense_tests::codes_and_senses; proposed tied maximum oracle.",
+        "id": "nonbehavior",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "U={(lang,word,text,result)} with result None or a catalog concept; R uses matching language/word and earliest maximum cue score. U\\R excludes unrelated-language concepts, None for a nonempty sense set and a later tied maximum. Conditional exact specification target; no semantic disambiguation guarantee.",
+        "path": "model.md",
+        "scope": "Exact concept lookup, ordered senses and cue-scored sense selection.",
+        "section": "nonbehavior",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Exact concept lookup, ordered senses and cue-scored sense selection.",
+        "evidence": "Proposed bounded cue-power-set evaluation.",
+        "id": "antecedents",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "For winning i, compatible texts satisfy every score inequality: strictly beat earlier candidates, tie or beat later ones. Preserve all strings meeting those inequalities; cues starting with the queried word never constrain a score. For None, sense set is empty regardless of text.",
+        "path": "model.md",
+        "scope": "Exact concept lookup, ordered senses and cue-scored sense selection.",
+        "section": "antecedents",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Exact concept lookup, ordered senses and cue-scored sense selection.",
+        "evidence": "Proposed prefix and duplicated-cue fixtures; existing tests do not isolate this.",
+        "id": "prefix-exclusion",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "A cue equal to word OR having word as prefix is excluded, even if linguistically a different word. Adding occurrences of an excluded cue changes no score unless it also matches another eligible cue; repeated occurrences of one eligible cue still contribute one per stored cue occurrence.",
+        "path": "model.md",
+        "scope": "Exact concept lookup, ordered senses and cue-scored sense selection.",
+        "section": "prefix-exclusion",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "sensitivity"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Exact concept lookup, ordered senses and cue-scored sense selection.",
+        "evidence": "Proposed zero-cue and reordered-catalog reference; source-derived only.",
+        "id": "stable-tie",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "best updates only on strict score increase. For all-zero scores the first catalog sense wins. Permuting equal-score candidate order can change the result; permutation invariance is therefore outside the relation.",
+        "path": "model.md",
+        "scope": "Exact concept lookup, ordered senses and cue-scored sense selection.",
+        "section": "stable-tie",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "order_dependence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "existing_test_references"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4146,
+      "start": 2943
+    },
+    "description": "Exact concept lookup, ordered senses and cue-scored sense selection."
+  },
+  "id": "global-catalog-sense-selection",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../lib.rs",
+    "sha256": "f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907"
+  },
+  "status": "partial"
+}

@@ -1,0 +1,241 @@
+{
+  "children": [
+    {
+      "id": "value-fields",
+      "path": "fields.groupant"
+    },
+    {
+      "id": "value-ownership",
+      "path": "ownership.groupant"
+    },
+    {
+      "id": "value-state-history",
+      "path": "history.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; lexical fields/goals and command-start history",
+        "domain": "U=finite command traces x projected judgment multisets; R is a deterministic fold under fixed global tables. Candidate inner bound U minus R includes truth violation from narrator-only speech and causal state judgment without earlier cause event.",
+        "evidence": "Existing four tests and probe.",
+        "id": "nonbehavior",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "U=finite command traces x projected judgment multisets; R is a deterministic fold under fixed global tables. Candidate inner bound U minus R includes truth violation from narrator-only speech and causal state judgment without earlier cause event.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "b885d25364939e38e130ff598a24a46efd21f500ba51e27cd4465ceddb56f064",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; lexical fields/goals and command-start history",
+        "domain": "For observed y retain all traces with projection(judge(trace))=y. Ignored commands, overwritten events and name aliases preserve ambiguity; because/line observations narrow fibers.",
+        "evidence": "Probe finite speech fibers.",
+        "id": "antecedents",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "For observed y retain all traces with projection(judge(trace))=y. Ignored commands, overwritten events and name aliases preserve ambiguity; because/line observations narrow fibers.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "b885d25364939e38e130ff598a24a46efd21f500ba51e27cd4465ceddb56f064",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; lexical fields/goals and command-start history",
+        "domain": "Truth requires speaker!=narrator, sincere exactly0 and rule present; why/means/to are not required. Missing speaker defaults empty.",
+        "evidence": "Probe 3x3 matrix.",
+        "id": "speech-gate",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "Truth requires speaker!=narrator, sincere exactly0 and rule present; why/means/to are not required. Missing speaker defaults empty.",
+        "path": "model.md",
+        "section": "speech-gate",
+        "status": "partial_source_derived_model",
+        "subject_revision": "b885d25364939e38e130ff598a24a46efd21f500ba51e27cd4465ceddb56f064",
+        "type": "predicate_partition"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; lexical fields/goals and command-start history",
+        "domain": "Character transfer away from stored owner violates unless event agent is owner and verb class give. Noncharacter destination retains owner; character causal agent is blamed else recipient.",
+        "evidence": "Probe give/drop/transfer.",
+        "id": "ownership-rule",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "Character transfer away from stored owner violates unless event agent is owner and verb class give. Noncharacter destination retains owner; character causal agent is blamed else recipient.",
+        "path": "model.md",
+        "section": "ownership-rule",
+        "status": "partial_source_derived_model",
+        "subject_revision": "b885d25364939e38e130ff598a24a46efd21f500ba51e27cd4465ceddb56f064",
+        "type": "state_transition"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; lexical fields/goals and command-start history",
+        "domain": "Theft-concept character cause emits independently from ownership transfer test; both branches can emit justice on one move.",
+        "evidence": "Probe steal double emission.",
+        "id": "theft-double",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "Theft-concept character cause emits independently from ownership transfer test; both branches can emit justice on one move.",
+        "path": "model.md",
+        "section": "theft-double",
+        "status": "partial_source_derived_model",
+        "subject_revision": "b885d25364939e38e130ff598a24a46efd21f500ba51e27cd4465ceddb56f064",
+        "type": "multiplicity"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; lexical fields/goals and command-start history",
+        "domain": "External character harm cause adds agent once to harmed[target]; relief never removes entry, so same-agent later harm remains suppressed.",
+        "evidence": "Probe harm-relief-harm.",
+        "id": "harm-memory",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "External character harm cause adds agent once to harmed[target]; relief never removes entry, so same-agent later harm remains suppressed.",
+        "path": "model.md",
+        "section": "harm-memory",
+        "status": "partial_source_derived_model",
+        "subject_revision": "b885d25364939e38e130ff598a24a46efd21f500ba51e27cd4465ceddb56f064",
+        "type": "history_projection"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; lexical fields/goals and command-start history",
+        "domain": "Relief needs harmed[target] recorded before this command and absent helped(agent,target); adds pair then optionally mercy from prior agent harm and reciprocity from earlier reverse help. Later harm does not reset suppression.",
+        "evidence": "Probe repeated relief.",
+        "id": "help-memory",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "Relief needs harmed[target] recorded before this command and absent helped(agent,target); adds pair then optionally mercy from prior agent harm and reciprocity from earlier reverse help. Later harm does not reset suppression.",
+        "path": "model.md",
+        "section": "help-memory",
+        "status": "partial_source_derived_model",
+        "subject_revision": "b885d25364939e38e130ff598a24a46efd21f500ba51e27cd4465ceddb56f064",
+        "type": "deduplication"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; lexical fields/goals and command-start history",
+        "domain": "Reciprocate needs earlier helped(target,agent,line) with line<current. Current appended help cannot satisfy prior-time gate. Each help direction requires target harm history.",
+        "evidence": "Existing lion/mouse.",
+        "id": "reciprocity-time",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "Reciprocate needs earlier helped(target,agent,line) with line<current. Current appended help cannot satisfy prior-time gate. Each help direction requires target harm history.",
+        "path": "model.md",
+        "section": "reciprocity-time",
+        "status": "partial_source_derived_model",
+        "subject_revision": "b885d25364939e38e130ff598a24a46efd21f500ba51e27cd4465ceddb56f064",
+        "type": "temporal_precondition"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; lexical fields/goals and command-start history",
+        "domain": "Self-caused relief status with goal joins other same-goal agents. Rival edges derive endpoints from referenced speech, not rel a/b fields; scorner-target match triggers humility.",
+        "evidence": "Existing tortoise/hare; contradictory endpoints proposed.",
+        "id": "goal-rivalry",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "Self-caused relief status with goal joins other same-goal agents. Rival edges derive endpoints from referenced speech, not rel a/b fields; scorner-target match triggers humility.",
+        "path": "model.md",
+        "section": "goal-rivalry",
+        "status": "partial_source_derived_model",
+        "subject_revision": "b885d25364939e38e130ff598a24a46efd21f500ba51e27cd4465ceddb56f064",
+        "type": "join_constraint"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; lexical fields/goals and command-start history",
+        "domain": "Both agents' rest windows use achiever goal time since, not peer goal time: since<rest<achievement. No achiever rest plus some peer rest triggers paired perseverance judgments.",
+        "evidence": "Existing tortoise/hare; asymmetric timestamps proposed.",
+        "id": "rest-window",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "Both agents' rest windows use achiever goal time since, not peer goal time: since<rest<achievement. No achiever rest plus some peer rest triggers paired perseverance judgments.",
+        "path": "model.md",
+        "section": "rest-window",
+        "status": "partial_source_derived_model",
+        "subject_revision": "b885d25364939e38e130ff598a24a46efd21f500ba51e27cd4465ceddb56f064",
+        "type": "interval_constraint"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; lexical fields/goals and command-start history",
+        "domain": "gaps reports unknown nonempty event verbs and unknown values only on feeling/freedom/status/health/sleep, deduplicating exact strings. This is catalog coverage, not truth.",
+        "evidence": "Probe duplicate unknown verb.",
+        "id": "gap-observation",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "gaps reports unknown nonempty event verbs and unknown values only on feeling/freedom/status/health/sleep, deduplicating exact strings. This is catalog coverage, not truth.",
+        "path": "model.md",
+        "section": "gap-observation",
+        "status": "partial_source_derived_model",
+        "subject_revision": "b885d25364939e38e130ff598a24a46efd21f500ba51e27cd4465ceddb56f064",
+        "type": "knowledge_gap"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner bound for complement; ambiguous converse for reconstruction",
+        "assumptions": "Fixed dependencies; valid bounded nonoverflowing inputs; successful allocation; lexical fields/goals and command-start history",
+        "domain": "Field and goal-peer iteration are lexical; frozen command-start harm history gates help and mercy. First qualifying lexical fields choose explanation text.",
+        "evidence": "Current finite snapshot oracle and retained historical witness.",
+        "id": "canonical-command-order",
+        "observation_scope": "Bounded tagged call or finite command trace; see catalog",
+        "operator": "Field and goal-peer iteration are lexical; frozen command-start harm history gates help and mercy. First qualifying lexical fields choose explanation text.",
+        "path": "model.md",
+        "section": "canonical-command-order",
+        "status": "partial_source_derived_model",
+        "subject_revision": "b885d25364939e38e130ff598a24a46efd21f500ba51e27cd4465ceddb56f064",
+        "type": "deterministic_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 23022,
+      "start": 0
+    },
+    "syntax_nodes": {
+      "node_ids": [
+        0
+      ],
+      "path": "syntax.json"
+    }
+  },
+  "id": "value-judgment",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../values.rs",
+    "sha256": "b885d25364939e38e130ff598a24a46efd21f500ba51e27cd4465ceddb56f064"
+  },
+  "status": "partial_source_derived_instance"
+}

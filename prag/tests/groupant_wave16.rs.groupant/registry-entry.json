@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "notation_alignment_preserves_permuted_links_and_occurrence_bounds",
+    "numbered_silver_rows_keep_item_and_closed_class_identity",
+    "batching_and_prompt_context_share_source_safe_paragraph_identity"
+  ],
+  "children": [],
+  "cost": "Notation bytes, greedy pair alignment, occurrence accounting, row parsing, ordered batches and emitted prompt bytes; external acquisition excluded.",
+  "description": "3 bounded native joins and 5 typed source-bound views.",
+  "forward": [
+    "Three supplied joins transport frame notation/permutation into occurrence scores, numbered rows into Item/classes, and batch order into source-safe prompts."
+  ],
+  "id": "prag-groupant-wave16",
+  "inverse": [
+    "Universe: supplied Frame notation/permutation, numbered silver rows and Item batches/prompts paired with observed counts/labels/text. Exclude unremapped links, true positives exceeding system/gold occurrence counts, exchanged one-based row/class identities, partial duplicate-identifier acceptance, and context suppression across source collisions or overflowing paragraph transitions. These separate tagged transitions invoke no external teacher/parser.",
+    "Retain compatible Frames, notation, rows, Items and batches sharing observed coordinates. Notation omits frame detail; counts cannot recover source text; accepted labels discard row order/junk spelling; identical prompts cannot recover all metadata. Reverse composition retains the frame permutation, one-based Item position, act alphabet and ordered batch references; many antecedents remain."
+  ],
+  "limitations": [
+    "Bounded native evidence and repeated partial syntax are recorded; no general proof is inferred.",
+    "Finite checks do not establish general proof or unique antecedents.",
+    "No live parser, corpus, teacher, GPU, adoption or throughput experiment."
+  ],
+  "source": "prag/tests/groupant_wave16.rs",
+  "state": "Retained frame permutation, one-based batch positions, closed act alphabet, source/document identity and checked consecutive paragraphs."
+}

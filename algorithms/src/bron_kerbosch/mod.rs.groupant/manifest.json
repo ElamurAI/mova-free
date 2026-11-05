@@ -1,0 +1,112 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-bron-kerbosch-behavior_complement",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "U consists of (n,simple edge list,candidate Result) tuples. For valid inputs, noncliques, smaller cliques, unsorted results, or lexicographically later maximum cliques are absent. Invalid endpoints, loops, reversed duplicates and cap excess cannot yield Ok, under documented first-error ordering.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "f50ae4c86b9a355ec9178f9d690c48f15f4aaa1ffc4266545837194063d28ef3",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-bron-kerbosch-reverse_reconstruction",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "Fix sorted output C. Its fiber is every valid graph on the fixed vertex universe in which C is a maximum clique and no lexicographically smaller equal-cardinality clique exists. Missing edges outside C are not recoverable; many distinct graphs share C. Empty C is reachable only for n=0.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "f50ae4c86b9a355ec9178f9d690c48f15f4aaa1ffc4266545837194063d28ef3",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-bron-kerbosch-complement_independence",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "For fixed vertex universe, C is a clique in G iff it is independent in the loopless complement of G. Maximum cardinality and lexicographic ordering are preserved by this exact graph complement. This is a specialized relation, not an implemented independent-set solver or a faster exact bound.",
+        "path": "model.md",
+        "section": "complement_independence",
+        "status": "partial_relational_specification",
+        "subject_revision": "f50ae4c86b9a355ec9178f9d690c48f15f4aaa1ffc4266545837194063d28ef3",
+        "type": "complement_independence"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-bron-kerbosch-maximal_maximum_boundary",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "A terminal P=X=empty certifies only that R is maximal: no vertex can extend it. The result is maximum only after comparing all unpruned terminal candidates by cardinality and lexicographic order. For a triangle on vertices 1,2,3 plus isolated vertex 0, {0} is maximal but the returned maximum is [1,2,3]. The bound |R|+|P|<|best| is deliberately strict; equality must remain searchable because an equal-size candidate can improve the lexicographic result. Pivot choice changes search order, not the target objective.",
+        "path": "model.md",
+        "section": "maximal_maximum_boundary",
+        "status": "partial_relational_specification",
+        "subject_revision": "f50ae4c86b9a355ec9178f9d690c48f15f4aaa1ffc4266545837194063d28ef3",
+        "type": "maximal_maximum_boundary"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-bron-kerbosch-simple_graph_failure_order",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "Validation checks n>64 first, then E>n(n-1)/2 before allocating masks or checking endpoints. For each surviving input edge it checks u then v range, self-loop, and whether the adjacency bit already exists. Reversing an earlier edge is a duplicate because both directions were recorded. Thus n=0 with [(0,0)] returns TooManyEdges, not InvalidEndpoint or SelfLoop. On n=64 valid indices include 63 and all-mask construction uses u64::MAX; no shift by 64 occurs. The complete cap graph and vertex-63 witnesses exercise this representation boundary.",
+        "path": "model.md",
+        "section": "simple_graph_failure_order",
+        "status": "partial_relational_specification",
+        "subject_revision": "f50ae4c86b9a355ec9178f9d690c48f15f4aaa1ffc4266545837194063d28ef3",
+        "type": "simple_graph_failure_order"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-bron-kerbosch",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "f50ae4c86b9a355ec9178f9d690c48f15f4aaa1ffc4266545837194063d28ef3"
+  },
+  "status": "partial_source_derived_instance"
+}

@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "ast::wave28_tests::normalization_and_span_quotient; ast::wave28_tests::traversal_preserves_script_and_unknown_order",
+    "Two debug/two release selected runs; paired syntax"
+  ],
+  "children": [],
+  "cost": "walk/size/has_unknown O(N), O(D) recursion; unknowns adds name bytes and K outputs; usize size overflow not separately guarded.",
+  "description": "norm collapses exactly one atom; empty is Row([]). walk is preorder and preserves row/cell order; Scripts visits base, sub, sup, optional roots visit index before body. unknowns collects names and actual stored spans; has_unknown traverses all nodes.",
+  "forward": [
+    "norm collapses exactly one atom; empty is Row([]). walk is preorder and preserves row/cell order; Scripts visits base, sub, sup, optional roots visit index before body. unknowns collects names and actual stored spans; has_unknown traverses all nodes."
+  ],
+  "id": "latex-ast",
+  "inverse": [
+    "Span equality cannot distinguish coordinates; traversal cannot silently omit Unknown arguments or script children.",
+    "A structural equality class admits arbitrary span assignments. norm inverse of atom n includes [n], and when n is Row(v), v subject to normalization; original grouping/positions cannot be uniquely inferred."
+  ],
+  "limitations": [
+    "Partial source models and finite tests, no semantic proof or expanded AST.",
+    "No useful executable percentage approximant metric established; future caps1/2/5/10% only.",
+    "No live VMM/API/corpus/GPU/full-school/held-out execution; allocation and extreme sizes untested."
+  ],
+  "source": "latex/src/ast.rs",
+  "state": "Public Node permits non-normal forms; no validation enforces singleton Row absence. Span u32 represents byte coordinates but equality deliberately ignores them."
+}

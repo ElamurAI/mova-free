@@ -1,0 +1,100 @@
+{
+  "children": [
+    {
+      "id": "fact-index-section-prior",
+      "path": "section.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Explicit gap: no syntax projection or semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "scope": "U is valid fact/query/world-text to finite Scored transitions. R sums the five terms and returns diagnostic flags. U minus R includes +3 predicate when no first-Pred alternative matches and +3 subject when only another role matches. Malformed sent=0 is outside domain due to subtraction underflow behavior.",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "scope": "For score s, compatible antecedents are all feature assignments whose sum equals s, including role and section tradeoffs. Scored flags narrow but do not identify matched IDs or lexical alternatives; why text is not a full provenance trace.",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "duplicates",
+        "path": "model.md",
+        "scope": "Adding one matching q.others occurrence adds 1.5; adding a repeated q.words group adds its best field weight. Adding another matching predicate group changes nothing once pred=true.",
+        "section": "duplicates",
+        "status": "partial_source_derived_model",
+        "type": "multiplicity_response"
+      },
+      {
+        "id": "tie-filter",
+        "path": "model.md",
+        "scope": "Search result set equals keep-filtered facts, including negative-score facts; there is no score cutoff or top-k truncation. Order is descending score and ascending n, not anchor order.",
+        "section": "tie-filter",
+        "status": "partial_source_derived_model",
+        "type": "ranking_constraint"
+      },
+      {
+        "id": "query-preimage-join",
+        "path": "model.md",
+        "scope": "For full Scored y, compatible tuples (fact,query,text) satisfy the joint constraints on n, total, pred, who, words, insec and why. Sum-only fibers are larger. Composition with section is an existential join on the same sent/text/secs/fut; independently choosing a compatible section and incompatible query is invalid. With fixed query, ignored fact neg/end/by/line and unmatched extra fields yield compatible full-Scored antecedents; this does not reconstruct an input world.",
+        "section": "query-preimage-join",
+        "status": "partial_source_derived_model",
+        "type": "relational_join_preimage"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "coverage_recorded"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 23624,
+      "start": 19441
+    },
+    "description": "Score predicate, subject-role, other-ID, word and section features; filter facts before ranking by descending score then n."
+  },
+  "id": "fact-index-query",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../index.rs",
+    "sha256": "c182d747ecc69b9e86a34ae5a49caa3841477c53719b2b8bb77b39e0ba4120d1"
+  },
+  "status": "partial_source_derived_instance",
+  "subject_revision": "sha256:c182d747ecc69b9e86a34ae5a49caa3841477c53719b2b8bb77b39e0ba4120d1"
+}

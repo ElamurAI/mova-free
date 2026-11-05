@@ -110,3 +110,16 @@ fn boost_negative_control_broken_erf_is_red() {
     let st = measure("erf", &table("erf_data.ipp", "erf_data"), 1, Some("erf"));
     assert!(st.max_eps > 1e6, "broken erf did not turn red: {}", st.max_eps);
 }
+
+#[test]
+fn wave30_synthetic_measure() {
+    let rows = vec![vec![0.0, 1.0], vec![1.0, 0.0], vec![2.0, f64::NAN]];
+    let s = measure("erfc", &rows, 1, None);
+    assert_eq!(s.n, 1);
+    assert_eq!(s.max_eps, 0.0);
+    assert!(s.worst_x.is_nan());
+    let bad = measure("erf", &[vec![0.0, 1.0]], 1, None);
+    assert_eq!(bad.max_eps, 1.0 / f64::EPSILON);
+    assert_eq!(bad.worst_x, 0.0);
+    assert_eq!(mlab_eval("erf", &[0.0], Some("erf")), vec![1.0]);
+}

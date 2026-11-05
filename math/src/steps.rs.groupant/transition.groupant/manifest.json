@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical projection only; fragment bound by byte range; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "stack_accounting",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "stack_accounting",
+        "status": "partial_source_derived_model",
+        "type": "stack_accounting"
+      },
+      {
+        "id": "oracle_reachability",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "oracle_reachability",
+        "status": "partial_source_derived_model",
+        "type": "oracle_reachability"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 32881,
+      "start": 10473
+    },
+    "description": "SHIFT increases next and stack length by1, then fix_leaf_vals restores qs[leaf].val; SKIP increases next only. REDUCE/FAR consumes two stack items and appends one operation tree, representative=max(source indices). legal precedes apply only in generated search.",
+    "source_bytes_sha256": "60d156367c1df2c21ef7a2e15601fca983e493cad6291a25d4254405e84f7477"
+  },
+  "id": "math-steps-transition",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../steps.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "e5cb6a8faf439e291e373da48acc452c2dbe4b831e011b44230ade64f0f9a803"
+  },
+  "status": "partial_source_bound_model"
+}

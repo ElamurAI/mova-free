@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test --offline --release --manifest-path tools/mova-json/Cargo.toml",
+    "2026-11-05: 12 passed, two identical runs."
+  ],
+  "children": [],
+  "cost": "About 0.1 s release (2026-11-05).",
+  "description": "Finite tests with paired negative controls for the mova-json library and CLI-level operations.",
+  "forward": [
+    "Twelve tests covering round trip, escapes, path edits, sorted insertion, replace_str, JSONL, merges, conflicts, offset mapping, rebind and rebind-groupant."
+  ],
+  "id": "mova-json-tests",
+  "inverse": [
+    "Typed behavior complement first and nonunique reverse reconstruction second; see model.md.",
+    "Each positive check has a red control; a failing test names the property, not the mutated line."
+  ],
+  "limitations": [
+    "No concurrent-writer, non-UTF-8 or Windows-path coverage."
+  ],
+  "source": "tools/mova-json/src/tests.rs",
+  "state": "Repository JSON files and temporary git repositories."
+}

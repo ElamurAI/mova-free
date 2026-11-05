@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "corpus::wave31::cleaning_chunk_and_split_boundaries"
+  ],
+  "children": [],
+  "cost": "Cleaning O(B) with bounded60 lookahead; maps/sets O(E log E) string comparisons/storage. English quota rescans accumulated output per row, potentially O(rows*E). Whole XML file and output retained; allocation and disk errors outside pure domain.",
+  "description": "Builder::build ingests MACULA, licensed registry routes, then UD; retains first occurrence by (Lang,text). push chunks, assigning ids only to surviving chunks. clean strips tags and references with60-character closer lookahead. split_of uses fnv(doc)%10 except explicit UD split. Talmud state expires after ten subsequent segments.",
+  "forward": [
+    "Builder::build ingests MACULA, licensed registry routes, then UD; retains first occurrence by (Lang,text). push chunks, assigning ids only to surviving chunks. clean strips tags and references with60-character closer lookahead. split_of uses fnv(doc)%10 except explicit UD split. Talmud state expires after ten subsequent segments."
+  ],
+  "id": "langseg-corpus",
+  "inverse": [
+    "Within bounded helper domain, no emitted chunk has<3 alphabetic tokens; exact ud:dev cannot become hash train. Registry scope!=open, NC, unknown and non-JSON rows excluded; separate MACULA path is an explicit exception.",
+    "Cleaned output admits arbitrary removed tags/references and dropped short chunks. Retained (language,text) admits arbitrary later duplicates. Split admits all corresponding document hash residues, not a unique original."
+  ],
+  "limitations": [
+    "Builder, pool I/O and XML accumulation source-modeled only; no corpus read.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/langseg/src/corpus.rs",
+  "state": "Chunks require>=3 alphabetic words; max=0 drops every single-word flush. Dedup retains first licence/id, not unique ids. Missing sources often yield empty; XML error yields partial prefix. Registry filtering does not govern earlier MACULA route."
+}

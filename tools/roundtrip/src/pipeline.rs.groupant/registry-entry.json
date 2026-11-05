@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named tests in native-commands.json; paired source syntax"
+  ],
+  "children": [],
+  "cost": "groups O(n) singleton storage or O(1) Block. drop_class O(n^2) worst-case ancestor walking, O(n) vectors. run cost sums segmentation, annotation, frame realization, alignments, world passes and text diffs; retained intermediate payload is proportional to all generated representations, not streaming constant memory.",
+  "description": "groups partitions sentence indices by Unit. run segments and annotates, reads frames with context groups, realizes/world-encodes with world groups, then exact decodes R4->R3->R2->R1; normal mode independently compares starts. damage edits first eligible residual; drop_class maps surviving heads past removed ancestors.",
+  "forward": [
+    "groups partitions sentence indices by Unit. run segments and annotates, reads frames with context groups, realizes/world-encodes with world groups, then exact decodes R4->R3->R2->R1; normal mode independently compares starts. damage edits first eligible residual; drop_class maps surviving heads past removed ancestors."
+  ],
+  "id": "roundtrip-pipeline",
+  "inverse": [
+    "Exact output with all intermediate residuals and unchanged decoders admits original trees/frames/tokens as reconstruction witnesses. Tally alone collapses volumes and cannot recover them. Unit World and Sentence share singleton worlds but differ reader contexts.",
+    "Exact_ok requires final text equality and no earlier frames/tree/token mismatch; a tree mismatch is not decoded further. Normal text scores do not establish exact recovery, semantic understanding or retained knowledge."
+  ],
+  "limitations": [
+    "No annotator/model loading, live corpus, full suite, teacher, GPU or persistent-learning evidence. No executable percentage surrogate: categorical codecs/effects need a useful metric before future caps 1/2/5/10%."
+  ],
+  "source": "tools/roundtrip/src/pipeline.rs",
+  "state": "Layer representations, diagnostic residuals and fixed environment state; see scoped catalog."
+}

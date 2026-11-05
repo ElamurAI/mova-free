@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test --offline --release --manifest-path tools/mova-json/Cargo.toml",
+    "2026-11-05: temporary git repositories for merge3 and rebind-groupant; mutation controls (delete-vs-change ignored, identity map, no rehash, joined duplicates) each turned a test red."
+  ],
+  "children": [],
+  "cost": "Linear in value size plus bounded O(n*m) LCS tables (40M cells); three git show per merged file; one ls-files scan per rebound source.",
+  "description": "Three-way JSON merge inside a git merge with keyed arrays and diff3 sequences, source-binding refresh and groupant byte-range rebinding through a line diff.",
+  "forward": [
+    "Clean merges apply one-side or disjoint changes; conflicts are reported (exit 3) and nothing is written; both-sides sha256 changes of a bound path are recomputed from the working tree; rebind refreshes only listed paths; rebind-groupant maps byte ranges and reports TEXT CHANGED."
+  ],
+  "id": "mova-json-merge",
+  "inverse": [
+    "Typed behavior complement first and nonunique reverse reconstruction second; see model.md.",
+    "Excluded: written files with conflicts, joined insertions that repeat an element, silent refresh of unlisted bindings, revision fields rebound; a clean merge output does not identify its inputs without git history."
+  ],
+  "limitations": [
+    "Intra-line edits map to block boundaries; criss-cross merges use the single merge base git reports."
+  ],
+  "source": "tools/mova-json/src/merge.rs",
+  "state": "Base/HEAD/MERGE_HEAD values via git show, working-tree files, sidecar manifests and tracked group manifests."
+}

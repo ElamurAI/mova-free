@@ -1,0 +1,108 @@
+{
+  "children": [
+    {
+      "id": "qagen-main-parsing",
+      "path": "parsing.groupant"
+    },
+    {
+      "id": "qagen-main-tests",
+      "path": "tests.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "qagen-main-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "qagen-main-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "qagen-main-option-values",
+        "path": "model.md",
+        "section": "option-values",
+        "status": "partial_source_model",
+        "type": "option_values"
+      },
+      {
+        "id": "qagen-main-duplicates",
+        "path": "model.md",
+        "section": "duplicates",
+        "status": "partial_source_model",
+        "type": "duplicates"
+      },
+      {
+        "id": "qagen-main-effect-boundary",
+        "path": "model.md",
+        "section": "effect-boundary",
+        "status": "partial_source_model",
+        "type": "effect_boundary"
+      },
+      {
+        "id": "qagen-main-teacher-docs",
+        "path": "model.md",
+        "section": "teacher-docs",
+        "status": "partial_source_model",
+        "type": "teacher_docs"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 13488,
+      "start": 0
+    },
+    "description": "Parse command/positionals and key-value options, reject missing/unknown flags before dispatch, then select, prompt, run, gate, sample or fix operations."
+  },
+  "id": "qagen-main",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../main.rs",
+    "sha256": "7d4410bf5d85e04c46475fe0fef9e8e5a24b44fc37973f8420b950517ef05222"
+  },
+  "status": "partial_source_bound_model"
+}

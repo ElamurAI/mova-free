@@ -59,3 +59,29 @@ impl Rng {
         }
     }
 }
+
+#[cfg(test)]
+mod wave30 {
+    use super::*;
+    #[test]
+    fn stream_and_spare() {
+        let mut a = Rng::new(42);
+        let mut b = a.clone();
+        for _ in 0..32 {
+            assert_eq!(a.next_u64(), b.next_u64());
+        }
+        for _ in 0..32 {
+            assert!((0.0..1.0).contains(&a.uniform()));
+        }
+        let z = a.normal();
+        assert!(z.is_finite());
+        let state = a.s;
+        let spare = a.spare.unwrap();
+        assert_eq!(a.normal(), spare);
+        assert_eq!(a.s, state);
+        a.normal();
+        a.reseed(42);
+        assert!(a.spare.is_none());
+        assert_eq!(a.next_u64(), Rng::new(42).next_u64());
+    }
+}

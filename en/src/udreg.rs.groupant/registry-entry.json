@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p en --lib udreg::wave27_tests",
+    "Repeated debug/release named outcomes and paired partial syntax"
+  ],
+  "children": [],
+  "cost": "Load expected O(bytes); check O(Feat::N+lemma bytes); exports O(n log n).",
+  "description": "Embedded UD gate with ordered diagnostics",
+  "forward": [
+    "Load known feature pairs/relations/auxiliaries, ignore malformed rows. check enum-order features then relation then lowercase AUX membership then cop=be. Exports sorted except allowed enum order."
+  ],
+  "id": "en-udreg",
+  "inverse": [
+    "Empty diagnostics preimage satisfies all independent predicates; case variants of lemma share gate; no unique antecedent."
+  ],
+  "limitations": [
+    "No tree validation; unknown Feats bits invisible and not rejected; relation violation does not short circuit later diagnostics.",
+    "No executable percent surrogate: no demonstrated useful metric preserving categorical/effect semantics; permitted future caps 1/2/5/10%, no production substitution.",
+    "Partial source-bound modeling, no corpus/API/GPU, allocation faults or exhaustive numerical checks."
+  ],
+  "source": "en/src/udreg.rs",
+  "state": "Embedded UD gate with ordered diagnostics"
+}

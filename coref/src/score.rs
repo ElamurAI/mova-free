@@ -29,14 +29,26 @@ impl Counts {
         self.pd += o.pd;
     }
     pub fn r(&self) -> f64 {
-        if self.rd == 0.0 { 0.0 } else { self.rn / self.rd }
+        if self.rd == 0.0 {
+            0.0
+        } else {
+            self.rn / self.rd
+        }
     }
     pub fn p(&self) -> f64 {
-        if self.pd == 0.0 { 0.0 } else { self.pn / self.pd }
+        if self.pd == 0.0 {
+            0.0
+        } else {
+            self.pn / self.pd
+        }
     }
     pub fn f(&self) -> f64 {
         let (r, p) = (self.r(), self.p());
-        if r + p == 0.0 { 0.0 } else { 2.0 * r * p / (r + p) }
+        if r + p == 0.0 {
+            0.0
+        } else {
+            2.0 * r * p / (r + p)
+        }
     }
 }
 
@@ -142,11 +154,13 @@ pub fn assign_max(w: &[Vec<f64>]) -> f64 {
     let inf = f64::INFINITY;
     let (mut u, mut v) = (vec![0.0f64; n + 1], vec![0.0f64; m + 1]);
     let (mut p, mut way) = (vec![0usize; m + 1], vec![0usize; m + 1]);
+    let mut minv = vec![inf; m + 1];
+    let mut used = vec![false; m + 1];
     for i in 1..=n {
         p[0] = i;
         let mut j0 = 0usize;
-        let mut minv = vec![inf; m + 1];
-        let mut used = vec![false; m + 1];
+        minv.fill(inf);
+        used.fill(false);
         loop {
             used[j0] = true;
             let i0 = p[j0];
@@ -187,7 +201,10 @@ pub fn assign_max(w: &[Vec<f64>]) -> f64 {
             }
         }
     }
-    (1..=m).filter(|&j| p[j] != 0).map(|j| w[p[j] - 1][j - 1]).sum()
+    (1..=m)
+        .filter(|&j| p[j] != 0)
+        .map(|j| w[p[j] - 1][j - 1])
+        .sum()
 }
 
 /// Best assignment over entities with non-zero overlap only (each component of the bipartite graph
@@ -224,7 +241,14 @@ fn best_alignment(ov: &[Vec<usize>], sim: impl Fn(usize, usize) -> f64) -> f64 {
                 }
             }
         }
-        let w: Vec<Vec<f64>> = rows.iter().map(|&i| cols.iter().map(|&j| if ov[i][j] > 0 { sim(i, j) } else { 0.0 }).collect()).collect();
+        let w: Vec<Vec<f64>> = rows
+            .iter()
+            .map(|&i| {
+                cols.iter()
+                    .map(|&j| if ov[i][j] > 0 { sim(i, j) } else { 0.0 })
+                    .collect()
+            })
+            .collect();
         total += assign_max(&w);
     }
     total
@@ -235,8 +259,15 @@ pub fn ceafe(key: &Part, resp: &Part) -> Counts {
     let key: Part = key.iter().filter(|e| !e.is_empty()).cloned().collect();
     let resp: Part = resp.iter().filter(|e| !e.is_empty()).cloned().collect();
     let ov = overlaps(&key, &resp);
-    let s = best_alignment(&ov, |i, j| 2.0 * ov[i][j] as f64 / (key[i].len() + resp[j].len()) as f64);
-    Counts { rn: s, rd: key.len() as f64, pn: s, pd: resp.len() as f64 }
+    let s = best_alignment(&ov, |i, j| {
+        2.0 * ov[i][j] as f64 / (key[i].len() + resp[j].len()) as f64
+    });
+    Counts {
+        rn: s,
+        rd: key.len() as f64,
+        pn: s,
+        pd: resp.len() as f64,
+    }
 }
 
 /// CEAF-m: φ3(K, R) = |K∩R|; R = Σφ / Σ|K|, P = Σφ / Σ|R|.
@@ -245,7 +276,12 @@ pub fn ceafm(key: &Part, resp: &Part) -> Counts {
     let s = best_alignment(&ov, |i, j| ov[i][j] as f64);
     let nk: usize = key.iter().map(Vec::len).sum();
     let nr: usize = resp.iter().map(Vec::len).sum();
-    Counts { rn: s, rd: nk as f64, pn: s, pd: nr as f64 }
+    Counts {
+        rn: s,
+        rd: nk as f64,
+        pn: s,
+        pd: nr as f64,
+    }
 }
 
 /// All metrics of one measurement.
@@ -274,7 +310,13 @@ impl Scores {
 }
 
 pub fn score_parts(key: &Part, resp: &Part) -> Scores {
-    Scores { muc: muc(key, resp), b3: b3(key, resp), ceafe: ceafe(key, resp), ceafm: ceafm(key, resp), ment: Counts::default() }
+    Scores {
+        muc: muc(key, resp),
+        b3: b3(key, resp),
+        ceafe: ceafe(key, resp),
+        ceafm: ceafm(key, resp),
+        ment: Counts::default(),
+    }
 }
 
 /// A mention for matching: span and head.
@@ -329,7 +371,11 @@ pub fn match_mentions(gold: &[MSpan], pred: &[MSpan], how: Matching) -> Vec<Opti
                 true
             }
         });
-        // then the largest overlap (greedy, stable by order)
+        // Static edge priority preserves the greedy selector and its stable ties.
+        if sorted_residual(gold, pred, &gfree, &pfree, &mut out) {
+            continue;
+        }
+        // Small or resource-limited groups retain the scanning selector.
         while !pfree.is_empty() && !gfree.is_empty() {
             let mut best = (0usize, 0usize, 0usize);
             let mut found = false;
@@ -349,8 +395,63 @@ pub fn match_mentions(gold: &[MSpan], pred: &[MSpan], how: Matching) -> Vec<Opti
     out
 }
 
+/// Attempts the static-priority selector only within its bounded resource domain.
+/// Returning false leaves out unchanged so the caller can use the scan fallback.
+fn sorted_residual(
+    gold: &[MSpan],
+    pred: &[MSpan],
+    gs: &[usize],
+    ps: &[usize],
+    out: &mut [Option<usize>],
+) -> bool {
+    use std::cmp::Reverse;
+    const MIN_SIDE: usize = 128;
+    const MAX_EDGES: usize = 262_144;
+    if gs.len().min(ps.len()) < MIN_SIDE {
+        return false;
+    }
+    let Some(count) = gs.len().checked_mul(ps.len()).filter(|&n| n <= MAX_EDGES) else {
+        return false;
+    };
+    let mut edges = Vec::new();
+    let mut gold_used = Vec::new();
+    let mut pred_used = Vec::new();
+    if edges.try_reserve_exact(count).is_err()
+        || gold_used.try_reserve_exact(gs.len()).is_err()
+        || pred_used.try_reserve_exact(ps.len()).is_err()
+    {
+        return false;
+    }
+    gold_used.resize(gs.len(), false);
+    pred_used.resize(ps.len(), false);
+    for (p, &j) in ps.iter().enumerate() {
+        for (g, &i) in gs.iter().enumerate() {
+            edges.push((Reverse(overlap(gold[i].span, pred[j].span)), p, g));
+        }
+    }
+    mova_algorithms::heap_sort::heap_sort(&mut edges);
+    let mut remaining = gs.len().min(ps.len());
+    for (_, p, g) in edges {
+        if !pred_used[p] && !gold_used[g] {
+            out[ps[p]] = Some(gs[g]);
+            pred_used[p] = true;
+            gold_used[g] = true;
+            remaining -= 1;
+            if remaining == 0 {
+                break;
+            }
+        }
+    }
+    true
+}
+
 /// Score one document: gold and output entities as lists of mentions.
-pub fn score_doc(gold: &[Vec<MSpan>], pred: &[Vec<MSpan>], how: Matching, singletons: bool) -> Scores {
+pub fn score_doc(
+    gold: &[Vec<MSpan>],
+    pred: &[Vec<MSpan>],
+    how: Matching,
+    singletons: bool,
+) -> Scores {
     let gold: Vec<&Vec<MSpan>> = gold.iter().filter(|e| singletons || e.len() > 1).collect();
     let pred: Vec<&Vec<MSpan>> = pred.iter().filter(|e| singletons || e.len() > 1).collect();
     let gm: Vec<MSpan> = gold.iter().flat_map(|e| e.iter().copied()).collect();
@@ -381,7 +482,12 @@ pub fn score_doc(gold: &[Vec<MSpan>], pred: &[Vec<MSpan>], how: Matching, single
     }
     let mut s = score_parts(&key, &resp);
     let hit = mt.iter().filter(|x| x.is_some()).count() as f64;
-    s.ment = Counts { rn: hit, rd: gm.len() as f64, pn: hit, pd: pm.len() as f64 };
+    s.ment = Counts {
+        rn: hit,
+        rd: gm.len() as f64,
+        pn: hit,
+        pd: pm.len() as f64,
+    };
     s
 }
 
@@ -400,17 +506,29 @@ mod tests {
         let key: Part = vec![vec![a, b, c], vec![d, e, f, g]];
         let resp: Part = vec![vec![a, b], vec![c, d], vec![f, g, h, i]];
         let m = muc(&key, &resp);
-        assert!(close(m.r(), 0.4) && close(m.p(), 0.4) && close(m.f(), 0.4), "MUC {m:?}");
+        assert!(
+            close(m.r(), 0.4) && close(m.p(), 0.4) && close(m.f(), 0.4),
+            "MUC {m:?}"
+        );
         let x = b3(&key, &resp);
         assert!(close(x.r(), 35.0 / 84.0) && close(x.p(), 0.5), "B3 {x:?}");
         // the paper's F1 "0.46" comes from rounded 0.42 and 0.50; the exact value is 0.4545…
-        assert!(close(x.f(), 2.0 * (35.0 / 84.0) * 0.5 / (35.0 / 84.0 + 0.5)));
+        assert!(close(
+            x.f(),
+            2.0 * (35.0 / 84.0) * 0.5 / (35.0 / 84.0 + 0.5)
+        ));
         assert!((x.f() - 0.4545).abs() < 1e-4);
         let ce = ceafe(&key, &resp);
-        assert!(close(ce.r(), 0.65) && close(ce.p(), 1.3 / 3.0), "CEAF-e {ce:?}");
+        assert!(
+            close(ce.r(), 0.65) && close(ce.p(), 1.3 / 3.0),
+            "CEAF-e {ce:?}"
+        );
         assert!((ce.f() - 0.52).abs() < 0.005);
         let cm = ceafm(&key, &resp);
-        assert!(close(cm.r(), 4.0 / 7.0) && close(cm.p(), 0.5), "CEAF-m {cm:?}");
+        assert!(
+            close(cm.r(), 4.0 / 7.0) && close(cm.p(), 0.5),
+            "CEAF-m {cm:?}"
+        );
         assert!((cm.f() - 0.53).abs() < 0.005);
     }
 
@@ -436,7 +554,10 @@ mod tests {
         let z = score_parts(&key, &single);
         assert!(close(z.muc.f(), 0.0));
         assert!(close(z.b3.p(), 1.0));
-        assert!(close(z.b3.r(), (3.0 * (1.0 / 3.0) + 2.0 * 0.5 + 1.0 + 4.0 * 0.25) / 10.0));
+        assert!(close(
+            z.b3.r(),
+            (3.0 * (1.0 / 3.0) + 2.0 * 0.5 + 1.0 + 4.0 * 0.25) / 10.0
+        ));
         assert!(z.conll() < 0.6, "singletons {}", z.conll());
     }
 
@@ -459,13 +580,16 @@ mod tests {
         }
         let mut seed = 12345u64;
         let mut rnd = || {
-            seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+            seed = seed
+                .wrapping_mul(6364136223846793005)
+                .wrapping_add(1442695040888963407);
             ((seed >> 33) % 7) as f64 / 6.0
         };
         for n in 1..=5 {
             for m in n..=6 {
                 for _ in 0..20 {
-                    let w: Vec<Vec<f64>> = (0..n).map(|_| (0..m).map(|_| rnd()).collect()).collect();
+                    let w: Vec<Vec<f64>> =
+                        (0..n).map(|_| (0..m).map(|_| rnd()).collect()).collect();
                     // brute force: pick n of m columns in every order
                     let mut best = 0.0f64;
                     for p in perms(m) {
@@ -473,7 +597,8 @@ mod tests {
                         best = best.max(s);
                     }
                     assert!((assign_max(&w) - best).abs() < 1e-9, "{w:?}");
-                    let t: Vec<Vec<f64>> = (0..m).map(|j| (0..n).map(|i| w[i][j]).collect()).collect();
+                    let t: Vec<Vec<f64>> =
+                        (0..m).map(|j| (0..n).map(|i| w[i][j]).collect()).collect();
                     assert!((assign_max(&t) - best).abs() < 1e-9);
                 }
             }
@@ -483,10 +608,40 @@ mod tests {
     /// Head matching: same head — told apart by span; different head — no match.
     #[test]
     fn head_matching() {
-        let sp = |s, a, b| Span { sent: s, start: a, end: b };
+        let sp = |s, a, b| Span {
+            sent: s,
+            start: a,
+            end: b,
+        };
         // "John and Mary": the coordination and the first conjunct share the head John (0)
-        let gold = [MSpan { span: sp(0, 0, 2), head: 0 }, MSpan { span: sp(0, 0, 0), head: 0 }, MSpan { span: sp(0, 2, 2), head: 2 }];
-        let pred = [MSpan { span: sp(0, 0, 0), head: 0 }, MSpan { span: sp(0, 0, 3), head: 0 }, MSpan { span: sp(0, 4, 4), head: 4 }];
+        let gold = [
+            MSpan {
+                span: sp(0, 0, 2),
+                head: 0,
+            },
+            MSpan {
+                span: sp(0, 0, 0),
+                head: 0,
+            },
+            MSpan {
+                span: sp(0, 2, 2),
+                head: 2,
+            },
+        ];
+        let pred = [
+            MSpan {
+                span: sp(0, 0, 0),
+                head: 0,
+            },
+            MSpan {
+                span: sp(0, 0, 3),
+                head: 0,
+            },
+            MSpan {
+                span: sp(0, 4, 4),
+                head: 4,
+            },
+        ];
         let m = match_mentions(&gold, &pred, Matching::Head);
         assert_eq!(m, [Some(1), Some(0), None]);
         let e = match_mentions(&gold, &pred, Matching::Exact);
@@ -496,12 +651,100 @@ mod tests {
     /// Singletons: without them, a one-mention entity disappears from both sides.
     #[test]
     fn singletons_filter() {
-        let sp = |a| MSpan { span: Span { sent: 0, start: a, end: a }, head: a };
+        let sp = |a| MSpan {
+            span: Span {
+                sent: 0,
+                start: a,
+                end: a,
+            },
+            head: a,
+        };
         let gold = vec![vec![sp(0), sp(1)], vec![sp(2)]];
         let pred = vec![vec![sp(0)], vec![sp(1)], vec![sp(2)]];
         let with = score_doc(&gold, &pred, Matching::Head, true);
         let without = score_doc(&gold, &pred, Matching::Head, false);
         assert!(close(with.ment.r(), 1.0) && close(with.b3.p(), 1.0));
         assert!(close(without.ment.pd, 0.0) && close(without.conll(), 0.0));
+    }
+}
+
+#[cfg(test)]
+mod transfer_tests {
+    use super::*;
+    fn spans(n: usize, shift: usize) -> Vec<MSpan> {
+        (0..n)
+            .map(|i| MSpan {
+                span: Span {
+                    sent: 0,
+                    start: i * 2 + shift,
+                    end: i * 2 + shift + 3,
+                },
+                head: 0,
+            })
+            .collect()
+    }
+    #[test]
+    fn matching_tie_oracle() {
+        // Every edge has zero weight: original prediction then gold order wins.
+        for n in [128, 129, 256] {
+            let g = spans(n, 0);
+            let p = spans(n + 3, 1000);
+            let expected: Vec<_> = (0..n + 3).map(|i| (i < n).then_some(i)).collect();
+            assert_eq!(match_mentions(&g, &p, Matching::Head), expected);
+            let mut reversed = g.clone();
+            reversed.reverse();
+            assert_eq!(match_mentions(&reversed, &p, Matching::Head), expected);
+        }
+    }
+    #[test]
+    fn matching_choice_oracle() {
+        for n in [127, 128, 129, 256] {
+            for shift in [1, 5, 137] {
+                let g = spans(n, 0);
+                let p = spans(n + 3, shift);
+                let mut available: std::collections::BTreeSet<_> = (0..p.len())
+                    .flat_map(|j| (0..g.len()).map(move |i| (j, i)))
+                    .collect();
+                let mut expected = vec![None; p.len()];
+                while !available.is_empty() {
+                    let &(j, i) = available
+                        .iter()
+                        .min_by_key(|&&(j, i)| {
+                            (std::cmp::Reverse(overlap(g[i].span, p[j].span)), j, i)
+                        })
+                        .unwrap();
+                    expected[j] = Some(i);
+                    available.retain(|&(pj, gi)| pj != j && gi != i);
+                }
+                assert_eq!(match_mentions(&g, &p, Matching::Head), expected);
+            }
+        }
+    }
+    #[test]
+    fn resource_fallback() {
+        let g = spans(513, 0);
+        let p = spans(513, 1);
+        let mut out = vec![None; p.len()];
+        let ids: Vec<_> = (0..513).collect();
+        assert!(!sorted_residual(&g, &p, &ids, &ids, &mut out));
+        assert!(out.iter().all(Option::is_none));
+        assert!(!sorted_residual(&g, &p, &ids[..15], &ids, &mut out));
+        assert!(out.iter().all(Option::is_none));
+        assert!(!sorted_residual(&g, &p, &ids[..127], &ids[..128], &mut out));
+        assert!(out.iter().all(Option::is_none));
+        assert!(sorted_residual(&g, &p, &ids[..128], &ids[..128], &mut out));
+        assert_eq!(out.iter().flatten().count(), 128);
+    }
+    #[test]
+    fn assignment_row_reset() {
+        assert_eq!(
+            assign_max(&[
+                vec![9.0, 1.0, 0.0],
+                vec![8.0, 7.0, 0.0],
+                vec![0.0, 6.0, 5.0]
+            ]),
+            21.0
+        );
+        assert_eq!(assign_max(&[vec![-1.0, -2.0], vec![-3.0, -9.0]]), -5.0);
     }
 }

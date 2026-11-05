@@ -1,0 +1,103 @@
+{
+  "children": [
+    {
+      "id": "math-deriv-simplification",
+      "path": "simplification.groupant"
+    },
+    {
+      "id": "math-deriv-rules",
+      "path": "rules.groupant"
+    },
+    {
+      "id": "math-deriv-numerical-check",
+      "path": "numerical-check.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Partial lexical Rust syntax, no macro expansion/semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "domain_erasure",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "domain_erasure",
+        "status": "partial_source_derived_model",
+        "type": "domain_erasure"
+      },
+      {
+        "id": "rule_order",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "rule_order",
+        "status": "partial_source_derived_model",
+        "type": "rule_order"
+      },
+      {
+        "id": "sample_metric",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "sample_metric",
+        "status": "partial_source_derived_model",
+        "type": "sample_metric"
+      },
+      {
+        "id": "constant_fiber",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "constant_fiber",
+        "status": "partial_source_derived_model",
+        "type": "constant_fiber"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "math-deriv",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../deriv.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "0ea96ef4d7df85aa6e234618664e368c594bef2280d7689b5a989da4d31c1f48"
+  },
+  "status": "partial_source_bound_model"
+}

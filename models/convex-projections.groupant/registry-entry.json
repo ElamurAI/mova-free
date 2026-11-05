@@ -1,0 +1,31 @@
+{
+  "checks": [
+    "projections_join_threshold_reconstruction_and_mean"
+  ],
+  "children": [
+    "algorithm-isotonic-regression",
+    "algorithm-isotonic-regression-tests",
+    "algorithm-simplex-projection",
+    "algorithm-simplex-projection-tests",
+    "algorithm-l1-ball-projection",
+    "algorithm-l1-ball-projection-tests",
+    "algorithm-soft-threshold",
+    "algorithm-soft-threshold-tests"
+  ],
+  "cost": "Unit-weight PAVA and soft threshold O(n) work/storage; sorted simplex and L1 projection O(n log n) work/O(n) storage. Length <=10^6 with fallible allocation.",
+  "description": "Project finite vectors onto monotone, simplex and L1-ball constraints and apply the L1 proximal soft-threshold map.",
+  "forward": [
+    "Project finite vectors onto monotone, simplex and L1-ball constraints and apply the L1 proximal soft-threshold map.",
+    "Outside the L1 ball, its projection equals signed simplex projection of magnitudes and soft threshold at the common active magnitude difference. Isotonic regression preserves total sum in real arithmetic; finite checks separately test residual prefixes. Residual-prefix evidence is in the leaf partition oracle; the parent harness checks totals, order, idempotence and selected normal-cone inequalities."
+  ],
+  "id": "convex-projections",
+  "inverse": [
+    "At the real-model level exclude KKT-incompatible outputs for the tagged convex set/proximal problem. At the native level exclude different rounded transitions and invalid accepted results; arithmetic/allocation errors are retained, and tolerance-sized feasibility deviations are not silently discarded.",
+    "For fixed convex set C and output y in C, compatible real inputs are y+N_C(y). Soft-threshold zero coordinate has input fiber [-lambda,lambda]; nonzero coordinate reconstructs x_i=y_i+lambda*sign(y_i). This many-to-one model does not uniquely invert rounded implementations."
+  ],
+  "limitations": [
+    "Real normal-cone and KKT laws do not by themselves prove floating-point outputs. Simplex relative mass residual acceptance is <=64*n*EPSILON, not objective error. L1 may exceed radius within tolerance. Overflow/cancellation can reject mathematically solvable inputs.",
+    "Finite tests and source-derived models are not a universal proof."
+  ],
+  "state": "Real maps have unique minimizers and KKT conditions; native f64 routines preserve explicit validation and acceptance tolerances rather than universal exact feasibility."
+}

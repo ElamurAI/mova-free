@@ -1,0 +1,164 @@
+{
+  "children": [
+    "rt-mixed-compare",
+    "rt-mixed-diff",
+    "rt-mixed-heb",
+    "rt-mixed-link",
+    "rt-mixed-orchestration",
+    "rt-mixed-report",
+    "rt-mixed-route",
+    "rt-mixed-sample",
+    "rt-mixed-tally"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "No actual annotator/gparse/model/corpus/teacher/GPU execution. Full run_volume and parser/cache paths source-reviewed only. Allocation/IO failures and hostile malformed public structs not exhaustively tested.",
+        "domain": "Small in-memory synthetic UTF-8 text, explicit spans, frames, dictionaries, finite residual cells; compare TSVs only under dedicated temp receipt root. All chosen tests read before selection.",
+        "id": "behavior-complement",
+        "observation_scope": "Actual joins: sample::Span -> route/owner in mixed; heb::R1/R2/R3 -> mixed exact decode; link::rename/inverse -> world frame identity; diff::compare -> tally::Diverge; Run::merge -> Tally::merge -> report metrics. compare consumes independent residual/normal schemas, not mixed report::tsv's nine columns. These shared helper joins are not an invented sequential pipeline.",
+        "operator": "On valid residual codec inputs, changing retained original bytes is excluded; token-only Text route cannot establish parser semantics. Mixed reports cannot be assumed compatible with compare TSV parser.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "No actual annotator/gparse/model/corpus/teacher/GPU execution. Full run_volume and parser/cache paths source-reviewed only. Allocation/IO failures and hostile malformed public structs not exhaustively tested.",
+        "domain": "Small in-memory synthetic UTF-8 text, explicit spans, frames, dictionaries, finite residual cells; compare TSVs only under dedicated temp receipt root. All chosen tests read before selection.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Actual joins: sample::Span -> route/owner in mixed; heb::R1/R2/R3 -> mixed exact decode; link::rename/inverse -> world frame identity; diff::compare -> tally::Diverge; Run::merge -> Tally::merge -> report metrics. compare consumes independent residual/normal schemas, not mixed report::tsv's nine columns. These shared helper joins are not an invented sequential pipeline.",
+        "operator": "Retained tokens/scripts/joints reconstruct compatible source text under fixed decoder context; aggregate reports and normalized lexical keys have many antecedents. Exact identity recovery requires injective noncolliding rename.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "No actual annotator/gparse/model/corpus/teacher/GPU execution. Full run_volume and parser/cache paths source-reviewed only. Allocation/IO failures and hostile malformed public structs not exhaustively tested.",
+        "domain": "Small in-memory synthetic UTF-8 text, explicit spans, frames, dictionaries, finite residual cells; compare TSVs only under dedicated temp receipt root. All chosen tests read before selection.",
+        "id": "coordinate-transport",
+        "observation_scope": "Actual joins: sample::Span -> route/owner in mixed; heb::R1/R2/R3 -> mixed exact decode; link::rename/inverse -> world frame identity; diff::compare -> tally::Diverge; Run::merge -> Tally::merge -> report metrics. compare consumes independent residual/normal schemas, not mixed report::tsv's nine columns. These shared helper joins are not an invented sequential pipeline.",
+        "operator": "Spans and owner overlap use bytes, sentence cuts use char_indices byte positions, diff preview counts Unicode scalars, LCS and tree Take use token indices, tree heads one-based.",
+        "path": "model.md",
+        "required": false,
+        "section": "coordinate-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No actual annotator/gparse/model/corpus/teacher/GPU execution. Full run_volume and parser/cache paths source-reviewed only. Allocation/IO failures and hostile malformed public structs not exhaustively tested.",
+        "domain": "Small in-memory synthetic UTF-8 text, explicit spans, frames, dictionaries, finite residual cells; compare TSVs only under dedicated temp receipt root. All chosen tests read before selection.",
+        "id": "tagged-routing",
+        "observation_scope": "Actual joins: sample::Span -> route/owner in mixed; heb::R1/R2/R3 -> mixed exact decode; link::rename/inverse -> world frame identity; diff::compare -> tally::Diverge; Run::merge -> Tally::merge -> report metrics. compare consumes independent residual/normal schemas, not mixed report::tsv's nine columns. These shared helper joins are not an invented sequential pipeline.",
+        "operator": "En/Heb/Text are alternatives; Text stores whole token residual. Language classifier loss and route accuracy use distinct labels.",
+        "path": "model.md",
+        "required": false,
+        "section": "tagged-routing",
+        "status": "partial_source_derived_model",
+        "type": "tagged_routing"
+      },
+      {
+        "assumptions": "No actual annotator/gparse/model/corpus/teacher/GPU execution. Full run_volume and parser/cache paths source-reviewed only. Allocation/IO failures and hostile malformed public structs not exhaustively tested.",
+        "domain": "Small in-memory synthetic UTF-8 text, explicit spans, frames, dictionaries, finite residual cells; compare TSVs only under dedicated temp receipt root. All chosen tests read before selection.",
+        "id": "metric-denominators",
+        "observation_scope": "Actual joins: sample::Span -> route/owner in mixed; heb::R1/R2/R3 -> mixed exact decode; link::rename/inverse -> world frame identity; diff::compare -> tally::Diverge; Run::merge -> Tally::merge -> report metrics. compare consumes independent residual/normal schemas, not mixed report::tsv's nine columns. These shared helper joins are not an invented sequential pipeline.",
+        "operator": "Report bits per sampled item differs from parsed sentence chrF and language token accuracy. Meta excluded in summary bits yet present in TSV.",
+        "path": "model.md",
+        "required": false,
+        "section": "metric-denominators",
+        "status": "partial_source_derived_model",
+        "type": "metric_denominators"
+      },
+      {
+        "assumptions": "No actual annotator/gparse/model/corpus/teacher/GPU execution. Full run_volume and parser/cache paths source-reviewed only. Allocation/IO failures and hostile malformed public structs not exhaustively tested.",
+        "domain": "Small in-memory synthetic UTF-8 text, explicit spans, frames, dictionaries, finite residual cells; compare TSVs only under dedicated temp receipt root. All chosen tests read before selection.",
+        "id": "shared-helper-joins",
+        "observation_scope": "Actual joins: sample::Span -> route/owner in mixed; heb::R1/R2/R3 -> mixed exact decode; link::rename/inverse -> world frame identity; diff::compare -> tally::Diverge; Run::merge -> Tally::merge -> report metrics. compare consumes independent residual/normal schemas, not mixed report::tsv's nine columns. These shared helper joins are not an invented sequential pipeline.",
+        "operator": "diff updates Diverge consumed by Tally; compare is independent file comparison with before-only set domain. No direct mixed-TSV adapter claimed.",
+        "path": "model.md",
+        "required": false,
+        "section": "shared-helper-joins",
+        "status": "partial_source_derived_model",
+        "type": "shared_helper_joins"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "roundtrip-mixed-routing",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "tools/roundtrip/src/compare.rs",
+      "sha256": "0e0a504b415f23e88f9dd01e8cc5a468c83c3532d5feeebb8a3ae1fb832c9701"
+    },
+    {
+      "path": "tools/roundtrip/src/diff.rs",
+      "sha256": "dc8f0bd667aee979f3e9bbd534059cda7594c560f66f10811b1e85a81ec975cb"
+    },
+    {
+      "path": "tools/roundtrip/src/mixed/heb.rs",
+      "sha256": "875be40516fae16e4e0deb2f01d6dd4d908af19cb2fde1cd8e47030c184c91c0"
+    },
+    {
+      "path": "tools/roundtrip/src/mixed/link.rs",
+      "sha256": "9ec656e7db9174a65370e932dbe93940f9ecc137ed3180673d62ee671c795220"
+    },
+    {
+      "path": "tools/roundtrip/src/mixed/mod.rs",
+      "sha256": "ec7cbac5010f8e79b5609ceb6399662a15596513756ea0b8a29b6e1c183f9be8"
+    },
+    {
+      "path": "tools/roundtrip/src/mixed/report.rs",
+      "sha256": "5585a6c515e315fa31adfae1948524d9f424f896d4c51fa7af437cba698182ec"
+    },
+    {
+      "path": "tools/roundtrip/src/mixed/route.rs",
+      "sha256": "5e7d9e53093eb86dafd6a9c7b38bc1fafff1adbb7392788eb6bfd3a5689b38e0"
+    },
+    {
+      "path": "tools/roundtrip/src/mixed/sample.rs",
+      "sha256": "4fa37ab7a99fc9a76b9a3de1bd2f02769269542443dd47e067530b94c1fedb12"
+    },
+    {
+      "path": "tools/roundtrip/src/tally.rs",
+      "sha256": "c3382ca2a337994e1e1f7eef64ee405b8bcfd2d06be64e58e6b44f2df06d1d42"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

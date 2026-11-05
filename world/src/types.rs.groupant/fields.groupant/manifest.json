@@ -1,0 +1,101 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "scope": "U=(Reg,key spelling,optional admitted Field/Dom). R composes key with key_ok. U minus R forbids gender admission for O, any E admission, and Stage decoded from status. Downstream payload parsing excluded.",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "scope": "At/Place key output has {at,to,in} antecedents; name status has {Status,Stage}. Successful O admission restricts spellings to name,trait,status,num,at,to,in.",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "permission-matrix",
+        "path": "model.md",
+        "scope": "Over nine Reg and thirty Field variants C accepts 30, O 5 and L 4: 39 accepted of 270 pairs. Other registries reject all fields. Explicit literal sets are the proposed oracle.",
+        "section": "permission-matrix",
+        "status": "partial_source_derived_model",
+        "type": "finite_relation"
+      },
+      {
+        "id": "name-not-parser",
+        "path": "model.md",
+        "scope": "key(Parent.name()) decodes in to At; key(Target.name()) decodes to to At; Stage.name() decodes status to Status. key(name(f)) cannot be identity on all Field.",
+        "section": "name-not-parser",
+        "status": "partial_source_derived_model",
+        "type": "partial_retraction"
+      },
+      {
+        "id": "domain-routing",
+        "path": "model.md",
+        "scope": "gender/age/sleep/freedom/life select Tags; feeling selects TagSet; mother/father Char; num Num; name/goal/belief Text; trait/status Words; at/to/in Place. Routing does not parse payloads.",
+        "section": "domain-routing",
+        "status": "partial_source_derived_model",
+        "type": "tagged_union"
+      }
+    ],
+    "tests": {
+      "path": "../model.md#tests",
+      "status": "coverage_recorded"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 15003,
+      "start": 9811
+    },
+    "description": "fields declarations and operation implementations; gaps between selected items allowed",
+    "syntax_nodes": {
+      "node_ids": [
+        614,
+        615,
+        685,
+        686,
+        716,
+        721,
+        819
+      ],
+      "path": "../syntax.json"
+    }
+  },
+  "id": "world-types-fields",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../types.rs",
+    "sha256": "ac2d47f390463744e9b5d2e7b0a005352b62368e4e5d68bb1348a173a5c90037"
+  },
+  "status": "partial_source_derived_instance"
+}

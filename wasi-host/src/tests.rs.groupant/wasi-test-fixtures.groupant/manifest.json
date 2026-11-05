@@ -1,0 +1,98 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Source syntax only; no macro expansion/type resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "wasi-test-fixtures",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "wasi-test-fixtures",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "fixture_contents",
+        "path": "model.md",
+        "scope": "wasi-test-fixtures",
+        "section": "fixture_contents",
+        "status": "partial_source_derived_model",
+        "type": "fixture_contents"
+      },
+      {
+        "id": "pointer_assumption",
+        "path": "model.md",
+        "scope": "wasi-test-fixtures",
+        "section": "pointer_assumption",
+        "status": "partial_source_derived_model",
+        "type": "pointer_assumption"
+      },
+      {
+        "id": "root_adapter",
+        "path": "model.md",
+        "scope": "wasi-test-fixtures",
+        "section": "root_adapter",
+        "status": "partial_source_derived_model",
+        "type": "root_adapter"
+      },
+      {
+        "id": "error_propagation",
+        "path": "model.md",
+        "scope": "wasi-test-fixtures",
+        "section": "error_propagation",
+        "status": "partial_source_derived_model",
+        "type": "error_propagation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 768,
+      "start": 105
+    },
+    "description": "ctx creates /d, two files and argv prog,arg1; put_str raw-copies at given coordinate; open writes path at1000 and invokes production path_open with root fd3/follow1 and output900.",
+    "source_bytes_sha256": "797355935337935abbf1e6fe164d95d6e9b33fa8902d7d3e78a2b3698dd00123"
+  },
+  "id": "wasi-test-fixtures",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../tests.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "74685e5440b3b7df7f40518395e62d6cd68a60e80ff71e87b772f020c80bec8d"
+  },
+  "status": "partial_source_bound_model"
+}

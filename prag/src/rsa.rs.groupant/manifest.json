@@ -1,0 +1,320 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "section": "Behavior complement",
+        "status": "partial",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "section": "Reverse reconstruction",
+        "status": "partial",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "raw-utility-nonmonotonicity",
+        "path": "model.md",
+        "scope": "One-world positive two-utterance finite counterexample; fixed listener",
+        "section": "Utility behavior complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "utility-difference-preimage",
+        "path": "model.md",
+        "scope": "Positive support alpha>0 utility differences, common-offset ambiguity",
+        "section": "Utility-difference converse",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      }
+    ],
+    "rust_approximants": [
+      {
+        "assumptions": [
+          "IEEE binary64 round-to-nearest arithmetic without fast-math",
+          "Only Game::l0 output is modeled"
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 1,
+        "classification": {
+          "assurance_kind": "analytical",
+          "method_kind": "floating_normalization",
+          "metric_kind": "probability_relative"
+        },
+        "domain": "worlds 1..64; utterances 0..64; rectangular truth; integer priors 1..1000000",
+        "error_percent": 1e-10,
+        "evidence": [
+          {
+            "path": "model.md#l0-bound-evidence",
+            "sha256": "8a58965f422be8ea5e12575b99a2a185de0285ff3a2095a916426638558937aa"
+          }
+        ],
+        "id": "rsa-l0-1",
+        "metric": "maximum positive-cell relative error; zero cells exact",
+        "path": "rust_approximant.rs",
+        "sha256": "74e3c19640fce2f83c6528d85baf7af2b07fb126d30e4ff9aa19ad9d6bb1c238",
+        "source": {
+          "path": "../rsa.rs",
+          "sha256": "4b56d6cf124b770d9481bd6ae29f456ecd26a58bfd46e5f0f6af9a4131ebd1a6"
+        },
+        "status": "bounded_verified"
+      },
+      {
+        "assumptions": [
+          "IEEE binary64 round-to-nearest arithmetic without fast-math",
+          "Only Game::l0 output is modeled"
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 2,
+        "classification": {
+          "assurance_kind": "analytical",
+          "method_kind": "floating_normalization",
+          "metric_kind": "probability_relative"
+        },
+        "domain": "worlds 1..64; utterances 0..64; rectangular truth; integer priors 1..1000000",
+        "error_percent": 1e-10,
+        "evidence": [
+          {
+            "path": "model.md#l0-bound-evidence",
+            "sha256": "8a58965f422be8ea5e12575b99a2a185de0285ff3a2095a916426638558937aa"
+          }
+        ],
+        "id": "rsa-l0-2",
+        "metric": "maximum positive-cell relative error; zero cells exact",
+        "path": "rust_approximant.rs",
+        "sha256": "74e3c19640fce2f83c6528d85baf7af2b07fb126d30e4ff9aa19ad9d6bb1c238",
+        "source": {
+          "path": "../rsa.rs",
+          "sha256": "4b56d6cf124b770d9481bd6ae29f456ecd26a58bfd46e5f0f6af9a4131ebd1a6"
+        },
+        "status": "bounded_verified"
+      },
+      {
+        "assumptions": [
+          "IEEE binary64 round-to-nearest arithmetic without fast-math",
+          "Only Game::l0 output is modeled"
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 5,
+        "classification": {
+          "assurance_kind": "analytical",
+          "method_kind": "floating_normalization",
+          "metric_kind": "probability_relative"
+        },
+        "domain": "worlds 1..64; utterances 0..64; rectangular truth; integer priors 1..1000000",
+        "error_percent": 1e-10,
+        "evidence": [
+          {
+            "path": "model.md#l0-bound-evidence",
+            "sha256": "8a58965f422be8ea5e12575b99a2a185de0285ff3a2095a916426638558937aa"
+          }
+        ],
+        "id": "rsa-l0-5",
+        "metric": "maximum positive-cell relative error; zero cells exact",
+        "path": "rust_approximant.rs",
+        "sha256": "74e3c19640fce2f83c6528d85baf7af2b07fb126d30e4ff9aa19ad9d6bb1c238",
+        "source": {
+          "path": "../rsa.rs",
+          "sha256": "4b56d6cf124b770d9481bd6ae29f456ecd26a58bfd46e5f0f6af9a4131ebd1a6"
+        },
+        "status": "bounded_verified"
+      },
+      {
+        "assumptions": [
+          "IEEE binary64 round-to-nearest arithmetic without fast-math",
+          "Only Game::l0 output is modeled"
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 10,
+        "classification": {
+          "assurance_kind": "analytical",
+          "method_kind": "floating_normalization",
+          "metric_kind": "probability_relative"
+        },
+        "domain": "worlds 1..64; utterances 0..64; rectangular truth; integer priors 1..1000000",
+        "error_percent": 1e-10,
+        "evidence": [
+          {
+            "path": "model.md#l0-bound-evidence",
+            "sha256": "8a58965f422be8ea5e12575b99a2a185de0285ff3a2095a916426638558937aa"
+          }
+        ],
+        "id": "rsa-l0-10",
+        "metric": "maximum positive-cell relative error; zero cells exact",
+        "path": "rust_approximant.rs",
+        "sha256": "74e3c19640fce2f83c6528d85baf7af2b07fb126d30e4ff9aa19ad9d6bb1c238",
+        "source": {
+          "path": "../rsa.rs",
+          "sha256": "4b56d6cf124b770d9481bd6ae29f456ecd26a58bfd46e5f0f6af9a4131ebd1a6"
+        },
+        "status": "bounded_verified"
+      },
+      {
+        "assumptions": [
+          "IEEE binary64 round-to-nearest without fast-math",
+          "Only Game::s1 output is modeled; production rational intermediates bounded below 2^128"
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 1,
+        "classification": {
+          "assurance_kind": "analytical",
+          "method_kind": "floating_normalization",
+          "metric_kind": "probability_relative"
+        },
+        "domain": "worlds and utterances 1..8; rectangular truth; priors 1..8; costs 0..4; alpha 1..2",
+        "error_percent": 1e-10,
+        "evidence": [
+          {
+            "path": "s1_approximant.rs.groupant/model.md",
+            "sha256": "4da9d309f0d0b5453fbd2acc5c437f8e59bf83e527cb487960cf1c97e9dfdcdf"
+          }
+        ],
+        "id": "rsa-s1-1",
+        "metric": "maximum positive-cell relative error; zero cells exact",
+        "path": "s1_approximant.rs",
+        "sha256": "880c3c496fcbc8da8aea3c4ce8ee8b6ced960f76ce1cacfb765538b5726cfe65",
+        "source": {
+          "path": "../rsa.rs",
+          "sha256": "4b56d6cf124b770d9481bd6ae29f456ecd26a58bfd46e5f0f6af9a4131ebd1a6"
+        },
+        "status": "bounded_verified"
+      },
+      {
+        "assumptions": [
+          "IEEE binary64 round-to-nearest without fast-math",
+          "Only Game::s1 output is modeled; production rational intermediates bounded below 2^128"
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 2,
+        "classification": {
+          "assurance_kind": "analytical",
+          "method_kind": "floating_normalization",
+          "metric_kind": "probability_relative"
+        },
+        "domain": "worlds and utterances 1..8; rectangular truth; priors 1..8; costs 0..4; alpha 1..2",
+        "error_percent": 1e-10,
+        "evidence": [
+          {
+            "path": "s1_approximant.rs.groupant/model.md",
+            "sha256": "4da9d309f0d0b5453fbd2acc5c437f8e59bf83e527cb487960cf1c97e9dfdcdf"
+          }
+        ],
+        "id": "rsa-s1-2",
+        "metric": "maximum positive-cell relative error; zero cells exact",
+        "path": "s1_approximant.rs",
+        "sha256": "880c3c496fcbc8da8aea3c4ce8ee8b6ced960f76ce1cacfb765538b5726cfe65",
+        "source": {
+          "path": "../rsa.rs",
+          "sha256": "4b56d6cf124b770d9481bd6ae29f456ecd26a58bfd46e5f0f6af9a4131ebd1a6"
+        },
+        "status": "bounded_verified"
+      },
+      {
+        "assumptions": [
+          "IEEE binary64 round-to-nearest without fast-math",
+          "Only Game::s1 output is modeled; production rational intermediates bounded below 2^128"
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 5,
+        "classification": {
+          "assurance_kind": "analytical",
+          "method_kind": "floating_normalization",
+          "metric_kind": "probability_relative"
+        },
+        "domain": "worlds and utterances 1..8; rectangular truth; priors 1..8; costs 0..4; alpha 1..2",
+        "error_percent": 1e-10,
+        "evidence": [
+          {
+            "path": "s1_approximant.rs.groupant/model.md",
+            "sha256": "4da9d309f0d0b5453fbd2acc5c437f8e59bf83e527cb487960cf1c97e9dfdcdf"
+          }
+        ],
+        "id": "rsa-s1-5",
+        "metric": "maximum positive-cell relative error; zero cells exact",
+        "path": "s1_approximant.rs",
+        "sha256": "880c3c496fcbc8da8aea3c4ce8ee8b6ced960f76ce1cacfb765538b5726cfe65",
+        "source": {
+          "path": "../rsa.rs",
+          "sha256": "4b56d6cf124b770d9481bd6ae29f456ecd26a58bfd46e5f0f6af9a4131ebd1a6"
+        },
+        "status": "bounded_verified"
+      },
+      {
+        "assumptions": [
+          "IEEE binary64 round-to-nearest without fast-math",
+          "Only Game::s1 output is modeled; production rational intermediates bounded below 2^128"
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 10,
+        "classification": {
+          "assurance_kind": "analytical",
+          "method_kind": "floating_normalization",
+          "metric_kind": "probability_relative"
+        },
+        "domain": "worlds and utterances 1..8; rectangular truth; priors 1..8; costs 0..4; alpha 1..2",
+        "error_percent": 1e-10,
+        "evidence": [
+          {
+            "path": "s1_approximant.rs.groupant/model.md",
+            "sha256": "4da9d309f0d0b5453fbd2acc5c437f8e59bf83e527cb487960cf1c97e9dfdcdf"
+          }
+        ],
+        "id": "rsa-s1-10",
+        "metric": "maximum positive-cell relative error; zero cells exact",
+        "path": "s1_approximant.rs",
+        "sha256": "880c3c496fcbc8da8aea3c4ce8ee8b6ced960f76ce1cacfb765538b5726cfe65",
+        "source": {
+          "path": "../rsa.rs",
+          "sha256": "4b56d6cf124b770d9481bd6ae29f456ecd26a58bfd46e5f0f6af9a4131ebd1a6"
+        },
+        "status": "bounded_verified"
+      }
+    ],
+    "tests": {
+      "path": "model.md#measurements",
+      "status": "bounded_execution"
+    }
+  },
+  "id": "rsa-literal-listener",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../rsa.rs",
+    "sha256": "4b56d6cf124b770d9481bd6ae29f456ecd26a58bfd46e5f0f6af9a4131ebd1a6"
+  },
+  "status": "partial_l0_s1_only"
+}

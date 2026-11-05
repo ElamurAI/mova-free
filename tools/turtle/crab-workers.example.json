@@ -1,0 +1,66 @@
+{
+  "_comment": "Crab worker entries for turtle: merge into a Crab configuration's workers. Off by default (autostart false): the English service, the standing loop and the animal's own teacher terminal (held by crab-tmux-worker, Opus through Claude Code; see tools/terminal/README.md). Each is one instance per lock.",
+  "workers": [
+    {
+      "name": "turtle",
+      "argv": [
+        "/ABSOLUTE/PATH/bin/turtle",
+        "serve",
+        "/ABSOLUTE/PATH/turtle/deputy.json",
+        "/ABSOLUTE/PATH/turtle/turtle.json",
+        "/ABSOLUTE/PATH/turtle/socket/turtle.sock",
+        "/ABSOLUTE/PATH/turtle/turtle.lock"
+      ],
+      "cwd": "/ABSOLUTE/PATH/turtle",
+      "log": "/ABSOLUTE/PATH/turtle/turtle.log",
+      "autostart": false,
+      "stop_marker": "/ABSOLUTE/PATH/turtle/socket/STOP",
+      "restart": false
+    },
+    {
+      "name": "turtle-work",
+      "argv": [
+        "/ABSOLUTE/PATH/bin/turtle",
+        "work",
+        "/ABSOLUTE/PATH/turtle/turtle.json",
+        "/ABSOLUTE/PATH/turtle/teachers.json",
+        "opus",
+        "/ABSOLUTE/PATH/turtle/work"
+      ],
+      "cwd": "/ABSOLUTE/PATH/turtle",
+      "log": "/ABSOLUTE/PATH/turtle/work.log",
+      "autostart": false,
+      "stop_marker": "/ABSOLUTE/PATH/turtle/work/STOP",
+      "restart": false
+    },
+    {
+      "name": "turtle-terminal",
+      "argv": [
+        "/ABSOLUTE/PATH/bin/crab-tmux-worker",
+        "--lock",
+        "/ABSOLUTE/PATH/turtle/turtle-1-terminal.lock",
+        "--owner-marker",
+        "mova-turtle-1",
+        "--prompt-file",
+        "/ABSOLUTE/PATH/mova/tools/terminal/prompts/animal-terminal.md",
+        "--var",
+        "name=turtle-1",
+        "--var",
+        "idle_marker=TERMINAL READY",
+        "turtle-1-opus",
+        "/ABSOLUTE/PATH/turtle/terminal",
+        "--",
+        "/ABSOLUTE/PATH/bin/claude",
+        "--model",
+        "opus",
+        "--permission-mode",
+        "acceptEdits",
+        "--disallowedTools=Bash,WebFetch,WebSearch"
+      ],
+      "cwd": "/ABSOLUTE/PATH/turtle/terminal",
+      "log": "/ABSOLUTE/PATH/turtle/terminal.log",
+      "autostart": false,
+      "restart": false
+    }
+  ]
+}

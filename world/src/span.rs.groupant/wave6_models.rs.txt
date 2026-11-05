@@ -1,0 +1,37 @@
+// Run after build_models.rs.txt; all model mechanics remain Rust.
+use serde_json::{json, Value};
+use std::{fs, path::Path};
+const ROOT: &str = "world/src/span.rs.groupant";
+fn add(scope: &str, id: &str, ty: &str, body: &str) {
+    let dir = Path::new(ROOT).join(scope);
+    let path = dir.join("manifest.json");
+    let mut m: Value = serde_json::from_str(&fs::read_to_string(&path).unwrap()).unwrap();
+    let prefix = m["id"].as_str().unwrap().to_owned();
+    m["components"]["obernants"].as_array_mut().unwrap().push(json!({
+        "id": format!("{prefix}-{id}"), "type": ty, "path": "wave6.md",
+        "section": id, "status": "bounded_native_correspondence"
+    }));
+    fs::write(path, serde_json::to_string_pretty(&m).unwrap()+"\n").unwrap();
+    let path = dir.join("wave6.md");
+    let mut text = fs::read_to_string(&path).unwrap_or_else(|_| String::from(
+        "# Native selection observations, 2026-10-30\n\nRevision: exact source SHA in this manifest. Observations are single terminating calls. Tree fixtures are directly annotated, acyclic and index-valid; dependencies are compiled from this checkout. No parser or teacher is loaded. Metric is exact equality of optional indices/text and rule labels; zero tolerance. Exhaustive claims apply only to explicitly bounded domains, with no semantic accuracy or general Rust proof.\n"));
+    text.push_str(&format!("\n## {id}\n\n{body}\n"));
+    fs::write(path, text).unwrap();
+}
+fn main() {
+    for p in ["", "normalization.groupant", "predicate.groupant"] {
+        let path = Path::new(ROOT).join(p).join("wave6.md");
+        if path.exists() { fs::remove_file(path).unwrap(); }
+    }
+    add("normalization.groupant", "finite-list-fibers", "reverse_reconstruction",
+        "Fix tree [and/Cc, ruby/NOUN, jade/NOUN, ./Punct]. Domain D is every index list of length 0..4 over {0,1,2,3}, crossed with four question-membership masks over ruby/jade: 1364 calls. Let S be ascending unique input indices intersected with {1,2}. A(S,q) is Some(S) for S=[1] with ruby absent, S=[2] with jade absent, or S=[1,2] unless both present; otherwise None. For every output y, B_q(y)={L in D_lists:A(L,q)=y}; complete enumeration compares every member of each production fiber with this independently specified truth table, including None. Ambiguous duplicate/permuted/edge antecedents remain. Test cleanup_complete_bounded_fibers supplies exact bounded correspondence, not an unbounded reconstruction algorithm. Cost: 341 list evaluations per mask, maximum four indices each.");
+    add("normalization.groupant", "marker-boundary-intervention", "boundary_relation",
+        "Fix q empty and tree [to/Mark, ruby/NOUN, and/Cc, jade/NOUN, to/Mark]. For all-index candidate plus duplicate ruby, normalization returns [1,2,3,4]: leading non-EDGE Mark disappears, trailing non-EDGE Mark and internal Cc survive. Subdomains [0,1] and [1,4] yield [1] and [1,4]. Model forbids symmetric Mark stripping on these calls (inner complement) and retains the original indices as compatible antecedents, without claiming these three lists exhaust the full fiber. Test cleanup_marker_asymmetry_and_internal_edges observes indices, so repeated spelling cannot hide boundary errors.");
+    add("predicate.groupant", "finite-rank-fibers", "reverse_reconstruction",
+        "Fix three forms/lemmas to ruby, preds=[ruby], rank tags {VERB,ADJ,NOUN,PROPN}. Domain is all 4^3=64 rank triples. A(r)=argmin (r_i,i) among r_i<3, or None if empty. B(j) contains every triple with r_j<3, each earlier rank strictly larger and each later rank at least r_j; B(None)={(3,3,3)}. The native test enumerates entire actual and oracle maps of fibers and compares equality, including earliest ties. This is complete for this finite tag set; AUX and morphology are outside the enumeration. Two additional literal caller-order observations show an earlier predicate noun outranks a later predicate verb. Test predicate_rank_complete_fibers_and_caller_order.");
+    add("", "fallback-tie-intervention", "counterfactual",
+        "Fix q={anchor} and the seven-token fixture ruby jade anchor the opal and pearl, with only ruby/jade/anchor/opal/pearl content. Runs have content counts (2,2) and token lengths (2,4). A chooses ruby jade; a token-length maximizer would choose the later run and is excluded. Append content amber to the second run: counts become (2,3), production yields the opal and pearl amber. A third question mask leaves every run below two content words and yields None. This is an exact three-call intervention relation with finite observed equality, not a general optimization or semantic superiority claim. Test fallback_content_objective_and_earliest_tie.");
+    add("", "candidate-expansion-and-retry", "composition_relation",
+        "Fix the eight-token try/take/ruby/give/jade/seek/pearl/they tree in verb_children_expand_one_xcomp_level_only. Helper output is [take,give,ruby,seek,they]: direct children precede exactly one level of direct Xcomp children; Conj grandchildren and deeper Xcomp grandchildren are excluded, while an independently supplied Xcomp subject is retained. Obj selection observes ruby with obj label. Separately two three-token fixtures differ only in Obj/Iobj versus Obl/Obl relations; with ruby echoed, direct selection returns None while the oblique retry loop returns jade/obl. These observations constrain parent wiring, order and cleanup failure propagation; they do not infer general branch reachability. Oracle arrays and optional text/rule outputs are literal and independent of production selection loops. Tests verb_children_expand_one_xcomp_level_only and object_shadowing_and_oblique_retry_are_distinct.");
+    println!("7 nodes; 41 typed models; 6 fragments; 6 native tests");
+}

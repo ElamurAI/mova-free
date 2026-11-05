@@ -1,0 +1,92 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "../model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "effect_boundary",
+        "path": "model.md",
+        "section": "effect_boundary",
+        "status": "partial_source_derived_model",
+        "type": "effect_boundary"
+      },
+      {
+        "id": "domain_restriction",
+        "path": "model.md",
+        "section": "domain_restriction",
+        "status": "partial_source_derived_model",
+        "type": "domain_restriction"
+      }
+    ],
+    "tests": {
+      "path": "../model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 91639,
+      "start": 81834
+    },
+    "description": "train_model rejects missing output before training, saves before optional reload checks; errors afterward leave model file. annotate_files loads first, emits streamed CoNLL-U, flushes last. compare keys references by ID last-wins, full metrics need identical forms; partial equal-form zip still contributes class counters. Only missing-output early return tested.",
+    "source_bytes_sha256": "d0a05f07bf69a67ba5461bc02f1aec1e849f3d2e0925fe018b498be4f5812b8a"
+  },
+  "id": "en-main-persistence-compare",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../main.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "a843b9d343aa90e8c2a9d6efc1b25d4b67089a21f1012857e6cee43b13acf8fc"
+  },
+  "status": "partial_source_bound_model"
+}

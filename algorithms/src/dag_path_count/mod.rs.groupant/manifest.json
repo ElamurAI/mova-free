@@ -1,0 +1,117 @@
+{
+  "children": [
+    {
+      "id": "algorithm-dag-path-count-validation",
+      "path": "validation.groupant"
+    },
+    {
+      "id": "algorithm-dag-path-count-counting",
+      "path": "counting.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Finite materialized ordered graphs and machine-sized indices, fixed input, successful allocation. Observations are returned Result values; allocator failure and wall-clock timing are outside the relation.",
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "Finite materialized ordered graphs and machine-sized indices, fixed input, successful allocation. Observations are returned Result values; allocator failure and wall-clock timing are outside the relation.",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "parallel",
+        "path": "model.md",
+        "required": false,
+        "scope": "Finite materialized ordered graphs and machine-sized indices, fixed input, successful allocation. Observations are returned Result values; allocator failure and wall-clock timing are outside the relation.",
+        "section": "parallel",
+        "status": "partial_source_derived_model",
+        "type": "arc_multiplicity"
+      },
+      {
+        "id": "unreachable",
+        "path": "model.md",
+        "required": false,
+        "scope": "Finite materialized ordered graphs and machine-sized indices, fixed input, successful allocation. Observations are returned Result values; allocator failure and wall-clock timing are outside the relation.",
+        "section": "unreachable",
+        "status": "partial_source_derived_model",
+        "type": "zero_extension"
+      },
+      {
+        "id": "overflow",
+        "path": "model.md",
+        "required": false,
+        "scope": "Finite materialized ordered graphs and machine-sized indices, fixed input, successful allocation. Observations are returned Result values; allocator failure and wall-clock timing are outside the relation.",
+        "section": "overflow",
+        "status": "partial_source_derived_model",
+        "type": "checked_arithmetic_boundary"
+      },
+      {
+        "id": "renaming",
+        "path": "model.md",
+        "required": false,
+        "scope": "Finite materialized ordered graphs and machine-sized indices, fixed input, successful allocation. Observations are returned Result values; allocator failure and wall-clock timing are outside the relation.",
+        "section": "renaming",
+        "status": "partial_source_derived_model",
+        "type": "vertex_transport"
+      },
+      {
+        "id": "validation",
+        "path": "model.md",
+        "required": false,
+        "scope": "Finite materialized ordered graphs and machine-sized indices, fixed input, successful allocation. Observations are returned Result values; allocator failure and wall-clock timing are outside the relation.",
+        "section": "validation",
+        "status": "partial_source_derived_model",
+        "type": "error_precedence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "algorithm-dag-path-count",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "b373088f752be5d16a5de4fc5189b923fe7c65f240ac462598221fd38919856e"
+  },
+  "status": "partial_source_bound_model"
+}

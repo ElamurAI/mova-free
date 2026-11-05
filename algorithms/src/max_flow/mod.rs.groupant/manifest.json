@@ -1,0 +1,156 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite allocated typed inputs under ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One construction or query/flow invocation.",
+        "operator": "Let X be ordered finite graphs with usize terminals and u64 capacities, Y typed Result<Flow,Error>, and U=X times Y under sufficient allocation. R is the exact deterministic relation in Forward, including validation precedence. U minus R excludes wrong validation, infeasible/nonmaximum certificates, and alternate feasible optima not chosen by the specified traversal. This is a source-derived exact target with only bounded correspondence evidence, not a proof.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "b397f042e7960da32951a78ea12a4e19f26e43f7154cb6d76c7745a1e09990df",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite allocated typed inputs under ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_inputs",
+        "observation_scope": "One construction or query/flow invocation.",
+        "operator": "For a successful (value,flows,cut), compatible inputs must have matching lengths, capacities at least flows, conservation at every nonterminal, net terminal flow equal value, and cut capacity equal value. These are necessary filters; the complete preimage additionally requires Forward to select exactly those flows and cut. Capacities and ordered graphs are generally not uniquely recovered. Error preimages follow the first failing validation or checked arithmetic site.",
+        "path": "model.md",
+        "section": "compatible_inputs",
+        "status": "partial_source_derived",
+        "subject_revision": "b397f042e7960da32951a78ea12a4e19f26e43f7154cb6d76c7745a1e09990df",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite allocated typed inputs under ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "cut_duality",
+        "observation_scope": "One construction or query/flow invocation.",
+        "operator": "For any feasible output f and separating set S, value(f)<=sum of capacities leaving S. Equality certifies maximum flow. Enumerated cut minima and independent conservation checks test this certificate for all 4096 directed simple unit-capacity graphs on four vertices.",
+        "path": "model.md",
+        "section": "cut_duality",
+        "status": "partial_source_derived",
+        "subject_revision": "b397f042e7960da32951a78ea12a4e19f26e43f7154cb6d76c7745a1e09990df",
+        "type": "optimality_certificate"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite allocated typed inputs under ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "residual_obstruction",
+        "observation_scope": "One construction or query/flow invocation.",
+        "operator": "A feasible flow is maximum exactly when no positive residual source-sink path remains. Reverse residual arcs permit cancellation: the seven-edge fixture requires replacing edge 1-to-3 flow to achieve value two. Setting reverse updates to zero violates the capacity/certificate relation.",
+        "path": "model.md",
+        "section": "residual_obstruction",
+        "status": "partial_source_derived",
+        "subject_revision": "b397f042e7960da32951a78ea12a4e19f26e43f7154cb6d76c7745a1e09990df",
+        "type": "augmenting_path_obstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite allocated typed inputs under ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "capacity_scaling",
+        "observation_scope": "One construction or query/flow invocation.",
+        "operator": "For positive integer k with every multiplied capacity in u64 range, multiplying capacities by k preserves BFS decisions, scales every flow and total by k and preserves residual reachability. Zero factor preserves value but may change reachability. Tests check total scaling by three for 25 length-two paths.",
+        "path": "model.md",
+        "section": "capacity_scaling",
+        "status": "partial_source_derived",
+        "subject_revision": "b397f042e7960da32951a78ea12a4e19f26e43f7154cb6d76c7745a1e09990df",
+        "type": "homogeneity"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite allocated typed inputs under ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "transpose",
+        "observation_scope": "One construction or query/flow invocation.",
+        "operator": "Reverse all directed edges and exchange source and sink; feasible flows biject and maximum value is preserved. Selected flow vectors/cuts need not be invariant. Tests compare values for all 4096 directed unit graphs.",
+        "path": "model.md",
+        "section": "transpose",
+        "status": "partial_source_derived",
+        "subject_revision": "b397f042e7960da32951a78ea12a4e19f26e43f7154cb6d76c7745a1e09990df",
+        "type": "terminal_duality"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite allocated typed inputs under ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "parallel_capacity",
+        "observation_scope": "One construction or query/flow invocation.",
+        "operator": "Two parallel source-sink edges of capacity u64::MAX carry total 2*(2^64-1), representable in u128 but not u64. Antiparallel edges have distinct residual pairs, not merged capacities; loops remain zero. The numeric fixture checks exact indexed values and conservation.",
+        "path": "model.md",
+        "section": "parallel_capacity",
+        "status": "partial_source_derived",
+        "subject_revision": "b397f042e7960da32951a78ea12a4e19f26e43f7154cb6d76c7745a1e09990df",
+        "type": "numeric_boundary"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite allocated typed inputs under ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "direct_preimage",
+        "observation_scope": "One construction or query/flow invocation.",
+        "operator": "For c in u64, the one-edge two-vertex graph 0-to-1 with capacity c maps to (c,[c],[true,false]), including c=0. This constructs one exact antecedent. Adding isolated vertices preserves only value and edge-flow projection; full cut shape grows. Bounded tests c=0..9 retain this distinction and do not assert unique graph reconstruction.",
+        "path": "model.md",
+        "section": "direct_preimage",
+        "status": "partial_source_derived",
+        "subject_revision": "b397f042e7960da32951a78ea12a4e19f26e43f7154cb6d76c7745a1e09990df",
+        "type": "constructive_preimage"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "sha256": "2c17ae8c9844c1db17baf8e488c051dc5c69f5312cbbeda63beba88180fa1113",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-max-flow",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "b397f042e7960da32951a78ea12a4e19f26e43f7154cb6d76c7745a1e09990df"
+  },
+  "status": "partial_source_derived_instance"
+}

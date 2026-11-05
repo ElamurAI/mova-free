@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "prag-eval-scores-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "prag-eval-scores-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "prag-eval-scores-specialization",
+        "path": "model.md",
+        "section": "specialization",
+        "status": "partial_source_model",
+        "type": "observation_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4503,
+      "start": 3360
+    },
+    "description": "Require equal lengths and all classes in [0,C). Accuracy=sum_i[g_i=p_i]/max(N,1). Let gp_c and pp_c be marginal counts and tp_c diagonal counts. Macro-F1 averages 2tp_c/(gp_c+pp_c) over classes with nonzero denominator. Empty inputs yield (0,0), including C=0."
+  },
+  "id": "prag-eval-scores",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../eval.rs",
+    "sha256": "c6a0e3ae0e424ffd6e5883502ce7e55d38d61e53b1184b6160f4236371fecd2e"
+  },
+  "status": "partial_source_bound_model"
+}

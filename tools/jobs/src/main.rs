@@ -118,3 +118,23 @@ fn main() -> Result<()> {
     eprintln!("jobs: \"{name}\" — peak memory {:.2} GB{}, CPU {:.0} s, wall {:.0} s{}, {reason}", peak as f64 / 1048576.0, est_mem.map(|e| format!(" (estimate {e} GB)")).unwrap_or_default(), cpu, wall, est_secs.map(|e| format!(" (estimate {e} s)")).unwrap_or_default());
     std::process::exit(code);
 }
+#[cfg(test)]
+mod wave33_tests {
+    use super::*;
+    #[test]
+    fn flag_first_occurrence_and_nonfinite() {
+        let args = |a: &[&str]| a.iter().map(|s| s.to_string()).collect::<Vec<_>>();
+        assert_eq!(
+            flag(&args(&["--secs", "2", "--secs", "9"]), "--secs"),
+            Some(2.0)
+        );
+        assert_eq!(flag(&args(&["--secs"]), "--secs"), None);
+        assert_eq!(
+            flag(&args(&["--secs", "bad", "--secs", "9"]), "--secs"),
+            None
+        );
+        assert_eq!(flag(&args(&["--secs", "-2"]), "--secs"), Some(-2.0));
+        assert!(flag(&args(&["--secs", "NaN"]), "--secs").unwrap().is_nan());
+        assert_eq!(flag(&[], "--secs"), None);
+    }
+}

@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "id": "algorithm-aho-corasick",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "83f5c836da9b51515eb83b3f3751e90c18689883250cf685ccb32da945fbb697"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "83f5c836da9b51515eb83b3f3751e90c18689883250cf685ccb32da945fbb697",
+        "domain": "Finite byte slices and ordinary terminating executions with successful allocation.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "One public call or explicitly scoped internal state.",
+        "operator": "Exclude missing or spurious occurrences, duplicate reports of the same (end,pattern), out-of-range offsets, wrong byte spans, changed inputs, and an output not ordered by (end,pattern). Empty-pattern omissions and deduplication of equal pattern values are outside the contract.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "preimages",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "83f5c836da9b51515eb83b3f3751e90c18689883250cf685ccb32da945fbb697",
+        "domain": "Finite byte slices and ordinary terminating executions with successful allocation.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "One public call or explicitly scoped internal state.",
+        "operator": "For fixed patterns P and length n, restrict R to valid pattern IDs and ranges 0<=s<=e<=n, unique (end,pattern) pairs, and canonical increasing (end,pattern) order. Such an output R admits exactly byte texts T of length n for which each (i,s,e) in R has e-s=|P_i| and T[s..e]=P_i, and every matching span is in R. These positive and negative span constraints generally admit several texts; no unique reconstruction is claimed.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "state-suffix",
+        "type": "state_preimage",
+        "path": "model.md",
+        "section": "state-suffix",
+        "status": "partial_source_derived",
+        "subject_revision": "83f5c836da9b51515eb83b3f3751e90c18689883250cf685ccb32da945fbb697",
+        "domain": "Finite byte slices and ordinary terminating executions with successful allocation.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "One public call or explicitly scoped internal state.",
+        "operator": "After consuming T[..e], state represents the longest suffix of T[..e] which is a trie prefix. Compatible histories are precisely histories with this longest-prefix-suffix property, not histories with only the same final byte.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "output-fiber",
+        "type": "conservation_relation",
+        "path": "model.md",
+        "section": "output-fiber",
+        "status": "partial_source_derived",
+        "subject_revision": "83f5c836da9b51515eb83b3f3751e90c18689883250cf685ccb32da945fbb697",
+        "domain": "Finite byte slices and ordinary terminating executions with successful allocation.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "One public call or explicitly scoped internal state.",
+        "operator": "Outputs at a state are exactly IDs whose patterns are suffixes of that state's trie label. Each pattern ID occurs once; distinct IDs with equal bytes coexist. Root outputs are exactly empty IDs.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "relabel",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "relabel",
+        "status": "partial_source_derived",
+        "subject_revision": "83f5c836da9b51515eb83b3f3751e90c18689883250cf685ccb32da945fbb697",
+        "domain": "Finite byte slices and ordinary terminating executions with successful allocation.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "One public call or explicitly scoped internal state.",
+        "operator": "Every injective byte map applied jointly to patterns and text preserves the entire match list. Noninjective maps can introduce occurrences and are excluded.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "pattern-permutation",
+        "type": "equivariance_relation",
+        "path": "model.md",
+        "section": "pattern-permutation",
+        "status": "partial_source_derived",
+        "subject_revision": "83f5c836da9b51515eb83b3f3751e90c18689883250cf685ccb32da945fbb697",
+        "domain": "Finite byte slices and ordinary terminating executions with successful allocation.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "One public call or explicitly scoped internal state.",
+        "operator": "Permuting pattern IDs transports each report's pattern field by the same permutation, then sorting by (end,pattern) restores required order. Repeated byte patterns remain separate IDs.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "extension",
+        "type": "prefix_relation",
+        "path": "model.md",
+        "section": "extension",
+        "status": "partial_source_derived",
+        "subject_revision": "83f5c836da9b51515eb83b3f3751e90c18689883250cf685ccb32da945fbb697",
+        "domain": "Finite byte slices and ordinary terminating executions with successful allocation.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "One public call or explicitly scoped internal state.",
+        "operator": "For text U followed by V, filtering matches on UV to end<=|U| gives exactly matches on U, including empty matches at the shared boundary only once.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "empty-boundaries",
+        "type": "cardinality_relation",
+        "path": "model.md",
+        "section": "empty-boundaries",
+        "status": "partial_source_derived",
+        "subject_revision": "83f5c836da9b51515eb83b3f3751e90c18689883250cf685ccb32da945fbb697",
+        "domain": "Finite byte slices and ordinary terminating executions with successful allocation.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "One public call or explicitly scoped internal state.",
+        "operator": "With e empty pattern IDs and text length n, empty reports number e(n+1); all other reports have start<end. No patterns yields an empty result on every text.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms forward_backward::tests",
+    "Repeated debug/release, paired syntax, compiled mutant and restored rerun"
+  ],
+  "children": [],
+  "cost": "O(T*n*n) arithmetic, O(T*n+n) space; log-sum-exp allocates a temporary bounded n-vector per recurrence.",
+  "description": "Independent finite oracle and boundary tests for forward_backward. Production: n1..64,T0..4096; normalized finite initial/transition rows and time-major emissions in[0,1]. Shape then values then row normalization. Alpha log-sum-exp over incoming paths; beta log-sum-exp over outgoing paths. exp(alpha+beta-logZ), normalized per posterior row. Empty returns logZ0/no rows; zero evidence returns None.",
+  "forward": [
+    "Independent finite oracle and boundary tests for forward_backward. Production: n1..64,T0..4096; normalized finite initial/transition rows and time-major emissions in[0,1]. Shape then values then row normalization. Alpha log-sum-exp over incoming paths; beta log-sum-exp over outgoing paths. exp(alpha+beta-logZ), normalized per posterior row. Empty returns logZ0/no rows; zero evidence returns None."
+  ],
+  "id": "algorithm-forward-backward-tests",
+  "inverse": [
+    "All-pass observations admit implementations differing on unsampled inputs. This finite test fiber does not uniquely identify source or prove universality. Production fiber: Posterior and likelihood admit many hidden models, e.g. a one-state model with different emission factorizations sharing the same product. Observed marginals do not recover joint state paths or transitions uniquely."
+  ],
+  "limitations": [
+    "Partial syntax not semantic proof",
+    "Finite oracle coverage not universal numerical accuracy",
+    "No certified surrogate, timing or allocator fault injection"
+  ],
+  "source": "algorithms/src/forward_backward/tests.rs",
+  "state": "Bounded validated numeric inputs, deterministic recurrence, explicit errors/status and standard allocation policy"
+}

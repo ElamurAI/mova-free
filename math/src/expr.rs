@@ -299,3 +299,23 @@ mod tests {
         assert_eq!(e.to_string(), "x^2");
     }
 }
+#[cfg(test)]
+mod wave27_tests {
+    use super::*;
+    #[test]
+    fn variable_occurrence_in_probability_count_and_wrappers() {
+        let e = Expr::Convert(
+            Expr::Prob(
+                ProbOp::NoneOf,
+                vec![(num(0), Expr::Neg(Expr::Var(Var(2)).bx()))],
+            )
+            .bx(),
+            Target::Mono(Mono::one()),
+        );
+        assert!(e.has_var(Var(2)));
+        assert!(!e.has_var(Var(1)));
+        assert_eq!(Var::parse("z"), Some(Var(2)));
+        assert_eq!(Var::parse("Z"), None);
+        assert_eq!(Var(255).name(), "?");
+    }
+}

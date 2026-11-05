@@ -1,0 +1,154 @@
+{
+  "children": [
+    "mlab-builtins-stats",
+    "mlab-builtins-table",
+    "mlab-mcgate",
+    "mlab-rng",
+    "mlab-table",
+    "mlab-ext-boost",
+    "mlab-ext-nist"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "IEEE f64/transcendentals and statrs/faer behavior delegated. Direct public helper dimension preconditions and overflow-sensitive dates/windows are partial. No universal numerical accuracy or significance calibration claim. Physical file backend and frozen NIST/Boost suites unexecuted.",
+        "domain": "CPU-only bounded synthetic values, well-shaped Mat/Table structures, practical finite dimensions, seed42, Monte Carlo K=0 and2, synthetic2x2 NIST-like text and special-function known points. Host datasets, GPU and external services excluded.",
+        "id": "behavior-complement",
+        "observation_scope": "Actual joins: stats imports builtins::table::{opts,opt}, table::groups, value::Table; mcgate imports stats and Rng; ext_boost/ext_nist import Interp whose registry resolves the same builtins. Invalid adapter example: group equality on NaN does not imply matching hash keys. Another: row-key signed zero canonicalization must agree with numerical sorting equality. Benchmark/calibration or full external dataset results are not inferred from helper tests. Paired ttest length compatibility precedes option parsing; only the minimum cleaned-sample-count check follows options. agg count and numel both count original values, so NaN insertion changes both. iso_date selects date-only formatting only for exactly integral inputs; rounded nonintegral midnight keeps a time-bearing pattern.",
+        "operator": "Composition excludes missing-key join pairs even though group summaries include missing groups; excludes 1 from uniform draws; excludes cached-normal state advance; excludes rejection only on p==alpha because stats verdict is strict. Zero-K mcgate cannot claim ok rows. Synthetic helper success excludes no possible failure in unexecuted external data suites.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "IEEE f64/transcendentals and statrs/faer behavior delegated. Direct public helper dimension preconditions and overflow-sensitive dates/windows are partial. No universal numerical accuracy or significance calibration claim. Physical file backend and frozen NIST/Boost suites unexecuted.",
+        "domain": "CPU-only bounded synthetic values, well-shaped Mat/Table structures, practical finite dimensions, seed42, Monte Carlo K=0 and2, synthetic2x2 NIST-like text and special-function known points. Host datasets, GPU and external services excluded.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Actual joins: stats imports builtins::table::{opts,opt}, table::groups, value::Table; mcgate imports stats and Rng; ext_boost/ext_nist import Interp whose registry resolves the same builtins. Invalid adapter example: group equality on NaN does not imply matching hash keys. Another: row-key signed zero canonicalization must agree with numerical sorting equality. Benchmark/calibration or full external dataset results are not inferred from helper tests. Paired ttest length compatibility precedes option parsing; only the minimum cleaned-sample-count check follows options. agg count and numel both count original values, so NaN insertion changes both. iso_date selects date-only formatting only for exactly integral inputs; rounded nonintegral midnight keeps a time-bearing pattern.",
+        "operator": "Given gate fractions, antecedents are all p-vectors with matching threshold counts and scenario-compatible RNG/statistical states; original samples/seed generally not unique. Group sums and fitted beta admit many observation tables; missing rows and dropped columns cannot be recovered. Boost/NIST scalar error reports admit all curves beneath or attaining their maxima/caps.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "IEEE f64/transcendentals and statrs/faer behavior delegated. Direct public helper dimension preconditions and overflow-sensitive dates/windows are partial. No universal numerical accuracy or significance calibration claim. Physical file backend and frozen NIST/Boost suites unexecuted.",
+        "domain": "CPU-only bounded synthetic values, well-shaped Mat/Table structures, practical finite dimensions, seed42, Monte Carlo K=0 and2, synthetic2x2 NIST-like text and special-function known points. Host datasets, GPU and external services excluded.",
+        "id": "missingness-transport",
+        "observation_scope": "Actual joins: stats imports builtins::table::{opts,opt}, table::groups, value::Table; mcgate imports stats and Rng; ext_boost/ext_nist import Interp whose registry resolves the same builtins. Invalid adapter example: group equality on NaN does not imply matching hash keys. Another: row-key signed zero canonicalization must agree with numerical sorting equality. Benchmark/calibration or full external dataset results are not inferred from helper tests. Paired ttest length compatibility precedes option parsing; only the minimum cleaned-sample-count check follows options. agg count and numel both count original values, so NaN insertion changes both. iso_date selects date-only formatting only for exactly integral inputs; rounded nonintegral midnight keeps a time-bearing pattern.",
+        "operator": "table::groups(NaN,NaN) puts both rows together; row_key(NaN)=None removes both from join indexes. stats::clean drops NaNs while cov_matrix sums them; passing grouped data into stats requires method-specific policy, not blanket missing equivalence.",
+        "path": "model.md",
+        "required": false,
+        "section": "missingness-transport",
+        "status": "partial_source_derived_model",
+        "type": "missingness_transport"
+      },
+      {
+        "assumptions": "IEEE f64/transcendentals and statrs/faer behavior delegated. Direct public helper dimension preconditions and overflow-sensitive dates/windows are partial. No universal numerical accuracy or significance calibration claim. Physical file backend and frozen NIST/Boost suites unexecuted.",
+        "domain": "CPU-only bounded synthetic values, well-shaped Mat/Table structures, practical finite dimensions, seed42, Monte Carlo K=0 and2, synthetic2x2 NIST-like text and special-function known points. Host datasets, GPU and external services excluded.",
+        "id": "random-calibration",
+        "observation_scope": "Actual joins: stats imports builtins::table::{opts,opt}, table::groups, value::Table; mcgate imports stats and Rng; ext_boost/ext_nist import Interp whose registry resolves the same builtins. Invalid adapter example: group equality on NaN does not imply matching hash keys. Another: row-key signed zero canonicalization must agree with numerical sorting equality. Benchmark/calibration or full external dataset results are not inferred from helper tests. Paired ttest length compatibility precedes option parsing; only the minimum cleaned-sample-count check follows options. agg count and numel both count original values, so NaN insertion changes both. iso_date selects date-only formatting only for exactly integral inputs; rounded nonintegral midnight keeps a time-bearing pattern.",
+        "operator": "Rng uniform consumes one integer transition; normal may consume cached spare without transition. mcgate reuses one RNG sequentially across scenarios, so modifying one scenario's draws changes later samples; per-row calibration is only a finite random experiment, and K=2 tests validate wiring only.",
+        "path": "model.md",
+        "required": false,
+        "section": "random-calibration",
+        "status": "partial_source_derived_model",
+        "type": "state_transition"
+      },
+      {
+        "assumptions": "IEEE f64/transcendentals and statrs/faer behavior delegated. Direct public helper dimension preconditions and overflow-sensitive dates/windows are partial. No universal numerical accuracy or significance calibration claim. Physical file backend and frozen NIST/Boost suites unexecuted.",
+        "domain": "CPU-only bounded synthetic values, well-shaped Mat/Table structures, practical finite dimensions, seed42, Monte Carlo K=0 and2, synthetic2x2 NIST-like text and special-function known points. Host datasets, GPU and external services excluded.",
+        "id": "table-statistic-shape",
+        "observation_scope": "Actual joins: stats imports builtins::table::{opts,opt}, table::groups, value::Table; mcgate imports stats and Rng; ext_boost/ext_nist import Interp whose registry resolves the same builtins. Invalid adapter example: group equality on NaN does not imply matching hash keys. Another: row-key signed zero canonicalization must agree with numerical sorting equality. Benchmark/calibration or full external dataset results are not inferred from helper tests. Paired ttest length compatibility precedes option parsing; only the minimum cleaned-sample-count check follows options. agg count and numel both count original values, so NaN insertion changes both. iso_date selects date-only formatting only for exactly integral inputs; rounded nonintegral midnight keeps a time-bearing pattern.",
+        "operator": "Table numeric columns are n-by1. categories groups keys into0-based IDs, crosstab counts into row/column categories then emits column-major Mat; stats tables wrap numeric summaries as aligned columns. sortrows output permutation adds1; it cannot be reused as an internal index without subtracting1.",
+        "path": "model.md",
+        "required": false,
+        "section": "table-statistic-shape",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "IEEE f64/transcendentals and statrs/faer behavior delegated. Direct public helper dimension preconditions and overflow-sensitive dates/windows are partial. No universal numerical accuracy or significance calibration claim. Physical file backend and frozen NIST/Boost suites unexecuted.",
+        "domain": "CPU-only bounded synthetic values, well-shaped Mat/Table structures, practical finite dimensions, seed42, Monte Carlo K=0 and2, synthetic2x2 NIST-like text and special-function known points. Host datasets, GPU and external services excluded.",
+        "id": "error-metric-boundaries",
+        "observation_scope": "Actual joins: stats imports builtins::table::{opts,opt}, table::groups, value::Table; mcgate imports stats and Rng; ext_boost/ext_nist import Interp whose registry resolves the same builtins. Invalid adapter example: group equality on NaN does not imply matching hash keys. Another: row-key signed zero canonicalization must agree with numerical sorting equality. Benchmark/calibration or full external dataset results are not inferred from helper tests. Paired ttest length compatibility precedes option parsing; only the minimum cleaned-sample-count check follows options. agg count and numel both count original values, so NaN insertion changes both. iso_date selects date-only formatting only for exactly integral inputs; rounded nonintegral midnight keeps a time-bearing pattern.",
+        "operator": "Boost e=abs((got-want)/want)/EPS excludes nonnormal reference values; NIST LRE=-log10(relative error) capped15 uses absolute error at certified zero. These metrics are not interchangeable, and neither finite synthetic observations nor source-bound models establishes a supported executable-surrogate percent cap.",
+        "path": "model.md",
+        "required": false,
+        "section": "error-metric-boundaries",
+        "status": "partial_source_derived_model",
+        "type": "metric_transport"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "statistical-computing",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "mlab/src/builtins/stats.rs",
+      "sha256": "bdc3772b09d9113e108afa29e391fee97a5372caf9052bb1689996c41c94116f"
+    },
+    {
+      "path": "mlab/src/builtins/table.rs",
+      "sha256": "f1b0959092cfcdd3cbd171a48d252ce4c1e652b1e56ed030c160e7667d8cbb54"
+    },
+    {
+      "path": "mlab/src/mcgate.rs",
+      "sha256": "367b5b5a047a1c38b6d47c2d19978efd2f0274468ffc4375c4c6cc08d3426bc9"
+    },
+    {
+      "path": "mlab/src/rng.rs",
+      "sha256": "dccb613f518f32218a910c4eca3ad31df44347dd38b90d431833558e995a2046"
+    },
+    {
+      "path": "mlab/src/table.rs",
+      "sha256": "7af3a65aabe33226d39f741909fd08d74c3b3e43390417c64e617a10704ac26b"
+    },
+    {
+      "path": "mlab/tests/ext_boost.rs",
+      "sha256": "7fa4b847808f0a485411988bb342bd0b0540d350c50e6166f08224c1dbac9dfc"
+    },
+    {
+      "path": "mlab/tests/ext_nist.rs",
+      "sha256": "82ac1127de001872692aa31cc92c6bf01f367afe18cfbd08941641a96851256c"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

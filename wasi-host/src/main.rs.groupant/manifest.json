@@ -1,0 +1,99 @@
+{
+  "children": [
+    {
+      "id": "wasi-cli-effects",
+      "path": "wasi-cli-effects.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Source syntax only; no macro expansion/type resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "wasi-cli",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "wasi-cli",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "option_boundary",
+        "path": "model.md",
+        "scope": "wasi-cli",
+        "section": "option_boundary",
+        "status": "partial_source_derived_model",
+        "type": "option_boundary"
+      },
+      {
+        "id": "export_gate",
+        "path": "model.md",
+        "scope": "wasi-cli",
+        "section": "export_gate",
+        "status": "partial_source_derived_model",
+        "type": "export_gate"
+      },
+      {
+        "id": "journal_failure",
+        "path": "model.md",
+        "scope": "wasi-cli",
+        "section": "journal_failure",
+        "status": "partial_source_derived_model",
+        "type": "journal_failure"
+      },
+      {
+        "id": "memory_cast",
+        "path": "model.md",
+        "scope": "wasi-cli",
+        "section": "memory_cast",
+        "status": "partial_source_derived_model",
+        "type": "memory_cast"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "wasi-cli",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../main.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "2200229297d1dde6d9f8477a577a7320c854d0db4fb3ea450b457a9858107122"
+  },
+  "status": "partial_source_bound_model"
+}

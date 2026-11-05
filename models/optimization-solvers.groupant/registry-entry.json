@@ -1,0 +1,31 @@
+{
+  "checks": [
+    "quadratic_solvers_join_scalar_roots_and_polynomial_values"
+  ],
+  "children": [
+    "algorithm-bisection-root",
+    "algorithm-bisection-root-tests",
+    "algorithm-golden-section-search",
+    "algorithm-golden-section-search-tests",
+    "algorithm-gradient-descent-quadratic",
+    "algorithm-gradient-descent-quadratic-tests",
+    "algorithm-conjugate-gradient",
+    "algorithm-conjugate-gradient-tests"
+  ],
+  "cost": "Sum O(k_b+k_g+n*k_d+n^2*k_c) arithmetic plus callback costs; serial auxiliary O(n), input matrix O(n^2). Hard dimension and iteration limits remain leaf-specific.",
+  "description": "Bracket roots and deterministic strictly unimodal minima; descend diagonal quadratics and solve dense symmetric positive definite linear systems with explicit stopping observations.",
+  "forward": [
+    "Bracket roots and deterministic strictly unimodal minima; descend diagonal quadratics and solve dense symmetric positive definite linear systems with explicit stopping observations.",
+    "On q(x)=d*x^2/2-b*x with d>0, derivative root, scalar minimizer, diagonal descent and one-dimensional CG share b/d. For a common diagonal system, GD and CG target identical stationarity but need not share iteration counts or statuses."
+  ],
+  "id": "optimization-solvers",
+  "inverse": [
+    "Exclude input/report pairs outside each tagged solver relation: exhausted or stagnant reports relabeled as convergence, bracket-width bounds promoted to objective bounds, residual norms promoted to unconditional coordinate error, or visited positive curvature promoted to global SPD.",
+    "A returned estimate and status admit many callbacks, brackets, initial states and budgets. For zero residual x, any positive diagonal D with b=D*x is compatible. Common roots/minima survive positive scaling; output does not uniquely recover the problem."
+  ],
+  "limitations": [
+    "Continuity, deterministic strict unimodality and global SPD are not established by sampling or visited curvature. Residual magnitude alone does not bound coordinate error without conditioning. Floating-point underflow and conservative arithmetic rejection remain possible.",
+    "Finite tests and source-derived models are not a universal proof."
+  ],
+  "state": "Preserve finite reports, bracket order, dimensional agreement and distinct converged, exhausted and stagnated states. True residual is recomputed for stopping."
+}

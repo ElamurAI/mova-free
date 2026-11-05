@@ -1,0 +1,82 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "stop_failure_order",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "stop_failure_order",
+        "status": "partial_source_derived_model",
+        "type": "stop_failure_order"
+      },
+      {
+        "id": "script_attachment",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "script_attachment",
+        "status": "partial_source_derived_model",
+        "type": "script_attachment"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 22977,
+      "start": 8102
+    },
+    "description": "top parses a table; one row/one cell unwraps, otherwise any row with>1 cells yields Aligned, else Gathered. table removes exactly one trailing row consisting of one empty cell. list increments depth and rejects>400 before processing; Close succeeds only for Brace/TableBrace, & only for table-enabled stop. script parses its argument before checking existing sub/sup slot.",
+    "source_bytes_sha256": "61fea8e8ca5da3de67da81309255cf7192cfa68ceb5559d58c875254a3609249"
+  },
+  "id": "latex-parse-stage0",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../parse.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "f463a4a8e13c770287eeeb57c59e74732daac90bf64f57302870d1ea86cc5f47"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,127 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "All u64 (n,m,a,b), normal terminating calls, Result<u128,FloorSumError> observations.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One normal terminating call.",
+        "operator": "Excluded pairs are Ok with any value different from the exact sum, ZeroModulus with m>0, Overflow for a representable sum, and success for m=0 or an unrepresentable sum.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "0805d6dde5f7e8ee03d2b7d6167cf3cf2146fbe5131399cd94c5452e60363f75",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "All u64 (n,m,a,b), normal terminating calls, Result<u128,FloorSumError> observations.",
+        "evidence": "model.md#evidence",
+        "id": "sum_fibers",
+        "observation_scope": "One normal terminating call.",
+        "operator": "For output Ok(s), compatible inputs are exactly positive-modulus tuples with sum s within u128. They are highly nonunique: (3,2,1,0) and (1,7,99,7) both give 1. ZeroModulus reconstructs m=0 but no other parameter; Overflow reconstructs positive m with sum above u128::MAX.",
+        "path": "model.md",
+        "section": "sum_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "0805d6dde5f7e8ee03d2b7d6167cf3cf2146fbe5131399cd94c5452e60363f75",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "All u64 (n,m,a,b), normal terminating calls, Result<u128,FloorSumError> observations.",
+        "evidence": "model.md#evidence",
+        "id": "quotient_shift",
+        "observation_scope": "One normal terminating call.",
+        "operator": "For representable parameter shifts a'=a+k*m,b'=b+l*m with nonnegative k,l, the sum increases by k*n(n-1)/2+l*n. Machine comparisons require both results representable.",
+        "path": "model.md",
+        "section": "quotient_shift",
+        "status": "partial_source_derived",
+        "subject_revision": "0805d6dde5f7e8ee03d2b7d6167cf3cf2146fbe5131399cd94c5452e60363f75",
+        "type": "algebraic_relation"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "All u64 (n,m,a,b), normal terminating calls, Result<u128,FloorSumError> observations.",
+        "evidence": "model.md#evidence",
+        "id": "prefix_difference",
+        "observation_scope": "One normal terminating call.",
+        "operator": "For n<u64::MAX and representable sums, S(n+1)-S(n)=floor((a*n+b)/m). This provides an independent local boundary observation.",
+        "path": "model.md",
+        "section": "prefix_difference",
+        "status": "partial_source_derived",
+        "subject_revision": "0805d6dde5f7e8ee03d2b7d6167cf3cf2146fbe5131399cd94c5452e60363f75",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "All u64 (n,m,a,b), normal terminating calls, Result<u128,FloorSumError> observations.",
+        "evidence": "model.md#evidence",
+        "id": "lattice_transpose",
+        "observation_scope": "One normal terminating call.",
+        "operator": "After stripping quotients, let h=a*n+b and h>=m. Remaining lattice count is S(floor(h/m),a,m,h mod m). When h<m the remaining count is zero. The swapped denominator is positive.",
+        "path": "model.md",
+        "section": "lattice_transpose",
+        "status": "partial_source_derived",
+        "subject_revision": "0805d6dde5f7e8ee03d2b7d6167cf3cf2146fbe5131399cd94c5452e60363f75",
+        "type": "certificate_relation"
+      },
+      {
+        "approximation_semantics": "Exact relation target with finite correspondence evidence; no numerical surrogate claim.",
+        "assumptions": "Standard Rust semantics, available allocation, and stated bounded domain. Finite checks are not a universal proof.",
+        "domain": "All u64 (n,m,a,b), normal terminating calls, Result<u128,FloorSumError> observations.",
+        "evidence": "model.md#evidence",
+        "id": "overflow_boundary",
+        "observation_scope": "One normal terminating call.",
+        "operator": "For n=0 and m>0 the sum is zero; m=0 still errors first. With a=0 the answer is n*floor(b/m) and fits u128. With m=1 and full-width n,a, the sum can exceed u128. Dividing an even triangle factor before multiplication avoids an unnecessary intermediate overflow.",
+        "path": "model.md",
+        "section": "overflow_boundary",
+        "status": "partial_source_derived",
+        "subject_revision": "0805d6dde5f7e8ee03d2b7d6167cf3cf2146fbe5131399cd94c5452e60363f75",
+        "type": "boundary_specialization"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-floor-sum",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "0805d6dde5f7e8ee03d2b7d6167cf3cf2146fbe5131399cd94c5452e60363f75"
+  },
+  "status": "partial_source_derived_instance"
+}

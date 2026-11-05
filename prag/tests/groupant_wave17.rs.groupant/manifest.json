@@ -1,0 +1,119 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived relational specification; bounded native evidence in model.md#evidence; no general proof.",
+        "assumptions": "Identical shared coordinates and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "Named check: all three prag joins; bounded execution receipts in model.md#evidence",
+        "id": "prag-groupant-wave17-behavior-complement",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "Universe: supplied event traces, caller metadata, isolated ledger and numbered label rows over an ordered Item batch. Exclude accounting after decode failure, exchanged source/row labels, accepted labels for missing or duplicated rows, and treating attempted sentence count as accepted labels. A valid suffix cannot recover an earlier rejected trace. No process/crash/concurrency or teacher guarantee is modeled.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "subject_revision": "6daabf7b11474b3266be105a16669f19ad9fc5a00b72853aae4e35ac8a9ef94e",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived relational specification; bounded native evidence in model.md#evidence; no general proof.",
+        "assumptions": "Identical shared coordinates and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "Named check: all three prag joins; bounded execution receipts in model.md#evidence",
+        "id": "prag-groupant-wave17-reverse-reconstruction",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "Retain all traces, metadata, rows and Item lists sharing the observed reply, accounting and labels. Row k plus the same batch recovers Item k-1; ledger cardinality alone cannot recover accepted rows or text. Full, partial and duplicate answers can share usage and attempted counts. Unchanged ledger bytes admit multiple failure histories; event decoding and label parsing lose spellings and discarded events.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "subject_revision": "6daabf7b11474b3266be105a16669f19ad9fc5a00b72853aae4e35ac8a9ef94e",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived relational specification; bounded native evidence in model.md#evidence; no general proof.",
+        "assumptions": "Identical shared coordinates and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "Named check: turn_rows_accounting_and_labels_keep_batch_coordinates; bounded execution receipts in model.md#evidence",
+        "id": "prag-groupant-wave17-accounted-label-coordinates",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "Decoded usage (13 input,5 output,7 cache-read,0 cache-write) and caller (batch9,attempted2,0.25secs) survive interpret/append/read. Reversed TSV arrival order retains row1 Tale/Narrate and row2 Tatoeba/Assert through the same Item references. Exclude arrival-order indexing and reversed source mapping. Compatible source content remains unconstrained beyond the retained keys, source policy and supplied rows.",
+        "path": "model.md",
+        "section": "accounted-label-coordinates",
+        "status": "partial_source_model",
+        "subject_revision": "6daabf7b11474b3266be105a16669f19ad9fc5a00b72853aae4e35ac8a9ef94e",
+        "type": "attempted_label_coordinate_transport"
+      },
+      {
+        "approximation_semantics": "Source-derived relational specification; bounded native evidence in model.md#evidence; no general proof.",
+        "assumptions": "Identical shared coordinates and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "Named check: attempted_counts_do_not_turn_partial_labels_into_acceptance; bounded execution receipts in model.md#evidence",
+        "id": "prag-groupant-wave17-partial-label-accounting",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "Three attempted Items yield accepted row1 and row3, missing row2, and one accounting record with sentences3. A separate duplicate-row reply rejects all labels but still records one successfully decoded attempted call. Ledger data does not establish label coverage; accepted labels cannot reconstruct absent text. Costs are event/row parsing, one append and ledger read.",
+        "path": "model.md",
+        "section": "partial-label-accounting",
+        "status": "partial_source_model",
+        "subject_revision": "6daabf7b11474b3266be105a16669f19ad9fc5a00b72853aae4e35ac8a9ef94e",
+        "type": "attempted_acceptance_separation"
+      },
+      {
+        "approximation_semantics": "Source-derived relational specification; bounded native evidence in model.md#evidence; no general proof.",
+        "assumptions": "Identical shared coordinates and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "Named check: failed_turn_stops_before_accounting_and_successful_suffix; bounded execution receipts in model.md#evidence",
+        "id": "prag-groupant-wave17-decode-before-ledger",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "The supplied adapter evaluates decode_events with ? before interpret/append/gate. A prior valid ledger is byte-identical after failed suffix, failed prefix with valid suffix, repeated successful trace, or error prefix with valid suffix. Failure histories have nonunique unchanged-ledger preimages. This sequential adapter property is not atomicity, process execution, durability or concurrency evidence.",
+        "path": "model.md",
+        "section": "decode-before-ledger",
+        "status": "partial_source_model",
+        "subject_revision": "6daabf7b11474b3266be105a16669f19ad9fc5a00b72853aae4e35ac8a9ef94e",
+        "type": "failure_effect_exclusion"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed_evidence"
+    }
+  },
+  "id": "prag-groupant-wave17",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../groupant_wave17.rs",
+    "sha256": "6daabf7b11474b3266be105a16669f19ad9fc5a00b72853aae4e35ac8a9ef94e"
+  },
+  "status": "partial_source_bound_model"
+}

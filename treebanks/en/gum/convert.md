@@ -6,7 +6,7 @@ GUM is the large treebank closest to EWT: since 2021 it has deliberately been co
 
 ## gum → mova
 
-### 1. *You guys* (`seeds/dep.md`)
+### 1. *You guys* (`seeds.md#dep`)
 
 ```convert-todo
 rule: gum.you-guys
@@ -20,7 +20,7 @@ source: EWT README v2.17 (#436)
 
 Needs a `rel=@v` action — copy another node's relation. The workaround for now is one rule per role of *guys*: `nsubj`, `obj`, `vocative`, `root`, `conj`. Dependents of *guys* (*all you guys*) stay with it, except those standing before *you*: they also have to be reattached to *you*. 56 cases.
 
-### 2. `obl` in fragments (`seeds/obl-fragment.md`)
+### 2. `obl` in fragments (`seeds.md#obl-fragment`)
 
 ```convert
 rule: gum.obl-fragment
@@ -44,7 +44,7 @@ set: o[rel=nmod:unmarked]
 source: UD 2.18 nmod/obl
 ```
 
-### 3. The number of *you* (`seeds/you-number.md`)
+### 3. The number of *you* (`seeds.md#you-number`)
 
 ```convert
 rule: gum.you-verb
@@ -79,7 +79,7 @@ source: EWT 2.18
 
 *yourselves* keeps `Number=Plur`, as in EWT: there it comes from the form.
 
-### 4. `Degree` (`seeds/adv-degree.md`)
+### 4. `Degree` (`seeds.md#adv-degree`)
 
 ```convert
 rule: gum.adv-degree
@@ -101,7 +101,7 @@ set: a[feats+=Degree=Pos]
 source: EWT 2.18 (88 of 88)
 ```
 
-### 5. Web-text XPOS (`seeds/xpos-web.md`)
+### 5. Web-text XPOS (`seeds.md#xpos-web`)
 
 ```convert
 rule: gum.add
@@ -152,7 +152,7 @@ from: mova
 to: gum
 match: y[form=you]; n[rel=nmod:unmarked, head=y, next=y]
 set: n[head=@y]; n[rel=@y]; y[head=n]; y[rel=dep]
-source: seeds/dep.md
+source: seeds.md#dep
 ```
 
 ```convert
@@ -162,7 +162,7 @@ from: mova
 to: gum
 match: h[form=what, head=0]; o[rel=nmod, head=h, after=h]; c[form=about, rel=case, head=o]
 set: o[rel=obl]
-source: seeds/obl-fragment.md
+source: seeds.md#obl-fragment
 ```
 
 ```convert
@@ -172,7 +172,7 @@ from: mova
 to: gum
 match: p[form=you|yourself, upos=PRON, feats.Person=2]
 set: p[feats+=Number=Sing]
-source: seeds/you-number.md
+source: seeds.md#you-number
 ```
 
 ```convert
@@ -182,7 +182,7 @@ from: mova
 to: gum
 match: a[upos=ADV, !feats.Degree, !feats.PronType, lemma!=so|just|also|very|even|as|only|about|however|all|already|over|instead|maybe|out|rather|pretty|once|yet|quite|thus|twice|e.g.|anyway|somewhat|i.e.|c.|anyways|namely|merely]
 set: a[feats+=Degree=Pos]
-source: seeds/adv-degree.md (GUM: ADV without Degree mostly — only these lemmas)
+source: seeds.md#adv-degree (GUM: ADV without Degree mostly — only these lemmas)
 ```
 
 ```convert
@@ -192,7 +192,7 @@ from: mova
 to: gum
 match: a[upos=ADJ, lemma=such]
 set: a[feats-=Degree]
-source: seeds/adv-degree.md
+source: seeds.md#adv-degree
 ```
 
 ```convert
@@ -202,7 +202,7 @@ from: mova
 to: gum
 match: u[xpos=ADD]
 set: u[xpos=NNP]
-source: seeds/xpos-web.md
+source: seeds.md#xpos-web
 ```
 
 ```convert
@@ -212,7 +212,7 @@ from: mova
 to: gum
 match: e[xpos=NFP]
 set: e[xpos=SYM]
-source: seeds/xpos-web.md
+source: seeds.md#xpos-web
 ```
 
 ```convert
@@ -222,7 +222,7 @@ from: mova
 to: gum
 match: p[xpos=AFX]
 set: p[xpos=NN]
-source: seeds/xpos-web.md
+source: seeds.md#xpos-web
 ```
 
 Matches on EWT: `what-about` 7, `you` 2806, `adv-degree` 5151, `such` 88, `add` 475, `nfp` 499, `afx` 75.
@@ -236,7 +236,7 @@ Matches on EWT: `what-about` 7, `you` 2806, `adv-degree` 5151, `such` 88, `add` 
 - ***you guys*** — until there is `rel=@v`, the rule is in `convert-todo`, and `dep` stays in both directions. The round trip is lossless, but `mova` here is not yet like EWT.
 
 **Lossy:**
-- **The number of *you*** — 256 *you*:Plur and 111 verbs (63 predicates and 48 aux/cop). `mova` = EWT has no Number on *you*; on the way back we set Sing. If Mova borrows the GUM custom (`seeds/you-number.md`), the losses will disappear.
+- **The number of *you*** — 256 *you*:Plur and 111 verbs (63 predicates and 48 aux/cop). `mova` = EWT has no Number on *you*; on the way back we set Sing. If Mova borrows the GUM custom (`seeds.md#you-number`), the losses will disappear.
 - **`obl` in fragments.** On the way there — 105 `obl`/`obl:unmarked` → `nmod`/`nmod:unmarked`. On the way back the GUM custom is restored only for *What about X* (13). The remaining ≈ 90 stay `nmod`. GUM itself is inconsistent in fragments: on roots without a copula 56 `obl` versus 151 `nmod`, so there is no rule that would restore exactly these 90.
 - **`Degree` on adverbs.** On the way there we remove it from 4933, on the way back we set it according to the GUM list. Adverbs that are not in the list and that GUM left without Degree will produce a divergence. Expect 100–300 per 12,206 ADV.
 - **`AFX`** → `NN`: 6 on the way there, on the way back only NN, while GUM also has NNP, VB, IN — up to 6 XPOS divergences.

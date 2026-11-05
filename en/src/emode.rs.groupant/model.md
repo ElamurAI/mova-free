@@ -1,0 +1,106 @@
+# en-emode
+
+## descriptant
+
+### en-emode
+
+Archaic closed-word guards, dictionary-backed ending fallback, annotation repair and postverbal negation reattachment.
+
+## approximant
+
+### Forward approximant
+
+entry picks first case-folded form; closed applies contextual guard; force takes closed tag before ending. tagged additionally matches tag and can select second thine reading. ending rejects non-ASCII letters, interior capitalization, any closed/dictionary-known form, then asks morph::ending_verb. fix chooses tagged or matching ending, selects final UPOS, removes illegal features and changes non-be Cop to Aux.
+
+Domain/state: Ordered CLOSED entries, token forms/tags/upos/head/relations, embedded registry OnceLock and dictionary.
+
+Executable surrogate: unsupported. Categorical decisions, binary layouts and effects have no calibrated percentage metric here. No automatic substitution and no claimed 1/2/5/10 percent profile.
+
+## invariant
+
+### Invariant and cost
+
+force length equals word count. fix returns None when no matching tag/analysis. Allowed output features are subset of registry.allowed(final upos). postverbal_not changes only eligible not heads/rels to predecessor lexical verb and Advmod, skipping ancestry path through not.
+
+Cost: Closed lookup O(n*C*wordbytes), C fixed table size; Capitals guard can scan whole sentence per hit. ending delegates dictionary/morph. postverbal_not O(n²) ancestry worst case, O(1) extra beyond lowercased word. Registry initialized once; no training.
+
+Limits: Dictionary-sensitive ending_rule and fix_follows_the_registry excluded (can early-return); Registry-dependent fix and dictionary ending not newly measured; Mismatched arrays/invalid head indices can panic; preexisting cycles not repaired
+
+## composition
+
+### Composition
+
+entry picks first case-folded form; closed applies contextual guard; force takes closed tag before ending. tagged additionally matches tag and can select second thine reading. ending rejects non-ASCII letters, interior capitalization, any closed/dictionary-known form, then asks morph::ending_verb. fix chooses tagged or matching ending, selects final UPOS, removes illegal features and changes non-be Cop to Aux.
+
+Token positions zero-based; stored head v+1. Optional postposed PRON/PRP skips backward one extra word. Cycle guard follows current mutated heads, so later edits observe earlier edits.
+
+Composition is branch-selected, not a claim that every function runs in sequence. Inputs and effects cross the English library module boundary; consumer checks cannot establish delegated training, parser, dictionary, registry or filesystem behavior. The main CLI has source-scoped children for dispatch, XPOS, evaluation/context, text/conversion and persistence/comparison. Child coverage is lexical and parent relations remain partial.
+
+## models
+
+## behavior_complement
+
+Exclude force alternatives that override an applicable first closed entry with a later duplicate. Exclude moved not when following token is VBG/VBN/TO/JJ/JJR/JJS or only, when predecessor auxiliary/skip-form, already attached, or ancestor chain reaches not.
+
+## reverse_reconstruction
+
+R(force tags) includes all spellings/context sentences satisfying the selected guard and lowercased table match; unknown words also map None. fix loses original feature bits rejected by allowed and original non-be Cop vs Aux; neither repaired tuple nor moved-count uniquely restores old annotation.
+
+## context_modes
+
+NearThou inspects i-2,i-1,i+1 only; Interjection permits first/punctuation/and or following punctuation; exact Ye before uppercase suppresses; Capitals needs >1 letters all nonlowercase plus any lowercase elsewhere; NotAfterBe inspects immediate preceding be-form.
+
+## analysis_precedence
+
+Second thine PRP entry is available to tagged but force emits first PRPS. A closed form whose guard fails is still excluded by ending because entry exists. Dictionary evidence is required for nonclosed endings.
+
+## feature_projection
+
+KEEP preserves supplied feats before allowed filtering; other entries replace them. Explicit entry UPOS dominates parsed UPOS, otherwise AUX/VERB kept, auxiliary/cop relation chooses AUX, else VERB. Only lemma be keeps exact Cop.
+
+## arc_coordinates
+
+Token positions zero-based; stored head v+1. Optional postposed PRON/PRP skips backward one extra word. Cycle guard follows current mutated heads, so later edits observe earlier edits.
+
+## tests
+
+### Evidence
+
+Checks: emode::tests::closed_words_in_context; emode::tests::not_after_the_verb.
+
+The selected suite contains 14 actual named Rust tests, each run twice debug and twice release with identical sorted named outcomes, all exit0. Build entrypoint additionally ran empty-directory, two-lemma synthetic dictionary and malformed-tag precedence cases twice per profile; outputs matched and malformed row exited101 without changing previous outputs. Compiled mutation control 4: compiler exit0, selected assertion run exit101, exact source restoration, positive rerun exit0. See external control-4.txt and compile/red/green logs.
+
+Unexecuted: Dictionary-sensitive ending_rule and fix_follows_the_registry excluded (can early-return); Registry-dependent fix and dictionary ending not newly measured; Mismatched arrays/invalid head indices can panic; preexisting cycles not repaired. No corpus, training, model mutation, held-out set, GPU, teacher or API was run.
+
+## prospective
+
+### Prospective source-bound modeling
+
+- build.rs assembles dictionary blobs and constants. index has power-of-two capacity >=2n and linear probing, zero sentinel, 1-based stored indices; src_bits unions four known source bits. main reads missing/unreadable dictionaries as empty, parses tags before lemma/count, merges UD lower-lemma paradigms and writes three outputs sequentially after OUT_DIR lookup. Test actual helpers and invoke compiled build main only in isolated synthetic directories. Overflow and large-id casts remain gaps.
+- ctx.rs preserves absent layers, emits stable group codes, stacks entity openings before token observation and closes afterward; gold carries genre across newdoc while resetting previous type/speaker, skips empty tokens after state updates. derived checks sentence count then noun lemma recurrence by document. Setup rejects training pred before eval/groups/source/dependency checks. Rng wrapping mix and bounded modulo; shuffled resizes entities and rejects same-document donors, with unbounded rejection-loop worst case. Existing two GUM tests must not run. Safe existing entity and gold/shuffle fixtures plus added empty/cycle/precedence cases.
+- ctxeval.rs load reads each file then checks sentence count, id and token count (not forms), rejects no runs last. report assumes nonempty systems and runs; bootstrap with zero resamples panics, floating means of empty samples can be NaN. Metrics percent units, sample standard deviation, quantile indices floor(.025B), ceil(.975B)-1. Add bounded pure helper tests plus temporary System::load and report fixtures. Invalid arbitrary public System shapes are not certified.
+- diag.rs class partitions relations; depths cycles return n+1 despite comment saying n; invalid heads panic. nonprojective walks intervening words; report delegates parser work and constrained failures fall back to original parse. Synthetic depth/crossing tests only, no model training. Report ceiling prose is not a mathematical guarantee.
+- emode.rs first matching closed entry wins force, tagged finds alternate thine reading; contextual guards precede ending dictionary resolution; fix filters feats through loaded embedded registry, only be keeps cop. postverbal_not skips modern continuations, auxiliaries, already-attached and newly-created cycle cases; preexisting cycles bounded to n+1 steps, invalid aligned arrays/heads can panic. Execute safe existing closed-word and negation tests; dictionary-sensitive early-return tests excluded.
+- lib.rs solely declares 26 public modules: compile/name visibility is the only source-owned boundary, no independent runtime semantics or control claimed.
+- license.rs sequentially strips ordered suffixes; empty paths yield empty source. Table is embedded and collects duplicate keys last; gate first denied/unknown path fails, empty train succeeds without opening files. Existing safe path-only gate test plus empty and failure-precedence fixtures.
+- main.rs dispatches arguments and effectful delegated work. split searches separator globally and may panic when separator precedes from. xpos_of has ordered morphology precedence. folds rejects k<2 before read, preserves per-sentence raw content but resets document blank_before/final_newline; creates directory then writes fold/rest sequentially without rollback. test_ctx None returns before any read. train license gate precedes missing output validation; model save precedes reload verification. Nested fragments will cover dispatch, pure/file helpers, context/evaluation, conversion, persistence. Add bounded helper/folds/xpos/temp tests; training/model/teacher execution excluded.
+
+Expected costs: context O(bytes + mentions*stack depth), tree rules O(n²) worst case; diagnostics O(n²) tree traversal plus delegated decode; report O(B*n*seeds) bootstrap plus token metrics; build linear probing O(n²) worst case and binary/strings space; CLI costs sum delegated stages with sequential partial effects. Compiled mutation controls target index sentinel, context mode, bootstrap statistics, cycle bound, archaic force, license denial and XPOS precedence. Exact restoration verified byte-for-byte. No useful percentage surrogate for categorical decisions, effects or visibility; executable approximants explicitly unsupported.
+
+## History
+
+### 2026-10-31 · descriptant
+
+2026-10-31 modeling epoch: inspected complete existing source before changes; added bounded inline tests where missing. Production behavior unchanged. The model records existing failure boundaries, including panics, lossy projections and partial effects. A registered leaf is partial coverage, not a proof.
+
+### 2026-10-31 · tests
+
+Heading `### Evidence — 2026-10-31` stays in tests as `### Evidence`.
+
+Receipts: $MOVA_DATA/runs/octopus-wave27-control-2026-10-31/. verify.rs and controls.rs preserve exact commands; *.exit files preserve numeric statuses. Paired syntax projections were identical. Strict Clippy exits101 on pre-existing en/build.rs:51 manual_is_multiple_of before library checking; no lint-clean claim. Only appended test modules formatted; existing source formatting retained.
+
+### 2026-10-31 · prospective
+
+Heading `### Prospective source-bound modeling — 2026-10-31` stays in prospective as `### Prospective source-bound modeling`.
+
+Read all eight sources at base e90d56b1d87092a22ce7a05ce8352fe70cf151d8 before edits. Scope is English orchestration under inference-core. No training, corpus or external services will execute.

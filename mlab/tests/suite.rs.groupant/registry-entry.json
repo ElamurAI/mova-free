@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "sha256_self_check",
+    "parse_error_runs_nothing",
+    "wave30_synthetic_suite_boundaries"
+  ],
+  "children": [],
+  "cost": "SHA O(B) bytes and padded copy, wrapping arithmetic; bit-length conversion/multiplication lacks huge-input bound. Synthetic scenario fixtures tiny; existing numerical/MC suites explicitly unmeasured.",
+  "description": "Frozen suite hash/oracle and numerical gate harness, with selected SHA known vector, parse-error and synthetic scenario-boundary tests.",
+  "forward": [
+    "sha256_hex pads bytes with big-endian bit length, expands 64-word schedule, uses wrapping u32 compression and emits lowercase hex. Selected tests compare abc digest and parse failure; synthetic runner checks fresh states/factory count and line boundaries."
+  ],
+  "id": "mlab-tests-suite",
+  "inverse": [
+    "Digest preimages are not reconstructed by this test; one known-vector equality does not prove all SHA inputs. A green synthetic suite assertion admits arbitrary untested scenario text."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no macro expansion or semantic resolution. Finite synthetic CPU checks are not a proof. Frozen suites, corpus, teacher, GPU, allocation exhaustion and host IO failure injection were not run. No useful executable percent surrogate for categorical control/effects; unsupported gap, no 1/2/5/10% claim."
+  ],
+  "source": "mlab/tests/suite.rs",
+  "state": "This epoch runs no frozen suite, Monte Carlo or real file tests; compile-time include_str constants are compiled but not evaluated as scenarios by selected tests."
+}

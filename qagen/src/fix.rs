@@ -25,7 +25,7 @@ use serde_json::{Value, json};
 use crate::gate::{Level, Reject, Sents, anchors, span_reason, verbatim, words};
 use crate::lemma::{self, Lemmas};
 use crate::report::{calls_json, kind, pct};
-use crate::run::{Job, final_raw, retry_path};
+use crate::run::{Job, retry_path, try_final_raw};
 use crate::schema::{ExIm, QType};
 use crate::select::{Para, load_paras};
 
@@ -101,7 +101,13 @@ impl Item {
 
 fn anchor_nums(p: &Para, ids: &[String]) -> Result<Vec<usize>> {
     ids.iter()
-        .map(|id| p.sents.iter().position(|s| &s.sent_id == id).map(|i| i + 1).with_context(|| format!("{}: anchor {id} is not from the paragraph", p.key())))
+        .map(|id| {
+            p.sents
+                .iter()
+                .position(|s| &s.sent_id == id)
+                .map(|i| i + 1)
+                .with_context(|| format!("{}: anchor {id} is not from the paragraph", p.key()))
+        })
         .collect()
 }
 
@@ -113,10 +119,17 @@ pub fn select(pilot: &Path, dir: &Path, per: usize, l: &dyn Lemmas) -> Result<Va
         bail!("--batch 0");
     }
     if dir.join("raw").join("b000.txt").exists() {
-        bail!("{}: LLM outputs already exist — a new selection would shift the batches", dir.display());
+        bail!(
+            "{}: LLM outputs already exist — a new selection would shift the batches",
+            dir.display()
+        );
     }
     let paras = load_paras(pilot)?;
-    let order: HashMap<String, usize> = paras.iter().enumerate().map(|(i, p)| (p.key(), i)).collect();
+    let order: HashMap<String, usize> = paras
+        .iter()
+        .enumerate()
+        .map(|(i, p)| (p.key(), i))
+        .collect();
     let rows = read_qa(&pilot.join("qa.tsv"))?;
     let mut items: Vec<(usize, Item)> = Vec::new();
     let mut by_reason: BTreeMap<String, usize> = BTreeMap::new();
@@ -125,7 +138,9 @@ pub fn select(pilot: &Path, dir: &Path, per: usize, l: &dyn Lemmas) -> Result<Va
     let mut sents_of: HashMap<String, Sents> = HashMap::new();
     for r in &rows {
         let key = format!("{}#{}", r.doc, r.para);
-        let &i = order.get(&key).with_context(|| format!("{key}: paragraph missing from the pilot's paras.jsonl"))?;
+        let &i = order
+            .get(&key)
+            .with_context(|| format!("{key}: paragraph missing from the pilot's paras.jsonl"))?;
         let p = &paras[i];
         let anchors = anchor_nums(p, &r.anchors)?;
         match r.exim {
@@ -134,7 +149,17 @@ pub fn select(pilot: &Path, dir: &Path, per: usize, l: &dyn Lemmas) -> Result<Va
                 let s = sents_of.entry(key).or_insert_with(|| Sents::of(p));
                 if let Some(reason) = span_reason(&r.answer, &s.norm, &s.words, &anchors) {
                     *by_reason.entry(kind(&reason)).or_default() += 1;
-                    let it = Item { doc: r.doc.clone(), para: r.para, k: r.k, qtype: r.qtype.name().into(), question: r.question.clone(), answer: r.answer.clone(), anchors, reason, batch: 0 };
+                    let it = Item {
+                        doc: r.doc.clone(),
+                        para: r.para,
+                        k: r.k,
+                        qtype: r.qtype.name().into(),
+                        question: r.question.clone(),
+                        answer: r.answer.clone(),
+                        anchors,
+                        reason,
+                        batch: 0,
+                    };
                     items.push((i, it));
                 }
             }
@@ -143,7 +168,11 @@ pub fn select(pilot: &Path, dir: &Path, per: usize, l: &dyn Lemmas) -> Result<Va
                 let texts: Vec<&str> = p.sents.iter().map(|s| s.text.as_str()).collect();
                 if let Some((k, share)) = lemma::doubt(l, &texts, &anchors, &r.answer) {
                     doubts += 1;
-                    let _ = writeln!(doubt, "{}\t{}\t{}\t{k}\t{share:.2}\t{}\t{}", r.doc, r.para, r.k, r.question, r.answer);
+                    let _ = writeln!(
+                        doubt,
+                        "{}\t{}\t{}\t{k}\t{share:.2}\t{}\t{}",
+                        r.doc, r.para, r.k, r.question, r.answer
+                    );
                 }
             }
         }
@@ -186,8 +215,12 @@ pub fn select(pilot: &Path, dir: &Path, per: usize, l: &dyn Lemmas) -> Result<Va
 
 pub fn load_items(dir: &Path) -> Result<Vec<Item>> {
     let p = dir.join("items.jsonl");
-    let text = std::fs::read_to_string(&p).with_context(|| format!("{} — run qagen fix select first", p.display()))?;
-    text.lines().filter(|l| !l.trim().is_empty()).map(|l| Ok(serde_json::from_str(l)?)).collect()
+    let text = std::fs::read_to_string(&p)
+        .with_context(|| format!("{} — run qagen fix select first", p.display()))?;
+    text.lines()
+        .filter(|l| !l.trim().is_empty())
+        .map(|l| Ok(serde_json::from_str(l)?))
+        .collect()
 }
 
 /// Fix rules.
@@ -220,6 +253,38 @@ pub struct Fixes<'a> {
 }
 
 impl<'a> Fixes<'a> {
+    /// Validate paragraph/item alignment before constructing batches.
+    /// Legacy `new` remains unchecked for callers already holding validated data.
+    pub fn try_new(paras: &'a [Para], items: &'a [Item]) -> Result<Fixes<'a>> {
+        let mut by_key = BTreeMap::new();
+        for p in paras {
+            if by_key.insert(p.key(), p).is_some() {
+                bail!("duplicate paragraph {}", p.key());
+            }
+        }
+        let mut seen = std::collections::BTreeSet::new();
+        for it in items {
+            let key = it.key();
+            let p = by_key
+                .get(&key)
+                .with_context(|| format!("{key}: item paragraph missing"))?;
+            if !seen.insert((key.clone(), it.k)) {
+                bail!("{key}: duplicate item {}", it.k);
+            }
+            if it.batch != p.batch {
+                bail!(
+                    "{key}: item batch {} differs from paragraph batch {}",
+                    it.batch,
+                    p.batch
+                );
+            }
+            if it.anchors.is_empty() || it.anchors.iter().any(|&k| k == 0 || k > p.sents.len()) {
+                bail!("{key}: invalid item anchors {:?}", it.anchors);
+            }
+        }
+        Ok(Self::new(paras, items))
+    }
+
     pub fn new(paras: &'a [Para], items: &'a [Item]) -> Fixes<'a> {
         let mut by_key: HashMap<String, Vec<&Item>> = HashMap::new();
         for it in items {
@@ -241,15 +306,32 @@ pub fn prompt(paras: &[&Para], items: &[&Item]) -> String {
     p.push_str("\nParagraphs and items:\n");
     let mut n = 0;
     for (i, a) in paras.iter().enumerate() {
-        let by = if a.author.is_empty() { String::new() } else { format!(" ({})", a.author) };
-        let _ = write!(p, "\n=== P{} - \"{}\"{by}, paragraph {}\n", i + 1, a.title, a.para);
+        let by = if a.author.is_empty() {
+            String::new()
+        } else {
+            format!(" ({})", a.author)
+        };
+        let _ = write!(
+            p,
+            "\n=== P{} - \"{}\"{by}, paragraph {}\n",
+            i + 1,
+            a.title,
+            a.para
+        );
         for (k, s) in a.sents.iter().enumerate() {
             let _ = writeln!(p, "[{}] {}", k + 1, s.text);
         }
         for it in items.iter().filter(|it| it.key() == a.key()) {
             n += 1;
             let anchors: Vec<String> = it.anchors.iter().map(usize::to_string).collect();
-            let _ = writeln!(p, "Item {n} ({}; anchors {}): {} | current answer: {}", it.qtype, anchors.join(","), it.question, it.answer);
+            let _ = writeln!(
+                p,
+                "Item {n} ({}; anchors {}): {} | current answer: {}",
+                it.qtype,
+                anchors.join(","),
+                it.question,
+                it.answer
+            );
         }
     }
     p
@@ -278,7 +360,14 @@ impl Job for Fixes<'_> {
         let g = gate(text, paras, items);
         let span = g.ok.iter().filter(|f| f.exim == ExIm::Explicit).count();
         let rej = g.rej.iter().filter(|r| r.level == Level::Pair).count();
-        (g.format, format!("items {}, spans {span}, became implicit {}, rejected {rej}", items.len(), g.ok.len() - span))
+        (
+            g.format,
+            format!(
+                "items {}, spans {span}, became implicit {}, rejected {rej}",
+                items.len(),
+                g.ok.len() - span
+            ),
+        )
     }
 }
 
@@ -316,7 +405,11 @@ pub fn gate(text: &str, paras: &[&Para], items: &[&Item]) -> FixGated {
             continue; // header
         }
         // "Item 3" instead of "3" is the same unambiguous label
-        let num = if c0.len() > 4 && c0[..4].eq_ignore_ascii_case("item") { c0[4..].trim() } else { c0 };
+        let num = if c0.get(..4).is_some_and(|s| s.eq_ignore_ascii_case("item")) {
+            c0[4..].trim()
+        } else {
+            c0
+        };
         let Ok(i) = num.parse::<usize>() else {
             junk += 1;
             continue;
@@ -332,38 +425,83 @@ pub fn gate(text: &str, paras: &[&Para], items: &[&Item]) -> FixGated {
     let format = if total == 0 {
         Some("no lines at all".to_string())
     } else if !outside.is_empty() {
-        Some(format!("item numbers outside 1..{m}: {outside:?} — alignment in doubt"))
+        Some(format!(
+            "item numbers outside 1..{m}: {outside:?} — alignment in doubt"
+        ))
     } else if junk * 5 > total + junk {
-        Some(format!("lines without a number: {junk} of {}", total + junk))
+        Some(format!(
+            "lines without a number: {junk} of {}",
+            total + junk
+        ))
     } else if missing * 4 > m {
-        Some(format!("items without an answer: {missing} of {m} — truncated output?"))
+        Some(format!(
+            "items without an answer: {missing} of {m} — truncated output?"
+        ))
     } else {
         None
     };
     if let Some(f) = format {
-        let rej = vec![Reject { p: None, level: Level::Batch, reason: f.clone(), line: String::new() }];
-        return FixGated { ok: Vec::new(), rej, junk, format: Some(f) };
+        let rej = vec![Reject {
+            p: None,
+            level: Level::Batch,
+            reason: f.clone(),
+            line: String::new(),
+        }];
+        return FixGated {
+            ok: Vec::new(),
+            rej,
+            junk,
+            format: Some(f),
+        };
     }
     let mut ok = Vec::new();
     let mut rej = Vec::new();
-    let pos: HashMap<String, usize> = paras.iter().enumerate().map(|(i, p)| (p.key(), i + 1)).collect();
+    let pos: HashMap<String, usize> = paras
+        .iter()
+        .enumerate()
+        .map(|(i, p)| (p.key(), i + 1))
+        .collect();
     for (i, it) in items.iter().enumerate().map(|(j, it)| (j + 1, it)) {
         let pn = pos[&it.key()];
         let para = paras[pn - 1];
         let Some(lines) = by_i.get(&i) else {
-            rej.push(Reject { p: Some(pn), level: Level::Pair, reason: "no answer".into(), line: format!("{i}\t{}", it.question) });
+            rej.push(Reject {
+                p: Some(pn),
+                level: Level::Pair,
+                reason: "no answer".into(),
+                line: format!("{i}\t{}", it.question),
+            });
             continue;
         };
         let sents = Sents::of(para);
         for (j, (line, cols)) in lines.iter().enumerate() {
-            let r = if j > 0 { Err("item repeated".to_string()) } else { check(cols, &sents, it) };
+            let r = if j > 0 {
+                Err("item repeated".to_string())
+            } else {
+                check(cols, &sents, it)
+            };
             match r {
-                Ok((exim, anchors, answer)) => ok.push(Fix { i, exim, anchors, answer }),
-                Err(reason) => rej.push(Reject { p: Some(pn), level: Level::Pair, reason, line: line.clone() }),
+                Ok((exim, anchors, answer)) => ok.push(Fix {
+                    i,
+                    exim,
+                    anchors,
+                    answer,
+                }),
+                Err(reason) => rej.push(Reject {
+                    p: Some(pn),
+                    level: Level::Pair,
+                    reason,
+                    line: line.clone(),
+                }),
             }
         }
     }
-    FixGated { ok, rej, junk, format: None }
+    FixGated {
+        ok,
+        rej,
+        junk,
+        format: None,
+    }
 }
 
 fn check(cols: &[String], s: &Sents, it: &Item) -> Result<(ExIm, Vec<usize>, String), String> {
@@ -373,7 +511,9 @@ fn check(cols: &[String], s: &Sents, it: &Item) -> Result<(ExIm, Vec<usize>, Str
     let span = cols[2].trim();
     if span.eq_ignore_ascii_case("implicit") {
         if let Some(k) = verbatim(&it.answer, &s.words) {
-            return Err(format!("implicit, but the old answer is verbatim in sentence {k}"));
+            return Err(format!(
+                "implicit, but the old answer is verbatim in sentence {k}"
+            ));
         }
         return Ok((ExIm::Implicit, it.anchors.clone(), it.answer.clone()));
     }
@@ -392,17 +532,18 @@ fn check(cols: &[String], s: &Sents, it: &Item) -> Result<(ExIm, Vec<usize>, Str
 pub fn collect(dir: &Path, replaces: &str, l: &dyn Lemmas) -> Result<Value> {
     let paras = load_paras(dir)?;
     let items = load_items(dir)?;
-    let fx = Fixes::new(&paras, &items);
+    let fx = Fixes::try_new(&paras, &items)?;
     let mut qa = format!("{QA_HEADER}\n");
     let mut rej = String::from("batch\tdoc_key\tpara\tlevel\treason\tline\n");
-    let mut changes = format!("# qagen fix — explicit pilot pairs → verbatim spans (replacing run {replaces})\n");
+    let mut changes =
+        format!("# qagen fix — explicit pilot pairs → verbatim spans (replacing run {replaces})\n");
     let (mut span, mut implicit, mut doubts, mut retries) = (0usize, 0usize, 0usize, 0usize);
     let mut by_level: BTreeMap<&str, usize> = BTreeMap::new();
     let mut by_kind: BTreeMap<String, usize> = BTreeMap::new();
     let mut missing = Vec::new();
     let mut fixed_reason: BTreeMap<String, (usize, usize)> = BTreeMap::new();
     for (&b, (ps, its)) in &fx.all {
-        let Some(path) = final_raw(dir, b) else {
+        let Some(path) = try_final_raw(dir, b)? else {
             missing.push(b);
             continue;
         };
@@ -413,8 +554,23 @@ pub fn collect(dir: &Path, replaces: &str, l: &dyn Lemmas) -> Result<Value> {
         for f in &g.ok {
             let it = its[f.i - 1];
             let p = ps.iter().find(|p| p.key() == it.key()).unwrap();
-            let ids: Vec<&str> = f.anchors.iter().map(|&k| p.sents[k - 1].sent_id.as_str()).collect();
-            let _ = writeln!(qa, "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}", it.doc, it.para, it.k, it.qtype, f.exim.name(), ids.join(","), it.question, f.answer);
+            let ids: Vec<&str> = f
+                .anchors
+                .iter()
+                .map(|&k| p.sents[k - 1].sent_id.as_str())
+                .collect();
+            let _ = writeln!(
+                qa,
+                "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}",
+                it.doc,
+                it.para,
+                it.k,
+                it.qtype,
+                f.exim.name(),
+                ids.join(","),
+                it.question,
+                f.answer
+            );
             let e = fixed_reason.entry(kind(&it.reason)).or_default();
             match f.exim {
                 ExIm::Explicit => {
@@ -427,8 +583,16 @@ pub fn collect(dir: &Path, replaces: &str, l: &dyn Lemmas) -> Result<Value> {
                     let texts: Vec<&str> = p.sents.iter().map(|s| s.text.as_str()).collect();
                     if let Some((k, share)) = lemma::doubt(l, &texts, &f.anchors, &f.answer) {
                         doubts += 1;
-                        let reason = format!("doubtful implicit: lemmas of sentence {k} cover {:.0} % of the answer", 100.0 * share);
-                        log.push(Reject { p: ps.iter().position(|q| q.key() == it.key()).map(|x| x + 1), level: Level::Doubt, reason, line: format!("{}\t{}", it.question, f.answer) });
+                        let reason = format!(
+                            "doubtful implicit: lemmas of sentence {k} cover {:.0} % of the answer",
+                            100.0 * share
+                        );
+                        log.push(Reject {
+                            p: ps.iter().position(|q| q.key() == it.key()).map(|x| x + 1),
+                            level: Level::Doubt,
+                            reason,
+                            line: format!("{}\t{}", it.question, f.answer),
+                        });
                     }
                 }
             }
@@ -450,20 +614,27 @@ pub fn collect(dir: &Path, replaces: &str, l: &dyn Lemmas) -> Result<Value> {
             );
         }
         for r in &log {
-            let (doc, para) = r.p.map(|p| (ps[p - 1].doc.as_str(), ps[p - 1].para.to_string())).unwrap_or(("-", "-".into()));
-            let _ = writeln!(rej, "{b}\t{doc}\t{para}\t{}\t{}\t{}", r.level.name(), r.reason, r.line.replace('\t', " | "));
+            let (doc, para) =
+                r.p.map(|p| (ps[p - 1].doc.as_str(), ps[p - 1].para.to_string()))
+                    .unwrap_or(("-", "-".into()));
+            let _ = writeln!(
+                rej,
+                "{b}\t{doc}\t{para}\t{}\t{}\t{}",
+                r.level.name(),
+                r.reason,
+                r.line.replace('\t', " | ")
+            );
             *by_level.entry(r.level.name()).or_default() += 1;
-            *by_kind.entry(format!("{}: {}", r.level.name(), kind(&r.reason))).or_default() += 1;
+            *by_kind
+                .entry(format!("{}: {}", r.level.name(), kind(&r.reason)))
+                .or_default() += 1;
         }
     }
-    std::fs::write(dir.join("qa.tsv"), qa)?;
-    std::fs::write(dir.join("rejects.tsv"), rej)?;
-    std::fs::write(dir.join("changes.md"), changes)?;
     let fixed = span + implicit;
     let params = json!({
-        "model": std::env::var("PRAG_MODEL").unwrap_or_else(|_| "claude-haiku-5-5".into()),
+        "model": mova_teacher::model("PRAG_MODEL"),
         "effort": std::env::var("PRAG_EFFORT").unwrap_or_else(|_| "medium".into()),
-        "how": "claude -p --settings {\"env\":{\"CLAUDE_CODE_EFFORT_LEVEL\":…}}, prag::opus; qagen fix",
+        "how": "Codex CLI via mova-teacher",
         "rule": 2,
         "replaces": replaces,
         "license": "gutenberg-tales (en/data/train-licenses.tsv): public domain",
@@ -475,7 +646,11 @@ pub fn collect(dir: &Path, replaces: &str, l: &dyn Lemmas) -> Result<Value> {
         "batches_missing": missing,
         "calls": calls_json(dir, retries)?,
     });
-    std::fs::write(dir.join("params.json"), serde_json::to_string_pretty(&params)?)?;
+    let params_text = serde_json::to_string_pretty(&params)?;
+    std::fs::write(dir.join("qa.tsv"), qa)?;
+    std::fs::write(dir.join("rejects.tsv"), rej)?;
+    std::fs::write(dir.join("changes.md"), changes)?;
+    std::fs::write(dir.join("params.json"), params_text)?;
     Ok(params)
 }
 
@@ -492,7 +667,14 @@ mod tests {
             author: String::new(),
             para: n,
             block: "p".into(),
-            sents: texts.iter().enumerate().map(|(i, t)| Sent { sent_id: format!("{doc}:{n}{}", i + 1), text: t.to_string() }).collect(),
+            sents: texts
+                .iter()
+                .enumerate()
+                .map(|(i, t)| Sent {
+                    sent_id: format!("{doc}:{n}{}", i + 1),
+                    text: t.to_string(),
+                })
+                .collect(),
             dialogue: false,
             words: 0,
             ctx: vec![],
@@ -501,19 +683,71 @@ mod tests {
     }
 
     fn item(doc: &str, n: i64, k: usize, anchors: &[usize], q: &str, a: &str) -> Item {
-        Item { doc: doc.into(), para: n, k, qtype: "action".into(), question: q.into(), answer: a.into(), anchors: anchors.to_vec(), reason: "explicit: not a span of an anchor sentence".into(), batch: 0 }
+        Item {
+            doc: doc.into(),
+            para: n,
+            k,
+            qtype: "action".into(),
+            question: q.into(),
+            answer: a.into(),
+            anchors: anchors.to_vec(),
+            reason: "explicit: not a span of an anchor sentence".into(),
+            batch: 0,
+        }
     }
 
     fn setup() -> (Vec<Para>, Vec<Item>) {
         let paras = vec![
-            para("g:1:a", 1, &["A certain king had a beautiful garden.", "Every night one of the golden apples was gone."]),
-            para("g:1:b", 3, &["‘I will catch the thief,’ said the eldest son.", "At midnight he fell asleep."]),
+            para(
+                "g:1:a",
+                1,
+                &[
+                    "A certain king had a beautiful garden.",
+                    "Every night one of the golden apples was gone.",
+                ],
+            ),
+            para(
+                "g:1:b",
+                3,
+                &[
+                    "‘I will catch the thief,’ said the eldest son.",
+                    "At midnight he fell asleep.",
+                ],
+            ),
         ];
         let items = vec![
-            item("g:1:a", 1, 2, &[2], "What happened every night?", "an apple vanished"),
-            item("g:1:a", 1, 4, &[1], "What did the king own?", "a lovely garden"),
-            item("g:1:b", 3, 1, &[1], "What did the eldest son promise?", "to catch whoever steals"),
-            item("g:1:b", 3, 5, &[1, 2], "Why did the son fail?", "he slept at midnight instead of watching"),
+            item(
+                "g:1:a",
+                1,
+                2,
+                &[2],
+                "What happened every night?",
+                "an apple vanished",
+            ),
+            item(
+                "g:1:a",
+                1,
+                4,
+                &[1],
+                "What did the king own?",
+                "a lovely garden",
+            ),
+            item(
+                "g:1:b",
+                3,
+                1,
+                &[1],
+                "What did the eldest son promise?",
+                "to catch whoever steals",
+            ),
+            item(
+                "g:1:b",
+                3,
+                5,
+                &[1, 2],
+                "Why did the son fail?",
+                "he slept at midnight instead of watching",
+            ),
         ];
         (paras, items)
     }
@@ -542,13 +776,41 @@ mod tests {
         let g = gate(good, ps, its);
         assert!(g.format.is_none() && g.rej.is_empty(), "{:?}", g.rej);
         assert_eq!(g.ok.len(), 4);
-        assert_eq!(g.ok[0], Fix { i: 1, exim: ExIm::Explicit, anchors: vec![2], answer: "one of the golden apples was gone.".into() });
-        assert_eq!(g.ok[3], Fix { i: 4, exim: ExIm::Implicit, anchors: vec![1, 2], answer: "he slept at midnight instead of watching".into() });
+        assert_eq!(
+            g.ok[0],
+            Fix {
+                i: 1,
+                exim: ExIm::Explicit,
+                anchors: vec![2],
+                answer: "one of the golden apples was gone.".into()
+            }
+        );
+        assert_eq!(
+            g.ok[3],
+            Fix {
+                i: 4,
+                exim: ExIm::Implicit,
+                anchors: vec![1, 2],
+                answer: "he slept at midnight instead of watching".into()
+            }
+        );
         let bad = [
-            ("1\t1\tone of the golden apples was gone\n", "explicit: span of sentence 2, which is not an anchor"),
-            ("1\t2\tan apple was gone\n", "explicit: not a span of an anchor sentence"),
-            ("1\t2\tone of the golden apples, was gone\n", "explicit: consecutive words in sentence 2, but different punctuation"),
-            ("1\t3\tone of the golden apples was gone\n", "anchor 3 outside the paragraph (2 sentences)"),
+            (
+                "1\t1\tone of the golden apples was gone\n",
+                "explicit: span of sentence 2, which is not an anchor",
+            ),
+            (
+                "1\t2\tan apple was gone\n",
+                "explicit: not a span of an anchor sentence",
+            ),
+            (
+                "1\t2\tone of the golden apples, was gone\n",
+                "explicit: consecutive words in sentence 2, but different punctuation",
+            ),
+            (
+                "1\t3\tone of the golden apples was gone\n",
+                "anchor 3 outside the paragraph (2 sentences)",
+            ),
             ("1\t2\t\n", "empty span"),
             ("1\t2\n", "2 columns instead of 3"),
         ];
@@ -562,9 +824,16 @@ mod tests {
         }
         // repeated item: the first line counts, the second is rejected
         let g = gate(&format!("{good}1\t2\tthe golden apples\n"), ps, its);
-        assert_eq!((g.ok.len(), g.rej.len(), g.rej[0].reason.as_str()), (4, 1, "item repeated"));
+        assert_eq!(
+            (g.ok.len(), g.rej.len(), g.rej[0].reason.as_str()),
+            (4, 1, "item repeated")
+        );
         // no answer for item 4: logged, the rest is accepted
-        let g = gate("1\t2\tone of the golden apples was gone\n2\t1\ta beautiful garden\n3\t1\tI will catch the thief\n", ps, its);
+        let g = gate(
+            "1\t2\tone of the golden apples was gone\n2\t1\ta beautiful garden\n3\t1\tI will catch the thief\n",
+            ps,
+            its,
+        );
         assert_eq!((g.ok.len(), g.rej[0].reason.as_str()), (3, "no answer"));
         // "implicit" while the old answer is verbatim in a sentence
         let mut items2 = items.clone();
@@ -572,12 +841,27 @@ mod tests {
         let fx2 = Fixes::new(&paras, &items2);
         let (ps2, its2) = &fx2.all[&0];
         let g = gate(good, ps2, its2);
-        assert_eq!(g.rej[0].reason, "implicit, but the old answer is verbatim in sentence 2");
+        assert_eq!(
+            g.rej[0].reason,
+            "implicit, but the old answer is verbatim in sentence 2"
+        );
         // format: empty, number outside the batch, truncated output, junk
         assert!(gate("", ps, its).format.is_some());
-        assert!(gate(&format!("{good}5\t1\tthe king\n"), ps, its).format.is_some());
-        assert!(gate("1\t2\tone of the golden apples was gone\n", ps, its).format.is_some());
-        assert!(gate(&format!("{good}Sure, here:\nNote:\n"), ps, its).format.is_some());
+        assert!(
+            gate(&format!("{good}5\t1\tthe king\n"), ps, its)
+                .format
+                .is_some()
+        );
+        assert!(
+            gate("1\t2\tone of the golden apples was gone\n", ps, its)
+                .format
+                .is_some()
+        );
+        assert!(
+            gate(&format!("{good}Sure, here:\nNote:\n"), ps, its)
+                .format
+                .is_some()
+        );
     }
 
     #[test]
@@ -585,13 +869,154 @@ mod tests {
         let dir = std::env::temp_dir().join(format!("qagen-fix-test-{}", std::process::id()));
         std::fs::create_dir_all(&dir).unwrap();
         let f = dir.join("qa.tsv");
-        std::fs::write(&f, format!("{QA_HEADER}\ng:1:a\t1\t2\taction\texplicit\tg:1:a:12\tWhat?\tan apple\n")).unwrap();
+        std::fs::write(
+            &f,
+            format!("{QA_HEADER}\ng:1:a\t1\t2\taction\texplicit\tg:1:a:12\tWhat?\tan apple\n"),
+        )
+        .unwrap();
         let r = read_qa(&f).unwrap();
-        assert_eq!((r[0].k, r[0].exim, r[0].anchors.as_slice()), (2, ExIm::Explicit, &["g:1:a:12".to_string()][..]));
+        assert_eq!(
+            (r[0].k, r[0].exim, r[0].anchors.as_slice()),
+            (2, ExIm::Explicit, &["g:1:a:12".to_string()][..])
+        );
         std::fs::write(&f, "doc\tpara\n").unwrap();
         assert!(read_qa(&f).is_err());
-        std::fs::write(&f, format!("{QA_HEADER}\ng:1:a\t1\t2\tcausal\texplicit\tg:1:a:12\tWhat?\tan apple\n")).unwrap();
+        std::fs::write(
+            &f,
+            format!("{QA_HEADER}\ng:1:a\t1\t2\tcausal\texplicit\tg:1:a:12\tWhat?\tan apple\n"),
+        )
+        .unwrap();
         assert!(read_qa(&f).is_err());
         let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    struct NoLemmas;
+    impl Lemmas for NoLemmas {
+        fn lemmas(&self, _: &str) -> Vec<lemma::Lemma> {
+            panic!("unexpected model callback")
+        }
+    }
+    fn scratch(name: &str) -> std::path::PathBuf {
+        let p = std::env::temp_dir().join(format!("qagen-wave20-{name}-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&p);
+        std::fs::create_dir_all(&p).unwrap();
+        p
+    }
+    #[test]
+    fn unicode_item_junk_does_not_panic() {
+        let (paras, items) = setup();
+        let fx = Fixes::new(&paras, &items);
+        let (ps, its) = &fx.all[&0];
+        for label in ["abcé", "猫猫", "🦑x"] {
+            let result =
+                std::panic::catch_unwind(|| gate(&format!("{label}\t1\tanswer\n"), ps, its));
+            assert!(result.is_ok(), "UTF-8 item labels must not panic");
+            let g = result.unwrap();
+            assert_eq!(g.junk, 1);
+            assert!(g.format.is_some());
+        }
+    }
+    #[test]
+    fn collect_accounting_error_preserves_four_artifacts() {
+        let dir = scratch("accounting");
+        std::fs::write(dir.join("paras.jsonl"), "").unwrap();
+        std::fs::write(dir.join("items.jsonl"), "").unwrap();
+        std::fs::write(dir.join("calls.jsonl"), "broken json\n").unwrap();
+        for file in ["qa.tsv", "rejects.tsv", "changes.md", "params.json"] {
+            std::fs::write(dir.join(file), "sentinel").unwrap();
+        }
+        assert!(collect(&dir, "pilot", &NoLemmas).is_err());
+        for file in ["qa.tsv", "rejects.tsv", "changes.md", "params.json"] {
+            assert_eq!(
+                std::fs::read_to_string(dir.join(file)).unwrap(),
+                "sentinel",
+                "{file}"
+            );
+        }
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+    #[cfg(unix)]
+    #[test]
+    fn collect_raw_metadata_error_is_not_missing() {
+        let dir = scratch("raw");
+        let (paras, items) = setup();
+        std::fs::write(
+            dir.join("paras.jsonl"),
+            paras
+                .iter()
+                .map(|p| serde_json::to_string(p).unwrap() + "\n")
+                .collect::<String>(),
+        )
+        .unwrap();
+        std::fs::write(
+            dir.join("items.jsonl"),
+            items
+                .iter()
+                .map(|p| serde_json::to_string(p).unwrap() + "\n")
+                .collect::<String>(),
+        )
+        .unwrap();
+        std::fs::create_dir(dir.join("raw")).unwrap();
+        std::os::unix::fs::symlink("b000.txt", dir.join("raw/b000.txt")).unwrap();
+        assert!(collect(&dir, "pilot", &NoLemmas).is_err());
+        assert!(!dir.join("qa.tsv").exists());
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+
+    #[test]
+    fn checked_batches_reject_inconsistent_items() {
+        let (paras, items) = setup();
+        assert_eq!(Fixes::try_new(&paras, &items).unwrap().all[&0].1.len(), 4);
+        let mut bad = items.clone();
+        bad[0].anchors = vec![0];
+        assert!(Fixes::try_new(&paras, &bad).is_err());
+        bad[0].anchors = vec![3];
+        assert!(Fixes::try_new(&paras, &bad).is_err());
+        bad[0].anchors.clear();
+        assert!(Fixes::try_new(&paras, &bad).is_err());
+        let mut bad = items.clone();
+        bad[0].batch = 1;
+        assert!(Fixes::try_new(&paras, &bad).is_err());
+        let mut bad = items.clone();
+        bad[0].doc = "unknown".into();
+        assert!(Fixes::try_new(&paras, &bad).is_err());
+        let mut bad = items.clone();
+        bad.push(items[0].clone());
+        assert!(Fixes::try_new(&paras, &bad).is_err());
+        let mut bad = paras.clone();
+        bad.push(paras[0].clone());
+        assert!(Fixes::try_new(&bad, &items).is_err());
+    }
+    #[test]
+    fn checked_collection_preserves_alignment_and_counts() {
+        let dir = scratch("join");
+        let (paras, items) = setup();
+        std::fs::write(
+            dir.join("paras.jsonl"),
+            paras
+                .iter()
+                .map(|p| serde_json::to_string(p).unwrap() + "\n")
+                .collect::<String>(),
+        )
+        .unwrap();
+        std::fs::write(
+            dir.join("items.jsonl"),
+            items
+                .iter()
+                .map(|p| serde_json::to_string(p).unwrap() + "\n")
+                .collect::<String>(),
+        )
+        .unwrap();
+        std::fs::create_dir(dir.join("raw")).unwrap();
+        std::fs::write(dir.join("raw/b000.txt"),"1\t2\tone of the golden apples was gone\n2\t1\ta beautiful garden\n3\t1\tcatch the thief\n4\t2\the fell asleep\n").unwrap();
+        let v = collect(&dir, "pilot", &NoLemmas).unwrap();
+        assert_eq!(v["fixed"]["n"], 4);
+        assert_eq!(v["unfixed"], 0);
+        let rows = read_qa(&dir.join("qa.tsv")).unwrap();
+        assert_eq!(rows.len(), 4);
+        assert_eq!(rows[2].doc, items[2].doc);
+        assert_eq!(rows[2].k, items[2].k);
+        assert_eq!(rows[2].anchors, [paras[1].sents[0].sent_id.clone()]);
+        std::fs::remove_dir_all(dir).unwrap();
     }
 }

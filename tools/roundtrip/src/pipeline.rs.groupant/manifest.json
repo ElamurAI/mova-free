@@ -1,0 +1,104 @@
+{
+  "children": [
+    {
+      "id": "roundtrip-pipeline-grouping",
+      "path": "grouping.groupant"
+    },
+    {
+      "id": "roundtrip-pipeline-drop",
+      "path": "drop.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "source-bound lexical projection only; no expansion/resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "stated source scope and domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "stated source scope and domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "context_partition",
+        "path": "model.md",
+        "scope": "stated source scope and domain",
+        "section": "context_partition",
+        "status": "partial_source_derived_model",
+        "type": "context_partition"
+      },
+      {
+        "id": "damage_precedence",
+        "path": "model.md",
+        "scope": "stated source scope and domain",
+        "section": "damage_precedence",
+        "status": "partial_source_derived_model",
+        "type": "damage_precedence"
+      },
+      {
+        "id": "head_repair",
+        "path": "model.md",
+        "scope": "stated source scope and domain",
+        "section": "head_repair",
+        "status": "partial_source_derived_model",
+        "type": "head_repair"
+      },
+      {
+        "id": "failure_gate",
+        "path": "model.md",
+        "scope": "stated source scope and domain",
+        "section": "failure_gate",
+        "status": "partial_source_derived_model",
+        "type": "failure_gate"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_checks"
+    }
+  },
+  "id": "roundtrip-pipeline",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../pipeline.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "88be3b618dd828411c1e6633432af60ba9fa905429b55cff88fbc31b5ae721da"
+  },
+  "status": "partial_source_bound_model"
+}

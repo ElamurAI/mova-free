@@ -1,0 +1,187 @@
+{
+  "children": [
+    {
+      "id": "world-poly-sentences",
+      "path": "sentences.groupant"
+    },
+    {
+      "id": "world-poly-extraction",
+      "path": "extraction.groupant"
+    },
+    {
+      "id": "world-poly-emission",
+      "path": "emission.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "On finite tokens, exclude a range containing an out-of-bounds index, overlapping ranges, or lost tokens. On malformed marker order exclude a successful extraction or parser acquisition. Oracle: partition enumeration and reversed-marker public rejection.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "For paragraph vector P, return all marker-bounded books whose selected lines collapse to P, including arbitrary excluded prefixes/suffixes and alternative whitespace. For ranges Q, retain all token forms producing Q; sentence ranges cannot reconstruct words. Oracle: whitespace variants and heading cut fixtures.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "partition",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "For n tokens, Q is an ordered sequence [a_i,b_i), a_0=0, b_last=n, b_i=a_next and a_i<b_i; n=0 gives Q empty. Oracle exhausts the six-symbol alphabet through length four independently via flattened coverage.",
+        "path": "model.md",
+        "section": "partition",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "partition_conservation"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "continuation",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "After a terminal run extended over closers/terminals, suppress the break iff the next first Unicode character is lowercase or one of comma/semicolon/colon/hyphen/en-dash/em-dash. EOF forces the run end; empty next token does not continue. Oracle includes accented cases and punctuation.",
+        "path": "model.md",
+        "section": "continuation",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "boundary_suppression"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "heading_selection",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Select first exact heading after first START and first exact end after that heading; end before the selected start is not a candidate. Repeated headings may cut at the second occurrence. A selected heading is removed; nested headings are ordinary paragraph strings. Oracle: repeated and whitespace-sensitive headings.",
+        "path": "model.md",
+        "section": "heading_selection",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "selection_preimage"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "whitespace_loss",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Paragraph projection splits on blank lines and joins all split_whitespace words with one space. Preimage permits arbitrary runs of blank lines and intra-paragraph whitespace; it does not recover line boundaries. Whitespace-only selection is an error.",
+        "path": "model.md",
+        "section": "whitespace_loss",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "information_loss"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "failure_order",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Order is read UTF-8, remove leading BOMs, locate START, locate END, check ordering, select heading/end, reject empty paragraphs, acquire annotator, encode/write. Earlier errors exclude later effects. Output write is not atomic; no rollback claim after acquisition. Oracle: sentinel unchanged on reversed markers.",
+        "path": "model.md",
+        "section": "failure_order",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "failure_boundary"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "emission",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Conditioned on tokenizer/detokenizer, each nonempty detokenized sentence yields paragraph index pi+1, globally increasing sentence ID and tabs replaced by spaces. words counts tokens containing an alphanumeric character; diff counts paragraphs not reproduced verbatim. Header carries raw path and selections. No guarantee that arbitrary heading text is automatically isolated without blank lines.",
+        "path": "model.md",
+        "section": "emission",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "serialization_projection"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "resource",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Let N be total input bytes, L the line count and B selected bytes. Extraction takes O(N+L+B) time: text.lines scans the entire input, including excluded text. Its auxiliary memory is O(L+B); the whole prep call also retains the raw input, so extraction-stage retained memory is O(N+L+B). Sentence scan takes O(n+sum token bytes); output adds O(Bout) time/storage, plus opaque annotator and token storage costs. These bounds assume finite valid UTF-8 and successful allocation; no measured timing prediction.",
+        "path": "model.md",
+        "section": "resource",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "resource_bound"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "id": "world-poly",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../poly.rs",
+    "sha256": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c"
+  },
+  "status": "partial_source_derived_instance"
+}

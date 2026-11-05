@@ -1,0 +1,36 @@
+{
+  "checks": [
+    "14 exact native names twice debug/release, numeric statuses and sorted outcomes",
+    "Nine sources each syntax generated twice and byte compared",
+    "Six compiled behavior mutations fail named assertions, exact-byte restoration and positive reruns"
+  ],
+  "children": [
+    "teacher-live-tests",
+    "bench-main",
+    "cycle-build",
+    "cycle-db",
+    "cycle-main",
+    "cycle-pipeline",
+    "enrich-lesson-smoke",
+    "jobs-main",
+    "twin-ledger-tests",
+    "cycle-reviewed"
+  ],
+  "cost": "Helper costs compose by actual call multiplicity and bytes: DB O(S log S+V W log V+W²), cascade O(B+N log(N+1)*(1+L_id)+N min(n,N)) for maximum id byte length L_id, including repeated sort-key hashing, parser/report linear bytes plus ranking, jobs sampled proc tree, bench output scan per metric. External teacher/parser/train costs unmeasured and potentially unbounded.",
+  "description": "Tagged union of cycle orchestration, live teacher diagnostic, jobs monitor, benchmark reporter, staged lesson smoke and twin ledger tests. Actual cycle joins: build default→Cfg; main ids/parser/log/model helpers↔pipeline; pipeline collect→db update/prag/training_file; cycle draft→jobs command. State transition is ordered filesystem/subprocess trace, not a transaction.",
+  "forward": [
+    "Tagged union of cycle orchestration, live teacher diagnostic, jobs monitor, benchmark reporter, staged lesson smoke and twin ledger tests. Actual cycle joins: build default→Cfg; main ids/parser/log/model helpers↔pipeline; pipeline collect→db update/prag/training_file; cycle draft→jobs command. State transition is ordered filesystem/subprocess trace, not a transaction.",
+    "Build MOVA_BIG_DEFAULT joins runtime nonempty MOVA_BIG precedence. Pipeline sends selected ids to main parser helpers, consumes db with_drafts and later updates DB before check/train/row. jobs wraps configured drafts. Teacher live test, bench main, lesson_smoke and twin ledger are explicitly independent paths; common diagnostics vocabulary is not a caller edge. Existing artifact markers may bypass stages, and failed collect can leave earlier DB commits."
+  ],
+  "id": "cycle-teacher-diagnostics",
+  "inverse": [
+    "Inner exclusions at actual boundaries: ignored teacher not launched by default harness; mismatched parser cardinality stops parser file writes; exhausted attempt budget stops ledger append; heldout ids excluded from training_file. These do not exclude earlier effects on later failure.",
+    "Given cycle row/current DB/attempt ledger, compatible histories include multiple resumed stages, overwritten versions and unsuccessful teacher attempts. Reports lose bodies, timestamps/order and sampled-process information. No unique global predecessor; independent diagnostics reconstruct only their tagged path."
+  ],
+  "limitations": [
+    "No live teacher, model, corpus, learning/benchmark CLI, GPU or full package suite",
+    "Agreement aggregation, injected filesystem faults, jobs signals and actual external runtime joins remain source-derived",
+    "No executable numerical surrogate; future caps 1/2/5/10% require meaningful metric/reference/domain"
+  ],
+  "state": "Teacher smoke stays ignored. This evidence uses only synthetic helper/CLI fixtures and preserves production implementations. DB current rename precedes history/log; pipeline attempt reservation precedes optional review. Model publication uses .part rename; reports do not establish learning quality."
+}

@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cpu_f64_uses_reference; fused_softmax_matches_reference_gradients_and_finite_differences"
+  ],
+  "children": [],
+  "cost": "O(elements) forward and backward plus reductions; contiguous conversion may allocate/copy O(elements). CUDA allocation/launch/device errors propagate; no speed measurement or all-domain error cap.",
+  "description": "last_dim dispatches nonempty CUDA F32 to contiguous custom Softmax; otherwise Candle reference last-dimension softmax. cuda_fwd validates contiguous offsets, row dimension/nonempty, i32 columns/u32 rows, allocates output and launches existing softmax_f32 with retained source offset and grid(rows,1,1), block(1,32,1). bwd returns p*(upstream-sum_last(p*upstream)).",
+  "forward": [
+    "last_dim dispatches nonempty CUDA F32 to contiguous custom Softmax; otherwise Candle reference last-dimension softmax. cuda_fwd validates contiguous offsets, row dimension/nonempty, i32 columns/u32 rows, allocates output and launches existing softmax_f32 with retained source offset and grid(rows,1,1), block(1,32,1). bwd returns p*(upstream-sum_last(p*upstream))."
+  ],
+  "id": "gparse-softmax",
+  "inverse": [
+    "CPU/F64 inputs cannot use the custom CUDA F32 kernel through last_dim. Noncontiguous input is copied before custom invocation; raw custom rejects noncontiguous. CUDA error path does not silently use CPU fallback.",
+    "For positive normalized row p, compatible finite real logits are log(p)+constant; zero probabilities may be finite underflow/masking in f32 and do not uniquely identify -infinity. Gradient output admits upstream shifts by a row constant."
+  ],
+  "limitations": [
+    "Partial lexical syntax; no semantic proof",
+    "Finite synthetic checks only; external corpus/model experiments excluded",
+    "No executable Rust percent surrogate or throughput claim",
+    "Fault injection and exhaustive nonfinite/dimension cases absent"
+  ],
+  "source": "gparse/src/softmax.rs",
+  "state": "Output shape matches input; finite real row relation sums probabilities to one, while numerical agreement is only finite-tested. Backward row-sum zero mathematically; singleton derivative zero. CPU custom kernel rejects; public wrapper routes CPU to reference."
+}

@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "bounded Rust differential tests twice debug/release",
+    "compiled reverse-scan mutant rejected and restored",
+    "paired source-bound syn projection"
+  ],
+  "children": [],
+  "cost": "Cycle phase: n<=64 old walks O(n^2), constant cycle scratch; n>64 at most4n walk steps plus O(n) BFS fallback and O(n) scratch. Other module operations add separate costs.",
+  "description": "CoNLL-U annotation parsing, normalization, validation, serialization and differences.",
+  "forward": [
+    "write_block writes the supplied fields in token order. split_blocks collects digit-starting lines under the most recent sent_id. parse_block skips multiword/empty-node rows after the column gate, parses closed inventories in source order, normalizes EWT relations while incrementing EWT_FIXED, then invokes check. check orders Count before token-local Form, Head, Registry, then Roots, then minimum nonterminating token Cycle. diff compares zipped tokens only and lowercases lemmas; length mismatch is not reported by diff.",
+    "\n\n## Hybrid amendment 2026-10-30\n\nFor n<=64 the original ordered cycle walks run unchanged. For n>64, ordered walks share a saturating 4*n step budget. A detected cycle returns the original diagnostic immediately. Completion returns Ok without BFS. Exhaustion discards partial reachability work and invokes the exact reverse-head BFS adapter over the whole input, preserving the least failing start even when exhaustion happened on an earlier rooted prefix. Prior input/head/root predicates are unchanged. Budget exhaustion is not an error and never implies a cycle.\n\nCost: tiny input work is bounded by 65*n; larger prefixes perform at most 4*n head steps before O(n) BFS. Thus worst-case cycle-phase time is O(n). Auxiliary space is constant for the walk-only branch and O(n) on fallback; converter's preexisting heads vector remains O(n). Saturation cannot increase work beyond the mathematical 4*n bound. Stars complete their walks without adjacency allocation. No universal throughput gain follows from this bound.\n"
+  ],
+  "id": "annot-ann",
+  "inverse": [
+    "With lawful preflight, success for a root-unreachable token or Cycle(j) later than the first failing chain is excluded; Count/Form/Head/Registry/Roots retain precedence.",
+    "A tagged error admits all annotations/forms satisfying earlier predicates and failing the named predicate; accepted output admits many rooted trees and lexical records. Serialization/diff preimages retain their own information loss."
+  ],
+  "limitations": [
+    "partial legacy semantic coverage",
+    "no macro expansion or semantic AST",
+    "finite evidence, not universal verification"
+  ],
+  "source": "annot/src/ann.rs",
+  "state": "finite typed inputs; successful allocation; ordered source predicates; normal outputs"
+}

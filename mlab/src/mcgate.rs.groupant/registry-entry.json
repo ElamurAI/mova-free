@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "mcgate::wave30::tiny_and_zero_gate",
+    "Paired lexical syntax generation; bounded debug/release and compiled assertion controls in receipt"
+  ],
+  "children": [],
+  "cost": "O(k) simulations with fixed scenario dimensions, 300 chi-square observations per replicate; O(k) p vectors plus32 rows, expected polar cost only.",
+  "description": "gate: Eight scenarios each append four ALPHAS rows. frac=count(p<=alpha)/ps.len; tol=4.5sqrt(alpha(1-alpha)/ps.len)+margin, margins .004 for Welch/chi2 only. Fault selects exact p:name.",
+  "forward": [
+    "gate: Eight scenarios each append four ALPHAS rows. frac=count(p<=alpha)/ps.len; tol=4.5sqrt(alpha(1-alpha)/ps.len)+margin, margins .004 for Welch/chi2 only. Fault selects exact p:name."
+  ],
+  "id": "mlab-mcgate",
+  "inverse": [
+    "gate: A row admits every p-vector with matching length and threshold counts, many seeds, and sample histories; four counts do not reconstruct draws."
+  ],
+  "limitations": [
+    "Bounded k and allocations; tiny k checks structure, not significance calibration.",
+    "Partial lexical AST, no macro expansion or semantic proof",
+    "No executable numerical surrogate or global error bound",
+    "External frozen dataset/effect paths unexecuted"
+  ],
+  "source": "mlab/src/mcgate.rs",
+  "state": "Seeded RNG, vectors of per-scenario p-values and ordered Row results."
+}

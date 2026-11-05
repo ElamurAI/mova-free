@@ -1,0 +1,138 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Units partition exact original bytes; coordinates are neither Unicode scalar positions nor bytes. Point removal preserves nonpoint/nonaccent scalars before NFC. Leading marks form their own first unit. Hash overflow is explicit wrapping.",
+        "evidence": "model.md#tests",
+        "id": "behavior_complement",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Apostrophe inside a chunk is not split by tokenize; colon does end a sentence.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Units partition exact original bytes; coordinates are neither Unicode scalar positions nor bytes. Point removal preserves nonpoint/nonaccent scalars before NFC. Leading marks form their own first unit. Hash overflow is explicit wrapping.",
+        "evidence": "model.md#tests",
+        "id": "reverse_reconstruction",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "All whitespace and canonically equivalent raw variants yielding same tokens are compatible.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Units partition exact original bytes; coordinates are neither Unicode scalar positions nor bytes. Point removal preserves nonpoint/nonaccent scalars before NFC. Leading marks form their own first unit. Hash overflow is explicit wrapping.",
+        "evidence": "model.md#tests",
+        "id": "maqaf_left",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Append maqaf and emit current token; repeated maqaf can yield maqaf-only token.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "maqaf_left",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7",
+        "type": "maqaf_left"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Units partition exact original bytes; coordinates are neither Unicode scalar positions nor bytes. Point removal preserves nonpoint/nonaccent scalars before NFC. Leading marks form their own first unit. Hash overflow is explicit wrapping.",
+        "evidence": "model.md#tests",
+        "id": "paragraph_attach",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Following פ/ס tokens attach only after an ending token.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "paragraph_attach",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7",
+        "type": "paragraph_attach"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Units partition exact original bytes; coordinates are neither Unicode scalar positions nor bytes. Point removal preserves nonpoint/nonaccent scalars before NFC. Leading marks form their own first unit. Hash overflow is explicit wrapping.",
+        "evidence": "model.md#tests",
+        "id": "empty_input",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "No chunks implies no tokens and no sentences.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "empty_input",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7",
+        "type": "empty_input"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Units partition exact original bytes; coordinates are neither Unicode scalar positions nor bytes. Point removal preserves nonpoint/nonaccent scalars before NFC. Leading marks form their own first unit. Hash overflow is explicit wrapping.",
+        "evidence": "model.md#tests",
+        "id": "nfc_boundary",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "NFC occurs before character dispatch, so output slices are newly owned normalized strings.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "nfc_boundary",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7",
+        "type": "nfc_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 5287,
+      "start": 3755
+    },
+    "description": "NFC then chunk scan emits maqaf-left and punctuation tokens; second pass closes sentences and consumes paragraph markers."
+  },
+  "id": "hbo-text-tokenization",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../text.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7"
+  },
+  "status": "partial_source_bound_model"
+}

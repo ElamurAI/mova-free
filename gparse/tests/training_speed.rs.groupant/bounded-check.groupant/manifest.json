@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "head_transport",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "head_transport",
+        "status": "partial_source_derived_model",
+        "type": "head_transport"
+      },
+      {
+        "id": "loss_weights",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "loss_weights",
+        "status": "partial_source_derived_model",
+        "type": "loss_weights"
+      },
+      {
+        "id": "mutation_order",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "mutation_order",
+        "status": "partial_source_derived_model",
+        "type": "mutation_order"
+      },
+      {
+        "id": "observation_scope",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "observation_scope",
+        "status": "partial_source_derived_model",
+        "type": "observation_scope"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "partial_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 2027,
+      "start": 420
+    },
+    "description": "step forwards train=true, gathers real arc rows and local-to-flat gold heads, constructs arc/relation/tag losses, differentiates joint loss, optionally validates four gradient norms, updates AdamW, returns pre-update scalar loss.",
+    "source_bytes_sha256": "8579349ea72f0012bb6743671ea116e24765eace3649d87670ccb255fbba1650"
+  },
+  "id": "gparse-test-training-speed-bounded-check",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../training_speed.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "6ee300cfcccce2095cce02974a8fc0d03a644f7da62676c2d5eedae36abe4f32"
+  },
+  "status": "partial_source_bound_model"
+}

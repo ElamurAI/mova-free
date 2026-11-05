@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "Selected onto wave29_tests / hs::t:: actual-code tests; repeated debug/release and compiled controls"
+  ],
+  "children": [],
+  "cost": "CSV O(B); bounds nearest-attribute/unit scans O(T²) worst-case; NP/tail recursion may quadratic. u8 colon level overflow beyond255; no allocation bound.",
+  "description": "read_codes skips header, requires two CSV fields/six digits/increasing code. Tree deduplicates prefixes2/4/6. bounds scans comparator hits, borrows next then previous unit, scales Rat, joins opposite endpoints of last compatible attr/base interval. parse uses ordered chunk branches, colon levels and parenthesis state; main first deepest Item else Head.",
+  "forward": [
+    "x_base=x_Rat*f_unit. overlap(a,b)=¬below(a.hi,b.lo)∧¬below(b.hi,a.lo), below(h,l)=(h<l)∨(h=l∧¬(h_closed∧l_closed)). main=first argmax_level(Item) ⊕ first(Head)."
+  ],
+  "id": "onto-hs",
+  "inverse": [
+    "No comparator excludes numeric threshold; open touching endpoints exclude overlap unless both closed. Whether clause excludes distinguishing features. Bad code order excludes Ok.",
+    "Bound preimages include synonyms and rescaled kg/g, cc/l values; Parsed loses punctuation/filler/optional content. Tree loses descriptions."
+  ],
+  "limitations": [
+    "Partial lexical AST, no semantic proof",
+    "No live teacher/corpus/model/DB execution",
+    "No validated executable percentage surrogate",
+    "Synthetic finite tests do not cover all public malformed states"
+  ],
+  "source": "onto/src/hs.rs",
+  "state": "Rat conversion exact when representable; scaling overflow skips hit. overlaps ignores dimensions/basis. CSV quote scanner permissive; Tree assumes valid ASCII. Parenthesis state restored."
+}

@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "fetch::tests::compacts_sources",
+    "fetch::tests::ext_and_licenses",
+    "fetch::wave33::list_signature_hash_and_existing"
+  ],
+  "children": [],
+  "cost": "List O(B); hashing O(file bytes) with 1 MiB buffer. Archive filtering O(uncompressed bytes) plus gzip cost; max kept entry 5 MiB but total input has no cap. Manifest O(D log S) plus serialized bytes; effects and delays are external costs.",
+  "description": "read_list validates columns and rows; run checks free space, then for each row creates slug directory and hashes existing file before STOP/cap. Fresh path checks blocked host, space, robots, bounded download, extension/signature, optional text compaction, then records Done. write_manifest groups Done by sorted slug and writes JSONL then TSV.",
+  "forward": [
+    "read_list validates columns and rows; run checks free space, then for each row creates slug directory and hashes existing file before STOP/cap. Fresh path checks blocked host, space, robots, bounded download, extension/signature, optional text compaction, then records Done. write_manifest groups Done by sorted slug and writes JSONL then TSV."
+  ],
+  "id": "mathlib-fetch",
+  "inverse": [
+    "Invalid required columns or disallowed license prevent run from reaching free-space or network setup. Unknown response extension and bad signature delete the candidate and do not append Done. These exclusions do not apply to already existing files.",
+    "Manifest file record admits any Item/Done pair matching retained fields and valid item_idx; original tar contents dropped by compaction are unrecoverable. Hash equality is an observation, not a unique byte inverse. JSON groups preserve per-group order but not original cross-group interleaving."
+  ],
+  "limitations": [
+    "No network/DNS/download, real catalog/corpus/model/teacher or database execution. Effect paths are source-derived; finite helper tests are not universal verification. No executable percentage surrogate or speed claim; future caps require metric/domain/reference and remain 1/2/5/10%."
+  ],
+  "source": "tools/mathlib/src/fetch.rs",
+  "state": "All rows are license-validated before download setup. Existing wildcard choice is filesystem-order dependent and bypasses signature/STOP/cap checks. Done item_idx must be in range. Aggregate format uses HashSet iteration; do not claim byte-deterministic mixed-format JSON."
+}

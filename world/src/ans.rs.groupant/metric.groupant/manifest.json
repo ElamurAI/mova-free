@@ -1,0 +1,90 @@
+{
+  "children": [
+    {
+      "id": "world-ans-metric-lcs-row",
+      "path": "lcs-row.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "wave34-composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "wave34-invariant-correction",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-ans-metric-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-ans-metric-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-ans-metric-token-fiber",
+        "path": "model.md",
+        "section": "token-fiber",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-ans-metric-bounded-oracle",
+        "path": "model.md",
+        "section": "bounded-oracle",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 65803,
+      "start": 64146
+    },
+    "description": "baseline restricts to requested sections and keeps earliest maximal lemma overlap, unlike event ranking preference. LCS uses one-row DP; rouge_l tokenizes lowercase ASCII alphanumerics, returns zero for empty input, otherwise harmonic LCS precision/recall. rouge_q maximizes over nonblank references."
+  },
+  "id": "world-ans-metric",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../ans.rs",
+    "sha256": "d8d94c891e347d2b640744b20c4662dc35064368e7d4d9253c4954b4297e1e09"
+  },
+  "status": "partial_source_bound_model"
+}

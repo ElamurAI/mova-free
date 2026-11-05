@@ -1,0 +1,115 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional mathematical relation with finite checks; no universal proof.",
+        "assumptions": "Standard Rust execution, sufficient allocation, independently checked oracle within stated bounds.",
+        "domain": "Finite exhaustive and named boundary fixtures paired with assertion outcomes.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "Bounded suite run.",
+        "operator": "Universe U consists of pairs (candidate implementation, claimed Boolean completion outcome) for this fixed bounded assertion suite, under terminating ordinary execution. R contains exactly pairs whose claim equals conjunction of the suite assertions. The behavior complement is U minus R, including false pass and false failure claims. Behavior on untested inputs is unconstrained; finite acceptance is not universal correctness.",
+        "path": "model.md",
+        "section": "explicit_test_universe",
+        "status": "partial_source_derived",
+        "subject_revision": "51f928c217bd441aa21c5d9b16e41a5be8077048cd4aed6fb2005a144c9d076d",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical relation with finite checks; no universal proof.",
+        "assumptions": "Standard Rust execution, sufficient allocation, independently checked oracle within stated bounds.",
+        "domain": "Finite exhaustive and named boundary fixtures paired with assertion outcomes.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_implementations",
+        "observation_scope": "Bounded suite run.",
+        "operator": "Given a passing test transcript, the compatible antecedents are every implementation agreeing on all enumerated assertions; behavior elsewhere remains unconstrained. A failed named assertion restricts the antecedent to implementations violating that concrete predicate, without unique bug localization.",
+        "path": "model.md",
+        "section": "compatible_implementations",
+        "status": "partial_source_derived",
+        "subject_revision": "51f928c217bd441aa21c5d9b16e41a5be8077048cd4aed6fb2005a144c9d076d",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical relation with finite checks; no universal proof.",
+        "assumptions": "Standard Rust execution, sufficient allocation, independently checked oracle within stated bounds.",
+        "domain": "Finite exhaustive and named boundary fixtures paired with assertion outcomes.",
+        "evidence": "model.md#evidence",
+        "id": "oracle_separation",
+        "observation_scope": "Bounded suite run.",
+        "operator": "Floyd closure uses allowed intermediate vertices, whereas production uses synchronous edge-count relaxation. Distinct recurrences reduce shared-defect risk; arithmetic and Rust runtime remain shared assumptions.",
+        "path": "model.md",
+        "section": "oracle_separation",
+        "status": "partial_source_derived",
+        "subject_revision": "51f928c217bd441aa21c5d9b16e41a5be8077048cd4aed6fb2005a144c9d076d",
+        "type": "oracle_independence"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation with bounded Rust correspondence; no universal verification.",
+        "assumptions": "Original deterministic Rust; graph endpoint validation; sufficient allocation. Specialized domains are stated in each relation.",
+        "domain": "Fixed finite fixtures and ordinary terminating implementations.",
+        "evidence": "model.md#evidence",
+        "id": "certificate_partition",
+        "observation_scope": "Named bounded assertions and isolated compiled mutation.",
+        "operator": "For the fixed four-vertex signed graph enumerate U={candidate vectors [0,a,b,z]:a=-3..2,b=-1..5,z in {None,0}} (84 observations). The independent inequality-plus-tight-reachability predicate partitions U into one accepted actual production result and 83 excluded candidates. Each candidate is compared with equality to production; the too-low vector witnesses why inequalities alone are insufficient.",
+        "path": "model.md",
+        "section": "certificate_partition",
+        "status": "conditional_relation_bounded_checked",
+        "subject_revision": "51f928c217bd441aa21c5d9b16e41a5be8077048cd4aed6fb2005a144c9d076d",
+        "type": "finite_relation_partition"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation with bounded Rust correspondence; no universal verification.",
+        "assumptions": "Original deterministic Rust; graph endpoint validation; sufficient allocation. Specialized domains are stated in each relation.",
+        "domain": "Fixed finite fixtures and ordinary terminating implementations.",
+        "evidence": "model.md#evidence",
+        "id": "metamorphic_sensitivity",
+        "observation_scope": "Named bounded assertions and isolated compiled mutation.",
+        "operator": "Hold test fixtures fixed and replace production checked_add(weight) by checked_add(abs(weight)) in an isolated compiled copy. potential_reweighting_correspondence must fail; restored production passes. The observation is a Boolean distinction between these two implementations, not a claim that all negative-edge defects are detected. Integer potential and constructed-distance tests additionally cover ambiguous output fibers.",
+        "path": "model.md",
+        "section": "metamorphic_sensitivity",
+        "status": "conditional_relation_bounded_checked",
+        "subject_revision": "51f928c217bd441aa21c5d9b16e41a5be8077048cd4aed6fb2005a144c9d076d",
+        "type": "compiled_fault_observation"
+      }
+    ],
+    "tests": {
+      "epoch": "2026-10-30 deep graph correspondence",
+      "path": "model.md#evidence",
+      "sha256": "2285de1583ca0b1c82d2e59ddf62d0b80f340e7d048595c9ec03844d79129c3f",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-bellman-ford-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "51f928c217bd441aa21c5d9b16e41a5be8077048cd4aed6fb2005a144c9d076d"
+  },
+  "status": "partial_source_derived_instance"
+}

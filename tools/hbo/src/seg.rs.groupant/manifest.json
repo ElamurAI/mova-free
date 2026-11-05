@@ -1,0 +1,148 @@
+{
+  "children": [
+    {
+      "id": "hbo-seg-ranking",
+      "path": "ranking.groupant"
+    },
+    {
+      "id": "hbo-seg-pieces",
+      "path": "pieces.groupant"
+    },
+    {
+      "id": "hbo-seg-codec",
+      "path": "codec.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Nonempty well-formed gold words; unit sums/usize and u32 counts representable. Valid cuts sum to units and exclude zero-length Cut. H consumes0; leading cut moves previous vowels. Probability domain positive table totals, finite host factor>=0, finite K>=0 with total+K>0. Public malformed states can violate premises.",
+        "evidence": "model.md#tests",
+        "id": "behavior_complement",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Consonant-checked nonempty admissible outputs cannot lose/invent unpointed letters after removing H. This does not hold as a blanket claim for empty form: fallback Cut(0) is returned even though spells rejects it. Context does not rerank lexp/rules.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "subject_revision": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Nonempty well-formed gold words; unit sums/usize and u32 counts representable. Valid cuts sum to units and exclude zero-length Cut. H consumes0; leading cut moves previous vowels. Probability domain positive table totals, finite host factor>=0, finite K>=0 with total+K>0. Public malformed states can violate premises.",
+        "evidence": "model.md#tests",
+        "id": "reverse_reconstruction",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Pieces plus written form determine cut strings under valid coordinates; pieces alone admit all forms with matching unit length. Candidate winners admit many count tables and context histories. save cannot recover fallback, lex/rest booleans, absent level versus default Pointed, or original TSV order.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "subject_revision": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Nonempty well-formed gold words; unit sums/usize and u32 counts representable. Valid cuts sum to units and exclude zero-length Cut. H consumes0; leading cut moves previous vowels. Probability domain positive table totals, finite host factor>=0, finite K>=0 with total+K>0. Public malformed states can violate premises.",
+        "evidence": "model.md#tests",
+        "id": "piece_transport",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Cut(n,lead) advances n units; H emits ה without advancement. lead transfers only vowel subset from previous non-H output and keeps dagesh. Direct cut can truncate oversized first piece then panic on later slices; spells checks length before calling cut.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "piece_transport",
+        "status": "partial_source_derived_model",
+        "subject_revision": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d",
+        "type": "piece_transport"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Nonempty well-formed gold words; unit sums/usize and u32 counts representable. Valid cuts sum to units and exclude zero-length Cut. H consumes0; leading cut moves previous vowels. Probability domain positive table totals, finite host factor>=0, finite K>=0 with total+K>0. Public malformed states can violate premises.",
+        "evidence": "model.md#tests",
+        "id": "fallback_precedence",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Exact accepted lex precedes partial lex, which precedes fallback. Fallback requires partial, Pointed, thinly and attached model; it calls raw_candidates and prefixes why, leaving outer consonant check active. Mater-only אב is not thin; bare בב is.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "fallback_precedence",
+        "status": "partial_source_derived_model",
+        "subject_revision": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d",
+        "type": "fallback_precedence"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Nonempty well-formed gold words; unit sums/usize and u32 counts representable. Valid cuts sum to units and exclude zero-length Cut. H consumes0; leading cut moves previous vowels. Probability domain positive table totals, finite host factor>=0, finite K>=0 with total+K>0. Public malformed states can violate premises.",
+        "evidence": "model.md#tests",
+        "id": "context_smoothing",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "For each neighbour in previous then next order q=(count(label)+K*p)/(total+K); next smoothing uses updated p, so order matters. Stable descending sort preserves earlier order on equal/NaN comparison. Original lex tie uses smaller label.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "context_smoothing",
+        "status": "partial_source_derived_model",
+        "subject_revision": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d",
+        "type": "context_smoothing"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Nonempty well-formed gold words; unit sums/usize and u32 counts representable. Valid cuts sum to units and exclude zero-length Cut. H consumes0; leading cut moves previous vowels. Probability domain positive table totals, finite host factor>=0, finite K>=0 with total+K>0. Public malformed states can violate premises.",
+        "evidence": "model.md#tests",
+        "id": "codec_counts",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "load duplicate TSV key/label rows add u32 counts, unknown rows skip, malformed counts become0. save emits sorted BTree entries, optional switches and no fallback. Index rebuilt from lex groups by unpointed form.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "codec_counts",
+        "status": "partial_source_derived_model",
+        "subject_revision": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d",
+        "type": "codec_counts"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "hbo-seg",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../seg.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d"
+  },
+  "status": "partial_source_bound_model"
+}

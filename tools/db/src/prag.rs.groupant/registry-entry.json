@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "prag::wave31::labels_bits_and_migration_boundaries"
+  ],
+  "children": [],
+  "cost": "O(label bytes + queried rows + output TSV bytes) expected work/memory, plus SQL. Each input ID is scanned for duplicates and missing/ambiguous membership; diagnostic output limits displayed IDs to five but counts all.",
+  "description": "Pragmatic label parser and staged load",
+  "forward": [
+    "read_labels accepts exact first eight header columns plus optional trace, skips empty lines and requires row width. Missing trace becomes empty. load rejects empty/duplicate sent_id, stages wanted IDs, queries maxima/runs/sentences, rejects duplicate run then missing then ambiguous IDs. It writes run/annset/pragmatics rows, validates bits, maps empty means/trace to NULL, executes SQL and checks post row count."
+  ],
+  "id": "db-src-prag",
+  "inverse": [
+    "Foreign header, wrong width, no rows or duplicate IDs cannot reach write exec. Invalid bit cannot yield a successful load; it may have already written temporary rows. A post-count error does not exclude a committed DB state.",
+    "Given stored pragmatic row, compatible TSVs may omit trace or supply empty trace, and use either 1/true or 0/false. Empty means and trace collapse to NULL; lexical bool spelling is unrecoverable. Unused source/database fields remain unconstrained.",
+    "Eight columns append one empty trace field; nine require trace as final header. Header-only parser output is empty but load subsequently rejects. Empty lines are skipped, whitespace-only lines are not.",
+    "bit maps exactly {0,false}->false and {1,true}->true, excluding yes, case changes, negatives and empty. The direct helper check exercises these finite cases.",
+    "Missing IDs are reported before ambiguous IDs after duplicate run rejection. Exactly one (sid,doc) is required; identical duplicate candidates still count as ambiguity.",
+    "migrate_sql returns a borrowed suffix beginning at the first literal -- migrate:v substring. It neither parses SQL nor checks migration idempotence; actual DDL semantics remain unexecuted."
+  ],
+  "limitations": [
+    "Finite helper/fixture evidence only; no DuckDB integration or SQL semantics",
+    "Partial syntax projection; no macro expansion or full semantic proof",
+    "No executable approximate profile or speedup claim"
+  ],
+  "source": "tools/db/src/prag.rs",
+  "state": "Each admitted label maps to exactly one prior sentence/doc and one new aid on the safe nonoverflow domain. Source does not validate closed form/act sets. IDs are max+1 increments; bits accept only 0,false,1,true with exact spelling."
+}

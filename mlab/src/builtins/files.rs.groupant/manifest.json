@@ -1,0 +1,104 @@
+{
+  "children": [
+    {
+      "id": "mlab-builtins-files-status",
+      "path": "status.groupant"
+    },
+    {
+      "id": "mlab-builtins-files-transfer",
+      "path": "transfer.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "For valid path strings, an FsError from rmdir with n>0 excludes a thrown MError; the same FsError with n=0 excludes false-return success. delete(directory) excludes remove_file(directory), but does not exclude earlier successful deletions.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Successful status has all compatible VFS antecedents permitting the requested operation, including already-existing mkdir directories. exist_path=0 includes every stat error, not just absence; status/messages cannot reconstruct original filesystem contents.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_invariant",
+        "path": "model.md",
+        "scope": "All operational mutations route through it.fs. Path-string validation precedes the corresponding trait effect; earlier delete effects survive later errors.",
+        "section": "state_invariant",
+        "status": "partial_source_derived_model",
+        "type": "state_invariant"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "mkdir validates parent then optional name; move/copy validates both paths before destination stat. readdir failure throws for n<2, otherwise yields empty string column and -1. isfile/isfolder suppress stat failures to false.",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "exist_path uses 7 for directories, 2 for any other stat success, 0 for error. readdir prepends . and .. and delegates remaining ordering to provider. Recursive rmdir is enabled only by second string equal to s.",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "O(argument bytes + VFS operation work); delete adds O(number of paths) sequential stat/remove calls; listing retains O(entries + name bytes). No transaction, allocation or traversal cap is added here.",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "mlab-builtins-files",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../files.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "c66336a9d4bf2e948158e64f1b02e1f9b80bfc42949cb019fd11d3f70c66cfd4"
+  },
+  "status": "partial_source_bound_model"
+}

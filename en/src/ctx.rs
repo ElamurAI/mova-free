@@ -717,3 +717,27 @@ mod tests {
         assert_eq!(s[0].genre, Some(Genre::Fiction));
     }
 }
+
+#[cfg(test)]
+mod wave27 {
+    use super::*;
+    #[test]
+    fn absence_modes_and_unmatched_entities() {
+        assert_eq!(Mode::parse(" pred ").unwrap(), Mode::Pred);
+        assert!(Mode::parse("PRED").is_err());
+        assert_eq!(
+            entities_checked(&["Entity=(1-person-new", "Entity=2)"]),
+            (vec![Some((EType::Person, Info::New)); 2], 1, 1)
+        );
+        assert!(shuffled(&[], &[], &[], 0).is_empty());
+        assert_eq!(Rng::new(0).below(0), 0);
+        let c = Ctx {
+            prev: Some(None),
+            ..Ctx::default()
+        };
+        assert_eq!(c.sent_codes(), [(3, 100)]);
+        assert!(c.masked(0).is_empty());
+        let d = Doc::parse("# sent_id = x\n1\t?\t?\tPUNCT\t.\t_\t1\tpunct\t_\t_\n").unwrap();
+        assert_eq!(stype_rule(&d.sents[0].sent), SType::Other);
+    }
+}

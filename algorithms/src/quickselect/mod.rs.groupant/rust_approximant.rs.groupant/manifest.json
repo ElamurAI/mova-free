@@ -1,0 +1,71 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "analytical"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional analytical relation with finite evidence",
+        "assumptions": "Standard Rust integer semantics and u64 total order",
+        "domain": "Immutable slices of u64 with valid zero-based index; invalid index returns None",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "One companion call",
+        "operator": "For valid input, exclude results absent from input, with reported distance differing from full rank counts, or 100*d>percent*n. Invalid k excludes Some. This necessary complement approximation also permits some candidates excluded by deterministic sample choice.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_source_derived",
+        "subject_revision": "abab400e5f4d944fc1c7ad34752aa5dd7c122ae3b4bcfdf7481176c4c681eb08",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional analytical relation with finite evidence",
+        "assumptions": "Standard Rust integer semantics and u64 total order",
+        "domain": "Immutable slices of u64 with valid zero-based index; invalid index returns None",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "One companion call",
+        "operator": "For observed v,d,k,n,b, compatible multisets contain v at counts L,E>0 with distance(k,[L,L+E-1])=d and 100*d<=percent*n. Exact fallback requires k in interval and d=0. Compatible orderings additionally satisfy deterministic sample/fallback conditions; permutations can change branch. Conservative preimage, not unique recovery.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived",
+        "subject_revision": "abab400e5f4d944fc1c7ad34752aa5dd7c122ae3b4bcfdf7481176c4c681eb08",
+        "type": "reverse_reconstruction"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-quickselect-rust-approximant",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../rust_approximant.rs",
+    "sha256": "abab400e5f4d944fc1c7ad34752aa5dd7c122ae3b4bcfdf7481176c4c681eb08"
+  },
+  "status": "partial_source_derived_instance"
+}

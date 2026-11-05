@@ -1,0 +1,95 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source snapshot, declared domain and observations below; finite evidence is not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source snapshot, declared domain and observations below; finite evidence is not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "stderr_tail",
+        "path": "model.md",
+        "scope": "Source snapshot, declared domain and observations below; finite evidence is not proof",
+        "section": "stderr_tail",
+        "status": "partial_source_derived_model",
+        "type": "stderr_tail"
+      },
+      {
+        "id": "lossy_utf8",
+        "path": "model.md",
+        "scope": "Source snapshot, declared domain and observations below; finite evidence is not proof",
+        "section": "lossy_utf8",
+        "status": "partial_source_derived_model",
+        "type": "lossy_utf8"
+      },
+      {
+        "id": "environment_override",
+        "path": "model.md",
+        "scope": "Source snapshot, declared domain and observations below; finite evidence is not proof",
+        "section": "environment_override",
+        "status": "partial_source_derived_model",
+        "type": "environment_override"
+      },
+      {
+        "id": "spawn_partition",
+        "path": "model.md",
+        "scope": "Source snapshot, declared domain and observations below; finite evidence is not proof",
+        "section": "spawn_partition",
+        "status": "partial_source_derived_model",
+        "type": "spawn_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence_and_explicit_gaps"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 1700,
+      "start": 1215
+    },
+    "description": "Command(args,cwd,envs).output; spawn error context; failed exit returns reversed last-five stderr lines; success returns lossy stdout."
+  },
+  "id": "value-cli-subprocess",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../main.rs",
+    "sha256": "bd047698b58e5910d6762b81e35cc6acbb6cc7f62c5fd6216ebb774da1a477c7"
+  },
+  "status": "partial_source_bound_model"
+}

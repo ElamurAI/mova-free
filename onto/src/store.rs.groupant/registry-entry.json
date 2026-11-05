@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "Selected onto wave29_tests / hs::t:: actual-code tests; repeated debug/release and compiled controls"
+  ],
+  "children": [],
+  "cost": "O(B+N+E+W) codec/checksum with full buffers/copies; u32 count checked_mul4 and take bounds before allocation; no total allocation limit.",
+  "description": "pack fixed little-endian graph arrays under38-byte magic/version/enum-shape/length/checksum header. unpack gate order then typed arrays/pair lengths/full consumption/check. save direct write; load full read. R::take compares n<=len-p, avoiding addition overflow after retained old-code regression.",
+  "forward": [
+    "decode(encode(g))=g for checked representable g. Reader invariant p0=0≤B; n≤B-p ⇒ p'=p+n≤B, so addition cannot overflow. ValidOffsets(o,r,t): |o|=r+1 ∧ o0=0 ∧ o_last=t ∧ monotone(o)."
+  ],
+  "id": "onto-store",
+  "inverse": [
+    "Bad earlier header gate excludes Ok/body decode. n>remaining excludes slice panic under p<=len. Extra bytes/invalid enums exclude accepted graph; semantic defects may pass shape.",
+    "Checked g has unpack(pack(g))=g; canonical accepted b has pack(unpack(b))=b. Error class admits many inputs; path/metadata unrecoverable."
+  ],
+  "limitations": [
+    "Partial lexical AST, no semantic proof",
+    "No live teacher/corpus/model/DB execution",
+    "No validated executable percentage surrogate",
+    "Synthetic finite tests do not cover all public malformed states"
+  ],
+  "source": "onto/src/store.rs",
+  "state": "Accepted arrays/refs/UTF8 shape; no sortedness/unique keys/inverse edges/lexfile range/DAG proof. pack accepts malformed public graph; roundtrip requires checked graph. save not atomic/fsync."
+}

@@ -1,0 +1,51 @@
+{
+  "logs": [
+    {
+      "exit": 0,
+      "receipt": "debug-1-05.log",
+      "sha256": "d25f3c71c82dfc9606938e0b28c248cd08f2f5a4e4ed4571d61a04b6d836b2de"
+    },
+    {
+      "exit": 0,
+      "receipt": "debug-2-05.log",
+      "sha256": "c16da09ff466411e3a5b2113a873aee36b6dc8a737f09954b67d284a8ba84ca7"
+    },
+    {
+      "exit": 0,
+      "receipt": "release-1-05.log",
+      "sha256": "472512e8c0c3b37aa77d6f0ccd71827e22e41d3da4b37ba4b119f4c0f47333c6"
+    },
+    {
+      "exit": 0,
+      "receipt": "release-2-05.log",
+      "sha256": "99f6dc6b21351f5e98e8b03019ecf48bd5a3e693e017b320f8e007f9225284f5"
+    },
+    {
+      "exit": 101,
+      "receipt": "mutant-main.log",
+      "sha256": "1f8ffea66064132d98164c2f3242bbe6e315d5d2d84ce1d2d349e9c8f3b9809a"
+    },
+    {
+      "exit": 0,
+      "receipt": "restored-main.log",
+      "sha256": "827362070e7d95f3fad8a6ce7db11475e7e1bf04845fcb2d080d4a7915fd52df"
+    }
+  ],
+  "mutation": {
+    "kind": "compiled_source_behavior",
+    "new": "t.sents_unaligned += 0;",
+    "old": "t.sents_unaligned += 1;",
+    "original_sha256": "0c6745dd24d6be0c80fc44c855adc88cceb66e5faf0890747f4e93c1cf49d62a",
+    "restoration_exact": true,
+    "restored_sha256": "0c6745dd24d6be0c80fc44c855adc88cceb66e5faf0890747f4e93c1cf49d62a",
+    "source": "tools/hbo/src/main.rs",
+    "status": 101
+  },
+  "primary_test": "wave32::flags_parts_prepare_and_score_boundaries",
+  "production_prefix_preserved": true,
+  "schema": 1,
+  "scope": "Finite synthetic actual-code observations, no semantic correctness proof or percent surrogate",
+  "source": "tools/hbo/src/main.rs",
+  "source_sha256": "0c6745dd24d6be0c80fc44c855adc88cceb66e5faf0890747f4e93c1cf49d62a",
+  "syntax_sha256": "74bbaf9f7e558d204bd0fd04cb65d7a3971abf6571bcc4cc8fdc7530e83c0a30"
+}

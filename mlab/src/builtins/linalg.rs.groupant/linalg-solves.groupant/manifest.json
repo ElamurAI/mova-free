@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "pivot_ties",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "pivot_ties",
+        "status": "partial_source_derived_model",
+        "type": "pivot_ties"
+      },
+      {
+        "id": "svd_zero",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "svd_zero",
+        "status": "partial_source_derived_model",
+        "type": "svd_zero"
+      },
+      {
+        "id": "qr_rank",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "qr_rank",
+        "status": "partial_source_derived_model",
+        "type": "qr_rank"
+      },
+      {
+        "id": "rhs_projection",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "rhs_projection",
+        "status": "partial_source_derived_model",
+        "type": "rhs_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 12030,
+      "start": 8498
+    },
+    "description": "lstsq_svd computes X=V*diag(1/s retained)*U^T B, ignoring s<=max(m,n)*smax*eps. lstsq_qr pivots largest remaining column norm (strict greater, earliest tie), reflects RHS, triangular-solves and unpermutes; returns None when m<n,n=0 or pivot below tolerance.",
+    "source_bytes_sha256": "608ad048647a06e8d4420557fc8d350a66f706dba8c7ce8c3e451f36baf964d3"
+  },
+  "id": "mlab-numerics-linalg-solves",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../linalg.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "f3579e5bd4a5ee898096bb912061bc751a0d48e294cd3062452e5ca38546d178"
+  },
+  "status": "partial_source_bound_model"
+}

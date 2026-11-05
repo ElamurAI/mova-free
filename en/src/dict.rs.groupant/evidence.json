@@ -1,0 +1,74 @@
+{
+  "clippy": {
+    "blocker": "Pre-existing en/build.rs:51 manual_is_multiple_of",
+    "exit": 101,
+    "scope": "cargo clippy -p en --lib --no-deps -- -D warnings"
+  },
+  "epoch": "2026-10-31",
+  "negative_control": {
+    "gap": "Only three distinct algorithm/effect boundaries received compiled controls",
+    "status": "not_mutated"
+  },
+  "receipt_digests": [
+    {
+      "receipt": "debug1.log",
+      "sha256": "fe2e58adccc4b14a718e5dd7d6a7e3878f31871e6a1ba9316fc907a0cca0735a"
+    },
+    {
+      "receipt": "debug2.log",
+      "sha256": "9fccf3549bb70461f937960dabcb36ef0d59d2107fc6c69f91f2d0aac64a0fef"
+    },
+    {
+      "receipt": "release1.log",
+      "sha256": "e88766762499c0e9eb3a9a52f66eb17f64859e8f03b33b84ab2fbb400c0a60b9"
+    },
+    {
+      "receipt": "release2.log",
+      "sha256": "501677fadc9d60886c012df69fb5e9687abf336bbbcc41b1bbb0a438a2472c8b"
+    },
+    {
+      "receipt": "control-hash.log",
+      "sha256": "02667a9a05167211810921e490fa708309abef059264857a9720cb277105f1b1"
+    },
+    {
+      "receipt": "control-text.log",
+      "sha256": "988957b44c01b454d3f28efb39b63e5ae458f7f61b563046855f2ff1bab63e91"
+    },
+    {
+      "receipt": "control-lexgen.log",
+      "sha256": "e81dca03e866291d0c4a51f40fd7218cae53a3b2cacdd0564eeb89e0b1b9c983"
+    },
+    {
+      "receipt": "restored.log",
+      "sha256": "c99bbb7dd6defd59eadb9d192786bf7be1ff0d61a5cc1bce0ff7c693dd67306c"
+    }
+  ],
+  "runs": [
+    {
+      "exit": 0,
+      "failed": 0,
+      "name": "debug1",
+      "passed": 10
+    },
+    {
+      "exit": 0,
+      "failed": 0,
+      "name": "debug2",
+      "passed": 10
+    },
+    {
+      "exit": 0,
+      "failed": 0,
+      "name": "release1",
+      "passed": 10
+    },
+    {
+      "exit": 0,
+      "failed": 0,
+      "name": "release2",
+      "passed": 10
+    }
+  ],
+  "source_sha256": "22160ef3c2a2b5b60b9fa4eda3f597144b6d5352d369dd78e873d42e38cdb1e7",
+  "test": "dict::wave27_tests::invalid_namespace_and_frozen_lookup"
+}

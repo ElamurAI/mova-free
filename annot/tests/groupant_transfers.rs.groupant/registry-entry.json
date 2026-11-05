@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "groupant_common_tree_and_rejected_cycle_only_projection",
+    "groupant_distinct_empty_self_head_and_error_policies",
+    "Run only groupant_ external tests when distinguishing them from included source-local tests"
+  ],
+  "children": [],
+  "cost": "For fixture vectors h, total harness cost is sum_h of construction plus both gates plus the BFS observation. Production cycle-phase costs are O(n_h^2) with constant auxiliary walk space for n_h<=64, and O(n_h) with up to O(n_h) BFS storage after the <=4n_h budget for larger vectors. Fixture enumeration, diagnostics and source-included test modules add separate compile/test-run scope; no timing claim.",
+  "description": "Two supplied-input test observations construct lawful annotation tokens and converter words from shared head vectors, invoke actual ann::check and en::convert::tree_gate, and compare accepted trees or minimum root-unreachable-token projections with reversed-head BFS. Separate fixtures assert the intentionally different empty, self-head, count/form and ordered error policies. Expanded inputs exercise the hybrid dispatch without changing these named test relations.",
+  "forward": [
+    "Two supplied-input test observations construct lawful annotation tokens and converter words from shared head vectors, invoke actual ann::check and en::convert::tree_gate, and compare accepted trees or minimum root-unreachable-token projections with reversed-head BFS. Separate fixtures assert the intentionally different empty, self-head, count/form and ordered error policies. Expanded inputs exercise the hybrid dispatch without changing these named test relations.",
+    "Test-only join: one supplied head vector produces two lawful record representations and an independent reachability observation. Calls target the real annotation and conversion gates; neither production gate calls the other. On admitted common-domain fixtures, compare acceptance or first root-unreachable token. On boundary fixtures, assert the distinct exact Result observations. Source-local imported unit tests are separate from the two groupant_ tests."
+  ],
+  "id": "annot-groupant-transfers",
+  "inverse": [
+    "For the finite supplied-call universe, the modeled excluded observations include accepting a root-disconnected lawful vector, reporting token 3 instead of token 1 for [3,0,4,3], and claiming both gates share empty/self-head outcomes. The first test samples common-domain exclusions and the second samples boundary exclusions; passing them is not a complement model for every parser input.",
+    "Given a projected accepted/rejected result, retain all lawful fixture vectors and token fields producing it under both actual gates. A rejected first token does not identify the rest of the cycle or lexical fields. Given a boundary error, retain the operation tag and earlier predicates; no unique input is recovered."
+  ],
+  "limitations": [
+    "Finite checks do not establish full annotation normalization or converter action semantics. Installed fixtures include 12 shared vectors (eight accepted, four cycle cases), lengths 64/65 and a 132-token budget-exhaustion case. Exact root error strings and stable one-based indexing are part of the checked observation. Paired syntax is byte-identical; named tests passed twice in debug and twice in release.",
+    "Finite integration evidence is recorded; checks do not establish a general proof."
+  ],
+  "source": "annot/tests/groupant_transfers.rs",
+  "state": "The harness keeps operation tags and compares cross-gate outputs only after establishing shared representation and preflight assumptions. An unreachable tail can be the first reported token without being a cycle vertex. Boundary differences are asserted explicitly rather than normalized into false equivalence."
+}

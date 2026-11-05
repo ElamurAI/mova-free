@@ -1,0 +1,102 @@
+{
+  "children": [
+    {
+      "id": "translation-flow-measure-order",
+      "path": "order.groupant"
+    },
+    {
+      "id": "translation-flow-measure-text",
+      "path": "text.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "order_residual",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "order_residual",
+        "status": "partial_source_derived_model",
+        "type": "order_residual"
+      },
+      {
+        "id": "boundary_coordinates",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "boundary_coordinates",
+        "status": "partial_source_derived_model",
+        "type": "boundary_coordinates"
+      },
+      {
+        "id": "text_literals",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "text_literals",
+        "status": "partial_source_derived_model",
+        "type": "text_literals"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_helpers_only"
+    }
+  },
+  "id": "translation-flow-measure",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../measure.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "c34da721e6921c202314dfe546331c6d192234a2e37de17049bb09e4321dbd5d"
+  },
+  "status": "partial_source_bound_model"
+}

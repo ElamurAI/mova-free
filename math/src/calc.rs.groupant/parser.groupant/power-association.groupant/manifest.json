@@ -1,0 +1,102 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "scope": "Shared parent syntax restricted to coverage byte interval; no semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "unary_power_order",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "unary_power_order",
+        "status": "partial_source_derived_model",
+        "type": "unary_power_order"
+      },
+      {
+        "id": "postfix_power_order",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "postfix_power_order",
+        "status": "partial_source_derived_model",
+        "type": "postfix_power_order"
+      },
+      {
+        "id": "index_failure_boundary",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "index_failure_boundary",
+        "status": "partial_source_derived_model",
+        "type": "index_failure_boundary"
+      },
+      {
+        "id": "tree_value_distinction",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "tree_value_distinction",
+        "status": "partial_source_derived_model",
+        "type": "tree_value_distinction"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "Tests",
+      "status": "bounded_actual_helper_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 13882,
+      "start": 13128
+    },
+    "description": "pow first consumes postfix; if ^ follows it advances once and parses unary as exponent, producing Pow(base,exponent). postfix repeatedly adds Fact or Index nodes after a primary. Unary may recursively reenter pow, so exponentiation associates right while leading minus wraps the power."
+  },
+  "id": "math-calc-parser-power-association",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../calc.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e"
+  },
+  "status": "partial_source_bound_model"
+}

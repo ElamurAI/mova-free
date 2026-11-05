@@ -1,0 +1,250 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "ast.json",
+      "scope": "Partial source syntax; macros opaque; no semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "descriptant",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional inner bound of U minus R",
+        "assumptions": "Successful allocation; trusted Rust semantics; lawful stable generic traits where applicable",
+        "domain": "Lawful API inputs and invariant states; see section domain",
+        "evidence": "Four tests twice, direct reference checks, filtered compiled-source mutation failure; see tests section",
+        "id": "algorithm-sparse-table-behavior-complement",
+        "observation_scope": "Single call or explicitly named update trace",
+        "operator": "Relation in model.md behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/sparse_table/mod.rs sha256:e6b5192428b67f7a1d06b4ec0b177450a37f08f49d27da1fbd4e9cb6ddf73f57",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Set-valued preimage; no unique recovery unless stated",
+        "assumptions": "Successful allocation; trusted Rust semantics; lawful stable generic traits where applicable",
+        "domain": "Lawful API inputs and invariant states; see section domain",
+        "evidence": "Four tests twice, direct reference checks, filtered compiled-source mutation failure; see tests section",
+        "id": "algorithm-sparse-table-reverse-reconstruction",
+        "observation_scope": "Single call or explicitly named update trace",
+        "operator": "Relation in model.md reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/sparse_table/mod.rs sha256:e6b5192428b67f7a1d06b4ec0b177450a37f08f49d27da1fbd4e9cb6ddf73f57",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped source relation and bounded executable correspondence",
+        "assumptions": "Successful allocation; trusted Rust semantics; lawful stable generic traits where applicable",
+        "domain": "Lawful API inputs and invariant states; see section domain",
+        "evidence": "Four tests twice, direct reference checks, filtered compiled-source mutation failure; see tests section",
+        "id": "algorithm-sparse-table-overlap-cover",
+        "observation_scope": "Single call or explicitly named update trace",
+        "operator": "Relation in model.md overlap-cover",
+        "path": "model.md",
+        "required": false,
+        "section": "overlap-cover",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/sparse_table/mod.rs sha256:e6b5192428b67f7a1d06b4ec0b177450a37f08f49d27da1fbd4e9cb6ddf73f57",
+        "type": "interval_cover"
+      },
+      {
+        "approximation_semantics": "Scoped source relation and bounded executable correspondence",
+        "assumptions": "Successful allocation; trusted Rust semantics; lawful stable generic traits where applicable",
+        "domain": "Lawful API inputs and invariant states; see section domain",
+        "evidence": "Four tests twice, direct reference checks, filtered compiled-source mutation failure; see tests section",
+        "id": "algorithm-sparse-table-tie-identity",
+        "observation_scope": "Single call or explicitly named update trace",
+        "operator": "Relation in model.md tie-identity",
+        "path": "model.md",
+        "required": false,
+        "section": "tie-identity",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/sparse_table/mod.rs sha256:e6b5192428b67f7a1d06b4ec0b177450a37f08f49d27da1fbd4e9cb6ddf73f57",
+        "type": "stable_argmin"
+      },
+      {
+        "approximation_semantics": "Scoped source relation and bounded executable correspondence",
+        "assumptions": "Successful allocation; trusted Rust semantics; lawful stable generic traits where applicable",
+        "domain": "Lawful API inputs and invariant states; see section domain",
+        "evidence": "Four tests twice, direct reference checks, filtered compiled-source mutation failure; see tests section",
+        "id": "algorithm-sparse-table-ownership",
+        "observation_scope": "Single call or explicitly named update trace",
+        "operator": "Relation in model.md ownership",
+        "path": "model.md",
+        "required": false,
+        "section": "ownership",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/sparse_table/mod.rs sha256:e6b5192428b67f7a1d06b4ec0b177450a37f08f49d27da1fbd4e9cb6ddf73f57",
+        "type": "snapshot_frame"
+      }
+    ],
+    "rust_approximants": [
+      {
+        "assumptions": [
+          "Global minimum m and maximum M bound every valid range minimum R.",
+          "100(M-m)<=pM implies (R-m)/R<=p/100; u128 products avoid overflow.",
+          "Failed certificates invoke original SparseTable; resource failures have no numerical guarantee."
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 1,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "interval_certificate",
+          "metric_kind": "scalar_relative"
+        },
+        "domain": "All finite u64 slices and usize half-open range endpoints after successful construction.",
+        "error_percent": 1,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md#tests",
+            "sha256": "853fb4ba2a3541123bf9cc4da795a97f51feab3afdf83e50f7f7d4c4f7e4df00"
+          }
+        ],
+        "id": "sparse-table-1pct",
+        "metric": "(R-value)/R for true range minimum R>0; zero exact; invalid ranges return None; numerical value only, no in-range witness.",
+        "path": "rust_approximant.rs",
+        "sha256": "c2c5d9c8341a0c6a826dc507ba41d74db187592d65a60281fce119bb22c61934",
+        "source": {
+          "path": "../mod.rs",
+          "sha256": "e6b5192428b67f7a1d06b4ec0b177450a37f08f49d27da1fbd4e9cb6ddf73f57"
+        },
+        "status": "analytical_certificate_with_finite_differential_checks"
+      },
+      {
+        "assumptions": [
+          "Global minimum m and maximum M bound every valid range minimum R.",
+          "100(M-m)<=pM implies (R-m)/R<=p/100; u128 products avoid overflow.",
+          "Failed certificates invoke original SparseTable; resource failures have no numerical guarantee."
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 2,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "interval_certificate",
+          "metric_kind": "scalar_relative"
+        },
+        "domain": "All finite u64 slices and usize half-open range endpoints after successful construction.",
+        "error_percent": 2,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md#tests",
+            "sha256": "853fb4ba2a3541123bf9cc4da795a97f51feab3afdf83e50f7f7d4c4f7e4df00"
+          }
+        ],
+        "id": "sparse-table-2pct",
+        "metric": "(R-value)/R for true range minimum R>0; zero exact; invalid ranges return None; numerical value only, no in-range witness.",
+        "path": "rust_approximant.rs",
+        "sha256": "c2c5d9c8341a0c6a826dc507ba41d74db187592d65a60281fce119bb22c61934",
+        "source": {
+          "path": "../mod.rs",
+          "sha256": "e6b5192428b67f7a1d06b4ec0b177450a37f08f49d27da1fbd4e9cb6ddf73f57"
+        },
+        "status": "analytical_certificate_with_finite_differential_checks"
+      },
+      {
+        "assumptions": [
+          "Global minimum m and maximum M bound every valid range minimum R.",
+          "100(M-m)<=pM implies (R-m)/R<=p/100; u128 products avoid overflow.",
+          "Failed certificates invoke original SparseTable; resource failures have no numerical guarantee."
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 5,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "interval_certificate",
+          "metric_kind": "scalar_relative"
+        },
+        "domain": "All finite u64 slices and usize half-open range endpoints after successful construction.",
+        "error_percent": 5,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md#tests",
+            "sha256": "853fb4ba2a3541123bf9cc4da795a97f51feab3afdf83e50f7f7d4c4f7e4df00"
+          }
+        ],
+        "id": "sparse-table-5pct",
+        "metric": "(R-value)/R for true range minimum R>0; zero exact; invalid ranges return None; numerical value only, no in-range witness.",
+        "path": "rust_approximant.rs",
+        "sha256": "c2c5d9c8341a0c6a826dc507ba41d74db187592d65a60281fce119bb22c61934",
+        "source": {
+          "path": "../mod.rs",
+          "sha256": "e6b5192428b67f7a1d06b4ec0b177450a37f08f49d27da1fbd4e9cb6ddf73f57"
+        },
+        "status": "analytical_certificate_with_finite_differential_checks"
+      },
+      {
+        "assumptions": [
+          "Global minimum m and maximum M bound every valid range minimum R.",
+          "100(M-m)<=pM implies (R-m)/R<=p/100; u128 products avoid overflow.",
+          "Failed certificates invoke original SparseTable; resource failures have no numerical guarantee."
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 10,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "interval_certificate",
+          "metric_kind": "scalar_relative"
+        },
+        "domain": "All finite u64 slices and usize half-open range endpoints after successful construction.",
+        "error_percent": 10,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md#tests",
+            "sha256": "853fb4ba2a3541123bf9cc4da795a97f51feab3afdf83e50f7f7d4c4f7e4df00"
+          }
+        ],
+        "id": "sparse-table-10pct",
+        "metric": "(R-value)/R for true range minimum R>0; zero exact; invalid ranges return None; numerical value only, no in-range witness.",
+        "path": "rust_approximant.rs",
+        "sha256": "c2c5d9c8341a0c6a826dc507ba41d74db187592d65a60281fce119bb22c61934",
+        "source": {
+          "path": "../mod.rs",
+          "sha256": "e6b5192428b67f7a1d06b4ec0b177450a37f08f49d27da1fbd4e9cb6ddf73f57"
+        },
+        "status": "analytical_certificate_with_finite_differential_checks"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "tests",
+      "status": "partial"
+    }
+  },
+  "id": "algorithm-sparse-table",
+  "kind": "groupant",
+  "registry": {
+    "node": "algorithm-sparse-table",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "e6b5192428b67f7a1d06b4ec0b177450a37f08f49d27da1fbd4e9cb6ddf73f57"
+  },
+  "status": "partial"
+}

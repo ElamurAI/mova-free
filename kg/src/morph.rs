@@ -156,3 +156,35 @@ mod tests {
         assert_eq!(norm("М’ЯСО"), "м'ясо");
     }
 }
+
+#[cfg(test)]
+mod wave29 {
+    use super::*;
+    use std::io::Write;
+    #[test]
+    fn two_pass_synthetic_dictionary() {
+        let path = std::env::temp_dir().join(format!("kg-wave29-morph-{}.bz2", std::process::id()));
+        let mut enc =
+            bzip2::write::BzEncoder::new(File::create(&path).unwrap(), bzip2::Compression::best());
+        enc.write_all("читати verb:imperf:inf # rv_zna\n  читає verb:imperf:pres:s:3:xp2\n  читав verb:imperf:past:m:xp2\nкіт noun:anim:m:v_naz\n  кота noun:anim:m:v_rod\n".as_bytes()).unwrap();
+        enc.finish().unwrap();
+        let m = Morph::load(&path, &HashSet::from(["читає".to_string()])).unwrap();
+        assert_eq!(m.forms.len(), 1);
+        let a = &m.forms["читає"][0];
+        assert_eq!(a.lemma, "читати|verb#xp2");
+        assert_eq!(a.gov, 1 << 4);
+        assert_eq!(
+            m.synth[&(a.lemma.clone(), Gram::from_vesum("verb:imperf:past:m"))],
+            vec!["читав"]
+        );
+        assert!(!m.forms.contains_key("читав"));
+        assert!(
+            Morph::load(&path, &HashSet::new())
+                .unwrap()
+                .synth
+                .is_empty()
+        );
+        assert_eq!(norm("М\u{301}ʼЯСО\u{200D}"), "м'ясо");
+        std::fs::remove_file(path).unwrap();
+    }
+}

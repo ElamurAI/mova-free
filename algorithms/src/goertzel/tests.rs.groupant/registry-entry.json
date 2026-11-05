@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "independent_dft computes trigonometric sum for all bins and n=1..55; phase_and_duplicates checks sign/order/repeated bins; dc_nyquist_limits checks endpoints and caps; rejected_domains checks invalid bins even for empty input and invalid values even for empty bins.",
+    "Negating terminal imaginary component compiles and fails phase_and_duplicates."
+  ],
+  "children": [],
+  "cost": "O(n*b) work/O(b) output, worst bounded product 2^32 scalar iterations. Standard allocator policy; no callbacks.",
+  "description": "Finite fixture-to-assertion transition. independent_dft computes trigonometric sum for all bins and n=1..55; phase_and_duplicates checks sign/order/repeated bins; dc_nyquist_limits checks endpoints and caps; rejected_domains checks invalid bins even for empty input and invalid values even for empty bins.",
+  "forward": [
+    "Finite fixture-to-assertion transition. independent_dft computes trigonometric sum for all bins and n=1..55; phase_and_duplicates checks sign/order/repeated bins; dc_nyquist_limits checks endpoints and caps; rejected_domains checks invalid bins even for empty input and invalid values even for empty bins."
+  ],
+  "id": "algorithm-goertzel-tests",
+  "inverse": [
+    "Pass has all implementations agreeing on checked fixture observations as preimages; behavior outside fixtures can differ. Partial bins are noninjective: bin0 alone sees only sum, so [1,-1] and [0,0] share zero; empty bins erase all sample information, though values still validate. Complete spectrum determines real samples in exact arithmetic; rounding and omitted bins prevent general exact reconstruction."
+  ],
+  "limitations": [
+    "Partial syntax without semantic proof",
+    "Finite numerical tests do not guarantee accuracy",
+    "No executable approximation profile or timing claim",
+    "Standard allocation exhaustion may abort; no callback effects"
+  ],
+  "source": "algorithms/src/goertzel/tests.rs",
+  "state": "Bounded finite sample vectors, transform/QR scratch, tagged errors; test state comprises finite observations"
+}

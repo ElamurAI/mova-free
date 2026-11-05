@@ -1,0 +1,103 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical projection, no macro expansion or name/type resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Exact source byte scope below",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Exact source byte scope below",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "identity_casefold",
+        "path": "model.md",
+        "scope": "Exact source byte scope below",
+        "section": "identity_casefold",
+        "status": "partial_source_derived_model",
+        "type": "identity_casefold"
+      },
+      {
+        "id": "owner_guard",
+        "path": "model.md",
+        "scope": "Exact source byte scope below",
+        "section": "owner_guard",
+        "status": "partial_source_derived_model",
+        "type": "owner_guard"
+      },
+      {
+        "id": "location_history",
+        "path": "model.md",
+        "scope": "Exact source byte scope below",
+        "section": "location_history",
+        "status": "partial_source_derived_model",
+        "type": "location_history"
+      },
+      {
+        "id": "rename_scope",
+        "path": "model.md",
+        "scope": "Exact source byte scope below",
+        "section": "rename_scope",
+        "status": "partial_source_derived_model",
+        "type": "rename_scope"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_checks_partial_scope"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 13748,
+      "start": 10950
+    },
+    "description": "set_me lowercases once and refuses a distinct established name. rename rewrites selected person keys/participants. move_to writes At and appends history; take removes previous carrier entry then appends; drop_ removes holder only on matching owner. Equations: H'[o]=a, C'[previous]=C[previous] without o, C'[a]=C'[a]++[o]; drop only removes H[o] when H[o]=a. move appends (order,t,p) and coalesces equal adjacent ohist places.",
+    "source_bytes_sha256": "927ba44eea4d08909cd488969f374aee452c8e8406e335c170cafe7b0d23eeeb"
+  },
+  "id": "world-babi-inventory",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../babi.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "54596da093fa9515cac6d7bf5eeb9443322c98fee3dcc27c1eebae32a83e5880"
+  },
+  "status": "partial_source_bound_model"
+}

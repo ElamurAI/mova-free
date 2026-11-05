@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "emode::tests::closed_words_in_context",
+    "emode::tests::not_after_the_verb"
+  ],
+  "children": [],
+  "cost": "Closed lookup O(n*C*wordbytes), C fixed table size; Capitals guard can scan whole sentence per hit. ending delegates dictionary/morph. postverbal_not O(n²) ancestry worst case, O(1) extra beyond lowercased word. Registry initialized once; no training.",
+  "description": "Archaic closed-word guards, dictionary-backed ending fallback, annotation repair and postverbal negation reattachment.",
+  "forward": [
+    "entry picks first case-folded form; closed applies contextual guard; force takes closed tag before ending. tagged additionally matches tag and can select second thine reading. ending rejects non-ASCII letters, interior capitalization, any closed/dictionary-known form, then asks morph::ending_verb. fix chooses tagged or matching ending, selects final UPOS, removes illegal features and changes non-be Cop to Aux."
+  ],
+  "id": "en-emode",
+  "inverse": [
+    "R(force tags) includes all spellings/context sentences satisfying the selected guard and lowercased table match; unknown words also map None. fix loses original feature bits rejected by allowed and original non-be Cop vs Aux; neither repaired tuple nor moved-count uniquely restores old annotation."
+  ],
+  "limitations": [
+    "Dictionary-sensitive ending_rule and fix_follows_the_registry excluded (can early-return)",
+    "Registry-dependent fix and dictionary ending not newly measured",
+    "Mismatched arrays/invalid head indices can panic; preexisting cycles not repaired"
+  ],
+  "source": "en/src/emode.rs",
+  "state": "Ordered CLOSED entries, token forms/tags/upos/head/relations, embedded registry OnceLock and dictionary."
+}

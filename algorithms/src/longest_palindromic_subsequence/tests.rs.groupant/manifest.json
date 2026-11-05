@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-longest_palindromic_subsequence-tests",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "8dbd0ef2532ac5f2c826c5f98f08f4bc00e6d55ea65f1dd43c59327f15461c2d"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "path": "syntax.json",
+      "format": "rust_syntax_projection",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "domain": "Deterministic successful Rust test runs on named bounded fixtures; no claims for unexecuted cases.",
+        "operator": "Within deterministic terminating test executions, a pass is excluded when any executed assertion is false; failure is excluded when all assertions hold. Untested inputs are outside this observation.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Bounded test observations.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "8dbd0ef2532ac5f2c826c5f98f08f4bc00e6d55ea65f1dd43c59327f15461c2d",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "compatible_antecedents",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "compatible_antecedents",
+        "domain": "Deterministic successful Rust test runs on named bounded fixtures; no claims for unexecuted cases.",
+        "operator": "A pass admits every implementation agreeing with all tested observations; many disagree elsewhere. A failure trace restricts compatible executions to those violating its named assertion and cannot identify a unique source bug.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Bounded test observations.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "8dbd0ef2532ac5f2c826c5f98f08f4bc00e6d55ea65f1dd43c59327f15461c2d",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "oracle_independence",
+        "type": "oracle_relation",
+        "path": "model.md",
+        "section": "oracle_independence",
+        "domain": "Deterministic successful Rust test runs on named bounded fixtures; no claims for unexecuted cases.",
+        "operator": "Enumerate every index subset and test its reversal, without interval recurrence.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Bounded test observations.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "8dbd0ef2532ac5f2c826c5f98f08f4bc00e6d55ea65f1dd43c59327f15461c2d",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "finite_scope",
+        "type": "evidence_boundary",
+        "path": "model.md",
+        "section": "finite_scope",
+        "domain": "Deterministic successful Rust test runs on named bounded fixtures; no claims for unexecuted cases.",
+        "operator": "9841 ternary words through length 8, every index subset; generic strings, constant length 1000, endpoint wrapping and projection collisions.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Bounded test observations.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "8dbd0ef2532ac5f2c826c5f98f08f4bc00e6d55ea65f1dd43c59327f15461c2d",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "mutant_discrimination",
+        "type": "negative_control",
+        "path": "model.md",
+        "section": "mutant_discrimination",
+        "domain": "Deterministic successful Rust test runs on named bounded fixtures; no claims for unexecuted cases.",
+        "operator": "A separately compiled semantic source mutant must fail a real production assertion; a compiler error does not count. This demonstrates one detected error, not mutation completeness.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Bounded test observations.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "8dbd0ef2532ac5f2c826c5f98f08f4bc00e6d55ea65f1dd43c59327f15461c2d",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      }
+    ]
+  }
+}

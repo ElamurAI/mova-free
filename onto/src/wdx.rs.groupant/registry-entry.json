@@ -1,0 +1,29 @@
+{
+  "checks": [
+    "wdx::t::entity_rows",
+    "wdx::t::filters",
+    "wdx::t::ids",
+    "wdx::t::sql_columns_match",
+    "wdx::t::stream_tails",
+    "wdx::t::wikipedia_sites"
+  ],
+  "children": [],
+  "cost": "Linear parse/emission plus compression, eight buffers per worker and max-line carry; repeated growing tail copies may be superlinear for huge lines. workers*2/chunk arithmetic/counters unchecked; decompressor/live IO unmeasured.",
+  "description": "Serde visitors borrow selected fields, discard unknown props, accept arrays as defaults. num_id checked decimalu32. process_line markers/bad counters; emits item/property schemas, deprecated rank0 retained but live flags only. Label export=(P279∨any_sitelink∨taxon)∧!skip_wm with optional languages; only Wikipedia sitelinks. Tsv controls<32→space. Chunk carry preserves LF tails/long/final lines, merges workers. extract/sample own decompressor/files; bzip bit restream drops incomplete lines.",
+  "forward": [
+    "Serde visitors borrow selected fields, discard unknown props, accept arrays as defaults. num_id checked decimalu32. process_line markers/bad counters; emits item/property schemas, deprecated rank0 retained but live flags only. Label export=(P279∨any_sitelink∨taxon)∧!skip_wm with optional languages; only Wikipedia sitelinks. Tsv controls<32→space. Chunk carry preserves LF tails/long/final lines, merges workers. extract/sample own decompressor/files; bzip bit restream drops incomplete lines.",
+    "Trim CR/comma/space; empty/[ /] marker returns; else lines++. Deserialize error→bad++. emit property/item/other; export=(live279∨sl.n>0∨taxon)∧!skip_wm. Item row before labels/aliases/sitelinks/selected claims. Secondary JSON error counts bad without undo."
+  ],
+  "id": "onto-wdx",
+  "inverse": [
+    "Exclude unknown props and non-Wikipedia sitelinks, overflow IDs. Allow leading zeros. Do not exclude partial emission after secondary JSON failure; any sitelink can enable labels.",
+    "TSV fibers include control spellings, removed leading+ amounts, ignored fields/properties/default arrays. Stats lose ordering/worker partition. restream loses prefix bits/final partial shifted byte."
+  ],
+  "limitations": [
+    "entity_rows, filters, 50-item/5000-byte-label/300-chunk stream_tails, Wikipedia/SQL/ID tests executed. 400000-item bzip test, dumps/extract/sample/subprocess/DB skipped.",
+    "Executable approximant gap: no useful percentage metric established for these categorical/effectful observations. No surrogate or production substitution. Future caps 1/2/5/10% require a metric/domain and evidence; no numerical error bound follows here.",
+    "Partial lexical AST, no macro expansion/semantic proof; no live teacher/dump/corpus/database execution"
+  ],
+  "source": "onto/src/wdx.rs",
+  "state": "Invalid provided id blocks numeric-id fallback. Unknown rank1. Secondary labels error can follow counters/item row; no rollback. Positive workers/chunk required to avoid zero hang. Parallel partition/report tie order not deterministic."
+}

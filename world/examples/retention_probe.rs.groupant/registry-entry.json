@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "15selected wave29_worldlearn CPU tests paired debug/release; see model.md#tests for exact source names",
+    "Compiled negative source control, exact restoration and positive rerun"
+  ],
+  "children": [],
+  "cost": "Two material reads+train+3exams+save/load+metadata, sizes unbounded. Durations seconds, checkpoint bytes; no measured performance claim.",
+  "description": "main gathers args then probe requires4. Read/parse train then exam, Retained::new(train.course), train(false), live exam, exclusive save, load, cold exam. Delete seconds only from reports, assert JSON equality, blank exam, print timings/no_training_right/checkpoint bytes.",
+  "forward": [
+    "main gathers args then probe requires4. Read/parse train then exam, Retained::new(train.course), train(false), live exam, exclusive save, load, cold exam. Delete seconds only from reports, assert JSON equality, blank exam, print timings/no_training_right/checkpoint bytes.",
+    "knowledge::retention::Retained owns graph semantics; removing seconds is report projection not graph equality proof. This file delegates all successful retention mechanics."
+  ],
+  "id": "world-retention-probe",
+  "inverse": [
+    "Success admits all train histories with same retained graph/report and arbitrary timing values. Early parse failure admits any absent exam/state paths; stdout cannot recover transient learner cache or original material bytes."
+  ],
+  "limitations": [
+    "Two early-failure tests only; successful retention path and process isolation remain unexecuted/delegated; no surrogate.",
+    "Partial source-derived model, not complete proof; no executable surrogate"
+  ],
+  "source": "world/examples/retention_probe.rs",
+  "state": "Material parse order preserved by main->probe extraction; errors propagate and prior effects may remain. Retained owns create_new/checksum semantics; success stdout after equality/blank exam/metadata."
+}

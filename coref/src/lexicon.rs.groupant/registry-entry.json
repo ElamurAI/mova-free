@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "tests::lexicon_paths_find_their_pairs",
+    "tests::lexicon_paths_negative_controls",
+    "tests::lexicon_decisions_need_evidence_and_a_clear_share",
+    "tests::lexicon_feature_keeps_it_from_a_person_noun"
+  ],
+  "children": [],
+  "cost": "hits O(n²) per sentence of n words (child scans and dominance walks); counting O(total words) plus one CoNLL-U parse per block of 5000 sentences; counts BTreeMap O(K log K) for K (lemma, source, path, class) keys; build O(K log K); feats O(log L) lookup in L lemmas; the table is loaded once per process (OnceLock).",
+  "description": "A gender, number and animacy lexicon of common nouns counted from Mova's own parses over Bergsma and Lin's high-precision noun–pronoun paths, smoothed into per-lemma shares, and the mention features it gives the sieve and the frame reader.",
+  "forward": [
+    "hits(s): for each third-person pronoun (he/him/his/himself, she/her/hers/herself, it/its/itself, they/them/their/themselves) and each acl:relcl on a noun, emit (noun lemma, class, path) for paths refl (reflexive under the subject's predicate, or emphatic directly under the noun without case), poss (nmod:poss in an obj/obl/iobj of the subject's predicate, outside the subject), say (subject of a SAY verb whose ccomp has the pronoun as nominative subject, same quote), pred (nominative pronoun subject of a copular noun without case, negation or clausal dependents), appos, relpron (first non-ADP word of the relative clause who/whom/whose or which). The noun must be countable (NOUN, not compound/flat/fixed/conj/goeswith/reparandum, no conj child, alphabetic lemma), in the pronoun's quote, without a what/which/whose determiner; a plural noun with a singular pronoun is dropped. feats(lemma): animacy ANIM if smoothed (masc+fem+who) share >= tau, INAN if the complement >= tau, with at least min_n counts; gender MASC, FEM, NEUT or MASC|FEM from smoothed he/she/it shares >= tau; contradictory (NEUT with ANIM, INAN with masc/fem) and empty results give None."
+  ],
+  "id": "coref-lexicon",
+  "inverse": [
+    "A table row is the sum over the corpus of path hits; it does not recover which sentences produced it beyond one example id per (lemma, source, path, class), and the shares do not recover counts. A Feats value is compatible with every row whose smoothed shares and evidence clear the same thresholds; None is compatible with missing lemmas, too little evidence, mixed shares and contradictory decisions alike."
+  ],
+  "limitations": [
+    "Parser errors become counts (an adjective tagged NOUN after a copula, e.g. «content», gets person counts); the which/who columns include relative clauses attached to the wrong noun.",
+    "Measured only through GUM dev, the frame bench dev lines and school/Wikipedia train and cv courses (2026-11-04); no proof of precision; percentage surrogate unsupported."
+  ],
+  "source": "coref/src/lexicon.rs",
+  "state": "One tree at a time for hits; Counts maps; a process-wide OnceLock table selected by COREF_GENDER, MOVA_DATA or HOME; COREF_GENDER_TAU, COREF_GENDER_MIN, COREF_GENDER_ALPHA, COREF_GENDER_INTERNAL environment snapshot."
+}

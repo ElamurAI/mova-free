@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "Offline guard negative control and finite fake-cycle lifecycle checks; see model.md#tests",
+    "Seven local tests cover dedicated contract and preserved guard; deterministic metadata CLI.",
+    "2026-11-02 followup:17 library plus legacy guard tests green, strict schema/byte budget/profile pins/process-group/provider-error partition; fake CLI only."
+  ],
+  "children": [],
+  "cost": "O(min(B,25001)) input bytes and memory plus one subprocess lifetime. It bounds input bytes, not inference cost or output tokens.",
+  "description": "Exact annotation-specific metadata/preparation dispatch plus preserved legacy audit-controller and25000-byte Codex guard.",
+  "forward": [
+    "A valid UTF-8 prompt with byte length B <= 25000 is forwarded with the exact argument vector to the configured Codex transport. Invalid UTF-8 or excessive bytes return failure before child launch.",
+    "Dedicated annotation preparation reuses native syntax/pragmatic contract; public Haiku default and explicit Terra override generate actual model-bearing argv without launching a model.",
+    "Reserved annotation-execute branch delegates explicit Sonnet review-only execution before legacy transport; bad command arity never falls through."
+  ],
+  "id": "annotation-review-guard",
+  "inverse": [
+    "behavior_complement: excluded, oversized, invalid or unreserved states cannot be counted as completed accepted work.",
+    "reverse_reconstruction: a receipt and pinned identities constrain compatible inputs and outcomes, but do not uniquely reconstruct hidden model computation or interrupted process histories."
+  ],
+  "limitations": [
+    "Audit controller and transport boundaries; source-derived partial model. Fake local child checks are finite evidence, not a proof of semantic annotation quality or general crash recovery."
+  ],
+  "source": "tools/fish/src/main.rs",
+  "state": "Audit-only; outputs isolated; no automatic production training or promotion."
+}

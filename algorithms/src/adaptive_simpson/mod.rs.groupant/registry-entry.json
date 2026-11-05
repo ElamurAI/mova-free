@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "analytic_polynomials tests degrees 0..7 and sine against exact antiderivatives; budgets count actual calls, depth and adjacent-endpoint stagnation, hidden bump, overflow and invalid input.",
+    "Change Simpson midpoint weight from 2/3 to 1/3; analytic_polynomials fails"
+  ],
+  "children": [],
+  "cost": "O(evaluations) scalar work plus callback cost. Fixed 65-panel stack, depth cap 64, no heap allocation. Evaluation count never exceeds supplied usize budget; increment by two only after subtraction check. Callback own resources/panics excluded.",
+  "description": "Deterministic callback on ordered finite endpoints, positive finite absolute tolerance, budget>=3 and depth<=64. Cache panel endpoints/midpoint, compare two half Simpson panels with coarse panel, accept corrected S2+(S2-S1)/15 when |S2-S1|/15<=local tolerance. Otherwise split tolerance and interval; report explicit budget or stagnation. EstimatedTolerance is a heuristic stopping reason, never an accuracy certificate.",
+  "forward": [
+    "Deterministic callback on ordered finite endpoints, positive finite absolute tolerance, budget>=3 and depth<=64. Cache panel endpoints/midpoint, compare two half Simpson panels with coarse panel, accept corrected S2+(S2-S1)/15 when |S2-S1|/15<=local tolerance. Otherwise split tolerance and interval; report explicit budget or stagnation. EstimatedTolerance is a heuristic stopping reason, never an accuracy certificate."
+  ],
+  "id": "algorithm-adaptive-simpson",
+  "inverse": [
+    "Every callback agreeing on visited abscissae follows the same traversal and report. Zero function and a bump supported inside (0.1,0.2) share the initial five samples and produce identical zero reports despite integrals 0 and 0.1. Unvisited function values, smoothness, integral and derivative bounds cannot be reconstructed."
+  ],
+  "limitations": [
+    "Rounded arithmetic not real exactness; no universal relative accuracy bound",
+    "Finite fixtures and partial syntax do not prove correctness",
+    "Callback determinism and bounded resource use outside Simpson are caller assumptions",
+    "No executable cheaper surrogate or performance claim"
+  ],
+  "source": "algorithms/src/adaptive_simpson/mod.rs",
+  "state": "Finite f64 slices or bounded panel stack; tests observe tagged results and assertion outcomes"
+}

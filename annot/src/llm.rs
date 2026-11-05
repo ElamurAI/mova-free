@@ -1,13 +1,10 @@
-//! Opus via `claude -p`: annotation of a batch of sentences and a second look at two annotations. The
-//! call runs in an empty directory (no project context), without tools; output is JSON with the result,
-//! time, tokens and cost.
+//! Teacher calls through the shared Codex CLI transport (mova-teacher).
+//! Existing result/accounting formats remain readable; subscription dollar cost is not reported.
 
-use std::io::Write as _;
 use std::path::Path;
-use std::process::{Command, Stdio};
 use std::time::Instant;
 
-use anyhow::{Context, Result, bail};
+use anyhow::Result;
 use en::gram::{Tag, UPos};
 use en::udreg::Registry;
 use serde::{Deserialize, Serialize};
@@ -39,27 +36,7 @@ impl Opus {
     fn ask(&self, step: &str, n: usize, prompt: &str) -> Result<(String, Call)> {
         std::fs::create_dir_all(&self.cwd)?;
         let t0 = Instant::now();
-        let mut child = Command::new("claude")
-            .args(["-p", "--model", &self.model, "--effort", &self.effort, "--output-format", "json"])
-            // the machine-wide settings.json sets CLAUDE_CODE_EFFORT_LEVEL=max and overrides --effort; --settings takes precedence
-            .args(["--settings", &format!("{{\"env\":{{\"CLAUDE_CODE_EFFORT_LEVEL\":\"{}\"}}}}", self.effort)])
-            .args(["--disallowedTools", "Bash,Edit,Write,Read,Glob,Grep,WebFetch,WebSearch,Agent,NotebookEdit"])
-            .envs(api_env())
-            .current_dir(&self.cwd)
-            .stdin(Stdio::piped())
-            .stdout(Stdio::piped())
-            .stderr(Stdio::piped())
-            .spawn()
-            .context("claude -p")?;
-        child.stdin.take().context("stdin")?.write_all(prompt.as_bytes())?;
-        let out = child.wait_with_output()?;
-        if !out.status.success() {
-            bail!("claude -p ({step}): {}", String::from_utf8_lossy(&out.stderr));
-        }
-        let v: serde_json::Value = serde_json::from_slice(&out.stdout).context("JSON from claude -p")?;
-        if v["is_error"].as_bool() == Some(true) {
-            bail!("claude -p ({step}): {}", v["result"]);
-        }
+        let v = mova_teacher::ask(&self.cwd, &self.model, &self.effort, prompt)?;
         let u = &v["usage"];
         let tok = |k: &str| u[k].as_u64().unwrap_or(0);
         let call = Call {
@@ -88,9 +65,23 @@ impl Opus {
         );
         p.push_str("\nSentences:\n\n");
         for (it, a, b) in items {
-            p.push_str(&format!("=== {} — {}\n--- A (your first pass)\n{}--- B (statistical parser)\n{}", it.id, it.text, write_block(&it.id, a), write_block(&it.id, b)));
+            p.push_str(&format!(
+                "=== {} — {}\n--- A (your first pass)\n{}--- B (statistical parser)\n{}",
+                it.id,
+                it.text,
+                write_block(&it.id, a),
+                write_block(&it.id, b)
+            ));
             let d = diff(a, b);
-            p.push_str(&format!("--- disagreements ({}):\n{}\n\n", d.len(), if d.is_empty() { "none".to_string() } else { d.join("\n") }));
+            p.push_str(&format!(
+                "--- disagreements ({}):\n{}\n\n",
+                d.len(),
+                if d.is_empty() {
+                    "none".to_string()
+                } else {
+                    d.join("\n")
+                }
+            ));
         }
         p.push_str("Now output ONLY the final CoNLL-U blocks, one per sentence, each starting with its `# sent_id = ` line.\n");
         self.ask("adjudicate", items.len(), &p)
@@ -106,7 +97,12 @@ impl Opus {
         );
         p.push_str("\nSentences with drafts:\n\n");
         for (it, b) in items {
-            p.push_str(&format!("=== {} — {}\n--- draft (statistical parser)\n{}", it.id, it.text, write_block(&it.id, b)));
+            p.push_str(&format!(
+                "=== {} — {}\n--- draft (statistical parser)\n{}",
+                it.id,
+                it.text,
+                write_block(&it.id, b)
+            ));
         }
         p.push_str("Now output ONLY the final CoNLL-U blocks, one per sentence, each starting with its `# sent_id = ` line.\n");
         self.ask("correct", items.len(), &p)
@@ -118,7 +114,11 @@ impl Opus {
     /// patches — `<sent_id> <word No.> <COLUMN>=<value>` or `<sent_id> OK`. Rust applies the patches,
     /// the gates check the result.
     /// `hints` — seed-rule hints for the drafts (`crate::hints`), by sentence id.
-    pub fn patch(&self, items: &[(&Item, &Ann)], hints: &std::collections::BTreeMap<String, Vec<String>>) -> Result<(String, Call)> {
+    pub fn patch(
+        &self,
+        items: &[(&Item, &Ann)],
+        hints: &std::collections::BTreeMap<String, Vec<String>>,
+    ) -> Result<(String, Call)> {
         let (fixed, var) = patch_prompt(items, hints);
         self.ask("patch", items.len(), &(fixed + &var))
     }
@@ -127,7 +127,9 @@ impl Opus {
 /// The first-look prompt (annotation from scratch, no draft) in two parts: fixed instructions (cacheable) and the
 /// sentences of this batch.
 pub fn annotate_prompt(items: &[&Item]) -> (String, String) {
-    let mut p = rules("You are an expert linguist annotating English in Universal Dependencies (UD v2.18) following the English EWT guidelines.");
+    let mut p = rules(
+        "You are an expert linguist annotating English in Universal Dependencies (UD v2.18) following the English EWT guidelines.",
+    );
     p.push_str("\nSentences (tokens are fixed, one per numbered line):\n\n");
     let mut v = String::new();
     for it in items {
@@ -143,12 +145,19 @@ pub fn annotate_prompt(items: &[&Item]) -> (String, String) {
 /// ANNOT_CONTEXT=<world.tsv> (`prag world`: sent_id, summary): the temporary world before each sentence — a page
 /// summary instead of the pages (design note, 15.10: a window must stay far below 70k tokens).
 fn world_context() -> &'static std::collections::BTreeMap<String, String> {
-    static W: std::sync::OnceLock<std::collections::BTreeMap<String, String>> = std::sync::OnceLock::new();
+    static W: std::sync::OnceLock<std::collections::BTreeMap<String, String>> =
+        std::sync::OnceLock::new();
     W.get_or_init(|| {
         std::env::var("ANNOT_CONTEXT")
             .ok()
             .and_then(|f| std::fs::read_to_string(f).ok())
-            .map(|t| t.lines().skip(1).filter_map(|l| l.split_once('\t')).map(|(a, b)| (a.to_string(), b.to_string())).collect())
+            .map(|t| {
+                t.lines()
+                    .skip(1)
+                    .filter_map(|l| l.split_once('\t'))
+                    .map(|(a, b)| (a.to_string(), b.to_string()))
+                    .collect()
+            })
             .unwrap_or_default()
     })
 }
@@ -156,7 +165,24 @@ fn world_context() -> &'static std::collections::BTreeMap<String, String> {
 /// Pragmatic fields and their closed sets (the prag schema, `prag/src/schema.rs`).
 pub const PRAG_FIELDS: [&str; 6] = ["form", "act", "indirect", "hedge", "polarity", "voice"];
 pub const PRAG_FORM: [&str; 8] = ["decl", "q", "wh", "imp", "excl", "frag", "intj", "other"];
-pub const PRAG_ACT: [&str; 16] = ["assert", "narrate", "ask", "request", "offer", "suggest", "promise", "thank", "apologize", "greet", "agree", "disagree", "evaluate", "express", "warn", "other"];
+pub const PRAG_ACT: [&str; 16] = [
+    "assert",
+    "narrate",
+    "ask",
+    "request",
+    "offer",
+    "suggest",
+    "promise",
+    "thank",
+    "apologize",
+    "greet",
+    "agree",
+    "disagree",
+    "evaluate",
+    "express",
+    "warn",
+    "other",
+];
 pub const PRAG_POL: [&str; 3] = ["pos", "neg", "none"];
 pub const PRAG_VOICE: [&str; 3] = ["narrator", "character", "none"];
 
@@ -174,16 +200,29 @@ pub fn prag_ok(field: &str, value: &str) -> bool {
 
 /// ANNOT_PRAG=<agreed.tsv> (`prag agree`: sent_id + the six fields): the pragmatic reading shown to the teacher next
 /// to the tree, and the base its PRAG patches apply to.
-pub fn prag_labels() -> &'static std::collections::BTreeMap<String, std::collections::BTreeMap<String, String>> {
-    static P: std::sync::OnceLock<std::collections::BTreeMap<String, std::collections::BTreeMap<String, String>>> = std::sync::OnceLock::new();
+pub fn prag_labels()
+-> &'static std::collections::BTreeMap<String, std::collections::BTreeMap<String, String>> {
+    static P: std::sync::OnceLock<
+        std::collections::BTreeMap<String, std::collections::BTreeMap<String, String>>,
+    > = std::sync::OnceLock::new();
     P.get_or_init(|| {
-        let Some(t) = std::env::var("ANNOT_PRAG").ok().and_then(|f| std::fs::read_to_string(f).ok()) else { return Default::default() };
+        let Some(t) = std::env::var("ANNOT_PRAG")
+            .ok()
+            .and_then(|f| std::fs::read_to_string(f).ok())
+        else {
+            return Default::default();
+        };
         let mut lines = t.lines();
         let head: Vec<&str> = lines.next().unwrap_or("").split('\t').collect();
         lines
             .filter_map(|l| {
                 let c: Vec<&str> = l.split('\t').collect();
-                let m: std::collections::BTreeMap<String, String> = head.iter().zip(&c).filter(|(h, _)| PRAG_FIELDS.contains(h)).map(|(h, v)| (h.to_string(), v.to_string())).collect();
+                let m: std::collections::BTreeMap<String, String> = head
+                    .iter()
+                    .zip(&c)
+                    .filter(|(h, _)| PRAG_FIELDS.contains(h))
+                    .map(|(h, v)| (h.to_string(), v.to_string()))
+                    .collect();
                 c.first().map(|id| (id.to_string(), m))
             })
             .collect()
@@ -192,7 +231,10 @@ pub fn prag_labels() -> &'static std::collections::BTreeMap<String, std::collect
 
 /// The "patches only" prompt in two parts: the fixed instructions (identical for every batch, so the
 /// Batches API can cache them) and the sentences of this batch. `claude -p` gets the two concatenated.
-pub fn patch_prompt(items: &[(&Item, &Ann)], hints: &std::collections::BTreeMap<String, Vec<String>>) -> (String, String) {
+pub fn patch_prompt(
+    items: &[(&Item, &Ann)],
+    hints: &std::collections::BTreeMap<String, Vec<String>>,
+) -> (String, String) {
     let mut p = rules(
         "You are an expert UD annotator (UD v2.18, English EWT guidelines). Below is a DRAFT annotation of each sentence produced by our statistical parser. It is often wrong: PP attachment (obl vs nmod), coordination, clausal relations, UPOS/XPOS of ambiguous words, FEATS. Check every token and column.",
     );
@@ -213,9 +255,21 @@ pub fn patch_prompt(items: &[(&Item, &Ann)], hints: &std::collections::BTreeMap<
         if let Some(w) = world.get(&it.id) {
             v.push_str(&format!("WORLD: {w}\n"));
         }
-        v.push_str(&format!("=== {} — {}\n{}", it.id, it.text, write_block(&it.id, b)));
+        v.push_str(&format!(
+            "=== {} — {}\n{}",
+            it.id,
+            it.text,
+            write_block(&it.id, b)
+        ));
         if let Some(p) = prag.get(&it.id) {
-            v.push_str(&format!("PRAG: {}\n\n", PRAG_FIELDS.iter().map(|f| format!("{f}={}", p.get(*f).map(String::as_str).unwrap_or("?"))).collect::<Vec<_>>().join(" ")));
+            v.push_str(&format!(
+                "PRAG: {}\n\n",
+                PRAG_FIELDS
+                    .iter()
+                    .map(|f| format!("{f}={}", p.get(*f).map(String::as_str).unwrap_or("?")))
+                    .collect::<Vec<_>>()
+                    .join(" ")
+            ));
         }
         if let Some(h) = hints.get(&it.id) {
             v.push_str("HINTS:\n");
@@ -232,12 +286,23 @@ pub fn patch_prompt(items: &[(&Item, &Ann)], hints: &std::collections::BTreeMap<
 /// and the feature registry per part of speech come from `en::udreg`.
 fn rules(role: &str) -> String {
     let reg = Registry::load();
-    let tags: Vec<&str> = Tag::ALL.iter().filter(|t| !matches!(t, Tag::DQuote | Tag::X)).map(|t| t.name()).collect();
+    let tags: Vec<&str> = Tag::ALL
+        .iter()
+        .filter(|t| !matches!(t, Tag::DQuote | Tag::X))
+        .map(|t| t.name())
+        .collect();
     let feats: String = UPos::ALL
         .iter()
         .map(|&u| {
             let f: Vec<&str> = reg.allowed(u).into_iter().map(|x| x.name()).collect();
-            format!("  {u}: {}", if f.is_empty() { "_ (no features)".to_string() } else { f.join(" ") })
+            format!(
+                "  {u}: {}",
+                if f.is_empty() {
+                    "_ (no features)".to_string()
+                } else {
+                    f.join(" ")
+                }
+            )
         })
         .collect::<Vec<_>>()
         .join("\n");
@@ -259,7 +324,11 @@ fn rules(role: &str) -> String {
         tags.join(" "),
         feats,
         reg.auxiliaries().join(" "),
-        reg.deprels().into_iter().filter(|d| crate::ann::ewt_rel(d).is_none()).collect::<Vec<_>>().join(" ")
+        reg.deprels()
+            .into_iter()
+            .filter(|d| crate::ann::ewt_rel(d).is_none())
+            .collect::<Vec<_>>()
+            .join(" ")
     )
 }
 
@@ -274,25 +343,29 @@ pub fn log_calls(path: &Path, calls: &[Call]) -> Result<()> {
     Ok(())
 }
 
-/// API key for `claude -p` (calls go through the API by default): the line
-/// `ANTHROPIC_API_KEY=…` in `~/Mova/local.md` (outside git, guarded by `secret-guard.sh`). No such line, or
-/// `MOVA_SUBSCRIPTION=1` — the call goes through the subscription, as before. The key is never printed.
-fn api_env() -> Vec<(String, String)> {
-    if std::env::var("MOVA_SUBSCRIPTION").as_deref() == Ok("1") {
-        return Vec::new();
+#[cfg(test)]
+mod wave27_tests {
+    use super::*;
+    #[test]
+    fn closed_pragmatic_domains_and_fixed_tokens() {
+        for field in PRAG_FIELDS {
+            assert!(!prag_ok(field, ""));
+            assert!(!prag_ok(field, "INVALID"));
+        }
+        assert!(!prag_ok("unknown", "assert"));
+        assert!(prag_ok("act", "assert"));
+        assert!(prag_ok("hedge", "0"));
+        assert!(!prag_ok("hedge", "2"));
+        let item = Item {
+            id: "synthetic".into(),
+            text: "ignored text".into(),
+            forms: vec!["can't".into(), ".".into()],
+            gold: None,
+        };
+        let (fixed, variable) = annotate_prompt(&[&item]);
+        let (empty_fixed, empty_variable) = annotate_prompt(&[]);
+        assert_eq!(fixed, empty_fixed);
+        assert!(empty_variable.is_empty());
+        assert_eq!(variable, "# sent_id = synthetic\n1 can't\n2 .\n\n");
     }
-    local_key().map(|k| vec![("ANTHROPIC_API_KEY".to_string(), k)]).unwrap_or_default()
-}
-
-/// The key line of `~/Mova/local.md`, if any.
-fn local_key() -> Option<String> {
-    let home = std::env::var("HOME").ok()?;
-    let text = std::fs::read_to_string(std::path::Path::new(&home).join("Mova/local.md")).ok()?;
-    text.lines().find_map(|l| l.strip_prefix("ANTHROPIC_API_KEY=")).map(str::trim).filter(|k| !k.is_empty()).map(str::to_string)
-}
-
-/// API key for direct API calls (Message Batches): `~/Mova/local.md`, else env `ANTHROPIC_API_KEY`.
-/// Never printed or written anywhere.
-pub fn api_key() -> Option<String> {
-    local_key().or_else(|| std::env::var("ANTHROPIC_API_KEY").ok().filter(|k| !k.trim().is_empty()))
 }

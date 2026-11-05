@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline bipartite_matching::tests::",
+    "Compiled external mutant rejected by exact named test.",
+    "Debug and release focused runs twice; strict all-target Clippy; isolated compiled mutation; source syntax twice."
+  ],
+  "children": [],
+  "cost": "Enumerates sum(2^(L*R)) graphs for L,R=0..3; subset oracle O(2^E E^2) time and O(E+R) space per graph. Chain fixture has 1,024 left vertices.",
+  "description": "bipartite_matching bounded independent tests",
+  "forward": [
+    "Runs a bounded deterministic assertion suite for bipartite_matching; successful completion means precisely that all enumerated oracle and boundary assertions held for this compiled source. Six tests per algorithm. Exhaustive all simple graphs on L,R=0..3: 689 graphs, with independent enumeration of all edge subsets and pairwise distinct endpoints. Check maximum cardinality, length, membership, right uniqueness and repeat equality. Boundary fixtures include duplicate edges, empty sides, deterministic ties, invalid endpoints and a 1,024-left alternating chain. A compiled mutant disabling matched-left queue traversal must fail reassignment_duplicates_and_ties.",
+    "2026-10-30 deep graph epoch: see specialized relations in adjacent model.md and six deterministic source tests."
+  ],
+  "id": "algorithm-bipartite-matching-tests",
+  "inverse": [
+    "Universe U consists of pairs (candidate implementation, claimed Boolean completion outcome) for this fixed bounded assertion suite, under terminating ordinary execution. R contains exactly pairs whose claim equals conjunction of the suite assertions. The behavior complement is U minus R, including false pass and false failure claims. Behavior on untested inputs is unconstrained; finite acceptance is not universal correctness.",
+    "Given a passing test transcript, the compatible antecedents are every implementation agreeing on all enumerated assertions; behavior elsewhere remains unconstrained. A failed named assertion restricts the antecedent to implementations violating that concrete predicate, without unique bug localization."
+  ],
+  "limitations": [
+    "Partial syntax has no macro expansion or type resolution. Bounded evidence is not proof. Allocation failures are outside the Result contract. No approximate executable profiles."
+  ],
+  "source": "algorithms/src/bipartite_matching/tests.rs",
+  "state": "Finite exhaustive and named boundary fixtures paired with assertion outcomes."
+}

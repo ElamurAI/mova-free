@@ -1,0 +1,15 @@
+[package]
+name = "translate"
+version.workspace = true
+edition = "2024"
+# license: Elamur Cosmic License (LICENSE.md at the repo root)
+publish = false
+description = "Mova's deterministic translator through a meta-world: readers of each author or language into a language- and author-independent meta-world, author profiles out of it, the standard stack below; with the byte-for-byte test and its residual."
+
+[dependencies]
+en = { path = "../../en" }
+prag = { path = "../../prag" }
+roundtrip = { path = "../roundtrip" }
+hbo = { path = "../hbo" }
+anyhow = "1.0.104"
+zstd = "0.14"

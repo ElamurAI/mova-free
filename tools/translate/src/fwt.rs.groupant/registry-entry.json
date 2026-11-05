@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "fwt::tests::a_fronted_part_moves_after_its_root",
+    "fwt::tests::drops_and_inserts"
+  ],
+  "children": [],
+  "cost": "Fw apply worst O(n²+I*n) head/neighbor searches plus map/strings; Join O(bytes+ n log J). Reorder repeated subtree fixed points and Vec retain/insert bounded O(n³) conservative; train LCS plus O(n²) uniqueness counts per verse.",
+  "description": "Training counts LCS gaps and function-only insertion/drop contexts; apply substitutes concepts then computes drops/inserts against substituted sequence. Remap kept heads and inserted attachment. JoinTable rewrites joining feature; ReorderTable moves contiguous root-dependent spans and renumbers.",
+  "forward": [
+    "Training counts LCS gaps and function-only insertion/drop contexts; apply substitutes concepts then computes drops/inserts against substituted sequence. Remap kept heads and inserted attachment. JoinTable rewrites joining feature; ReorderTable moves contiguous root-dependent spans and renumbers."
+  ],
+  "id": "translation-meta-fwt",
+  "inverse": [
+    "Drop contexts cannot delete nonfunction tokens. Substitution changes only concept before decisions. Join mapping cannot change spans/heads/tags.",
+    "Output admits removed tokens/heads and pre-substitution concepts; maps are generally noninjective. Reorder with a known unique permutation has inverse head renumbering, but output alone does not identify the selected moves."
+  ],
+  "limitations": [
+    "No live corpus/model/teacher/GPU execution or language accuracy claim",
+    "Partial syntax and finite tests; full effectful paths unexecuted; no percentage surrogate"
+  ],
+  "source": "tools/translate/src/fwt.rs",
+  "state": "Valid0..n heads; bounded counts; learned maps finite. Insertion strings use last slash tag or default IN. Corpus fitting remains unexecuted; selected transform tests only."
+}

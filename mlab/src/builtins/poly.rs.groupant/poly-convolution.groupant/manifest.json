@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "product_order",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "product_order",
+        "status": "partial_source_derived_model",
+        "type": "product_order"
+      },
+      {
+        "id": "division_fixture",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "division_fixture",
+        "status": "partial_source_derived_model",
+        "type": "division_fixture"
+      },
+      {
+        "id": "short_dividend",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "short_dividend",
+        "status": "partial_source_derived_model",
+        "type": "short_dividend"
+      },
+      {
+        "id": "zero_divisor",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "zero_divisor",
+        "status": "partial_source_derived_model",
+        "type": "zero_divisor"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 5720,
+      "start": 3724
+    },
+    "description": "conv flattens nonempty inputs, accumulates complex products into length P+Q-1 and uses first-input orientation. deconv requires nonempty divisor with nonzero first re; long-divides real coefficients, explicitly zeroing eliminated remainder positions.",
+    "source_bytes_sha256": "c2fe9d6baa066b77443c6a4cecc10e4c82e74a500eebb4b5b3b4de42bba2b1cb"
+  },
+  "id": "mlab-numerics-poly-convolution",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../poly.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "19ff6f221e4a7f3984115436092a1b36ea6a18222cbf8f76fc0b6fd53c13a287"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,29 @@
+{
+  "checks": [
+    "failure_requires_explicit_resume_and_never_repeats_successes",
+    "async_worker_publishes_only_complete_results",
+    "legacy_teacher_is_rejected_before_launch",
+    "changed_requests_cannot_reuse_partial_answers",
+    "timeout_is_a_failure_without_partial_publication",
+    "stale_worker_lock_is_reported",
+    "partial_without_final_lf_keeps_record_separation_on_resume",
+    "partial_boundary_shapes_and_failed_next_request",
+    "strict_line_consumers_see_only_json_rows_after_resume"
+  ],
+  "children": [],
+  "cost": "Small request count (<=2), one long timeout prompt of120000 bytes; six tests launch bounded subprocesses, timeout1s and async poll<=5s, with a fake hang30s killed by teacher timeout. Runtime depends on scheduling and process cleanup; no throughput inference.",
+  "description": "Unix integration fixture drives the actual annot executable with a generated fake Codex process and temporary queue files, including supplied partial-result files at the record-separator boundary. Assertions cover local orchestration only; fake teacher text does not certify annotation quality or live API behavior.",
+  "forward": [
+    "Fixture::new creates a fresh process/time-named tempdir, writes requests and executable script. run supplies executable path, call-log path, fixture API env values, one-second timeout and sync/async flag to annot batch-run. Tests inspect status, calls, final sentinel and stderr; Drop removes fixture directory."
+  ],
+  "id": "annot-tests-codex-batches",
+  "inverse": [
+    "Observed call count3 after failure/resume is compatible with two initial attempts plus one resumed request under recorded script state; it does not recover remote answers. Identical success JSON can come from many prompt strings because fake output ignores most input except FAIL selector."
+  ],
+  "limitations": [
+    "Unix-only, finite scheduling deadlines, no live teacher or cloud behavior.",
+    "No source mutation control directly targeting fixture implementation; controls target actual queue/production contracts."
+  ],
+  "source": "annot/tests/codex_batches.rs",
+  "state": "Each run uses MOVA_CODEX_BIN pointing to the synthetic script; script requires both API variables stripped before execution. No test intentionally contacts live Codex/API. Successful requests return sample OK and fixed token counts, not real model inference. Tempdir cleanup is best effort."
+}

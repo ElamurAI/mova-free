@@ -1,0 +1,408 @@
+{
+  "children": [
+    "prag-agree",
+    "prag-invariants",
+    "prag-lens",
+    "prag-roles",
+    "prag-irony",
+    "prag-model",
+    "prag-schema",
+    "prag-feats",
+    "prag-infer",
+    "prag-groupant-wave13",
+    "prag-eval",
+    "prag-data",
+    "prag-frames-md",
+    "prag-frames",
+    "prag-rules",
+    "prag-vn",
+    "prag-vnconv",
+    "prag-groupant-wave15",
+    "prag-fbench",
+    "prag-silver",
+    "prag-groupant-wave16",
+    "prag-main",
+    "prag-lib",
+    "prag-opus",
+    "prag-groupant-wave17"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Partial child syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "pragmatic-observation-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "pragmatic-observation-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "pragmatic-observation-frame-role-hit-identity",
+        "path": "model.md",
+        "section": "frame-role-hit-identity",
+        "status": "partial_source_model",
+        "type": "annotation_frame_projection"
+      },
+      {
+        "id": "pragmatic-observation-expression-report-identity",
+        "path": "model.md",
+        "section": "expression-report-identity",
+        "status": "partial_source_model",
+        "type": "lexical_surface_transport"
+      },
+      {
+        "id": "pragmatic-observation-agreement-row-policy",
+        "path": "model.md",
+        "section": "agreement-row-policy",
+        "status": "partial_source_model",
+        "type": "label_identity_policy"
+      },
+      {
+        "id": "pragmatic-observation-document-context-order",
+        "path": "model.md",
+        "section": "document-context-order",
+        "status": "partial_source_model",
+        "type": "chronological_state_projection"
+      },
+      {
+        "id": "pragmatic-observation-irony-cue-ancestry",
+        "path": "model.md",
+        "section": "irony-cue-ancestry",
+        "status": "partial_source_model",
+        "type": "incongruity_gate_relation"
+      },
+      {
+        "id": "pragmatic-observation-spread-plurality-tie",
+        "path": "model.md",
+        "section": "spread-plurality-tie",
+        "status": "partial_source_model",
+        "type": "frequency_selection_relation"
+      },
+      {
+        "id": "pragmatic-observation-wave13-field-transport",
+        "path": "model.md",
+        "scope": "For each field f with ordered class list C_f, predict class c then set gives get_f(set_f(l,c))=c for 0<=c<|C_f| while other fields remain. Our native fixture parses q/request/1/0/neg/character/- into literal [1,3,1,0,1,1], trains four identical supplied rows for each of three classifier kinds through fit_set and predicts all six fields through predict_seq, then checks the tuple and canonical TSV. This is real tiny classifier transport, not held-out learning accuracy. Shape, alignment and class bounds remain caller premises.",
+        "section": "pragmatic-observation-wave13-field-transport",
+        "status": "partial_source_model",
+        "type": "closed_class_transport"
+      },
+      {
+        "id": "pragmatic-observation-wave13-dictionary-transport",
+        "path": "model.md",
+        "scope": "For a built dictionary D whose slot values are unique, let J be JSON values-only persistence and rebuild the skipped index by reindex. Then E_D(r)=E_reindex(J(D))(r); reserved acts and start remain known, while unseen spelling remains UNSEEN. Tiny independent fits on both snapshots preserve observed class, confidence bits and explanations. Actual encode mapping is checked, but agreement between fits is a transport observation rather than an independent prediction oracle. IDs from different insertion-order dictionaries are not interchangeable; arbitrary malformed serialized dictionaries are excluded.",
+        "section": "pragmatic-observation-wave13-dictionary-transport",
+        "status": "partial_source_model",
+        "type": "dictionary_snapshot_equivalence"
+      },
+      {
+        "id": "pragmatic-observation-wave13-source-context",
+        "path": "model.md",
+        "scope": "For non-Tatoeba item i with ord>1, prev_of chooses the last supplied index with identical Src and doc and ord_i-1, if any. Duplicate coordinates remain last-wins; paragraph changes do not break this document relation. Composition with predict_seq uses the same index-to-row mapping. The seven-item mixed Tale/Gum/Tatoeba fixture asserts exact predecessor indices and resultant observed acts. Such source-scoped identity does not make corpus partitions semantically independent.",
+        "section": "pragmatic-observation-wave13-source-context",
+        "status": "partial_source_model",
+        "type": "source_document_predecessor"
+      },
+      {
+        "id": "pragmatic-observation-wave13-schedule-context",
+        "path": "model.md",
+        "scope": "For unique schedule pi, let O_t be already produced predictions. Row pi_t gets Act(O_t[p]).name only when p=prev[pi_t] is in O_t; otherwise it gets start. This overrides the supplied row's prev feature without mutating the row. A test observer exposes only this actual eval adapter: forward chain gives Ask/Request/Thank, reverse gives three Ask, suffix gives Ask/Request. It is not a learned classifier. No internal chronological sort, gold label access or future-context inference is asserted.",
+        "section": "pragmatic-observation-wave13-schedule-context",
+        "status": "partial_source_model",
+        "type": "prefix_available_feedback"
+      },
+      {
+        "id": "pragmatic-observation-wave13-canonical-gain",
+        "path": "model.md",
+        "scope": "Source scope prag/src/model.rs gain_ratio: aligned rows and valid classes form integer category histograms; BTreeMap visits category IDs in ascending order before floating conditional entropy and split-information reductions. Fixed histograms and target arithmetic therefore keep reduction order; constant slots return zero and two balanced perfectly separating categories return one. Relabeling categories may reorder floating sums; arbitrary malformed dimensions, overflowing counters and cross-platform bit equality are excluded. Equal gain leaves row order, keys and many histograms ambiguous. Leaf evidence covers canonical arithmetic; this parent does not claim an executed training CLI or general task accuracy.",
+        "section": "pragmatic-observation-wave13-canonical-gain",
+        "status": "partial_source_model",
+        "type": "deterministic_histogram_reduction"
+      },
+      {
+        "id": "pragmatic-observation-wave13-valid-inference-ancestry",
+        "path": "model.md",
+        "scope": "Source scope prag/src/infer.rs: direct presupposition predicate heads must be present and nonreflexive; manner conjunct heads must be in-range, nonzero and nonreflexive before event comparison. Factive subtree membership traverses at most the supplied token count, stops on invalid ancestry and does not accept disconnected cycles. A node reaching the selected clause head is a member; no global tree-validity guarantee is asserted. Presupposition licensing retains only predicate matches within the last 50 prior tokens and loses speaker/entity identity. Compatible outputs admit many supplied graphs/history tokens. Source and leaf evidence are distinct from executed parser or CLI evidence.",
+        "section": "pragmatic-observation-wave13-valid-inference-ancestry",
+        "status": "partial_source_model",
+        "type": "bounded_dependency_evidence"
+      },
+      {
+        "id": "pragmatic-observation-wave14-item-classification",
+        "path": "model.md",
+        "scope": "make_items selects s1,s2,tatoeba:a,tatoeba:b with batches 0,0,1,2 and context only on the first selected tale sentence. JSON roundtrip preserves Item fields; prev_of gives [None,Some(0),None,None], preserving source-qualified predecessor identity. Built slot dictionary and constant-label IgTree fit/predict preserve all six class coordinates and Act scores=(1,1). Exclude changed keys, source leakage and coordinate substitution. Labels admit many texts and fitted histories; this tiny fit tests transport rather than held-out accuracy.",
+        "section": "pragmatic-observation-wave14-item-classification",
+        "status": "partial_source_model",
+        "type": "source_batch_class_identity"
+      },
+      {
+        "id": "pragmatic-observation-wave14-closed-metrics",
+        "path": "model.md",
+        "scope": "Gold [Request,Assert] and prediction [Request,Request] yield accuracy 1/2 and macro F1 1/3 over present classes. Unequal lengths and class IDs at the class count panic. Empty vectors with zero classes yield (0,0). Exclude zip truncation and silently ignored invalid classes. Equal metrics retain row permutation and confusion-matrix ambiguity. Cost is row/class bookkeeping; no semantic label accuracy follows.",
+        "section": "pragmatic-observation-wave14-closed-metrics",
+        "status": "partial_source_model",
+        "type": "present_class_metric_boundary"
+      },
+      {
+        "id": "pragmatic-observation-wave14-frame-rendering",
+        "path": "model.md",
+        "scope": "The supplied Ada/carries/box tree yields one frame with agent id ada and patient id box. Markdown contains carry/Ada/box in one event row; roles preserves (1,2,agent); empty input states no event. Exclude exchanged participants and duplicated rows. Selected lexical/role observations lose other graph/state details and retain many antecedents. Only supplied Word trees are used; no parser acquisition.\n\nFor two supplied annotation rows, hwords retains participant head 1 and MId identity referenced by Frame=A0:2. Hebrew output includes v/did work, x/worker and finite/qal. LF-to-CRLF conversion leaves the table equal. Exclude missing referenced participants and newline-dependent labels. The table loses line endings, unused columns and gloss punctuation. This fixture does not establish external corpus coverage.",
+        "section": "pragmatic-observation-wave14-frame-rendering",
+        "status": "partial_source_model",
+        "type": "frame_and_macula_identity"
+      },
+      {
+        "id": "pragmatic-observation-wave15-converted-local-lex",
+        "path": "model.md",
+        "scope": "Two XML classes (distractor first), two members and one frame convert to counts (2,2,1). Loading the exact TSV into local Lex and matching give yields (class,fclass,frame)=(1,1,0), subj Agent, objs [Theme], pps [Recipient], score 8, for stable false/true; absent verb yields None. Index the local Lex, never global Match accessors. Exclude class 0 provenance or swapped object/preposition roles. Reverse admits XML layout, examples and unused-table ambiguity. Cost is supplied conversion/indexing plus candidate ancestor-frame/argument traversal.",
+        "section": "pragmatic-observation-wave15-converted-local-lex",
+        "status": "partial_source_model",
+        "type": "converted_lexicon_argument_transport"
+      },
+      {
+        "id": "pragmatic-observation-wave15-active-passive",
+        "path": "model.md",
+        "scope": "For supplied throw Agent V Theme with unknown animacy, empty frequencies/restrictions, active subj=Agent, objs=[Theme], by=None, score=4; passive subj=Theme, by=Agent, objs=[], score=8. Passive subject occupies an internal object position but must not create an output object entry. Exclude subject Agent in the passive. Role observations retain filler identity/animacy and clause ambiguity. Cost is candidate shape and argument traversal.",
+        "section": "pragmatic-observation-wave15-active-passive",
+        "status": "partial_source_model",
+        "type": "voice_argument_coordinate_transport"
+      },
+      {
+        "id": "pragmatic-observation-wave15-sentence-head",
+        "path": "model.md",
+        "scope": "Two supplied trees reuse token indices 1 and 2; Read.pred pairs [(0,1),(0,2),(1,1),(1,2)] bind four frames. AgentFromHead on frame 3 copies Bob from sentence 1, leaves frame 1 empty and original Read unchanged. KindSay(Ask) renders speech: ask and schema labels retain ask. Exclude Alice copied from sentence 0. Reverse retains overwritten agent/kind ambiguity and rendering loses tree details. Cost includes Read clone, ordered predicate map, bounded head traversal and output.",
+        "section": "pragmatic-observation-wave15-sentence-head",
+        "status": "partial_source_model",
+        "type": "sentence_qualified_head_action_transport"
+      },
+      {
+        "id": "pragmatic-observation-wave15-deletion-map",
+        "path": "model.md",
+        "scope": "Delete frame indices {1,2} from four: old 0/3 become 0/1. pred remains [(0,2),(1,4)], roots=[0], asked why->1; first frame quote=[1], cause=None, next=1, link parent=1. show(10) is Event _ say | says→#11 next→#11. Exclude stale frame references and renumbered token coordinates. Reverse retains arbitrary deleted frame content and vanished references. Cost scans frame/reference collections with ordered deletion-set membership and one dense remap.",
+        "section": "pragmatic-observation-wave15-deletion-map",
+        "status": "partial_source_model",
+        "type": "survivor_frame_reference_transport"
+      },
+      {
+        "id": "pragmatic-observation-wave15-participle-append",
+        "path": "model.md",
+        "scope": "Supplied broken cup and painted wall trees expose sites Token(0,0),Token(1,0). AddNounPatient at (0,0) appends break with patient cup, no agent, and pred (0,0); sites become Frame(0),Token(1,0). Markdown contains break/cup and excludes wall. Exclude sentence-coordinate substitution or reoffering represented token (0,0). Reverse admits omitted tree/noun detail. Cost includes token/site scan, Read clone, predicate lookup and one append.",
+        "section": "pragmatic-observation-wave15-participle-append",
+        "status": "partial_source_model",
+        "type": "sentence_token_site_append"
+      },
+      {
+        "id": "pragmatic-observation-wave15-oblique-slot",
+        "path": "model.md",
+        "scope": "Role indices 0..3 are agent/patient/recipient/place; 4+k selects oblique k. Recipient her at 2 and second oblique with her at 5 expose separate sites. Resolve(Before) at 5 changes only that oblique to alice, retains pron her and preposition with, and repeating returns None. Trace is Event _ walk to=she(«her») near=tree with=alice(«her»). Exclude recipient or first-oblique changes. Reverse admits multiple compatible discourse lists and overwritten entity fields. Cost includes clone, map construction, candidate scan and rendering.",
+        "section": "pragmatic-observation-wave15-oblique-slot",
+        "status": "partial_source_model",
+        "type": "oblique_role_candidate_transport"
+      },
+      {
+        "id": "pragmatic-observation-wave15-extract-rule-codec",
+        "path": "model.md",
+        "scope": "Supplied Ada carries box Word tree extracts one frame agent ada/patient box. Explicit accepted patient-to-to moves box to recipient; proposed to-to-patient restores exact original Frame; rejected drop is excluded and off selects none. Selected Action codes parse identically and Frame JSON roundtrips exactly, retaining provenance/TAM and predicate (0,1). Exclude changed agent, rule-status leakage or field loss. Transfer inverse is unique only with occupied source/empty destination and retained other state; JSON cannot reconstruct original Tree. Cost includes supplied-tree extraction, rule text/site/feature traversal and JSON bytes. Extraction may read built-in lexicon/configuration; no live parser or environment mutation occurs.",
+        "section": "pragmatic-observation-wave15-extract-rule-codec",
+        "status": "partial_source_model",
+        "type": "supplied_frame_rule_serialization_transport"
+      },
+      {
+        "id": "pragmatic-observation-wave16-notation-occurrences",
+        "path": "model.md",
+        "scope": "Actual Frame.show output parses to scorer GFrames. A two-frame speech/event fixture is permuted with its frame links remapped. Literal role counts stay 9/9/9 and per-link counts 1/1/1. Adding duplicate system quote links contributes predictions without creating more correct occurrences than exist in gold (multiset intersection). Complement excludes dangling/unremapped links and tp>min(sys,gold). Reverse retains all frame detail omitted by notation; correct scores do not uniquely recover source text. Cost includes output bytes, O(G*S log(G*S)) greedy alignment and role/link accounting; no global optimum alignment claim.",
+        "section": "pragmatic-observation-wave16-notation-occurrences",
+        "status": "partial_source_model",
+        "type": "alignment_multiset_transport"
+      },
+      {
+        "id": "pragmatic-observation-wave16-numbered-rows",
+        "path": "model.md",
+        "scope": "Supplied Items and numbered silver rows compose through exact 1-based batch positions. Out-of-order rows resolve to their original Items; schema TSV transport preserves act classes; metric scores compare the same closed act alphabet. Missing rows remain partial rejection, duplicate rows reject entire batch. Complement excludes position/label substitution and partial acceptance after duplicate identifiers. Reverse loses original row ordering, junk spelling and raw label formatting. Costs follow prompt/row bytes plus ordered key maps and class counts; no model call occurs.",
+        "section": "pragmatic-observation-wave16-numbered-rows",
+        "status": "partial_source_model",
+        "type": "annotation_position_class_transport"
+      },
+      {
+        "id": "pragmatic-observation-wave16-batch-context",
+        "path": "model.md",
+        "scope": "Batches preserve input order within each ascending batch ID. Prompt context suppression requires same source and document and checked consecutive paragraph arithmetic; cross-source collisions or MAX->MIN wrapping do not suppress context. Complement excludes dropped context for those disallowed transitions. Reverse cannot recover source metadata from identical prompt text. Cost is ordered batching and emitted prompt/context bytes; no end-to-end throughput measurement.",
+        "section": "pragmatic-observation-wave16-batch-context",
+        "status": "partial_source_model",
+        "type": "source_safe_prompt_coordinates"
+      },
+      {
+        "id": "pragmatic-observation-wave17-accounted-label-coordinates",
+        "path": "model.md",
+        "scope": "Decoded usage (13 input,5 output,7 cache-read,0 cache-write) and caller (batch9,attempted2,0.25secs) survive interpret/append/read. Reversed TSV arrival order retains row1 Tale/Narrate and row2 Tatoeba/Assert through the same Item references. Exclude arrival-order indexing and reversed source mapping. Compatible source content remains unconstrained beyond the retained keys, source policy and supplied rows.",
+        "section": "pragmatic-observation-wave17-accounted-label-coordinates",
+        "status": "partial_source_model",
+        "type": "attempted_label_coordinate_transport"
+      },
+      {
+        "id": "pragmatic-observation-wave17-partial-label-accounting",
+        "path": "model.md",
+        "scope": "Three attempted Items yield accepted row1 and row3, missing row2, and one accounting record with sentences3. A separate duplicate-row reply rejects all labels but still records one successfully decoded attempted call. Ledger data does not establish label coverage; accepted labels cannot reconstruct absent text. Costs are event/row parsing, one append and ledger read.",
+        "section": "pragmatic-observation-wave17-partial-label-accounting",
+        "status": "partial_source_model",
+        "type": "attempted_acceptance_separation"
+      },
+      {
+        "id": "pragmatic-observation-wave17-decode-before-ledger",
+        "path": "model.md",
+        "scope": "The supplied adapter evaluates decode_events with ? before interpret/append/gate. A prior valid ledger is byte-identical after failed suffix, failed prefix with valid suffix, repeated successful trace, or error prefix with valid suffix. Failure histories have nonunique unchanged-ledger preimages. This sequential adapter property is not atomicity, process execution, durability or concurrency evidence.",
+        "section": "pragmatic-observation-wave17-decode-before-ledger",
+        "status": "partial_source_model",
+        "type": "failure_effect_exclusion"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed_evidence"
+    }
+  },
+  "id": "pragmatic-observation",
+  "kind": "groupant_group",
+  "registry": {
+    "node": "pragmatic-observation",
+    "path": "../contracts.json"
+  },
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "prag/src/agree.rs",
+      "sha256": "b50e6b91851fb5a19e9d540b2668f6025524b634522a028614be6676e7b9be46"
+    },
+    {
+      "path": "prag/src/data.rs",
+      "sha256": "b3146b6af3ca37c5a64f82c60970bea0420e5f7f62cf38642c305e09b8ce4015"
+    },
+    {
+      "path": "prag/src/eval.rs",
+      "sha256": "c6a0e3ae0e424ffd6e5883502ce7e55d38d61e53b1184b6160f4236371fecd2e"
+    },
+    {
+      "path": "prag/src/fbench.rs",
+      "sha256": "ccddfbd624b5584905d4bf9f0a80eacfadbc4aeece072d68e0c216b36e7b04e3"
+    },
+    {
+      "path": "prag/src/feats.rs",
+      "sha256": "2a1a0bd6e43dd16f7284e993f30d0f4971c447c9e2080616033d19ac8693611f"
+    },
+    {
+      "path": "prag/src/frames.rs",
+      "sha256": "910a6ee1773cda288a40ba65bdd1bc5d9b00b22296a23d567bc0249b71fbd95c"
+    },
+    {
+      "path": "prag/src/frames_md.rs",
+      "sha256": "023ca98fa461e9d1545915abd8071ecb542cc61999bbf5a054b712e5edf9b5e3"
+    },
+    {
+      "path": "prag/src/infer.rs",
+      "sha256": "723690dfeebf9e8b5472d02d877ca4312dd24410441908893c32f83229e9a331"
+    },
+    {
+      "path": "prag/src/invariants.rs",
+      "sha256": "64ddcdabea1704fc3216d06f5f299ec06171dc4432b7f5c9b7d4b7c4a4fbf190"
+    },
+    {
+      "path": "prag/src/irony.rs",
+      "sha256": "2855171f6b887782c09c175e6ad59c4c3b91e8e5807b82cdf45170725a2c2eb6"
+    },
+    {
+      "path": "prag/src/lens.rs",
+      "sha256": "a84730ba30aaee9f91a8581f16544d5769a824f59b7a6ba43470d8aa6a641603"
+    },
+    {
+      "path": "prag/src/lib.rs",
+      "sha256": "01009a73cf1a1bc103374decd92328f31a226a3212d307ff9f7327bc95523d65"
+    },
+    {
+      "path": "prag/src/main.rs",
+      "sha256": "170a91fdaf37227ef14b8d620f451d9d46987dde5546136e8153e7e368794d0b"
+    },
+    {
+      "path": "prag/src/model.rs",
+      "sha256": "e18c587fd1f87b18c7e0118e0009b16fb469e26ba9cd0edf26b097226130ee25"
+    },
+    {
+      "path": "prag/src/opus.rs",
+      "sha256": "0169f72bddab55f9e493b85a86918b5f0adbcf5153c7c12725bb249f2ed5c136"
+    },
+    {
+      "path": "prag/src/roles.rs",
+      "sha256": "30e3aba0c3fba51e326a90fb8da79fa28c009d58c10742100aa462a75d41a5df"
+    },
+    {
+      "path": "prag/src/rules.rs",
+      "sha256": "ba82334c7c91aaaff7aed9651eae4b2d54b99d66c88cbe3f162fdda3407bc9f3"
+    },
+    {
+      "path": "prag/src/schema.rs",
+      "sha256": "7dade219cf710dd08df7a60853a6101058b90af22a564ac35c9b3c5d4b23eff8"
+    },
+    {
+      "path": "prag/src/silver.rs",
+      "sha256": "adf915c8d5e9059d3f58b20eca8d9b94721ee7fd9f39ac69f93775a6b5c856c9"
+    },
+    {
+      "path": "prag/src/vn.rs",
+      "sha256": "f35dceabba8b9e6e03a2e11d74967e79f4f40920cc2898b4a5d4b3812a6befa1"
+    },
+    {
+      "path": "prag/src/vnconv.rs",
+      "sha256": "b5e9e5a2a3fc9359403585f2a0b1ffacc4ecb71a563d252d1ea334a76695ae52"
+    },
+    {
+      "path": "prag/tests/groupant_wave13.rs",
+      "sha256": "9991d8a61afc40be64d7828b5411d1cc55d8d49b750db50fe55f85f2c15d51d4"
+    },
+    {
+      "path": "prag/tests/groupant_wave15.rs",
+      "sha256": "b4a5a8101f5ea6a7bc74f63a3d1e6130b4d85e91ef9c5c886a7ace090e1f387f"
+    },
+    {
+      "path": "prag/tests/groupant_wave16.rs",
+      "sha256": "e3b13f4d30c6df653b6cea0843c66ad119cb3f3de894fda7aef23b0aefc2eb4c"
+    },
+    {
+      "path": "prag/tests/groupant_wave17.rs",
+      "sha256": "6daabf7b11474b3266be105a16669f19ad9fc5a00b72853aae4e35ac8a9ef94e"
+    }
+  ],
+  "status": "partial_source_bound_model"
+}

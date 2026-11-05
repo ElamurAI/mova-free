@@ -3,7 +3,7 @@
 //!
 //!   world domains "<text>" [--genre tale]
 //!
-//! Evidence (docs/pragmatics-expressions.md, docs/absurdity.md):
+//! Evidence (docs/pragmatics.md#expressions-by-their-real-meaning, docs/knowledge.md#the-absurdity-matrix):
 //! - slang: a word or expression whose main sense is slang/informal/colloquial/vulgar/derogatory; with two or more
 //!   such cues, other content words with a slang sense are read in that sense;
 //! - formal: a main sense labelled formal, literary or archaic;
@@ -111,9 +111,11 @@ pub fn domains(words: &[Word], genre: &str) -> Report {
     domains_with(words, genre, &default_cfg())
 }
 
-/// Domains under a configuration.
+/// Domains under finite configuration overrides; absent or nonfinite values use shipped defaults.
+/// Finite values retain threshold semantics, including zero and fractional counts.
 pub fn domains_with(words: &[Word], genre: &str, cfg: &Cfg) -> Report {
-    let k = |n: &str| cfg.get(n).copied().unwrap_or(0.0);
+    let defaults: Cfg = knobs().into_iter().map(|(n, v, _)| (n.to_string(), v)).collect();
+    let k = |n: &str| cfg.get(n).copied().filter(|v| v.is_finite()).unwrap_or(defaults[n]);
     let lens = prag::lens::lens(words);
     let mut r = Report { means: prag::lens::means(&lens), ..Default::default() };
     use en::gram::UPos;
@@ -302,4 +304,154 @@ pub fn eval(path: &std::path::Path, show: usize) -> Result<()> {
         println!("{e}");
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod wave11_models {
+    use super::*;
+    use en::gram::{Feats, Rel, Tag, UPos};
+
+    fn shipped() -> Cfg {
+        knobs()
+            .into_iter()
+            .map(|(k, v, _)| (k.to_owned(), v))
+            .collect()
+    }
+    fn words() -> Vec<Word> {
+        [
+            ("CHEESE", "cheese", UPos::NOUN, 2, Rel::Nsubj),
+            ("ATE", "eat", UPos::VERB, 0, Rel::Root),
+            ("MOUSE", "mouse", UPos::NOUN, 2, Rel::Obj),
+        ]
+        .into_iter()
+        .map(|(f, l, u, h, r)| Word {
+            form: f.into(),
+            lemma: l.into(),
+            upos: u,
+            head: h,
+            rel: r,
+            tag: Tag::NN,
+            feats: Feats::default(),
+        })
+        .collect()
+    }
+
+    #[test]
+    fn partial_default_maps_and_explicit_zero() {
+        let ws = words();
+        let baseline = format!("{:?}", domains_with(&ws, "real", &shipped()));
+        assert_eq!(
+            format!("{:?}", domains_with(&ws, "real", &Cfg::new())),
+            baseline
+        );
+        for (name, value, _) in knobs() {
+            let partial = Cfg::from([(name.into(), value)]);
+            assert_eq!(
+                format!("{:?}", domains_with(&ws, "real", &partial)),
+                baseline
+            );
+            for bad in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY] {
+                let partial = Cfg::from([(name.into(), bad)]);
+                assert_eq!(
+                    format!("{:?}", domains_with(&ws, "real", &partial)),
+                    baseline
+                );
+            }
+        }
+        let cfg = Cfg::from([("legal_k".into(), 0.0)]);
+        assert!(
+            domains_with(&[], "real", &cfg)
+                .domains
+                .iter()
+                .any(|d| d.name == "formal")
+        );
+    }
+
+    #[test]
+    fn missing_and_nonfinite_overrides() {
+        assert!(
+            domains_with(&[], "real", &Cfg::new()).domains.is_empty(),
+            "empty override uses shipped thresholds"
+        );
+        for bad in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY] {
+            let mut cfg = shipped();
+            cfg.insert("legal_k".into(), bad);
+            assert!(
+                domains_with(&[], "real", &cfg).domains.is_empty(),
+                "nonfinite override ignored"
+            );
+        }
+    }
+
+    #[test]
+    fn annotation_judge_threshold_join() {
+        let ws = words();
+        let original = ws.clone();
+        for genre in ["real", "tale"] {
+            let nodes: Vec<_> = ws
+                .iter()
+                .map(|w| Node {
+                    form: w.form.clone(),
+                    lemma: w.lemma.to_lowercase(),
+                    upos: Some(w.upos),
+                    head: w.head,
+                    rel: w.rel,
+                })
+                .collect();
+            let (js, _) = judge(&Matrix::global_in(genre), &nodes);
+            assert!(!js.is_empty(), "configured fixture has matrix judgments");
+            for threshold in [0., 1., 2., 3., 4., 5.] {
+                let mut cfg = shipped();
+                cfg.insert("absurd_humor_min".into(), threshold);
+                let r = domains_with(&ws, genre, &cfg);
+                let actual: Vec<_> = r
+                    .domains
+                    .iter()
+                    .flat_map(|d| &d.reasons)
+                    .filter(|s| s.starts_with("absurd in "))
+                    .cloned()
+                    .collect();
+                let expected: Vec<_> = js
+                    .iter()
+                    .filter(|j| f64::from(j.score) >= threshold)
+                    .map(|j| {
+                        format!(
+                            "absurd in the {genre} domain: {} as the {} of {} (score {})",
+                            ws[j.noun].form,
+                            if j.role == 0 { "doer" } else { "object" },
+                            ws[j.verb].form,
+                            j.score
+                        )
+                    })
+                    .collect();
+                assert_eq!(actual, expected);
+                assert!(r.domains.windows(2).all(|w| w[0].name < w[1].name));
+            }
+        }
+        assert_eq!(ws, original);
+    }
+
+    #[test]
+    fn domain_reason_dedup_and_score_complement() {
+        let mut ds = vec![];
+        for reason in ["a", "b", "a", "b"] {
+            push(&mut ds, "humor", reason.into());
+        }
+        assert_eq!(ds.len(), 1);
+        assert_eq!(ds[0].reasons, ["a", "b"]);
+        for mask in 0u8..16 {
+            let names = ["slang", "formal", "humor", "hidden-meaning"];
+            let gold = names
+                .iter()
+                .enumerate()
+                .filter(|(i, _)| mask & (1 << i) != 0)
+                .map(|(_, s)| s.to_string())
+                .collect();
+            let set = vec![(vec![], "real".into(), gold)];
+            assert_eq!(
+                score_set(&set, &shipped()),
+                vec![4 - i64::from(mask.count_ones())]
+            );
+        }
+    }
 }

@@ -57,7 +57,7 @@ pub fn prompt(items: &[&Item]) -> String {
                 if it.pos == 0 {
                     let _ = write!(p, "\n=== Tale \"{}\" - paragraph {}\n", it.title, it.para);
                     // context only if the previous paragraph does not come right before in this same batch
-                    let adjacent = prev.is_some_and(|q| q.doc == it.doc && q.para + 1 == it.para);
+                    let adjacent = prev.is_some_and(|q| q.src == it.src && q.doc == it.doc && q.para.checked_add(1) == Some(it.para));
                     if !it.ctx.is_empty() && !adjacent {
                         let _ = writeln!(p, "context (previous sentences, do not label): {}", it.ctx.join(" "));
                     }
@@ -294,5 +294,58 @@ mod tests {
         // voice inconsistent with the source: tale with none, Tatoeba without quotes with narrator
         let g = gate("1\tq\trequest\t1\t0\tnone\tnone\tx\n2\tdecl\tnarrate\t0\t0\tnone\tnarrator\t-\n3\tdecl\tassert\t0\t1\tnone\tnarrator\t-\n", &its);
         assert_eq!((g.ok.len(), g.bad.len()), (1, 2));
+    }
+}
+
+#[cfg(test)]
+mod wave16_models {
+    use super::*;
+    fn item(src: Src, para: i64, batch: usize) -> Item {
+        Item{key:format!("{para}"),src,doc:"d".into(),title:"Tiny".into(),para,ord:para,pos:0,plen:1,text:"Hello.".into(),batch,ctx:vec!["Before.".into()]}
+    }
+    #[test]
+    fn prompt_context_is_source_scoped() {
+        let a=item(Src::Tale,1,0); let b=item(Src::Gum,2,0);
+        assert_eq!(prompt(&[&a,&b]).matches("context (previous sentences").count(),2);
+        let c=item(Src::Tale,2,0);
+        assert_eq!(prompt(&[&a,&c]).matches("context (previous sentences").count(),1);
+    }
+    #[test]
+    fn prompt_adjacency_does_not_wrap() {
+        let a=item(Src::Tale,i64::MAX,0);let b=item(Src::Tale,i64::MIN,0);
+        assert_eq!(prompt(&[&a,&b]).matches("context (previous sentences").count(),2);
+    }
+    #[test]
+    fn batches_preserve_identity_and_prompt_order() {
+        let xs=[item(Src::Tatoeba,7,3),item(Src::Tale,8,1),item(Src::Tatoeba,9,3)];
+        let bs=batches(&xs);
+        assert_eq!(bs.keys().copied().collect::<Vec<_>>(),[1,3]);
+        assert!(std::ptr::eq(bs[&3][0],&xs[0]) && std::ptr::eq(bs[&3][1],&xs[2]));
+        let p=prompt(&bs[&3]);
+        assert_eq!(p.matches("=== Standalone").count(),1);
+        assert!(p.ends_with("1\tHello.\n2\tHello.\n"));
+        assert_eq!(prompt(&[]),format!("{RULES}\nSentences:\n"));
+    }
+    #[test]
+    fn gates_partition_numbers_and_keep_junk_separate() {
+        let a=item(Src::Tatoeba,1,0);let b=item(Src::Tatoeba,2,0);
+        let row="1\tdecl\tassert\t0\t0\tnone\tnone\t-";
+        let g=gate(&format!("junk\n```tsv\n{row}\r\n"),&[&a,&b]);
+        assert_eq!(g.ok.keys().copied().collect::<Vec<_>>(),[1]);
+        assert_eq!(g.bad,vec![(Some(2),"no line".into())]);assert_eq!(g.junk,1);
+        for text in [format!("{row}\n{row}"),format!("{row}\n0\tx"),format!("{row}\n3\tx")] {
+            let g=gate(&text,&[&a,&b]);assert!(g.ok.is_empty());assert_eq!(g.bad.len(),1);assert_eq!(g.bad[0].0,None);
+        }
+    }
+    #[test]
+    fn voice_and_schema_boundaries_are_distinct() {
+        for (src,text,voice,accepted) in [(Src::Tale,"Hello.","none",false),(Src::Tale,"Hello.","narrator",true),(Src::Gum,"Hello.","none",true),(Src::Tatoeba,"Hello.","character",false),(Src::Tatoeba,"\"Hello.\"","character",true)] {
+            let mut a=item(src,1,0);a.text=text.into();
+            let g=gate(&format!("1\tdecl\tassert\t0\t0\tnone\t{voice}\t-"),&[&a]);
+            assert_eq!(g.ok.len(),usize::from(accepted));
+            assert_eq!(g.bad.len(),usize::from(!accepted));
+        }
+        let a=item(Src::Tatoeba,1,0);
+        let g=gate("1\tdecl\tassert\t2\t0\tnone\tnone\t-",&[&a]);assert!(g.ok.is_empty());assert_eq!(g.bad[0].0,Some(1));
     }
 }

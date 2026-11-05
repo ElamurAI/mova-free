@@ -1,0 +1,22 @@
+{
+  "id": "algorithm-suffix_automaton",
+  "source": "algorithms/src/suffix_automaton/mod.rs",
+  "description": "suffix_automaton exact implementation",
+  "state": "Finite byte strings s and query q; count observation is u128; allocations must succeed.",
+  "forward": [
+    "contains(q) iff q is a contiguous substring of s, including empty. distinct_substrings is the cardinality of the set of nonempty substrings."
+  ],
+  "inverse": [
+    "Universe is (s,q,b,count). Exclude b disagreeing with interval occurrence (empty occurs), and counts unequal to the cardinality of nonempty interval values. State numbering and occurrence multiplicities are not observable.",
+    "For a complete membership language L, compatible texts are exactly s with substring-set including empty equal to L. A realizable finite L has a unique longest word s, recovering the text. Count alone admits all texts with that count: ab and ba both give 3; a count does not recover symbols."
+  ],
+  "cost": "For n bytes and alphabet size sigma<=256, O(n log sigma) construction plus O(n sigma) clone-map copying (O(n) for fixed byte alphabet), O(n sigma) conservative storage. Query O(|q| log sigma), count O(n). No timings measured.",
+  "checks": [
+    "cargo test -p mova-algorithms --offline suffix_automaton::tests::",
+    "Compiled semantic mutant rejected by a real assertion; syntax generated twice."
+  ],
+  "limitations": [
+    "Partial syntax, finite evidence, no timing or downstream gain claimed."
+  ],
+  "children": []
+}

@@ -1,0 +1,149 @@
+{
+  "children": [
+    "world-spartqa",
+    "world-spartqa-inference-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Hybrid thresholds and outgoing preflight must match merged sources. Scene reader, descriptions, query parsing and other legacy module behavior remain partially modeled. Finite differential/fixed-point checks and partial syntax are not a general semantic proof. Contradictory direct facts and block observations follow existing priority rather than a newly imposed consistency axiom.",
+        "domain": "Finite immutable scenes with valid initial query IDs wherever holds/tv dereference objs, fixed facts, relations and block assignments; intermediate fact endpoints may be absent from objs, including usize::MAX; normal terminating calls with successful allocation. Distinguish boolean reach, irreflexive holds, three-valued tv and nonempty qualified dir_path operation tags. Reader acquisition, mutable fact generation and invalid dereferenced query IDs are outside this transfer domain.",
+        "evidence": "model.md",
+        "id": "spatial-inference-excluded-path-observations",
+        "observation_scope": "The actual joins are directional fact projection -> reach/product-state traversal -> near/far/holds -> three-valued query projection, with direct-fact and block priority retained at the callers. The inference_tests source calls private scene methods and compares against a retained scan reference and bounded fixed-point/product-state observations. These supplied-scene tests do not run the story reader or establish prose-to-scene correctness. No generic shortest-path result substitutes for qualified all-path evidence.",
+        "operator": "Within supplied lawful scenes, excluded observations include a directional path absent from projected facts, reporting None when a nonempty path exists, returning Some(false) after a longer Far/fully-qualified witness is reachable, and treating the zero-edge x-to-x walk as a dir_path witness. At the caller, holds(x,r,x)=true and an object-fact answer overriding an earlier applicable block inference are excluded under the existing precedence.",
+        "path": "model.md",
+        "section": "excluded-path-observations",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Hybrid thresholds and outgoing preflight must match merged sources. Scene reader, descriptions, query parsing and other legacy module behavior remain partially modeled. Finite differential/fixed-point checks and partial syntax are not a general semantic proof. Contradictory direct facts and block observations follow existing priority rather than a newly imposed consistency axiom.",
+        "domain": "Finite immutable scenes with valid initial query IDs wherever holds/tv dereference objs, fixed facts, relations and block assignments; intermediate fact endpoints may be absent from objs, including usize::MAX; normal terminating calls with successful allocation. Distinguish boolean reach, irreflexive holds, three-valued tv and nonempty qualified dir_path operation tags. Reader acquisition, mutable fact generation and invalid dereferenced query IDs are outside this transfer domain.",
+        "evidence": "model.md",
+        "id": "spatial-inference-compatible-scenes",
+        "observation_scope": "The actual joins are directional fact projection -> reach/product-state traversal -> near/far/holds -> three-valued query projection, with direct-fact and block priority retained at the callers. The inference_tests source calls private scene methods and compares against a retained scan reference and bounded fixed-point/product-state observations. These supplied-scene tests do not run the story reader or establish prose-to-scene correctness. No generic shortest-path result substitutes for qualified all-path evidence.",
+        "operator": "For a tagged query result retain all scenes, facts, object/block attributes and reachable product-state witnesses producing it. Some(true) from dir_path can arise from an explicit Far edge or a sufficiently long fully-qualified path; these witnesses are not uniquely recoverable. None constrains directional reachability, not unrelated facts. tv erases witness provenance and can merge different direct, block and inferred causes.",
+        "path": "model.md",
+        "section": "compatible-scenes",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Hybrid thresholds and outgoing preflight must match merged sources. Scene reader, descriptions, query parsing and other legacy module behavior remain partially modeled. Finite differential/fixed-point checks and partial syntax are not a general semantic proof. Contradictory direct facts and block observations follow existing priority rather than a newly imposed consistency axiom.",
+        "domain": "Finite immutable scenes with valid initial query IDs wherever holds/tv dereference objs, fixed facts, relations and block assignments; intermediate fact endpoints may be absent from objs, including usize::MAX; normal terminating calls with successful allocation. Distinguish boolean reach, irreflexive holds, three-valued tv and nonempty qualified dir_path operation tags. Reader acquisition, mutable fact generation and invalid dereferenced query IDs are outside this transfer domain.",
+        "evidence": "model.md",
+        "id": "spatial-inference-product-state",
+        "observation_scope": "The actual joins are directional fact projection -> reach/product-state traversal -> near/far/holds -> three-valued query projection, with direct-fact and block priority retained at the callers. The inference_tests source calls private scene methods and compares against a retained scan reference and bounded fixed-point/product-state observations. These supplied-scene tests do not run the story reader or establish prose-to-scene correctness. No generic shortest-path result substitutes for qualified all-path evidence.",
+        "operator": "The visited key is (object, far_seen, min(steps,2), all_edges_qualified). Merging visits by object alone loses distinctions needed for later witnesses. Qualification is conjoined along edges; far_seen is disjoined. State transitions use exact fact membership in either orientation for Near/Far/Touch qualification, and termination follows from the finite product-state space.",
+        "path": "model.md",
+        "section": "product-state",
+        "status": "partial_source_model",
+        "type": "product_state_obligation"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Hybrid thresholds and outgoing preflight must match merged sources. Scene reader, descriptions, query parsing and other legacy module behavior remain partially modeled. Finite differential/fixed-point checks and partial syntax are not a general semantic proof. Contradictory direct facts and block observations follow existing priority rather than a newly imposed consistency axiom.",
+        "domain": "Finite immutable scenes with valid initial query IDs wherever holds/tv dereference objs, fixed facts, relations and block assignments; intermediate fact endpoints may be absent from objs, including usize::MAX; normal terminating calls with successful allocation. Distinguish boolean reach, irreflexive holds, three-valued tv and nonempty qualified dir_path operation tags. Reader acquisition, mutable fact generation and invalid dereferenced query IDs are outside this transfer domain.",
+        "evidence": "model.md",
+        "id": "spatial-inference-all-path-aggregation",
+        "observation_scope": "The actual joins are directional fact projection -> reach/product-state traversal -> near/far/holds -> three-valued query projection, with direct-fact and block priority retained at the callers. The inference_tests source calls private scene methods and compares against a retained scan reference and bounded fixed-point/product-state observations. These supplied-scene tests do not run the story reader or establish prose-to-scene correctness. No generic shortest-path result substitutes for qualified all-path evidence.",
+        "operator": "The target observation ORs all qualifying witnesses instead of stopping at first arrival. A direct unqualified edge gives a path but may produce Some(false); a later longer Far or fully-qualified route upgrades the result to Some(true). Shortest-path length alone cannot determine this observation.",
+        "path": "model.md",
+        "section": "all-path-aggregation",
+        "status": "partial_source_model",
+        "type": "all_path_projection"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Hybrid thresholds and outgoing preflight must match merged sources. Scene reader, descriptions, query parsing and other legacy module behavior remain partially modeled. Finite differential/fixed-point checks and partial syntax are not a general semantic proof. Contradictory direct facts and block observations follow existing priority rather than a newly imposed consistency axiom.",
+        "domain": "Finite immutable scenes with valid initial query IDs wherever holds/tv dereference objs, fixed facts, relations and block assignments; intermediate fact endpoints may be absent from objs, including usize::MAX; normal terminating calls with successful allocation. Distinguish boolean reach, irreflexive holds, three-valued tv and nonempty qualified dir_path operation tags. Reader acquisition, mutable fact generation and invalid dereferenced query IDs are outside this transfer domain.",
+        "evidence": "model.md",
+        "id": "spatial-inference-dispatch-preflight",
+        "observation_scope": "The actual joins are directional fact projection -> reach/product-state traversal -> near/far/holds -> three-valued query projection, with direct-fact and block priority retained at the callers. The inference_tests source calls private scene methods and compares against a retained scan reference and bounded fixed-point/product-state observations. These supplied-scene tests do not run the story reader or establish prose-to-scene correctness. No generic shortest-path result substitutes for qualified all-path evidence.",
+        "operator": "E<=64 keeps the scan traversal. For larger E the outgoing preflight examines the requested start and relation before allocating indexed rows; absent outgoing edges return the operation's exact no-path result. Present starts pay index construction even if little else is reached. This dispatch is a resource policy over one relation, not a new inference rule.",
+        "path": "model.md",
+        "section": "dispatch-preflight",
+        "status": "partial_source_model",
+        "type": "resource_fallback"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Hybrid thresholds and outgoing preflight must match merged sources. Scene reader, descriptions, query parsing and other legacy module behavior remain partially modeled. Finite differential/fixed-point checks and partial syntax are not a general semantic proof. Contradictory direct facts and block observations follow existing priority rather than a newly imposed consistency axiom.",
+        "domain": "Finite immutable scenes with valid initial query IDs wherever holds/tv dereference objs, fixed facts, relations and block assignments; intermediate fact endpoints may be absent from objs, including usize::MAX; normal terminating calls with successful allocation. Distinguish boolean reach, irreflexive holds, three-valued tv and nonempty qualified dir_path operation tags. Reader acquisition, mutable fact generation and invalid dereferenced query IDs are outside this transfer domain.",
+        "evidence": "model.md",
+        "id": "spatial-inference-nonempty-and-irreflexive",
+        "observation_scope": "The actual joins are directional fact projection -> reach/product-state traversal -> near/far/holds -> three-valued query projection, with direct-fact and block priority retained at the callers. The inference_tests source calls private scene methods and compares against a retained scan reference and bounded fixed-point/product-state observations. These supplied-scene tests do not run the story reader or establish prose-to-scene correctness. No generic shortest-path result substitutes for qualified all-path evidence.",
+        "operator": "dir_path(x,r,x) may return a value when a nonempty cycle exists, while holds rejects x==y before inference. A zero-length reachability convention from a generic graph library cannot be applied blindly to either API. Tests must preserve operation tags rather than equating all path predicates.",
+        "path": "model.md",
+        "section": "nonempty-and-irreflexive",
+        "status": "partial_source_model",
+        "type": "boundary_non_equivalence"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation; finite observations do not establish a general proof.",
+        "assumptions": "Hybrid thresholds and outgoing preflight must match merged sources. Scene reader, descriptions, query parsing and other legacy module behavior remain partially modeled. Finite differential/fixed-point checks and partial syntax are not a general semantic proof. Contradictory direct facts and block observations follow existing priority rather than a newly imposed consistency axiom.",
+        "domain": "Finite immutable scenes with valid initial query IDs wherever holds/tv dereference objs, fixed facts, relations and block assignments; intermediate fact endpoints may be absent from objs, including usize::MAX; normal terminating calls with successful allocation. Distinguish boolean reach, irreflexive holds, three-valued tv and nonempty qualified dir_path operation tags. Reader acquisition, mutable fact generation and invalid dereferenced query IDs are outside this transfer domain.",
+        "evidence": "model.md",
+        "id": "spatial-inference-block-before-fact",
+        "observation_scope": "The actual joins are directional fact projection -> reach/product-state traversal -> near/far/holds -> three-valued query projection, with direct-fact and block priority retained at the callers. The inference_tests source calls private scene methods and compares against a retained scan reference and bounded fixed-point/product-state observations. These supplied-scene tests do not run the story reader or establish prose-to-scene correctness. No generic shortest-path result substitutes for qualified all-path evidence.",
+        "operator": "holds and its query callers retain the established ordering of block-derived inference, object facts and inverse checks. A correct local adjacency result does not authorize bypassing an earlier block decision. Three-valued None is unknown under these rules, not proof that the opposite relation holds.",
+        "path": "model.md",
+        "section": "block-before-fact",
+        "status": "partial_source_model",
+        "type": "stage_priority"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks (evidence)",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "spatial-inference",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "world/src/spartqa.rs",
+      "sha256": "cea8049e1369f5948363a41d6ae85368faa3b9ede1075e0b8c79e92f79c1aa4d"
+    },
+    {
+      "path": "world/src/spartqa.rs.groupant/inference_tests.rs",
+      "sha256": "9585c4e10757c7cf36a8077c45316ecfbbd4ac5253e4c87017a1163cc65c4b93"
+    }
+  ],
+  "status": "partial_source_bound_model"
+}

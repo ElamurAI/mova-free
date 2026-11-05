@@ -1,0 +1,180 @@
+{
+  "children": [
+    "math-calc",
+    "math-comb",
+    "math-deriv",
+    "math-fcheck",
+    "math-linsys",
+    "math-nt",
+    "math-poly"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "No teacher/API/corpus/GPU/heldout/expensive benchmark execution. Tests inspected first. One root-authorized checker shape repair; otherwise production semantics retained. No new executable percent surrogate.",
+        "domain": "Finite synthetic fixtures, normalized Poly, matched rectangular gauss inputs, supported expression and canonical digit domains. Resource/overflow assumptions are source-specific.",
+        "id": "behavior-complement",
+        "observation_scope": "calc->comb/nt coerces Q to Z/u64 and appends certificates; poly/linsys->calc may mutate Env for constants; deriv->calc::approx inherits unsupported/numerical domains. comb->nt::sieve supports Legendre, poly->nt::factor/divisors supports candidates/surds. fcheck->expr/units is legacy SI path, not an adapter for dimensionless calc E. math/src/plan.rs is an existing downstream caller; ownership remains with this source list.",
+        "operator": "For admitted fixed inputs/state exclude outputs/effect prefixes inconsistent with exact dispatch relations. Some(f64) does not exclude NaN, probable does not exclude lack of proof, unavailable Check.ok does not exclude arbitrary claimed values, and numerator roots do not exclude canceled holes. Shape-invalid substitution results now cannot be accepted.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "No teacher/API/corpus/GPU/heldout/expensive benchmark execution. Tests inspected first. One root-authorized checker shape repair; otherwise production semantics retained. No new executable percent surrogate.",
+        "domain": "Finite synthetic fixtures, normalized Poly, matched rectangular gauss inputs, supported expression and canonical digit domains. Resource/overflow assumptions are source-specific.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "calc->comb/nt coerces Q to Z/u64 and appends certificates; poly/linsys->calc may mutate Env for constants; deriv->calc::approx inherits unsupported/numerical domains. comb->nt::sieve supports Legendre, poly->nt::factor/divisors supports candidates/surds. fcheck->expr/units is legacy SI path, not an adapter for dimensionless calc E. math/src/plan.rs is an existing downstream caller; ownership remains with this source list.",
+        "operator": "Join fibers: quotient/remainder with divisor reconstruct dividend; factors/lead reconstruct polynomial after product check; x,A constrain b=Ax. E syntax, Env history, denominator provenance, signed factor/digit inputs and SI representation are many-to-one. Root-only/Check-only results cannot uniquely reconstruct antecedents.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "No teacher/API/corpus/GPU/heldout/expensive benchmark execution. Tests inspected first. One root-authorized checker shape repair; otherwise production semantics retained. No new executable percent surrogate.",
+        "domain": "Finite synthetic fixtures, normalized Poly, matched rectangular gauss inputs, supported expression and canonical digit domains. Resource/overflow assumptions are source-specific.",
+        "id": "exact-transport",
+        "observation_scope": "calc->comb/nt coerces Q to Z/u64 and appends certificates; poly/linsys->calc may mutate Env for constants; deriv->calc::approx inherits unsupported/numerical domains. comb->nt::sieve supports Legendre, poly->nt::factor/divisors supports candidates/surds. fcheck->expr/units is legacy SI path, not an adapter for dimensionless calc E. math/src/plan.rs is an existing downstream caller; ownership remains with this source list.",
+        "operator": "calc Q feeds exact big Q/Z; poly/linsys reject R constants. fcheck uses legacy Rat/SI scales; f64 magnitude is not a lossless dimensional/calculation adapter.",
+        "path": "model.md",
+        "required": false,
+        "section": "exact-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No teacher/API/corpus/GPU/heldout/expensive benchmark execution. Tests inspected first. One root-authorized checker shape repair; otherwise production semantics retained. No new executable percent surrogate.",
+        "domain": "Finite synthetic fixtures, normalized Poly, matched rectangular gauss inputs, supported expression and canonical digit domains. Resource/overflow assumptions are source-specific.",
+        "id": "certificate-join",
+        "observation_scope": "calc->comb/nt coerces Q to Z/u64 and appends certificates; poly/linsys->calc may mutate Env for constants; deriv->calc::approx inherits unsupported/numerical domains. comb->nt::sieve supports Legendre, poly->nt::factor/divisors supports candidates/surds. fcheck->expr/units is legacy SI path, not an adapter for dimensionless calc E. math/src/plan.rs is an existing downstream caller; ownership remains with this source list.",
+        "operator": "Exact substitution/product, modular collision-prone fingerprint, probable labels, finite floating samples and unavailable routes have distinct assurance. Boolean conjunction alone cannot prove the composition.",
+        "path": "model.md",
+        "required": false,
+        "section": "certificate-join",
+        "status": "partial_source_derived_model",
+        "type": "evidence_composition"
+      },
+      {
+        "assumptions": "No teacher/API/corpus/GPU/heldout/expensive benchmark execution. Tests inspected first. One root-authorized checker shape repair; otherwise production semantics retained. No new executable percent surrogate.",
+        "domain": "Finite synthetic fixtures, normalized Poly, matched rectangular gauss inputs, supported expression and canonical digit domains. Resource/overflow assumptions are source-specific.",
+        "id": "state-prefix",
+        "observation_scope": "calc->comb/nt coerces Q to Z/u64 and appends certificates; poly/linsys->calc may mutate Env for constants; deriv->calc::approx inherits unsupported/numerical domains. comb->nt::sieve supports Legendre, poly->nt::factor/divisors supports candidates/surds. fcheck->expr/units is legacy SI path, not an adapter for dimensionless calc E. math/src/plan.rs is an existing downstream caller; ownership remains with this source list.",
+        "operator": "poly/linsys constant eval can retain calc effects on failure; ranged errors retain binding. Capped traces omit work; local resource gates do not bound all callees.",
+        "path": "model.md",
+        "required": false,
+        "section": "state-prefix",
+        "status": "partial_source_derived_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "No teacher/API/corpus/GPU/heldout/expensive benchmark execution. Tests inspected first. One root-authorized checker shape repair; otherwise production semantics retained. No new executable percent surrogate.",
+        "domain": "Finite synthetic fixtures, normalized Poly, matched rectangular gauss inputs, supported expression and canonical digit domains. Resource/overflow assumptions are source-specific.",
+        "id": "domain-provenance",
+        "observation_scope": "calc->comb/nt coerces Q to Z/u64 and appends certificates; poly/linsys->calc may mutate Env for constants; deriv->calc::approx inherits unsupported/numerical domains. comb->nt::sieve supports Legendre, poly->nt::factor/divisors supports candidates/surds. fcheck->expr/units is legacy SI path, not an adapter for dimensionless calc E. math/src/plan.rs is an existing downstream caller; ownership remains with this source list.",
+        "operator": "Retain ratfunc dens across cancellation/solving. Derivative simplify forgets singularities and SI projection forgets units representation. Arithmetic checks must be joined with original domain obligations.",
+        "path": "model.md",
+        "required": false,
+        "section": "domain-provenance",
+        "status": "partial_source_derived_model",
+        "type": "domain_transport"
+      },
+      {
+        "assumptions": "Normal return and stated scalar/base domain; no allocation failure. See the referenced section for formula and counterexample.",
+        "counterexample": "Concrete source-level witnesses in referenced section and tools/correspondence/tests/bridges.rs digit_*",
+        "domain": "Selected pure nt child composition at u32 base>=2; separate floating pullback",
+        "evidence_status": "source_derived_algebra_and_bounded_actual_api_checks",
+        "formula": "See the source-specific named section; no generic percentage metric is admitted.",
+        "id": "wave39-magnitude_retraction_composition",
+        "observation": "Magnitude normalization and lost sign/coefficient histories",
+        "path": "model.md",
+        "section": "magnitude_retraction_composition",
+        "status": "partial_source_derived_model",
+        "type": "magnitude_retraction_composition"
+      },
+      {
+        "assumptions": "Normal return and stated scalar/base domain; no allocation failure. See the referenced section for formula and counterexample.",
+        "counterexample": "Concrete source-level witnesses in referenced section and tools/correspondence/tests/bridges.rs digit_*",
+        "domain": "Selected pure nt child composition at u32 base>=2; separate floating pullback",
+        "evidence_status": "source_derived_algebra_and_bounded_actual_api_checks",
+        "formula": "See the source-specific named section; no generic percentage metric is admitted.",
+        "id": "wave39-transport_domain_pullback",
+        "observation": "Magnitude normalization and lost sign/coefficient histories",
+        "path": "model.md",
+        "section": "transport_domain_pullback",
+        "status": "partial_source_derived_model",
+        "type": "exact_transport_domain_pullback"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "symbolic-computation",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "math/src/calc.rs",
+      "sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e"
+    },
+    {
+      "path": "math/src/comb.rs",
+      "sha256": "c5937a3576697c052a6de3ce4c9763d806b35105d1ef08a90c525b7f0603055d"
+    },
+    {
+      "path": "math/src/deriv.rs",
+      "sha256": "0ea96ef4d7df85aa6e234618664e368c594bef2280d7689b5a989da4d31c1f48"
+    },
+    {
+      "path": "math/src/fcheck.rs",
+      "sha256": "e16a631c5a71bb3e7ac769703c386098859bb31541bb69e8e697103ee8a32d3a"
+    },
+    {
+      "path": "math/src/linsys.rs",
+      "sha256": "dd9f5f6f6c55e4f91db8f8be82b3a0472be600f245de26372c417224d22fdc2b"
+    },
+    {
+      "path": "math/src/nt.rs",
+      "sha256": "27f4bf91578ab245e6b50f5f880126990b73b93b46882c37127e241031c359fe"
+    },
+    {
+      "path": "math/src/poly.rs",
+      "sha256": "28c7c69c8282270b6ac3bde99e6947108ec5be0f908d510806c4aefdfad61fca"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

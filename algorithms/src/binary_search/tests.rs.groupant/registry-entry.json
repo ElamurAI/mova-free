@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline binary_search::tests::",
+    "External source mutant rejected by a specifically filtered new test"
+  ],
+  "children": [],
+  "cost": "4,146 wider duplicate cut/first cases, 145 Reverse targets and 305 translation targets, in addition to preserved bounded tests. Linear expected search costs O(n) per query; all lengths and target ranges fixed.",
+  "description": "Independent bounded tests and metamorphic laws for binary_search",
+  "forward": [
+    "Accept iff all specified finite assertions hold."
+  ],
+  "id": "algorithm-binary-search-tests",
+  "inverse": [
+    "Let F be the explicit finite fixture set below, O(f) the oracle expectations and U the candidate implementations paired with pass/fail observations over F. R(P,pass) iff every assertion succeeds under the fixed execution assumptions. U minus R consists of false pass observations for any mismatch and false failure observations when every assertion holds. Conditional exact harness model; panics count as failures, harness crashes/timeouts are outside this two-outcome universe.",
+    "Given a failing fixture and observed mismatch, retain all candidate implementations whose observations violate that assertion. Wrong tie policy, wrong bounds, wrong arithmetic and fixture-oracle defects may share the same failure. Passing admits every implementation agreeing on this finite F and leaves all off-fixture behavior unconstrained; no unique fault reconstruction."
+  ],
+  "limitations": [
+    "Finite acceptance does not prove general correctness; source-bound partial AST omits macro expansion and semantic typing."
+  ],
+  "source": "algorithms/src/binary_search/tests.rs",
+  "state": "Old exhaustive sorted ternary sequences and boundaries; new six lengths {8,31,64,127,257,1025} with 17-value runs and targets -310..380; descending Reverse values -70..70 repeated three times and targets -72..72; translations +1000 for targets -102..202."
+}

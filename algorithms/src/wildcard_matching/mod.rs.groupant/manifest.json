@@ -1,0 +1,155 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "Within U of finite (text,pattern,bool) observations, exclude true when no whole-string token consumption exists and false when one exists. Anchoring forbids an interior literal match by itself. Bytes outside '?' and '*' remain literal, including backslash; Unicode scalar or path-separator semantics are absent.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "9400255d9b64fd788511b5e92ef26552b2d48d4a2e027aa941c3182f14efd08e",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "preimages",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "For fixed pattern P and result true, the fiber is exactly its byte language L(P); for false it is the complement within finite byte strings. Many distinct texts match '*'. A Boolean and pattern cannot recover a unique original text or its allocation history.",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "9400255d9b64fd788511b5e92ef26552b2d48d4a2e027aa941c3182f14efd08e",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "frontier",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "At text prefix length i, row[j] equals membership of T[..i] in P[..j]. Fixing a row retains all text prefixes with the same vector of prefix memberships; in-place diagonal/above temporaries preserve the previous row observations until used.",
+        "path": "model.md",
+        "section": "frontier",
+        "status": "partial_source_derived",
+        "subject_revision": "9400255d9b64fd788511b5e92ef26552b2d48d4a2e027aa941c3182f14efd08e",
+        "type": "state_preimage"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "star-collapse",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "Replacing any nonempty run of consecutive stars by one star preserves the recognized full-string language, since all nonnegative compositions of consumed lengths have the same possible total. This law does not replace or remove question marks.",
+        "path": "model.md",
+        "section": "star-collapse",
+        "status": "partial_source_derived",
+        "subject_revision": "9400255d9b64fd788511b5e92ef26552b2d48d4a2e027aa941c3182f14efd08e",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "length-language",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "If P has q nonstar tokens, every accepted text has length at least q; with no stars length must equal q. A pattern of q question marks accepts exactly length q. All stars accept every finite text, including empty.",
+        "path": "model.md",
+        "section": "length-language",
+        "status": "partial_source_derived",
+        "subject_revision": "9400255d9b64fd788511b5e92ef26552b2d48d4a2e027aa941c3182f14efd08e",
+        "type": "domain_partition"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "literal-identity",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "For a pattern containing neither '?' nor '*', L(P) is the singleton {P}. On this restricted pattern domain, a successful match fixes the input bytes; adding a wildcard generally restores ambiguity.",
+        "path": "model.md",
+        "section": "literal-identity",
+        "status": "partial_source_derived",
+        "subject_revision": "9400255d9b64fd788511b5e92ef26552b2d48d4a2e027aa941c3182f14efd08e",
+        "type": "restricted_inverse"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "byte-boundary",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "Under byte semantics a two-byte UTF-8 character needs two question marks; a scalar-aware counterfactual would require one. Backslash is literal even immediately before '*', so backslash-star accepts a literal backslash followed by any bytes, not a lone literal star.",
+        "path": "model.md",
+        "section": "byte-boundary",
+        "status": "partial_source_derived",
+        "subject_revision": "9400255d9b64fd788511b5e92ef26552b2d48d4a2e027aa941c3182f14efd08e",
+        "type": "counterfactual_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "star-recurrence",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "For star at pattern position j, accepting (i,j+1) is equivalent to accepting (i,j) with zero new bytes OR (i-1,j+1) with one more byte, for i>0. Replacing OR by AND loses witnesses such as nonempty text matched by one star.",
+        "path": "model.md",
+        "section": "star-recurrence",
+        "status": "partial_source_derived",
+        "subject_revision": "9400255d9b64fd788511b5e92ef26552b2d48d4a2e027aa941c3182f14efd08e",
+        "type": "refinement_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-wildcard-matching",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "9400255d9b64fd788511b5e92ef26552b2d48d4a2e027aa941c3182f14efd08e"
+  },
+  "status": "partial_source_derived_instance"
+}

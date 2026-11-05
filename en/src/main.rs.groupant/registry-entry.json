@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "main::wave27::argument_and_xpos_precedence",
+    "main::wave27::synthetic_folds_and_xpos_fill"
+  ],
+  "children": [],
+  "cost": "Pure helpers O(args/features/input bytes). folds clones/writes O(k*document bytes), retains one partition at a time. Context validation O(tokens), generation/shuffle as ctx model. Evaluation/training cost delegated; output accumulation can be full-file or full-report. No cost cap on user counts/epochs/beam.",
+  "description": "English CLI dispatch and adapters for evaluation, context wiring, file transforms, conversion and saved annotators. Most model/training paths remain explicitly unexecuted.",
+  "forward": [
+    "Dispatch matches command and selected arity guards; train gates licenses before requiring output. Pure split uses first global -- then slices from index (panic if separator precedes from). xpos_of maps UPOS/features in ordered cases. folds rejects k<2 before read, assigns newdoc groups d%k, creates output dir and writes fold/rest per f. test_ctx None returns before file read; remaining branches read doc then validate shapes, optional pass1 then derive/shuffle then mask.",
+    "Commands derive and lexicon-cover (2026-11-04)."
+  ],
+  "id": "en-main",
+  "inverse": [
+    "R(xpos VB) includes VERB/AUX with Inf even if Past also set; R(split) admits original prefix command, same train/rest and first separator, but paths lose original OS encoding through String args. Fold/rest pair recovers selected sentence multiset/order under known k/document assignment but not leading blanks/final-newline framing."
+  ],
+  "limitations": [
+    "Training, model load/save/annotation, real corpus evaluation, teachers and APIs not executed",
+    "Missing args on expert-check can index-panic; split invalid from/separator can panic",
+    "Environment fraction accepts negative/NaN rather than validating claimed 0..1 domain",
+    "Report/schema/data adapters are source-derived outside bounded helpers"
+  ],
+  "source": "en/src/main.rs",
+  "state": "Arguments/environment, file paths, sentence/context vectors, delegated models and output streams/files."
+}

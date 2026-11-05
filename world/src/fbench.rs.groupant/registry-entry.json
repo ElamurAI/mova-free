@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p world --lib fbench::wave11_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "For C courses with N rows each, sorting O(C N log N), at most 40 picks/course with repeated category scans O(C N L) for maximum text length L; TSV parsing linear bytes plus gold per-ID sorting. Scorer complexity belongs to prag; external parser and teacher cost are unbounded here.",
+  "description": "Frame benchmark: deterministic course sampling, TSV parsing, gold identity selection, delegated frame scoring and report serialization. Synthetic execution covers pure helpers only.",
+  "forward": [
+    "Frame benchmark: deterministic course sampling, TSV parsing, gold identity selection, delegated frame scoring and report serialization. Synthetic execution covers pure helpers only.",
+    "frames.rs routes bench-make to make and bench arguments to bench. sample reads course explain then facts; make writes row IDs and lossy whitespace, load_items/load_gold bind by IDs, system reads lessons from start, bench aggregates score_line and show_g displays diagnostics. Native tests execute parse_gold -> score_line -> overall and parse_frame -> show_g -> parse_frame; live joins are inspected only."
+  ],
+  "id": "world-fbench",
+  "inverse": [
+    "Within pure fixtures, selected IDs retain input order; frame display preserves the parsed observation on the tested canonical notation domain. Filesystem, lesson identity and live reader correctness are external obligations.",
+    "All TSV byte streams, sample pools, gold/sys maps and arguments yielding the same report under fixed dependencies. Text normalization, omitted unsampled records, score aggregation and header removal create many antecedents."
+  ],
+  "limitations": [
+    "Finite synthetic fixtures and partial syntax only; live parser, teacher, external books, heldout and active school state excluded.",
+    "No general semantic AST, proof, speedup or approximation-error guarantee.",
+    "See local fragments for duplicate IDs, malformed metadata, numeric grammar and serialization precision boundaries."
+  ],
+  "source": "world/src/fbench.rs",
+  "state": "Within pure fixtures, selected IDs retain input order; frame display preserves the parsed observation on the tested canonical notation domain. Filesystem, lesson identity and live reader correctness are external obligations."
+}

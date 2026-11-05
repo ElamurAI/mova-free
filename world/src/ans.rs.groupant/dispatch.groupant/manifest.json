@@ -1,0 +1,94 @@
+{
+  "children": [
+    {
+      "id": "world-ans-dispatch-number-tokens",
+      "path": "number-tokens.groupant"
+    },
+    {
+      "id": "world-ans-dispatch-why-chain",
+      "path": "why-chain.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "wave34-composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "wave34-invariant-correction",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-ans-dispatch-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-ans-dispatch-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-ans-dispatch-number-fiber",
+        "path": "model.md",
+        "section": "number-fiber",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-ans-dispatch-anchor-separation",
+        "path": "model.md",
+        "section": "anchor-separation",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 63715,
+      "start": 30239
+    },
+    "description": "Scope includes constructors, time helpers, dispatch and why. Executed subset: supplied Frame/World, no subject and one matching event -> explicit why, then causal how, then missing-state None. ans sets State and num_words; none sets None/empty text while retaining anchor. Read-only descriptions do not certify every intent."
+  },
+  "id": "world-ans-dispatch",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../ans.rs",
+    "sha256": "d8d94c891e347d2b640744b20c4662dc35064368e7d4d9253c4954b4297e1e09"
+  },
+  "status": "partial_source_bound_model"
+}

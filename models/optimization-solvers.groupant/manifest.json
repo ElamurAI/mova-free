@@ -1,0 +1,153 @@
+{
+  "children": [
+    "algorithm-bisection-root",
+    "algorithm-bisection-root-tests",
+    "algorithm-golden-section-search",
+    "algorithm-golden-section-search-tests",
+    "algorithm-gradient-descent-quadratic",
+    "algorithm-gradient-descent-quadratic-tests",
+    "algorithm-conjugate-gradient",
+    "algorithm-conjugate-gradient-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Continuity, deterministic strict unimodality and global SPD are not established by sampling or visited curvature. Residual magnitude alone does not bound coordinate error without conditioning. Floating-point underflow and conservative arithmetic rejection remain possible.",
+        "domain": "Finite, dimensionally valid solver inputs under each leaf validation; continuous bracketed derivative, deterministic strictly unimodal objective, positive diagonal and caller-supplied SPD assumptions where required.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "optimization-solvers-behavior-complement",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Exclude input/report pairs outside each tagged solver relation: exhausted or stagnant reports relabeled as convergence, bracket-width bounds promoted to objective bounds, residual norms promoted to unconditional coordinate error, or visited positive curvature promoted to global SPD.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Continuity, deterministic strict unimodality and global SPD are not established by sampling or visited curvature. Residual magnitude alone does not bound coordinate error without conditioning. Floating-point underflow and conservative arithmetic rejection remain possible.",
+        "domain": "Finite, dimensionally valid solver inputs under each leaf validation; continuous bracketed derivative, deterministic strictly unimodal objective, positive diagonal and caller-supplied SPD assumptions where required.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "optimization-solvers-reverse-reconstruction",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "A returned estimate and status admit many callbacks, brackets, initial states and budgets. For zero residual x, any positive diagonal D with b=D*x is compatible. Common roots/minima survive positive scaling; output does not uniquely recover the problem.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Continuity, deterministic strict unimodality and global SPD are not established by sampling or visited curvature. Residual magnitude alone does not bound coordinate error without conditioning. Floating-point underflow and conservative arithmetic rejection remain possible.",
+        "domain": "Finite, dimensionally valid solver inputs under each leaf validation; continuous bracketed derivative, deterministic strictly unimodal objective, positive diagonal and caller-supplied SPD assumptions where required.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "optimization-solvers-scalar-stationarity",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For q(x)=d*x^2/2-b*x,d>0 with valid enclosing intervals, q'=d*x-b links bisection, golden-section, GD and CG to the same b/d. Native finite fixtures compare additive coordinates with explicit tolerance, not status equality.",
+        "path": "model.md",
+        "section": "scalar-stationarity",
+        "status": "partial_source_model",
+        "type": "stationarity_transport"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Continuity, deterministic strict unimodality and global SPD are not established by sampling or visited curvature. Residual magnitude alone does not bound coordinate error without conditioning. Floating-point underflow and conservative arithmetic rejection remain possible.",
+        "domain": "Finite, dimensionally valid solver inputs under each leaf validation; continuous bracketed derivative, deterministic strictly unimodal objective, positive diagonal and caller-supplied SPD assumptions where required.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "optimization-solvers-diagonal-equations",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For the same positive diagonal D and b, gradient D*x-b and linear residual b-D*x differ only by sign. Their Euclidean norms agree in real arithmetic; rounding and solver trajectories remain separate.",
+        "path": "model.md",
+        "section": "diagonal-equations",
+        "status": "partial_source_model",
+        "type": "residual_transport"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Continuity, deterministic strict unimodality and global SPD are not established by sampling or visited curvature. Residual magnitude alone does not bound coordinate error without conditioning. Floating-point underflow and conservative arithmetic rejection remain possible.",
+        "domain": "Finite, dimensionally valid solver inputs under each leaf validation; continuous bracketed derivative, deterministic strictly unimodal objective, positive diagonal and caller-supplied SPD assumptions where required.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "optimization-solvers-conditioning",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For SPD A with known lambda_min>0, ||x-x*||2 <= ||A*x-b||2/lambda_min in real arithmetic. This group supplies no eigenvalue certificate; without that premise the residual-to-solution bound is absent.",
+        "path": "model.md",
+        "section": "conditioning",
+        "status": "partial_source_model",
+        "type": "conditional_error_bound"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "optimization-solvers",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/bisection_root/mod.rs",
+      "sha256": "4c4ec376d126d910fc1ab011186742e81316adcfafad875f53d36ddb3f3eb1de"
+    },
+    {
+      "path": "algorithms/src/bisection_root/tests.rs",
+      "sha256": "ccb0af8ae7a9ab6a579b4e88ec6abf72b51cf47f946a10d4fdae7a97aef0ddfd"
+    },
+    {
+      "path": "algorithms/src/conjugate_gradient/mod.rs",
+      "sha256": "db3811f6fab44ae073eb03834a83530439095894ee1d839a3fb88f30c8d61fdb"
+    },
+    {
+      "path": "algorithms/src/conjugate_gradient/tests.rs",
+      "sha256": "f5461c2081df0fa44dd47ff3e840f71e9dc0705f14b52baa3c1e7e1833ae4c5e"
+    },
+    {
+      "path": "algorithms/src/golden_section_search/mod.rs",
+      "sha256": "6cb2401d83f3d18fbcf8fd8140b871cdfffdb482d44f0b2f21ae485e419bd2ed"
+    },
+    {
+      "path": "algorithms/src/golden_section_search/tests.rs",
+      "sha256": "10ea20366be08f1f9b21aa3efa52a20ed759d1d73d4f991e291c4d1e765a6651"
+    },
+    {
+      "path": "algorithms/src/gradient_descent_quadratic/mod.rs",
+      "sha256": "654341c8fb4b6fb1125090f2448a853909ab7b55248085b99e32ee96d06e6887"
+    },
+    {
+      "path": "algorithms/src/gradient_descent_quadratic/tests.rs",
+      "sha256": "fb1292d57709475d0d75146a7db40bd27c2c1ec44d8ffe2ca3705c7b45391e22"
+    }
+  ],
+  "status": "partial_source_bound_group"
+}

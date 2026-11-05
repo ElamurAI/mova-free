@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms romberg_integration::tests",
+    "Repeated debug/release profiles and compiled mutation receipts in model.md#tests"
+  ],
+  "children": [],
+  "cost": "Finite fixture loops plus repeated native runner; production cost: At complete level L>=1, 2^(L-1)+1 calls; zero interval0 calls. O(2^L+L²) arithmetic, fixed20 f64 stack, no allocation. Refinement budget checked before new level, partial coordinate-stagnated level may consume samples and report previous completed level value.",
+  "description": "Finite independent and adversarial tests for romberg_integration. Production domain: Finite |a|,|b|<=1e100, a<=b; finite tolerance>0; levels1..20, evaluation budget>=2. Configuration precedes bounds checks. T_k=T_(k-1)/2+h*sum new odd-grid samples. R_(k,j)=R_(k,j-1)+(R_(k,j-1)-R_(k-1,j-1))/(4^j-1). Callback deterministic finite |f|<=1e100, panics propagate. Successive diagonal difference is only heuristic absolute error. Configuration/domain validated before degenerate return.",
+  "forward": [
+    "Finite independent and adversarial tests for romberg_integration. Production domain: Finite |a|,|b|<=1e100, a<=b; finite tolerance>0; levels1..20, evaluation budget>=2. Configuration precedes bounds checks. T_k=T_(k-1)/2+h*sum new odd-grid samples. R_(k,j)=R_(k,j-1)+(R_(k,j-1)-R_(k-1,j-1))/(4^j-1). Callback deterministic finite |f|<=1e100, panics propagate. Successive diagonal difference is only heuristic absolute error. Configuration/domain validated before degenerate return."
+  ],
+  "id": "algorithm-romberg-integration-tests",
+  "inverse": [
+    "The all-pass observation admits both production and implementations differing only at unsampled queries. This nonunique observation fiber is broader than production preimages: All functions agreeing on the finite sampled dyadic grid give the same report under deterministic callbacks. Adding c*product(x-x_j)^2 preserves every sampled value but changes the true integral; no inverse reconstruction of full function or certified error follows."
+  ],
+  "limitations": [
+    "Partial syntax is not semantic proof",
+    "Finite polynomial/shape checks do not establish universal f64 accuracy",
+    "No certified cheaper executable surrogate; numerical percentage profiles unsupported",
+    "No speed claim, callback panic recovery or allocator experiment"
+  ],
+  "source": "algorithms/src/romberg_integration/tests.rs",
+  "state": "Validated bounded f64 inputs, stack recurrence, explicit validation errors and iterative statuses where applicable"
+}

@@ -284,7 +284,17 @@ pub fn score_line(gold: &[GFrame], sys: &[GFrame]) -> [Prf; 10] {
         let sl: Vec<(usize, usize)> = sys.iter().enumerate().flat_map(|(i, f)| get(f).into_iter().map(move |t| (i, t))).filter(|(_, t)| *t < sys.len()).collect();
         out[r].gold = gl.len();
         out[r].sys = sl.len();
-        out[r].tp = sl.iter().filter(|(a, b)| matches!((inv.get(a), inv.get(b)), (Some(x), Some(y)) if gl.contains(&(*x, *y)))).count();
+        // Links are occurrences: each gold occurrence can credit at most one prediction.
+        // Unique links retain the original behavior; duplicates cannot inflate recall.
+        let mut remaining: BTreeMap<(usize, usize), usize> = BTreeMap::new();
+        for link in gl { *remaining.entry(link).or_default() += 1; }
+        for (a, b) in sl {
+            if let (Some(x), Some(y)) = (inv.get(&a), inv.get(&b)) {
+                if let Some(left) = remaining.get_mut(&(*x, *y)) {
+                    if *left > 0 { *left -= 1; out[r].tp += 1; }
+                }
+            }
+        }
     }
     // coreference: the k-th occurrence of a pronoun in the gold against the k-th in the reader's frames
     let gp = pronouns(gold);
@@ -339,5 +349,75 @@ mod tests {
         let c = score_line(&g, &bad);
         assert_eq!((c[9].tp, c[9].gold, c[8].tp), (0, 1, 0));
         assert!(overall(&c).f1() < 1.0);
+    }
+}
+
+#[cfg(test)]
+mod wave16_models {
+    use super::*;
+    fn f(s: &str) -> GFrame { parse_frame(s).unwrap() }
+    #[test]
+    fn canonical_parser_fields_and_loss() {
+        let x = f("#12 Say(ask) Alice+Bob NOT speak up patient=Cat(«IT») recipient=March Hare place=Home with=Tea attrs=Red,LOUD | says->#1,#x,#2 cause→#2 next→#9 quoted if");
+        assert_eq!(x.kind, "Say(ask)");
+        assert_eq!(x.agent.unwrap().ids, ["alice", "bob"]);
+        assert_eq!(x.verb, "speak up");
+        assert!(x.neg && x.quoted && x.cond);
+        assert_eq!(x.patient.unwrap().pron.as_deref(), Some("it"));
+        assert_eq!(x.to.unwrap().head(), "hare");
+        assert_eq!(x.attrs, ["red", "loud"]);
+        assert_eq!(x.says, [1,2]);
+        assert_eq!((x.cause,x.next), (Some(2),Some(9)));
+        assert_eq!(x.obls[0].0, "with");
+        assert!(parse_frame("nonsense").is_none());
+        assert!(parse_frame("").is_none());
+        assert_eq!(norm_id("'March_Hare'"), "hare");
+    }
+    #[test]
+    fn alignment_ties_and_threshold() {
+        let a = f("Event cat run patient=mouse");
+        assert_eq!(align(&[a.clone(),a.clone()], &[a.clone(),a]).into_iter().collect::<Vec<_>>(), [(0,0),(1,1)]);
+        let g = f("Event cat eat patient=mouse");
+        let s = f("Bare cat chase patient=mouse");
+        assert_eq!(align(&[g], &[s]).get(&0), Some(&0));
+        assert!(align(&[f("Event cat eat")], &[f("Event cat sleep")]).is_empty());
+    }
+    #[test]
+    fn independent_role_counts_and_mapped_links() {
+        let g = vec![f("Say(ask) alice say patient=cat(«it») to=bob place=home | says→#1 cause→#1 next→#1"), f("Event bob run")];
+        let s = vec![f("Event bob run"), f("Say(ask) alice say patient=dog(«it») to=bob place=away | says→#0 cause→#0 next→#0")];
+        let c = score_line(&g,&s);
+        assert_eq!(c.map(|x|(x.tp,x.sys,x.gold)), [(2,2,2),(2,2,2),(0,1,1),(1,1,1),(0,1,1),(1,1,1),(1,1,1),(1,1,1),(1,1,1),(0,1,1)]);
+        assert_eq!(overall(&c),Prf{tp:9,sys:12,gold:12});
+        assert_eq!(overall(&c).f1(),0.75);
+    }
+    #[test]
+    fn duplicate_links_are_occurrence_bounded() {
+        let g = vec![f("Event cat run | says→#1"),f("Event dog sleep")];
+        let mut s=g.clone(); s[0].says=vec![1,1,1,99];
+        assert_eq!(score_line(&g,&s)[6],Prf{tp:1,sys:3,gold:1});
+        assert_eq!(score_line(&s,&g)[6],Prf{tp:1,sys:1,gold:3});
+    }
+    #[test]
+    fn finite_canonical_count_oracle() {
+        for agent in ["cat","dog"] { for verb in ["run","sleep"] { for patient in ["_","mouse"] {
+            let g=vec![f("Event cat run patient=mouse")];
+            let s=vec![f(&format!("Event {agent} {verb} patient={patient}"))];
+            let eligible=verb=="run" || (agent=="cat" && patient=="mouse");
+            let c=score_line(&g,&s);
+            assert_eq!(c[0],Prf{tp:usize::from(eligible && agent=="cat"),sys:1,gold:1});
+            assert_eq!(c[1],Prf{tp:usize::from(verb=="run"),sys:1,gold:1});
+            assert_eq!(c[2],Prf{tp:usize::from(eligible && patient=="mouse"),sys:usize::from(patient!="_"),gold:1});
+            for r in 3..10 {assert_eq!(c[r],Prf::default());}
+        }}}
+    }
+    #[test]
+    fn coreference_occurrence_order_and_zero_metrics() {
+        let g=vec![f("Event cat(«it») see patient=dog(«it») with=bird(«she»)")];
+        let s=vec![f("Event dog(«it») see patient=cat(«it») with=bird(«she»)")];
+        assert_eq!(pronouns(&g),vec![("it".into(),"cat".into()),("it".into(),"dog".into()),("she".into(),"bird".into())]);
+        assert_eq!(score_line(&g,&s)[9],Prf{tp:1,sys:3,gold:3});
+        assert_eq!((Prf::default().p(),Prf::default().r(),Prf::default().f1()),(0.0,0.0,0.0));
+        assert_eq!(overall(&score_line(&[],&[])),Prf::default());
     }
 }

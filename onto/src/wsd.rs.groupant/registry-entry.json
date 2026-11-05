@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "wsd::wave29_ontowiki::normalization_and_prior_collision"
+  ],
+  "children": [],
+  "cost": "IDF O(gloss/member bytes); signature2 upward levels+40 in+unbounded qualifying out. choose O(senses*signature+hits log hits+context lookup). Corpus maps/top200 vectors unexecuted; recursive depth stack bound absent.",
+  "description": "stem lowercase/trim/possessive/suffix heuristic; content stops before/after. IDF=max(ln(N/(1+df)),0) over OEWN stems. Signature self1 neighbors.5. choose noun senses, target removal, Lesk set sorted hits/10+1.5prior+.5core+domain top3 rank votes; replace iff total>best+1e-9. build_prior corpus neighbors WUP^8, global_prior OnceLock file/error default.",
+  "forward": [
+    "stem lowercase/trim/possessive/suffix heuristic; content stops before/after. IDF=max(ln(N/(1+df)),0) over OEWN stems. Signature self1 neighbors.5. choose noun senses, target removal, Lesk set sorted hits/10+1.5prior+.5core+domain top3 rank votes; replace iff total>best+1e-9. build_prior corpus neighbors WUP^8, global_prior OnceLock file/error default.",
+    "Missing path→empty. ReadUTF8; skip starts#; >=4 tabfields: share[f1]=parse(f2).unwrap_or(0); neighbors.entry(f0).or_insert(f3)."
+  ],
+  "id": "onto-wsd",
+  "inverse": [
+    "Exclude later replacement for advantage<=1e-9. Duplicate context cannot increase Lesk but may alter domain. NaN/negative shares allowed; no universal valid-WUP claim on cyclic graphs.",
+    "Choice fiber admits many texts sharing normalized stems/domain votes/scores within epsilon. Prior maps lose overridden shares and short rows; neighbor/weight may originate different records."
+  ],
+  "limitations": [
+    "stem/content, tiny missing/duplicate/malformed Prior, empty IDF executed. choose/signature/WUP/corpus/global prior paths unexecuted; no live prior read.",
+    "Executable approximant gap: no useful percentage metric established for these categorical/effectful observations. No surrogate or production substitution. Future caps 1/2/5/10% require a metric/domain and evidence; no numerical error bound follows here.",
+    "Partial lexical AST, no macro expansion/semantic proof; no live teacher/dump/corpus/database execution"
+  ],
+  "source": "onto/src/wsd.rs",
+  "state": "Prior absent empty; malformed share0, share duplicate last/neighbors first. No finite/nonnegative prior gate. Signature first40 qualifying incoming; domain repetitions count, Lesk dedups. Empty IDF0. OnceLock freezes first access."
+}

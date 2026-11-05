@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "refusal_branch",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "refusal_branch",
+        "status": "partial_source_derived_model",
+        "type": "refusal_branch"
+      },
+      {
+        "id": "whole_missing",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "whole_missing",
+        "status": "partial_source_derived_model",
+        "type": "whole_missing"
+      },
+      {
+        "id": "sample_gate",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "sample_gate",
+        "status": "partial_source_derived_model",
+        "type": "sample_gate"
+      },
+      {
+        "id": "retained_state",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "retained_state",
+        "status": "partial_source_derived_model",
+        "type": "retained_state"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_helpers_only"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 35145,
+      "start": 21876
+    },
+    "description": "Train Standard/deltas from training Seen, drop Seen, stream dev blocks. Parse translations, optionally intersect keys; measure own tails; compare each present ordered pair both ordinary and shuffled; sum own/pair/block metrics; sample full code into reference and back; retain dev metas only rules && name=many pairs."
+  },
+  "id": "translation-flow-many-stream_measure",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../many.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "14b6295b8b94f871c0c2fbb90c92d19698cabe47b439443c393135a6d777555f"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "prag-model-tree-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "prag-model-tree-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "prag-model-tree-specialization",
+        "path": "model.md",
+        "section": "specialization",
+        "status": "partial_source_model",
+        "type": "observation_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 12528,
+      "start": 8990
+    },
+    "description": "Sort slot indices by descending gain ratio then ascending index. Each node records the maximum (local count,global prior,-class), local support N and winning hits. Partition recursively by ordered slot values, stop on purity or exhausted slots, and drop a leaf matching its parent's default. Prediction follows matching edges in slot order; on the first missing edge it returns that node default, support fraction and visited path. Leaf-pruning preserves the label at that branch, not its original confidence."
+  },
+  "id": "prag-model-tree",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../model.rs",
+    "sha256": "e18c587fd1f87b18c7e0118e0009b16fb469e26ba9cd0edf26b097226130ee25"
+  },
+  "status": "partial_source_bound_model"
+}

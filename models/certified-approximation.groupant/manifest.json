@@ -1,0 +1,153 @@
+{
+  "children": [
+    "algorithm-knapsack-fptas",
+    "algorithm-knapsack-fptas-tests",
+    "algorithm-subset-sum-fptas",
+    "algorithm-subset-sum-fptas-tests",
+    "algorithm-piecewise-linear",
+    "algorithm-piecewise-linear-tests",
+    "algorithm-quantized-dot",
+    "algorithm-quantized-dot-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Curvature bound is a caller premise, not inferred from knots. Overflow, work limits and allocation failures do not count as small approximation errors. Integer certificates do not provide a shared parent percentage or universal speed gain.",
+        "domain": "Unsigned feasible item/subset instances and accepted 1/2/5/10 percent tiers; ordered integer knots and in-domain queries; checked integer vector dot domain and explicit quantization step.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "certified-approximation-behavior-complement",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Exclude infeasible or over-optimal FPTAS outputs, violated declared loss bounds, extrapolated interpolation, and true dot errors outside the absolute certificate. Exclude promotion of caller curvature to checked fact and promotion of L1-normalized dot error to cancellation-relative error.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Curvature bound is a caller premise, not inferred from knots. Overflow, work limits and allocation failures do not count as small approximation errors. Integer certificates do not provide a shared parent percentage or universal speed gain.",
+        "domain": "Unsigned feasible item/subset instances and accepted 1/2/5/10 percent tiers; ordered integer knots and in-domain queries; checked integer vector dot domain and explicit quantization step.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "certified-approximation-reverse-reconstruction",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Objective certificates admit many item lists and optimal subsets. One interpolated ordinate admits many functions through the supplied knots; dot values admit sign/permutation and cancellation fibers. Reconstruct only constraints retained by the certificate, not unique original inputs.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Curvature bound is a caller premise, not inferred from knots. Overflow, work limits and allocation failures do not count as small approximation errors. Integer certificates do not provide a shared parent percentage or universal speed gain.",
+        "domain": "Unsigned feasible item/subset instances and accepted 1/2/5/10 percent tiers; ordered integer knots and in-domain queries; checked integer vector dot domain and explicit quantization step.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "certified-approximation-subset-embedding",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "On representable inputs, each subset value v becomes a knapsack item of weight v and profit v with capacity target. Exact optima coincide. Each accepted epsilon result lies between (1-epsilon)*OPT and OPT; results need not coincide.",
+        "path": "model.md",
+        "section": "subset-embedding",
+        "status": "partial_source_model",
+        "type": "objective_embedding"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Curvature bound is a caller premise, not inferred from knots. Overflow, work limits and allocation failures do not count as small approximation errors. Integer certificates do not provide a shared parent percentage or universal speed gain.",
+        "domain": "Unsigned feasible item/subset instances and accepted 1/2/5/10 percent tiers; ordered integer knots and in-domain queries; checked integer vector dot domain and explicit quantization step.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "certified-approximation-absolute-transport",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "If interpolation error <=e and downstream real map is L-Lipschitz on the reached interval, downstream discrepancy <=L*e. Any independent downstream error adds separately; floating conversion and missing curvature premises require extra treatment.",
+        "path": "model.md",
+        "section": "absolute-transport",
+        "status": "partial_source_model",
+        "type": "lipschitz_error_transport"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Curvature bound is a caller premise, not inferred from knots. Overflow, work limits and allocation failures do not count as small approximation errors. Integer certificates do not provide a shared parent percentage or universal speed gain.",
+        "domain": "Unsigned feasible item/subset instances and accepted 1/2/5/10 percent tiers; ordered integer knots and in-domain queries; checked integer vector dot domain and explicit quantization step.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "certified-approximation-cancellation",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For signed products near cancellation, sum(abs(products)) may be large while abs(sum(products)) is zero or tiny. A <=10% L1-normalized dot certificate supplies an absolute bound, not <=10% relative error of the scalar dot.",
+        "path": "model.md",
+        "section": "cancellation",
+        "status": "partial_source_model",
+        "type": "normalization_countermodel"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "certified-approximation",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/knapsack_fptas/mod.rs",
+      "sha256": "03795683bef91f2d5e9ac96b4069b8cdf6bb134044c7121bef8289f3b7200392"
+    },
+    {
+      "path": "algorithms/src/knapsack_fptas/tests.rs",
+      "sha256": "9bbc0147cc986419764726104fb8a8584691c6dbf46916cb88fdb6a70881a7eb"
+    },
+    {
+      "path": "algorithms/src/piecewise_linear/mod.rs",
+      "sha256": "83e21dc6ede1e8cfb9c397eb4e3eea7050646fbac380a74a5f9932f703adbe5c"
+    },
+    {
+      "path": "algorithms/src/piecewise_linear/tests.rs",
+      "sha256": "f084398af5644c3eec94cacb0614ba124e4e83509eb168f540296f3df8ce3fc9"
+    },
+    {
+      "path": "algorithms/src/quantized_dot/mod.rs",
+      "sha256": "d9febc9238ca4be5499ee10640372509e0a4d3eb7241ce5139e3a32ddf45b94c"
+    },
+    {
+      "path": "algorithms/src/quantized_dot/tests.rs",
+      "sha256": "1c8d36000e8b7236183612e5eb877fabb6f5c0063bdf07f6e16ab9b3864a7e81"
+    },
+    {
+      "path": "algorithms/src/subset_sum_fptas/mod.rs",
+      "sha256": "2fd464a483122ac2c9550a54e3ab525b9186c577279fecea977afba3ffec742f"
+    },
+    {
+      "path": "algorithms/src/subset_sum_fptas/tests.rs",
+      "sha256": "3e99e6d2161012cd21303938a92633a718fce29d0373accebaee56804398f1ea"
+    }
+  ],
+  "status": "partial_source_bound_group"
+}

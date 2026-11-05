@@ -1,0 +1,94 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Parent projection restricted to[6191,9459)",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "constant_evaluation",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "constant_evaluation",
+        "status": "partial_source_derived_model",
+        "type": "constant_evaluation"
+      },
+      {
+        "id": "fraction_join",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "fraction_join",
+        "status": "partial_source_derived_model",
+        "type": "fraction_join"
+      },
+      {
+        "id": "power_domain",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "power_domain",
+        "status": "partial_source_derived_model",
+        "type": "power_domain"
+      },
+      {
+        "id": "failure_order",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "failure_order",
+        "status": "partial_source_derived_model",
+        "type": "failure_order"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 9459,
+      "start": 6191
+    },
+    "description": "rf converts expressions to reduced fractions, evaluating constant subtrees through calc Env; only exact Q constants and target-independent integer powers admitted. Divisor roots are saved before cancellation. Original syntax is not reconstructible from normalized fraction/domain. Parent Poly operations supply cost and normalization assumptions.",
+    "source_bytes_sha256": "9f001df3f94f81c31cb52050fed3150f1df1a41eca255c784728faabcfca39be"
+  },
+  "id": "math-poly-rational",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../poly.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "28c7c69c8282270b6ac3bde99e6947108ec5be0f908d510806c4aefdfad61fca"
+  },
+  "status": "partial_source_bound_model"
+}

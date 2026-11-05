@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-absurd-judgment-report-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-absurd-judgment-report-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-absurd-judgment-report-coupling",
+        "path": "model.md",
+        "section": "coupling",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 22378,
+      "start": 9995
+    },
+    "description": "judge scans verbs in node order and calls sense::arguments with shared dense positions. Unknown verb yields a gap before noun checks; idiomatic subjects are suppressed. Unknown noun yields noun gap; known sparse missing cell abstains silently. Judgments retain verb/noun indices, role and opposite-role score. run aligns gold by nonempty ID, length and forms, then checks noun head/relation. Events scores TSV arguments independently."
+  },
+  "id": "world-absurd-judgment-report",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../absurd.rs",
+    "sha256": "c9b7b1c3951b40314b49e5b3bf00e07f023c5bb5775866ed80a09a509da108bd"
+  },
+  "status": "partial_source_bound_model"
+}

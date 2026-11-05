@@ -1,0 +1,103 @@
+{
+  "children": [
+    {
+      "id": "coref-eval-transport",
+      "path": "transport.groupant"
+    },
+    {
+      "id": "coref-eval-diagnostics",
+      "path": "diagnostics.groupant"
+    },
+    {
+      "id": "coref-eval-report",
+      "path": "report.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-bound relation under stated domain, finite witnesses only",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-bound relation under stated domain, finite witnesses only",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "visibility",
+        "path": "model.md",
+        "scope": "Source-bound relation under stated domain, finite witnesses only",
+        "section": "visibility",
+        "status": "partial_source_derived_model",
+        "type": "visibility"
+      },
+      {
+        "id": "micro_transport",
+        "path": "model.md",
+        "scope": "Source-bound relation under stated domain, finite witnesses only",
+        "section": "micro_transport",
+        "status": "partial_source_derived_model",
+        "type": "micro_transport"
+      },
+      {
+        "id": "failure_effect_order",
+        "path": "model.md",
+        "scope": "Source-bound relation under stated domain, finite witnesses only",
+        "section": "failure_effect_order",
+        "status": "partial_source_derived_model",
+        "type": "failure_effect_order"
+      },
+      {
+        "id": "diagnostic_precedence",
+        "path": "model.md",
+        "scope": "Source-bound relation under stated domain, finite witnesses only",
+        "section": "diagnostic_precedence",
+        "status": "partial_source_derived_model",
+        "type": "diagnostic_precedence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "coref-eval",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../eval.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "5682c8888142509fc2c9ea531f6eb5e003d4a80fac3c9e2db304b8e37ebb52ef"
+  },
+  "status": "partial_source_bound_model"
+}

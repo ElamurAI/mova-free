@@ -1,0 +1,86 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-invariants-frame-checks-behavior-complement",
+        "operator": "Exclude pairs violating concrete fragment forward/invariant relation",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-invariants-frame-checks-reverse-reconstruction",
+        "operator": "Retain all compatible tagged inputs and intermediate states",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "domain": "Parent-tagged finite inputs and fragment forward premises; scoped observation in model.md.",
+        "id": "prag-invariants-frame-checks-intervention",
+        "operator": "Scoped intervention/coupling relation in referenced section",
+        "path": "model.md",
+        "section": "intervention",
+        "status": "partial_source_model",
+        "type": "counterfactual_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 3874,
+      "start": 1992
+    },
+    "description": "sentence visits frames in order with one-based output rows. Missing subject on Fact Is/IsA or non-Bare verb be emits copula-no-who. A time_word place emits time-in-where. Equal nonempty ASCII-insensitive agent/patient IDs emit who-is-what except reflexive patient surface/pronoun or both unresolved bare entities. Checks are diagnostic hypotheses for teacher review."
+  },
+  "domain": "sentence visits frames in order with one-based output rows. Missing subject on Fact Is/IsA or non-Bare verb be emits copula-no-who. A time_word place emits time-in-where. Equal nonempty ASCII-insensitive agent/patient IDs emit who-is-what except reflexive patient surface/pronoun or both unresolved bare entities. Checks are diagnostic hypotheses for teacher review.",
+  "id": "prag-invariants-frame-checks",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../invariants.rs",
+    "sha256": "64ddcdabea1704fc3216d06f5f299ec06171dc4432b7f5c9b7d4b7c4a4fbf190"
+  },
+  "state": "Bare be alone is not a copula. Different/empty entity IDs and recognized reflexives must not receive who-is-what. Multiple checks may flag one row; counts are hits, not distinct bad sentences. Existing time_word semantics distinguish named March from common march.",
+  "status": "partial_source_bound_model"
+}

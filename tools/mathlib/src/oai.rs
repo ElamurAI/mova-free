@@ -118,7 +118,7 @@ pub fn run(h: &Harvest, dir: &Path) -> Result<()> {
                 println!("{} DONE noRecordsMatch", utc_now());
                 return Ok(());
             }
-            bail!("OAI error {code} on {url} — stopping (for badResumptionToken: the token has expired, see docs/math-library.md)");
+            bail!("OAI error {code} on {url} — stopping (for badResumptionToken: the token has expired, see docs/data.md#mathematics-and-science-library)");
         }
         let n = body.matches("<record>").count() as u64;
         let next = resumption_token(&body);
@@ -190,5 +190,39 @@ mod tests {
         assert_eq!(resumption_token("<ListRecords></ListRecords>"), None);
         assert_eq!(oai_error("<error code=\"badResumptionToken\">x</error>").as_deref(), Some("badResumptionToken"));
         assert_eq!(oai_error("<ListRecords/>"), None);
+    }
+}
+
+#[cfg(test)]
+mod wave33 {
+    use super::*;
+    #[test]
+    fn state_resume_and_stop_without_requests() {
+        let dir = std::env::temp_dir().join(format!("mathlib-wave33-oai-{}", std::process::id()));
+        fs::create_dir_all(&dir).unwrap();
+        let state = dir.join("state.tsv");
+        assert_eq!(last_state(&state).unwrap(), None);
+        fs::write(
+            &state,
+            "page\trecords\ttoken\tutc\n1\t3\tfirst\t0\n2\tbad\tnext\t0\n",
+        )
+        .unwrap();
+        assert_eq!(last_state(&state).unwrap(), Some((2, 3, "next".into())));
+        fs::write(dir.join("STOP"), "").unwrap();
+        let h = Harvest {
+            base: "invalid",
+            set: None,
+            prefix: "arXivRaw",
+            from: None,
+            delay: Duration::ZERO,
+            max_pages: 0,
+        };
+        run(&h, &dir).unwrap();
+        assert!(!dir.join("p00003.xml.gz").exists());
+        fs::write(&state, "1\t2\t\t0\n").unwrap();
+        fs::remove_file(dir.join("STOP")).unwrap();
+        run(&h, &dir).unwrap();
+        assert_eq!(last_state(&state).unwrap(), Some((1, 2, "".into())));
+        fs::remove_dir_all(dir).unwrap();
     }
 }

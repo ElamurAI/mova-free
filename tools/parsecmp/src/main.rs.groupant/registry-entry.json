@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named synthetic native tests; paired syntax projection"
+  ],
+  "children": [],
+  "cost": "Read O(bytes); spans O(chars+spans log spans) memory O(chars+depth+spans), bracket intersection O((a+b)log distinct). Main pairwise comparisons O(system²*tokens), holds all outputs; no parser/model invocation. Numeric sums assume no overflow.",
+  "description": "read_conllu ignores read errors, short/range/dotted rows, defaults malformed head to u32::MAX and lowercases relation. Score counts head matches, UD-only base LAS and gold-PUNCT exclusion. spans strips functional label suffixes, excludes root/preterminals and sorts half-open word spans. bracket_f1 counts multiset intersection. Main aligns by counts/order, requires two UD voters, ties smaller head, flags changed head at >=0.75 support; writes three reports sequentially. agree uses first system punctuation mask for all pairs.",
+  "forward": [
+    "read_conllu ignores read errors, short/range/dotted rows, defaults malformed head to u32::MAX and lowercases relation. Score counts head matches, UD-only base LAS and gold-PUNCT exclusion. spans strips functional label suffixes, excludes root/preterminals and sorts half-open word spans. bracket_f1 counts multiset intersection. Main aligns by counts/order, requires two UD voters, ties smaller head, flags changed head at >=0.75 support; writes three reports sequentially. agree uses first system punctuation mask for all pairs."
+  ],
+  "id": "parsecmp-main",
+  "inverse": [
+    "Scores constrain numbers of matching positions but cannot recover trees; spans lose words, POS/preterminal labels and root wrapper; multiset F1 loses identities of missed spans.",
+    "Non-UD systems never contribute LAS or majority votes. Span duplicates contribute at most minimum multiplicity. Token count alignment does not validate matching forms/ids or safe heads."
+  ],
+  "limitations": [
+    "Partial source models and finite fixtures only. No corpus/model/network/site/release execution or universal proof."
+  ],
+  "source": "tools/parsecmp/src/main.rs",
+  "state": "Bounded helper inputs and source-derived CLI state/effects; see catalog."
+}

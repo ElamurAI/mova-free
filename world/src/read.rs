@@ -1362,3 +1362,151 @@ fn span_candidates(t: &Tree, v: usize, qc: &[String], q: &str) -> Vec<(String, V
     }
     out
 }
+
+#[cfg(test)]
+mod wave9_models {
+    use super::*;
+    fn word(head: usize, rel: Rel, pos: UPos, form: &str) -> en::annotate::Word {
+        en::annotate::Word { head, rel, upos: pos, form: form.into(), lemma: form.into(), tag: en::gram::Tag::NN, feats: Default::default() }
+    }
+    #[test]
+    fn segmentation_threshold_and_service_filter() {
+        for n in 180..221 {
+            let paragraph = format!("one two three {}", "x".repeat(n - 14));
+            assert_eq!(paragraph.len(), n);
+            let text = format!("A STORY\n\n{paragraph}\n");
+            assert_eq!(split_book(&text).len(), usize::from(n >= 200), "{n}");
+        }
+        let prose = "one two three four ".repeat(20);
+        assert!(split_book(&format!("CONTENTS\n\n{prose}")).is_empty());
+        assert!(split_book(&format!("A STORY\n\n[{}]\n", prose)).is_empty());
+        // Admission precedes service filtering; retained prose need not itself total 200 bytes.
+        assert_eq!(split_book(&format!("A STORY\n\n[{}]\n\none two three four", prose))[0].1, vec!["one two three four"]);
+    }
+    #[test]
+    fn book_whitespace_fibers_and_markers() {
+        let prose = "one two three four ".repeat(20);
+        let expected=split_book(&format!("A STORY\n\n{prose}"));
+        for newline in ["\n", "\r\n"] {
+            for spaces in [" ", "   "] {
+                let altered=prose.trim().replace(' ', spaces);
+                let text=format!("discarded\n*** START BOOK\nA STORY\n\n{altered}\n*** END BOOK\nignored").replace('\n',newline);
+                assert_eq!(split_book(&text),expected);
+            }
+        }
+        assert!(split_book(&prose).is_empty());
+        assert!(split_book("A STORY\n\nB STORY\n").is_empty());
+    }
+    #[test]
+    fn skeleton_boolean_projection_oracle() {
+        for subject in [false,true] { for neg in [false,true] { for object in [false,true] {
+            let mut words=vec![word(0,Rel::Root,UPos::VERB,"runs")];
+            if subject { words.push(word(1,Rel::Nsubj,UPos::NOUN,"Alice")); }
+            if neg { words.push(word(1,Rel::Advmod,UPos::ADV,"not")); }
+            if object { words.push(word(1,Rel::Obj,UPos::NOUN,"race")); }
+            let orig=words.iter().map(|w|w.form.clone()).collect::<Vec<_>>();
+            let t=Tree::of_words(words);
+            let mut expected=vec![];
+            if subject { expected.push("Alice"); }
+            if neg { expected.push("not"); }
+            expected.push("runs");
+            if object { expected.push("race"); }
+            assert_eq!(skeleton(&t,&orig),vec![expected.join(" ")]);
+        }}}
+        assert!(skeleton(&Tree::default(),&[]).is_empty());
+    }
+    #[test]
+    fn speech_fiber_and_coordinated_subject() {
+        for object in ["secret","story","answer"] {
+            let t=Tree::of_words(vec![word(0,Rel::Root,UPos::VERB,"say"),word(1,Rel::Nsubj,UPos::NOUN,"Alice"),word(1,Rel::Obj,UPos::NOUN,object)]);
+            assert_eq!(skeleton(&t,&["said".into(),"Alice".into(),object.into()]),vec!["Alice said"]);
+        }
+        let t=Tree::of_words(vec![word(0,Rel::Root,UPos::VERB,"run"),word(1,Rel::Nsubj,UPos::NOUN,"Alice"),word(1,Rel::Conj,UPos::VERB,"jump")]);
+        assert_eq!(skeleton(&t,&["ran".into(),"Alice".into(),"jumped".into()]),vec!["Alice ran","Alice jumped"]);
+    }
+    #[test]
+    fn question_priority_and_literal_boundaries() {
+        let cases=[("WHO left",QType::Who),("where now",QType::Where),("what happened",QType::WhatHappen),("what did she do?",QType::WhatDo),("what thing",QType::What),("why feel sad",QType::Feel),("who feels",QType::Feel),("who?",QType::Other),("",QType::Other)];
+        for (q,want) in cases { assert_eq!(qtype(q),want,"{q}"); }
+    }
+}
+
+#[cfg(test)]
+mod wave34_models {
+    use super::*;
+
+    fn word(head: usize, rel: Rel, pos: UPos, form: &str) -> en::annotate::Word {
+        en::annotate::Word {
+            head,
+            rel,
+            upos: pos,
+            form: form.into(),
+            lemma: form.into(),
+            tag: en::gram::Tag::NN,
+            feats: Default::default(),
+        }
+    }
+
+    #[test]
+    fn centered_heading_boundaries() {
+        let prose = "one two three four ".repeat(20);
+        for (heading, accepted) in [
+            ("   Quiet tale", true),
+            ("  Quiet tale", false),
+            ("   Quiet tale.", false),
+            ("   Quiet tale:", false),
+            ("   quiet tale", false),
+            ("ABCDE", true),
+            ("ABCD", false),
+        ] {
+            assert_eq!(
+                split_book(&format!("{heading}\n\n{prose}")).len(),
+                usize::from(accepted),
+                "{heading}"
+            );
+        }
+        assert!(split_book(&format!("preamble\n   Quiet tale\n\n{prose}")).is_empty());
+        assert!(split_book(&format!("   Quiet tale\n{prose}")).is_empty());
+    }
+
+    #[test]
+    fn phrase_direct_modifiers_and_original_forms() {
+        let t = Tree::of_words(vec![
+            word(4, Rel::Det, UPos::DET, "the"),
+            word(4, Rel::Amod, UPos::ADJ, "old"),
+            word(4, Rel::Compound, UPos::NOUN, "oak"),
+            word(0, Rel::Root, UPos::NOUN, "tree"),
+            word(4, Rel::NmodPoss, UPos::NOUN, "alice"),
+            word(2, Rel::Advmod, UPos::ADV, "very"),
+        ]);
+        let orig: Vec<String> = ["THE", "Old", "Oak", "Tree", "Alice's", "Very"]
+            .into_iter()
+            .map(String::from)
+            .collect();
+        assert_eq!(phrase(&t, 3, &orig), "Old Oak Tree Alice's");
+        assert_eq!(phrase(&t, 3, &orig[..3]), "Old Oak  ");
+    }
+
+    #[test]
+    fn modal_negation_and_subject_reset() {
+        let t = Tree::of_words(vec![
+            word(0, Rel::Root, UPos::VERB, "run"),
+            word(1, Rel::Nsubj, UPos::NOUN, "Alice"),
+            word(1, Rel::Aux, UPos::AUX, "could"),
+            word(1, Rel::Advmod, UPos::ADV, "never"),
+            word(1, Rel::Conj, UPos::VERB, "jump"),
+            word(5, Rel::Nsubj, UPos::NOUN, "Bob"),
+            word(5, Rel::Conj, UPos::VERB, "rest"),
+        ]);
+        let orig: Vec<String> = ["run", "Alice", "could", "never", "jumped", "Bob", "rested"]
+            .into_iter()
+            .map(String::from)
+            .collect();
+        assert_eq!(
+            skeleton(&t, &orig),
+            vec!["Alice could not run", "Bob jumped", "Bob rested"]
+        );
+        let lone = Tree::of_words(vec![word(0, Rel::Root, UPos::VERB, "run")]);
+        assert_eq!(skeleton(&lone, &["ran".into()]), vec!["ran"]);
+    }
+}

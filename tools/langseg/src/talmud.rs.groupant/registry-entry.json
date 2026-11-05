@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "talmud::tests::english_drops_footnotes",
+    "talmud::tests::original_heading"
+  ],
+  "children": [],
+  "cost": "O(B) cleaner/read bytes plus stack depth and owned JSON/text; segment glue adds classifier cost and output copies. No real Sefaria traversal.",
+  "description": "read emits string leaves from three JSON array levels using1-based positions. original cleans then strips exact Hebrew heading. english drops recognized double-quoted footnote classes and descendants via boolean stack, strips other tags, decodes entities/whitespace then heading. segments extends classifier segment to next start or text end.",
+  "forward": [
+    "read emits string leaves from three JSON array levels using1-based positions. original cleans then strips exact Hebrew heading. english drops recognized double-quoted footnote classes and descendants via boolean stack, strips other tags, decodes entities/whitespace then heading. segments extends classifier segment to next start or text end."
+  ],
+  "id": "langseg-talmud",
+  "inverse": [
+    "Recognized footnote content cannot survive; plain italic text does. Missing arrays emit no addresses. Noninitial heading cannot set Part.",
+    "Cleaned output admits arbitrary dropped footnotes/tags/whitespace. Sparse addresses admit nonstrings at holes. Segmented text cannot reconstruct omitted leading neutral prefix."
+  ],
+  "limitations": [
+    "Address reader and segment glue source-modeled; selected checks cover cleaners.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/langseg/src/talmud.rs",
+  "state": "Skipped nonstrings leave coordinate holes. Headings case-sensitive after left trim. HTML close pops irrespective of name. Segment glue preserves intersegment punctuation and trims whitespace."
+}

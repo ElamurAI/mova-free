@@ -117,6 +117,12 @@ pub fn gauss(a: &[Vec<Q>], b: &[Q]) -> LinSol {
 
 /// Substitute the solution into every equation (exact).
 pub fn check_solution(a: &[Vec<Q>], b: &[Q], x: &[Q]) -> Check {
+    if a.len() != b.len() {
+        return Check::new("substitution into every equation", false, "equation and right-hand-side counts differ");
+    }
+    if a.iter().any(|row| row.len() != x.len()) {
+        return Check::new("substitution into every equation", false, "coefficient and solution dimensions differ");
+    }
     let mut bad = Vec::new();
     for (i, (r, bi)) in a.iter().zip(b).enumerate() {
         let lhs = r.iter().zip(x).fold(q(0), |s, (c, v)| s + c.clone() * v.clone());
@@ -161,5 +167,31 @@ mod tests {
         let (a, b) = system(&["x/2 + y/3 + z = 1", "x - y + 2z = 0", "3x + y/2 - z/4 = 5"], &["x", "y", "z"]);
         let LinSol::Unique(x) = gauss(&a, &b) else { panic!() };
         assert!(check_solution(&a, &b, &x).ok);
+    }
+}
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn free_coordinates_and_checker_scope() {
+        let a = vec![vec![q(0), q(2)]];
+        let b = vec![q(6)];
+        match gauss(&a, &b) {
+            LinSol::Infinite { particular, free } => {
+                assert_eq!(particular, vec![q(0), q(3)]);
+                assert_eq!(free, vec![0]);
+                assert!(check_solution(&a, &b, &particular).ok);
+            }
+            _ => panic!("expected a free coordinate"),
+        }
+        assert!(matches!(gauss(&[], &[]), LinSol::Unique(x) if x.is_empty()));
+        assert!(!check_solution(&a, &[], &[]).ok);
+        assert!(!check_solution(&[], &[q(0)], &[]).ok);
+        assert!(!check_solution(&[vec![q(1), q(0)]], &[q(1)], &[q(1)]).ok);
+        assert!(!check_solution(&[vec![q(1)]], &[q(1)], &[q(1), q(9)]).ok);
+        assert!(check_solution(&[], &[], &[q(7)]).ok);
+        let mut env = Env::new(crate::nt::Limits::default());
+        assert!(linear_form(&crate::calc::parse("x*x").unwrap(), &["x".into()], &mut env).is_err());
     }
 }

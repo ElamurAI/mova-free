@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms l1_ball_projection::tests"
+  ],
+  "children": [],
+  "cost": "O(n) validation, magnitude formation and sign restoration. O(n log n) worst-case work via simplex, O(n) additional magnitude and simplex output storage; inside/zero paths O(n). Length cap inherited from simplex.",
+  "description": "Finite f64 convex projection/proximal kernel",
+  "forward": [
+    "Validate and form absolute magnitudes with sequential L1 norm. Inside ball return input exactly; outside call simplex projection on magnitudes and restore original signs. Radius zero returns all positive zeros. Real model is unique Euclidean L1-ball projection."
+  ],
+  "id": "algorithm-l1-ball-projection",
+  "inverse": [
+    "Typed complement, normal-cone or subgradient fibers and specialized views in model.md"
+  ],
+  "limitations": [
+    "Finite observations do not certify universal f64 accuracy",
+    "Allocation refusal unforced",
+    "Partial source syntax; executable surrogate absent"
+  ],
+  "source": "algorithms/src/l1_ball_projection/mod.rs",
+  "state": "Deterministic, finite validation and explicit resource/arithmetic limits"
+}

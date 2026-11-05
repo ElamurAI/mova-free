@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms knapsack_fptas::tests",
+    "Repeated debug/release, compiled production mutant and restored hashes; see model.md#tests"
+  ],
+  "children": [],
+  "cost": "O(n^3/epsilon) time and O(n^2/epsilon) cells; work=n*width+input length, an upper bound on DP cell visits plus input count, not exact CPU instructions. Multiple validation scans are constant factors. Checked usize/u128 dimensions; fallible reservation; no capacity-sized array.",
+  "description": "Nonnegative integer item profits and usize weights; capacity, one supported percent and caller work budget. Scale q_i=floor(100*n*v_i/(percent*vmax)) exactly. DP stores minimum feasible weight per scaled profit, ties greater original value. Return maximum retained original objective V and D=percent*vmax, so OPT-V<=D/100<=percent*OPT/100.",
+  "forward": [
+    "Nonnegative integer item profits and usize weights; capacity, one supported percent and caller work budget. Scale q_i=floor(100*n*v_i/(percent*vmax)) exactly. DP stores minimum feasible weight per scaled profit, ties greater original value. Return maximum retained original objective V and D=percent*vmax, so OPT-V<=D/100<=percent*OPT/100."
+  ],
+  "id": "algorithm-knapsack-fptas",
+  "inverse": [
+    "Output value zero admits empty input and all-infeasible/zero-profit inputs. Positive objective admits permutations, redundant infeasible items and distinct optimal subsets. A reported value does not identify item indices; certificate and work narrow but do not uniquely invert these fibers."
+  ],
+  "limitations": [
+    "Partial syntax, not semantic proof",
+    "Finite oracles do not establish universal accuracy",
+    "No performance measurement or automatic substitution",
+    "Allocator failure not experimentally injected"
+  ],
+  "source": "algorithms/src/knapsack_fptas/mod.rs",
+  "state": "Validated integer inputs and checked exact arithmetic states"
+}

@@ -1,0 +1,103 @@
+{
+  "children": [
+    {
+      "id": "onto-pron-cue-parser",
+      "path": "cue-parser.groupant"
+    },
+    {
+      "id": "onto-pron-pronoun-policy",
+      "path": "pronoun-policy.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical source projection; no expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Explicit domain in approximant and invariant; finite checks only",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Explicit domain in approximant and invariant; finite checks only",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "cue_ambiguity",
+        "path": "model.md",
+        "scope": "Explicit domain in approximant and invariant; finite checks only",
+        "section": "cue_ambiguity",
+        "status": "partial_source_derived_model",
+        "type": "cue_ambiguity"
+      },
+      {
+        "id": "persona_relation",
+        "path": "model.md",
+        "scope": "Explicit domain in approximant and invariant; finite checks only",
+        "section": "persona_relation",
+        "status": "partial_source_derived_model",
+        "type": "persona_relation"
+      },
+      {
+        "id": "ordered_pronouns",
+        "path": "model.md",
+        "scope": "Explicit domain in approximant and invariant; finite checks only",
+        "section": "ordered_pronouns",
+        "status": "partial_source_derived_model",
+        "type": "ordered_pronouns"
+      },
+      {
+        "id": "sense_transport",
+        "path": "model.md",
+        "scope": "Explicit domain in approximant and invariant; finite checks only",
+        "section": "sense_transport",
+        "status": "partial_source_derived_model",
+        "type": "sense_transport"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "onto-pron",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../pron.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "58269d22bbd6e6362d382e15ea169cb0cdb51debfa12014a2f229d22b07996ac"
+  },
+  "status": "partial_source_bound_model"
+}

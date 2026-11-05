@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-integer-sqrt-tests",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "5fddfd2e52bb4fd98448505fb6085cbde3765edb115f6a41d80aca699ffc01cd"
+  },
+  "components": {
+    "ast": {
+      "path": "syntax.json",
+      "status": "partial",
+      "format": "rust_syntax_projection"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "5fddfd2e52bb4fd98448505fb6085cbde3765edb115f6a41d80aca699ffc01cd",
+        "domain": "65,537 inputs 0..=65536, nine square-root values with square/neighbor cases, u64::MAX and 4,096 fixed-seed full-width inputs with adjacent monotonicity.",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "U is candidate implementations paired with pass/fail on the finite fixture set F. R(P,pass) iff all assertions succeed; R(P,fail) iff a terminating call/assertion panics or a mismatch occurs. U minus R comprises false passes despite failure and false failures despite all assertions holding. Harness crashes/nontermination are excluded.",
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "failure_fibers",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "failure_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "5fddfd2e52bb4fd98448505fb6085cbde3765edb115f6a41d80aca699ffc01cd",
+        "domain": "65,537 inputs 0..=65536, nine square-root values with square/neighbor cases, u64::MAX and 4,096 fixed-seed full-width inputs with adjacent monotonicity.",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "A pass admits all implementations agreeing on F with arbitrary off-fixture behavior. A failure admits all faulty implementations or faulty oracles producing that mismatch/panic; no unique defect reconstruction.",
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "oracle",
+        "type": "oracle_correspondence",
+        "path": "model.md",
+        "section": "oracle",
+        "status": "partial_source_derived",
+        "subject_revision": "5fddfd2e52bb4fd98448505fb6085cbde3765edb115f6a41d80aca699ffc01cd",
+        "domain": "65,537 inputs 0..=65536, nine square-root values with square/neighbor cases, u64::MAX and 4,096 fixed-seed full-width inputs with adjacent monotonicity.",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "Standard u64::isqrt is independent of this source; u128 square bounds provide a second constraint. Finite correspondence assumes the oracle; no universal proof.",
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "mutation",
+        "type": "counterfactual_boundary",
+        "path": "model.md",
+        "section": "mutation",
+        "status": "partial_source_derived",
+        "subject_revision": "5fddfd2e52bb4fd98448505fb6085cbde3765edb115f6a41d80aca699ffc01cd",
+        "domain": "65,537 inputs 0..=65536, nine square-root values with square/neighbor cases, u64::MAX and 4,096 fixed-seed full-width inputs with adjacent monotonicity.",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "Replacing <= by < in the square predicate compiled and exactly tests::square_neighbors_and_maximum failed (exit 101; one failed, two filtered). Intervention changes source operations with fixture inputs fixed.",
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "schedule",
+        "type": "resource_observation",
+        "path": "model.md",
+        "section": "schedule",
+        "status": "partial_source_derived",
+        "subject_revision": "5fddfd2e52bb4fd98448505fb6085cbde3765edb115f6a41d80aca699ffc01cd",
+        "domain": "65,537 inputs 0..=65536, nine square-root values with square/neighbor cases, u64::MAX and 4,096 fixed-seed full-width inputs with adjacent monotonicity.",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "65,537 inputs 0..=65536, nine square-root values with square/neighbor cases, u64::MAX and 4,096 fixed-seed full-width inputs with adjacent monotonicity. Fixed seed, wrapping generator and loop bounds determine observations; wall-clock time is not part of the deterministic output.",
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "evidence": "model.md#evidence"
+      }
+    ]
+  },
+  "children": []
+}

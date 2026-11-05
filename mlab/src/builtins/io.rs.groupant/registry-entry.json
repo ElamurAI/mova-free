@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "builtins::io::tests::g_format",
+    "builtins::io::wave30_tests::cycling_unicode_and_empty"
+  ],
+  "children": [],
+  "cost": "O(format bytes + expanded atoms + repeated segment/flag scans + emitted bytes); repeated conversion/flag scans can require O(format length * expanded atoms) work even with small output. String-to-code expansion and requested width/precision can dominate allocations. No resource bound or useful percent surrogate for exact text.",
+  "description": "Output registration and C-like format parser/cycler; scalar numeric formatting and num2str/mat2str conversions.",
+  "forward": [
+    "sprintf_impl parses format, flattens real numeric matrices column-major to atoms, then cycles segments until atoms consumed. Strings under numeric conversions expand to Unicode scalar codes. fprintf formatted-string branch writes the completed string through Interp.out and returns UTF-8 byte count only for nargout>0. A scalar nonchar first argument is ignored as fid only when followed by a char format. The numeric-first fallback formats all arguments with %g\\n and returns no values even for nargout>0."
+  ],
+  "id": "mlab-builtins-io",
+  "inverse": [
+    "Unsupported atom types exclude any successful formatted output even for a literal-only format because atoms is called first. Empty argument queue excludes numeric substitution; empty specs can still contribute width padding.",
+    "Rendered strings admit many inputs: integer/float atoms with same formatting, varying matrix shapes with identical real storage, ignored imaginary components and fid values in the qualifying scalar-fid/char-format branch. No inverse recovers those discarded components."
+  ],
+  "limitations": [
+    "Partial source-bound model, not semantic proof",
+    "No executable percentage surrogate",
+    "Finite synthetic fixtures only; frozen suites/external measurement unexecuted"
+  ],
+  "source": "mlab/src/builtins/io.rs",
+  "state": "Numeric atoms follow m.re storage, not printed row order; char matrices are one string atom. num2str default aligns columns while mat2str assembles row syntax."
+}

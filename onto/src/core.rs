@@ -374,3 +374,26 @@ pub fn lexfile_warnings(g: &Graph) -> Vec<String> {
     let sm = synset_map(g);
     CORE.iter().filter_map(|r| find(&sm, r.synset).filter(|&c| g.lexfile_name(c) != r.domain.lexfile()).map(|c| format!("{:?}: domain {} ({}), synset — {}", r.id, r.domain.name(), r.domain.lexfile(), g.lexfile_name(c)))).collect()
 }
+
+#[cfg(test)]
+mod wave29 {
+    use super::*;
+    #[test]
+    fn field_and_synset_semantics() {
+        let known = Field::Known(0u8);
+        assert_eq!(known.known(), Some(&0));
+        assert!(known.is_applicable());
+        let unknown: Field<u8> = Field::Unknown("");
+        assert!(unknown.is_applicable() && !unknown.is_known());
+        assert!(!Field::<u8>::NotApplicable.is_applicable());
+        let mut g = Graph::default();
+        g.src = vec![Src::Oewn, Src::Oewn];
+        g.key = vec![7, 7];
+        g.pos = vec![Pos::Noun, Pos::Noun];
+        assert_eq!(g.find_synset("oewn-7-n"), Some(0));
+        assert_eq!(find(&synset_map(&g), "oewn-7-n"), Some(1));
+        assert_eq!(find(&synset_map(&g), "oewn-7-F"), None);
+        assert_eq!(sig(0.0), "0");
+        assert_eq!(sig(0.012345), "0.0123");
+    }
+}

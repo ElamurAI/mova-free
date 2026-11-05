@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "blocks::site_learn::tests::escaped_literals_come_back"
+  ],
+  "children": [],
+  "cost": "esc/unesc O(bytes) output; markup_of O(pieces+marks+copied bytes). Dictionary counts O(L log U), ranking O(U log U), cap4096 after count>=3,len>=4. Full main costs corpus scan, annotation and adaptation outside measured scope.",
+  "description": "esc doubles backslashes then escapes tabs/newlines; unesc interprets t/n, drops slash on unknown escaped scalar, preserves trailing slash. markup_of emits Markup pieces then each block's marks. load_dict parses tab records and first OnceLock set wins. copier_for selects corpus before colon. held_out_book checks corpus/part/final basename. main samples train blocks, filters held-out ids, ranks literals count*bytes with lexical ties, writes dictionary/lexicon before optional model adaptation.",
+  "forward": [
+    "esc doubles backslashes then escapes tabs/newlines; unesc interprets t/n, drops slash on unknown escaped scalar, preserves trailing slash. markup_of emits Markup pieces then each block's marks. load_dict parses tab records and first OnceLock set wins. copier_for selects corpus before colon. held_out_book checks corpus/part/final basename. main samples train blocks, filters held-out ids, ranks literals count*bytes with lexical ties, writes dictionary/lexicon before optional model adaptation."
+  ],
+  "id": "roundtrip-site-dictionary-codec",
+  "inverse": [
+    "esc output cannot contain literal tabs/newlines. markup_of excludes non-Markup pieces. Held-out predicate does not classify arbitrary filenames outside corpora/Tanakh parts. No persistent-learning claim from codec checks.",
+    "unesc(esc(s))=s. For arbitrary encoded input, unesc is noninjective: unknown slash escapes and literal characters can coincide. markup list loses original piece/block placement; dictionary serialization loses counts and rejected candidates."
+  ],
+  "limitations": [
+    "Partial source syntax and finite pure-code tests only; no model loading, live corpus/site/lesson workflows, full pipeline or persistent learning claim.",
+    "No executable percentage surrogate or semantic proof; explicit codec domains and resource limits apply."
+  ],
+  "source": "tools/roundtrip/src/blocks/site_learn.rs",
+  "state": "String codec all UTF-8. Count/saved-byte products representable. Pure helpers only; CLI learning, model adaptation, global installation and filesystem writes unexecuted."
+}

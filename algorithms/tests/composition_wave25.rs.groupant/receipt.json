@@ -1,0 +1,47 @@
+{
+  "compiled_mutant": "from_le_bytes -> from_be_bytes compiles, bpe_codec_model_bound_join assertion rejects; exact original bytes restored and positive checks repeated",
+  "date": "2026-10-30",
+  "evidence": [
+    {
+      "name": "composition-debug1.log",
+      "sha256": "e2c1ebc3ab048cf43efeee7ff41e4f9ffbe02e91878acf035d87c3e8084fe9e7"
+    },
+    {
+      "name": "composition-debug2.log",
+      "sha256": "e9b9cd61281d03147775e3dd4d9533f95a55d96b1a72d37f7a6b78aac1094cdf"
+    },
+    {
+      "name": "composition-release1.log",
+      "sha256": "16c85d15f54cbbecb8091fb289d4372eae09ac71e76b5431492c2d3c5b269aa5"
+    },
+    {
+      "name": "composition-release2.log",
+      "sha256": "6da87a13aa946c24252ec9ea3170d9e3e5300ddbf3dc5832e0dccfa7b4ebb4a9"
+    },
+    {
+      "name": "composition-mutant.log",
+      "sha256": "9a75fa2b5f03c4658595aa6bc9b237c3a831b370b2e0bb375e8208cfbfdd08d9"
+    },
+    {
+      "name": "composition-clippy.log",
+      "sha256": "fdc212a13bfa9f829d799c2c793f33af3253b32c6a2f432260ae3684faa706e1"
+    },
+    {
+      "name": "composition-syntax1.json",
+      "sha256": "07d725e91d56cbc7135427741ab3383826f76b291e8f1d3caf27fee8c57760dc"
+    },
+    {
+      "name": "composition-syntax2.json",
+      "sha256": "07d725e91d56cbc7135427741ab3383826f76b291e8f1d3caf27fee8c57760dc"
+    }
+  ],
+  "external_run": "$MOVA_DATA/runs/octopus-wave25-numerical-2026-10-30",
+  "limitations": [
+    "No timing or global accuracy guarantee"
+  ],
+  "repetitions": "Twice debug and twice Cargo release; all12 normalized names/results equal",
+  "source": "algorithms/tests/composition_wave25.rs",
+  "source_sha256": "716553074fe8c5b71ae86392b4b14e25b1cc2c743ba5c22dab609514018d30ed",
+  "syntax": "Two fresh projections byte identical",
+  "tests": 12
+}

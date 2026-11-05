@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "babi::wave29_tests::identity_and_inventory_without_parser",
+    "babi::wave29_tests::graph_and_sentence_boundaries_without_parser"
+  ],
+  "children": [],
+  "cost": "Split O(B); parser delegated. Ordered maps O(log V) plus string bytes, carry filtering O(C), reach O(VE), offset/path O((V+E)log V) plus adjacency clones. History sort O(HlogH), reverse fact scans linear. Allocation and integer overflow have no general bound.",
+  "description": "read increments t before fallible annotator acquisition, resolves root fallbacks, then updates subject/name memory. Relation verbs precede move/get/have/lose/give/be; copular relations precede locations/classes/attributes/short identity. ask handles three-word self identity before parsing; remaining branches parse recased text and prioritize path/count/yes-no/why/where/what-who. eval_file resets on literal line number 1 and sorts comma answers; reading failures and answer errors share the show cap. Compact transition: take(a,o): H'[o]=a; C'[old]=filter(C[old],x≠o); C'[a]=C'[a]++[o]. move(a,p,k): P'[a]=At(p), hist'[a]=hist[a]++[(k,t,p)], ohist carried objects append p iff last≠p. Query relation F(s,q) returns an answer/explanation or parse error under branch order.",
+  "forward": [
+    "read increments t before fallible annotator acquisition, resolves root fallbacks, then updates subject/name memory. Relation verbs precede move/get/have/lose/give/be; copular relations precede locations/classes/attributes/short identity. ask handles three-word self identity before parsing; remaining branches parse recased text and prioritize path/count/yes-no/why/where/what-who. eval_file resets on literal line number 1 and sorts comma answers; reading failures and answer errors share the show cap. Compact transition: take(a,o): H'[o]=a; C'[old]=filter(C[old],x≠o); C'[a]=C'[a]++[o]. move(a,p,k): P'[a]=At(p), hist'[a]=hist[a]++[(k,t,p)], ohist carried objects append p iff last≠p. Query relation F(s,q) returns an answer/explanation or parse error under branch order.",
+    "take removes prior carry occurrence before appending; move_to appends person history but only changes adjacent object history when place differs. Person order is (u32 day-order,usize sentence index); spatial coordinates are i32 relative units. General read is not transactional."
+  ],
+  "id": "world-babi",
+  "inverse": [
+    "Exclude replacement of an established lowercase speaker by distinct set_me name, holder removal by drop_(a,o) when owner differs, and path/offset across disconnected vertices. Do not exclude t increment on parser failure, partial name changes before semantic errors, or contradictory graph paths. Unknown facts may yield '?', not invented evidence. Explicit excluded tuple: (me=n, set_me(m), return=true∧me'=m)∈C for lowercase(m)≠n; (H[o]=b,drop_(a,o),o∉dom(H'))∈C when a≠b.",
+    "Final holder map admits all acquisition/drop histories with the same last surviving assignments; overwritten positions and interleavings are lost. state_lines omits t, me, attributes and several histories. Offset d admits every graph whose first-discovered BFS path has displacement d, including unused contradictory edges. Who-are-you answer n on fast path constrains me=n but not class or history. Ownership fiber: F_H^{-1}(H*)={event sequences e | dom(final_holder(e))=dom(H*) and ∀o∈dom(H*), last_surviving_take(e,o)=H*[o]}. No object outside dom(H*) may retain a holder; H*=empty admits only histories with empty final holder map. Erased intermediate transitions remain free."
+  ],
+  "limitations": [
+    "Partial syntax projection only; no macro expansion or proof",
+    "No useful percentage surrogate for exact categorical/state/effect semantics; executable approximant unsupported",
+    "No live parser, corpus, gap journal, training or held-out evaluation",
+    "Unicode recasing byte slices, unbounded recursion/overflow not covered"
+  ],
+  "source": "world/src/babi.rs",
+  "state": "Story positions, person/object histories, holders, acquisition-ordered carries, transfers, relations, types/attributes/predicates, subject memory, speaker and t; parsed words and child indices."
+}

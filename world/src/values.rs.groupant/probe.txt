@@ -1,0 +1,35 @@
+// Compile as Rust --test with --crate-name value_groupant_probe.
+#[path="../values.rs"] mod values;
+fn count(t:&str,p:&str)->usize{values::judge(t).iter().filter(|j|j.principle==p).count()}
+#[test] fn speech_fibers(){
+let mut positives=0;
+for speaker in ["C1","narrator",""]{for sincere in ["0","1","2"]{
+let t=format!("say {speaker} sincere={sincere}");
+let expected=usize::from(speaker!="narrator"&&sincere=="0");
+assert_eq!(count(&t,"truth"),expected,"{t}");positives+=expected;
+}}
+assert_eq!(positives,2);
+assert_eq!(count("say C1 sincere=1 sincere=0","truth"),1);
+println!("speech matrix=9; positive fiber size=2; duplicate-key case=1");
+}
+#[test] fn ownership_and_history(){
+let prefix="obj O1 at=C1\n";
+assert_eq!(count(&format!("{prefix}move O1 to=C2"),"justice"),1);
+assert_eq!(count(&format!("{prefix}event E1 verb=give agent=C1\nmove O1 to=C2 cause=E1"),"justice"),0);
+assert_eq!(count(&format!("{prefix}move O1 to=L1\nmove O1 to=C2"),"justice"),1);
+assert_eq!(count(&format!("{prefix}event E1 verb=steal agent=C2\nmove O1 to=C2 cause=E1"),"justice"),2);
+let harm="event E1 verb=catch agent=C1\nset C2 freedom=captive cause=E1\n";
+let relief="event E2 verb=release agent=C1\nset C2 freedom=free cause=E2\n";
+let t=format!("{harm}{relief}{harm}{relief}");
+assert_eq!(count(&t,"do-no-harm"),1);
+let j=values::judge(&t);
+let mercy=j.iter().filter(|j|j.principle=="forgiveness").count();assert_eq!(mercy,1);
+let help=j.iter().filter(|j|!j.violated&&j.principle!="forgiveness").count();assert_eq!(help,1,"{j:?}");
+let expected=if std::env::var_os("FALSE_FORMULA").is_some(){2}else{1};
+assert_eq!(count(&t,"do-no-harm"),expected,"false per-episode harm reset formula");
+println!("ownership fixtures=4; repeated harm/relief has one harm, one help, one mercy");
+}
+#[test] fn gap_dedup(){
+let t="event E1 verb=zzzz_unknown_action\nevent E2 verb=zzzz_unknown_action\n";
+assert_eq!(values::gaps(t),vec!["action \"zzzz_unknown_action\": neither a verb class nor a concept"]);
+}

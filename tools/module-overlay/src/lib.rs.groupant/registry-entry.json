@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test --manifest-path tools/module-overlay/Cargo.toml --jobs 2",
+    "Fourteen native fixtures pass debug/release; new masked/visible drift controls reject an external target-insensitive-gate mutation. No production composer or live runtime change."
+  ],
+  "children": [],
+  "cost": "Bounded byte scans, map ordering and filesystem effects; see source-specific cost model.",
+  "description": "Bound external source composition",
+  "forward": [
+    "See the source-bound forward relation and effect boundaries in model.md."
+  ],
+  "id": "module-overlay-library",
+  "inverse": [
+    "Typed behavior complement first and nonunique reverse reconstruction second; specialized views preserve their observation scopes.",
+    "Fixed replacement projection loses overwritten originals; equal final source maps do not imply old-base admission or unchanged provenance. See the specialized source-bound models."
+  ],
+  "limitations": [
+    "Finite native fixtures and partial source-derived relations, not a semantic compatibility proof.",
+    "Stable inputs and exclusively owned output parent required; no hostile concurrent-writer snapshot guarantee."
+  ],
+  "source": "tools/module-overlay/src/lib.rs",
+  "state": "Bound input metadata, exact byte copies and explicit output/status observations in the declared domain."
+}

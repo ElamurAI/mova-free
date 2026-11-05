@@ -629,3 +629,19 @@ mod tests {
         assert!(m.gold_tree(&p, 1_000_003.0).is_none());
     }
 }
+#[cfg(test)]
+mod wave27_tests {
+    use super::*;
+    #[test]
+    fn exact_tree_and_empty_search() {
+        let p = prepare("8 2 0", 3);
+        let div = Tree::Node(Op::Div, Box::new(Tree::Leaf(0)), Box::new(Tree::Leaf(1)));
+        assert_eq!(div.exact(&p.qs), Some(q(4)));
+        let zero = Tree::Node(Op::Div, Box::new(Tree::Leaf(0)), Box::new(Tree::Leaf(2)));
+        assert_eq!(zero.exact(&p.qs), None);
+        let m = Model::new(3, 10);
+        assert!(m.predict(&prepare("", 0), false).is_none());
+        let t = m.gold_tree(&p, 16.0).unwrap();
+        assert_eq!(t.exact(&p.qs), Some(q(16)));
+    }
+}

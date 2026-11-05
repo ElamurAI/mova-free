@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-30",
+  "debug_release_repeat_normalized_equal": true,
+  "evidence_locator": "MOVA_DATA/runs/octopus-wave7-language-2026-10-30",
+  "groupants_report_sha256": "220a138b3f779011f0f6a0f6388d8058519ae2a4581f0e8d5152768ea1c32af7",
+  "groupants_valid": true,
+  "limits": [
+    "Finite bounded correspondence; no general proof or semantic AST.",
+    "Existing fire-based tests excluded; no teacher, GPU or live-state writes.",
+    "Initial --bin world attempts selected zero tests and are not counted; native repeat evidence uses --lib."
+  ],
+  "logs": [
+    {
+      "name": "debug1.log",
+      "normalized_sha256": "f9f50eea5f5c08b92d5b237e4d3daff499a3cc17b91406fe8695b2400be00b9b",
+      "passed": 10,
+      "sha256": "6dec54950bdfc783a19a49a55e9203692c2993a37fe2638ddbc0ea6f38e36dee"
+    },
+    {
+      "name": "debug-native2.log",
+      "normalized_sha256": "f9f50eea5f5c08b92d5b237e4d3daff499a3cc17b91406fe8695b2400be00b9b",
+      "passed": 10,
+      "sha256": "17186866f91e352c9e1bd79b00152a35844da09671601f6a9ed9cbd424f72a5a"
+    },
+    {
+      "name": "release-native1.log",
+      "normalized_sha256": "f9f50eea5f5c08b92d5b237e4d3daff499a3cc17b91406fe8695b2400be00b9b",
+      "passed": 10,
+      "sha256": "86405e923a5a11364af1ce2f10b049c33888c4801a6a214cc1701ce90cb768d9"
+    },
+    {
+      "name": "release-native2.log",
+      "normalized_sha256": "f9f50eea5f5c08b92d5b237e4d3daff499a3cc17b91406fe8695b2400be00b9b",
+      "passed": 10,
+      "sha256": "b5e2bf3a500c7b07ea2b900a101dfc86fe36d73399abb2e056ba77e4b35d440d"
+    }
+  ],
+  "mutation_controls": [
+    {
+      "compiled": true,
+      "exit_code": 101,
+      "failed_tests": 1,
+      "log": "poly-mutation.log",
+      "mutation": "remove marker-order guard",
+      "sha256": "2e909e0410e5d1c58cc79149acbacd38df5be1ad40b4de9c02feebecdd19383d",
+      "source": "world/src/poly.rs"
+    },
+    {
+      "compiled": true,
+      "exit_code": 101,
+      "failed_tests": 1,
+      "log": "triggers-mutation.log",
+      "mutation": "replace Gregorian predicate with divisible-by-four",
+      "sha256": "31bee8e658868d94334d046f2c48bd7da126a82aeb405b510cc6aa2ecc09dceb",
+      "source": "world/src/triggers.rs"
+    }
+  ],
+  "native_tests_per_source": 5,
+  "source": "world/src/poly.rs",
+  "source_sha256": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+  "syntax_repeat_equal": true,
+  "syntax_sha256": "e966c46719988d21c4dc1bbe0b98d2aeef364208e562b6773927804c14d18e50"
+}

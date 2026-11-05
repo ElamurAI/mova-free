@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p prag --lib model::wave13_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "Dispatch cost equals selected child training plus allocation, not sum of all learners. Prediction chooses one child. Shared gain work is charged once within that learner. Serialization allocates bytes; info formats metadata. No training-throughput or accuracy measurement is claimed.",
+  "description": "fit dispatches a shared Train to one of three learners: perceptron with 12 epochs, IGTree, or kNN. A common encoded row then produces Pred{class,conf,why}. The child gain function supplies both tree slot ordering and kNN overlap weights. Class indices mean exactly the supplied names order; Dict slot/value coordinates and sentence key order must remain aligned across fitting, prediction and explanation.",
+  "forward": [
+    "fit dispatches a shared Train to one of three learners: perceptron with 12 epochs, IGTree, or kNN. A common encoded row then produces Pred{class,conf,why}. The child gain function supplies both tree slot ordering and kNN overlap weights. Class indices mean exactly the supplied names order; Dict slot/value coordinates and sentence key order must remain aligned across fitting, prediction and explanation."
+  ],
+  "id": "prag-model",
+  "inverse": [
+    "An observed class 0 may come from zero perceptron ties, tree majority fallback or kNN tie resolution. Even Kind plus conf/why leaves inactive dimensions and training histories ambiguous. Candidate reconstruction must retain shared names order, dictionary coordinates, row/key alignment, seed and child constraints. Without these correlations an invented tree default or nearest key is not a compatible antecedent."
+  ],
+  "limitations": [
+    "Finite in-memory supplied fixtures only; no corpus/parser/teacher/GPU or training job.",
+    "Fixed-target numerical repeatability, not cross-platform bit identity or semantic accuracy.",
+    "Malformed aligned state, representability overflow and long-run weight precision remain outside domain.",
+    "Partial syntax has opaque macro bodies; no general proof or speed claim."
+  ],
+  "source": "prag/src/model.rs",
+  "state": "All class indices stay within nonempty names for valid models. Repeated same supplied input/seed on a fixed target must preserve prediction observations. conf is a margin for perceptron, local support for IGTree and vote share for kNN, so confidence is not a shared calibrated probability. bytes serializes full perceptron but selected core tuples for IGTree/kNN; it is not full resident-memory usage."
+}

@@ -1,0 +1,32 @@
+{
+  "clippy": "strict all targets passed",
+  "clippy_log_sha256": "e48fdcbc229e1b97d87c9359a9b2eba2660460760256fd3ad0c3bb9f87875bb2",
+  "date": "2026-10-30",
+  "evidence": "$MOVA_DATA/runs/octopus-wave20-interpolation-2026-10-30/",
+  "limitations": [
+    "Finite absolute-tolerance observations, no general machine error guarantee",
+    "No certified executable surrogate",
+    "No timing benchmark or throughput claim"
+  ],
+  "mutant": {
+    "change": "halve normalized segment coordinate",
+    "compiled": true,
+    "failed_assertion": "monotone_cubic::tests::affine_oracle",
+    "log_sha256": "8dcb3fd3b4a282451bedbf1c5ca7dcb6337e899b9905bc9c371282faa5503128",
+    "restored_positive_sha256": "bd48478edd1146d27f94e18d94e1045c15fcca828f0c7609b97e8a97cdec4e07",
+    "source_bytes_restored": true
+  },
+  "native_module_tests": 3,
+  "normalized_outcomes_sha256": "7310f78ab4c8a4183faaa86b4a8df0da4e70df5c509183a01f8fce0ac5258202",
+  "paired_syntax_sha256": "52d09bb5b84408016b65a37d27d7246134e1662e6e300bee6e11fefb39e7ed30",
+  "profiles": [
+    "debug1",
+    "debug2",
+    "release1",
+    "release2"
+  ],
+  "source": "algorithms/src/monotone_cubic/mod.rs",
+  "source_sha256": "573662c8ac099c426367d6f5dbd0ed81f4f8d067e0d256a3ebc08ff527688755",
+  "syntax_scope": "partial lexical Rust projection, no macro expansion or semantic proof",
+  "whole_library_tests": 560
+}

@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "analytic_oracle compares powers 0..4 and sine to exact integrals; budget_and_order checks exact [0,1,.5,.25,.75], count 5, value .34375 and budget=2; failure_and_alias checks no invalid calls, early nonfinite abort, overflow, adjacent-float stagnation and hidden bump.",
+    "Change retained coarse contribution from 0.5 to 0.25; analytic_oracle assertion fails."
+  ],
+  "children": [],
+  "cost": "O(evaluations) scalar work plus two geometry loops, O(1) storage. Callback resources and panics excluded; no calls beyond usize budget. Refinement doubling checked.",
+  "description": "Finite a<b with finite span, positive finite absolute tolerance and budget>=2. Evaluate a then b; initial T=(fa/2+fb/2)(b-a). Each complete level evaluates old-panel midpoints ascending, Tnew=T/2+step*sum/2, estimator |Tnew-T|/3. Report EstimatedTolerance when estimator<=tolerance; it is never a guaranteed integral error. Whole-level budget checked before geometry/callbacks; geometry checked for all abscissae before any level callback.",
+  "forward": [
+    "Finite a<b with finite span, positive finite absolute tolerance and budget>=2. Evaluate a then b; initial T=(fa/2+fb/2)(b-a). Each complete level evaluates old-panel midpoints ascending, Tnew=T/2+step*sum/2, estimator |Tnew-T|/3. Report EstimatedTolerance when estimator<=tolerance; it is never a guaranteed integral error. Whole-level budget checked before geometry/callbacks; geometry checked for all abscissae before any level callback."
+  ],
+  "id": "algorithm-adaptive-trapezoid",
+  "inverse": [
+    "Zero and indicator bump in (0.1,0.2) agree at 0,1,0.5 and return identical zero reports after three calls although true integrals differ by 0.1. Finite callback trace identifies only sampled values, not smoothness or integral."
+  ],
+  "limitations": [
+    "Partial source projection, no semantic proof",
+    "Finite fixtures do not guarantee accuracy",
+    "No executable approximation profile or speed claim",
+    "Rust allocation failures and callback panics are not caught"
+  ],
+  "source": "algorithms/src/adaptive_trapezoid/mod.rs",
+  "state": "Validated finite arrays, rolling recurrence state or bounded quadrature level; tests observe result tags and traces"
+}

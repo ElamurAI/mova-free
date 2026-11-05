@@ -47,4 +47,4 @@ Because two years outside the family, in this field, is several generations of m
 
 - `Not-a-Big-Brother.md` — explanatory policy appendix.
 - `LICENSE-ANNEX-A.md` — restricted jurisdictions and institutional categories.
-- `~/aran/docs/mysticism/the-biological-intelligence-hypothesis.md` — the Godmother Matrix.
+- [`../docs/mysticism/04-the-biological-intelligence-hypothesis.md`](../docs/mysticism/04-the-biological-intelligence-hypothesis.md) — the Godmother Matrix.

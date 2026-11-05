@@ -232,3 +232,143 @@ impl World {
             .join(", ")
     }
 }
+
+#[cfg(test)]
+mod finite_models {
+    // Native query correspondence: fixtures bypass command validation intentionally.
+    use super::*;
+    use crate::world::{Entity, Text};
+    use std::collections::BTreeMap;
+
+    fn world() -> World {
+        World::new(Text { doc: 0, title: String::new(), sents: vec![] })
+    }
+    fn state(delta: Vec<Delta>) -> State {
+        State { ver: 1, delta, cause: None, by: "fixture", line: 0,
+            pos: TextPos { sent: 1, ..TextPos::default() }, note: None }
+    }
+    fn entity(w: &mut World, id: Id, delta: Vec<Delta>) {
+        w.ents.insert(id, Entity { id, states: vec![state(delta)], mentions: vec![] });
+    }
+    // Comparing entire maps checks every output fiber, including ambiguous inputs.
+    fn fibers(rows: &[(String, String, usize)]) {
+        let mut actual = BTreeMap::<String, Vec<usize>>::new();
+        let mut oracle = BTreeMap::<String, Vec<usize>>::new();
+        for (got, want, input) in rows {
+            assert_eq!(got, want, "input {input}");
+            actual.entry(got.clone()).or_default().push(*input);
+            oracle.entry(want.clone()).or_default().push(*input);
+        }
+        assert_eq!(actual, oracle);
+        assert_eq!(actual.values().map(Vec::len).sum::<usize>(), rows.len());
+    }
+
+    #[test]
+    fn query_finite_label_priority_fibers() {
+        let id = Id::new(Reg::C, 1);
+        let mut rows = vec![];
+        for code in 0..64 {
+            let mut w = world();
+            let digits = [code % 4, code / 4 % 4, code / 16];
+            let mut delta = vec![];
+            for (f, d) in [Field::Name, Field::Class, Field::Type].into_iter().zip(digits) {
+                let v = match d {
+                    0 => Val::Unknown,
+                    1 => Val::Known(V::Text("fox".into())),
+                    2 => Val::Known(V::Words(vec!["red".into(), "fox".into()])),
+                    _ => Val::Known(V::Id(Id::new(Reg::L, 1))),
+                };
+                delta.push(Delta::Set(f, v));
+            }
+            entity(&mut w, id, delta);
+            let accepted = digits.into_iter().find(|d| [1, 2].contains(d));
+            let want = match accepted { Some(1) => "C1 fox", Some(2) => "C1 red,fox", _ => "C1" };
+            rows.push((w.label(id), want.into(), code));
+        }
+        fibers(&rows);
+        assert_eq!(world().label(id), "C1");
+    }
+
+    #[test]
+    fn query_finite_resolver_fibers() {
+        // Literal expected matrix avoids duplicating tokenizer/plural implementation.
+        let labels = ["fox", "foxes", "FOX", "red-fox", "red_fox", "foxs", ""];
+        let queries = ["char:fox", "char:FOX", "char:foxs", "char:red", "char:red_fox",
+            "char: fox", "char:fox|red_fox", "obj:fox", "C1", "C2", "bad:fox"];
+        let masks = [45u16, 45, 45, 8, 16, 0, 61, 0, 127, 0, 0];
+        let id = Id::new(Reg::C, 1);
+        let mut rows = vec![];
+        for (i, label) in labels.into_iter().enumerate() {
+            let mut w = world();
+            entity(&mut w, id, vec![Delta::Set(Field::Name, Val::Known(V::Text(label.into())))]);
+            for (j, q) in queries.into_iter().enumerate() {
+                let want = if masks[j] & (1 << i) != 0 { vec![id] } else { vec![] };
+                rows.push((format!("{:?}", w.resolve(q)), format!("{want:?}"), i * queries.len() + j));
+            }
+        }
+        fibers(&rows);
+    }
+
+    #[test]
+    fn query_finite_history_projection_fibers() {
+        let id = Id::new(Reg::C, 1);
+        let mut rows = vec![];
+        for code in 0..64 {
+            let mut w = world();
+            let digits = [code % 4, code / 4 % 4, code / 16];
+            let delta = digits.into_iter().map(|d| match d {
+                0 => Delta::Set(Field::Name, Val::Known(V::Text("fox".into()))),
+                1 => Delta::Set(Field::Name, Val::Unknown),
+                2 => Delta::Set(Field::Type, Val::Known(V::Text("animal".into()))),
+                _ => Delta::Set(Field::Class, Val::Unknown),
+            }).collect();
+            entity(&mut w, id, delta);
+            let got: Vec<_> = w.history(id, Field::Name).into_iter().map(|(s, v)| (s.ver, v)).collect();
+            let want: Vec<_> = digits.into_iter().filter_map(|d| match d {
+                0 => Some((1, Val::Known(V::Text("fox".into())))),
+                1 => Some((1, Val::Unknown)), _ => None,
+            }).collect();
+            rows.push((format!("{got:?}"), format!("{want:?}"), code));
+        }
+        fibers(&rows);
+        assert!(world().history(id, Field::Name).is_empty());
+    }
+
+    #[test]
+    fn query_finite_attention_context_fibers() {
+        let mut rows = vec![];
+        for code in 0..64 {
+            let counts = [code % 4, code / 4 % 4, code / 16];
+            let mut w = world();
+            for (i, n) in counts.into_iter().enumerate() {
+                let id = Id::new(Reg::C, (i + 1) as u32);
+                entity(&mut w, id, vec![]);
+                w.ents.get_mut(&id).unwrap().mentions = (0..n)
+                    .map(|_| TextPos { sent: 2, ..TextPos::default() })
+                    .chain([TextPos { sent: 4, ..TextPos::default() }]).collect();
+            }
+            let object = Id::new(Reg::O, 1);
+            entity(&mut w, object, vec![]);
+            w.ents.get_mut(&object).unwrap().mentions = vec![TextPos::default(); 9];
+            for cutoff in [0, 2, 4] {
+                let observed = counts.map(|n| if cutoff == 0 { 0 } else { n + usize::from(cutoff == 4) });
+                let mut expected = vec![];
+                // Rank buckets, no production sort or filter expression.
+                for n in (1..=4).rev() {
+                    for (i, c) in observed.into_iter().enumerate() {
+                        if c == n { expected.push((Id::new(Reg::C, (i + 1) as u32), n)); }
+                    }
+                }
+                let threshold = match observed.into_iter().max().unwrap() { 0 => 0, 1 | 2 => 1, 3 | 4 => 2, _ => unreachable!() };
+                let main: Vec<_> = expected.iter().copied().filter(|(_, n)| *n >= threshold).collect();
+                let secondary: Vec<_> = expected.iter().copied().filter(|(_, n)| *n < threshold).collect();
+                let c = w.context_at(cutoff);
+                assert!(c.speaker.is_none() && c.addressee.is_none() && c.what.is_none() &&
+                    c.why.is_none() && c.place.is_none() && c.time.is_none());
+                rows.push((format!("{:?}/{:?}/{:?}", w.attention(cutoff), c.main, c.secondary),
+                    format!("{expected:?}/{main:?}/{secondary:?}"), code * 3 + usize::from(cutoff / 2)));
+            }
+        }
+        fibers(&rows);
+    }
+}

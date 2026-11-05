@@ -56,7 +56,12 @@ fn items(path: &Path, m: &Matrix, k: usize) -> Result<Vec<Item>> {
     Ok(out)
 }
 
+// Empty candidates return the zero sentinel; consumers must use get/first.
+// Infinite parser log scores are admissible; NaN cannot define an ordering.
 fn pick(it: &Item, lambda: f64) -> usize {
+    assert!(lambda >= 0.0, "lambda must be nonnegative and not NaN");
+    assert!(it.cands.iter().all(|c| !c.score.is_nan() && c.penalty.is_finite() && c.penalty >= 0.0),
+        "candidate scores must not be NaN and penalties must be finite and nonnegative");
     let key = |c: &Cand| if lambda.is_infinite() { (-c.penalty, c.score) } else { (c.score - lambda * c.penalty, 0.0) };
     let mut best = 0;
     for i in 1..it.cands.len() {
@@ -432,4 +437,77 @@ pub fn repair_eval(paths: &[std::path::PathBuf], domain: &str) -> Result<()> {
         }
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod wave10_models {
+    use super::*;
+
+    fn item(cs: &[(f64, f64, usize)], n: usize) -> Item {
+        Item { n, greedy: 0, cands: cs.iter().map(|&(score, penalty, correct)| Cand { score, penalty, correct }).collect() }
+    }
+
+    #[test]
+    fn invalid_scores_rejected_before_selection() {
+        for (score, penalty, lambda) in [(f64::NAN, 0.0, 0.0), (0.0, f64::NAN, 1.0),
+            (0.0, f64::INFINITY, 0.0), (0.0, -1.0, 1.0), (0.0, 0.0, f64::NAN), (0.0, 0.0, -1.0)] {
+            assert!(std::panic::catch_unwind(|| pick(&item(&[(score, penalty, 1)], 1), lambda)).is_err(),
+                "invalid candidate/lambda must be rejected");
+        }
+    }
+
+    #[test]
+    fn selection_independent_pairwise_oracle() {
+        // 9 choices per candidate, 729 triples, four lambdas: 2916 finite choices.
+        for code in 0..729 {
+            let cs: Vec<_> = (0..3).map(|i| {
+                let v = code / 9usize.pow(i) % 9;
+                ((v / 3) as f64 - 1.0, (v % 3) as f64, i as usize)
+            }).collect();
+            let it = item(&cs, 3);
+            for l in [0.0, 0.5, 2.0, f64::INFINITY] {
+                // Enumerate the first candidate unbeaten by any other; not a running-maximum oracle.
+                let expected = (0..3).find(|&a| (0..3).all(|b| {
+                    if l.is_infinite() { cs[a].1 < cs[b].1 || (cs[a].1 == cs[b].1 && cs[a].0 >= cs[b].0) }
+                    else { cs[a].0 - l * cs[a].1 >= cs[b].0 - l * cs[b].1 }
+                })).unwrap();
+                assert_eq!(pick(&it, l), expected);
+            }
+        }
+        assert_eq!(pick(&item(&[], 0), 0.0), 0); // sentinel, callers use get
+        assert_eq!(pick(&item(&[(f64::NEG_INFINITY, 0.0, 0), (0.0, 1.0, 1)], 1), 0.0), 1);
+        assert_eq!(pick(&item(&[(f64::NEG_INFINITY, 0.0, 0), (0.0, 1.0, 1)], 1), f64::INFINITY), 0);
+    }
+
+    #[test]
+    fn weighted_las_report_and_lambda_grid() {
+        let its = [item(&[(2.0, 1.0, 0), (1.0, 0.0, 1)], 1),
+            item(&[(2.0, 1.0, 3), (1.0, 0.0, 0)], 3)];
+        assert_eq!(las(&its, &|it| it.cands[0].correct), 75.0);
+        assert_eq!(las(&[], &|_| unreachable!()), 0.0);
+        let best = LAMBDAS.iter().copied().max_by(|&a, &b| {
+            las(&its, &|it| it.cands[pick(it, a)].correct).partial_cmp(
+                &las(&its, &|it| it.cands[pick(it, b)].correct)).unwrap()
+        }).unwrap();
+        assert!(best <= 1.0);
+        let r = report("fixture", &its, 2.0);
+        assert!(r.contains("beam top-1 75.00  reranked (λ=2) 25.00  oracle of k 100.00"));
+        assert!(r.contains("changed 2 sentences: better 1, worse 1"));
+        assert!(report("empty", &[item(&[], 2)], 0.0).contains("changed 0 sentences"));
+    }
+
+    #[test]
+    fn bootstrap_constant_sign_and_translation() {
+        for n in 0..=8 {
+            let its: Vec<_> = (0..n).map(|_| item(&[], 2)).collect();
+            assert_eq!(bootstrap(&its, &|_| 0, &|_| 0), 1.0);
+            assert_eq!(bootstrap(&its, &|_| 0, &|_| 1), if n == 0 { 1.0 } else { 0.0 });
+            assert_eq!(bootstrap(&its, &|_| 1, &|_| 0), 1.0);
+        }
+        let its = [item(&[], 0), item(&[], 1), item(&[], 2)];
+        let p = bootstrap(&its, &|_| 1, &|it| it.n);
+        assert_eq!(p, bootstrap(&its, &|_| 11, &|it| it.n + 10));
+        assert_eq!(p, bootstrap(&its, &|_| 1, &|it| it.n));
+        assert!((0.0..=1.0).contains(&p));
+    }
 }

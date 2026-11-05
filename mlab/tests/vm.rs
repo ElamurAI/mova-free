@@ -242,3 +242,86 @@ fn vm_workspace_is_visible_after_run() {
     it.run("x = x + 1; disp(x)");
     assert_eq!(it.take_output(), "42\n");
 }
+
+#[test]
+fn wave30_bounded_state_and_fallback() {
+    let cases = [
+        ("x = 2; y = 3; disp(x+y)", "5\n"),
+        (
+            "A=[1 2;3 4]; B=A; B(1,2)=9; disp(A(1,2)); disp(B(1,2))",
+            "2\n9\n",
+        ),
+        (
+            "s=0; for k=3:-1:1; s=s+k; end; disp(s); for k=[]; disp(99); end",
+            "6\n",
+        ),
+        (
+            "x=4; try; x=x+1; missing_wave30(); catch; x=x+2; end; disp(x); clear x; disp(exist('x'))",
+            "7\n0\n",
+        ),
+        (
+            "disp(false && missing_wave30()); disp(true || missing_wave30())",
+            "0\n1\n",
+        ),
+        ("a=2; f=@(x) x+a; a=9; disp(f(3))", "5\n"),
+        ("S={'aa','bb'}; disp(S(2))", "bb\n"),
+    ];
+    for (src, expected) in cases {
+        let (tree, _) = run(src, false, None);
+        let (vm, _) = run(src, true, None);
+        assert_eq!(tree, expected, "{src}");
+        assert_eq!(vm, tree, "{src}");
+    }
+    let (_, it) = run("x=1; clear x; S={'a','b'}; y=S(2);", true, None);
+    assert!(it.vm_stats.fallback_runs > 0);
+    assert!(it.vm_stats.dyn_runs > 0);
+}
+
+#[test]
+fn wave30_parse_runtime_and_output_state() {
+    for vm in [false, true] {
+        let mut it = Interp::capture();
+        it.vm_mode = vm;
+        assert!(it.run("x=7;"));
+        assert!(!it.run("x=8; disp(1); y=(2"));
+        assert_eq!(
+            match it.get_var("x").unwrap() {
+                mlab::Value::Mat(m) => m.re.clone(),
+                _ => panic!("matrix expected"),
+            },
+            [7.0]
+        );
+        assert!(it.take_output().starts_with("parse error"));
+        assert!(!it.run("x=9; missing_wave30(); x=10;"));
+        assert_eq!(
+            match it.get_var("x").unwrap() {
+                mlab::Value::Mat(m) => m.re.clone(),
+                _ => panic!("matrix expected"),
+            },
+            [9.0]
+        );
+        assert_eq!(it.take_output(), "error: 'missing_wave30' undefined\n");
+        assert_eq!(it.take_output(), "");
+        it.warnings_on = false;
+        it.warn("ordinary");
+        it.gate_warn("checked");
+        assert_eq!(it.gate_warnings, 1);
+        assert_eq!(it.take_output(), "warning: checked\n");
+    }
+}
+
+#[test]
+fn wave30_synthetic_gate_fail_fast() {
+    let sc = suite::parse(
+        "### first | scalar | addition\nx=2; y=3; disp(x+y)\n---\n> 5\n### second | scalar | next\ndisp(7)\n---\n> 7\n",
+    );
+    let clean = suite::vm_gate(&sc, None);
+    assert_eq!((clean.total, clean.same), (2, 2));
+    let bad = suite::vm_gate(&sc, Some("vm:add"));
+    assert_eq!((bad.total, bad.same), (1, 0));
+    assert_eq!(
+        bad.mismatch.unwrap(),
+        ("first".into(), 1, "5".into(), "6".into())
+    );
+    assert_eq!(suite::vm_gate(&[], None).total, 0);
+}

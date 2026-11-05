@@ -12,8 +12,8 @@ use crate::duck::{Duck, Stage, quote};
 use crate::tsv;
 use crate::util;
 
-const EXPORT_SQL: &str = include_str!("../../../db/sql/export.sql");
-const FILES_SQL: &str = include_str!("../../../db/sql/files.sql");
+const EXPORT_SQL: &str = include_str!("../sql/export.sql");
+const FILES_SQL: &str = include_str!("../sql/files.sql");
 
 pub const KEYS: [&str; 12] = ["file", "run", "source", "tool", "layer", "dialect", "origin", "doc", "sent", "sid", "aid", "gate"];
 
@@ -112,7 +112,7 @@ fn ud_counts(text: &str) -> Result<[i64; 5]> {
 
 /// For every loaded file: (1) the export from the database gives the same bytes as the file on disk and the
 /// same sha1 as at load time; (2) counters in the database match the file; (3) for treebanks, the part
-/// size matches the card (`treebanks/…/README.md`). Any mismatch goes to `bad`.
+/// size matches the treebank's row in `treebanks/cards.tsv`. Any mismatch goes to `bad`.
 pub fn verify(duck: &Duck, only: Option<&str>) -> Result<Verify> {
     let st = Stage::new("verify")?;
     duck.read(&st.sql(FILES_SQL, "q")?)?;
@@ -159,12 +159,9 @@ pub fn verify(duck: &Duck, only: Option<&str>) -> Result<Verify> {
             };
             if let Some(p) = part {
                 v.card_checked += 1;
-                let want: Vec<i64> = c[p].as_array().map(|a| a.iter().filter_map(Value::as_i64).collect()).unwrap_or_default();
-                let got = ud_counts(&out)?;
-                if want == got {
-                    v.card_ok += 1;
-                } else {
-                    v.bad.push(format!("{name}: size from the database {got:?} ≠ card {want:?} (sentences, tokens, words, multiword, empty)"));
+                match size_mismatch(&c, p, &ud_counts(&out)?) {
+                    None => v.card_ok += 1,
+                    Some(m) => v.bad.push(format!("{name}: {m}")),
                 }
             }
         }
@@ -172,27 +169,15 @@ pub fn verify(duck: &Duck, only: Option<&str>) -> Result<Verify> {
     Ok(v)
 }
 
-/// The size table of a treebank card: part → [sentences, tokens, words, fused, empty].
+/// The sizes of a treebank from its fact row (`treebanks/cards.tsv`): part → [sentences, tokens, words, fused, empty].
 fn card_volume(card: &str) -> Result<Value> {
-    let text = std::fs::read_to_string(card).with_context(|| card.to_string())?;
-    let mut out = serde_json::Map::new();
-    let mut on = false;
-    for line in text.lines() {
-        if line.starts_with("## ") {
-            on = util::CARD_SIZE_HEADINGS.contains(&line.trim());
-            continue;
-        }
-        let cells: Vec<&str> = line.split('|').map(str::trim).collect();
-        if on && cells.len() >= 8 {
-            let part = cells[1].trim_matches('*');
-            let nums: Vec<i64> = cells[2..7].iter().filter_map(|c| c.chars().filter(char::is_ascii_digit).collect::<String>().parse().ok()).collect();
-            if nums.len() == 5 {
-                let part = util::card_part(part);
-                out.insert(part.to_string(), serde_json::json!(nums));
-            }
-        }
-    }
-    Ok(Value::Object(out))
+    Ok(Value::Object(util::card_volume(&util::card_lookup(card)?)?))
+}
+
+/// Size check of one part: `None` when the counted size equals the table, otherwise the mismatch.
+fn size_mismatch(volume: &Value, part: &str, got: &[i64]) -> Option<String> {
+    let want: Vec<i64> = volume[part].as_array().map(|a| a.iter().filter_map(Value::as_i64).collect()).unwrap_or_default();
+    (want != got).then(|| format!("size from the database {got:?} ≠ card {want:?} (sentences, tokens, words, multiword, empty)"))
 }
 
 #[cfg(test)]
@@ -206,5 +191,25 @@ mod tests {
         assert!(filters(&["file=x".into(), "source=rust".into()]).is_ok());
         assert!(filters(&["zzz=1".into()]).is_err());
         assert!(filters(&["file".into()]).is_err());
+    }
+
+    #[test]
+    fn size_check_reads_cards_tsv() {
+        let dir = std::env::temp_dir().join(format!("mova-db-sizes-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let tsv = dir.join("cards.tsv");
+        let head = "ud_name\tlang\ttreebank\ttrain\tdev\ttest\ttotal\n";
+        let got = [1, 2, 3, 1, 1];
+        std::fs::write(&tsv, format!("{head}UD_Xx-ZZ\txx\tzz\t\t\t1 2 3 1 1\t1 2 3 1 1\n")).unwrap();
+        let card = format!("{}#UD_Xx-ZZ", tsv.display());
+        assert_eq!(size_mismatch(&card_volume(&card).unwrap(), "test", &got), None);
+        // negative control: a wrong size in the table makes the check fail
+        std::fs::write(&tsv, format!("{head}UD_Xx-ZZ\txx\tzz\t\t\t1 2 4 1 1\t1 2 4 1 1\n")).unwrap();
+        assert!(size_mismatch(&card_volume(&card).unwrap(), "test", &got).is_some_and(|m| m.contains("[1, 2, 4, 1, 1]")));
+        // a split absent from the table fails too, and a broken size value is an error, not a pass
+        assert!(size_mismatch(&card_volume(&card).unwrap(), "train", &got).is_some());
+        std::fs::write(&tsv, format!("{head}UD_Xx-ZZ\txx\tzz\t\t\t1 2 x 1 1\t1 2 3 1 1\n")).unwrap();
+        assert!(card_volume(&card).is_err());
+        let _ = std::fs::remove_dir_all(&dir);
     }
 }

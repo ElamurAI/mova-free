@@ -1,0 +1,98 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Source syntax only; no macro expansion/type resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "wasi-context",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "wasi-context",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "descriptor_reuse",
+        "path": "model.md",
+        "scope": "wasi-context",
+        "section": "descriptor_reuse",
+        "status": "partial_source_derived_model",
+        "type": "descriptor_reuse"
+      },
+      {
+        "id": "seed_transition",
+        "path": "model.md",
+        "scope": "wasi-context",
+        "section": "seed_transition",
+        "status": "partial_source_derived_model",
+        "type": "seed_transition"
+      },
+      {
+        "id": "capture_routing",
+        "path": "model.md",
+        "scope": "wasi-context",
+        "section": "capture_routing",
+        "status": "partial_source_derived_model",
+        "type": "capture_routing"
+      },
+      {
+        "id": "path_precedence",
+        "path": "model.md",
+        "scope": "wasi-context",
+        "section": "path_precedence",
+        "status": "partial_source_derived_model",
+        "type": "path_precedence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 9569,
+      "start": 4771
+    },
+    "description": "Ctx starts stdio0..2 and preopen root3, empty env/input/output, fixed seed, 1000ns step and1024 fd cap. alloc_fd fills the first hole at index>=3 before checking vector length. at validates string then directory, rejects empty/absolute, otherwise joins base and relative path.",
+    "source_bytes_sha256": "da063af404bb8095f7c78f8c8e8b1c6987fdb3bc78540a929a3287e46a2c4efe"
+  },
+  "id": "wasi-context",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../lib.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "91213ce9038107912c2dd707c3a6639a2d723cdfceb02981a166a6853800248e"
+  },
+  "status": "partial_source_bound_model"
+}

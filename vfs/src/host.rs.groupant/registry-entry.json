@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "dirfs_confines_to_root",
+    "gates_green_and_negative_controls_red"
+  ],
+  "children": [],
+  "cost": "O(path bytes+ancestor canonicalization syscalls) resolution; OS byte I/O costs; read_dir sort O(k log k), memory O(names+data). No measured speed claim.",
+  "description": "Confined DirFs and explicit unrestricted RealFs adapters.",
+  "forward": [
+    "DirFs.new canonicalizes existing directory. real_path normalizes virtual components, joins root, checks canonical deepest existing ancestor; final symlinks require canonical target inside root. with runs OS operation after check then logs result; RealFs.with directly applies OS operation."
+  ],
+  "id": "vfs-host",
+  "inverse": [
+    "Canonical target admits symlink/path aliases and unknown prior host contents. Error/zero-byte journal does not recover actual payload. Metadata projection loses native ctime,nlink and directory-entry inode."
+  ],
+  "limitations": [
+    "Finite checks only; partial source syntax, no expanded semantic AST.",
+    "No numerical surrogate: categorical/effect semantics lack useful metric; future caps 1/2/5/10 require domain and reference."
+  ],
+  "source": "vfs/src/host.rs",
+  "state": "Under stable filesystem and safe temp prefix, DirFs regular access remains rooted; TOCTOU invalidates concurrent adversarial confinement. Metadata reports ctime=mtime,nlink1; host logs bytes0. remove_dir_all rejects exact root."
+}

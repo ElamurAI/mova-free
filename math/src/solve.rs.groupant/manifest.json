@@ -1,0 +1,93 @@
+{
+  "children": [
+    {
+      "id": "math-solver-orchestration-batching",
+      "path": "batching.groupant"
+    },
+    {
+      "id": "math-solver-orchestration-memory-fallback",
+      "path": "memory-fallback.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical projection, no semantic resolution or expansion",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_boundary",
+        "path": "model.md",
+        "section": "resource_boundary",
+        "status": "partial_source_derived_model",
+        "type": "resource_boundary"
+      },
+      {
+        "id": "domain_boundary",
+        "path": "model.md",
+        "section": "domain_boundary",
+        "status": "partial_source_derived_model",
+        "type": "domain_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "partial_bounded_evidence"
+    }
+  },
+  "id": "math-solver-orchestration",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../solve.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "e6b60f9cdd4e36eb00d0528079c7a2cfabff94a8bd4f7d3ff0d5f79a41009a9d"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,211 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "source syntax; no expansion or semantic resolution",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "description": "model.md#approximant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "explicit relation and observation in linked section",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "explicit relation and observation in linked section",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "minimum_tail_invariant",
+        "path": "model.md",
+        "scope": "explicit relation and observation in linked section",
+        "section": "minimum_tail_invariant",
+        "status": "partial_source_derived_model",
+        "type": "minimum_tail_invariant"
+      },
+      {
+        "id": "equal_tail_policy",
+        "path": "model.md",
+        "scope": "explicit relation and observation in linked section",
+        "section": "equal_tail_policy",
+        "status": "partial_source_derived_model",
+        "type": "equal_tail_policy"
+      },
+      {
+        "id": "resource_bound",
+        "path": "model.md",
+        "scope": "explicit relation and observation in linked section",
+        "section": "resource_bound",
+        "status": "partial_source_derived_model",
+        "type": "resource_bound"
+      }
+    ],
+    "rust_approximants": [
+      {
+        "assumptions": [
+          "Greedy is feasible and OPT <= n.",
+          "Exact integer certificate or production reconstruction fallback.",
+          "Accepted witness identities and resource behavior may differ."
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 1,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "interval_certificate",
+          "metric_kind": "objective_loss"
+        },
+        "domain": "Finite slices with lawful stable total Ord and successful allocation/comparisons.",
+        "error_percent": 1,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md#tests",
+            "sha256": "317f0407670f8373faa42e7f03ad95cca2796b070db5cbcf564fddf6cc686e5b"
+          }
+        ],
+        "id": "lis-1pct",
+        "metric": "Relative length loss (OPT-L)/OPT; zero for empty input; witness feasibility exact.",
+        "path": "rust_approximant.rs",
+        "sha256": "6bdc82bffc2c2f50fe7faaf016253b1a91d896da3046c90c3c903348ca3acc2b",
+        "source": {
+          "path": "../mod.rs",
+          "raw_code_location": "outside_this_sidecar",
+          "sha256": "96b5ef4c18ad43a9405671f301ff08b9af1d98425e66fa8cffa3e90deff83f70"
+        },
+        "status": "analytical_certificate_with_finite_differential_checks"
+      },
+      {
+        "assumptions": [
+          "Greedy is feasible and OPT <= n.",
+          "Exact integer certificate or production reconstruction fallback.",
+          "Accepted witness identities and resource behavior may differ."
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 2,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "interval_certificate",
+          "metric_kind": "objective_loss"
+        },
+        "domain": "Finite slices with lawful stable total Ord and successful allocation/comparisons.",
+        "error_percent": 2,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md#tests",
+            "sha256": "317f0407670f8373faa42e7f03ad95cca2796b070db5cbcf564fddf6cc686e5b"
+          }
+        ],
+        "id": "lis-2pct",
+        "metric": "Relative length loss (OPT-L)/OPT; zero for empty input; witness feasibility exact.",
+        "path": "rust_approximant.rs",
+        "sha256": "6bdc82bffc2c2f50fe7faaf016253b1a91d896da3046c90c3c903348ca3acc2b",
+        "source": {
+          "path": "../mod.rs",
+          "raw_code_location": "outside_this_sidecar",
+          "sha256": "96b5ef4c18ad43a9405671f301ff08b9af1d98425e66fa8cffa3e90deff83f70"
+        },
+        "status": "analytical_certificate_with_finite_differential_checks"
+      },
+      {
+        "assumptions": [
+          "Greedy is feasible and OPT <= n.",
+          "Exact integer certificate or production reconstruction fallback.",
+          "Accepted witness identities and resource behavior may differ."
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 5,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "interval_certificate",
+          "metric_kind": "objective_loss"
+        },
+        "domain": "Finite slices with lawful stable total Ord and successful allocation/comparisons.",
+        "error_percent": 5,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md#tests",
+            "sha256": "317f0407670f8373faa42e7f03ad95cca2796b070db5cbcf564fddf6cc686e5b"
+          }
+        ],
+        "id": "lis-5pct",
+        "metric": "Relative length loss (OPT-L)/OPT; zero for empty input; witness feasibility exact.",
+        "path": "rust_approximant.rs",
+        "sha256": "6bdc82bffc2c2f50fe7faaf016253b1a91d896da3046c90c3c903348ca3acc2b",
+        "source": {
+          "path": "../mod.rs",
+          "raw_code_location": "outside_this_sidecar",
+          "sha256": "96b5ef4c18ad43a9405671f301ff08b9af1d98425e66fa8cffa3e90deff83f70"
+        },
+        "status": "analytical_certificate_with_finite_differential_checks"
+      },
+      {
+        "assumptions": [
+          "Greedy is feasible and OPT <= n.",
+          "Exact integer certificate or production reconstruction fallback.",
+          "Accepted witness identities and resource behavior may differ."
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 10,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "interval_certificate",
+          "metric_kind": "objective_loss"
+        },
+        "domain": "Finite slices with lawful stable total Ord and successful allocation/comparisons.",
+        "error_percent": 10,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md#tests",
+            "sha256": "317f0407670f8373faa42e7f03ad95cca2796b070db5cbcf564fddf6cc686e5b"
+          }
+        ],
+        "id": "lis-10pct",
+        "metric": "Relative length loss (OPT-L)/OPT; zero for empty input; witness feasibility exact.",
+        "path": "rust_approximant.rs",
+        "sha256": "6bdc82bffc2c2f50fe7faaf016253b1a91d896da3046c90c3c903348ca3acc2b",
+        "source": {
+          "path": "../mod.rs",
+          "raw_code_location": "outside_this_sidecar",
+          "sha256": "96b5ef4c18ad43a9405671f301ff08b9af1d98425e66fa8cffa3e90deff83f70"
+        },
+        "status": "analytical_certificate_with_finite_differential_checks"
+      }
+    ],
+    "tests": {
+      "path": "model.md#checks",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "id": "algorithm-longest-increasing-subsequence",
+  "kind": "groupant",
+  "registry": {
+    "node": "algorithm-longest-increasing-subsequence",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "96b5ef4c18ad43a9405671f301ff08b9af1d98425e66fa8cffa3e90deff83f70"
+  },
+  "status": "partial_descriptive_instance"
+}

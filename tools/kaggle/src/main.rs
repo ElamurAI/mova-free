@@ -290,3 +290,48 @@ fn main() -> Result<()> {
         _ => bail!("usage: kaggle titanic <data dir> [--out submission.csv]"),
     }
 }
+#[cfg(test)]
+mod wave33 {
+    use super::*;
+    fn person(id: u32, female: bool, survived: Option<bool>) -> P {
+        P {
+            id,
+            female,
+            survived,
+            class: 1,
+            name: format!("Family{id}, Mr. X"),
+            age: None,
+            sibsp: 0,
+            parch: 0,
+            ticket: format!("T{id}"),
+            fare: None,
+            cabin: String::new(),
+            port: String::new(),
+        }
+    }
+    #[test]
+    fn features_groups_and_empty_learning() {
+        assert_eq!(split_csv("1,\"a,\"\"b\"\"\","), vec!["1", "a,\"b\"", ""]);
+        let mut a = person(1, true, None);
+        a.age = Some(13.0);
+        a.fare = Some(8.0);
+        let f = feats(&a);
+        assert!(f.contains(&("age", "teen".into())));
+        assert!(f.contains(&("fare", "mid".into())));
+        assert!(covers(&vec![], &f));
+        let mut b = person(2, true, Some(false));
+        b.ticket = a.ticket.clone();
+        let mut c = person(3, true, Some(true));
+        c.name = b.name.clone();
+        let all = vec![&a, &b, &c];
+        let g = groups(&all);
+        assert_eq!(g[&1], vec![2]);
+        assert!(!g[&1].contains(&3));
+        assert!(!predict_wcg(&[b.clone(), c.clone()], &all, &a).0);
+        assert!(predict_wcg(&[], &all, &a).0);
+        let list = learn(&[], 1);
+        assert!(list.rules.is_empty());
+        assert!(!list.default);
+        assert!(cv(&[], 10, |_, _| false).is_nan());
+    }
+}

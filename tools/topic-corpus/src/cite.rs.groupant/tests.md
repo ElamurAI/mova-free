@@ -1,0 +1,9 @@
+# Checks
+
+cite::tests (numbering and bibliography; a web-based sentence cited internally and refused publicly; a closed neighbour paper refused publicly). Negative control: ignoring refusals turns the test red. Live 2026-11-04: owl-1 round 28 of bryant-2017, 247 sentences, 2 sources.
+
+cargo test --manifest-path tools/topic-corpus/Cargo.toml --offline with WORLD_EN_MODEL=$MOVA_DATA/download/0/0.4/en.bin (18 unit tests; fixture library, fake `papers` binary, fake terminal, local Sea Spider store; two identical runs on 2026-11-04). Without the model the model-dependent tests report a skip.
+
+Negative controls 2026-11-04 (each red, then restored): public admission without the origin condition; assert_public without the Sea Spider/draft/note refusals; seeding without the learner lock; shadow-library filter off; public citing that ignores refusals; cache eviction ignoring the hot pin.
+
+These are finite fixtures and live samples; not a proof.

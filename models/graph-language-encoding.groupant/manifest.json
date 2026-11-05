@@ -1,0 +1,187 @@
+{
+  "children": [
+    "global-build",
+    "kg-cols",
+    "kg-gram",
+    "kg-id",
+    "kg-main",
+    "kg-morph",
+    "kg-textgen",
+    "kg-uk"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "No live datasets/DB/teacher/GPU/held-out execution. Tatoeba ingestion/show/stats and nonempty optional build tables remain unexecuted. Hash-map frequency tie order in stats is not deterministic; float/u32 frequency overflow and nontransactional persistence have no new guarantee. Exact categorical semantics have no useful executable percentage approximant established.",
+        "domain": "Finite UTF-8 synthetic text, unchanged tiny bz2 dictionary between passes, valid parser-derived Gram,1..8 word parse gate,1..12 explicit generation heads, aligned edge vectors below2^32, sorted src for out, valid unique registry files under single writer. Build fixtures use isolated temporary seed/out directories with absent optional closed tables. Resource exhaustion outside tested domain.",
+        "id": "behavior-complement",
+        "observation_scope": "Actual module declarations in kg/src/main.rs connect cols/gram/id/morph/uk/textgen; Morph and uk share Gram; textgen consumes uk::Fact and Morph synthesis; main writes Registry IDs and Edges using relation.local and full vertex Id. Registry keys are append IDs, not lexical concept indexes. global/Cargo.toml has no runtime dependencies and kg/Cargo.toml has no global dependency. Compile seed path is a separate tagged branch, not a claimed graph pipeline. Tests exercise actual Morph→parse→TSV and Fact→generate joins on invented inputs.",
+        "operator": "KG rejected parser gates emit no Fact; successful render excludes mismatched normalized multiset only. Mask filtering excludes any missing-bit row; codecs exclude value loss on encoder-domain streams. Checked registry exhaustion excludes ID wrap/heap insertion. GlobalBuild success excludes duplicate canonical concept/link codes but does not exclude ignored blocks or partial write effects on failure. These exclusions are tag-specific and cannot transfer to absent KG↔GlobalBuild adapter.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "No live datasets/DB/teacher/GPU/held-out execution. Tatoeba ingestion/show/stats and nonempty optional build tables remain unexecuted. Hash-map frequency tie order in stats is not deterministic; float/u32 frequency overflow and nontransactional persistence have no new guarantee. Exact categorical semantics have no useful executable percentage approximant established.",
+        "domain": "Finite UTF-8 synthetic text, unchanged tiny bz2 dictionary between passes, valid parser-derived Gram,1..8 word parse gate,1..12 explicit generation heads, aligned edge vectors below2^32, sorted src for out, valid unique registry files under single writer. Build fixtures use isolated temporary seed/out directories with absent optional closed tables. Resource exhaustion outside tested domain.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Actual module declarations in kg/src/main.rs connect cols/gram/id/morph/uk/textgen; Morph and uk share Gram; textgen consumes uk::Fact and Morph synthesis; main writes Registry IDs and Edges using relation.local and full vertex Id. Registry keys are append IDs, not lexical concept indexes. global/Cargo.toml has no runtime dependencies and kg/Cargo.toml has no global dependency. Compile seed path is a separate tagged branch, not a claimed graph pipeline. Tests exercise actual Morph→parse→TSV and Fact→generate joins on invented inputs.",
+        "operator": "KG output edges+Registry admit antecedent Facts with same member lemma/relation/gram but different lost word coordinates/order; filters admit arbitrary rejected rows; sorted graphs admit input permutations. Realization sentence admits multiple Fact/dictionary/count antecedents. GlobalBuild table preimage admits whitespace/comments/ignored or excluded input and absent/unreadable optional files. No unique source-text or registry reconstruction from lexical global index is implied.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "No live datasets/DB/teacher/GPU/held-out execution. Tatoeba ingestion/show/stats and nonempty optional build tables remain unexecuted. Hash-map frequency tie order in stats is not deterministic; float/u32 frequency overflow and nontransactional persistence have no new guarantee. Exact categorical semantics have no useful executable percentage approximant established.",
+        "domain": "Finite UTF-8 synthetic text, unchanged tiny bz2 dictionary between passes, valid parser-derived Gram,1..8 word parse gate,1..12 explicit generation heads, aligned edge vectors below2^32, sorted src for out, valid unique registry files under single writer. Build fixtures use isolated temporary seed/out directories with absent optional closed tables. Resource exhaustion outside tested domain.",
+        "id": "grammar-transport",
+        "observation_scope": "Actual module declarations in kg/src/main.rs connect cols/gram/id/morph/uk/textgen; Morph and uk share Gram; textgen consumes uk::Fact and Morph synthesis; main writes Registry IDs and Edges using relation.local and full vertex Id. Registry keys are append IDs, not lexical concept indexes. global/Cargo.toml has no runtime dependencies and kg/Cargo.toml has no global dependency. Compile seed path is a separate tagged branch, not a claimed graph pipeline. Tests exercise actual Morph→parse→TSV and Fact→generate joins on invented inputs.",
+        "operator": "Morph Gram::from_vesum keys meet uk analysis grammar and textgen synth grammar after NEG/IMPLICIT masking. Implicit subject copies predicate person/number/gender; main stores fact gram in every gs and member gram in gd. This preserves packed bits, not original VESUM tags, discarded xp tags in Gram, or semantic correctness.",
+        "path": "model.md",
+        "required": false,
+        "section": "grammar-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No live datasets/DB/teacher/GPU/held-out execution. Tatoeba ingestion/show/stats and nonempty optional build tables remain unexecuted. Hash-map frequency tie order in stats is not deterministic; float/u32 frequency overflow and nontransactional persistence have no new guarantee. Exact categorical semantics have no useful executable percentage approximant established.",
+        "domain": "Finite UTF-8 synthetic text, unchanged tiny bz2 dictionary between passes, valid parser-derived Gram,1..8 word parse gate,1..12 explicit generation heads, aligned edge vectors below2^32, sorted src for out, valid unique registry files under single writer. Build fixtures use isolated temporary seed/out directories with absent optional closed tables. Resource exhaustion outside tested domain.",
+        "id": "identity-boundary",
+        "observation_scope": "Actual module declarations in kg/src/main.rs connect cols/gram/id/morph/uk/textgen; Morph and uk share Gram; textgen consumes uk::Fact and Morph synthesis; main writes Registry IDs and Edges using relation.local and full vertex Id. Registry keys are append IDs, not lexical concept indexes. global/Cargo.toml has no runtime dependencies and kg/Cargo.toml has no global dependency. Compile seed path is a separate tagged branch, not a claimed graph pipeline. Tests exercise actual Morph→parse→TSV and Fact→generate joins on invented inputs.",
+        "operator": "Registry::Id=(heap<<32)|local is split exactly; relation edges use local only and require separate rel heap context. Global concept IDs are lexical vector positions with no heap/local encoding. Equating these numbers would fail even for a one-concept compiler and first global heap2^27.",
+        "path": "model.md",
+        "required": false,
+        "section": "identity-boundary",
+        "status": "partial_source_derived_model",
+        "type": "identity_transport"
+      },
+      {
+        "assumptions": "No live datasets/DB/teacher/GPU/held-out execution. Tatoeba ingestion/show/stats and nonempty optional build tables remain unexecuted. Hash-map frequency tie order in stats is not deterministic; float/u32 frequency overflow and nontransactional persistence have no new guarantee. Exact categorical semantics have no useful executable percentage approximant established.",
+        "domain": "Finite UTF-8 synthetic text, unchanged tiny bz2 dictionary between passes, valid parser-derived Gram,1..8 word parse gate,1..12 explicit generation heads, aligned edge vectors below2^32, sorted src for out, valid unique registry files under single writer. Build fixtures use isolated temporary seed/out directories with absent optional closed tables. Resource exhaustion outside tested domain.",
+        "id": "completeness-vs-realization",
+        "observation_scope": "Actual module declarations in kg/src/main.rs connect cols/gram/id/morph/uk/textgen; Morph and uk share Gram; textgen consumes uk::Fact and Morph synthesis; main writes Registry IDs and Edges using relation.local and full vertex Id. Registry keys are append IDs, not lexical concept indexes. global/Cargo.toml has no runtime dependencies and kg/Cargo.toml has no global dependency. Compile seed path is a separate tagged branch, not a claimed graph pipeline. Tests exercise actual Morph→parse→TSV and Fact→generate joins on invented inputs.",
+        "operator": "render_check sorts normalized words; generate chooses conditional/global-frequency variants and DP order. Therefore render_check(text,Fact)=Ok does not imply generate(Fact)=text, nor does generation establish role correctness. Synthetic tests separately witness each actual function.",
+        "path": "model.md",
+        "required": false,
+        "section": "completeness-vs-realization",
+        "status": "partial_source_derived_model",
+        "type": "observation_projection"
+      },
+      {
+        "assumptions": "No live datasets/DB/teacher/GPU/held-out execution. Tatoeba ingestion/show/stats and nonempty optional build tables remain unexecuted. Hash-map frequency tie order in stats is not deterministic; float/u32 frequency overflow and nontransactional persistence have no new guarantee. Exact categorical semantics have no useful executable percentage approximant established.",
+        "domain": "Finite UTF-8 synthetic text, unchanged tiny bz2 dictionary between passes, valid parser-derived Gram,1..8 word parse gate,1..12 explicit generation heads, aligned edge vectors below2^32, sorted src for out, valid unique registry files under single writer. Build fixtures use isolated temporary seed/out directories with absent optional closed tables. Resource exhaustion outside tested domain.",
+        "id": "effect-frontiers",
+        "observation_scope": "Actual module declarations in kg/src/main.rs connect cols/gram/id/morph/uk/textgen; Morph and uk share Gram; textgen consumes uk::Fact and Morph synthesis; main writes Registry IDs and Edges using relation.local and full vertex Id. Registry keys are append IDs, not lexical concept indexes. global/Cargo.toml has no runtime dependencies and kg/Cargo.toml has no global dependency. Compile seed path is a separate tagged branch, not a claimed graph pipeline. Tests exercise actual Morph→parse→TSV and Fact→generate joins on invented inputs.",
+        "operator": "sub bad mask precedes reads; parse_lines loads input/names/Morph before output creation; ingestion creates names before Registry open and writes columns before registry save. Build expressions writes before global.rs. Success/failure does not compose into a transaction across these files.",
+        "path": "model.md",
+        "required": false,
+        "section": "effect-frontiers",
+        "status": "partial_source_derived_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "Source-bound valid files and stable inputs, one worker/writer, successful stated effects; imported-data and strict-consumer premises in the referenced model.",
+        "domain": "UTF-8 heap labels with no LF/terminal CR and keys with no TAB/LF/CR, unique well-formed registry rows, representable indices.",
+        "evidence": "model.md",
+        "id": "admitted-identity-composition",
+        "observation_scope": "Only the explicitly described child transition and its downstream representation, not every branch of the parent.",
+        "operator": "On admitted successful heap -> id -> save -> open lookups, I=(h<<32)|l and decoded label/key identities remain fixed; failures do not compose into multi-file rollback.",
+        "path": "model.md",
+        "required": false,
+        "section": "admitted_identity_composition",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2d9a9d00550ecd11000c8885ddb3418afd6835bd06c1a52f057a191145d4db52",
+        "type": "persistence_composition"
+      },
+      {
+        "assumptions": "Source-bound valid files and stable inputs, one worker/writer, successful stated effects; imported-data and strict-consumer premises in the referenced model.",
+        "domain": "Observed full identifier and valid decoded metadata; legacy ambiguity is a separate explicitly bounded extension.",
+        "evidence": "model.md",
+        "id": "identifier-history-preimages",
+        "observation_scope": "Only the explicitly described child transition and its downstream representation, not every branch of the parent.",
+        "operator": "Heap/local splitting fixes numeric coordinates, not allocation/lookup history or original language content; legacy CRLF decodes retain compatible writer histories.",
+        "path": "model.md",
+        "required": false,
+        "section": "identifier_history_preimages",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2d9a9d00550ecd11000c8885ddb3418afd6835bd06c1a52f057a191145d4db52",
+        "type": "identity_preimage_product"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "graph-language-encoding",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "global/build.rs",
+      "sha256": "1b6ce3b580039cf908cfc1f1bfc281a728a2c7b3c5c7d26fb4da3ca2d614fd37"
+    },
+    {
+      "path": "kg/src/cols.rs",
+      "sha256": "70bf9a9666a1726974e3f926c4bed6c5df615d3b2dbf3e66b956a929c2a90778"
+    },
+    {
+      "path": "kg/src/gram.rs",
+      "sha256": "a344ab06f5816ca7a55e7108921f693608315fa0f8156033fceed706dbf1ccc3"
+    },
+    {
+      "path": "kg/src/id.rs",
+      "sha256": "2d9a9d00550ecd11000c8885ddb3418afd6835bd06c1a52f057a191145d4db52"
+    },
+    {
+      "path": "kg/src/main.rs",
+      "sha256": "2b0c3334d8294c57354f5b7815bbddc7093c462d66e41dbc600045ed82e5f0fe"
+    },
+    {
+      "path": "kg/src/morph.rs",
+      "sha256": "cfa483216783580f0ccf414ffdf5750a80fb0cdb9f9736f894a5a571a6373514"
+    },
+    {
+      "path": "kg/src/textgen.rs",
+      "sha256": "c3e9c00982be1bbd5ad27429054234388c6ebca5f155e85bbdc2a2cdc0be0469"
+    },
+    {
+      "path": "kg/src/uk.rs",
+      "sha256": "f2c9f7b2877f239aa2971b1b96cf8dc94d6d30e8304201c9bf37630a6ae877f9"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

@@ -1,0 +1,30 @@
+[package]
+name = "mova-seaspider"
+version = "0.1.0"
+edition = "2021"
+description = "Sea Spider: a polite link downloader with robots.txt, a per-IP limit and compressed raw page storage"
+license = "LicenseRef-Elamur-Cosmic"
+
+[workspace]
+
+[lib]
+name = "seaspider"
+path = "src/lib.rs"
+
+[[bin]]
+name = "seaspider"
+path = "src/main.rs"
+
+[dependencies]
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "gzip", "brotli", "deflate"] }
+tokio = { version = "1", features = ["rt", "macros", "time", "net"] }
+regex = "1"
+zstd = "0.13"
+sha2 = "0.10"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+anyhow = "1"
+mova-octopus = { path = "../octopus" }
+
+[dev-dependencies]
+flate2 = "1"

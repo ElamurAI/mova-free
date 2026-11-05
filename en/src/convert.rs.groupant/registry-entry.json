@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "Repeated focused debug/release differential tests; compiled semantic mutants; paired syntax; serial benchmarks separately authorized."
+  ],
+  "children": [],
+  "cost": "For n<=64 old ordered walks; n>64 O(n) coloring, <=2n head transitions, two total successful-call allocations (heads and n+1 byte colors). Other module operations separate.",
+  "description": "Dialect conversion rule parsing, selected edits, differences and structural tree validation.",
+  "forward": [
+    "# Current wave25 model — 2026-10-30\n\nThis section supersedes implementation/cost claims in retained earlier epochs below. The current gate preserves ordered row parsing, range/root-label checks, nonempty root count, then least nonterminating start. For n<=64, ordered head walks remain. For n>64, color[0]=2; color 0 is unvisited, 1 is the current head path, 2 is certified terminating. An unseen path reaches 2 or revisits 1; only the latter errors. A successful path is recolored 2 by following its preserved heads. Earlier completed paths contain no color 1, so cycles are reported for the least original start, including tails. Reverse adjacency remains a mathematical equivalence, not a runtime dependency.\n\nEach vertex is followed at most once while coloring 1 and once during cleanup. Cycle phase O(n), at most 2n head transitions and O(n) scratch. Parsing retains its O(n) heads Vec; valid large calls allocate exactly heads plus n+1 colors, with no row/queue allocation. Tiny calls allocate only heads (empty input none). Diagnostic String construction adds allocation on errors. A successful Vec<usize> allocation bounds n by isize::MAX/size_of::<usize>(), so n+1 and bounded tiny step increments cannot overflow; no saturating sentinel arithmetic. Allocation failure behavior remains allocator-defined and outside the normal-return relation.\n\nBehavior complement excludes false success for a cycle, erroneous Cycle(k) on a previously completed suffix, and selecting a cycle member instead of its earlier tail. Reverse reconstruction retains all head functions with the returned first failure and arbitrary lexical fields; star and chain successes are distinct compatible preimages. Existing four typed implementation specializations below remain mathematical relations; resource-refinement now uses coloring rather than runtime BFS. Tests retain legacy and exact transfer-parent references, all 126,126 head maps through n=6, boundary 63/64/65/66/128/1024 shapes and completed-suffix/later-parse-error witnesses. No semantic bug was found and no old-code-failing correctness claim is made. Ignored benchmark pairs compare both references with uninstrumented production. Categorical exact semantics have no useful approximate percentage profile; no executable surrogate is claimed.\n"
+  ],
+  "id": "en-convert",
+  "inverse": [
+    "A cycle witness cannot mask an earlier head parse/range/root-label failure; empty success and self-head Cycle are separate from annotation policy.",
+    "A gate Result admits many token rows/rule histories; earliest unreachable word constrains head reachability without uniquely identifying the cycle or prior conversion."
+  ],
+  "limitations": [
+    "partial legacy semantic coverage",
+    "no macro expansion or semantic AST",
+    "finite evidence, not universal verification"
+  ],
+  "source": "en/src/convert.rs",
+  "state": "finite typed inputs; successful allocation; ordered source predicates; normal outputs"
+}

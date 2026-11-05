@@ -1,0 +1,22 @@
+{
+  "id": "algorithm-kruskal",
+  "source": "algorithms/src/kruskal/mod.rs",
+  "description": "Original kruskal implementation with explicit domain and deterministic output.",
+  "state": "vertex count V and finite ordered undirected multigraph Edge records with usize endpoints and u64 weights, on <=64-bit usize targets",
+  "forward": [
+    "Validate every endpoint in input order, u before v. First failure returns InvalidEndpoint(edge,vertex,V). Ignore valid loops; sort original indices by (weight,min(u,v),max(u,v),index). Accept precisely edges connecting different current DSU blocks. Return accepted input indices in this order, their checked u128 weight sum, and component count including isolates. The result is a minimum-weight spanning forest of each original connected component."
+  ],
+  "inverse": [
+    "In the explicit one-call universe U of vertex count V and finite ordered undirected multigraph Edge records with usize endpoints and u64 weights, on <=64-bit usize targets crossed with declared returned values, C=U minus R for the forward relation R. C includes incorrect partitions/forests/distances, wrong error details or wrong first-failure precedence. This is the exact specification complement and a partial source-derived approximant of Rust behavior. Allocation failures, panics, timing and traces are outside U.",
+    "For each returned y, Pre(y)={x in domain | R(x,y)} retains ALL compatible inputs. For success, preserve every graph satisfying the forward equations and observable canonical ordering; for errors, preserve every graph matching that exact first-failure condition. Parallel alternatives, internal representations and unobserved edge choices are retained whenever compatible. No unique input recovery or executable inverse is claimed."
+  ],
+  "cost": "O(V+E log(E+1)+E alpha(V)) time and O(V+E) auxiliary space; reuses crate::disjoint_set::DisjointSet with union-by-size and path compression.",
+  "checks": [
+    "cargo test -p mova-algorithms kruskal::tests",
+    "four targeted tests twice; strict Clippy; compiled filtered mutation"
+  ],
+  "limitations": [
+    "Bounded correspondence is not unrestricted proof.",
+    "Partial syntax excludes macro expansion and semantic resolution."
+  ]
+}

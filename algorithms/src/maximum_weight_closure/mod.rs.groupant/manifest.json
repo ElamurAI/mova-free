@@ -1,0 +1,141 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=512 i64 weights, <=131072 zero-based implications; positive sum plus one fits u64; sorted selected coordinates and i128 weight.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Exclude nonclosed selected sets, unsorted coordinates, wrong weight or suboptimal closure and wrapping capacity totals.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "e47e7f2eb3fde24827d8f0509f34021114ea9116d98fe19749a503ebc25ff1bd",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=512 i64 weights, <=131072 zero-based implications; positive sum plus one fits u64; sorted selected coordinates and i128 weight.",
+        "evidence": "model.md#evidence",
+        "id": "preimages",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Compatible instances make the selected set closed and globally optimal with the reported sum; exact preimages also require residual tie choice. Many weight distributions share a sum and zero-weight disconnected vertices may be absent.",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "e47e7f2eb3fde24827d8f0509f34021114ea9116d98fe19749a503ebc25ff1bd",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=512 i64 weights, <=131072 zero-based implications; positive sum plus one fits u64; sorted selected coordinates and i128 weight.",
+        "evidence": "model.md#evidence",
+        "id": "transition",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Cut capacity equals P minus selected weight for every implication-respecting source side.",
+        "path": "model.md",
+        "section": "transition",
+        "status": "partial_source_derived",
+        "subject_revision": "e47e7f2eb3fde24827d8f0509f34021114ea9116d98fe19749a503ebc25ff1bd",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=512 i64 weights, <=131072 zero-based implications; positive sum plus one fits u64; sorted selected coordinates and i128 weight.",
+        "evidence": "model.md#evidence",
+        "id": "order",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Implication cycles require all-or-none selection within each strongly connected component.",
+        "path": "model.md",
+        "section": "order",
+        "status": "partial_source_derived",
+        "subject_revision": "e47e7f2eb3fde24827d8f0509f34021114ea9116d98fe19749a503ebc25ff1bd",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=512 i64 weights, <=131072 zero-based implications; positive sum plus one fits u64; sorted selected coordinates and i128 weight.",
+        "evidence": "model.md#evidence",
+        "id": "coordinate",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Increasing one vertex weight cannot lower optimum, though selected witness can change.",
+        "path": "model.md",
+        "section": "coordinate",
+        "status": "partial_source_derived",
+        "subject_revision": "e47e7f2eb3fde24827d8f0509f34021114ea9116d98fe19749a503ebc25ff1bd",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=512 i64 weights, <=131072 zero-based implications; positive sum plus one fits u64; sorted selected coordinates and i128 weight.",
+        "evidence": "model.md#evidence",
+        "id": "fiber",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Duplicate implications and self implications preserve objective; no universal witness uniqueness is claimed.",
+        "path": "model.md",
+        "section": "fiber",
+        "status": "partial_source_derived",
+        "subject_revision": "e47e7f2eb3fde24827d8f0509f34021114ea9116d98fe19749a503ebc25ff1bd",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=512 i64 weights, <=131072 zero-based implications; positive sum plus one fits u64; sorted selected coordinates and i128 weight.",
+        "evidence": "model.md#evidence",
+        "id": "errors",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Public size caps precede input-order validation, then arithmetic/search. Exact cover budget exhaustion is not infeasibility; closure capacity overflow is not infeasibility. Bounded index arithmetic cannot overflow. Checked i128 arborescence arithmetic remains defensive. Allocation failure is process-level, not returned; no callbacks or external writes. Empty cases and deterministic ties follow API docs.",
+        "path": "model.md",
+        "section": "errors",
+        "status": "partial_source_derived",
+        "subject_revision": "e47e7f2eb3fde24827d8f0509f34021114ea9116d98fe19749a503ebc25ff1bd",
+        "type": "error_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-maximum-weight-closure",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "e47e7f2eb3fde24827d8f0509f34021114ea9116d98fe19749a503ebc25ff1bd"
+  },
+  "status": "partial_source_derived_instance"
+}

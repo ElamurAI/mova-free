@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms gauss_legendre::tests",
+    "Repeated debug/release profiles and compiled mutation receipts in model.md#tests"
+  ],
+  "children": [],
+  "cost": "Finite fixture loops plus repeated native runner; production cost: Exactly order callback evaluations on nondegenerate success, increasing tabulated nodes, O(order) arithmetic and constant stack. Caller callback cost/panics external, no allocations.",
+  "description": "Finite independent and adversarial tests for gauss_legendre. Production domain: Order1..5; finite -1e100<=a<=b<=1e100. Fixed rounded Legendre nodes and positive weights; value=(b-a)/2*sum w_i*f((a+b)/2+(b-a)/2*x_i). Order, nonfinite, domain, then callback validity precedence. Equal endpoints return0 without callback. FnMut assumed deterministic with finite |f|<=1e100; errors abort at first bad sample, panic propagates.",
+  "forward": [
+    "Finite independent and adversarial tests for gauss_legendre. Production domain: Order1..5; finite -1e100<=a<=b<=1e100. Fixed rounded Legendre nodes and positive weights; value=(b-a)/2*sum w_i*f((a+b)/2+(b-a)/2*x_i). Order, nonfinite, domain, then callback validity precedence. Equal endpoints return0 without callback. FnMut assumed deterministic with finite |f|<=1e100; errors abort at first bad sample, panic propagates."
+  ],
+  "id": "algorithm-gauss-legendre-tests",
+  "inverse": [
+    "The all-pass observation admits both production and implementations differing only at unsampled queries. This nonunique observation fiber is broader than production preimages: Every odd integrand on [-1,1] has real quadrature sum0 by symmetry. x and zero function are distinct compatible antecedents; finite samples do not reconstruct an integrand."
+  ],
+  "limitations": [
+    "Partial syntax is not semantic proof",
+    "Finite polynomial/shape checks do not establish universal f64 accuracy",
+    "No certified cheaper executable surrogate; numerical percentage profiles unsupported",
+    "No speed claim, callback panic recovery or allocator experiment"
+  ],
+  "source": "algorithms/src/gauss_legendre/tests.rs",
+  "state": "Validated bounded f64 inputs, stack recurrence, explicit validation errors and iterative statuses where applicable"
+}

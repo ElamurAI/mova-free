@@ -1,0 +1,119 @@
+{
+  "schema": 1,
+  "id": "world-md",
+  "kind": "groupant",
+  "status": "partial_source_bound_model",
+  "source": {
+    "path": "../md.rs",
+    "sha256": "24ac2701cc2d8fb92b95913978128d9be3180e25528cc8f486be19cfab0376b4"
+  },
+  "components": {
+    "ast": {
+      "path": "syntax.json",
+      "format": "rust_syntax_projection",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "id": "world-md-behavior-complement",
+        "type": "behavior_complement"
+      },
+      {
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "id": "world-md-reverse-reconstruction",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "path": "model.md",
+        "section": "cell-fiber",
+        "status": "partial_source_model",
+        "id": "world-md-cell-fiber",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "path": "model.md",
+        "section": "escape-boundary",
+        "status": "partial_source_model",
+        "id": "world-md-escape-boundary",
+        "type": "encoding_relation"
+      },
+      {
+        "path": "model.md",
+        "section": "snapshot-loss",
+        "status": "partial_source_model",
+        "id": "world-md-snapshot-loss",
+        "type": "information_loss"
+      },
+      {
+        "path": "model.md",
+        "section": "fallback-law",
+        "status": "partial_source_model",
+        "id": "world-md-fallback-law",
+        "type": "constraint_relation"
+      },
+      {
+        "path": "model.md",
+        "section": "story-root-coupling",
+        "status": "partial_source_model",
+        "id": "world-md-story-root-coupling",
+        "type": "composition_relation"
+      },
+      {
+        "path": "model.md",
+        "section": "diagnostic-projection",
+        "status": "partial_source_model",
+        "id": "world-md-diagnostic-projection",
+        "type": "encoding_relation"
+      }
+    ]
+  },
+  "children": [
+    {
+      "id": "world-md-cells",
+      "path": "cells.groupant"
+    },
+    {
+      "id": "world-md-world-report",
+      "path": "world-report.groupant"
+    },
+    {
+      "id": "world-md-story-report",
+      "path": "story-report.groupant"
+    }
+  ]
+}

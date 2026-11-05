@@ -1,0 +1,66 @@
+fn main() {
+    let mut assertions = 0usize;
+    macro_rules! check { ($a:expr,$b:expr) => {{ assert_eq!($a,$b); assertions += 1; }} }
+    check!(class(UPos::ADP,"OF"),"ADP:of");
+    check!(class(UPos::NOUN,"Cats"),"NOUN");
+    check!(class_with(UPos::NOUN,"Cats",Some("in")),"NOUN+in");
+    check!(class_with(UPos::ADP,"OF",Some("ignored")),"ADP:of");
+    check!(class(UPos::PRON,"I"),"PRON:i");
+    check!(class(UPos::VERB,"ran"),"VERB");
+    let s = S { form: vec![], lemma: vec![], upos: vec![UPos::NOUN,UPos::ADP,UPos::NOUN,UPos::VERB,UPos::NOUN], finite: vec![],head: vec![4,3,4,0,4],rel: vec![] };
+    check!(nth(&s,1,1,UPos::NOUN,1),Some(2));
+    check!(nth(&s,1,1,UPos::NOUN,2),Some(4));
+    check!(nth(&s,1,1,UPos::NOUN,3),None);
+    check!(nth(&s,3,-1,UPos::NOUN,1),Some(2));
+    check!(nth(&s,3,-1,UPos::NOUN,2),Some(0));
+    check!(nth(&s,0,-1,UPos::NOUN,1),None);
+    check!(nth(&s,4,1,UPos::NOUN,1),None);
+    check!(pending(&s,0,2,0,4),false);
+    check!(pending(&s,0,2,0,3),true); // strict interval endpoint
+    check!(pending(&s,0,0,0,4),false);
+    check!(nth_pending(&s,0,1,UPos::NOUN,1,4),None);
+    check!(nth_pending(&s,0,1,UPos::NOUN,1,2),Some(2));
+    check!(makes_cycle(&[2,3,0],2,0),true);
+    check!(makes_cycle(&[2,3,0],0,2),false);
+    check!(makes_cycle(&[0,1,2],1,2),true);
+    check!(makes_cycle(&[0,1,2],2,0),false);
+    check!(makes_cycle(&[2,1,0],2,0),true); // unrelated existing cycle exhausts guard
+    let c = vec![Cond::Class("NOUN".into()),Cond::HeadPos("VERB".into()),Cond::HeadSide(1),Cond::Prev("START".into()),Cond::Next("END".into()),Cond::Rel(Rel::Dep)];
+    let expected = [1,2,4,7,11,16];
+    for n in 1..=6 {
+        let sets = cond_sets(&c[..n]);
+        check!(sets.len(),expected[n-1]);
+        check!(sets.iter().all(|s| s[0]==c[0] && s.len()<=3),true);
+        // independent bit-mask family, compare without relying on production enumeration order
+        let expected_masks: Vec<u32> = (1..(1<<n)).filter(|m: &u32| m&1==1 && m.count_ones()<=3).collect();
+        let mut actual_masks:Vec<u32> = sets.iter().map(|s| s.iter().map(|x|1 << c.iter().position(|y|x==y).unwrap()).sum()).collect();
+        actual_masks.sort();
+        check!(actual_masks,expected_masks);
+    }
+    let classes = vec!["ADP:of".into(),"NOUN".into(),"ADP:x:y".into()];
+    let p = Packed { upos:vec![0,7,0],class:vec![0,1,2],finite:vec![false,true,false],head:vec![2,0,65535],rel:vec![2,1,0] };
+    let u = unpack(&p,&classes);
+    check!(u.form,vec!["","",""]);
+    check!(u.lemma,vec!["of","","x"]);
+    check!(u.upos,vec![UPos::ADP,UPos::NOUN,UPos::ADP]);
+    check!(u.finite,vec![false,true,false]);
+    check!(u.head,vec![2,0,65535]);
+    check!(u.rel,vec![Rel::Case,Rel::Root,Rel::Dep]);
+    let u2 = unpack(&p,&["ADP:of".into(),"VERB".into(),"ADP:x:z".into()]);
+    check!(u.lemma,u2.lemma); // multiple class dictionaries have the same lemma projection
+    check!(u.head,u2.head);
+    let u3 = unpack(&p,&["ADP:to".into(),"NOUN".into(),"ADP:x:y".into()]);
+    check!(u3.lemma,vec!["to","","x"]);
+    // Exhaustive bounded input/output relation for closed/open class projection.
+    let inputs = [(UPos::ADP,"OF"),(UPos::ADP,"of"),(UPos::ADP,"to"),(UPos::NOUN,"cat"),(UPos::NOUN,"dog")];
+    let outputs = ["ADP:of","ADP:to","NOUN","VERB"];
+    let fibers = [vec![0,1],vec![2],vec![3,4],vec![]];
+    for (oi,y) in outputs.iter().enumerate() {
+        for (i,(u,l)) in inputs.iter().enumerate() {
+            let actual = class(*u,l)==*y;
+            check!(actual,fibers[oi].contains(&i));
+            check!(!actual,!fibers[oi].contains(&i));
+        }
+    }
+    println!("derive pure source probe: {assertions} assertions passed");
+}

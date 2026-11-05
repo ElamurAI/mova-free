@@ -1,0 +1,38 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms alias_method::tests",
+    "cargo test -p mova-algorithms viterbi::tests",
+    "cargo test -p mova-algorithms forward_backward::tests",
+    "cargo test -p mova-algorithms sinkhorn_scaling::tests",
+    "cargo test -p mova-algorithms weighted_covariance::tests",
+    "15 local tests; 877 integrated checks twice debug/release; source-bound compiled controls; see model.md#wave26-evidence."
+  ],
+  "children": [
+    "algorithm-alias-method",
+    "algorithm-alias-method-tests",
+    "algorithm-viterbi",
+    "algorithm-viterbi-tests",
+    "algorithm-forward-backward",
+    "algorithm-forward-backward-tests",
+    "algorithm-sinkhorn-scaling",
+    "algorithm-sinkhorn-scaling-tests",
+    "algorithm-weighted-covariance",
+    "algorithm-weighted-covariance-tests"
+  ],
+  "cost": "Alias preparation is linear and lookup constant within leaf bounds. Viterbi/forward-backward cost sequence length times transition work; Sinkhorn cost iterations times matrix cells plus marginal checks; weighted covariance includes sample/feature accumulation. Costs of producing random draws or building upstream models are outside these kernels.",
+  "description": "Tagged weighted observations: alias-table sampling decisions, most-probable sequence decoding, forward/backward posterior mass, Sinkhorn matrix scaling and weighted covariance. Deterministic supplied uniforms and probability normalization are separate from external randomness. HMM w(s)=pi(s0) product_t emission_t(st) product_{t>0}transition(st-1,st); Z=sum_s w(s),V=max_s w(s),0<=V<=Z. Posterior path sums divide by Z when Z>0. Sinkhorn X=diag(u)Kdiag(v),X1=r,X^T1=c. Population covariance=sum_i w_i(x_i-mu)(x_i-mu)^T/sum_i w_i under leaf denominator rules.",
+  "forward": [
+    "Tagged weighted observations: alias-table sampling decisions, most-probable sequence decoding, forward/backward posterior mass, Sinkhorn matrix scaling and weighted covariance. Deterministic supplied uniforms and probability normalization are separate from external randomness. HMM w(s)=pi(s0) product_t emission_t(st) product_{t>0}transition(st-1,st); Z=sum_s w(s),V=max_s w(s),0<=V<=Z. Posterior path sums divide by Z when Z>0. Sinkhorn X=diag(u)Kdiag(v),X1=r,X^T1=c. Population covariance=sum_i w_i(x_i-mu)(x_i-mu)^T/sum_i w_i under leaf denominator rules.",
+    "Alias may sample a normalized posterior row only after row validity and index mapping are checked; a sampled marginal sequence is not a joint HMM sample. Viterbi and forward/backward can share initial/transition/emission data but compare max versus sum semantics, with consistent log/scaled conventions. Sinkhorn outputs can represent couplings only under its support/marginal convergence conditions. Weighted covariance consumes weights, not probabilities necessarily summing to one; normalization must match its population/sample convention."
+  ],
+  "id": "probabilistic-inference",
+  "inverse": [
+    "Exclude V>Z for identical nonnegative path weights beyond documented rounding tolerance; posterior normalization at Z=0 contrary to status/error rules; invalid alias variates; exhausted Sinkhorn residuals treated as exact marginals; covariance with a substituted denominator.",
+    "Z admits all HMMs with that path-weight sum; Viterbi constrains maximizing path/score but leaves other weights ambiguous. Alias outcomes do not reconstruct random source. Sinkhorn u->a*u,v->v/a preserves X for a>0. Covariance retains moments; many weighted multisets share them."
+  ],
+  "limitations": [
+    "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+    "Finite observations and partial syntax do not establish universal proof."
+  ],
+  "state": "Nonnegative mass, finite values, support, zero-total handling, sequence-state indexes and normalization/status conventions remain leaf-specific. Maximum-path score is not summed evidence; posterior marginal consistency is not joint-path optimality."
+}

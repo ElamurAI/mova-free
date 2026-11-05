@@ -1,0 +1,103 @@
+{
+  "children": [
+    {
+      "id": "kg-main-ingestion",
+      "path": "ingestion.groupant"
+    },
+    {
+      "id": "kg-main-parse-lines",
+      "path": "parse-lines.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Source lexical projection only; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "CLI dispatch, compressed sentence reader, ingestion orchestration, graph displays/subgraphs, arbitrary TSV parsing.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "CLI dispatch, compressed sentence reader, ingestion orchestration, graph displays/subgraphs, arbitrary TSV parsing.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "reader_policy",
+        "path": "model.md",
+        "scope": "CLI dispatch, compressed sentence reader, ingestion orchestration, graph displays/subgraphs, arbitrary TSV parsing.",
+        "section": "reader_policy",
+        "status": "partial_source_derived_model",
+        "type": "reader_policy"
+      },
+      {
+        "id": "fact_edge_join",
+        "path": "model.md",
+        "scope": "CLI dispatch, compressed sentence reader, ingestion orchestration, graph displays/subgraphs, arbitrary TSV parsing.",
+        "section": "fact_edge_join",
+        "status": "partial_source_derived_model",
+        "type": "fact_edge_join"
+      },
+      {
+        "id": "effect_precedence",
+        "path": "model.md",
+        "scope": "CLI dispatch, compressed sentence reader, ingestion orchestration, graph displays/subgraphs, arbitrary TSV parsing.",
+        "section": "effect_precedence",
+        "status": "partial_source_derived_model",
+        "type": "effect_precedence"
+      },
+      {
+        "id": "evaluation_boundary",
+        "path": "model.md",
+        "scope": "CLI dispatch, compressed sentence reader, ingestion orchestration, graph displays/subgraphs, arbitrary TSV parsing.",
+        "section": "evaluation_boundary",
+        "status": "partial_source_derived_model",
+        "type": "evaluation_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "kg-main",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../main.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "2b0c3334d8294c57354f5b7815bbddc7093c462d66e41dbc600045ed82e5f0fe"
+  },
+  "status": "partial_source_bound_model"
+}

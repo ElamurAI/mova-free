@@ -188,3 +188,317 @@ fn write_read_round_trip() {
     let gold = eval::gold_of(&docs[0]).unwrap();
     assert_eq!(gold.entities[0].len(), 5);
 }
+
+/// «The box fell. It <verb>.»: the last sentence's «it» with the given predicate (word, UPOS, XPOS, FEATS).
+fn box_then_it(pred: &[&str]) -> String {
+    let mut t = String::from("# newdoc id = t3\n");
+    t += &sent("t3-1", &[], &["The DET DT Definite=Def|PronType=Art 2 det", "box NOUN NN Number=Sing 3 nsubj", &format!("fell VERB VBD {VBD} 0 root"), ". PUNCT . _ 3 punct"]);
+    let it = "It PRON PRP Case=Nom|Gender=Neut|Number=Sing|Person=3|PronType=Prs";
+    let mut words = vec![format!("{it} {} nsubj", pred.len() + 1)];
+    for (k, w) in pred.iter().enumerate() {
+        words.push(if k + 1 == pred.len() { format!("{w} 0 root") } else { format!("{w} {} cop", pred.len() + 1) });
+    }
+    words.push(format!(". PUNCT . _ {} punct", pred.len() + 1));
+    let refs: Vec<&str> = words.iter().map(String::as_str).collect();
+    t += &sent("t3-2", &[], &refs);
+    // the lemmas of the test verbs (`row` takes the form as the lemma)
+    for (form, lemma) in [("rained", "rain"), ("happened", "happen"), ("broke", "break"), ("was", "be")] {
+        t = t.replace(&format!("\t{form}\t{form}\t"), &format!("\t{form}\t{lemma}\t"));
+    }
+    t
+}
+
+/// Pleonastic and event «it» are not linked to a noun (loaiciga-2017 I1, kolhatkar-2018 I1); an anaphoric one is —
+/// the negative control: the same text with «broke» links «It» to «The box».
+#[test]
+fn it_readings_keep_it_from_nouns() {
+    let (docs, sys) = resolve(&box_then_it(&[&format!("broke VERB VBD {VBD}")]));
+    assert_eq!(chain_of(&docs[0], &sys[0], "It"), ["The box", "It"], "the control: an anaphoric «it» is linked");
+    for pred in [vec![format!("rained VERB VBD {VBD}")], vec![format!("happened VERB VBD {VBD}")], vec!["was AUX VBD _".to_string(), "true ADJ JJ Degree=Pos".to_string()]] {
+        let p: Vec<&str> = pred.iter().map(String::as_str).collect();
+        let (docs, sys) = resolve(&box_then_it(&p));
+        let d = &docs[0];
+        let it = sys[0].ms.iter().position(|m| m.head_low == "it").unwrap();
+        assert!(sys[0].links.iter().all(|l| l.from != it), "«it {}» must not be linked", pred.join(" "));
+        let rd = crate::it::reading(&d.sents[1], 0);
+        assert_ne!(rd, crate::it::Reading::Anaphoric, "{pred:?}");
+    }
+}
+
+/// Notional «they» (zeldes-2018 I1–I2): «The family left. They were happy.» links «They» to «The family»; with a plural
+/// that agrees strictly («The family met the guests.») «They» goes to the plural — the control that the relaxed
+/// agreement is only a fallback.
+#[test]
+fn notional_they_only_without_a_plural() {
+    let they = "They PRON PRP Case=Nom|Number=Plur|Person=3|PronType=Prs";
+    let story = |second: &[&str]| {
+        let mut t = String::from("# newdoc id = t4\n");
+        let mut first = vec!["The DET DT Definite=Def|PronType=Art 2 det", "family NOUN NN Number=Sing 3 nsubj"];
+        first.extend_from_slice(second);
+        t += &sent("t4-1", &[], &first);
+        t += &sent("t4-2", &[], &[&format!("{they} 3 nsubj"), "were AUX VBD Mood=Ind|Number=Plur|Tense=Past|VerbForm=Fin 3 cop", "happy ADJ JJ Degree=Pos 0 root", ". PUNCT . _ 3 punct"]);
+        t
+    };
+    let left = format!("left VERB VBD {VBD} 0 root");
+    let (docs, sys) = resolve(&story(&[&left, ". PUNCT . _ 3 punct"]));
+    assert_eq!(chain_of(&docs[0], &sys[0], "They"), ["The family", "They"]);
+    let met = format!("met VERB VBD {VBD} 0 root");
+    let (docs, sys) = resolve(&story(&[&met, "the DET DT Definite=Def|PronType=Art 5 det", "guests NOUN NNS Number=Plur 3 obj", ". PUNCT . _ 3 punct"]));
+    assert_eq!(chain_of(&docs[0], &sys[0], "They"), ["the guests", "They"]);
+}
+
+#[test]
+fn wave27_document_failure_order_quotes_and_retree() {
+    let invalid = sent("bad", &[], &["A NOUN NN _ 9 dep", "B NOUN NN _ 2 dep"]);
+    assert!(
+        doc::documents(&UdDoc::parse(&invalid).unwrap())
+            .unwrap_err()
+            .to_string()
+            .contains("outside")
+    );
+    let cycle = sent("cycle", &[], &["A NOUN NN _ 2 dep", "B NOUN NN _ 1 dep"]);
+    assert!(
+        doc::documents(&UdDoc::parse(&cycle).unwrap())
+            .unwrap_err()
+            .to_string()
+            .contains("cycle")
+    );
+    let mut text = sent(
+        "q1",
+        &[],
+        &["“ PUNCT `` _ 2 punct", "box NOUN NN Number=Sing 0 root"],
+    );
+    text += &sent("q2", &[], &["lid NOUN NN Number=Sing 0 root"]);
+    text += &sent("q3", &["# newpar"], &["other NOUN NN Number=Sing 0 root"]);
+    let gold = UdDoc::parse(&text).unwrap();
+    let docs = doc::documents(&gold).unwrap();
+    assert_eq!(
+        docs[0]
+            .sents
+            .iter()
+            .map(|s| s.quote.clone())
+            .collect::<Vec<_>>(),
+        vec![vec![1, 1], vec![1], vec![0]]
+    );
+    let replacement = UdDoc::parse(&text.replace("Number=Sing", "Number=Plur")).unwrap();
+    let retreed = doc::retree(&gold, &replacement).unwrap();
+    assert!(retreed.text().contains("Number=Plur"));
+    assert!(retreed.text().contains("# newpar"));
+    let mismatched = UdDoc::parse(&text.replace("box", "crate")).unwrap();
+    assert!(
+        doc::retree(&gold, &mismatched)
+            .unwrap_err()
+            .to_string()
+            .contains("word 2")
+    );
+}
+
+#[test]
+fn wave27_entity_boundaries_and_head_ties() {
+    let read = |text: &str| {
+        let ud = UdDoc::parse(text).unwrap();
+        corefud::read_mentions(&doc::documents(&ud).unwrap()[0])
+    };
+    let bad = sent("bad", &[], &["box NOUN NN _ 0 root Entity=1)"]);
+    assert!(
+        read(&bad)
+            .unwrap_err()
+            .to_string()
+            .contains("no open mention")
+    );
+    let mut cross = sent("a", &[], &["box NOUN NN _ 0 root Entity=(1"]);
+    cross += &sent("b", &[], &["lid NOUN NN _ 0 root Entity=1)"]);
+    assert!(read(&cross).unwrap_err().to_string().contains("crosses"));
+    let nested = sent(
+        "nested",
+        &[],
+        &[
+            "A NOUN NN _ 0 root Entity=(1(1)",
+            "B NOUN NN _ 0 root Entity=1)",
+        ],
+    );
+    let mentions = read(&nested).unwrap();
+    assert_eq!(
+        mentions
+            .iter()
+            .map(|m| (m.span.start, m.span.end))
+            .collect::<Vec<_>>(),
+        vec![(0, 1), (0, 0)]
+    );
+    let ud = UdDoc::parse(&sent(
+        "heads",
+        &[],
+        &[
+            ", PUNCT , _ 0 root",
+            "box NOUN NN _ 0 root",
+            "lid NOUN NN _ 0 root",
+        ],
+    ))
+    .unwrap();
+    let docs = doc::documents(&ud).unwrap();
+    assert_eq!(
+        corefud::span_head(
+            &docs[0].sents[0],
+            corefud::Span {
+                sent: 0,
+                start: 0,
+                end: 2
+            }
+        ),
+        1
+    );
+}
+
+#[test]
+fn wave27_coordination_mentions_and_visibility() {
+    let text = sent(
+        "coord",
+        &[],
+        &[
+            "Ada PROPN NNP Number=Sing 0 root",
+            "and CCONJ CC _ 3 cc",
+            "Bea PROPN NNP Number=Sing 1 conj",
+        ],
+    );
+    let ud = UdDoc::parse(&text).unwrap();
+    let docs = doc::documents(&ud).unwrap();
+    let ms = crate::mention::detect(&docs[0]);
+    assert_eq!(
+        ms.iter()
+            .map(|m| (m.span.start, m.span.end, m.coord, m.number))
+            .collect::<Vec<_>>(),
+        vec![
+            (0, 2, true, crate::mention::PL),
+            (0, 0, false, crate::mention::SG),
+            (2, 2, false, crate::mention::SG)
+        ]
+    );
+    let sys = eval::resolve(
+        &docs[0],
+        &Config {
+            sieves: vec![],
+            ..Config::default()
+        },
+    );
+    assert_eq!(eval::out_mentions(&sys).len(), 2);
+    let mut grouped = sys;
+    grouped.clusters = vec![vec![0, 1], vec![2]];
+    assert_eq!(eval::out_mentions(&grouped).len(), 3);
+}
+
+#[test]
+fn wave27_event_antecedent_and_empty_evaluation() {
+    let text = box_then_it(&[&format!("happened VERB VBD {VBD}")]);
+    let ud = UdDoc::parse(&text).unwrap();
+    let docs = doc::documents(&ud).unwrap();
+    assert_eq!(
+        crate::it::antecedent(&docs[0].sents, 1, 0),
+        Some((0, 2, 0, 2))
+    );
+    assert_eq!(crate::it::antecedent(&docs[0].sents, 0, 0), None);
+    let empty = UdDoc::parse("").unwrap();
+    let input = eval::Input {
+        label: "synthetic".into(),
+        ud: empty,
+        docs: vec![],
+    };
+    let mut report = String::new();
+    eval::run("empty", &[], &input, &mut report, None, None).unwrap();
+    assert!(report.contains("Documents 0, gold mentions 0, entities 0"));
+    let mut failed_report = String::new();
+    let bad = eval::Input {
+        label: "bad".into(),
+        ud,
+        docs,
+    };
+    assert!(
+        eval::run("bad", &[], &bad, &mut failed_report, None, None)
+            .unwrap_err()
+            .to_string()
+            .contains("documents")
+    );
+    assert!(failed_report.is_empty());
+}
+
+// ---- the noun lexicon (`crate::lexicon`): each path, its negative controls, the decision and the sieve feature ----
+
+fn lex_hits(words: &[&str]) -> Vec<(String, &'static str, &'static str)> {
+    let ud = UdDoc::parse(&sent("x", &[], words)).unwrap();
+    let d = doc::documents(&ud).unwrap();
+    crate::lexicon::hits(&d[0].sents[0]).into_iter().map(|h| (h.lemma, crate::lexicon::CLASSES[h.class], h.path)).collect()
+}
+
+const NSG: &str = "Number=Sing";
+
+#[test]
+fn lexicon_paths_find_their_pairs() {
+    // The farmer hurt himself .
+    let refl = lex_hits(&["The DET DT _ 2 det", "farmer NOUN NN Number=Sing 3 nsubj", "hurt VERB VBD _ 0 root", "himself PRON PRP Reflex=Yes 3 obj", ". PUNCT . _ 3 punct"]);
+    assert_eq!(refl, vec![("farmer".into(), "masc", "refl")]);
+    // The hen sat on her eggs .
+    let poss = lex_hits(&["The DET DT _ 2 det", "hen NOUN NN Number=Sing 3 nsubj", "sat VERB VBD _ 0 root", "on ADP IN _ 6 case", "her PRON PRP$ Poss=Yes 6 nmod:poss", "eggs NOUN NNS Number=Plur 3 obl", ". PUNCT . _ 3 punct"]);
+    assert_eq!(poss, vec![("hen".into(), "fem", "poss")]);
+    // The millers say they are poor . (the test rows take the form as the lemma)
+    let say = lex_hits(&["The DET DT _ 2 det", "millers NOUN NNS Number=Plur 3 nsubj", "say VERB VBP _ 0 root", "they PRON PRP Case=Nom 6 nsubj", "are AUX VBP _ 6 cop", "poor ADJ JJ _ 3 ccomp", ". PUNCT . _ 3 punct"]);
+    assert_eq!(say, vec![("millers".into(), "plur", "say")]);
+    // She was a widow .
+    let pred = lex_hits(&["She PRON PRP Case=Nom 4 nsubj", "was AUX VBD _ 4 cop", "a DET DT _ 4 det", "widow NOUN NN Number=Sing 0 root", ". PUNCT . _ 4 punct"]);
+    assert_eq!(pred, vec![("widow".into(), "fem", "pred")]);
+    // the man who came
+    let rel = lex_hits(&["the DET DT _ 2 det", "man NOUN NN Number=Sing 0 root", "who PRON WP PronType=Rel 4 nsubj", "came VERB VBD _ 2 acl:relcl"]);
+    assert_eq!(rel, vec![("man".into(), "who", "relpron")]);
+}
+
+#[test]
+fn lexicon_paths_negative_controls() {
+    // negation: He is not a woman . — no pair
+    assert!(lex_hits(&["He PRON PRP Case=Nom 5 nsubj", "is AUX VBZ _ 5 cop", "not PART RB _ 5 advmod", "a DET DT _ 5 det", "woman NOUN NN Number=Sing 0 root"]).is_empty());
+    // a preposition: he was in the road — not a predicate noun
+    assert!(lex_hits(&["he PRON PRP Case=Nom 5 nsubj", "was AUX VBD _ 5 cop", "in ADP IN _ 5 case", "the DET DT _ 5 det", "road NOUN NN Number=Sing 0 root"]).is_empty());
+    // a name is never counted: John hurt himself .
+    assert!(lex_hits(&["John PROPN NNP Number=Sing 2 nsubj", "hurt VERB VBD _ 0 root", "himself PRON PRP Reflex=Yes 2 obj"]).is_empty());
+    // a plural noun with a singular pronoun is a path error: The boys hurt himself .
+    assert!(lex_hits(&["The DET DT _ 2 det", "boys NOUN NNS Number=Plur 3 nsubj", "hurt VERB VBD _ 0 root", "himself PRON PRP Reflex=Yes 3 obj"]).is_empty());
+    // a possessive inside the subject itself is not the subject's: The man's wife lost her ring — wife (fem), not man
+    let h = lex_hits(&["The DET DT _ 2 det", "man NOUN NN Number=Sing 4 nmod:poss", "'s PART POS _ 2 case", "wife NOUN NN Number=Sing 5 nsubj", "lost VERB VBD _ 0 root", "her PRON PRP$ Poss=Yes 7 nmod:poss", "ring NOUN NN Number=Sing 5 obj"]);
+    assert_eq!(h, vec![("wife".into(), "fem", "poss")]);
+}
+
+fn lex_table(rows: &[(&str, [u64; 6])]) -> crate::lexicon::Table {
+    crate::lexicon::Table::from_counts(rows.iter().map(|(l, c)| (l.to_string(), crate::lexicon::Row { counts: *c })).collect())
+}
+
+#[test]
+fn lexicon_decisions_need_evidence_and_a_clear_share() {
+    use crate::mention::{ANIM, FEM, INAN, MASC, NEUT};
+    let t = lex_table(&[("farmer", [40, 2, 1, 5, 9, 0]), ("widow", [0, 30, 0, 0, 3, 0]), ("stone", [0, 0, 50, 4, 0, 6]), ("fox", [10, 2, 9, 1, 0, 0]), ("doctor", [1, 0, 0, 0, 0, 0])]);
+    let f = t.feats("farmer").unwrap();
+    assert_eq!((f.gender, f.animacy), (MASC, ANIM));
+    assert_eq!(t.feats("widow").map(|f| (f.gender, f.animacy)), Some((FEM, ANIM)));
+    assert_eq!(t.feats("stone").map(|f| (f.gender, f.animacy)), Some((NEUT, INAN)));
+    // mixed (he and it) stays unknown; one count is not evidence
+    assert_eq!(t.feats("fox"), None);
+    assert_eq!(t.feats("doctor"), None);
+    assert_eq!(t.feats("unseen"), None);
+    // the rotation control moves every row to another lemma
+    let r = crate::lexicon::rotate(&t, 1);
+    assert!(t.rows.keys().all(|l| r.rows[l] != t.rows[l]));
+}
+
+#[test]
+fn lexicon_feature_keeps_it_from_a_person_noun() {
+    // The farmer came . It was late . — «it» is pleonastic here; use: The farmer saw the stone . It fell .
+    let mut text = String::from("# newdoc id = lx\n");
+    text += &sent("lx-1", &[], &["The DET DT _ 2 det", "farmer NOUN NN Number=Sing 3 nsubj", "saw VERB VBD _ 0 root", "the DET DT _ 5 det", "stone NOUN NN Number=Sing 3 obj", ". PUNCT . _ 3 punct"]);
+    text += &sent("lx-2", &[], &["It PRON PRP Case=Nom|Gender=Neut|Number=Sing|Person=3|PronType=Prs 2 nsubj", "fell VERB VBD _ 0 root", ". PUNCT . _ 2 punct"]);
+    // without the table «it» takes the subject first (Hobbs order: subject before object)
+    crate::lexicon::TEST_TABLE.with(|t| *t.borrow_mut() = Some(lex_table(&[])));
+    let (docs, sys) = resolve(&text);
+    let without = chain_of(&docs[0], &sys[0], "It");
+    crate::lexicon::TEST_TABLE.with(|t| *t.borrow_mut() = Some(lex_table(&[("farmer", [40, 2, 1, 5, 9, 0]), ("stone", [0, 0, 50, 4, 0, 6])])));
+    let (docs, sys) = resolve(&text);
+    let with = chain_of(&docs[0], &sys[0], "It");
+    crate::lexicon::TEST_TABLE.with(|t| *t.borrow_mut() = None);
+    assert!(without.iter().any(|m| m.contains("farmer")), "{without:?}");
+    assert!(with.iter().any(|m| m.contains("stone")) && !with.iter().any(|m| m.contains("farmer")), "{with:?}");
+}

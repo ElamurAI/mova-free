@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named synthetic native tests; paired syntax projection"
+  ],
+  "children": [],
+  "cost": "Index O(title bytes plus entries), expected hash lookups. For T item tokens and C title candidates of length L, contained O(T+C*(L+T+authors)) plus span sorting and overlap scans O(S²); raw token/string costs additional. Library scans bounded directory depth and reads YAML; no downloads.",
+  "description": "Unicode token folding retains original UTF-8 byte boundaries. Index stores first id/DOI and full/article-skipped title variants. Matcher gathers URL and ACL DOI ids, other DOIs, bibtex, then library titles followed by ACL titles; contained ranks longest spans first and skips overlaps. best prefers exact year, author count, ACL-bearing record then index. lift maps ACL match into library by anthology id; duplicates keep first method. near records exactly-one-failed checks and excludes final hits.",
+  "forward": [
+    "Unicode token folding retains original UTF-8 byte boundaries. Index stores first id/DOI and full/article-skipped title variants. Matcher gathers URL and ACL DOI ids, other DOIs, bibtex, then library titles followed by ACL titles; contained ranks longest spans first and skips overlaps. best prefers exact year, author count, ACL-bearing record then index. lift maps ACL match into library by anthology id; duplicates keep first method. near records exactly-one-failed checks and excludes final hits."
+  ],
+  "id": "treebanks-refs",
+  "inverse": [
+    "Hit preimages include explicit id strings and normalized title/author/year variants; normalization is many-to-one, and best tie-break loses candidate identities except selected alts. Not a unique paper correctness proof.",
+    "Missing author/year/boundary cannot become free-title hit unless allowed fuzzy year/boundary alternatives apply. Short titles (<3 words or <20 chars) never enter trigram search. Explicit identifiers can still match without those title constraints."
+  ],
+  "limitations": [
+    "Partial source models and finite fixtures only. No corpus/model/network/site/release execution or universal proof."
+  ],
+  "source": "tools/treebanks/src/refs.rs",
+  "state": "Bounded helper inputs and source-derived CLI state/effects; see catalog."
+}

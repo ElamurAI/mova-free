@@ -423,3 +423,67 @@ fn write_tables(st: &Stats, dir: &Path) -> std::io::Result<()> {
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod wave28_tests {
+    use super::*;
+
+    #[test]
+    fn counters_limit_and_ranking() {
+        assert_eq!(unescape("&lt;&#x3b1;&#65;&bad;&amp;lt;"), "<αA&bad;&lt;");
+        let mut st = Stats::default();
+        let zero = Opts {
+            limit: Some(0),
+            ..Opts::default()
+        };
+        assert!(process("$x$ $", &Macros::new(), &zero, &mut st));
+        assert_eq!((st.formulas, st.unterminated), (0, 1));
+        assert!(!process(
+            r"$x$ $\zzz$ $\aaa$",
+            &Macros::new(),
+            &Opts::default(),
+            &mut st
+        ));
+        assert_eq!((st.formulas, st.parsed, st.clean, st.rt_ok), (3, 3, 1, 3));
+        assert_eq!(
+            top_unknown(&st)
+                .iter()
+                .map(|x| x.0.as_str())
+                .collect::<Vec<_>>(),
+            vec![r"\aaa", r"\zzz"]
+        );
+        assert_eq!(pct(1, 0), 0.0);
+    }
+
+    #[test]
+    fn synthetic_xml_outputs_and_read_errors() {
+        let dir = std::env::temp_dir().join(format!("mova-wave28-corpus-{}", std::process::id()));
+        std::fs::create_dir(&dir).unwrap();
+        let source = dir.join("fixture.xml");
+        std::fs::write(&source, "<record><id>one</id><title>$x$</title><abstract>$y$</abstract></record><record><id>one</id><title>$z$</title></record>").unwrap();
+        let out = dir.join("out");
+        let report = run(
+            &[source, dir.join("missing.tex")],
+            &Opts {
+                out: Some(out.clone()),
+                ..Opts::default()
+            },
+        )
+        .unwrap();
+        assert!(report.contains("files: 1 of 2 (read errors: 1)"));
+        assert!(
+            report.contains("arXiv records: 1 (duplicates from other sets skipped: 1), texts: 2")
+        );
+        assert!(report.contains("formulas: 2 (distinct: 2)"));
+        assert_eq!(
+            std::fs::read_to_string(out.join("unknown.tsv")).unwrap(),
+            "command\toccurrences\texample\n"
+        );
+        assert_eq!(
+            std::fs::read_to_string(out.join("summary.md")).unwrap(),
+            report
+        );
+        assert!(run(&[], &Opts::default()).is_err());
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+}

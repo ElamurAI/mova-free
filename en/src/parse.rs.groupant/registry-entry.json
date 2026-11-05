@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p en --lib parse::wave27::bounded_contract",
+    "Paired partial syntax; debug/release repeated outcomes; see receipt"
+  ],
+  "children": [],
+  "cost": "2n legal transitions; greedy scores O(n*F*(3+R)). Beam adds candidate sorting O(n*b log b) and clones O(n) configuration/path per surviving step, giving O(b*n^2) clone work. Constraints scan n for child readiness. Dense deserialization allocates rows*k with unchecked arithmetic.",
+  "description": "Legal arc-standard transitions shift next buffer, Left attaches second-top under top, Right attaches top under second-top. Root is never Left dependent; Right to root waits for buffer exhaustion. Greedy maximizes valid type scores then label scores. Beam expands valid actions, sorts path scores, truncates max(width,1), labels greedily except gold/forced arcs. Constrained search returns None when beam dies. kbest deduplicates trees.",
+  "forward": [
+    "Legal arc-standard transitions shift next buffer, Left attaches second-top under top, Right attaches top under second-top. Root is never Left dependent; Right to root waits for buffer exhaustion. Greedy maximizes valid type scores then label scores. Beam expands valid actions, sorts path scores, truncates max(width,1), labels greedily except gold/forced arcs. Constrained search returns None when beam dies. kbest deduplicates trees."
+  ],
+  "id": "en-parse",
+  "inverse": [
+    "For fixed words/tags and resulting tree, compatible parser states are all weight tables/label orders whose selected transition path builds that tree. Multiple action paths can induce one tree and kbest collapses them; tree cannot recover scores or training history. Sparse table decoding reconstructs weights exactly but loses averaging accumulators.",
+    "A legal nonempty completed parse has n arcs and exactly one root attachment. No transition attaches root as dependent. Greedy label ties choose latest encountered label, not lexical order. Constraints do not guarantee existence with finite beam; nonprojective training may stop/skip. Tables do not validate all resource dimensions."
+  ],
+  "limitations": [
+    "Partial source-bound model, not full proof. No useful executable percentage surrogate established for these categorical decisions/effects; budgets1/2/5/10% require a future observation metric. No corpus/API/GPU/teacher, allocation fault injection, adversarial size exhaustion or broad accuracy claim."
+  ],
+  "source": "en/src/parse.rs",
+  "state": "Parser holds dense perceptron type/label tables, labels in encounter order, sorted known-word ids, training clock and beam. Config holds root0 stack, next buffer, heads/labels, extrema and saturating child counts."
+}

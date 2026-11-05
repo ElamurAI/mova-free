@@ -5,6 +5,12 @@
 //!   coref score <gold.conllu> <output.conllu> [--exact]           MUC, B³, CEAF-e, CoNLL F1 (with and without singletons)
 //!   coref eval <gold.conllu> --out <dir> [--trees <trees>] [--label <name>]   baselines, sieves, pronouns
 //!   coref mentions <gold.conllu> [--trees <trees>]                mention detection against gold (for debugging)
+//!   coref lexicon count <source> <in.conllu|->...                 noun–pronoun path counts (part file) to stdout
+//!   coref lexicon build <out.tsv> <part>... [--label <note>]...   merged table with provenance (`lexicon`)
+//!   coref lexicon paths <gold.conllu> [--trees <trees>]           precision of each path on gold coreference
+//!   coref lexicon rotate <table.tsv> <out.tsv> <k>              negative control: counts moved k lemmas on
+//!   coref lexicon show <table.tsv> <lemma>...                     features a table gives
+//!   coref lexicon compare <a.tsv> <b.tsv>                         agreement of two tables' decisions
 //!
 //! `--trees` — output of `en annotate` on the same tokens: trees are taken from it, comments and gold from the first file.
 
@@ -117,7 +123,8 @@ fn main() -> Result<()> {
             let (_, docs) = load(gold_path, a.trees.as_deref())?;
             mention_stats(&gold_docs, &docs)?;
         }
-        _ => bail!("usage: coref resolve <in.conllu> [--trees f] | explain <in.conllu> [doc-id] [--trees f] | score <gold> <pred> [--exact] | eval <gold> --out <dir> [--trees f] [--label s] | mentions <gold> [--trees f]"),
+        "lexicon" if !a.pos.is_empty() => lexicon_cmd(&a)?,
+        _ => bail!("usage: coref resolve <in.conllu> [--trees f] | explain <in.conllu> [doc-id] [--trees f] | score <gold> <pred> [--exact] | eval <gold> --out <dir> [--trees f] [--label s] | mentions <gold> [--trees f] | lexicon count|build|paths|show|compare …"),
     }
     Ok(())
 }
@@ -240,6 +247,149 @@ fn mention_stats(gold_docs: &[Document], docs: &[Document]) -> Result<()> {
     println!("\n\nmismatched spans:");
     for (k, c) in top(&span_diff, 10) {
         println!("  {c:5} {k}   {}", span_ex[&k].join(" | "));
+    }
+    Ok(())
+}
+
+#[cfg(test)]
+mod wave27_tests {
+    use super::*;
+    #[test]
+    fn synthetic_load_preserves_gold_and_rejects_mismatched_trees() {
+        let dir = std::env::temp_dir().join(format!("mova-coref-wave27-{}", std::process::id()));
+        std::fs::create_dir(&dir).unwrap();
+        let gold = dir.join("gold.conllu");
+        let trees = dir.join("trees.conllu");
+        let text = "# newdoc id = synthetic\n# sent_id = one\n1\tBox\tbox\tNOUN\tNN\tNumber=Sing\t0\troot\t_\tEntity=(1)\n\n";
+        std::fs::write(&gold, text).unwrap();
+        std::fs::write(&trees, text.replace("Number=Sing", "Number=Plur")).unwrap();
+        let (ud, docs) = load(&gold, Some(&trees)).unwrap();
+        assert!(ud.text().contains("Number=Plur"));
+        assert_eq!(eval::gold_of(&docs[0]).unwrap().mentions.len(), 1);
+        std::fs::write(&trees, text.replace("Box", "Crate")).unwrap();
+        assert!(
+            load(&gold, Some(&trees))
+                .unwrap_err()
+                .to_string()
+                .contains("trees")
+        );
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+}
+
+/// `coref lexicon …`: the noun lexicon learned from Mova's parses (`coref::lexicon`).
+fn lexicon_cmd(a: &Args) -> Result<()> {
+    use coref::lexicon::{self, Counts};
+    let sub = a.pos[0].as_str();
+    let rest = &a.pos[1..];
+    match sub {
+        "count" if rest.len() >= 2 => {
+            let mut c = Counts::default();
+            for input in &rest[1..] {
+                lexicon::count_stream(&rest[0], input, &mut c)?;
+            }
+            print!("{}", c.write_part());
+        }
+        "build" if rest.len() >= 2 => {
+            let mut c = Counts::default();
+            for p in &rest[1..] {
+                c.read_part(&std::fs::read_to_string(p).with_context(|| p.clone())?)?;
+            }
+            let header: Vec<String> = a.label.iter().cloned().collect();
+            std::fs::write(&rest[0], lexicon::build(&c, &header))?;
+            let t = lexicon::load(Path::new(&rest[0])).or_else(|_| {
+                // a CC BY-SA table is written for the comparison; read it back as internal
+                lexicon::parse_table(&std::fs::read_to_string(&rest[0])?)
+            })?;
+            let decided = t.rows.keys().filter(|l| t.feats(l).is_some()).count();
+            eprintln!("{} lemmas, {} with features → {}", t.rows.len(), decided, rest[0]);
+        }
+        "paths" if rest.len() == 1 => {
+            let gold_path = Path::new(&rest[0]);
+            let (_, gold_docs) = load(gold_path, None)?;
+            let (_, docs) = load(gold_path, a.trees.as_deref())?;
+            // precision of each path: the noun and the pronoun are heads of mentions of one gold entity
+            let mut st: BTreeMap<(&str, &str), (usize, usize)> = BTreeMap::new();
+            let mut wrong: BTreeMap<&str, Vec<String>> = BTreeMap::new();
+            for (gd, d) in gold_docs.iter().zip(&docs) {
+                let g = eval::gold_of(gd)?;
+                let mut ent: HashMap<(usize, usize), Vec<usize>> = HashMap::new();
+                for (i, m) in g.mentions.iter().enumerate() {
+                    ent.entry((m.span.sent, m.head)).or_default().push(g.entity_of[i]);
+                }
+                for (si, s) in d.sents.iter().enumerate() {
+                    for h in lexicon::hits(s) {
+                        let (en_, ep) = (ent.get(&(si, h.noun)), ent.get(&(si, h.pron)));
+                        let ok = matches!((en_, ep), (Some(x), Some(y)) if x.iter().any(|e| y.contains(e)));
+                        let e = st.entry((h.path, lexicon::CLASSES[h.class])).or_default();
+                        e.0 += 1;
+                        if ok {
+                            e.1 += 1;
+                        } else {
+                            let w = wrong.entry(h.path).or_default();
+                            if w.len() < 5 {
+                                w.push(format!("{}: «{}» ~ «{}»", s.id, s.toks[h.noun].form, s.toks[h.pron].form));
+                            }
+                        }
+                    }
+                }
+            }
+            println!("path\tclass\tpairs\tcoreferent\tprecision");
+            let mut tot: BTreeMap<&str, (usize, usize)> = BTreeMap::new();
+            for ((p, c), (n, ok)) in &st {
+                println!("{p}\t{c}\t{n}\t{ok}\t{:.3}", *ok as f64 / (*n).max(1) as f64);
+                let t = tot.entry(p).or_default();
+                t.0 += n;
+                t.1 += ok;
+            }
+            for (p, (n, ok)) in &tot {
+                println!("{p}\tall\t{n}\t{ok}\t{:.3}", *ok as f64 / (*n).max(1) as f64);
+            }
+            for (p, w) in &wrong {
+                println!("# not coreferent in gold, {p}: {}", w.join(" | "));
+            }
+        }
+        "rotate" if rest.len() == 3 => {
+            // the negative control: the counts moved k lemmas on (`lexicon::rotate`)
+            let k: usize = rest[2].parse()?;
+            let t = lexicon::parse_table(&std::fs::read_to_string(&rest[0])?)?;
+            let r = lexicon::rotate(&t, k);
+            std::fs::write(&rest[1], lexicon::write_counts(&r, &[format!("negative control: the counts of {} moved {k} lemmas on", rest[0])]))?;
+        }
+        "show" if rest.len() >= 2 => {
+            let t = lexicon::parse_table(&std::fs::read_to_string(&rest[0])?)?;
+            for l in &rest[1..] {
+                match t.feats(l) {
+                    Some(f) => println!("{l}\tgender {}\tanimacy {}\t{}", f.gender, f.animacy, f.why),
+                    None => println!("{l}\tunknown\t{:?}", t.rows.get(l.as_str()).map(|r| r.counts)),
+                }
+            }
+        }
+        "compare" if rest.len() == 2 => {
+            let ta = lexicon::parse_table(&std::fs::read_to_string(&rest[0])?)?;
+            let tb = lexicon::parse_table(&std::fs::read_to_string(&rest[1])?)?;
+            let (mut both, mut same_a, mut same_g, mut only_a, mut only_b) = (0usize, 0usize, 0usize, 0usize, 0usize);
+            let mut diff: Vec<String> = Vec::new();
+            let keys: std::collections::BTreeSet<&String> = ta.rows.keys().chain(tb.rows.keys()).collect();
+            for l in keys {
+                match (ta.feats(l), tb.feats(l)) {
+                    (Some(x), Some(y)) => {
+                        both += 1;
+                        same_a += (x.animacy == y.animacy) as usize;
+                        same_g += (x.gender == y.gender) as usize;
+                        if (x.animacy != y.animacy || x.gender != y.gender) && diff.len() < 40 {
+                            diff.push(format!("{l} a:{}/{} g:{}/{}", x.animacy, y.animacy, x.gender, y.gender));
+                        }
+                    }
+                    (Some(_), None) => only_a += 1,
+                    (None, Some(_)) => only_b += 1,
+                    _ => {}
+                }
+            }
+            println!("decided in both {both}: same animacy {same_a} ({:.1}%), same gender {same_g} ({:.1}%); only in A {only_a}, only in B {only_b}", 100.0 * same_a as f64 / both.max(1) as f64, 100.0 * same_g as f64 / both.max(1) as f64);
+            println!("differences (animacy bits 1 anim 2 inan; gender 1 masc 2 fem 4 neut): {}", diff.join("; "));
+        }
+        _ => bail!("usage: coref lexicon count <source> <in.conllu|->... | build <out.tsv> <part>... [--label note] | paths <gold> [--trees f] | rotate <table> <out> <k> | show <table> <lemma>... | compare <a> <b>"),
     }
     Ok(())
 }

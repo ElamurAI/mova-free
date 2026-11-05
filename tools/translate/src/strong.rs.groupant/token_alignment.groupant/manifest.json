@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "unicode_lower",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "unicode_lower",
+        "status": "partial_source_derived_model",
+        "type": "unicode_lower"
+      },
+      {
+        "id": "failure_state",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "failure_state",
+        "status": "partial_source_derived_model",
+        "type": "failure_state"
+      },
+      {
+        "id": "first_label",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "first_label",
+        "status": "partial_source_derived_model",
+        "type": "first_label"
+      },
+      {
+        "id": "lookahead_boundary",
+        "path": "model.md",
+        "scope": "Source-bound admitted domain; finite evidence and unexecuted paths in model.md#tests",
+        "section": "lookahead_boundary",
+        "status": "partial_source_derived_model",
+        "type": "lookahead_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_native_receipts"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 6164,
+      "start": 5028
+    },
+    "description": "Flatten source alnum lowercase chars with per-word labels. For each normalized token scan up to40 start positions; first contiguous match emits start label and advances by token char length; failure emits None."
+  },
+  "id": "translation-meta-strong-token_alignment",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../strong.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "c71599a55642bc5e4b6f148ca0eba6f631abb45ddce98370586c5fcbeaae1163"
+  },
+  "status": "partial_source_bound_model"
+}

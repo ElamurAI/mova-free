@@ -1,0 +1,87 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Explicit gap: no syntax projection or semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "scope": "U is valid world history to ordered built-fact vectors. R emits only the explicit event/entity/delta cases then sorts and renumbers. U minus R includes n-position mismatch, ordinary Set facts for skipped Type/Class/Parent/A/B/Mother/Father/PartOf fields, and removal facts from ignored set-removal deltas.",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "scope": "Given built facts, compatible histories retain all ignored fields and deltas plus arbitrary changes invisible to current names and emitted text. Fact projection is not injective; preserve every history yielding the same facts.",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "feeling-transition",
+        "path": "model.md",
+        "scope": "With previous tags p and current c, emit c minus p when nonempty; else emit end=true only when c empty and p nonempty; otherwise no feeling fact. Then p becomes c, so partial removal is silent.",
+        "section": "feeling-transition",
+        "status": "partial_source_derived_model",
+        "type": "delta_partition"
+      },
+      {
+        "id": "story-order",
+        "path": "model.md",
+        "scope": "For emitted tuples (line,old_n), final order is ascending pair and new_n=position. Reverse from final vectors recovers relative line order but not original category iteration unless source kind constraints are retained.",
+        "section": "story-order",
+        "status": "partial_source_derived_model",
+        "type": "renumbering_fiber"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "coverage_recorded"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 19441,
+      "start": 8681
+    },
+    "description": "Construct fields and typed facts from event roles, current plans/beliefs, state deltas and relation snapshots; sort by line and insertion order and renumber."
+  },
+  "id": "fact-index-construction",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../index.rs",
+    "sha256": "c182d747ecc69b9e86a34ae5a49caa3841477c53719b2b8bb77b39e0ba4120d1"
+  },
+  "status": "partial_source_derived_instance",
+  "subject_revision": "sha256:c182d747ecc69b9e86a34ae5a49caa3841477c53719b2b8bb77b39e0ba4120d1"
+}

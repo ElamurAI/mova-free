@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "cargo test -p math --lib wave28 -- --test-threads=1",
+    "cargo test -p math --test understand wave28_missing_path_skips_before_model_load -- --exact --test-threads=1",
+    "Same selected scope twice debug/release; seven compiled assertion controls and byte restoration"
+  ],
+  "children": [],
+  "cost": "Token progression plus Rat/lookup work; repeated item/placeholder scans and subtree membership can be cubic; Pratt linear with nesting-depth recursion. Annotation separate.",
+  "description": "Dictionary chunks, parser placeholder transport and ordered arithmetic frames.",
+  "forward": [
+    "chunk prefers number then unit then word; standins preserve owner index but erase sign/unit details. parse_sentence maps heads, tree cases then fallback, conditions and deltas. Interp rejects unknown before absent numbers, then chance/percent/comparison/state/source/conversion. Pratt precedence1/2/3/4, power right-associative."
+  ],
+  "id": "math-understand",
+  "inverse": [
+    "Many synonyms and parentheses lead to same Expr. standins cannot recover sign/unit/exact fraction without original Items; decimal fallback7 is lossy."
+  ],
+  "limitations": [
+    "Partial source-derived model and lexical AST only",
+    "No model loading, annotated English, corpus/frozen suite, teacher, GPU or large training",
+    "No executable percent surrogate or universal accuracy guarantee",
+    "Only bounded helper branches executed; malformed structures and resource failures untested"
+  ],
+  "source": "math/src/understand.rs",
+  "state": "Valid annotation heads and nonempty Interp sentences assumed. Bare conversion target cannot supply default source scale. Rat parse errors may become unknown words. No teacher calls; annotation/model paths unexecuted."
+}

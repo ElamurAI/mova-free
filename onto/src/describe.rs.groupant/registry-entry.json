@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "Selected onto wave29_tests / hs::t:: actual-code tests; repeated debug/release and compiled controls"
+  ],
+  "children": [],
+  "cost": "Graph resolution/parts +17 property calls; chain<=12 and graph list<=12 per relation. Completeness O(13D), output-sized memory.",
+  "description": "resolve explicit synset→context-compatible core→bridge. describe follows first up edge at most12, obtains parts, chooses nonempty known core list before graph fallback then n/a/unknown; numeric fields core-only.13 flags record applicability/known; character properties printed separately.",
+  "forward": [
+    "filled(D)=Σ_i 1[app_i∧known_i], applicable(D)=Σ_i 1[app_i]. List field=core_known_nonempty ⊕ graph_nonempty ⊕ n/a ⊕ unknown, with ⊕ ordered fallback."
+  ],
+  "id": "onto-describe",
+  "inverse": [
+    "Nonempty known core excludes graph fallback; character-only seeds cannot fill props. Missing concept excludes Some(Desc).",
+    "Same bounded chain/parts/flags admit arbitrary omitted alternatives; aggregate category counts admit many Desc assignments and lose texts/concepts."
+  ],
+  "limitations": [
+    "Partial lexical AST, no semantic proof",
+    "No live teacher/corpus/model/DB execution",
+    "No validated executable percentage surrogate",
+    "Synthetic finite tests do not cover all public malformed states"
+  ],
+  "source": "onto/src/describe.rs",
+  "state": "filled<=applicable; read-only. world_classes retains first class context and lexical output order."
+}

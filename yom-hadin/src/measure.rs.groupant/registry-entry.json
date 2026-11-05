@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "19 exact native tests twice debug/release; repeated syntax; three compiled source mutants"
+  ],
+  "children": [],
+  "cost": "sample O(R log G); precision O(S*O + S*V*Gverbs), recall O(Gentries*S*V); rows/strings allocated. shift addition must fit usize. No frozen assessment run.",
+  "description": "Own-rule selection and synthetic gold precision/recall accounting.",
+  "forward": [
+    "sample selects matching owner jurisdiction and sentence membership. judge_rule matches force and any act/condition verb, authority ASCII-insensitive. precision maps sentence through supplied order+shift, omits unavailable gold, excludes '?' authority denominator; recall counts each expected entry once if any sample matches."
+  ],
+  "id": "court-measure",
+  "inverse": [
+    "Excluded outputs include judging a sample absent from order, counting inherited rules as own when r.jur!=j.id, and unknown '?' authority increasing authority denominator. Metric correctness does not establish real legal precision.",
+    "Formatted precision recovers compatible integer counts up to rounding and supplied sample size, not unique rules/gold. Recall hits ignore duplicate extracted matches; many corpora share the same formatted percentage.",
+    "judged counts only available ordered gold; fa uses judged, authority uses known gold among judged, both treats unknown authority as unconstrained. No single shared denominator is valid.",
+    "For matching order position k, compare gold[order[(k+shift)%len]]; absence of position returns None before modulo, so empty order is safe. Duplicate order names use first occurrence.",
+    "For each expected(force,verbs), hit iff some same-sentence extracted rule has force and intersects verbs across acts+conditions. One extracted rule can satisfy multiple expected rows; no bijective matching.",
+    "read_gold overwrites duplicate sentence keys, ignores notes, missing second column means no rules, malformed force/verb errors. gold_order retains repeated sentence order independently; these representations can disagree."
+  ],
+  "limitations": [
+    "Partial source-derived models and finite correspondence only",
+    "No live parser/corpus/frozen gold or protocol filesystem effects; no percentage surrogate"
+  ],
+  "source": "yom-hadin/src/measure.rs",
+  "state": "Finite synthetic rule/case states; valid indices, bounded paths, successful allocations. No legal authority claim."
+}

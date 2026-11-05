@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "wave33::features_groups_and_empty_learning"
+  ],
+  "children": [],
+  "cost": "Eight features produce 36 candidates per row; at most twelve rules are retained, with up to thirteen candidate-building iterations, giving O(13*36*N log(36N)) plus string comparison; groups worst-case O(N^3) dedup scans and is rebuilt per prediction; CV clones O(kN) records before learner costs.",
+  "description": "Load CSV records into P with optional parse defaults; feats yields eight categories; learn repeatedly picks best Laplace singleton/pair among remaining rows, removes covered rows and stores strict majority, retaining at most twelve rules. Because the rule-count check follows candidate construction, up to thirteen candidate-building iterations can execute. predict_list first matching condition; predict_wcg direct shared-key neighbors with train-known outcomes; cv id modulo partitions.",
+  "forward": [
+    "Load CSV records into P with optional parse defaults; feats yields eight categories; learn repeatedly picks best Laplace singleton/pair among remaining rows, removes covered rows and stores strict majority, retaining at most twelve rules. Because the rule-count check follows candidate construction, up to thirteen candidate-building iterations can execute. predict_list first matching condition; predict_wcg direct shared-key neighbors with train-known outcomes; cv id modulo partitions."
+  ],
+  "id": "kaggle-text-command",
+  "inverse": [
+    "First-match list cannot defer to a later rule. Female correction to false requires known dead woman/child and zero known living; unknown mates alone cannot flip gender.",
+    "Prediction/reason admits many passenger feature and training fibers; category bins and rounded fare keys discard numeric precision; boolean result cannot recover rule list or unique outcomes."
+  ],
+  "limitations": [
+    "Unique passenger ids for group interpretation; bounded u32 family sums and usize counts; finite ages/fares for meaningful numeric bins; missing labels treated false by learner. No competition files used.",
+    "Partial syntax and bounded synthetic helper checks; no command/corpus/model/download effects, universal proof or percentage surrogate."
+  ],
+  "source": "tools/kaggle/src/main.rs",
+  "state": "Feature order and BTreeMap candidate order are deterministic for bounded finite inputs. Label ties/default ties false. Group neighbors are direct key intersections, not connected components. Empty cv returns NaN, k=0 executes no folds."
+}

@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p math --bin vmmtests wave28",
+    "two identical syntax projections"
+  ],
+  "children": [],
+  "cost": "O(TSV+jobs) storage,<=2 workers; external claimed-call time/cost delegated, no atomic budget reservation.",
+  "description": "Require ask/jobs, parse first options and exactly3-column TSV, initialize Vmm, spawn clamp(par,1,2). Nonempty output skips job. Call failure moves next far forward; already claimed jobs may finish. Output write failure increments failures without stopping future claims.",
+  "forward": [
+    "Require ask/jobs, parse first options and exactly3-column TSV, initialize Vmm, spawn clamp(par,1,2). Nonempty output skips job. Call failure moves next far forward; already claimed jobs may finish. Output write failure increments failures without stopping future claims."
+  ],
+  "id": "math-vmmtests-cli",
+  "inverse": [
+    "Skipped job admits any metadata-visible nonempty output regardless validity. Failure count admits many schedules and errors."
+  ],
+  "limitations": [
+    "Pure opt helper only; no jobs or teacher transport.",
+    "Partial lexical AST; no semantic proof or executable percentage surrogate"
+  ],
+  "source": "math/src/bin/vmmtests.rs",
+  "state": "Jobs, atomic next index, failure count and shared Vmm"
+}

@@ -1,0 +1,98 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical projection only; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "forced_priority",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "forced_priority",
+        "status": "partial_source_derived_model",
+        "type": "forced_priority"
+      },
+      {
+        "id": "averaging_clock",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "averaging_clock",
+        "status": "partial_source_derived_model",
+        "type": "averaging_clock"
+      },
+      {
+        "id": "beam_merge",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "beam_merge",
+        "status": "partial_source_derived_model",
+        "type": "beam_merge"
+      },
+      {
+        "id": "robust_environment",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "robust_environment",
+        "status": "partial_source_derived_model",
+        "type": "robust_environment"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 15103,
+      "start": 9287
+    },
+    "description": "Context lengths are checked before filtering tagged sentences. Frequent-word bypass excludes update-clock ticks; sparse cell totals integrate elapsed ticks, then final averaging divides by max(now,1). Robust wrong counts and environment influence suppressed updates.",
+    "source_bytes_sha256": "838bb7bdb175996d8805f2dc7d4d6e332cd908cada1df3479424266cfdd92fe3"
+  },
+  "id": "en-ptag-training",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../ptag.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "e57fcd6312bb18437676eec934f80498cba29af67b298c0bd394b8b50d978ed4"
+  },
+  "status": "partial_source_bound_model"
+}

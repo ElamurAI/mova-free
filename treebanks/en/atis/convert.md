@@ -10,7 +10,7 @@ The seeds the rules grew from are in `seeds/`.
 
 ## atis → mova
 
-### 1. Temporal modifiers (`seeds/tmod.md`)
+### 1. Temporal modifiers (`seeds.md#tmod`)
 
 ```convert
 rule: atis.tmod-np
@@ -58,7 +58,7 @@ source: EWT README v2.15
 
 Matches: `tmod-np` 241, `tmod-pp` 1022, `unmarked-pp` 688, `unmarked-np` 163.
 
-### 2. Imperative, agreement, modals, passive (`seeds/verb-feats.md`, `seeds/errors.md`)
+### 2. Imperative, agreement, modals, passive (`seeds.md#verb-feats`, `seeds.md#errors`)
 
 ```convert
 rule: atis.imperative
@@ -176,7 +176,7 @@ source: EWT README v2.13
 
 Matches on the source ATIS: `imperative` 1709, `agree-pron` 504, `agree-noun` 256, `agree-aux-pron` 142, `agree-aux-noun` 327, `modal` 782, `voice` 11, `pass-subj` 10. `imperative-conj`, `agree-conj` and `obl-agent` give 0 on the source data: they rely on features set by previous rules (`Mood=Imp`, Number of the first conjunct, `Voice=Pass`). After them — up to 36 conjuncts without their own subject (on a head with a subject) and 12 *by* phrases.
 
-### 3. Relative clauses (`seeds/relative-that-mark.md`, `seeds/acl-relcl-participle.md`)
+### 3. Relative clauses (`seeds.md#relative-that-mark`, `seeds.md#acl-relcl-participle`)
 
 ```convert
 rule: atis.relcl-participle
@@ -233,7 +233,7 @@ source: en/README.md («for a relative pronoun — the antecedent»)
 
 Matches: `relcl-participle` 662, `relcl-mark-subj` 278, `relcl-mark-obj` 13 (2 of the 293 `mark` fall under neither: the verb has both a subject and an `obj`), `relcl-pron` 102. `agree-relcl` on the source data — 0, after `relcl-mark-subj` — up to 56 relative-clause predicates without a subject.
 
-### 4. Function words (`seeds/pos-feats-from-ptb.md`)
+### 4. Function words (`seeds.md#pos-feats-from-ptb`)
 
 ```convert
 rule: atis.def
@@ -387,7 +387,7 @@ set: w[feats+=PronType=Int]
 source: EWT 2.18
 ```
 
-Needs a comma in a feature value: currently `,` separates node conditions. There is a workaround for `match` — `w[feats.PronType, feats.PronType!=Int|Rel|Prs|Art|Dem|Ind|Neg|Tot|Rcp|Emp]`, as in `seeds/pos-feats-from-ptb.md`. For the reverse action `feats+=PronType=Int,Rel` there is no workaround. The relative variant is the same with `v[rel=acl:relcl]` and `w[head=v]` → `PronType=Rel`. 1793 words.
+Needs a comma in a feature value: currently `,` separates node conditions. There is a workaround for `match` — `w[feats.PronType, feats.PronType!=Int|Rel|Prs|Art|Dem|Ind|Neg|Tot|Rcp|Emp]`, as in `seeds.md#pos-feats-from-ptb`. For the reverse action `feats+=PronType=Int,Rel` there is no workaround. The relative variant is the same with `v[rel=acl:relcl]` and `w[head=v]` → `PronType=Rel`. 1793 words.
 
 ```convert-todo
 rule: atis.extpos
@@ -402,10 +402,10 @@ source: UD 2.16, ExtPos
 Needs an "expression → ExtPos" dictionary: *out of*, *instead of* → ADP; *so that* → SCONJ; *at least*, *as well*, *all right* → ADV. These are six rules with `form=` on both nodes, they can be written even now. But *stand for*, *or as*, *from which* in `fixed` in ATIS are errors; there will be no rules for them. 22 heads.
 
 **Not converted:**
-- **Names** (`seeds/names-flat.md`). *new york* with head *new* → *York* with `amod` *New* requires moving the head together with its dependents, i.e. a `rel=@v` action — copy another node's relation. We keep `flat`: since 2.17 EWT also puts `flat` on place names.
+- **Names** (`seeds.md#names-flat`). *new york* with head *new* → *York* with `amod` *New* requires moving the head together with its dependents, i.e. a `rel=@v` action — copy another node's relation. We keep `flat`: since 2.17 EWT also puts `flat` on place names.
 - **XPOS.** ATIS does not have it, so the sentences do not train the PTB tagger, as `en::ud` already does.
 - **`VerbForm=Ger`.** A gerund cannot be distinguished from a participle by form.
-- **Errors from `seeds/errors.md`**, except the systematic `nsubj` in the passive.
+- **Errors from `seeds.md#errors`**, except the systematic `nsubj` in the passive.
 
 ## mova → atis
 
@@ -418,7 +418,7 @@ from: mova
 to: atis
 match: v[feats.Mood=Imp]
 set: v[feats-=Mood]; v[feats+=VerbForm=Inf]
-source: seeds/verb-feats.md
+source: seeds.md#verb-feats
 ```
 
 ```convert
@@ -428,7 +428,7 @@ from: mova
 to: atis
 match: v[feats.VerbForm=Fin, feats.Tense=Pres, suffix!=s]
 set: v[feats-=Number]; v[feats-=Person]
-source: seeds/verb-feats.md (ATIS: Number/Person only on VBZ)
+source: seeds.md#verb-feats (ATIS: Number/Person only on VBZ)
 ```
 
 ```convert
@@ -438,7 +438,7 @@ from: mova
 to: atis
 match: v[feats.VerbForm=Fin, feats.Tense=Past]
 set: v[feats-=Number]; v[feats-=Person]
-source: seeds/verb-feats.md
+source: seeds.md#verb-feats
 ```
 
 ```convert
@@ -448,7 +448,7 @@ from: mova
 to: atis
 match: m[upos=AUX, feats.VerbForm=Fin, !feats.Tense, !feats.Mood]
 set: m[feats-=VerbForm]
-source: seeds/verb-feats.md
+source: seeds.md#verb-feats
 ```
 
 ```convert
@@ -458,7 +458,7 @@ from: mova
 to: atis
 match: v[feats.Voice=Pass]
 set: v[feats-=Voice]
-source: seeds/errors.md
+source: seeds.md#errors
 ```
 
 ```convert
@@ -468,7 +468,7 @@ from: mova
 to: atis
 match: s[rel=nsubj:pass]
 set: s[rel=nsubj]
-source: seeds/errors.md
+source: seeds.md#errors
 ```
 
 ```convert
@@ -478,7 +478,7 @@ from: mova
 to: atis
 match: o[rel=obl:agent]
 set: o[rel=obl]
-source: seeds/errors.md
+source: seeds.md#errors
 ```
 
 ```convert
@@ -488,7 +488,7 @@ from: mova
 to: atis
 match: t[rel=nmod:unmarked]
 set: t[rel=nmod:tmod]
-source: seeds/tmod.md
+source: seeds.md#tmod
 ```
 
 ```convert
@@ -499,7 +499,7 @@ to: atis
 match: t[rel=nmod, lemma=morning|afternoon|evening|night|noon|pm|am|monday|tuesday|wednesday|thursday|friday|saturday|sunday|january|february|march|april|may|june|july|august|september|october|november|december|today|tomorrow|day|week|time]
 require: exists c[rel=case, head=t]
 set: t[rel=nmod:tmod]
-source: seeds/tmod.md
+source: seeds.md#tmod
 ```
 
 ```convert
@@ -510,7 +510,7 @@ to: atis
 match: t[rel=obl, lemma=morning|afternoon|evening|night|noon|pm|am|monday|tuesday|wednesday|thursday|friday|saturday|sunday|january|february|march|april|may|june|july|august|september|october|november|december|today|tomorrow|day|week|time]
 require: exists c[rel=case, head=t]
 set: t[rel=obl:unmarked]
-source: seeds/tmod.md
+source: seeds.md#tmod
 ```
 
 ```convert
@@ -520,7 +520,7 @@ from: mova
 to: atis
 match: d[form=a|an|the, upos=DET]
 set: d[feats-=Definite]
-source: seeds/pos-feats-from-ptb.md
+source: seeds.md#pos-feats-from-ptb
 ```
 
 ```convert
@@ -530,7 +530,7 @@ from: mova
 to: atis
 match: d[upos=DET, feats.PronType=Dem, form=this|that|these|those]
 set: d[feats+=PronType=Art]; d[feats-=Number]
-source: seeds/pos-feats-from-ptb.md
+source: seeds.md#pos-feats-from-ptb
 ```
 
 ```convert
@@ -540,7 +540,7 @@ from: mova
 to: atis
 match: t[upos=PRON, form=this|that|these|those, feats.PronType=Dem]
 set: t[upos=DET]; t[feats+=PronType=Art]; t[feats-=Number]
-source: seeds/pos-feats-from-ptb.md (90 of 125 — DET)
+source: seeds.md#pos-feats-from-ptb (90 of 125 — DET)
 ```
 
 ```convert
@@ -550,7 +550,7 @@ from: mova
 to: atis
 match: v[rel=acl:relcl]; t[form=that, rel=nsubj|nsubj:pass|obj, head=v, before=v]
 set: t[rel=mark]; t[upos=ADP]; t[feats-=PronType]
-source: seeds/relative-that-mark.md
+source: seeds.md#relative-that-mark
 ```
 
 ```convert
@@ -560,7 +560,7 @@ from: mova
 to: atis
 match: m[upos=SCONJ]
 set: m[upos=ADP]
-source: seeds/pos-feats-from-ptb.md
+source: seeds.md#pos-feats-from-ptb
 ```
 
 ```convert
@@ -570,7 +570,7 @@ from: mova
 to: atis
 match: p[upos=PRON, rel=nmod:poss, feats.Poss=Yes, form=my|your|their|our|his|her|its]
 set: p[upos=DET]; p[feats-=Case]; p[feats-=Person]
-source: seeds/pos-feats-from-ptb.md
+source: seeds.md#pos-feats-from-ptb
 ```
 
 ```convert
@@ -580,7 +580,7 @@ from: mova
 to: atis
 match: p[form=my, rel=nmod:poss]
 set: p[lemma=I]
-source: seeds/pos-feats-from-ptb.md
+source: seeds.md#pos-feats-from-ptb
 ```
 
 ```convert
@@ -590,7 +590,7 @@ from: mova
 to: atis
 match: p[form=your, rel=nmod:poss]
 set: p[lemma=you]
-source: seeds/pos-feats-from-ptb.md
+source: seeds.md#pos-feats-from-ptb
 ```
 
 ```convert
@@ -600,7 +600,7 @@ from: mova
 to: atis
 match: p[form=their, rel=nmod:poss]
 set: p[lemma=they]
-source: seeds/pos-feats-from-ptb.md
+source: seeds.md#pos-feats-from-ptb
 ```
 
 ```convert
@@ -610,7 +610,7 @@ from: mova
 to: atis
 match: n[form=not|n't, upos=PART]
 set: n[upos=ADV]; n[feats-=Polarity]
-source: seeds/pos-feats-from-ptb.md
+source: seeds.md#pos-feats-from-ptb
 ```
 
 ```convert
@@ -620,7 +620,7 @@ from: mova
 to: atis
 match: n[feats.NumForm]
 set: n[feats-=NumForm]
-source: seeds/pos-feats-from-ptb.md
+source: seeds.md#pos-feats-from-ptb
 ```
 
 ```convert
@@ -630,7 +630,7 @@ from: mova
 to: atis
 match: h[feats.ExtPos]
 set: h[feats-=ExtPos]
-source: seeds/pos-feats-from-ptb.md
+source: seeds.md#pos-feats-from-ptb
 ```
 
 ```convert
@@ -640,7 +640,7 @@ from: mova
 to: atis
 match: a[upos=ADV, !feats.Degree, !feats.PronType]
 set: a[feats+=Degree=Pos]
-source: seeds/pos-feats-from-ptb.md
+source: seeds.md#pos-feats-from-ptb
 ```
 
 ```convert
@@ -650,7 +650,7 @@ from: mova
 to: atis
 match: p[form=you, upos=PRON]
 set: p[feats+=Number=Sing]
-source: seeds/verb-feats.md
+source: seeds.md#verb-feats
 ```
 
 ```convert
@@ -660,7 +660,7 @@ from: mova
 to: atis
 match: v[rel=acl, feats.VerbForm=Part]
 set: v[rel=acl:relcl]
-source: seeds/acl-relcl-participle.md
+source: seeds.md#acl-relcl-participle
 ```
 
 ```convert
@@ -670,7 +670,7 @@ from: mova
 to: atis
 match: t[]
 set: t[xpos=_]
-source: seeds/data.md
+source: seeds.md#data
 ```
 
 ```convert-todo
@@ -680,7 +680,7 @@ from: mova
 to: atis
 match: w[feats.PronType=Int|Rel]
 set: w[feats+=PronType=Int,Rel]
-source: seeds/pos-feats-from-ptb.md
+source: seeds.md#pos-feats-from-ptb
 ```
 
 Matches on EWT (`mova → atis`): `imperative` 1663, `agree-pres` 6851, `agree-past` 6456, `modal` 4050, `voice` 3255, `pass-subj` 1445, `obl-agent` 376, `tmod-np` 1360, `tmod-pp` 199, `unmarked-pp` 546, `def` 16 365, `dem` 1397, `dem-pron` 994, `relcl-that` 576, `sconj` 4600, `poss` 3594, `not` 2077, `numform` 5608, `extpos` 869, `adv-degree` 8907, `relcl-participle` 584, `you` 2768. This is for estimating volume: on our annotator's output for ATIS text the numbers will differ.

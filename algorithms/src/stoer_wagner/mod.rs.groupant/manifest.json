@@ -1,0 +1,157 @@
+{
+  "schema": 1,
+  "id": "algorithm-stoer-wagner",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "99388dc692a562a7febda63f40e0024b17818d7926caecc33647b756cd6ba7c8"
+  },
+  "children": [
+    
+  ],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "99388dc692a562a7febda63f40e0024b17818d7926caecc33647b756cd6ba7c8",
+        "domain": "Finite square symmetric u64 adjacency matrices, interpreted as undirected nonnegative capacities; diagonal entries ignored. Results are errors, None for fewer than two vertices, or u128 cut weight with sorted proper side containing vertex zero. Allocations succeed; input immutable.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "In the declared input/result universe exclude acceptance of a nonsquare/asymmetric matrix, wrong first error, a trivial or unsorted cut side, a side excluding vertex zero, a weight unequal to original crossing capacity, a suboptimal objective, and wrapped sums. This is a source-derived semantic exclusion model rather than an enumerated negative-test set.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "cut_preimages",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "cut_preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "99388dc692a562a7febda63f40e0024b17818d7926caecc33647b756cd6ba7c8",
+        "domain": "Finite square symmetric u64 adjacency matrices, interpreted as undirected nonnegative capacities; diagonal entries ignored. Results are errors, None for fewer than two vertices, or u128 cut weight with sorted proper side containing vertex zero. Allocations succeed; input immutable.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "For a full Cut(w,S), candidate antecedents are square symmetric nonnegative matrices where S is sorted, proper, contains zero, has crossing sum w and no cut has lower weight. Those constraints form an outer reconstruction relation: exact antecedents additionally require the deterministic phase sequence and equal-phase tie rule to select S. Every diagonal is free, giving explicit nonunique full-output fibers. None has all valid matrices of size zero or one as preimages.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "contraction_quotient",
+        "type": "quotient_relation",
+        "path": "model.md",
+        "section": "contraction_quotient",
+        "status": "partial_source_derived",
+        "subject_revision": "99388dc692a562a7febda63f40e0024b17818d7926caecc33647b756cd6ba7c8",
+        "domain": "Finite square symmetric u64 adjacency matrices, interpreted as undirected nonnegative capacities; diagonal entries ignored. Results are errors, None for fewer than two vertices, or u128 cut weight with sorted proper side containing vertex zero. Allocations succeed; input immutable.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "Given the active partition P, quotient capacity W[A,B]=sum of original capacities across A and B. Merging A and B replaces each external capacity by W[A,C]+W[B,C]. Every quotient cut lifts to a union of original groups with exactly equal weight; cuts separating A from B are intentionally lost and accounted for by the phase theorem.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "witness_lift",
+        "type": "certificate_relation",
+        "path": "model.md",
+        "section": "witness_lift",
+        "status": "partial_source_derived",
+        "subject_revision": "99388dc692a562a7febda63f40e0024b17818d7926caecc33647b756cd6ba7c8",
+        "domain": "Finite square symmetric u64 adjacency matrices, interpreted as undirected nonnegative capacities; diagonal entries ignored. Results are errors, None for fewer than two vertices, or u128 cut weight with sorted proper side containing vertex zero. Allocations succeed; input immutable.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "The stored last-supervertex group is nonempty and proper at every phase. Sorting it and complementing when it excludes zero preserve cut weight in a symmetric matrix. Summing original rows across the returned side independently certifies feasibility and objective value, though minimum optimality needs exhaustive cuts or the phase theorem.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "capacity_order",
+        "type": "order_relation",
+        "path": "model.md",
+        "section": "capacity_order",
+        "status": "partial_source_derived",
+        "subject_revision": "99388dc692a562a7febda63f40e0024b17818d7926caecc33647b756cd6ba7c8",
+        "domain": "Finite square symmetric u64 adjacency matrices, interpreted as undirected nonnegative capacities; diagonal entries ignored. Results are errors, None for fewer than two vertices, or u128 cut weight with sorted proper side containing vertex zero. Allocations succeed; input immutable.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "Increasing one or more undirected capacities cannot reduce global minimum cut value, since each candidate partition sum is nondecreasing. Positive integer scaling multiplies the minimum value and preserves all capacity-order comparisons when representable in the input type. Cut witness identity under arbitrary increases is not promised.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "vertex_permutation",
+        "type": "equivariance_relation",
+        "path": "model.md",
+        "section": "vertex_permutation",
+        "status": "partial_source_derived",
+        "subject_revision": "99388dc692a562a7febda63f40e0024b17818d7926caecc33647b756cd6ba7c8",
+        "domain": "Finite square symmetric u64 adjacency matrices, interpreted as undirected nonnegative capacities; diagonal entries ignored. Results are errors, None for fewer than two vertices, or u128 cut weight with sorted proper side containing vertex zero. Allocations succeed; input immutable.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "Simultaneously permuting rows and columns preserves the minimum value and maps every feasible cut to an equal-weight cut. The chosen side need not follow the permutation because survivor tie order and zero orientation change; the API makes no global lexicographic minimum-side promise.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "loop_fibers",
+        "type": "kernel_relation",
+        "path": "model.md",
+        "section": "loop_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "99388dc692a562a7febda63f40e0024b17818d7926caecc33647b756cd6ba7c8",
+        "domain": "Finite square symmetric u64 adjacency matrices, interpreted as undirected nonnegative capacities; diagonal entries ignored. Results are errors, None for fewer than two vertices, or u128 cut weight with sorted proper side containing vertex zero. Allocations succeed; input immutable.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "Arbitrary diagonal changes leave every cut sum, phase connection, merge to an external group and returned result unchanged. This exact discarded-coordinate relation supplies recoverable crossing data without claiming recovery of loop capacities.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "validation_and_arithmetic",
+        "type": "error_partition",
+        "path": "model.md",
+        "section": "validation_and_arithmetic",
+        "status": "partial_source_derived",
+        "subject_revision": "99388dc692a562a7febda63f40e0024b17818d7926caecc33647b756cd6ba7c8",
+        "domain": "Finite square symmetric u64 adjacency matrices, interpreted as undirected nonnegative capacities; diagonal entries ignored. Results are errors, None for fewer than two vertices, or u128 cut weight with sorted proper side containing vertex zero. Allocations succeed; input immutable.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "All nonsquare-row errors precede asymmetry errors; first bad row or lexicographic upper-triangle pair determines the payload. u64 inputs are nonnegative by construction. Checked u128 merge/connection sums cannot wrap; finite tests cross u64::MAX but do not exercise actual u128 overflow or allocation failure.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "schema": 1,
+  "kind": "groupant_fragment",
+  "id": "rule-derivation-packing",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../../derive.rs",
+    "sha256": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842"
+  },
+  "components": {
+    "ast": {
+      "path": "../syntax.json",
+      "status": "partial",
+      "format": "rust_syntax_projection"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "tests": {
+      "path": "../model.md#tests",
+      "status": "bounded_evidence"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule state; specialization in operator",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "U consists of valid record/table projections and successful results. Inner absent behaviors include unpack recovering original surface forms, obtaining a nonempty lemma from a colon-free class, and finite=true for a decoded store tag outside VBD/VBZ/VBP/MD. Form/lemma cases executed; real decode_tag inspected only.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous preimage, or specialized conditional source relation",
+        "assumptions": "Equal Packed vector lengths, valid enum/class indexes and fewer than 65536 classes are assumptions. Downstream heads must be in range. Missing lemma IDs become empty strings, whereas malformed enum/class indexes can panic. Class IDs are dictionary-relative, not stable cross-run identities.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "antecedents",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule state; specialization in operator",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "Given unpacked S with fixed dictionary/enums, Packed must preserve observed enum/finite/u16-head values; each class slot may be any slot whose split(':').nth(1).unwrap_or(empty) equals the lemma. Nonempty forms or heads exceeding u16 have no preimage. Multiple slots and suffixes share observations; original forms are unrecoverable. Probe witnesses ADP:x:y versus ADP:x:z and open-class collisions.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous preimage, or specialized conditional source relation",
+        "assumptions": "Equal Packed vector lengths, valid enum/class indexes and fewer than 65536 classes are assumptions. Downstream heads must be in range. Missing lemma IDs become empty strings, whereas malformed enum/class indexes can panic. Class IDs are dictionary-relative, not stable cross-run identities.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "lexical-projection",
+        "type": "information_loss",
+        "path": "model.md",
+        "section": "lexical-projection",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule state; specialization in operator",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "Closed ADP/AUX/PART/SCONJ/CCONJ/DET/PRON map to POS:lowercase(lemma), others to POS. unpack retains only colon component one, so ADP:x:y yields x: class/unpack is not an identity for colon-containing lemmas. Missing lexical IDs yield empty suffix. Probe covers lowercase/open-class/colon collapse and to/of propagation; no full Unicode normalization claim.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous preimage, or specialized conditional source relation",
+        "assumptions": "Equal Packed vector lengths, valid enum/class indexes and fewer than 65536 classes are assumptions. Downstream heads must be in range. Missing lemma IDs become empty strings, whereas malformed enum/class indexes can panic. Class IDs are dictionary-relative, not stable cross-run identities.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "finite-projection",
+        "type": "state_projection",
+        "path": "model.md",
+        "section": "finite-projection",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule state; specialization in operator",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "scan_store finite is decoded-tag membership in VBD/VBZ/VBP/MD; parsed scan instead checks feature text for VerbForm=Fin. These are distinct dependency predicates. Finite=true admits four decoded tags, false all others; root preference further requires VERB POS. Proposed exhaustive real Tag/decode oracle not executed by stub probe; store sibling fixtures are separate evidence.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous preimage, or specialized conditional source relation",
+        "assumptions": "Equal Packed vector lengths, valid enum/class indexes and fewer than 65536 classes are assumptions. Downstream heads must be in range. Missing lemma IDs become empty strings, whereas malformed enum/class indexes can panic. Class IDs are dictionary-relative, not stable cross-run identities.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "widths",
+        "type": "admission_constraint",
+        "path": "model.md",
+        "section": "widths",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule state; specialization in operator",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "New class gets classes_m.len() as u16. After 65536 classes, the next index wraps to zero and dictionary inversion overwrites a slot: injectivity needs the capacity assumption. Raw head little-endian u16 widens without validation; probe retains 65535. Book scan narrows parser heads to u16. Width recovery needs range constraints. Capacity-boundary allocation oracle remains prospective.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous preimage, or specialized conditional source relation",
+        "assumptions": "Equal Packed vector lengths, valid enum/class indexes and fewer than 65536 classes are assumptions. Downstream heads must be in range. Missing lemma IDs become empty strings, whereas malformed enum/class indexes can panic. Class IDs are dictionary-relative, not stable cross-run identities.",
+        "evidence": "../model.md#tests"
+      }
+    ]
+  },
+  "coverage": {
+    "description": "rule-derivation-packing",
+    "byte_range": {
+      "start": 28959,
+      "end": 31543
+    },
+    "syntax_nodes": {
+      "path": "../syntax.json",
+      "node_ids": [
+        3705,
+        3716,
+        3790
+      ]
+    }
+  }
+}

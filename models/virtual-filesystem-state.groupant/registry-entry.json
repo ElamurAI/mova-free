@@ -1,0 +1,34 @@
+{
+  "checks": [
+    "20 exact named tests twice debug and twice release",
+    "Seven compiled actual-source negative controls with byte restoration",
+    "Two identical syntax projections per source"
+  ],
+  "children": [
+    "vfs-snapbench",
+    "vfs-error",
+    "vfs-host",
+    "vfs-journal",
+    "vfs-api",
+    "vfs-memory",
+    "vfs-path",
+    "vfs-gates"
+  ],
+  "cost": "Memory resolve O(expanded bytes+sum log fanout), COW O(sum shared-directory fanouts+copied payload); snapshot O(cwd bytes), restore additionally last-reference destruction. Host I/O and sorting separate. No benchmark throughput claim.",
+  "description": "FileSystem routes tagged mem/dir/real implementations. Vfs edits resolve paths, validate permissions/quotas, COW mutate then journal. Errno projects failures to Linux/WASI. Snapshot restores tree/counters but not journal/policy. Host import/export are explicit partial-effect paths.",
+  "forward": [
+    "FileSystem routes tagged mem/dir/real implementations. Vfs edits resolve paths, validate permissions/quotas, COW mutate then journal. Errno projects failures to Linux/WASI. Snapshot restores tree/counters but not journal/policy. Host import/export are explicit partial-effect paths.",
+    "Actual callers: mlab/src/interp.rs owns Box<dyn vfs::FileSystem>, mlab/src/builtins/files.rs and table.rs call it; open selects backend. Memory path->error->journal joins tested. wasi-host is sibling consumer of Vfs/Errno projections, not owned here. snapbench and test fixtures are independent observation paths, not production callers."
+  ],
+  "id": "virtual-filesystem-state",
+  "inverse": [
+    "Under Fault=None and bounded arithmetic, single-file quota failures do not install edits; virtual absolute paths cannot implicitly read host. Host race and transfer partial effects excluded from this inner source-derived claim.",
+    "Restored state admits arbitrary intervening histories; journal drops and TSV sanitization erase information. Linux errno1 admits Perm and NotCapable; backend tag required to interpret metadata."
+  ],
+  "limitations": [
+    "Skipped real /etc/passwd test and open_modes external probe",
+    "No full benchmark, WASI guest execution, corpus or production filesystem access",
+    "Unsigned counter overflow and allocation failure not exhaustively tested; finite mutation sensitivity only"
+  ],
+  "state": "Bounded Fault=None single-file quota rejection preserves dump; shared snapshots preserve prior tree bytes. Journal total counts retained+dropped before overflow. Host confinement requires stable filesystem and simple temp prefixes."
+}

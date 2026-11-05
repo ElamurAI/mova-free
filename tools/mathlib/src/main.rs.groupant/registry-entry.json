@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "wave33::argument_partition_and_numeric_failure",
+    "wave33::license_and_token_representation_joins"
+  ],
+  "children": [],
+  "cost": "Argument scans O(F*A) for F requested flags; positional O(A), allocations O(A). Downstream costs are tagged by selected route, not summed across commands.",
+  "description": "CLI argv chooses a command, partitions rest with skip-next semantics for all nonboolean --flags, derives first-occurrence flag values/numbers, then invokes exactly the guarded command branch. sql joins duck::fill and duck::run; other routes remain separate.",
+  "forward": [
+    "CLI argv chooses a command, partitions rest with skip-next semantics for all nonboolean --flags, derives first-occurrence flag values/numbers, then invokes exactly the guarded command branch. sql joins duck::fill and duck::run; other routes remain separate."
+  ],
+  "id": "mathlib-main",
+  "inverse": [
+    "Unknown command or failed positional arity cannot invoke a module route. Malformed numeric value on selected route fails before invoking that route. A dangling valued flag returns None/default rather than a missing-value error.",
+    "Given route and effective options, reconstruct all argv lists whose first flag values and positional partition select it. Unknown flags, redundant options and ignored tails can differ; defaults are indistinguishable from explicit values."
+  ],
+  "limitations": [
+    "No network/DNS/download, real catalog/corpus/model/teacher or database execution. Effect paths are source-derived; finite helper tests are not universal verification. No executable percentage surrogate or speed claim; future caps require metric/domain/reference and remain 1/2/5/10%."
+  ],
+  "source": "tools/mathlib/src/main.rs",
+  "state": "No arguments yield usage without indexing panic. Only --expect-pdf and --compact-src avoid consuming following positional token. Unknown flags are not validated. Numeric overflow in min-free multiplication is outside nonoverflowing model domain."
+}

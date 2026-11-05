@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "Two debug and two release runs with identical normalized outcomes",
+    "Named compiled mutation rejected by assertion; exact source restoration",
+    "Source syntax projected twice identically"
+  ],
+  "children": [],
+  "cost": "64(n+1) usize prefixes, O(64n) build, O(64) query",
+  "description": "Static u64 half-open rank, count and order statistics",
+  "forward": [
+    "See model.md forward and invariant"
+  ],
+  "id": "algorithm-wavelet-matrix",
+  "inverse": [
+    "Behavior complement and compatible-input reconstruction are distinct relations in model.md"
+  ],
+  "limitations": [
+    "Finite tests are not all-input proof",
+    "Allocation failure outside Result/Option contract",
+    "Partial syntax is not semantic AST",
+    "No certified executable numerical approximant"
+  ],
+  "source": "algorithms/src/wavelet_matrix/mod.rs",
+  "state": "64 stable prefix-rank levels"
+}

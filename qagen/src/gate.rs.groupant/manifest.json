@@ -1,0 +1,84 @@
+{
+  "children": [
+    {
+      "id": "qagen-gate-lexical",
+      "path": "lexical.groupant"
+    },
+    {
+      "id": "qagen-gate-rows",
+      "path": "rows.groupant"
+    },
+    {
+      "id": "qagen-gate-batch",
+      "path": "batch.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "qagen-gate-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "qagen-gate-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "qagen-gate-specialized",
+        "path": "model.md",
+        "section": "specialization",
+        "status": "partial_source_model",
+        "type": "gate_file_observation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "finite_observation"
+    }
+  },
+  "id": "qagen-gate",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../gate.rs",
+    "sha256": "09328f711abf4b6453f95bed3d873deb205c8801d939841974416fe74e3e5806"
+  },
+  "status": "partial_source_bound_model"
+}

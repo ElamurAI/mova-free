@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-gcd",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "abce5c9a9f0a2de26a6dbe392180e6a1c20eea179623fd5ede84434679b0d0e3"
+  },
+  "components": {
+    "ast": {
+      "path": "syntax.json",
+      "status": "partial",
+      "format": "rust_syntax_projection"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived_bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived_bounded_checked"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#test-extraction",
+      "status": "bounded_evidence"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "abce5c9a9f0a2de26a6dbe392180e6a1c20eea179623fd5ede84434679b0d0e3",
+        "domain": "All u64 pairs, one successful pure call, output u64. Divisibility oracle handles (0,0) separately.",
+        "observation_scope": "Input/output transition for one successful call; no trace or panic contract.",
+        "operator": "U=u64^2 x u64. R(a,b,g) is the forward gcd relation. U minus R contains g!=0 for (0,0), and otherwise g=0, a value not dividing both inputs, or a common divisor smaller than another common divisor. This is a mathematical exact target, source-derived and only bounded-tested.",
+        "approximation_semantics": "Conditional source-derived relation; bounded correspondence only, prospective details explicitly identified.",
+        "assumptions": "All u64 pairs, one successful pure call, output u64. Divisibility oracle handles (0,0) separately.",
+        "evidence": "model.md#test-extraction"
+      },
+      {
+        "id": "antecedents",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "abce5c9a9f0a2de26a6dbe392180e6a1c20eea179623fd5ede84434679b0d0e3",
+        "domain": "All u64 pairs, one successful pure call, output u64. Divisibility oracle handles (0,0) separately.",
+        "observation_scope": "Input/output transition for one successful call; no trace or panic contract.",
+        "operator": "For fixed g>0, compatible inputs are (g*x,g*y) with products fitting u64 and gcd(x,y)=1, including (0,g),(g,0). For g=0 only (0,0). Multiple coprime pairs preserve ambiguity; no unique reconstruction.",
+        "approximation_semantics": "Conditional source-derived relation; bounded correspondence only, prospective details explicitly identified.",
+        "assumptions": "All u64 pairs, one successful pure call, output u64. Divisibility oracle handles (0,0) separately.",
+        "evidence": "model.md#test-extraction"
+      },
+      {
+        "id": "symmetry",
+        "type": "argument_permutation",
+        "path": "model.md",
+        "section": "symmetry",
+        "status": "partial_source_derived_model",
+        "subject_revision": "abce5c9a9f0a2de26a6dbe392180e6a1c20eea179623fd5ede84434679b0d0e3",
+        "domain": "All u64 pairs, one successful pure call, output u64. Divisibility oracle handles (0,0) separately.",
+        "observation_scope": "Input/output transition for one successful call; no trace or panic contract.",
+        "operator": "Swap inputs: gcd(a,b)=gcd(b,a) for all u64 pairs. Control flow length may change, but output does not. Full bounded grid compares both ordered pairs with the divisor oracle.",
+        "approximation_semantics": "Conditional source-derived relation; bounded correspondence only, prospective details explicitly identified.",
+        "assumptions": "All u64 pairs, one successful pure call, output u64. Divisibility oracle handles (0,0) separately.",
+        "evidence": "model.md#test-extraction"
+      },
+      {
+        "id": "zero_boundary",
+        "type": "boundary_specialization",
+        "path": "model.md",
+        "section": "zero_boundary",
+        "status": "partial_source_derived_model",
+        "subject_revision": "abce5c9a9f0a2de26a6dbe392180e6a1c20eea179623fd5ede84434679b0d0e3",
+        "domain": "All u64 pairs, one successful pure call, output u64. Divisibility oracle handles (0,0) separately.",
+        "observation_scope": "Input/output transition for one successful call; no trace or panic contract.",
+        "operator": "Restrict input to a=0 or b=0. Output is max(a,b), including zero at the intersection. This specialization explains absent division by zero and is checked with zero/max literals and bounded pairs.",
+        "approximation_semantics": "Conditional source-derived relation; bounded correspondence only, prospective details explicitly identified.",
+        "assumptions": "All u64 pairs, one successful pure call, output u64. Divisibility oracle handles (0,0) separately.",
+        "evidence": "model.md#test-extraction"
+      },
+      {
+        "id": "divisor_lattice",
+        "type": "predicate_projection",
+        "path": "model.md",
+        "section": "divisor_lattice",
+        "status": "partial_source_derived_model",
+        "subject_revision": "abce5c9a9f0a2de26a6dbe392180e6a1c20eea179623fd5ede84434679b0d0e3",
+        "domain": "All u64 pairs, one successful pure call, output u64. Divisibility oracle handles (0,0) separately.",
+        "observation_scope": "Input/output transition for one successful call; no trace or panic contract.",
+        "operator": "For (a,b)!=(0,0) and positive d, d divides output iff d divides both inputs. Output is the greatest element under divisibility of common divisors. Oracle explicitly enumerates bounded common divisors; unbounded predicate equivalence remains a source-derived claim.",
+        "approximation_semantics": "Conditional source-derived relation; bounded correspondence only, prospective details explicitly identified.",
+        "assumptions": "All u64 pairs, one successful pure call, output u64. Divisibility oracle handles (0,0) separately.",
+        "evidence": "model.md#test-extraction"
+      }
+    ]
+  },
+  "children": []
+}

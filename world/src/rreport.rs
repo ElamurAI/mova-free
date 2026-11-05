@@ -24,7 +24,11 @@ pub struct Row {
     pub r_base: f64,
 }
 
+/// Pair answers with questions in the same order used by reader::read_all.
+/// Panics before scoring when cardinalities differ, preventing silent measurement loss.
+/// Equal lengths cannot detect reordered answers; order is a caller precondition.
 pub fn rows(own: &crate::world::World, qs: &[Qa], ans: Vec<RAnswer>) -> Vec<Row> {
+    assert_eq!(qs.len(), ans.len(), "one answer per question is required");
     qs.iter()
         .zip(ans)
         .map(|(q, a)| {
@@ -244,4 +248,87 @@ pub fn manual(rs: &[&Row], v: &BTreeMap<(String, usize), [f64; 4]>) -> String {
         let _ = writeln!(o, "| {name} | {n} | {:.0}% | {:.0}% | {:.0}% | {sent} | {:.0}% |", p(s[1]), p(s[0]), p(s[2]), p(s[3]));
     }
     o
+}
+
+#[cfg(test)]
+mod wave10_models {
+    use super::*;
+
+    fn row(n: usize, state: bool, score: f64) -> Row {
+        Row {
+            q: Qa { story: "t".into(), n, attr: "setting".into(), ex: "explicit".into(), ex2: "".into(),
+                local: true, secs: vec![1], question: "where?".into(), a1: "here".into(), a2: "".into() },
+            a: RAnswer { text: "here".into(), src: RSrc::Sentence, state: state.then(|| "here".into()),
+                conf: 1.0, fact: "".into(), reason: "".into(), frame: "where actor".into(), sent: None },
+            r: score, r_state: score / 2.0, old: "".into(), r_old: 0.5, base: "".into(), r_base: 1.0,
+        }
+    }
+
+    #[test]
+    fn mismatched_answers_rejected_before_scoring() {
+        let w = crate::world::World::new(crate::world::Text { doc: 0, title: String::new(), sents: vec![] });
+        assert!(std::panic::catch_unwind(|| rows(&w, &[], vec![row(0, false, 0.0).a])).is_err(),
+            "extra answers must not silently vanish");
+        assert!(std::panic::catch_unwind(|| rows(&w, &[row(0, false, 0.0).q], vec![])).is_err(),
+            "missing answers must not silently undercount");
+        assert!(rows(&w, &[], vec![]).is_empty());
+    }
+
+    #[test]
+    fn aggregation_independent_integer_oracle() {
+        for mask in 0..8 {
+            for code in 0..27 {
+                let scores = [code % 3, code / 3 % 3, code / 9];
+                let rs: Vec<_> = (0..3).map(|i| row(i, mask & (1 << i) != 0, scores[i] as f64 / 2.0)).collect();
+                let mut a = Agg::default();
+                for x in &rs { a.add(x); }
+                let sum: usize = scores.iter().sum();
+                let missing = 3 - (mask as u32).count_ones();
+                assert_eq!((a.n, a.none), (3, missing as usize));
+                assert_eq!((a.r, a.st, a.old, a.base), (sum as f64 / 2.0, sum as f64 / 4.0, 1.5, 3.0));
+                assert_eq!(a.line("x"), format!("| x | 3 | 0.500 | {:.3} | {:.3} | 1.000 | {:.0}% |",
+                    sum as f64 / 12.0, sum as f64 / 6.0, missing as f64 * 100.0 / 3.0));
+            }
+        }
+        assert_eq!(Agg::default().line("empty"), "| empty | 0 | 0.000 | 0.000 | 0.000 | 0.000 | 0% |");
+    }
+
+    #[test]
+    fn aggregation_fibers_and_identity_join() {
+        let mut fibers: BTreeMap<String, usize> = BTreeMap::new();
+        for x in 0..3 { for y in 0..3 {
+            let mut a = Agg::default();
+            a.add(&row(1, false, x as f64 / 2.0));
+            a.add(&row(2, false, y as f64 / 2.0));
+            *fibers.entry(a.line("pair")).or_default() += 1;
+        }}
+        assert_eq!(fibers.values().copied().collect::<Vec<_>>(), [1, 2, 3, 2, 1]);
+        let mut rs = vec![row(7, false, 1.0), row(7, true, 0.0)];
+        rs[1].q.story = "other".into();
+        let verdicts = read_verdicts("t\t7\t1\t0\t0.5\t1\nother\t7\t0\t1\t0.5\t0");
+        assert_eq!(verdicts.len(), 2);
+        let m = manual(&rs.iter().collect::<Vec<_>>(), &verdicts);
+        assert!(m.contains("| **all** | 2 | 50% | 50% | 50% | 2 | 50% |"));
+        let excluded = BTreeSet::from([("t".to_string(), 7)]);
+        let selected = sample(&rs, 5, "fixed", &excluded);
+        assert_eq!(selected.len(), 1);
+        assert_eq!(selected[0].q.story, "other");
+        assert!(report(&rs).contains("| **all** | 2 | 0.500 | 0.250 | 0.500 | 1.000 | 50% |"));
+        assert_eq!(tsv(&rs).lines().count(), 3);
+    }
+
+    #[test]
+    fn sample_bounds_and_verdict_overwrite() {
+        let rs: Vec<_> = (0..20).map(|i| row(i, false, 0.0)).collect();
+        for k in 0..=22 {
+            let chosen = sample(&rs, k, "s", &BTreeSet::new());
+            assert_eq!(chosen.len(), k.min(20));
+            let ids: BTreeSet<_> = chosen.iter().map(|r| r.q.n).collect();
+            assert_eq!(ids.len(), chosen.len());
+            assert_eq!(chosen.iter().map(|r| r.q.n).collect::<Vec<_>>(),
+                sample(&rs, k, "s", &BTreeSet::new()).iter().map(|r| r.q.n).collect::<Vec<_>>());
+        }
+        let v = read_verdicts("# header\nbad\nt\t1\t0\t0\t0\t0\nt\t1\t1\t0.5\t0\t1");
+        assert_eq!(v[&("t".into(), 1)], [1.0, 0.5, 0.0, 1.0]);
+    }
 }

@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "wave30_synthetic_helpers",
+    "Paired lexical syntax generation; bounded debug/release and compiled assertion controls in receipt"
+  ],
+  "children": [],
+  "cost": "Parsing O(bytes) plus generated code; dataset regression design and numerical costs delegated to stats/linalg. Synthetic2x2 fixture only.",
+  "description": "helpers: data_rows locates Data+lines header, extracts first two integers and inclusive1-based span, keeps numeric tokens. num normalizes uppercaseD. after selects first matching line with parseable token scanning right. lre equality first=>15, nonfinite q=>0, zero c uses absolute error, otherwise relative, clamp0..15.\n\ndatasets: lls_case builds intercept/polynomial/multi-predictor design and checks fitlm plus backslash output length; ANOVA expects9 outputs and exact df; univ computes autocorrelation. suite aggregates threshold failures; detail env affects printing only.",
+  "forward": [
+    "helpers: data_rows locates Data+lines header, extracts first two integers and inclusive1-based span, keeps numeric tokens. num normalizes uppercaseD. after selects first matching line with parseable token scanning right. lre equality first=>15, nonfinite q=>0, zero c uses absolute error, otherwise relative, clamp0..15.",
+    "datasets: lls_case builds intercept/polynomial/multi-predictor design and checks fitlm plus backslash output length; ANOVA expects9 outputs and exact df; univ computes autocorrelation. suite aggregates threshold failures; detail env affects printing only."
+  ],
+  "id": "mlab-ext-nist",
+  "inverse": [
+    "helpers: data_rows output admits ignored labels and whitespace and arbitrary lines outside span; LRE cap15 admits exact match and sufficiently small errors.",
+    "datasets: Reported LRE rows admit many generated data sets and numerical errors; thresholds determine accepted region not unique reference values."
+  ],
+  "limitations": [
+    "Well-formed one-based header spans and bounded synthetic data; frozen certified datasets unexecuted.",
+    "Partial lexical AST, no macro expansion or semantic proof",
+    "No executable numerical surrogate or global error bound",
+    "External frozen dataset/effect paths unexecuted"
+  ],
+  "source": "mlab/tests/ext_nist.rs",
+  "state": "NIST-like text, generated interpreter programs, LRE rows and acceptance thresholds."
+}

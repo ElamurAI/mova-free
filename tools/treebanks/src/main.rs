@@ -1,21 +1,19 @@
-//! treebanks — UD treebank cards and the papers about them.
-//!
-//! Design note: a separate treebanks folder, one folder per language and per treebank, holding the
-//! seeds for each treebank and the list of scientific papers about it; those papers are always
-//! downloaded and processed as usual.
+//! treebanks — UD treebank facts and the papers about them.
 //!
 //!   treebanks build <ud-treebanks-vX.tgz> <ud-docs/docs/treebanks> <anthology.bib[.gz]> <papers-dir> <out-dir> <run-dir>
+//!   treebanks index <out-dir>
 //!
 //! - The release is read as a stream: README, stats.xml, size of each `.conllu` per split.
 //!   Gate: size = release stats.xml for every split of every treebank, otherwise an error with nothing written.
 //!   Gate: every README has metadata (License, Genre, the five layers, Contributors, Data available since).
-//! - `<out>/<lang>/<treebank>/README.md` — the card; `papers.md` — the papers (see `refs.rs`);
-//!   `<out>/<lang>/README.md` — the language's treebanks; `<out>/INDEX.md` — all of them.
+//! - `<out>/cards.tsv` — one fact row per treebank (`render::COLUMNS`): licence, genres, annotation layers, sizes
+//!   per split, links, paper match ids. No README prose is carried. `<out>/INDEX.md` — rendered from the TSV;
+//!   `index` re-renders it alone (after seeds or a converter appear in a treebank folder).
 //! - `<run>/missing-ids.txt` — ACL ids from the lists that are not yet in the library (input to `sources bib-ids`);
 //!   `<run>/refs.jsonl` — every reference item with its result; `<run>/title-matches.tsv` — title and
-//!   bibtex matches for review by eye.
+//!   bibtex matches for review by eye; `<run>/unmatched.tsv` — references without a match, with hints.
 //!
-//! Seeds (`seeds/`) and converters (`convert.md`) are written by others — build does not touch them.
+//! Seeds (`seeds.md`) and converters (`convert.md`) in `<out>/<lang>/<treebank>/` are written by hand — build does not touch them.
 
 mod readme;
 mod refs;
@@ -48,8 +46,18 @@ fn main() -> Result<()> {
             out: args[5].as_ref(),
             run: args[6].as_ref(),
         }),
-        _ => bail!("usage: treebanks build <ud-treebanks-vX.tgz> <ud-docs/docs/treebanks> <anthology.bib[.gz]> <papers-dir> <out-dir> <run-dir>"),
+        Some("index") if args.len() == 2 => write_index(args[1].as_ref()),
+        _ => bail!("usage: treebanks build <ud-treebanks-vX.tgz> <ud-docs/docs/treebanks> <anthology.bib[.gz]> <papers-dir> <out-dir> <run-dir> | treebanks index <out-dir>"),
     }
+}
+
+/// `<out>/INDEX.md` from `<out>/cards.tsv`.
+fn write_index(out: &Path) -> Result<()> {
+    let tsv = out.join("cards.tsv");
+    let rows = render::parse_tsv(&fs::read_to_string(&tsv).with_context(|| tsv.display().to_string())?)?;
+    fs::write(out.join("INDEX.md"), render::index_md(&rows, out)?)?;
+    println!("INDEX.md: {} treebanks", rows.len());
+    Ok(())
 }
 
 struct Paths<'a> {
@@ -325,20 +333,14 @@ fn build(p: &Paths) -> Result<()> {
     for (code, cs) in &by_lang {
         let names: BTreeSet<&str> = cs.iter().map(|c| c.lang.as_str()).collect();
         if names.len() > 1 {
-            println!("WARNING: code {code} has several language names: {names:?} — the language index uses the first");
+            println!("WARNING: code {code} has several language names: {names:?}");
         }
     }
-    // write
-    let papers_link = format!("../../../{}/", p.papers.file_name().map(|x| x.to_string_lossy().into_owned()).unwrap_or_else(|| "papers".into()));
-    for c in &cards {
-        let dir = p.out.join(&c.lang_code).join(&c.name);
-        fs::create_dir_all(&dir)?;
-        fs::write(dir.join("README.md"), c.readme_md(&release))?;
-        fs::write(dir.join("papers.md"), c.papers_md(&m, &papers_link, &release))?;
-    }
-    for (code, cs) in &by_lang {
-        fs::write(p.out.join(code).join("README.md"), render::lang_md(cs, &release))?;
-    }
+    // write: the fact rows, then the index rendered from them as written
+    let rows: Vec<render::Row> = cards.iter().map(|c| c.row(&m, &release)).collect();
+    fs::create_dir_all(p.out)?;
+    fs::write(p.out.join("cards.tsv"), render::tsv(&rows))?;
+    write_index(p.out)?;
     // paper summary
     let mut uniq: BTreeSet<(Src, usize)> = BTreeSet::new();
     let (mut pairs_lib, mut pairs_acl, mut unfound) = (0usize, 0usize, 0usize);
@@ -355,20 +357,20 @@ fn build(p: &Paths) -> Result<()> {
     }
     let missing: BTreeSet<&str> = uniq.iter().filter(|x| x.0 == Src::Acl).map(|x| m.paper(x.0, x.1).anthology.as_str()).collect();
     let uniq_lib = uniq.iter().filter(|x| x.0 == Src::Lib).count();
-    let stats = format!(
-        "Papers in the lists: {} distinct — {uniq_lib} in the library, {} in the ACL Anthology outside the library; {unfound} references outside the ACL Anthology.",
-        uniq.len(),
-        missing.len()
-    );
-    let archive = p.tgz.file_name().map(|x| x.to_string_lossy().into_owned()).unwrap_or_default();
-    fs::write(p.out.join("INDEX.md"), render::index_md(&cards, &release, &archive, &stats))?;
     // run files
     fs::create_dir_all(p.run)?;
     fs::write(p.run.join("missing-ids.txt"), missing.iter().map(|x| format!("{x}\n")).collect::<String>())?;
     fs::write(p.run.join("refs.jsonl"), audit)?;
     fs::write(p.run.join("title-matches.tsv"), review)?;
+    let mut unmatched = String::from("treebank\treference\tnote\n");
+    for c in &cards {
+        for u in &c.unfound {
+            let _ = writeln!(unmatched, "{}\t{}\t{}", c.tb.dir, u.raw.replace(['\t', '\n'], " "), u.note.replace(['\t', '\n'], " "));
+        }
+    }
+    fs::write(p.run.join("unmatched.tsv"), unmatched)?;
     println!(
-        "cards: {} treebanks, {} languages → {}\nreference items: {} — library {}, ACL only {}, no match {}; unknown ACL ids {}\nmethods: {:?}\ntreebank–paper pairs: library {pairs_lib}, ACL outside the library {pairs_acl}; distinct papers {} (library {uniq_lib}, ACL {}); in the \"outside ACL\" lists {unfound}\n{:.0} s",
+        "cards.tsv: {} treebanks, {} languages → {}\nreference items: {} — library {}, ACL only {}, no match {}; unknown ACL ids {}\nmethods: {:?}\ntreebank–paper pairs: library {pairs_lib}, ACL outside the library {pairs_acl}; distinct papers {} (library {uniq_lib}, ACL {}); in the \"outside ACL\" lists {unfound}\n{:.0} s",
         cards.len(),
         by_lang.len(),
         p.out.display(),
@@ -401,5 +403,66 @@ mod tests {
         let o = Outcome::default();
         let flags: Vec<bool> = items.iter().map(|it| citation_like(it, &o)).collect();
         assert_eq!(flags, vec![true, false, false]);
+    }
+}
+#[cfg(test)]
+mod wave33_tests {
+    use super::*;
+
+    #[test]
+    fn readme_collect_render_join() {
+        let r = Readme::parse(
+            "# References\n\nSee https://aclanthology.org/L16-1262/\n\nSee https://aclanthology.org/L16-1262/\n",
+        );
+        let entries = bib::parse(
+            "@article{k, title={Synthetic treebank reference}, author={Smith, Jane}, year={2016}, url={https://aclanthology.org/L16-1262/}}",
+        );
+        let acl = Index::acl(&entries);
+        let lib = Index::default();
+        let m = Matcher::new(&lib, &acl);
+        let (mut audit, mut review, mut tally) = (String::new(), String::new(), Tally::default());
+        let refs = collect(
+            &m,
+            "UD_X-Y",
+            &[("readme", &r)],
+            &mut audit,
+            &mut review,
+            &mut tally,
+        );
+        assert_eq!(
+            (
+                refs.found.len(),
+                refs.unfound.len(),
+                tally.items,
+                tally.items_acl
+            ),
+            (1, 0, 1, 1)
+        );
+        assert_eq!(audit.lines().count(), 1);
+        assert!(review.is_empty());
+        let tb = release::Treebank {
+            dir: "UD_X-Y".into(),
+            code: "x_y".into(),
+            ..Default::default()
+        };
+        let card = Card {
+            tb: &tb,
+            readme: &r,
+            lang: "X".into(),
+            lang_code: "x".into(),
+            name: "y".into(),
+            family: String::new(),
+            has_docs: false,
+            found: refs.found,
+            unfound: refs.unfound,
+        };
+        let row = card.row(&m, "synthetic");
+        assert_eq!((row.get("papers"), row.get("unmatched_refs"), row.get("release")), ("L16-1262|url", "0", "synthetic"));
+        assert_eq!(row.get("ud_name"), "UD_X-Y");
+        let empty_card = Card {
+            found: Vec::new(),
+            ..card
+        };
+        assert_eq!(empty_card.row(&m, "synthetic").get("papers"), "");
     }
 }

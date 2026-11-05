@@ -1,0 +1,94 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Parent projection restricted to[2437,6714)",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "product_quotient",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "product_quotient",
+        "status": "partial_source_derived_model",
+        "type": "product_quotient"
+      },
+      {
+        "id": "power_cases",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "power_cases",
+        "status": "partial_source_derived_model",
+        "type": "power_cases"
+      },
+      {
+        "id": "chain_dispatch",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "chain_dispatch",
+        "status": "partial_source_derived_model",
+        "type": "chain_dispatch"
+      },
+      {
+        "id": "step_prefix",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "step_prefix",
+        "status": "partial_source_derived_model",
+        "type": "step_prefix"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 6714,
+      "start": 2437
+    },
+    "description": "derive checks target absence then arithmetic/chain rules. Steps append during recursion and survive errors. Inverse fibers remain nonunique/domain-dependent. Repeated has/simplify/clones dominate work, no integration or bounded output size guarantee.",
+    "source_bytes_sha256": "697de16cb903d76edd91e31aec15251d5310ee0ed36b3b19b1715b42035f927e"
+  },
+  "id": "math-deriv-rules",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../deriv.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "0ea96ef4d7df85aa6e234618664e368c594bef2280d7689b5a989da4d31c1f48"
+  },
+  "status": "partial_source_bound_model"
+}

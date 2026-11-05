@@ -1,0 +1,126 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "Universe (u64 n,u64 m) x Result<u64,error>. m=0 excludes every output except ZeroModulus; m>0 excludes errors and values unequal to recurrence residue. m=1 excludes every result except Ok(0). This target does not turn finite evidence into proof.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "508f3ef6ce9b93a1913ece15e64425cd0e200ea24adda0059c2daa831f271925",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "For fixed m,r retain all n with F(n)=r mod m. Fibers generally contain many indices; m=1 retains every u64 index. Without fixed modulus retain the union over nonzero moduli. ZeroModulus forgets n entirely.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "508f3ef6ce9b93a1913ece15e64425cd0e200ea24adda0059c2daa831f271925",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "doubling_state",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "After prefix k, (a,b)=(F(k),F(k+1)) mod m. Swapping even assignment compiles and fails exhaustive_iterative_oracle.",
+        "path": "model.md",
+        "section": "doubling_state",
+        "status": "partial_relational_specification",
+        "subject_revision": "508f3ef6ce9b93a1913ece15e64425cd0e200ea24adda0059c2daa831f271925",
+        "type": "doubling_state"
+      },
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "wide_arithmetic",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "Squares individually reduce before sum. Near-max modulus fixtures exercise full-width multiplication, and matrix reference reduces each dot-product term.",
+        "path": "model.md",
+        "section": "wide_arithmetic",
+        "status": "partial_relational_specification",
+        "subject_revision": "508f3ef6ce9b93a1913ece15e64425cd0e200ea24adda0059c2daa831f271925",
+        "type": "wide_arithmetic"
+      },
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "matrix_oracle",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "Generic binary exponentiation of [[1,1],[1,0]] independently checks full-width indices including u64::MAX.",
+        "path": "model.md",
+        "section": "matrix_oracle",
+        "status": "partial_relational_specification",
+        "subject_revision": "508f3ef6ce9b93a1913ece15e64425cd0e200ea24adda0059c2daa831f271925",
+        "type": "matrix_oracle"
+      },
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "recurrence_boundary",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "Iterative reference checks n<=1024 for m1..128 and two maximal moduli. Large recurrence uses n<=u64::MAX-2; zero/one moduli tested at maximal index.",
+        "path": "model.md",
+        "section": "recurrence_boundary",
+        "status": "partial_relational_specification",
+        "subject_revision": "508f3ef6ce9b93a1913ece15e64425cd0e200ea24adda0059c2daa831f271925",
+        "type": "recurrence_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-fibonacci",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "508f3ef6ce9b93a1913ece15e64425cd0e200ea24adda0059c2daa831f271925"
+  },
+  "status": "partial_source_derived_instance"
+}

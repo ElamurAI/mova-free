@@ -1,0 +1,155 @@
+{
+  "children": [
+    {
+      "id": "math-nt-modular",
+      "path": "modular.groupant"
+    },
+    {
+      "id": "math-nt-factor",
+      "path": "factor.groupant"
+    },
+    {
+      "id": "math-nt-arithmetic",
+      "path": "arithmetic.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Source-bound selected Rust syntax; macro expansion and semantic extraction absent",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "congruence_fiber",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "congruence_fiber",
+        "status": "partial_source_derived_model",
+        "type": "congruence_fiber"
+      },
+      {
+        "id": "primality_evidence",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "primality_evidence",
+        "status": "partial_source_derived_model",
+        "type": "primality_evidence"
+      },
+      {
+        "id": "resource_boundary",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "resource_boundary",
+        "status": "partial_source_derived_model",
+        "type": "resource_boundary"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Normal return and stated scalar/base domain; no allocation failure. See the referenced section for formula and counterexample.",
+        "counterexample": "Concrete source-level witnesses in referenced section and tools/correspondence/tests/bridges.rs digit_*",
+        "domain": "Integer coefficients; H any integer base, D u32 base>=2",
+        "evidence_status": "source_derived_algebra_and_bounded_actual_api_checks",
+        "formula": "See the source-specific named section; no generic percentage metric is admitted.",
+        "id": "wave39-canonical_sign_fiber",
+        "observation": "Exact integer values and canonical digit words; sign/length loss explicit",
+        "path": "model.md",
+        "section": "canonical_sign_fiber",
+        "status": "partial_source_derived_model",
+        "type": "canonical_digit_sign_preimage"
+      },
+      {
+        "assumptions": "Normal return and stated scalar/base domain; no allocation failure. See the referenced section for formula and counterexample.",
+        "counterexample": "Concrete source-level witnesses in referenced section and tools/correspondence/tests/bridges.rs digit_*",
+        "domain": "Integer coefficients; H any integer base, D u32 base>=2",
+        "evidence_status": "source_derived_algebra_and_bounded_actual_api_checks",
+        "formula": "See the source-specific named section; no generic percentage metric is admitted.",
+        "id": "wave39-positional_carry_kernel",
+        "observation": "Exact integer values and canonical digit words; sign/length loss explicit",
+        "path": "model.md",
+        "section": "positional_carry_kernel",
+        "status": "partial_source_derived_model",
+        "type": "fixed_length_integer_kernel"
+      },
+      {
+        "assumptions": "Normal return and stated scalar/base domain; no allocation failure. See the referenced section for formula and counterexample.",
+        "counterexample": "Concrete source-level witnesses in referenced section and tools/correspondence/tests/bridges.rs digit_*",
+        "domain": "Integer coefficients; H any integer base, D u32 base>=2",
+        "evidence_status": "source_derived_algebra_and_bounded_actual_api_checks",
+        "formula": "See the source-specific named section; no generic percentage metric is admitted.",
+        "id": "wave39-base_admission_partition",
+        "observation": "Exact integer values and canonical digit words; sign/length loss explicit",
+        "path": "model.md",
+        "section": "base_admission_partition",
+        "status": "partial_source_derived_model",
+        "type": "typed_base_admission_partition"
+      },
+      {
+        "assumptions": "Normal return and stated scalar/base domain; no allocation failure. See the referenced section for formula and counterexample.",
+        "counterexample": "Concrete source-level witnesses in referenced section and tools/correspondence/tests/bridges.rs digit_*",
+        "domain": "Integer coefficients; H any integer base, D u32 base>=2",
+        "evidence_status": "source_derived_algebra_and_bounded_actual_api_checks",
+        "formula": "See the source-specific named section; no generic percentage metric is admitted.",
+        "id": "wave39-magnitude_normalizer",
+        "observation": "Exact integer values and canonical digit words; sign/length loss explicit",
+        "path": "model.md",
+        "section": "magnitude_normalizer",
+        "status": "partial_source_derived_model",
+        "type": "idempotent_magnitude_retraction"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "math-nt",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../nt.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "27f4bf91578ab245e6b50f5f880126990b73b93b46882c37127e241031c359fe"
+  },
+  "status": "partial_source_bound_model"
+}

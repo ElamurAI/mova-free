@@ -1,0 +1,54 @@
+{
+  "compiled_mutant": "Swapping the forward/inverse chirp sign compiles and fails independent_dft.",
+  "date": "2026-10-30",
+  "evidence": [
+    {
+      "name": "debug1.log",
+      "sha256": "7a278f1878e1dbddd0ce01b4fdeffda2eb1cdf65489bc2d409faf4c4627dcc13"
+    },
+    {
+      "name": "debug2.log",
+      "sha256": "af05d068120d57a6de7fc5e11491787304458c0f1bea8cfcdd308ccd81f8ec5e"
+    },
+    {
+      "name": "release1.log",
+      "sha256": "a03b8886b035560f506dca62e6d5045f2589ed0d5230f616f86cae322569fbc0"
+    },
+    {
+      "name": "release2.log",
+      "sha256": "0f56c926d9f77f9520ae94441edbad404c19558de23636e7ae5c3140617cde3b"
+    },
+    {
+      "name": "clippy.log",
+      "sha256": "21a0826c5a4c358b0547dc65d304781e6a6d1136ac2e9f395877d64b09442b29"
+    },
+    {
+      "name": "controls.log",
+      "sha256": "ef74157a500002708b0fb5a2a2452725096de26de0e17ee723eb3028fe1e2389"
+    },
+    {
+      "name": "mutant-bluestein_fft.log",
+      "sha256": "d9916a4c127c3f67aa790817d1c51f6bbc8b1447a6a803adced6cc6299367d0d"
+    },
+    {
+      "name": "restored-bluestein_fft.log",
+      "sha256": "745f9a9ec700bb64a69c5546b0266a0409910e7e48162d610ef8b0e034f61bf2"
+    },
+    {
+      "name": "bluestein_fft-tests.rs-syntax1.json",
+      "sha256": "ac524e1cdb2e016fb5845ef63f45528b43fa5c7dbf2213baf45a6cef4e3f42e4"
+    },
+    {
+      "name": "bluestein_fft-tests.rs-syntax2.json",
+      "sha256": "ac524e1cdb2e016fb5845ef63f45528b43fa5c7dbf2213baf45a6cef4e3f42e4"
+    }
+  ],
+  "external_run": "$MOVA_DATA/runs/octopus-wave26-transforms-2026-10-30",
+  "limitations": [
+    "No timing or universal numerical accuracy claim"
+  ],
+  "repetitions": "20 new tests; 713 crate tests twice debug and twice release; identical normalized observations; exact restoration and four positive tests per mutant",
+  "source": "algorithms/src/bluestein_fft/tests.rs",
+  "source_sha256": "ddfdc4931789c13807fc524d15cf62061bdf94cf73569cbc05fd96a398422fcf",
+  "syntax": "Two fresh byte-identical projections"
+}

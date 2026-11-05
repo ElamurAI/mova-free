@@ -23,9 +23,7 @@ Example script:
 
 **How made:** a large language model wrote a script for each problem; Mova ran
 it with its exact arithmetic core and kept only scripts whose result equals the
-gold answer.
-
-**Sources:** the problems are from SVAMP and GSM8K (MIT); the scripts are Mova's.
+gold answer. The scripts are Mova's.
 
 **How Mova uses it:** training data for Mova's own world writer in `math`
 (`qworld`): it learns to label each number with its role in the world, so that

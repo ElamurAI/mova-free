@@ -1,0 +1,29 @@
+{
+  "checks": [
+    "converted_tsv_preserves_supplied_lex_role_coordinates",
+    "supplied_matcher_transports_active_and_passive_role_coordinates",
+    "sentence_token_pairs_select_head_agent_and_render_schema_act",
+    "deletion_reindexes_all_frame_links_but_preserves_token_coordinates",
+    "participle_site_addition_preserves_sentence_and_token_identity",
+    "oblique_pronoun_site_resolution_changes_only_the_selected_role",
+    "extracted_frame_selected_rules_role_transfer_and_serde_preserve_identity"
+  ],
+  "children": [],
+  "cost": "Conversion scans supplied XML/TSV bytes plus ordered map work; matching visits candidate classes, ancestor frames and argument positions. Rule sites/atoms traverse supplied frame/token snapshots; deletion constructs one index map and traverses retained references. Rendering cost includes emitted bytes. Tiny fixtures establish no throughput estimate.",
+  "description": "7 bounded native joins and 9 typed source-bound views.",
+  "forward": [
+    "Seven tagged joins transport converted local lexicon roles, active/passive slots, sentence/token head identity, frame-deletion references, participle additions, oblique candidates and frame/role/schema observations through supplied inputs."
+  ],
+  "id": "prag-groupant-wave15",
+  "inverse": [
+    "Universe U consists of the seven tagged supplied-input fixtures and candidate observations at their declared APIs. R requires local Lex class/frame (1,1,0), ordered Agent/Theme/Recipient roles and score 8; active/passive subject roles Agent/Theme and scores 4/8; sentence-1 Bob copied at frame 3; survivor frame map 0->0,3->1 with unchanged predicate token pairs; only sentence-0 participle added; only oblique slot 5 resolved; and accepted/proposed role transfers with exact Frame JSON preservation. U minus R excludes swapped lexical roles, global-Lex index substitution, Alice copied across sentences, dangling deleted frame indices, altered token coordinates, adding the wrong sentence token, changing recipient while resolving an oblique, rejected/off rule execution and changed non-target Frame fields. This is a source-derived assertion relation, not a proven complement for all Rust paths; malformed domains and unexecuted branches remain unknown.",
+    "For each tagged output y retain all supplied antecedents x satisfying its stated relation and shared coordinates. Match indices require the exact retained local Lex; roles/scores do not recover XML formatting, unused classes, examples, filler identity or animacy. Head copying and kind changes lose overwritten values. Deletion loses removed frames and incoming references while retaining survivor predicate coordinates. Added participle frames do not recover a complete tree; pronoun resolution leaves multiple compatible prior discourse lists. Full Frame JSON recovers that Frame on the lawful serialization domain, not the originating tree. Patient/recipient transfer is uniquely reversible only with occupied source, empty destination and all other state retained. Parent reverse composition existentially retains shared intermediate Lex/Read snapshots, never arbitrary independently chosen coordinates."
+  ],
+  "limitations": [
+    "Bounded native evidence and repeated partial syntax are recorded; no general proof is inferred.",
+    "Finite checks do not establish general proof or unique antecedents.",
+    "No live parser, corpus, teacher, GPU, adoption or throughput experiment."
+  ],
+  "source": "prag/tests/groupant_wave15.rs",
+  "state": "Read.pred remains aligned to frames; (sentence,zero-based token) identifies a predicate and UD heads are one-based. Match.class/fclass/frame address the same retained local Lex. Entity slots, surviving frame maps and original token forms remain explicit."
+}

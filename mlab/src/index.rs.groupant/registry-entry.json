@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "index::wave30::gather_update",
+    "Repeated debug/release named outcomes; compiled assertion mutant; exact restore; paired syntax"
+  ],
+  "children": [],
+  "cost": "Read O(index elements+output); resize O(new area+old overlap); assign O(index+new area+RHS), deletion O(old area+index) with row/col completeness sorting O(k log k). No fallible allocation or checked dimension products.",
+  "description": "to_indices converts positive integral finite numeric x to usize(x)-1, or logical nonzero positions; colon spans extent. read validates upper bounds and gathers column-major; one vector index on vector source preserves source orientation, colon gives a column. assign validates shape then resizes with zero fill and writes ordered indices; duplicate destinations use the final RHS occurrence. 0x0 RHS selects deletion, deduplicating removal positions.",
+  "forward": [
+    "to_indices converts positive integral finite numeric x to usize(x)-1, or logical nonzero positions; colon spans extent. read validates upper bounds and gathers column-major; one vector index on vector source preserves source orientation, colon gives a column. assign validates shape then resizes with zero fill and writes ordered indices; duplicate destinations use the final RHS occurrence. 0x0 RHS selects deletion, deduplicating removal positions."
+  ],
+  "id": "mlab-index",
+  "inverse": [
+    "Within well-formed representable bounded domains, rejected conformity excludes changes to target, and duplicate index writes exclude first-write-wins. Reads exclude silently clipping out-of-bound positions. Logical masks are not validated against extent until read. No claim excludes panic on zero-argument delete, oversized casts, malformed buffers or allocation failure.",
+    "Gather output defines constraints m[idx[p]]=out[p], leaving unselected cells free; repeated index outputs must agree, and narrow may erase zero-im representation. Assignment preimage consists of prior matrices agreeing on unwritten retained cells; overwritten cells arbitrary. Deletion loses removed values and duplicate deletion multiplicity."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no semantic proof or executable surrogate",
+    "Well-formed Mat, args lengths supported by each branch, finite indices representable below usize limit and bounded allocatable dimensions. Extra dimensions must be singleton; zero-argument deletion is outside modeled success domain."
+  ],
+  "source": "mlab/src/index.rs",
+  "state": "Well-formed Mat, args lengths supported by each branch, finite indices representable below usize limit and bounded allocatable dimensions. Extra dimensions must be singleton; zero-argument deletion is outside modeled success domain."
+}

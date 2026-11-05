@@ -1,0 +1,112 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived target with finite correspondence evidence; not a proof",
+        "assumptions": "Successful std allocation; exact bounded integer arithmetic; no live external dependencies",
+        "domain": "Documented bounded API input histories",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "API outputs, errors, insertion IDs or query order; named test outcomes",
+        "operator": "Universe: admitted coordinate sets and insertion/query histories paired with candidate results. Exclude any successful unknown-coordinate query, any value below all inserted lines or above their minimum, or a later ID tied with an earlier minimum. Empty coordinate construction cannot succeed; empty-line registered query cannot succeed; cap-rejected insertion cannot consume an ID.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "131fc4e32f41d0cbcf21be978aee039a96e98849ee9bcb410a6fa4740a9fc9eb",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived target with finite correspondence evidence; not a proof",
+        "assumptions": "Successful std allocation; exact bounded integer arithmetic; no live external dependencies",
+        "domain": "Documented bounded API input histories",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "API outputs, errors, insertion IDs or query order; named test outcomes",
+        "operator": "Given fixed X, an observed (x,v,id) retains all line histories where line id evaluates to v at x, every other line has value>=v, and every earlier ID has value>v. Intercepts/slopes and nonwinning lines remain ambiguous: at x=0, lines (0,2) and (7,2) both give v=2. Across several queries intersect these constraints; dominated lines remain unrecoverable.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "131fc4e32f41d0cbcf21be978aee039a96e98849ee9bcb410a6fa4740a9fc9eb",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived target with finite correspondence evidence; not a proof",
+        "assumptions": "Successful std allocation; exact bounded integer arithmetic; no live external dependencies",
+        "domain": "Documented bounded API input histories",
+        "evidence": "model.md#evidence",
+        "id": "tie_fiber",
+        "observation_scope": "API outputs, errors, insertion IDs or query order; named test outcomes",
+        "operator": "Lexicographic (value,id) ordering makes identical lines choose ID0, and crossing lines choose earlier insertion exactly at equality. Reversing the query reduction can return a dominated path candidate; exhaustive_envelopes rejects this compiled mutation.",
+        "path": "model.md",
+        "section": "tie_fiber",
+        "status": "partial_relational_specification",
+        "subject_revision": "131fc4e32f41d0cbcf21be978aee039a96e98849ee9bcb410a6fa4740a9fc9eb",
+        "type": "tie_fiber"
+      },
+      {
+        "approximation_semantics": "Source-derived target with finite correspondence evidence; not a proof",
+        "assumptions": "Successful std allocation; exact bounded integer arithmetic; no live external dependencies",
+        "domain": "Documented bounded API input histories",
+        "evidence": "model.md#evidence",
+        "id": "coordinate_projection",
+        "observation_scope": "API outputs, errors, insertion IDs or query order; named test outcomes",
+        "operator": "Sorting/deduplication maps [3,1,3] and [1,3] to the same domain. Raw cap checks occur before this projection, so repeated coordinates exceeding the cap still fail. Queries at unregistered points are rejected even when between registered extremes.",
+        "path": "model.md",
+        "section": "coordinate_projection",
+        "status": "partial_relational_specification",
+        "subject_revision": "131fc4e32f41d0cbcf21be978aee039a96e98849ee9bcb410a6fa4740a9fc9eb",
+        "type": "coordinate_projection"
+      },
+      {
+        "approximation_semantics": "Source-derived target with finite correspondence evidence; not a proof",
+        "assumptions": "Successful std allocation; exact bounded integer arithmetic; no live external dependencies",
+        "domain": "Documented bounded API input histories",
+        "evidence": "model.md#evidence",
+        "id": "numeric_domain",
+        "observation_scope": "API outputs, errors, insertion IDs or query order; named test outcomes",
+        "operator": "For all i64 a,x,b, |a*x|<=2^126 and adding b remains inside signed i128. Explicit MIN/MAX coefficient/coordinate fixtures compare literal wide arithmetic; no floating interpolation or saturation occurs.",
+        "path": "model.md",
+        "section": "numeric_domain",
+        "status": "partial_relational_specification",
+        "subject_revision": "131fc4e32f41d0cbcf21be978aee039a96e98849ee9bcb410a6fa4740a9fc9eb",
+        "type": "numeric_domain"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-li-chao-tree",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "131fc4e32f41d0cbcf21be978aee039a96e98849ee9bcb410a6fa4740a9fc9eb"
+  },
+  "status": "partial_source_derived_instance"
+}

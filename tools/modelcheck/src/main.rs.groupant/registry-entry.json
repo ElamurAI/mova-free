@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "real inventory positive and --require-all negative probes",
+    "CLI usage inspection"
+  ],
+  "children": [],
+  "cost": "Selected library work plus argument bytes, serialization and exclusive write/sync; gate failure may follow report persistence.",
+  "description": "Expose file/group coverage inventories and exclusive new-output table extraction.",
+  "forward": [
+    "Inventory writes a report; require-all returns failure if any Rust file lacks a registered model.",
+    "groupants writes a new diagnostic report before failing on invalid declared sidecars; missing sidecars are explicit backlog.",
+    "syntax writes an exclusive new source-bound partial AST projection."
+  ],
+  "id": "modelcheck-cli",
+  "inverse": [
+    "The CLI does not execute registry check strings, call a teacher, train or claim a fully verified system."
+  ],
+  "limitations": [
+    "No arbitrary command runner or automatic semantic model synthesis is supplied."
+  ],
+  "source": "tools/modelcheck/src/main.rs",
+  "state": "(CLI modes, repository/registry inputs, new output path, require-all switch)"
+}

@@ -1,0 +1,128 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Let R be the deterministic relation specified by Forward including validation precedence and tie rules, X the declared input type and Y its Result type. Behavior complement is (X times Y) minus R. Specifically outputs violating Each residual pair sums to original capacity. Internal flow conservation holds. No negative residual cycle; each augmentation attains a shortest residual path and increases integer value. are excluded; a valid-input Err or a wrong successful witness is excluded. Resource, cycle and structural rejections are determined before algorithmic output.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "a6de6ae849a183b1b508ebf475e7b1517b27bbf5c38a04dc6dbe1394e6885697",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_inputs",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Given (value,cost,edge_flows), antecedents satisfy capacity bounds, conservation, sum f_e*c_e=cost and lexicographic optimality under limit. Different unused capacities/costs yield the same output. InvalidEdge identifies first bad index; NegativeCycle recovers existence, not location.",
+        "path": "model.md",
+        "section": "compatible_inputs",
+        "status": "partial_source_derived",
+        "subject_revision": "a6de6ae849a183b1b508ebf475e7b1517b27bbf5c38a04dc6dbe1394e6885697",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "potential_transport",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Costs c'(u,v)=c(u,v)+h(u)-h(v), all fitting i64, preserve cycle sums and optimal flow value; optimal cost changes by value*(h(source)-h(sink)). Chosen witness can differ only among ties.",
+        "path": "model.md",
+        "section": "potential_transport",
+        "status": "partial_source_derived",
+        "subject_revision": "a6de6ae849a183b1b508ebf475e7b1517b27bbf5c38a04dc6dbe1394e6885697",
+        "type": "potential_reweighting"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "zero_capacity",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Adding a zero-capacity edge cannot change value or cost, though edge_flows gains a zero. Its endpoints must still validate.",
+        "path": "model.md",
+        "section": "zero_capacity",
+        "status": "partial_source_derived",
+        "subject_revision": "a6de6ae849a183b1b508ebf475e7b1517b27bbf5c38a04dc6dbe1394e6885697",
+        "type": "irrelevant_input"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "capacity_certificate",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "For every output, 0<=f_e<=capacity_e; incoming minus outgoing equals value at sink, -value at source and zero elsewhere. Objective is exact sum f_e*c_e.",
+        "path": "model.md",
+        "section": "capacity_certificate",
+        "status": "partial_source_derived",
+        "subject_revision": "a6de6ae849a183b1b508ebf475e7b1517b27bbf5c38a04dc6dbe1394e6885697",
+        "type": "feasibility_certificate"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "limit_monotonicity",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "For limits L<=L' within 1024, achieved value cannot decrease. Cost need not increase when costs are negative. Capped value is min(L, maximum feasible flow).",
+        "path": "model.md",
+        "section": "limit_monotonicity",
+        "status": "partial_source_derived",
+        "subject_revision": "a6de6ae849a183b1b508ebf475e7b1517b27bbf5c38a04dc6dbe1394e6885697",
+        "type": "monotone_extension"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "sha256": "6467a4c9aea0df5676842d39195feaa0ad4b34c2e15941d1f6cea87801508a25",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-minimum-cost-flow",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "a6de6ae849a183b1b508ebf475e7b1517b27bbf5c38a04dc6dbe1394e6885697"
+  },
+  "status": "partial_source_derived_instance"
+}

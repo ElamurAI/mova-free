@@ -1,0 +1,29 @@
+{
+  "id": "algorithm-dag-shortest-paths",
+  "source": "algorithms/src/dag_shortest_paths/mod.rs",
+  "children": [],
+  "description": "dag_shortest_paths exact std-only implementation",
+  "state": "Finite materialized directed adjacency lists of (usize,i64), usize source, and Result<Vec<Option<i128>>,Error> observations. Successful allocation and usize width at most 64 for the stated signed bound; arbitrary labels, parallel edges and disconnected components.",
+  "cost": "Endpoint projection O(V+E) time/space; reused binary-heap Kahn sort O(E+V log(V+1)) time; relaxation O(V+E). Overall O(E+V log(V+1)) time and O(V+E) extra space. No timing or approximation gain claimed.",
+  "forward": [
+    "F(G,s) rejects s>=n first; then projects endpoints and reuses topological_sort. That helper rejects the first invalid endpoint in row order before globally rejecting cycles. On a DAG, initialize source to zero and others None, visit the helper's topological order, and strictly relax outgoing edges of finite labels using checked i128 addition. Return shortest signed path sums and None for unreachable vertices. Cycles in unreachable components still reject."
+  ],
+  "inverse": [
+    "For U of declared input/output pairs, U\\\\graph(F) excludes success on any cyclic component, wrong endpoint/source error priority, nonminimal signed path sums, finite labels on unreachable vertices and vector-length mismatches. Negative edges are permitted on DAGs, so rejecting negativity alone is also excluded behavior.",
+    "For Ok(d), reconstruct the set of valid acyclic G and s with d[s]=0, reachability equal to the Some support, d[v]<=d[u]+w for each edge from a finite u, and a realizing source path of total d[v] for each finite v. These conditions characterize the preimage by telescoping path inequalities and witness paths. Multiple graphs, parallel edges and dominated edges share the same vector. Error fibers preserve validation priority; Cycle requires valid source/endpoints and a cycle anywhere.",
+    "A vertex permutation p maps D'[p(v)]=D[v] for valid DAGs. The sorter's tie order may change, but no predecessor relation or path sum does. Invalid-input error payloads require separate ordered validation modeling.",
+    "Let h:V->Z and replace w(u,v) by w(u,v)+h(v)-h(u), provided transformed weights fit i64 and arithmetic stays in i128. Every path telescopes, hence D'[v]=D[v]+h(v)-h(s) for reachable v, with reachability unchanged. This justifies signed reweighting without assuming nonnegative edges.",
+    "Adding a duplicate edge, or any edge that preserves acyclicity and satisfies D[v]<=D[u]+w for finite endpoints, cannot improve distances. Acyclicity is essential: adding a distance-neutral reverse edge may create a globally rejected cycle.",
+    "For a valid DAG, source zero, reachability closure, all edge inequalities and a realizing path for every finite label certify exact minima. No claim of uniquely recovering paths: equal-cost alternatives and parallel edges can share the output.",
+    "InvalidSource precedes the first row-order InvalidEdge, which precedes Cycle. Negative/zero/positive cycles all reject, even disconnected ones. DistanceOverflow is retained defensively but cannot be exercised with practical materialized graphs on <=64-bit usize; full-width weight tests cover widening, not overflow rejection.",
+    "For fixed acyclic topology, increasing any weights within i64 leaves reachability unchanged and cannot decrease finite shortest distances. Uniform multiplication by a nonnegative integer k preserves D'=kD provided all transformed weights/sums fit; k=0 makes all reachable distances zero."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline --lib (debug and release, twice each)",
+    "Strict all-target Clippy, rustfmt check, two identical syntax projections, compiled production mutant assertion rejection."
+  ],
+  "limitations": [
+    "Finite observations are not a universal proof; syntax projection is partial.",
+    "Defensive arithmetic overflow branch is not exercised; no executable approximate profile attached."
+  ]
+}

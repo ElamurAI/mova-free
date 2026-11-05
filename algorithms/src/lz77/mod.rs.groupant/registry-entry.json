@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms lz77::tests"
+  ],
+  "children": [],
+  "cost": "algorithms/src/lz77/mod.rs.groupant/model.md#approximant",
+  "description": "Original bounded byte lz77 algorithm",
+  "forward": [
+    "algorithms/src/lz77/mod.rs.groupant/model.md#approximant"
+  ],
+  "id": "algorithm-lz77",
+  "inverse": [
+    "algorithms/src/lz77/mod.rs.groupant/model.md: behavior_complement then reverse_reconstruction"
+  ],
+  "limitations": [
+    "Partial syntax and finite observations; no universal percentage bound or allocator-failure injection"
+  ],
+  "source": "algorithms/src/lz77/mod.rs",
+  "state": "Deterministic byte traversal; no callbacks; allocation failure environmental"
+}

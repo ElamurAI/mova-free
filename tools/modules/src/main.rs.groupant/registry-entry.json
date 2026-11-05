@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test --release -p mova-modules",
+    "End-to-end run of the mova binary in a scratch data folder (2026-11-04)",
+    "mova fetch 0.5 all by https, torrent and magnet against the live server (2026-11-05)"
+  ],
+  "cost": "O(arguments) plus the dispatched command.",
+  "description": "The `mova` binary: `mova modules ...` dispatches to mova_modules::main_args, `mova fetch ...` to mova_modules::fetch::main_args, `mova oewn ...` to mova_modules::oewn::main_args; errors print the chain and exit 1.",
+  "forward": [
+    "Arguments after the program name; modules -> main_args(rest); fetch -> fetch::main_args(rest); oewn -> oewn::main_args(rest); otherwise usage error; error -> stderr and exit 1."
+  ],
+  "id": "mova-modules-command",
+  "inverse": [
+    "Behavior complement: no option parsing, configuration or subcommands other than modules, fetch and oewn.",
+    "Reverse reconstruction: exit status gives only success or failure; stderr carries the failing step."
+  ],
+  "limitations": [
+    "Thin adapter; behaviour lives in mova-modules-lib, mova-modules-fetch and mova-modules-oewn."
+  ],
+  "source": "tools/modules/src/main.rs",
+  "state": "Stateless."
+}

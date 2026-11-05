@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "Direct source tests and finite transition oracle; see model.md#current-evidence",
+    "mova-modelcheck groupants structural validation"
+  ],
+  "children": [],
+  "cost": "Parsing O(B+K log(1+F)) for K assignments/F distinct keys plus string comparisons; ordered goal operations and unchanged history scans; no timing claim",
+  "description": "Fold commands through names/events/holder/harmed/helped/goals/speech/rivals/rests, emitting judgments when global rules exist.",
+  "forward": [
+    "Fold commands through names/events/holder/harmed/helped/goals/speech/rivals/rests, emitting judgments when global rules exist."
+  ],
+  "id": "value-judgment",
+  "inverse": [
+    "Complement relative to command traces and ordered observations under fixed tables.",
+    "Retain all traces whose deterministic fold yields the observed projection; aliases, overwrites and ignored commands preserve ambiguity."
+  ],
+  "limitations": [
+    "Partial syntax only; generated dependencies not source-bound",
+    "Catalog proposed experiments are not executed",
+    "No whole-inference correctness claim"
+  ],
+  "source": "world/src/values.rs",
+  "state": "Fixed tables, canonical fields/goals, command-start harm history"
+}

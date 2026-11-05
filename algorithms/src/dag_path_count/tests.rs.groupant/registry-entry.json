@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms dag_path_count::tests"
+  ],
+  "children": [],
+  "cost": "Bounded exponential oracle enumeration plus linear stress fixtures.",
+  "description": "Enumerate actual recursive arc paths independently of topological DP for every ternary multiplicity assignment on six four-vertex forward pairs (729 DAGs), every source and reversed vertex labels. Test exact u128 maximum, deterministic overflow, cycle precedence, unreachable exponential component and 30000-vertex chain.",
+  "forward": [
+    "Enumerate actual recursive arc paths independently of topological DP for every ternary multiplicity assignment on six four-vertex forward pairs (729 DAGs), every source and reversed vertex labels. Test exact u128 maximum, deterministic overflow, cycle precedence, unreachable exponential component and 30000-vertex chain."
+  ],
+  "id": "algorithm-dag-path-count-tests",
+  "inverse": [
+    "For the declared finite harness relation H, its complement consists of false passes, false failures, skipped intended assertions, wrong enumerated corpus or disagreement with the explicit expected results. This specification is not inferred merely from seeing a red control.",
+    "Given a passing harness result, retain every implementation agreeing on the executed finite inputs; behavior outside that corpus remains unconstrained. Given an assertion failure, retain every candidate and fixture yielding that discrepancy. Neither outcome uniquely reconstructs production code."
+  ],
+  "limitations": [
+    "Finite checks do not prove unrestricted correctness.",
+    "Partial syntax has no macro expansion or semantic resolution.",
+    "Allocation failure and executable approximation profiles are outside this model."
+  ],
+  "source": "algorithms/src/dag_path_count/tests.rs",
+  "state": "Finite fixtures in this test module, a trusted Rust compiler and standard library, and successful allocation; oracle recursion is restricted to four-vertex DAGs."
+}

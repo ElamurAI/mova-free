@@ -1,0 +1,25 @@
+{
+  "id": "algorithm-closest-pair-tests",
+  "source": "algorithms/src/closest_pair/tests.rs",
+  "children": [],
+  "description": "closest_pair tests.rs exact geometry checks",
+  "state": "Deterministic finite fixtures in tests.rs; ordinary terminating allocation-success execution.",
+  "cost": "5461 small sequences with O(n²) brute enumeration and bounded clouds up to 257 points; 10000 equal points exercise duplicate shortcut without brute oracle.",
+  "forward": [
+    "Run deterministic assertions comparing production outputs with independent geometric or exhaustive-pair certificates and stated transformations."
+  ],
+  "inverse": [
+    "behavior_complement: Within deterministic fixture runs, exclude a passing assertion when its compared oracle/result values differ. Passing output excludes only exercised counterexamples; it does not imply correctness on unenumerated coordinates or allocator failures.",
+    "reverse_reconstruction: A passing test transcript admits every implementation agreeing with all exercised observations, including incorrect implementations differing elsewhere. Exact test output therefore cannot reconstruct source or universal behavior; independent oracles narrow this equivalence class.",
+    "oracle_relation: Independent all-pairs enumeration uses i64 unsigned absolute differences and u128 powers, minimizes (distance,index tuple), and compares every sequence of length <=6 over four points (5461 sequences). It does not use production square_delta, candidate or better.",
+    "metamorphic_relation: Translation with quarter-turn preserves selected result; scaling by three multiplies distance by nine; a different-length fixture has the same result. These test selected members of the ambiguous preimage relation.",
+    "boundary_partition: Extremal coordinate pairs require a 65-bit squared distance. Rotated 25-point extremal grids, deterministic full-width clouds, vertical lines and multiple duplicate groups exercise index ties and strip recursion. A wrong distance metric must fail independent oracle assertions."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline closest_pair::tests::",
+    "Debug/release twice; strict Clippy; compiled mutant; source-bound syntax twice."
+  ],
+  "limitations": [
+    "Finite observations are not universal verification; allocator exhaustion untested; syntax projection lacks semantic type resolution and macro expansion. Exact implementation has no approximate execution profile."
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived specification; bounded Rust correspondence.",
+        "assumptions": "Standard Rust f64 semantics and successful allocation.",
+        "domain": "Tagged constructor calls over IEEE f64 values and four supported budgets.",
+        "evidence": "Six unit tests; maximum-versus-mean and relaxed-cap mutation negative controls.",
+        "id": "behavior-complement",
+        "observation_scope": "Results and certificate fields; external caller validity excluded.",
+        "operator": "Relation in behavior-complement section.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "subject_revision": "cadc492a3d62090c8dd27a4d674136d0227986a99a596f677e6c487db03e9fe3",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived specification; bounded Rust correspondence.",
+        "assumptions": "Standard Rust f64 semantics and successful allocation.",
+        "domain": "Tagged constructor calls over IEEE f64 values and four supported budgets.",
+        "evidence": "Six unit tests; maximum-versus-mean and relaxed-cap mutation negative controls.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Results and certificate fields; external caller validity excluded.",
+        "operator": "Relation in reverse-reconstruction section.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "subject_revision": "cadc492a3d62090c8dd27a4d674136d0227986a99a596f677e6c487db03e9fe3",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived specification; bounded Rust correspondence.",
+        "assumptions": "Standard Rust f64 semantics and successful allocation.",
+        "domain": "Tagged constructor calls over IEEE f64 values and four supported budgets.",
+        "evidence": "Six unit tests; maximum-versus-mean and relaxed-cap mutation negative controls.",
+        "id": "budget-lattice",
+        "observation_scope": "Results and certificate fields; external caller validity excluded.",
+        "operator": "Relation in budget-lattice section.",
+        "path": "model.md",
+        "required": false,
+        "section": "budget-lattice",
+        "status": "partial_source_derived_model",
+        "subject_revision": "cadc492a3d62090c8dd27a4d674136d0227986a99a596f677e6c487db03e9fe3",
+        "type": "budget_monotonicity"
+      },
+      {
+        "approximation_semantics": "Source-derived specification; bounded Rust correspondence.",
+        "assumptions": "Standard Rust f64 semantics and successful allocation.",
+        "domain": "Tagged constructor calls over IEEE f64 values and four supported budgets.",
+        "evidence": "Six unit tests; maximum-versus-mean and relaxed-cap mutation negative controls.",
+        "id": "provenance-barrier",
+        "observation_scope": "Results and certificate fields; external caller validity excluded.",
+        "operator": "Relation in provenance-barrier section.",
+        "path": "model.md",
+        "required": false,
+        "section": "provenance-barrier",
+        "status": "partial_source_derived_model",
+        "subject_revision": "cadc492a3d62090c8dd27a4d674136d0227986a99a596f677e6c487db03e9fe3",
+        "type": "evidence_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "Checks and limits",
+      "status": "bounded_evidence"
+    }
+  },
+  "id": "approximation-contract",
+  "kind": "groupant",
+  "registry": {
+    "node": "approximation-contract",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../lib.rs",
+    "sha256": "cadc492a3d62090c8dd27a4d674136d0227986a99a596f677e6c487db03e9fe3"
+  },
+  "status": "partial_source_derived_instance"
+}

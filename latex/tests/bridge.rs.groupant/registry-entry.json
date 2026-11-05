@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p latex --features math --test bridge"
+  ],
+  "children": [],
+  "cost": "Finite fixture count times parse/bridge work, 35 cloned expressions; no timing loop/corpus.",
+  "description": "Six math-gated tests call real parser/conversion on synthetic expected Expr/LaTeX, reason categories, relations, canonical output, 35 roundtrip expressions and foreign subtraction inequality.",
+  "forward": [
+    "Six math-gated tests call real parser/conversion on synthetic expected Expr/LaTeX, reason categories, relations, canonical output, 35 roundtrip expressions and foreign subtraction inequality."
+  ],
+  "id": "latex-test-bridge",
+  "inverse": [
+    "Pass admits all implementations agreeing on finite fixture set but differing elsewhere. Status does not recover intermediates or prove all supported-domain cases.",
+    "Absent math elides target; zero tests not runtime evidence. Chosen inequalities not proof of all arithmetic identities."
+  ],
+  "limitations": [
+    "Partial source-derived model and finite synthetic checks",
+    "No universal proof or executable percentage surrogate",
+    "No live corpus, frozen VMM, teacher/API, training or GPU execution"
+  ],
+  "source": "latex/tests/bridge.rs",
+  "state": "Fixture variable/Rat unwraps assume fixed valid constants. Exact Expr structure, fold_literals only where called."
+}

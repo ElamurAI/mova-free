@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "id": "algorithm-zero-one-bfs",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "494c1e36a75d80d042c09c02a4bb63f3a8e3f8689dc15db34b3b95666589b80f"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "494c1e36a75d80d042c09c02a4bb63f3a8e3f8689dc15db34b3b95666589b80f",
+        "domain": "Finite materialized directed adjacency lists of (usize,u8), a usize source, and Result<Vec<Option<usize>>,Error> observations. Allocation succeeds; immutable inputs. Binary valid graphs allow loops, parallel edges and cycles.",
+        "operator": "In universe U of declared input/output pairs, the complement U\\\\graph(F) contains accepted invalid rows, wrong first errors, finite labels for unreachable vertices, nonminimal reachable labels, nonzero source labels, and length-mismatched vectors. This defines semantic nonbehavior, not merely the negative test list.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "One exact terminating call.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "distance_fibers",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "distance_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "494c1e36a75d80d042c09c02a4bb63f3a8e3f8689dc15db34b3b95666589b80f",
+        "domain": "Finite materialized directed adjacency lists of (usize,u8), a usize source, and Result<Vec<Option<usize>>,Error> observations. Allocation succeeds; immutable inputs. Binary valid graphs allow loops, parallel edges and cycles.",
+        "operator": "For an Ok vector d of length n, compatible inputs are all valid binary G and s<n whose reachability equals the Some support and whose shortest-path lengths equal d. A sufficient and necessary certificate is d[s]=0, no edge from finite to None, d[v]<=d[u]+w on every finite-source edge, and for each finite v a witnessed s-to-v path of sum d[v]. Tight edges alone are insufficient because disconnected zero cycles could receive fake finite labels. Invalid-error preimages are inputs whose first failing check has exactly the reported payload. Recovery is generally many-to-one.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "One exact terminating call.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "relabeling",
+        "type": "equivariance_relation",
+        "path": "model.md",
+        "section": "relabeling",
+        "status": "partial_source_derived",
+        "subject_revision": "494c1e36a75d80d042c09c02a4bb63f3a8e3f8689dc15db34b3b95666589b80f",
+        "domain": "Finite materialized directed adjacency lists of (usize,u8), a usize source, and Result<Vec<Option<usize>>,Error> observations. Allocation succeeds; immutable inputs. Binary valid graphs allow loops, parallel edges and cycles.",
+        "operator": "For any vertex permutation p of [0,n), replacing every endpoint u by p(u), moving rows likewise, and source by p(s) gives D'[p(v)]=D[v] on valid graphs. Stored edge order can alter validation error priority for invalid inputs, so the relation is restricted to valid graphs.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "One exact terminating call.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "redundant_edges",
+        "type": "closure_relation",
+        "path": "model.md",
+        "section": "redundant_edges",
+        "status": "partial_source_derived",
+        "subject_revision": "494c1e36a75d80d042c09c02a4bb63f3a8e3f8689dc15db34b3b95666589b80f",
+        "domain": "Finite materialized directed adjacency lists of (usize,u8), a usize source, and Result<Vec<Option<usize>>,Error> observations. Allocation succeeds; immutable inputs. Binary valid graphs allow loops, parallel edges and cycles.",
+        "operator": "Adding an edge (u,v,w) with finite D[u], finite D[v] and D[v]<=D[u]+w preserves all shortest distances: substitute the old distance inequality through any new-edge path. A duplicate edge always preserves distances. An edge from an unreachable vertex also preserves distances unless some other edit makes that vertex reachable.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "One exact terminating call.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "triangle_certificate",
+        "type": "certificate_relation",
+        "path": "model.md",
+        "section": "triangle_certificate",
+        "status": "partial_source_derived",
+        "subject_revision": "494c1e36a75d80d042c09c02a4bb63f3a8e3f8689dc15db34b3b95666589b80f",
+        "domain": "Finite materialized directed adjacency lists of (usize,u8), a usize source, and Result<Vec<Option<usize>>,Error> observations. Allocation succeeds; immutable inputs. Binary valid graphs allow loops, parallel edges and cycles.",
+        "operator": "Every finite-source edge satisfies finite D[v] and D[v]<=D[u]+w; every finite target has a realizing path. Combined with d[s]=0 these witness both upper and lower bounds by telescoping along arbitrary paths.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "One exact terminating call.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "unit_specialization",
+        "type": "boundary_specialization",
+        "path": "model.md",
+        "section": "unit_specialization",
+        "status": "partial_source_derived",
+        "subject_revision": "494c1e36a75d80d042c09c02a4bb63f3a8e3f8689dc15db34b3b95666589b80f",
+        "domain": "Finite materialized directed adjacency lists of (usize,u8), a usize source, and Result<Vec<Option<usize>>,Error> observations. Allocation succeeds; immutable inputs. Binary valid graphs allow loops, parallel edges and cycles.",
+        "operator": "If every weight is one, output equals directed BFS hop distance. If every weight is zero, every reachable vertex has zero distance and others None. Isolated source has only its zero label; self loops cannot improve a nonnegative shortest path.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "One exact terminating call.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "validation_partition",
+        "type": "error_partition",
+        "path": "model.md",
+        "section": "validation_partition",
+        "status": "partial_source_derived",
+        "subject_revision": "494c1e36a75d80d042c09c02a4bb63f3a8e3f8689dc15db34b3b95666589b80f",
+        "domain": "Finite materialized directed adjacency lists of (usize,u8), a usize source, and Result<Vec<Option<usize>>,Error> observations. Allocation succeeds; immutable inputs. Binary valid graphs allow loops, parallel edges and cycles.",
+        "operator": "Source errors dominate all edge faults. For a valid source the earliest row-position edge fault wins, with endpoint checked before weight within that edge. Unreachable invalid edges are still faults. DistanceOverflow is defensive and not expected on materialized graphs by the n-bound; tests do not claim branch coverage.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "One exact terminating call.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "weight_monotonicity",
+        "type": "order_relation",
+        "path": "model.md",
+        "section": "weight_monotonicity",
+        "status": "partial_source_derived",
+        "subject_revision": "494c1e36a75d80d042c09c02a4bb63f3a8e3f8689dc15db34b3b95666589b80f",
+        "domain": "Finite materialized directed adjacency lists of (usize,u8), a usize source, and Result<Vec<Option<usize>>,Error> observations. Allocation succeeds; immutable inputs. Binary valid graphs allow loops, parallel edges and cycles.",
+        "operator": "For a fixed graph topology and source, increasing any subset of weights from zero to one preserves reachability and cannot decrease any finite shortest distance. Compare only valid binary weights; topology changes are outside this relation.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "One exact terminating call.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  }
+}

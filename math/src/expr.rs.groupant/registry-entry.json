@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p math --lib expr::",
+    "paired syntax and compiled controls; external receipts"
+  ],
+  "children": [],
+  "cost": "O(N) worst-case traversal with short circuit; display O(N+output bytes) plus rational formatting, recursion O(depth); no depth/allocation guard.",
+  "description": "Expression tree, occurrence traversal and precedence display",
+  "forward": [
+    "Constructors retain structure without evaluation. has_var ORs occurrences across unary, binary, variadic and both probability children. Display uses precedence and exact decimal constants up to6 places; variable names use fixed8-entry table."
+  ],
+  "id": "math-expr",
+  "inverse": [
+    "has_var=true antecedents are all trees containing at least one occurrence. Display preimages are many-valued: empty Add/Mul both print empty and invalid variable indices print '?'; algebraic equivalence is not structural identity."
+  ],
+  "limitations": [
+    "Partial lexical projection; no semantic proof",
+    "No useful executable percentage surrogate",
+    "Bounded synthetic fixtures; resource/malformed-state gaps in models"
+  ],
+  "source": "math/src/expr.rs",
+  "state": "Constructors retain structure without evaluation. has_var ORs occurrences across unary, binary, variadic and both probability children. Display uses precedence and exact decimal constants up to6 places; variable names use fixed8-entry table."
+}

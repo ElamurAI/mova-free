@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "19 exact native tests twice debug/release; repeated syntax; three compiled source mutants"
+  ],
+  "children": [],
+  "cost": "Argument helper scans O(A) per option and BTree weights O(W log W); command costs include loading, parser, repeated lattice/report work and output bytes. Selected tests exercise helpers only, no live file/model effects.",
+  "description": "Argument helpers and effectful command dispatch for yomhadin.",
+  "forward": [
+    "Parse first command and rest; positional skips value after every nonboolean -- option. opts parses weights strictly but defaults malformed max/depth/given. Commands load jurisdiction state, invoke helpers and print; judge parses case, formats report then optionally creates/writes protocol; extract can persist each jurisdiction before later errors."
+  ],
+  "id": "court-cli",
+  "inverse": [
+    "Pure flag/positional/opts helpers cannot load corpus or write protocols. A malformed weight pair cannot yield successful Opts. For full commands, earlier side effects before later errors are not excluded.",
+    "An Opts output admits omitted options and malformed numeric strings that default identically; first option wins while duplicate weight keys keep last. Positional projection cannot recover consumed flags/values.",
+    "Only --flagged and --no-protocol are boolean; every other -- token consumes next token in positional even unknown or another option. flag independently sees first occurrence, so the two projections may disagree.",
+    "max/depth parse usize else defaults5/3; given parses u8 else None. Weights parse f64 and allow nonfinite values; report statistical interpretation requires separate finite-domain assumptions.",
+    "judge requires positional case, loads jurisdictions, parses opts, reads case, builds/prints report, then computes protocol and creates directory/writes file unless --no-protocol. Late I/O error can follow visible stdout.",
+    "do_extract iterates selected jurisdictions, gathers sources/trees, extracts then overwrites rules.tsv and prints count. Later jurisdiction error does not revert earlier writes; unknown source kind errors before current extraction."
+  ],
+  "limitations": [
+    "Partial source-derived models and finite correspondence only",
+    "No live parser/corpus/frozen gold or protocol filesystem effects; no percentage surrogate"
+  ],
+  "source": "yom-hadin/src/main.rs",
+  "state": "Finite synthetic rule/case states; valid indices, bounded paths, successful allocations. No legal authority claim."
+}

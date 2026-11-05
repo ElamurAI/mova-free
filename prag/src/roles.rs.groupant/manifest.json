@@ -1,0 +1,88 @@
+{
+  "children": [
+    {
+      "id": "prag-roles-document-state",
+      "path": "document-state.groupant"
+    },
+    {
+      "id": "prag-roles-token-projection",
+      "path": "token-projection.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "domain": "Tagged finite API inputs and matching output schema in model.md forward; exact source revision and fixed dependency premises.",
+        "id": "prag-roles-behavior-complement",
+        "operator": "C_inner={(x,y): not J(x,y)} over declared domain; concrete forward/invariant exclusions",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "domain": "Tagged finite API inputs and matching output schema in model.md forward; exact source revision and fixed dependency premises.",
+        "id": "prag-roles-reverse-reconstruction",
+        "operator": "Converse/preimage relation retaining all compatible tagged inputs, states and intermediates",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "domain": "Tagged finite API inputs and matching output schema in model.md forward; exact source revision and fixed dependency premises.",
+        "id": "prag-roles-coupling",
+        "operator": "Scoped intervention/coupling relation in referenced section",
+        "path": "model.md",
+        "section": "coupling",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "domain": "Domain X is tagged calls roles(W), roles_docs(S), world_docs(S,b), doc_key(id), with finite supplied annotations and fixed frame-reader dependencies. For documents, pi is stable sort by doc_key; C resets at document-key changes. At each pi(i), world_docs first emits summary(C,6) plus bounded prior event queue, then frames_of_tree updates C, event/speech verb frames append event strings and queue truncates to last b, then C.new_line. roles_docs reads in the same context order, projects frames, then restores original input row order. Projection chooses first unused eligible predicate token matching first verb lemma component and closest nonpredicate matching slot token (earlier tie), preserving Ent.pron for primary slots; sort/deduplicate triples.",
+  "id": "prag-roles",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../roles.rs",
+    "sha256": "30e3aba0c3fba51e326a90fb8da79fa28c009d58c10742100aa462a75d41a5df"
+  },
+  "state": "Role triples (d+1,p+1,role) are sorted unique and within supplied token positions, and no predicate is reused across selected frames. roles_docs/world_docs preserve original ID sequence including duplicates. Context and recent queue never cross document-key transitions. world_docs observation is before the current frame update; b=0 gives 'none yet' for recent events. doc_key parsing and token choice use the child relations, not semantic identity guarantees.",
+  "status": "partial_source_bound_model"
+}

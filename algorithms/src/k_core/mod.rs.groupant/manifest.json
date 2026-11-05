@@ -1,0 +1,128 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Let R be the deterministic relation specified by Forward including validation precedence and tie rules, X the declared input type and Y its Result type. Behavior complement is (X times Y) minus R. Specifically outputs violating Deleted vertices cannot belong to any minimum-degree-k induced subgraph. For live vertices degree equals count of live neighbors; survivor set is maximal. are excluded; a valid-input Err or a wrong successful witness is excluded. Resource, cycle and structural rejections are determined before algorithmic output.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "37a416e1386fa1f72fcf9fa8771e88af0a2a98d0bf51b94df3605c8462065707",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_inputs",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Given survivor set S, compatible graphs make G[S] minimum degree at least k and every vertex outside S eventually peelable. For k=1, a three-vertex path and a triangle differ but both can yield all vertices when no isolated vertices. Errors identify violated validation predicates.",
+        "path": "model.md",
+        "section": "compatible_inputs",
+        "status": "partial_source_derived",
+        "subject_revision": "37a416e1386fa1f72fcf9fa8771e88af0a2a98d0bf51b94df3605c8462065707",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "subset_certificate",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Output equals union of all vertex subsets whose induced minimum degree is at least k. Union preserves the minimum-degree predicate and gives unique maximality.",
+        "path": "model.md",
+        "section": "subset_certificate",
+        "status": "partial_source_derived",
+        "subject_revision": "37a416e1386fa1f72fcf9fa8771e88af0a2a98d0bf51b94df3605c8462065707",
+        "type": "maximality_certificate"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "nested_cores",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "For k<=l, core_l(G) is a subset of core_k(G). core_0(G) is every vertex; k>=n gives empty on simple n-vertex graphs.",
+        "path": "model.md",
+        "section": "nested_cores",
+        "status": "partial_source_derived",
+        "subject_revision": "37a416e1386fa1f72fcf9fa8771e88af0a2a98d0bf51b94df3605c8462065707",
+        "type": "parameter_monotonicity"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "idempotence",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Restrict G to returned vertices, retaining their labels. Applying k-peeling again deletes none.",
+        "path": "model.md",
+        "section": "idempotence",
+        "status": "partial_source_derived",
+        "subject_revision": "37a416e1386fa1f72fcf9fa8771e88af0a2a98d0bf51b94df3605c8462065707",
+        "type": "fixed_point"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "edge_extension",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Adding an absent undirected edge cannot remove vertices from a k-core; the prior induced feasible set still witnesses membership.",
+        "path": "model.md",
+        "section": "edge_extension",
+        "status": "partial_source_derived",
+        "subject_revision": "37a416e1386fa1f72fcf9fa8771e88af0a2a98d0bf51b94df3605c8462065707",
+        "type": "monotone_extension"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "sha256": "85a1e6e1e9127f21aa598556792e6545cffd3806d4ba5bcce36d1f40f10ea028",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-k-core",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "37a416e1386fa1f72fcf9fa8771e88af0a2a98d0bf51b94df3605c8462065707"
+  },
+  "status": "partial_source_derived_instance"
+}

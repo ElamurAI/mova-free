@@ -322,3 +322,20 @@ Propose 1-3 concrete architecture changes that would raise the scores on unseen 
     std::fs::write(runs.join(format!("architect-r{round}.md")), &out)?;
     Ok(out)
 }
+
+#[cfg(test)]
+mod wave29 {
+    use super::*;
+    #[test]
+    fn score_overwrite_and_cleaning() {
+        let p =
+            parse("id 7\t1\t2\t3\t4\tfirst\n7\t5\t5\t5\t5\tlast\n8\t0\t1\t1\t1\nbad\t1\t1\t1\t1");
+        assert_eq!(p.len(), 1);
+        assert_eq!(p[&7], ([5; 4], "last".into()));
+        assert_eq!(mean4(&[1, 2, 3, 4]), 2.5);
+        assert_eq!(clean("a[x[y]z]b[tail"), "ab");
+        assert_eq!(clean(&"é".repeat(901)).chars().count(), 900);
+        assert_eq!(clean("a]b"), "a]b");
+        assert_eq!(is_train(""), 0xcbf2_9ce4_8422_2325u64 % 3 != 0);
+    }
+}

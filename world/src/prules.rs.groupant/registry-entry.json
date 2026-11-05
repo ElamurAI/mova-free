@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p world --lib prules::wave9_models -- --test-threads=1"
+  ],
+  "cost": "I<=cap; S trial sites/actions, A atoms/site, C candidate keys, L lines, E apply+score cost. Per iteration: O(S*(A+A^2+A^3)*log C) plus trial scoring, O(C log C) ranking and <=60*L*E actual rule trials. sign_p now O(n) time/O(1) memory; old sum of binomial-product loops was O(n^2). Current reads, candidate map and accepted rules retain memory. Parser/files/lexical services remain opaque; bounded timing is not full induction throughput.",
+  "description": "For fixed supplied lines L, options O and rules-file snapshot F, initialize current reads and banned rejected pairs. Each iteration sets w=round(500*microF1); trial each site/action; collect nonzero U(new)-U(old) across eligible conjunctions of one to three atom IDs. Keep positive-sum/min-line/precision candidates. Rank by deletion-adjusted sum descending, length ascending, Key ascending. Try first 60 entries, skipping banned; apply rule to all lines and accept only positive actual gain, min fixed, precision and sign-tail gates. Accept updates current reads/output; reject bans pair. Stop at cap or no accepted candidate. Data loading and CLI effects are separate external adapters.",
+  "forward": [
+    "For fixed supplied lines L, options O and rules-file snapshot F, initialize current reads and banned rejected pairs. Each iteration sets w=round(500*microF1); trial each site/action; collect nonzero U(new)-U(old) across eligible conjunctions of one to three atom IDs. Keep positive-sum/min-line/precision candidates. Rank by deletion-adjusted sum descending, length ascending, Key ascending. Try first 60 entries, skipping banned; apply rule to all lines and accept only positive actual gain, min fixed, precision and sign-tail gates. Accept updates current reads/output; reject bans pair. Stop at cap or no accepted candidate. Data loading and CLI effects are separate external adapters.",
+    "frames::main routes rules to prules::main. load joins dev keys with teacher_gold, excludes held keys from teacher additions, and reads lesson prefixes. score bridges Read->serialized scored frames->parse_frame->alignment; judged_only filters unaligned frames and remaps links. Candidate ranking joins atoms/actions/apply_at with score, final acceptance joins apply_rule with accepts. Native tests exercise production pure helpers only; real data/caller wiring was source-inspected."
+  ],
+  "id": "world-prules",
+  "inverse": [
+    "Universe: fixed lines/options/file snapshot and bounded candidate traces. Inner absent relation excludes acceptance with nonpositive gain, insufficient fixed count, failed precision/sign threshold, or more than cap rules under safe arithmetic. Site gain alone cannot imply acceptance. final_gate_finite_oracle_and_refusals checks 3969 grid rows and NaN threshold refusals; this evidence does not complement an invented complete learner emulator.",
+    "For learned output y retain all (L,O,F) and site/current-read traces that produce y. Empty output includes cap=0, no useful site delta, thresholds and top-60 failure; output does not distinguish those causes. A concrete finite inverse enumerates all 0<=tp<=sys<=4, tp<=gold<=4 vectors at w=500 and groups by U. utility_complete_small_fibers verifies inclusion, a 12-member zero fiber and unreachable U=250; no text/gold uniqueness."
+  ],
+  "limitations": [
+    "Partial source inspection plus bounded native synthetic checks, not universal proof or task-quality evidence. No live parser, lexical database, teacher, learning, held-out data, hot-state or persistence operation executed. Partial syntax omits macro expansion and semantic AST. No percentage approximant or overall speed guarantee."
+  ],
+  "source": "world/src/prules.rs",
+  "state": "Output length<=cap. Every accepted iteration has positive gain for that iteration's fixed U=1000 sum(tp)-w sum(sys); changing w prevents treating all gains as one fixed global objective. Stable ordered-map ties require fixed dependency outputs. Rules remain proposed until external review. No optimality or generalization guarantee."
+}

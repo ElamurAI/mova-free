@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "cargo test -p prag --lib infer::wave13_models -- --test-threads=1",
+    "cargo test -p prag --lib infer:: -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "Fixed-scale scalar O(n^2), presupposition O(B+n^3), maxims O(n^2), excluding string-byte costs; no measured speed claim.",
+  "description": "Ordered scalar, presupposition and maxim inferences over supplied dependency Words; bounds-safe malformed ancestry and distinct event coordinates.",
+  "forward": [
+    "Scalar candidates are suppressed by stronger words, negation and cancellation; duplicate trigger/strongest results collapse.",
+    "Presuppositions select triggers and first complements, project bounded clause ancestry, and license against last 50 prior tokens.",
+    "Maxims emit question then exclamation then event order; main chains these APIs before appending current words to history."
+  ],
+  "id": "prag-infer",
+  "inverse": [
+    "Behavior complement excludes blocked scalar emissions, licensing supported only beyond the 50-token window and invalid/reflexive manner edges.",
+    "Reverse fibers retain all compatible word graphs, histories and sentence punctuation; omitted words, older histories and provenance are unrecoverable."
+  ],
+  "limitations": [
+    "Finite supplied-input fixtures, partial syntax and source-inspected callers; no linguistic truth proof.",
+    "Scalar substring cancellation, duplicate surface triggers, first complement selection and punctuation heuristics retain legacy semantics.",
+    "No learned model, parser, teacher, GPU or live corpus execution; no automatic approximation substitution."
+  ],
+  "source": "prag/src/infer.rs",
+  "state": "Read-only supplied Word/history/text inputs. Valid dependency semantics are external; presupposition licensing records lexical support, not truth."
+}

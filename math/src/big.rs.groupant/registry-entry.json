@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p math --lib big::",
+    "paired syntax and compiled controls; external receipts"
+  ],
+  "children": [],
+  "cost": "O(L) lexical work plus bit-length-dependent GCD/power/root arithmetic. Decimal output O(places) allocation; no memory quota or allocation error interface.",
+  "description": "Arbitrary rational parsing, exact roots and decimal presentation",
+  "forward": [
+    "frac rejects zero denominator and normalizes sign. parse_q strips spaces/underscores, splits slash recursively before comma/exponent processing, then multiplies by10^(exp-fraction_digits). exact_decimal factors denominator by2 and5; roots verify r^k=n."
+  ],
+  "id": "math-big",
+  "inverse": [
+    "Reduced n/d has every representable signed pair(kn,kd), k nonzero, as antecedents and many accepted lexical spellings. Fixed root degree maps r back to r^k. show_nice/f64 are many-to-one; exact show retains rational value."
+  ],
+  "limitations": [
+    "Partial lexical projection; no semantic proof",
+    "No useful executable percentage surrogate",
+    "Bounded synthetic fixtures; resource/malformed-state gaps in models"
+  ],
+  "source": "math/src/big.rs",
+  "state": "frac rejects zero denominator and normalizes sign. parse_q strips spaces/underscores, splits slash recursively before comma/exponent processing, then multiplies by10^(exp-fraction_digits). exact_decimal factors denominator by2 and5; roots verify r^k=n."
+}

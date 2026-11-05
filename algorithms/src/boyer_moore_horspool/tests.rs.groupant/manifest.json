@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-boyer-moore-horspool-tests",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "1c33a411ed18446a445740093bd3da4c39cea20216d31569f92b11f650866ab3",
+    "raw_code_location": "outside_this_sidecar"
+  },
+  "status": "partial_descriptive_instance",
+  "components": {
+    "ast": {
+      "status": "partial",
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "source syntax only; no expansion or semantic resolution"
+    },
+    "approximant": {
+      "status": "partial",
+      "path": "model.md#approximant"
+    },
+    "invariant": {
+      "status": "partial",
+      "description": "model.md#approximant"
+    },
+    "descriptant": {
+      "status": "present",
+      "path": "model.md#descriptant"
+    },
+    "tests": {
+      "status": "existing_checks_referenced",
+      "path": "model.md#tests"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "type": "behavior_complement",
+        "required": true,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "type": "reverse_reconstruction",
+        "required": true,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "finite_domain",
+        "type": "finite_domain",
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "finite_domain",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "oracle_independence",
+        "type": "oracle_independence",
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "oracle_independence",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      },
+      {
+        "id": "mutation_sensitivity",
+        "type": "mutation_sensitivity",
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "mutation_sensitivity",
+        "scope": "single-call finite sequences; exact-source revision; relational specification with bounded evidence"
+      }
+    ]
+  },
+  "registry": {
+    "path": "../../../../models/contracts.json",
+    "node": "algorithm-boyer-moore-horspool-tests"
+  },
+  "extensions": {
+    "limits": "No universal proof or executable fast approximant; allocation and Eq costs retain explicit premises."
+  }
+}

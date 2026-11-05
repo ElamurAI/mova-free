@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p math --lib -- nt::wave28",
+    "18 selected tests twice debug/twice release; seven compiled mutants and restored positives",
+    "cargo test -p math --lib wave36_gcd: baseline zero-pair failure; fixed debug/release pass"
+  ],
+  "children": [],
+  "cost": "Euclid O(log magnitude) big divisions, modpow O(log|e|) ring operations; CRT one gcd/inverse per pair. Sieve O(n log log n)/O(n), cached small primes to1e6. Factor cost includes trial, recursive primality and Pollard without strict total time cap. Divisors materializes tau(n) values and sorts O(tau log tau), unchecked u128 count product. Digit conversion/repeated division and Horner have operand-width costs.",
+  "description": "gcd returns0 for (0,0), otherwise uses dashu, ext_gcd iterates independent Euclid and lcm handles zero. mod_floor normalizes modulo|m|; modpow uses inverse for negative exponents, rejects m=0 and short-circuits m=1 to0. CRT joins noncoprime congruences with difference divisibility and lcm modulus. Primality uses12 fixed bases for u64,30 plus trial/Pocklington for bigger values. factor strips sign, trial-divides and Pollard-splits, then sorts/merges; probable factors count complete. Multiplicative functions consume factors; digits emits |n| digits, from_digits unrestricted Horner sum.",
+  "forward": [
+    "gcd returns0 for (0,0), otherwise uses dashu, ext_gcd iterates independent Euclid and lcm handles zero. mod_floor normalizes modulo|m|; modpow uses inverse for negative exponents, rejects m=0 and short-circuits m=1 to0. CRT joins noncoprime congruences with difference divisibility and lcm modulus. Primality uses12 fixed bases for u64,30 plus trial/Pocklington for bigger values. factor strips sign, trial-divides and Pollard-splits, then sorts/merges; probable factors count complete. Multiplicative functions consume factors; digits emits |n| digits, from_digits unrestricted Horner sum."
+  ],
+  "id": "math-nt",
+  "inverse": [
+    "CRT (x,M) admits all nonempty matched congruence arrays whose lcm is M and residues agree modulo|mi|, including signs/order/redundancies. Factor list reconstructs magnitude, losing sign; empty list admits0 and±1 under producer conventions. Canonical digits recover magnitude but lose sign; unrestricted from_digits has many noncanonical antecedents. Probable verdict does not recover an integer or proof."
+  ],
+  "limitations": [
+    "Partial lexical syntax/source-derived model, no proof",
+    "No executable percentage surrogate; float diagnostics have no global certificate",
+    "mod_floor/check_crt require nonzero moduli; check_crt zips mismatched arrays and accepts empty zip. Fixed MR bases lack the randomized premise for textual4^-30 bound. complete permits probable primes. factor_limited ignores Limits.max_steps, uses a separate partial Pollard budget; trial/primality/recovery bypass it and u64 ignores deadline. Sieve dimensions can overflow/allocate; public prime_pi caps2e8 and nth_prime caps1e7. Clock and OnceLock cache are internal effects."
+  ],
+  "source": "math/src/nt.rs",
+  "state": "mod_floor/check_crt require nonzero moduli; check_crt zips mismatched arrays and accepts empty zip. Fixed MR bases lack the randomized premise for textual4^-30 bound. complete permits probable primes. factor_limited ignores Limits.max_steps, uses a separate partial Pollard budget; trial/primality/recovery bypass it and u64 ignores deadline. Sieve dimensions can overflow/allocate; public prime_pi caps2e8 and nth_prime caps1e7. Clock and OnceLock cache are internal effects."
+}

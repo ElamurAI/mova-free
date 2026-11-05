@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "Selected wave28_dialogue inline tests; lib compile only",
+    "Paired source syntax generation"
+  ],
+  "children": [],
+  "cost": "Prompt O(rule+example+story+brief bytes); partition O(n+k*boundaries); splice O(output+fix bytes); remote calls dominate unknown latency. At most 2 calls v1, 3 v2, up to 2 per part v3 absent resume; retries after failures can repeat effects.",
+  "description": "Prompts concatenate versioned rules/examples and numbered story slices; continuation includes preceding text/world brief. parts chooses k=ceil(n/max), nearest later paragraph boundary to ideal cut; splice replaces each valid 1-based @N line in order and counts writes. call rejects done before I/O/teacher; v2 rejects >2 parts then allows one repair total; v3 prefers fixed then raw, estimates before missing raw call and repair, writes fixed without revalidation.",
+  "forward": [
+    "Prompts concatenate versioned rules/examples and numbered story slices; continuation includes preceding text/world brief. parts chooses k=ceil(n/max), nearest later paragraph boundary to ideal cut; splice replaces each valid 1-based @N line in order and counts writes. call rejects done before I/O/teacher; v2 rejects >2 parts then allows one repair total; v3 prefers fixed then raw, estimates before missing raw call and repair, writes fixed without revalidation."
+  ],
+  "id": "world-vmm",
+  "inverse": [
+    "Spliced output admits arbitrary overwritten originals and duplicate replacement histories; count is not number of changed rows. Cached fixed output admits differing original raw/repair histories. Prompt strings retain selected sentence text but do not reconstruct entire world history."
+  ],
+  "limitations": [
+    "Pure parts/splice/prompt/estimate and done guard tempfile checks. No teacher invocation, DB/license query, live repair or finite-budget assurance.",
+    "No executable surrogate, semantic proof, live teacher, corpus, GPU or held-out execution"
+  ],
+  "source": "world/src/vmm.rs",
+  "state": "Done files refuse calls. Splice does not validate commands or restrict to rejected lines; duplicate last wins. Empty text yields (1,0); nonempty/max=0 panics, lengths beyond u16 truncate. Paragraph cuts do not guarantee max-length parts; if no later boundary remains the fallback ideal can move backwards, yielding reversed/overlapping ranges. NaN budget does not enforce cap; dollar estimate is legacy heuristic, not current subscription price."
+}

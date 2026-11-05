@@ -764,7 +764,7 @@ pub fn assemble_args(args: &[String]) -> Result<()> {
     std::fs::write(out, &md)?;
     println!("{} → {} files, {} parts, {lines} lines ({dropped} repeated lines dropped), {} words", out.display(), files.len(), parts.len(), md.split_whitespace().count());
     if let Some(po) = opt("--private-out") {
-        let mut pm = String::from("# The internal kitchen (closed build only)\n\nWhat the public Mova does not tell: the internal system, its siblings, its costs and its private arrangements. Built only with the cargo feature «tera»; never exported.\n");
+        let mut pm = String::from("# The internal kitchen (closed build only)\n\nWhat the public Mova does not tell: the internal system, its siblings, its costs and its private arrangements. Built only with the cargo feature «peta»; never exported.\n");
         for (n, ls) in &private_parts {
             pm += &format!("\n## {n}\n\n{}\n", ls.join("\n"));
         }
@@ -1997,4 +1997,135 @@ pub fn judge_args(args: &[String]) -> Result<()> {
     }
     println!("{}: {judged} judged, {good} good ({:.1}%)", args[1], 100.0 * good as f64 / judged.max(1) as f64);
     Ok(())
+}
+
+#[cfg(test)]
+mod wave29_worldlearn {
+    use super::*;
+    fn word(form: &str, head: usize, rel: Rel) -> Word {
+        Word {
+            form: form.into(),
+            lemma: form.into(),
+            upos: UPos::NOUN,
+            tag: en::gram::Tag::NN,
+            feats: Default::default(),
+            head,
+            rel,
+        }
+    }
+    fn temp(label: &str) -> std::path::PathBuf {
+        let p =
+            std::env::temp_dir().join(format!("wave29-worldlearn-{}-{label}", std::process::id()));
+        std::fs::create_dir(&p).unwrap();
+        p
+    }
+    #[test]
+    fn compression_root_function_words_and_empty() {
+        let list = crate::tabular::List {
+            rules: vec![],
+            default: false,
+        };
+        let w = vec![
+            word("Birds", 2, Rel::Nsubj),
+            word("fly", 0, Rel::Root),
+            word("never", 2, Rel::Advmod),
+            word("far", 2, Rel::Advmod),
+        ];
+        assert_eq!(compress_with(&list, &w), "fly never.");
+        assert_eq!(compress_with(&list, &[]), ".");
+        let attrs = word_attrs(&w, 0);
+        assert_eq!(attrs["side"], "before head");
+        assert_eq!(attrs["depth"], "1");
+        assert_eq!(outcome(&[word("survive", 0, Rel::Root)]), Some(true));
+        assert_eq!(
+            outcome(&[word("survive", 0, Rel::Root), word("not", 1, Rel::Advmod)]),
+            Some(false)
+        );
+        assert_eq!(
+            outcome(&[word("survive", 0, Rel::Root), word("die", 1, Rel::Conj)]),
+            None
+        );
+    }
+    #[test]
+    fn brain_projection_counts_beyond_twelve_and_stops_sources() {
+        let mut md = String::from("# Book\n## First\n");
+        for i in 1..=14 {
+            md += &format!("Fact {i} stands alone. [^1]\n");
+        }
+        md += "## Second\nAnother fact remains. [^1]\n## Sources\nIgnored fact here. [^1]\n[^1]: A, *Title* (2026). Kept: said in 5 sources.\n";
+        let (body, n) = brain_body(&md);
+        assert_eq!(n, 15);
+        assert!(body.contains("Fact 12"));
+        assert!(!body.contains("Fact 13"));
+        assert!(body.contains("Another fact"));
+        assert!(body.contains("Title; 5 sources"));
+        assert!(!body.contains("Ignored"));
+        assert!(!stands_alone("This follows from the earlier rule."));
+        assert!(!stands_alone("A rule holds (p. 12)."));
+        assert!(stands_alone("A bird has wings."));
+        assert!(stands_alone(""));
+    }
+    #[test]
+    fn list_roundtrip_and_bounded_writer_citations() {
+        let dir = temp("writer");
+        let list = crate::tabular::List {
+            rules: vec![(vec![("relation".into(), "obj".into())], false, 3, 2)],
+            default: true,
+        };
+        let p = dir.join("list.tsv");
+        write_list(&p, &list, "fixture").unwrap();
+        let back = read_list(&p).unwrap();
+        assert_eq!(back.rules, list.rules);
+        assert_eq!(back.default, list.default);
+        let source = Source {
+            key: "fixture".into(),
+            path: "unused".into(),
+            title: "Synthetic".into(),
+            author: "Fixture".into(),
+            year: "2026".into(),
+            pd: false,
+            licence: "reference".into(),
+        };
+        let fact = Fact {
+            text: "A synthetic bird flies.".into(),
+            subject: "bird".into(),
+            predicate: "fly".into(),
+            object: "".into(),
+            cites: vec![("fixture".into(), 1, "PRIVATE_QUOTE_MARKER".into())],
+            kept: "fixture".into(),
+            time: None,
+            numbers: vec![],
+            attrs: BTreeMap::new(),
+            lemmas: vec![],
+            nouns: vec![],
+        };
+        let bytes = write("fixture", &[fact], &[source], &dir, "test", None, None).unwrap();
+        let md = std::fs::read_to_string(dir.join("fixture.world.md")).unwrap();
+        assert_eq!(bytes, md.len());
+        assert!(md.contains("sentence fixture:1"));
+        assert!(!md.contains("PRIVATE_QUOTE_MARKER"));
+        assert_eq!(brain_body(&md).1, 1);
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+    #[test]
+    fn mini_zero_budget_keeps_floor_and_first_note() {
+        let dir = temp("mini");
+        let input = dir.join("in.md");
+        let output = dir.join("out.md");
+        std::fs::write(&input,"# Synthetic\n## One\nA bird has wings. [^7][^8]\n## Sources\n[^7]: First source.\n[^8]: Second source.\n").unwrap();
+        mini_args(&[
+            "mini".into(),
+            input.to_string_lossy().into_owned(),
+            output.to_string_lossy().into_owned(),
+            "--kb".into(),
+            "0".into(),
+        ])
+        .unwrap();
+        let md = std::fs::read_to_string(output).unwrap();
+        assert!(md.contains("A bird has wings. [^1]"));
+        assert!(md.contains("First source"));
+        assert!(!md.contains("Second source"));
+        assert!(!md.is_empty());
+        std::fs::remove_dir_all(dir).unwrap();
+    }
 }

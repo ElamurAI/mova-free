@@ -250,3 +250,20 @@ pub fn completeness(ds: &[(String, Desc)]) -> String {
     }
     s
 }
+
+#[cfg(test)]
+mod wave29_tests {
+    use super::*;
+    #[test]
+    fn graph_fallback_completeness_and_missing() {
+        let k = Kb::new(crate::wave29_tests::graph());
+        let d = describe(&k, "crow", None, 0, false).unwrap();
+        assert_eq!(d.concept, 1);
+        assert_eq!(d.fields.len(), 13);
+        assert!(d.text.contains("wing"));
+        assert!(d.fields.contains(&("parts", true, true)));
+        assert!(d.filled() <= d.applicable());
+        assert!(describe(&k, "missing", None, 0, true).is_none());
+        assert!(completeness(&[]).contains("category"));
+    }
+}

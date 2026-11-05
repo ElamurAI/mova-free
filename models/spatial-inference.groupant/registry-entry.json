@@ -1,0 +1,28 @@
+{
+  "checks": [
+    "Source-local inference differential and bounded product-state checks",
+    "Threshold, missing-start, nonempty-cycle and longer-qualified-path fixtures",
+    "Block-priority and holds-irreflexive observations",
+    "Repeated focused checks, negative controls and paired syntax: see model.md"
+  ],
+  "children": [
+    "world-spartqa",
+    "world-spartqa-inference-tests"
+  ],
+  "cost": "Let E count all facts, V_all all distinct fact endpoints, and V_reached reached vertices. For E<=64, scanning retains old per-state fact scans. Larger missing-start queries pay O(E) preflight without rows. Present-start queries add O(E log(V_all+1)) ordered-row construction, row lookups O(log(V_all+1)), visited-state operations O(log(V_reached+1)) and qualifier checks O(log(E+1)). At most 12 states per object are explored; per-query rows are rebuilt and far can invoke four direction searches. Reader/block/non-inference work remains separate.",
+  "description": "Supplied immutable Scene queries first retain irreflexive and block-inference priorities, then inspect direction facts. Small fact sets (E<=64) keep scan-based traversal. Larger sets perform an O(E) outgoing-edge preflight for the requested start/relation; an absent start returns the exact no-path observation, while present starts build direction rows for traversal. reach computes boolean reachability; dir_path explores (object, far_seen, steps_capped_at_2, all_edges_qualified) and ORs evidence from every nonempty path to the target. near/far and tv compose these observations with direct facts and block state under their existing precedence.",
+  "forward": [
+    "Supplied immutable Scene queries first retain irreflexive and block-inference priorities, then inspect direction facts. Small fact sets (E<=64) keep scan-based traversal. Larger sets perform an O(E) outgoing-edge preflight for the requested start/relation; an absent start returns the exact no-path observation, while present starts build direction rows for traversal. reach computes boolean reachability; dir_path explores (object, far_seen, steps_capped_at_2, all_edges_qualified) and ORs evidence from every nonempty path to the target. near/far and tv compose these observations with direct facts and block state under their existing precedence.",
+    "The actual joins are directional fact projection -> reach/product-state traversal -> near/far/holds -> three-valued query projection, with direct-fact and block priority retained at the callers. The inference_tests source calls private scene methods and compares against a retained scan reference and bounded fixed-point/product-state observations. These supplied-scene tests do not run the story reader or establish prose-to-scene correctness. No generic shortest-path result substitutes for qualified all-path evidence."
+  ],
+  "id": "spatial-inference",
+  "inverse": [
+    "Within supplied lawful scenes, excluded observations include a directional path absent from projected facts, reporting None when a nonempty path exists, returning Some(false) after a longer Far/fully-qualified witness is reachable, and treating the zero-edge x-to-x walk as a dir_path witness. At the caller, holds(x,r,x)=true and an object-fact answer overriding an earlier applicable block inference are excluded under the existing precedence.",
+    "For a tagged query result retain all scenes, facts, object/block attributes and reachable product-state witnesses producing it. Some(true) from dir_path can arise from an explicit Far edge or a sufficiently long fully-qualified path; these witnesses are not uniquely recoverable. None constrains directional reachability, not unrelated facts. tv erases witness provenance and can merge different direct, block and inferred causes."
+  ],
+  "limitations": [
+    "Hybrid thresholds and outgoing preflight must match merged sources. Scene reader, descriptions, query parsing and other legacy module behavior remain partially modeled. Finite differential/fixed-point checks and partial syntax are not a general semantic proof. Contradictory direct facts and block observations follow existing priority rather than a newly imposed consistency axiom.",
+    "Finite integration evidence is recorded; checks do not establish a general proof."
+  ],
+  "state": "Rows contain precisely the edges admitted by the requested relation and preserve the scan relation. Missing outgoing edges cannot contribute a nonempty path. dir_path returns None iff no nonempty directional path exists, Some(false) iff paths exist but none witnesses far_seen or at least two fully qualified steps, and Some(true) iff at least one such witness exists. A shorter unqualified path cannot suppress a longer qualifying path. Holds remains irreflexive; dir_path may observe a nonempty cycle."
+}

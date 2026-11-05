@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "analytic_oracle checks explicit 1.5t-0.5t^3 arch and a nonuniform affine example; boundaries checks two knots, singleton, duplicates, overflow, out-of-range and NaN; knots_and_smoothness checks endpoint curvature, interpolation and symmetry about central knot.",
+    "Change RHS multiplier 6 to 3; analytic_oracle assertion fails."
+  ],
+  "children": [],
+  "cost": "O(n) build/storage and O(log n) interval search plus O(1) query arithmetic; allocations follow Rust allocator policy.",
+  "description": "At least two finite matched samples with strictly increasing nodes. h_i=x[i+1]-x[i], s_i=(y[i+1]-y[i])/h_i. Solve h[i-1]M[i-1]+2(h[i-1]+h[i])M[i]+h[i]M[i+1]=6(s[i]-s[i-1]) with M endpoints zero. Thomas elimination/back substitution, then cubic segment via normalized weights. Query finite and in closed domain; exact knots return stored ordinates, no extrapolation.",
+  "forward": [
+    "At least two finite matched samples with strictly increasing nodes. h_i=x[i+1]-x[i], s_i=(y[i+1]-y[i])/h_i. Solve h[i-1]M[i-1]+2(h[i-1]+h[i])M[i]+h[i]M[i+1]=6(s[i]-s[i-1]) with M endpoints zero. Thomas elimination/back substitution, then cubic segment via normalized weights. Query finite and in closed domain; exact knots return stored ordinates, no extrapolation."
+  ],
+  "id": "algorithm-natural-cubic-spline",
+  "inverse": [
+    "Any two-point affine data produce zero endpoint curvatures; curvature alone cannot recover affine component. At q=0, three-point data [0,1,0] and [0,0,0] on [0,1,2] share value 0. Entire knot values and known nodes determine the real natural spline, but one query does not."
+  ],
+  "limitations": [
+    "Partial source projection, no semantic proof",
+    "Finite fixtures do not guarantee accuracy",
+    "No executable approximation profile or speed claim",
+    "Rust allocation failures and callback panics are not caught"
+  ],
+  "source": "algorithms/src/natural_cubic_spline/mod.rs",
+  "state": "Validated finite arrays, rolling recurrence state or bounded quadrature level; tests observe result tags and traces"
+}

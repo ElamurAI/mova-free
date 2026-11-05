@@ -1,0 +1,35 @@
+{
+  "checks": [
+    "10 source-local tests; five compiled mutation controls",
+    "composition_wave25: fft_exact_field_fixture_join, subset_triangular_reconstruction_rejects_or_join, discrete_log_target_join",
+    "Full library: 782 checks twice debug and twice release; see model.md"
+  ],
+  "children": [
+    "algorithm-fast-fourier-transform",
+    "algorithm-fast-fourier-transform-tests",
+    "algorithm-karatsuba-polynomial",
+    "algorithm-karatsuba-polynomial-tests",
+    "algorithm-subset-convolution",
+    "algorithm-subset-convolution-tests",
+    "algorithm-gaussian-elimination-modular",
+    "algorithm-gaussian-elimination-modular-tests",
+    "algorithm-baby-step-giant-step",
+    "algorithm-baby-step-giant-step-tests"
+  ],
+  "cost": "FFT O(n log n)/O(n), n power2<=65536. Karatsuba O(N^log2(3))/O(N) simultaneously live memory for padded N<=4096. Subset length2^d<=4096: O(d²2^d)/O(d2^d). Gaussian m,n<=128: conservative O(m*n*min(m,n)+m*(n+1)+n²) work plus bounded fixed-prime exponentiation, O(m*(n+1)+n²) memory including zero-variable rows. BSGS31596 entries, O(sqrt(p)log p) ordered-map work/O(sqrt(p)) memory.",
+  "description": "Compute a bounded complex radix-two DFT and four exact fixed-field operations: polynomial multiplication, disjoint-subset convolution, affine linear-system solution and least discrete logarithm. Complex f64 and field-residue outputs are separate semantic types.",
+  "forward": [
+    "Compute a bounded complex radix-two DFT and four exact fixed-field operations: polynomial multiplication, disjoint-subset convolution, affine linear-system solution and least discrete logarithm. Complex f64 and field-residue outputs are separate semantic types.",
+    "Each leaf is std-only; no production calls among these modules. Zero-padded FFT convolution may be compared with Karatsuba only on small representable integer fixtures with explicit rounding/error checks. Fixed-field subset convolution with invertible empty coefficient yields a triangular field system solvable by Gaussian elimination only when the2^d unknowns fit128. BSGS output can be checked by modular powering under the same fixed modulus."
+  ],
+  "id": "algebra-transforms",
+  "inverse": [
+    "Exclude wrong modular product coefficients, overlapping-subset terms, noncanonical residues, invalid affine particular/nullspace certificates or a nonleast/incorrect discrete exponent. For FFT exclude wrong length, nonfinite output, wrong phase/normalization or wrong native butterfly result; do not impose exact complex-theory equalities on rounded values. Exclude replacing field residues with raw floating magnitudes or equating resource refusal with algebraic None.",
+    "Ideal fixed-size DFT is invertible; rounded FFT can merge input bit patterns. Polynomial product admits factor scaling(a*c,b/c) and zero-product ambiguity. Subset output with fixed a and a[empty]!=0 uniquely recovers b in the field, while zero a admits every b. Gaussian output admits many row-equivalent systems. BSGS Some0 admits every base with target1, and modular normalization makes raw representatives nonunique."
+  ],
+  "limitations": [
+    "FFT inverse identities and convolution theorem are real/complex target identities, not universal f64 error bounds or an isomorphism to a finite field. Modular algebra is exact inside fixed prime; no caller-supplied composite modulus is supported. Allocator exhaustion follows std policy. No callbacks or executable percentage profiles.",
+    "Finite tests and source-derived models are not a universal proof."
+  ],
+  "state": "Modular inputs normalize to p=998244353, products remain within u64 bounds, and outputs retain canonical residues/shape/ties. FFT forward phase is negative and inverse divides by n. Polynomial coefficient index addition and subset disjoint union are distinct products."
+}

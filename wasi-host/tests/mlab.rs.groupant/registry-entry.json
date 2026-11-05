@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "wave31_newest_mtime_isolated_tree",
+    "wave31_cli_tiny_guest_isolated_effects"
+  ],
+  "children": [],
+  "cost": "Recursive metadata O(entries+depth stack); full tests have external native/wasm costs not executed. Helper test2 files/one subdir.",
+  "description": "Integration harness binds external suite texts, checks wasm freshness against mlab/src and vfs/src, caches Host and defines native/guest comparisons. Wave31 executes only two added synthetic tests: newest_mtime isolated tree and actual CLI with tiny modules/import/export/journal. Legacy mlab guest/frozen tests remain excluded.",
+  "forward": [
+    "Integration harness binds external suite texts, checks wasm freshness against mlab/src and vfs/src, caches Host and defines native/guest comparisons. Wave31 executes only two added synthetic tests: newest_mtime isolated tree and actual CLI with tiny modules/import/export/journal. Legacy mlab guest/frozen tests remain excluded."
+  ],
+  "id": "wasi-mlab-tests",
+  "inverse": [
+    "Passing freshness means artifact mtime>=maximum leaf mtime in two trees, not reproducible build identity. Output equality permits differing states; la18 divergence is explicitly expected by legacy suite."
+  ],
+  "limitations": [
+    "Partial source syntax and finite tests; no full WASI compliance or mlab suite claim",
+    "No executable percentage surrogate or whole-system proof"
+  ],
+  "source": "wasi-host/tests/mlab.rs",
+  "state": "Guest bytes/descriptors/Vfs/virtual clock/RNG, or scoped CLI/test state as described"
+}

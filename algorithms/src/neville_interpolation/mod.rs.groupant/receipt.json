@@ -1,0 +1,46 @@
+{
+  "compiled_mutant": "Change left+right to left-right; polynomial_oracle assertion fails.",
+  "date": "2026-10-30",
+  "evidence": [
+    {
+      "name": "debug1.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "debug2.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "release1.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "release2.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "clippy.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "mutant-neville_interpolation.log",
+      "sha256": "9796d5a412762b09ec524f66c1c9c3351b4199000d9510ba4a4e10ac42209033"
+    },
+    {
+      "name": "neville_interpolation-mod.rs-syntax1.json",
+      "sha256": "769f4495da01bed0fad50e637e6a8ceb952d5ad03ebef7c7be31094dd895248f"
+    },
+    {
+      "name": "neville_interpolation-mod.rs-syntax2.json",
+      "sha256": "769f4495da01bed0fad50e637e6a8ceb952d5ad03ebef7c7be31094dd895248f"
+    }
+  ],
+  "external_run": "$MOVA_DATA/runs/octopus-wave25-numerical-2026-10-30",
+  "limitations": [
+    "No timing or universal numerical accuracy claim"
+  ],
+  "repetitions": "15 focused tests twice debug and twice optimized release; normalized output identical; positive reruns after exact mutant restoration",
+  "source": "algorithms/src/neville_interpolation/mod.rs",
+  "source_sha256": "3de938e8c070d844bca6051ee92e2facb55a9c188798e6461c8b6a5bfa70beae",
+  "syntax": "Two fresh projections byte-identical"
+}

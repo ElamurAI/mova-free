@@ -1,0 +1,37 @@
+{
+  "schema": 1, "kind": "groupant", "id": "enrichment-artifacts",
+  "source": {"path": "../lib.rs", "sha256": "13ae2b236879cc6091da288ab4a53ec9d7505e31191979bbaf0f5a83128933d5", "raw_code_location": "outside_this_sidecar"},
+  "status": "partial_descriptive_instance",
+  "components": {
+    "ast": {"status": "not_materialized"},
+    "approximant": {"status": "partial_source_model", "path": "model.md#core-model"},
+    "invariant": {"status": "partial_source_model", "path": "model.md#core-model"},
+    "cost": {"status": "partial_symbolic_model", "path": "model.md#core-model"},
+    "descriptant": {"status": "present", "path": "model.md#descriptant"},
+    "tests": {"status": "structural_checks_only_semantic_oracles_prospective", "path": "model.md#tests"},
+    "obernants": [
+      {"id": "absent-artifact-transitions", "type": "behavior_complement", "required": true, "status": "partial_source_model", "path": "model.md", "section": "absent-artifact-transitions"},
+      {"id": "artifact-antecedents", "type": "reverse_reconstruction", "required": true, "status": "partial_source_model", "path": "model.md", "section": "artifact-antecedents"},
+      {"id": "document-selection-fiber", "type": "selection_preimage", "required": false, "status": "partial_source_model", "path": "model.md", "section": "document-selection-fiber"},
+      {"id": "source-join-boundary", "type": "join_admissibility", "required": false, "status": "partial_source_model", "path": "model.md", "section": "source-join-boundary"},
+      {"id": "lexical-ranking-projection", "type": "ranking_projection", "required": false, "status": "partial_source_model", "path": "model.md", "section": "lexical-ranking-projection"},
+      {"id": "lesson-retrieval-quotient", "type": "retrieval_projection", "required": false, "status": "partial_source_model", "path": "model.md", "section": "lesson-retrieval-quotient"},
+      {"id": "snapshot-freshness-fiber", "type": "snapshot_identity", "required": false, "status": "partial_source_model", "path": "model.md", "section": "snapshot-freshness-fiber"},
+      {"id": "prompt-budget-boundary", "type": "resource_admission", "required": false, "status": "partial_source_model", "path": "model.md", "section": "prompt-budget-boundary"},
+      {"id": "review-attempt-boundary", "type": "attempt_exclusion", "required": false, "status": "partial_source_model", "path": "model.md", "section": "review-attempt-boundary"},
+      {"id": "review-authentication-fiber", "type": "provenance_relation", "required": false, "status": "partial_source_model", "path": "model.md", "section": "review-authentication-fiber"},
+      {"id": "grounding-semantic-boundary", "type": "evidence_projection", "required": false, "status": "partial_source_model", "path": "model.md", "section": "grounding-semantic-boundary"},
+      {"id": "dictionary-preservation-boundary", "type": "preservation_contract", "required": false, "status": "partial_source_model", "path": "model.md", "section": "dictionary-preservation-boundary"},
+      {"id": "question-target-quotient", "type": "equivalence_quotient", "required": false, "status": "partial_source_model", "path": "model.md", "section": "question-target-quotient"},
+      {"id": "phase-and-freeze-admission", "type": "routing_constraint", "required": false, "status": "partial_source_model", "path": "model.md", "section": "phase-and-freeze-admission"},
+      {"id": "repair-support-fiber", "type": "restricted_reconstruction", "required": false, "status": "partial_source_model", "path": "model.md", "section": "repair-support-fiber"},
+      {"id": "stage-write-frontier", "type": "failure_frontier", "required": false, "status": "partial_source_model", "path": "model.md", "section": "stage-write-frontier"},
+      {"id": "status-observation-priority", "type": "state_projection", "required": false, "status": "partial_source_model", "path": "model.md", "section": "status-observation-priority"},
+      {"id": "receipt-output-closure", "type": "artifact_closure", "required": false, "status": "partial_source_model", "path": "model.md", "section": "receipt-output-closure"},
+      {"id": "restage-provenance-preservation", "type": "lineage_relation", "required": false, "status": "partial_source_model", "path": "model.md", "section": "restage-provenance-preservation"},
+      {"id": "atomic-receipt-counterfactual", "type": "transaction_counterfactual", "required": false, "status": "partial_source_model", "path": "model.md", "section": "atomic-receipt-counterfactual"}
+    ]
+  },
+  "registry": {"path": "../../../../models/contracts.json", "node": "enrichment-artifacts"},
+  "extensions": {"epoch": "2026-10-29", "notes": "Source inspection only; AST, executable reverse reconstruction and comprehensive failure tests remain missing."}
+}

@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "Independent matrix oracle, boundary fixtures, compiled mutants, repeated suites; see model.md#tests"
+  ],
+  "children": [],
+  "cost": "O(n*min(m+1,2k+1)) time, O(min(m+1,2k+1)) space, two rows capped at 4096 cells each. Empty and difference-pruned cases are constant time. No full matrix. Standard allocator failure is not a typed error.",
+  "description": "Test-level observation: four named assertion outcomes. Each module enumerates 3969 ordered pairs of binary words through length five against independently allocated full DP matrices. Distance checks eight thresholds per pair, LCS also swaps inputs. Oracle cost O(n*m) time and space per pair. The finite transcript cannot identify an implementation: untested inputs may differ. Excluded passes include disagreement with fixed oracle and literal boundary fixtures; failed assertions do not identify a unique defect.",
+  "forward": [
+    "Let d be unit-cost byte Levenshtein distance, n=max lengths, m=min lengths. If n-m>t return None; if m=0 return Some(n). Otherwise k=min(t,n), w=min(m+1,2k+1) using saturation. If w>4096 return BandTooWide{cells:w}; else return Some(d) iff d<=t, None otherwise."
+  ],
+  "id": "algorithm-banded-levenshtein-tests",
+  "inverse": [
+    "Some(v) retains every pair whose distance is v<=t and whose call is not a budget error. None retains all pairs with d>t outside the resource-error predicate. Error w retains all inputs satisfying the exact width predicate. ab/ac and xy/xz at t=1 both map to Some(1); None merges distinct distances. Lengths, bytes and edit scripts cannot be reconstructed uniquely."
+  ],
+  "limitations": [
+    "Finite evidence not proof; partial syntax; allocator failure outside model; no speed claim"
+  ],
+  "source": "algorithms/src/banded_levenshtein/tests.rs",
+  "state": "Byte slices, threshold/bitset, or assertion outcomes"
+}

@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "tests::changes_counts_moves; tests::part_dir_is_a_sibling; tests::metrics_from_logs; tests::parser_input_matches_ids. No round/training/report CLI.",
+    "2026-11-01: cycle debug/release synthetic reviewed selection transaction, old-vote negative control, malformed/phase/hash/header rejection, split/heldout exclusion, idempotency and interrupted rollback.",
+    "2026-11-05: db-export and Cfg.heldout exercised by the staged-DB export (twice, byte-identical); the pre-flow fine-tune filter is compile checked, not run.",
+    "2026-11-05 (retrain-clean): tests::annotator_base_files_lose_dev_sentences (negative control: with no held-out sources the dev id and dev text reach the annotator; a missing required source fails; empty CYCLE_BASE stays empty); mutation annot_train with Heldout::default fails it. heldout-filter run on school-agreed-train, school-db, EWT/ESLSpok train, twice."
+  ],
+  "children": [],
+  "cost": "Parser/report O(bytes+words+distinct changes log distinct changes); model selection O(directory entries). Wrapper cost sums subprocess costs and filesystem bytes, unmeasured. Stages can leave durable prefixes on failure.",
+  "description": "CLI validates Codex-only teacher for training commands then loads Cfg. pre/post flows skip existing artifact stages and call external tools; final trees append, check and optional train precede row. Helpers convert CoNLL-U to parser ids/tokens, extract log metrics, choose newest eligible model and report exact aligned-token changes.",
+  "forward": [
+    "CLI validates Codex-only teacher for training commands then loads Cfg. pre/post flows skip existing artifact stages and call external tools; final trees append, check and optional train precede row. Helpers convert CoNLL-U to parser ids/tokens, extract log metrics, choose newest eligible model and report exact aligned-token changes.",
+    "promote-reviewed and rollback-reviewed dispatch local DB operations; CYCLE_DB selects target; no teacher model call in these commands."
+  ],
+  "id": "cycle-main",
+  "inverse": [
+    "Report reconstructs only compatible counts/ranked relation transitions, not original trees; unreported sentences, words beyond top examples and lexical inputs remain ambiguous. Missing metrics NaN merges many malformed/missing logs.",
+    "Invalid configured training teacher is rejected before Cfg load. parser_input count mismatch excludes file writes for ids/tokens but not directory creation. Token-form mismatch excludes that sentence's change counts."
+  ],
+  "limitations": [
+    "Partial syntax, bounded synthetic helper coverage; no live teacher, corpus, model, lesson or benchmark CLI. No numerical approximation budget claimed."
+  ],
+  "source": "tools/cycle/src/main.rs",
+  "state": "parser_input requires id count=nonempty token groups, creates dirs before validation; model .part excluded from selection and renamed after successful train. changes compares exact token form arrays, denominator max(words,1). Existing files signal completion without content validation."
+}

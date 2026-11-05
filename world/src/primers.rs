@@ -18,17 +18,28 @@ pub fn corpus() -> std::path::PathBuf {
 
 /// The answer marker and the number after it: (where the marker starts, the number).
 fn answer_of(chunk: &str) -> Option<(usize, i64)> {
-    for m in ["Ans.", "Ans ", "Am.", "Aiis.", "Ans,", "Aus."] {
-        if let Some(k) = chunk.rfind(m) {
-            let rest = chunk[k + m.len()..].trim_start().trim_start_matches('$').trim_start();
-            let digits: String = rest.chars().take_while(|c| c.is_ascii_digit() || *c == ',').collect();
-            let after = rest[digits.len()..].chars().next();
-            // a fraction or a decimal after the number is not a whole answer
-            if digits.is_empty() || matches!(after, Some('.') if rest[digits.len() + 1..].starts_with(|c: char| c.is_ascii_digit())) || matches!(after, Some('/' | '£' | '^')) {
-                return None;
-            }
-            return digits.replace(',', "").parse().ok().map(|v| (k, v));
+    let marker = ["Ans.", "Ans ", "Am.", "Aiis.", "Ans,", "Aus."]
+        .into_iter()
+        .filter_map(|m| chunk.rfind(m).map(|k| (k, m)))
+        .max_by_key(|(k, _)| *k);
+    if let Some((k, m)) = marker {
+        let rest = chunk[k + m.len()..]
+            .trim_start()
+            .trim_start_matches('$')
+            .trim_start();
+        let digits: String = rest
+            .chars()
+            .take_while(|c| c.is_ascii_digit() || *c == ',')
+            .collect();
+        let after = rest[digits.len()..].chars().next();
+        // a fraction or a decimal after the number is not a whole answer
+        if digits.is_empty()
+            || matches!(after, Some('.') if rest[digits.len() + 1..].starts_with(|c: char| c.is_ascii_digit()))
+            || matches!(after, Some('/' | '£' | '^'))
+        {
+            return None;
         }
+        return digits.replace(',', "").parse().ok().map(|v| (k, v));
     }
     None
 }
@@ -103,15 +114,17 @@ pub fn page_answers(text: &str) -> std::collections::BTreeMap<(i64, i64), i64> {
             if let Ok(v) = digits.parse() {
                 page = v;
             }
-            i += 1;
+            // The separate page-number token belongs to the header, never an item.
+            i += if (p.is_empty() || !p.chars().any(|c| c.is_ascii_digit())) && i + 1 < toks.len() { 2 } else { 1 };
             continue;
         }
         if page >= 0 {
             if let Some((k, glued)) = item(t) {
                 // the answer: the glued part, or the next token(s) up to the next item
+                let needs_answer = glued.is_empty();
                 let mut ans = glued;
                 let mut j = i + 1;
-                while j < toks.len() && item(toks[j]).is_none() && !toks[j].starts_with("Page") {
+                while j < toks.len() && (needs_answer && j == i + 1 || item(toks[j]).is_none()) && !toks[j].starts_with("Page") {
                     if !ans.is_empty() {
                         ans.push(' ');
                     }
@@ -270,7 +283,7 @@ pub fn reachable(text: &str, ans: i64) -> bool {
         return true;
     }
     let ops = |a: i64, b: i64| -> Vec<i64> {
-        let mut v = vec![a + b, a * b];
+        let mut v: Vec<i64> = a.checked_add(b).into_iter().chain(a.checked_mul(b)).collect();
         if a >= b { v.push(a - b) } else { v.push(b - a) }
         if b != 0 && a % b == 0 { v.push(a / b) }
         if a != 0 && b % a == 0 { v.push(b / a) }
@@ -317,4 +330,110 @@ pub fn main_args(args: &[String]) -> Result<()> {
         _ => println!("usage: world primers extract <out.json> [book dir …]"),
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod wave11_models {
+    use super::*;
+
+    #[test]
+    fn last_answer_marker_owns_number() {
+        for first in ["Ans.", "Ans ", "Am.", "Aiis.", "Ans,", "Aus."] {
+            for last in ["Ans.", "Ans ", "Am.", "Aiis.", "Ans,", "Aus."] {
+                let text = format!("{first} 3. corrected {last} 7.");
+                assert_eq!(
+                    answer_of(&text),
+                    Some((text.rfind(last).unwrap(), 7)),
+                    "{text}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn reachability_refuses_wrapped_arithmetic() {
+        assert!(!reachable("9223372036854775807 stones and 2 stones", -2));
+    }
+    #[test]
+    fn numeric_and_segmentation_boundaries() {
+        for (text, answer) in [
+            ("Ans. 1,234.", Some(1234)),
+            ("Aiis. $ 42 apples", Some(42)),
+            ("Aus. 0.", Some(0)),
+            ("Ans. 3.5", None),
+            ("Ans. 3/4", None),
+            ("Ans. -3", None),
+            ("Ans. 9223372036854775808", None),
+            ("Ans. 3^2", None),
+            ("Ans. nope", None),
+        ] {
+            assert_eq!(answer_of(text).map(|x| x.1), answer, "{text}");
+        }
+        assert_eq!(problems("1. Ann has three apples.\n How many apples remain ? Ans. 3.\n2. Ben has six pears. How many pears remain? Ans. 6.").len(), 2);
+        let (s, q, a) =
+            word_problem("1. Ann has three apples. how many apples remain ? Ans. 3.").unwrap();
+        assert_eq!(
+            (s.as_str(), q.as_str(), a),
+            ("Ann has three apples.", "How many apples remain?", 3)
+        );
+        for text in [
+            "1. 3 X 2? Ans. 6.",
+            "1. Ann has half of 3/4 apples. How many apples remain? Ans. 3.",
+            "1. Ann has three apples and Ben has six apples. Ans. 9.",
+        ] {
+            assert!(word_problem(text).is_none(), "{text}");
+        }
+        let map = page_answers("Page 91. — 26. 40 mi. 27. 57. Page 92. — 26. 5 mi.");
+        assert_eq!(map.get(&(91, 26)), Some(&40));
+        assert_eq!(map.get(&(91, 27)), Some(&57));
+        assert_eq!(map.get(&(92, 26)), Some(&5));
+        assert_eq!(page_answers("Page 91. 26. 40 mi. 27. 57. Page92. 26. 5 mi."), map);
+    }
+
+    #[test]
+    fn reachability_matches_wide_integer_oracle() {
+        fn results(a: i128, b: i128) -> Vec<i128> {
+            let mut out = vec![a + b, a * b, (a - b).abs()];
+            if b != 0 && a % b == 0 {
+                out.push(a / b);
+            }
+            if a != 0 && b % a == 0 {
+                out.push(b / a);
+            }
+            out.into_iter().filter(|n| *n <= i64::MAX as i128).collect()
+        }
+        for a in 0..6i128 {
+            for b in 0..6i128 {
+                let mut ns = vec![a, b];
+                ns.sort();
+                ns.dedup();
+                let with: Vec<_> = ns.iter().copied().chain([12, 60, 100, 7, 24]).collect();
+                let mut expected = std::collections::BTreeSet::new();
+                if ns.len() == 1 {
+                    expected.insert(ns[0]);
+                }
+                for &x in &ns {
+                    for (j, &y) in with.iter().enumerate() {
+                        if x == y && j < ns.len() {
+                            continue;
+                        }
+                        for z in results(x, y) {
+                            expected.insert(z);
+                            for &w in &with {
+                                expected.extend(results(z, w));
+                            }
+                        }
+                    }
+                }
+                for ans in -1..40 {
+                    assert_eq!(
+                        reachable(&format!("{a} stones and {b} stones"), ans),
+                        expected.contains(&(ans as i128)),
+                        "{a} {b} {ans}"
+                    );
+                }
+            }
+        }
+        assert!(reachable("three apples and two apples", 5));
+    }
 }

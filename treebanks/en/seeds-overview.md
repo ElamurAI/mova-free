@@ -7,12 +7,12 @@
 
 Merged as is, they teach the model contradictions: the same imperative, the same *by* phrase, the same compound noun get different annotation in different treebanks. Below are a table of treebanks × customs with numbers, a list of contradictions, and what training on `mova` through converters will give.
 
-Each treebank's seeds are in `<treebank>/seeds/`, converters in `<treebank>/convert.md`. PTB is separate (`ptb/`): there are no data, only tagging customs and the constituents → dependencies path.
+Each treebank's seeds are in `<treebank>/seeds.md`, converters in `<treebank>/convert.md`. PTB is separate (`ptb/`): there are no data, only tagging customs and the constituents → dependencies path.
 
 ## How it was counted
 
 - **Counter rules.** The general `tb.en.*` at the end of this seed and each treebank's own `tb.<treebank>.*` in the treebank seeds. Run: `en expert-check treebanks/en <treebank files>`. The engine collects all rules from the folder. The notation "*v*/*n*": *n* — matches (`fired`), *v* — violations of the `mova`/EWT norm. Numbers are over all parts of the treebank together.
-- **Negative control.** Each rule is also run on EWT. There it must give 0 or a small residue: errors of EWT itself (`ewt/seeds/errors.md`). A rule that is red on EWT is wrong for `mova`.
+- **Negative control.** Each rule is also run on EWT. There it must give 0 or a small residue: errors of EWT itself (`ewt/seeds.md#errors`). A rule that is red on EWT is wrong for `mova`.
 - **`grep`/`cut`** — for what the rules do not see: layers, labels and features with a comma (`PronType=Int,Rel`), XPOS outside PTB.
 - "—" — the rule has no matches: the layer or forms are missing, or the phenomenon is absent from the treebank.
 
@@ -68,9 +68,9 @@ Largest discrepancies:
 - **ESLSpok:** *to* preposition — PART (224).
 
 Three more customs are not counted by a rule — `grep`:
-- `dep`: GUM 184, GENTLE 96, EWT 5 (`gum/seeds/dep.md`: *you guys*, photo captions, numbers);
+- `dep`: GUM 184, GENTLE 96, EWT 5 (`gum/seeds.md#dep`: *you guys*, photo captions, numbers);
 - `flat:foreign`: ParTUT 88, ESLSpok 14, EWT 0;
-- `acl:relcl` on a participle without a subject: ATIS 662, EWT 13 (`atis/seeds/acl-relcl-participle.md`).
+- `acl:relcl` on a participle without a subject: ATIS 662, EWT 13 (`atis/seeds.md#acl-relcl-participle`).
 
 ## 3. Customs: features and lemmas
 
@@ -91,7 +91,7 @@ Three more customs are not counted by a rule — `grep`:
 | PUD | 4/74 | 940/1569 | 0/164 | 272/272 | 0/474 | 260/260 | 0/464 | 0/234 | 0/15 | 0/222 |
 
 \* ParTUT: possessives are DET, so the PRON rule does not see them. The custom is in the `tb.en.poss-pron` column: 615 of 617 are not PRON.
-\*\* GUMReddit without text: the feature variants of the rules are counted (`gumreddit/seeds/gum-family.md`).
+\*\* GUMReddit without text: the feature variants of the rules are counted (`gumreddit/seeds.md#gum-family`).
 
 Largest discrepancies:
 - **Agreement by form:** Number/Person only where they are visible in the form. LinES 6607, ParTUT 2302, ATIS 1654, PUD 940, LittlePrince 317 — together ≈ 11 800 finite verbs without the features that EWT sets from the subject.
@@ -154,10 +154,10 @@ Part of the "foreign composition" that does not help training comes precisely fr
 4. **Honest evaluation on tests.** The reverse converter `mova` → treebank makes it possible to measure `en` in the treebank's dialect. UFeats on LinES (83.44), PUD (87.55), LittlePrince (85.90), Pronouns (69.56), ParTUT (78.90) and MLAS on ATIS (22.53) and CTeTex (13.26) are currently lowered by the difference in norms. After the reverse converter the real errors become visible.
 5. **NC treebanks — test and research only.** GUM, GENTLE, LinES, ParTUT. Their converters are needed for evaluation and for the two roads to the goal (`docs/dialect.md`), not for training commercial models.
 6. **Candidates for borrowing into `mova`.** Customs more informative than EWT that convert to EWT without loss:
-   - the number of *you* from GUM (`gum/seeds/you-number.md`);
+   - the number of *you* from GUM (`gum/seeds.md#you-number`);
    - singular *they/theirs* from Pronouns (`pronouns/convert.md`).
 
-   Decide in `dialects/mova/seeds/`.
+   Decide in `dialects/mova/seeds.md`.
 7. **Negative control:**
    - training on converted data must not worsen EWT test;
    - a converter with a deliberate error must give divergences in the reverse run and worsen the test. For example, `atis.imperative` without the subject condition would make 890 verbs with a subject imperative.

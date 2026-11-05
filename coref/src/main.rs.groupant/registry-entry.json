@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "wave27_tests::synthetic_load_preserves_gold_and_rejects_mismatched_trees"
+  ],
+  "children": [],
+  "cost": "Argument bytes linear; load holds raw cloned input plus tree/document views. Resolve/eval costs delegated; mention_stats matching plus map counts and sorted top-k summaries. Whole input/output strings are buffered, no resource cap.",
+  "description": "CLI flag/arity dispatch, file loading with optional aligned trees, resolver output and diagnostic printing.",
+  "forward": [
+    "args takes first argument as command; --trees/out/label consume next token with missing-value error; --exact boolean; all other tokens positional. Repeated values last-win. resolve requires1, score2, eval1+out, mentions1; explain accepts>=1 and uses second as optional id, ignoring further positionals. load reads gold then optional tree, retrees and builds documents. Eval creates directory before input load, then run outputs and report write. lexicon count|build|paths|rotate|show|compare: part files of path counts from CoNLL-U streams, the merged table with provenance, path precision against gold Entity, the rotated negative control, decisions of a table, and agreement of two tables."
+  ],
+  "id": "coref-main",
+  "inverse": [
+    "For stdout y, compatible argv/files may vary in ignored flags, extra explain positionals and discarded data. load output admits any aligned tree source with matching replacement columns; output does not uniquely identify file bytes or path. Error messages constrain failing stage rather than full prior state."
+  ],
+  "limitations": [
+    "Arg parser/process dispatch and output formatting not fully executed; synthetic load test only. No broad CLI or I/O-failure control.",
+    "Partial lexical syntax; no executable percentage surrogate; no corpus or universal proof."
+  ],
+  "source": "coref/src/main.rs",
+  "state": "Process argv/environment, input paths and files, stdout/stderr, optional evaluation directory."
+}

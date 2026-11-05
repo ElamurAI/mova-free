@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "diag::wave27::cycles_empty_and_bins",
+    "diag::tests::depth_and_projectivity"
+  ],
+  "children": [],
+  "cost": "Geometry O(n²) depths, nonprojectivity O(n³) worst for n arcs and nested ancestry. Report adds parser costs for each width and ten class interventions. Space O(tokens+predictions+beam trees+report). Malformed head arrays can panic.",
+  "description": "Dependency-tree error geometry, relation classes, PP attachment and parser diagnostic report.",
+  "forward": [
+    "depths follows each head chain while nonzero and steps<=n, stores root distance (cycles yield n+1). nonprojective(d) checks intervening words for ancestry under h, root arcs false. report decodes baseline, geometry, PP, k-best oracle then constrained class interventions; absent constrained tree reuses baseline and counts dead."
+  ],
+  "id": "en-diag",
+  "inverse": [
+    "R(depths)=all in-range head arrays with those truncated path lengths; star siblings and different same-depth parents collide. Relation class inverse is the finite set of Rel variants matched to that class; class does not reconstruct exact subtype."
+  ],
+  "limitations": [
+    "No trained-parser/report execution; PP and constrained-beam branches source-derived",
+    "Comment cycle-at-n differs from actual n+1; model records code behavior",
+    "Reported nonprojective ceiling text is not a proved bound"
+  ],
+  "source": "en/src/diag.rs",
+  "state": "Head arrays (1-based arcs, zero root), relation/tag vectors, prediction beams and report counters."
+}

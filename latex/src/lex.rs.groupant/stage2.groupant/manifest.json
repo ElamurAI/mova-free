@@ -1,0 +1,82 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "raw_flag_erasure",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "raw_flag_erasure",
+        "status": "partial_source_derived_model",
+        "type": "raw_flag_erasure"
+      },
+      {
+        "id": "separator_adapter",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "separator_adapter",
+        "status": "partial_source_derived_model",
+        "type": "separator_adapter"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 11671,
+      "start": 9128
+    },
+    "description": "render maps Cmd/CmdRaw(n) to backslash+n, adding a space when an ASCII-letter command is followed by Char(ASCII letter). Other punctuation tokens print literally, Param(k) prints # plus digit, Space prints one space, End prints nothing.",
+    "source_bytes_sha256": "81b77a6fa0765dacdbff4afb4b00231a9787319d63394ac915893559dfc291b8"
+  },
+  "id": "latex-lex-stage2",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../lex.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "65c9e2c47772827ade022d41d5bf4ab4f54c0d3a7b9505ec137f0df8c4c4c922"
+  },
+  "status": "partial_source_bound_model"
+}

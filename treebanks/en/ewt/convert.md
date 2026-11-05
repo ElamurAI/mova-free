@@ -1,6 +1,6 @@
 # EWT ↔ mova — converter
 
-`mova` today is UD 2.18 with EWT conventions plus three normalizations: `det:poss` → `nmod:poss`, `:tmod`/`:npmod` → `:unmarked`, Number/Person of verbs from the subject. On the EWT 2.18 data all three are empty (`seeds/mova-diff.md`). So the converter is identity in each direction. The rules below stand as safeguards for other EWT versions (≤ 2.14) and for Opus annotation in the EWT style. On EWT 2.18 they never fire.
+`mova` today is UD 2.18 with EWT conventions plus three normalizations: `det:poss` → `nmod:poss`, `:tmod`/`:npmod` → `:unmarked`, Number/Person of verbs from the subject. On the EWT 2.18 data all three are empty (`seeds.md#mova-diff`). So the converter is identity in each direction. The rules below stand as safeguards for other EWT versions (≤ 2.14) and for Opus annotation in the EWT style. On EWT 2.18 they never fire.
 
 ## ewt → mova
 
@@ -61,7 +61,7 @@ Matches on EWT 2.18: `det-poss` finds 19,371 `det`, but none has `Poss=Yes`, so 
 
 ## mova → ewt
 
-Identity. `mova` MISC must keep the EWT attributes (`TemporalNPAdjunct`, `Superlocation`, `FlatType`, `Cxn`, STREUSLE) — without them the reverse converters to old versions and other treebanks have to guess (`seeds/mova-diff.md`).
+Identity. `mova` MISC must keep the EWT attributes (`TemporalNPAdjunct`, `Superlocation`, `FlatType`, `Cxn`, STREUSLE) — without them the reverse converters to old versions and other treebanks have to guess (`seeds.md#mova-diff`).
 
 ## Round trip ewt → mova → ewt
 

@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test --release -p mova-modules"
+  ],
+  "cost": "F files, B bytes: validation O(F log F); install and verify O(B) hashing plus copy or download; discovery O(roots x modules) directory reads and manifest parses.",
+  "description": "Add-on modules: module.json format and validation, roots and deterministic discovery, size/SHA-256 verification, staged install from a folder or an https/file URL, licence admission, removal, aria2c torrent download, and the `mova modules` command.",
+  "forward": [
+    "Manifest::parse validates schema, safe names and paths, hashes, provides, layer states and requires_mova against MOVA_RELEASE 0.5; discover walks <root>/<name>/<version> sorted, first root wins; find picks the named or highest version.",
+    "Install checks admission (pinned module.json hash, --accept-nc for nc-research) and refuses Git work tree roots, stages and verifies every file, then renames into place; fetch reads file:// or curl https:// only; remove deletes only a canonical module folder."
+  ],
+  "id": "mova-modules-lib",
+  "inverse": [
+    "Behavior complement: no BitTorrent transfer, no signature beyond hashes, no licence truth check, no dependency resolution, no plain HTTP, no install into a Git work tree, no loading of contents.",
+    "Reverse reconstruction: an installed folder recovers manifest and files exactly; a module.json hash recovers the manifest only by search; a failed install leaves no installed folder."
+  ],
+  "limitations": [
+    "Partial source model; finite unit tests and one end-to-end run, no proof.",
+    "install-torrent exercised only without a client (no aria2c on the development box)."
+  ],
+  "source": "tools/modules/src/lib.rs",
+  "state": "Installed modules on disk under ordered roots; no process state beyond environment-derived roots."
+}

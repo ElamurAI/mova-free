@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "training_attention_keeps_gradients_and_inference_control_breaks_them"
+  ],
+  "children": [],
+  "cost": "O(AFFIX*16) parameter allocation plus tiny attention/backward; no corpus or persisted optimizer.",
+  "description": "Tiny CUDA Net d=16/layers=1/heads=2 builds two-word synthetic batch; training arc-square loss must reach word,QKV,LN and arc weights with positive finite L1 gradient; Q,K,V slices checked separately. Inference fused control requires zero Q/K and nonzero V.",
+  "forward": [
+    "Tiny CUDA Net d=16/layers=1/heads=2 builds two-word synthetic batch; training arc-square loss must reach word,QKV,LN and arc weights with positive finite L1 gradient; Q,K,V slices checked separately. Inference fused control requires zero Q/K and nonzero V."
+  ],
+  "id": "gparse-test-gpu-gradients",
+  "inverse": [
+    "Passing selected assertions excludes their stated counterexamples within the fixtures. No corpus/model-file mutation occurs in selected synthetic checks.",
+    "Positive norms admit all tensor gradients with same support/norm condition; zero Q/K is compatible with many inference input/weight states and does not reconstruct prior training."
+  ],
+  "limitations": [
+    "Partial lexical syntax; no semantic proof",
+    "Finite synthetic checks only; external corpus/model experiments excluded",
+    "No executable Rust percent surrogate or throughput claim",
+    "Fault injection and exhaustive nonfinite/dimension cases absent"
+  ],
+  "source": "gparse/tests/gpu_gradients.rs",
+  "state": "Any QKV gradient alone is insufficient: separate Q/K routes must learn. Seed42/dropout0 bound the fixture, no training quality conclusion."
+}

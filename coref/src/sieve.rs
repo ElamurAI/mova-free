@@ -10,6 +10,7 @@ use std::collections::{HashMap, HashSet};
 use en::gram::{Feat, Rel, UPos};
 
 use crate::doc::{Document, Sent};
+use crate::it::{self, Reading};
 use crate::mention::{self, ANIM, FEM, INAN, Kind, MASC, Mention, NEUT, P1, P2, P3, PL, Pron, SG};
 
 /// Sieve (rule) — id in output, explanations and tables.
@@ -28,13 +29,15 @@ pub enum Sieve {
     StrictC,
     ProperHead,
     RelaxedHead,
+    /// «it» of an event, a bare «this/that» → the clause before it (`crate::it`).
+    Deixis,
     Pronoun,
     /// Baseline: pronoun → nearest agreeing mention.
     Nearest,
 }
 
 impl Sieve {
-    /// Default sieve: all except strict_c and relaxed_head — on GUM dev they have precision 31% and 24%
+    /// Default sieve: all except strict_c, relaxed_head and deixis — on GUM dev they have precision 31%, 24% and 12%
     /// and do not add CoNLL F1 (contribution table in coref/README.md).
     pub const DEFAULT: [Sieve; 12] = [
         Sieve::Speaker,
@@ -50,8 +53,8 @@ impl Sieve {
         Sieve::ProperHead,
         Sieve::Pronoun,
     ];
-    /// Full sieve (all 14) in application order — for the contribution table.
-    pub const FULL: [Sieve; 14] = [
+    /// Full sieve (all 15) in application order — for the contribution table.
+    pub const FULL: [Sieve; 15] = [
         Sieve::Speaker,
         Sieve::Exact,
         Sieve::Relaxed,
@@ -65,6 +68,7 @@ impl Sieve {
         Sieve::StrictC,
         Sieve::ProperHead,
         Sieve::RelaxedHead,
+        Sieve::Deixis,
         Sieve::Pronoun,
     ];
     pub fn id(self) -> &'static str {
@@ -82,6 +86,7 @@ impl Sieve {
             Sieve::StrictC => "strict_c",
             Sieve::ProperHead => "proper_head",
             Sieve::RelaxedHead => "relaxed_head",
+            Sieve::Deixis => "deixis",
             Sieve::Pronoun => "pronoun",
             Sieve::Nearest => "nearest",
         }
@@ -101,6 +106,7 @@ impl Sieve {
             Sieve::StrictC => "head in cluster + modifiers ⊆",
             Sieve::ProperHead => "same proper-name head, no conflicting proper names or numbers in modifiers",
             Sieve::RelaxedHead => "proper-name head is among the cluster's words + words ⊆",
+            Sieve::Deixis => "event «it», bare «this/that» → the clause before it (predicate tests)",
             Sieve::Pronoun => "3rd-person pronoun: agreement, binding, Hobbs order, ≤ 3 sentences",
             Sieve::Nearest => "baseline: nearest preceding agreeing mention",
         }
@@ -169,12 +175,19 @@ pub struct Resolver<'a> {
     quote_author: HashMap<u32, usize>,
     /// Mention by head (sentence, word) — the proper one (without coordination).
     by_head: HashMap<(usize, usize), usize>,
+    /// The reading of each «it», «this», «that» that is not anaphoric (`crate::it`), by mention.
+    reading: HashMap<usize, Reading>,
+    /// Event pronoun (sentence, head) → the clause it refers to (sentence, predicate).
+    deictic: Vec<((usize, usize), (usize, usize))>,
 }
 
 /// Experiment switches on dev (`COREF_X=name,…`).
 fn opt_x(name: &str) -> bool {
     std::env::var("COREF_X").is_ok_and(|v| v.split(',').any(|x| x == name))
 }
+
+/// Singular nouns of a group that «they» may refer to (notional agreement, Zeldes 2018). Hand-made closed list.
+const COLLECTIVE: [&str; 24] = ["family", "government", "team", "company", "committee", "army", "crowd", "audience", "staff", "couple", "band", "group", "class", "party", "council", "board", "community", "public", "club", "organization", "organisation", "firm", "police", "household"];
 
 fn agree(a: u8, b: u8) -> bool {
     a == 0 || b == 0 || a & b != 0
@@ -195,8 +208,35 @@ fn feat_name(kind: &str, v: u8) -> String {
 
 impl<'a> Resolver<'a> {
     pub fn new(doc: &'a Document, cfg: Config) -> Resolver<'a> {
-        let ms = mention::detect(doc);
-        let mut r = Resolver { doc, ms, links: Vec::new(), cfg, of: Vec::new(), clusters: Vec::new(), quote_author: HashMap::new(), by_head: HashMap::new() };
+        let mut ms = mention::detect(doc);
+        // what each «it», «this», «that» refers to: nothing (not output), an event (a clause mention is added), a noun
+        let mut readings: Vec<((usize, usize), Reading)> = Vec::new();
+        let mut deictic = Vec::new();
+        if !it::off("it-class") {
+            let mut events = Vec::new();
+            for m in ms.iter_mut().filter(|m| m.kind == Kind::Pronoun && !m.coord) {
+                let s = &doc.sents[m.span.sent];
+                let rd = it::reading(s, m.head);
+                if rd == Reading::Anaphoric {
+                    continue;
+                }
+                readings.push(((m.span.sent, m.head), rd));
+                if rd == Reading::Pleonastic {
+                    m.internal = true;
+                } else if cfg.sieves.contains(&Sieve::Deixis)
+                    && let Some((ps, p, a, b)) = it::antecedent(&doc.sents, m.span.sent, m.head)
+                {
+                    deictic.push(((m.span.sent, m.head), (ps, p)));
+                    events.push(mention::event(&doc.sents[ps], ps, p, (a, b)));
+                }
+            }
+            if !events.is_empty() {
+                ms.extend(events);
+                ms.sort_by_key(|m| (m.span.sent, m.span.start, std::cmp::Reverse(m.span.end), m.head));
+                ms.dedup_by_key(|m| m.span);
+            }
+        }
+        let mut r = Resolver { doc, ms, links: Vec::new(), cfg, of: Vec::new(), clusters: Vec::new(), quote_author: HashMap::new(), by_head: HashMap::new(), reading: HashMap::new(), deictic };
         for i in 0..r.ms.len() {
             let v = r.voice(i);
             let m = &r.ms[i];
@@ -208,6 +248,11 @@ impl<'a> Resolver<'a> {
             r.clusters.push(c);
             if !m.coord {
                 r.by_head.insert((m.span.sent, m.head), i);
+            }
+        }
+        for (k, rd) in readings {
+            if let Some(&m) = r.by_head.get(&k) {
+                r.reading.insert(m, rd);
             }
         }
         r.find_quote_authors();
@@ -418,6 +463,7 @@ impl<'a> Resolver<'a> {
                 Sieve::Acronym => self.acronym(),
                 Sieve::Reflexive => self.reflexive(),
                 Sieve::StrictA | Sieve::StrictB | Sieve::StrictC | Sieve::ProperHead | Sieve::RelaxedHead => self.head_match(s),
+                Sieve::Deixis => self.deixis(),
                 Sieve::Pronoun => self.pronoun(),
                 Sieve::Nearest => self.nearest(),
             }
@@ -760,7 +806,7 @@ impl<'a> Resolver<'a> {
             if !(x.is_ppr() || dem && self.cfg.demonstratives) || x.person != P3 || !self.first_in_cluster(m) {
                 continue;
             }
-            if dem && x.role == Rel::Det {
+            if dem && x.role == Rel::Det || self.reading.contains_key(&m) {
                 continue;
             }
             let x_env = std::env::var("COREF_X").unwrap_or_default();
@@ -804,9 +850,27 @@ impl<'a> Resolver<'a> {
                         }
                         Err(e) => {
                             if rejected.len() < 3 && e != "already together" {
-                                rejected.push(format!("{}: {e}", self.describe(c)));
+                                let lx = self.ms[c].lexicon.as_ref().filter(|_| e.starts_with("Gender") || e.starts_with("Animacy")).map(|w| format!(" ({w})")).unwrap_or_default();
+                                rejected.push(format!("{}: {e}{lx}", self.describe(c)));
                             }
                         }
+                    }
+                }
+            }
+            // notional «they» (Zeldes 2018, I1–I2): only when no strictly agreeing candidate fits, a singular collective noun
+            // (the family, the government) — PRAG_OFF=coref-notional
+            let mut notional = false;
+            if pick.is_none() && self.ms[m].number == PL && !it::off("coref-notional") {
+                for (rank, &c) in cands.iter().enumerate() {
+                    let y = &self.ms[c];
+                    if y.kind != Kind::Nominal || y.coord || y.quantified || !COLLECTIVE.contains(&self.sent(c).lem(y.head).as_str()) || self.clusters[self.of[c]].number != SG || !self.principle_b(m, c) {
+                        continue;
+                    }
+                    let (ca, cb) = (&self.clusters[self.of[m]], &self.clusters[self.of[c]]);
+                    if self.of[m] != self.of[c] && agree(ca.animacy, cb.animacy) && agree(ca.gender, cb.gender) && agree(ca.person, cb.person) {
+                        pick = Some((c, rank, false));
+                        notional = true;
+                        break;
                     }
                 }
             }
@@ -827,11 +891,30 @@ impl<'a> Resolver<'a> {
                 if anim {
                     why.push_str("; animacy preference");
                 }
+                if let Some(w) = &self.ms[c].lexicon {
+                    why.push_str(&format!("; {w}"));
+                }
+                if notional {
+                    why.push_str("; notional agreement: no plural candidate, a collective noun");
+                }
                 if !rejected.is_empty() {
                     why.push_str(&format!("; rejected: {}", rejected.join("; ")));
                 }
                 self.merge(Sieve::Pronoun, m, c, why);
             }
+        }
+    }
+
+    /// Event «it» and bare «this/that» → the clause mention before it (`crate::it::antecedent`).
+    fn deixis(&mut self) {
+        for k in 0..self.deictic.len() {
+            let (p, e) = self.deictic[k];
+            let (Some(&m), Some(&c)) = (self.by_head.get(&p), self.by_head.get(&e)) else { continue };
+            if self.ms[c].kind != Kind::Other || !self.first_in_cluster(m) || self.compatible(m, c).is_err() {
+                continue;
+            }
+            let why = format!("«{}» — {} → the clause {}", self.ms[m].head_low, self.reading.get(&m).map_or("event", |r| if *r == Reading::Event { "event (predicate test)" } else { "?" }), self.describe(c));
+            self.merge(Sieve::Deixis, m, c, why);
         }
     }
 

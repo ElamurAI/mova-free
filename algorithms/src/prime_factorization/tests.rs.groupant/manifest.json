@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "id": "algorithm-prime-factorization-tests",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "ebd06d8fbe790fced807c1e67b813a489e66f122e23654134af4a89accf2273d"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "operator": "Over terminating candidate implementations paired with pass/fail, excluded observations comprise pass with any failed assertion and fail with every assertion satisfied. Aborts/nontermination are outside this binary domain.",
+        "domain": "Five tests: independent divisor/primality oracle n=1..2048; zero/one and eight prime squares; u64::MAX known factors, powers of two e=1..63 and 3^40; reconstruction/canonical certificates n=1..4096; valuation addition for 4096 pairs a,b=1..64.",
+        "assumptions": "Standard Rust arithmetic, successful resources and terminating harness.",
+        "observation_scope": "One complete finite harness run.",
+        "approximation_semantics": "Finite correspondence evidence only.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "ebd06d8fbe790fced807c1e67b813a489e66f122e23654134af4a89accf2273d",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "failure_fibers",
+        "type": "reverse_reconstruction",
+        "operator": "A pass reconstructs all implementations agreeing with every finite fixture, leaving arbitrary off-fixture behavior. Failure reconstructs implementations or faulty oracle premises causing the mismatch, never uniquely identifies a defect.",
+        "domain": "Five tests: independent divisor/primality oracle n=1..2048; zero/one and eight prime squares; u64::MAX known factors, powers of two e=1..63 and 3^40; reconstruction/canonical certificates n=1..4096; valuation addition for 4096 pairs a,b=1..64.",
+        "assumptions": "Standard Rust arithmetic, successful resources and terminating harness.",
+        "observation_scope": "One complete finite harness run.",
+        "approximation_semantics": "Finite correspondence evidence only.",
+        "path": "model.md",
+        "section": "failure_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "ebd06d8fbe790fced807c1e67b813a489e66f122e23654134af4a89accf2273d",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "oracle",
+        "type": "oracle_correspondence",
+        "operator": "Enumerate every candidate divisor of the original bounded n, certify prime by checking all smaller divisors, then determine valuation by powers dividing the original n. This uses neither shrinking remainder nor sqrt termination. Additional product/canonical certificates and multiplication relations test other observations.",
+        "domain": "Five tests: independent divisor/primality oracle n=1..2048; zero/one and eight prime squares; u64::MAX known factors, powers of two e=1..63 and 3^40; reconstruction/canonical certificates n=1..4096; valuation addition for 4096 pairs a,b=1..64.",
+        "assumptions": "Standard Rust arithmetic, successful resources and terminating harness.",
+        "observation_scope": "One complete finite harness run.",
+        "approximation_semantics": "Finite correspondence evidence only.",
+        "path": "model.md",
+        "section": "oracle",
+        "status": "partial_source_derived",
+        "subject_revision": "ebd06d8fbe790fced807c1e67b813a489e66f122e23654134af4a89accf2273d",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "mutation",
+        "type": "counterfactual_boundary",
+        "operator": "Change trial boundary <= to <. This compiled production-source mutant loses the exponent of 2 at n=4 and is rejected by zero_one_and_prime_squares.",
+        "domain": "Five tests: independent divisor/primality oracle n=1..2048; zero/one and eight prime squares; u64::MAX known factors, powers of two e=1..63 and 3^40; reconstruction/canonical certificates n=1..4096; valuation addition for 4096 pairs a,b=1..64.",
+        "assumptions": "Standard Rust arithmetic, successful resources and terminating harness.",
+        "observation_scope": "One complete finite harness run.",
+        "approximation_semantics": "Finite correspondence evidence only.",
+        "path": "model.md",
+        "section": "mutation",
+        "status": "partial_source_derived",
+        "subject_revision": "ebd06d8fbe790fced807c1e67b813a489e66f122e23654134af4a89accf2273d",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "schedule",
+        "type": "metamorphic_relation",
+        "operator": "Single-thread repeated debug/release runs preserve normalized test records, excluding timestamps, build progress and elapsed time. This is finite evidence, not universal equivalence.",
+        "domain": "Five tests: independent divisor/primality oracle n=1..2048; zero/one and eight prime squares; u64::MAX known factors, powers of two e=1..63 and 3^40; reconstruction/canonical certificates n=1..4096; valuation addition for 4096 pairs a,b=1..64.",
+        "assumptions": "Standard Rust arithmetic, successful resources and terminating harness.",
+        "observation_scope": "One complete finite harness run.",
+        "approximation_semantics": "Finite correspondence evidence only.",
+        "path": "model.md",
+        "section": "schedule",
+        "status": "partial_source_derived",
+        "subject_revision": "ebd06d8fbe790fced807c1e67b813a489e66f122e23654134af4a89accf2273d",
+        "evidence": "model.md#evidence"
+      }
+    ]
+  }
+}

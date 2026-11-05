@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-binary-search",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "567006864dcefe90ae51fa75f3292f8e9bc31c736688305a830ac21f3b91d060"
+  },
+  "components": {
+    "ast": {
+      "path": "syntax.json",
+      "status": "partial",
+      "format": "rust_syntax_projection"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived_bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived_bounded_checked"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#test-extraction",
+      "status": "bounded_evidence"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "567006864dcefe90ae51fa75f3292f8e9bc31c736688305a830ac21f3b91d060",
+        "domain": "Sorted finite slices of lawful totally ordered values and targets; successful calls; values and comparison behavior fixed.",
+        "observation_scope": "Input/output transition for one successful call; no trace or panic contract.",
+        "operator": "Let U={(A,t,k): sorted A, 0<=k<=len(A)}. R is the forward cut relation. U minus R consists exactly of k with an earlier element >=t or a later element <t. Candidate source-derived exact characterization under preconditions; bounded oracle evidence, no general machine proof.",
+        "approximation_semantics": "Conditional source-derived relation; bounded correspondence only, prospective details explicitly identified.",
+        "assumptions": "Sorted finite slices of lawful totally ordered values and targets; successful calls; values and comparison behavior fixed.",
+        "evidence": "model.md#test-extraction"
+      },
+      {
+        "id": "antecedents",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "567006864dcefe90ae51fa75f3292f8e9bc31c736688305a830ac21f3b91d060",
+        "domain": "Sorted finite slices of lawful totally ordered values and targets; successful calls; values and comparison behavior fixed.",
+        "observation_scope": "Input/output transition for one successful call; no trace or panic contract.",
+        "operator": "For fixed output k, retain all sorted A and t with k<=n, every i<k having A[i]<t and every i>=k having A[i]>=t. Many lengths, values and targets remain possible; no unique inverse.",
+        "approximation_semantics": "Conditional source-derived relation; bounded correspondence only, prospective details explicitly identified.",
+        "assumptions": "Sorted finite slices of lawful totally ordered values and targets; successful calls; values and comparison behavior fixed.",
+        "evidence": "model.md#test-extraction"
+      },
+      {
+        "id": "membership",
+        "type": "observation_projection",
+        "path": "model.md",
+        "section": "membership",
+        "status": "partial_source_derived_model",
+        "subject_revision": "567006864dcefe90ae51fa75f3292f8e9bc31c736688305a830ac21f3b91d060",
+        "domain": "Sorted finite slices of lawful totally ordered values and targets; successful calls; values and comparison behavior fixed.",
+        "observation_scope": "Input/output transition for one successful call; no trace or panic contract.",
+        "operator": "For fixed A,t, project cut k to Some(k) iff k<n and A[k]=t; otherwise None. None combines t below/above or between keys and loses the insertion point. Linear position oracle checks this projection.",
+        "approximation_semantics": "Conditional source-derived relation; bounded correspondence only, prospective details explicitly identified.",
+        "assumptions": "Sorted finite slices of lawful totally ordered values and targets; successful calls; values and comparison behavior fixed.",
+        "evidence": "model.md#test-extraction"
+      },
+      {
+        "id": "duplicate_cut",
+        "type": "counterfactual_boundary",
+        "path": "model.md",
+        "section": "duplicate_cut",
+        "status": "partial_source_derived_model",
+        "subject_revision": "567006864dcefe90ae51fa75f3292f8e9bc31c736688305a830ac21f3b91d060",
+        "domain": "Sorted finite slices of lawful totally ordered values and targets; successful calls; values and comparison behavior fixed.",
+        "observation_scope": "Input/output transition for one successful call; no trace or panic contract.",
+        "operator": "Change comparison < to <=: target relation becomes upper bound |{i:A[i]<=t}|. Difference from actual lower bound equals the count of equal keys. Tests with duplicates reject this changed rule as actual behavior.",
+        "approximation_semantics": "Conditional source-derived relation; bounded correspondence only, prospective details explicitly identified.",
+        "assumptions": "Sorted finite slices of lawful totally ordered values and targets; successful calls; values and comparison behavior fixed.",
+        "evidence": "model.md#test-extraction"
+      },
+      {
+        "id": "cut_fiber",
+        "type": "target_partition",
+        "path": "model.md",
+        "section": "cut_fiber",
+        "status": "partial_source_derived_model",
+        "subject_revision": "567006864dcefe90ae51fa75f3292f8e9bc31c736688305a830ac21f3b91d060",
+        "domain": "Sorted finite slices of lawful totally ordered values and targets; successful calls; values and comparison behavior fixed.",
+        "observation_scope": "Input/output transition for one successful call; no trace or panic contract.",
+        "operator": "Fix sorted A. For 0<k<n, targets mapping to k satisfy A[k-1]<t<=A[k]; k=0 requires t<=A[0], k=n requires A[n-1]<t. Empty A maps every target to zero. Equal neighbors can make interior fibers empty. Bounded linear oracle tests all five targets per input.",
+        "approximation_semantics": "Conditional source-derived relation; bounded correspondence only, prospective details explicitly identified.",
+        "assumptions": "Sorted finite slices of lawful totally ordered values and targets; successful calls; values and comparison behavior fixed.",
+        "evidence": "model.md#test-extraction"
+      }
+    ]
+  },
+  "children": []
+}

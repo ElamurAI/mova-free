@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p en --lib conllu::full_tests -- --skip full_round_trip_all_english_treebanks",
+    "Two compiled repair mutants, exact restoration and paired source syntax"
+  ],
+  "children": [],
+  "cost": "Let B be input bytes, R rows, W syntactic words and F feature parse work. read costs O(B+F) plus file-wide token counters and O(B+W) retained projection storage. Doc parse/text and refresh are linear in traversed bytes/rows plus gram parsing and cloning; exact enum parser costs are delegated. Atomic refresh adds an O(R) temporary index vector alongside old derived views. No dimension cap or fallible allocation interface; usize counters/length arithmetic have no separate overflow certificate.",
+  "description": "Three deliberately different views: read projects a UTF-8 file permissively to syntactic-word Sentence values; FullSentence retains raw rows/comments plus explicitly refreshed derived words/sent; Doc parses a stricter LF/column/comment grammar and serializes retained raw data exactly when unedited. No function establishes a dependency tree. Tokens keep mapped gram enums and parsed known features; serde views omit raw unknown fields.",
+  "forward": [
+    "Three deliberately different views: read projects a UTF-8 file permissively to syntactic-word Sentence values; FullSentence retains raw rows/comments plus explicitly refreshed derived words/sent; Doc parses a stricter LF/column/comment grammar and serializes retained raw data exactly when unedited. No function establishes a dependency tree. Tokens keep mapped gram enums and parsed known features; serde views omit raw unknown fields."
+  ],
+  "id": "en-conllu",
+  "inverse": [
+    "Doc::parse(t)?.text()==t uniquely recovers accepted original bytes from an unedited parsed Doc; there is no converse for arbitrary publicly mutable Doc structures. Sentence projections have many antecedents: different DEPS/MISC, comments, unknown features, range/empty rows and malformed heads mapping to zero can share one view. Existing sent/words alone cannot reconstruct raw rows."
+  ],
+  "limitations": [
+    "Permissive read differs from strict Doc grammar",
+    "Neither parser proves valid dependency trees",
+    "No corpus or timing run, no allocation/I/O fault injection",
+    "Partial lexical syntax, no semantic proof or executable surrogate"
+  ],
+  "source": "en/src/conllu.rs",
+  "state": "Raw UTF-8 lines, comments/columns/blank metadata and independently refreshed derived token/index views"
+}

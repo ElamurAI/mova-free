@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "synthetic_single_optimizer_step"
+  ],
+  "children": [],
+  "cost": "One bounded tiny Net step with O(parameters) AdamW state; existing experiment much larger and not authorized/executed.",
+  "description": "Actual step helper builds arc/rel/tag cross-entropies, loss=arc+rel+0.5*(xpos+upos), backpropagates, optionally checks finite positive norms of word/QKV/arc/rel weights, calls AdamW step and returns pre-update loss. New tiny seeded CUDA single-step test checks positive finite loss, changed arc_w and finite updated tensor. Existing measured_optimizer_steps requires real model/corpus and is not run.",
+  "forward": [
+    "Actual step helper builds arc/rel/tag cross-entropies, loss=arc+rel+0.5*(xpos+upos), backpropagates, optionally checks finite positive norms of word/QKV/arc/rel weights, calls AdamW step and returns pre-update loss. New tiny seeded CUDA single-step test checks positive finite loss, changed arc_w and finite updated tensor. Existing measured_optimizer_steps requires real model/corpus and is not run."
+  ],
+  "id": "gparse-test-training-speed",
+  "inverse": [
+    "Passing selected assertions excludes their stated counterexamples within the fixtures. No real-model/corpus optimizer experiment was executed.",
+    "Given returned loss, all pre-update logits with same cross-entropy and compatible labels are antecedents; post-step weights cannot recover moments or gradients without optimizer state."
+  ],
+  "limitations": [
+    "Partial lexical syntax; no semantic proof",
+    "Finite synthetic checks only; external corpus/model experiments excluded",
+    "No executable Rust percent surrogate or throughput claim",
+    "Fault injection and exhaustive nonfinite/dimension cases absent"
+  ],
+  "source": "gparse/tests/training_speed.rs",
+  "state": "Only ephemeral VarMap/optimizer state changes. One changed tensor does not certify all optimizer moments or convergence; no throughput claim. Original experiment permits <=128 sentences of lengths24..40, 88 steps and trajectory delta<0.005*scale, but excluded."
+}

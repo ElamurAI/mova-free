@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "selected_identity_exclusions_join_prompt_and_gate_coordinates",
+    "closed_schema_and_rule_join_prompt_and_span_gate",
+    "sentence_provenance_survives_normalization_ambiguity",
+    "quota_caps_join_book_selection_and_prompt_cardinality"
+  ],
+  "children": [],
+  "cost": "Reached selection/maps/sorts, prompt bytes and gate preprocessing/span checks; finite fixtures only.",
+  "description": "4 bounded native joins and 6 typed source-bound views.",
+  "forward": [
+    "Join selected Para identities to prompt/gate numbers; closed schemas and rule versions to explicit spans; normalization fibers to provenance; quotas to selected book counts."
+  ],
+  "id": "qagen-groupant-wave17",
+  "inverse": [
+    "Universe: supplied Para/Sent/Pick/skip, versioned schema/prompt and independent TSV observations. Exclude skipped/ineligible selections, source-coordinate substitution for local p/anchors, invented labels, V2 explicit nonanchor/context spans and punctuation-changing spans. Prompt semantic constraints not enforced by the gate remain outside this complement; no acquisition/teacher behavior is inferred.",
+    "Retain every input vector, metadata, raw sentence text, Pick/skip and response sharing selected identities, prompt/gate observations and quotas. The same retained batch plus p/anchor recovers source doc/para/sent_id; gate output alone cannot. Case/quote/whitespace normalization has many raw preimages, selection loses rejected content and quotas lose weight/cap details."
+  ],
+  "limitations": [
+    "Bounded native evidence and repeated partial syntax are recorded; no general proof is inferred.",
+    "Finite checks do not establish general proof or unique antecedents.",
+    "No live parser, corpus, teacher, GPU, adoption or throughput experiment."
+  ],
+  "source": "qagen/tests/groupant_wave17.rs",
+  "state": "Same ordered batch, local p/anchors, explicit skip identities, rule version and source sentence provenance."
+}

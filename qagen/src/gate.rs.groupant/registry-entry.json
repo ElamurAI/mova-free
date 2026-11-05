@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p qagen wave17_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "O(B + R log N + per-row sentence/answer comparisons), O(B+S) stored views.",
+  "description": "Pure synthetic-input QA row and batch gates with local anchor/span validation and dense acceptance numbering.",
+  "forward": [
+    "Batch classification then paragraph ordered folds of row predicates, deduplication and capacity."
+  ],
+  "id": "qagen-gate",
+  "inverse": [
+    "Set-valued compatible row streams; ignored lines, normalization and row rejection lose input information."
+  ],
+  "limitations": [
+    "Finite synthetic fixtures only.",
+    "Public span_reason assumes prevalidated aligned sentence views and anchors.",
+    "No linguistic grapheme or NFC boundary claim."
+  ],
+  "source": "qagen/src/gate.rs",
+  "state": "Batch errors imply no accepted rows; accepted local anchors sorted unique; at most six rows per paragraph."
+}

@@ -1,0 +1,101 @@
+{
+  "children": [
+    {
+      "id": "answer-span-why",
+      "path": "why.groupant"
+    },
+    {
+      "id": "answer-span-clauses",
+      "path": "clauses.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "answer-span-extraction-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "answer-span-extraction-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "answer-span-extraction-child-order",
+        "path": "model.md",
+        "section": "child-order",
+        "status": "partial_source_model",
+        "type": "priority_relation"
+      },
+      {
+        "id": "answer-span-extraction-global-selection",
+        "path": "model.md",
+        "section": "global-selection",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 29268,
+      "start": 9139
+    },
+    "description": "Source scope beginning pub fn extract(t: &Tree, want: Want, preds: &[String], sub_preds: &[String], fr: &QFrame, qlem: &HashSet<String>) -> Option<(String, String)> {; selected node envelope, partial semantic coverage.",
+    "syntax_nodes": {
+      "node_ids": [
+        911,
+        958
+      ],
+      "path": "../syntax.json"
+    }
+  },
+  "id": "answer-span-extraction",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../span.rs",
+    "sha256": "4d215ccd57884f41e77168839aac2710913efc4b233aa43ebdb2de36c7fcaa2c"
+  },
+  "status": "partial_source_bound_model"
+}

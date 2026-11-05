@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "power_oracle",
+    "boundaries_and_fibers",
+    "final_pair_gate_preserves_reference_observations",
+    "Missing derivative gate fails; exact restoration."
+  ],
+  "children": [],
+  "cost": "Fixed corpus: 133332 comparisons with at most four coefficients, 255 independent power-oracle cases of lengths 0..14, and boundaries. Oracle cost is distinct from production.",
+  "description": "Three tests combine independent power/derivative observations, boundary/fiber witnesses and full-width comparison with original gate placement. Success bits and error variants remain distinct.",
+  "forward": [
+    "Three tests combine independent power/derivative observations, boundary/fiber witnesses and full-width comparison with original gate placement. Success bits and error variants remain distinct."
+  ],
+  "id": "algorithm-horner-tests",
+  "inverse": [
+    "Pass reconstructs the set of implementations consistent with these finite assertions; it does not identify one implementation. Untested inputs remain arbitrary. At x=0 value=c0 and derivative=c1; all higher coefficients remain free. [2,3,7] and [2,3,99] have identical outputs. With fixed degree and x, real fiber is intersection of two affine constraints; dependent constraints and f64 rounding require separate treatment."
+  ],
+  "limitations": [
+    "Finite fixtures and partial syntax are not a general proof.",
+    "IEEE-754 no-trap/no-fast-math assumptions; no percentage guarantee.",
+    "Result equivalence does not preserve rejection work or exception timing."
+  ],
+  "source": "algorithms/src/horner/tests.rs",
+  "state": "133332 deterministic loop cases compare success bits and exact errors. The missing-derivative-gate mutant must fail W20-HORNER-DERIVATIVE-GATE."
+}

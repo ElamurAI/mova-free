@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "qagen-prompt-render-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "qagen-prompt-render-reverse",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "qagen-prompt-render-projection",
+        "path": "model.md",
+        "section": "specialization",
+        "status": "partial_source_model",
+        "type": "prompt_coordinate_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 8485,
+      "start": 7348
+    },
+    "description": "F(paras,rule)=rules(rule) + separator + ordered paragraph blocks. Paragraph i receives P(i+1); local sentence k receives [k+1]. Context is emitted iff nonempty and there is no immediate same-document predecessor whose checked successor equals current para. Domain: finite supplied Para references, including all i64 paragraph values; observation: exact rendered UTF-8 bytes."
+  },
+  "id": "qagen-prompt-render",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../prompt.rs",
+    "sha256": "2e30ac525e2bf8cf8432298ff35eaf2ec08933c17aff60e480017a2b7cca89f6"
+  },
+  "status": "partial_source_bound_model"
+}

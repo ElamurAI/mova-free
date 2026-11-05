@@ -1,0 +1,105 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial_source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Partial syntax only; no semantic proof",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial_source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Descriptant",
+      "status": "partial_source_derived"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial_source_derived"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "source_derived_finite_checked",
+        "subject_revision": "fc06432596ccfc7cee70f613e7fc15a99d67d1a38e78b8a350752e691dd77923",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "source_derived_finite_checked",
+        "subject_revision": "fc06432596ccfc7cee70f613e7fc15a99d67d1a38e78b8a350752e691dd77923",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "error_partition",
+        "path": "model.md",
+        "section": "error_partition",
+        "status": "source_derived_finite_checked",
+        "subject_revision": "fc06432596ccfc7cee70f613e7fc15a99d67d1a38e78b8a350752e691dd77923",
+        "type": "error_partition"
+      },
+      {
+        "id": "observation_scope_exclusion",
+        "path": "model.md",
+        "section": "observation_scope_exclusion",
+        "status": "source_derived_finite_checked",
+        "subject_revision": "fc06432596ccfc7cee70f613e7fc15a99d67d1a38e78b8a350752e691dd77923",
+        "type": "observation_scope_exclusion"
+      },
+      {
+        "id": "replay_uncertainty",
+        "path": "model.md",
+        "section": "replay_uncertainty",
+        "status": "source_derived_finite_checked",
+        "subject_revision": "fc06432596ccfc7cee70f613e7fc15a99d67d1a38e78b8a350752e691dd77923",
+        "type": "replay_uncertainty"
+      },
+      {
+        "assumptions": [
+          "Ordinary descriptor IO; no claim that concurrent writes form an atomic snapshot.",
+          "Only admitted suffix lines must decode as UTF-8; dropped history and prefix are unknown."
+        ],
+        "domain": "Trusted regular log descriptor; at most 65536 bytes from its observed suffix.",
+        "id": "utf8_suffix_observation",
+        "observation": "Original byte-window hash plus skipped prefix, absolute decoded start and bounded lexical candidate offsets.",
+        "path": "model.md",
+        "section": "utf8_suffix_observation",
+        "status": "source_derived_with_finite_native_checks",
+        "subject_revision": "fc06432596ccfc7cee70f613e7fc15a99d67d1a38e78b8a350752e691dd77923",
+        "type": "partial_observation_exclusion"
+      }
+    ],
+    "tests": {
+      "path": "model.md#checks",
+      "status": "finite_evidence"
+    }
+  },
+  "id": "octopus-deputy-library",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../lib.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "fc06432596ccfc7cee70f613e7fc15a99d67d1a38e78b8a350752e691dd77923"
+  },
+  "status": "partial_source_bound_model"
+}

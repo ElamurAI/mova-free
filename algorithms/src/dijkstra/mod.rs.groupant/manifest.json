@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-dijkstra",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "ea5ac36423acb893e8c57b53e40f98742352d03212625821ff049cf9c731dd9d",
+    "raw_code_location": "outside_this_sidecar"
+  },
+  "status": "partial_descriptive_instance",
+  "components": {
+    "ast": {
+      "status": "partial",
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "partial source syntax; no macro expansion or semantic resolution"
+    },
+    "approximant": {
+      "status": "partial",
+      "path": "model.md#approximant"
+    },
+    "invariant": {
+      "status": "partial",
+      "path": "model.md#invariant"
+    },
+    "descriptant": {
+      "status": "present",
+      "path": "model.md#descriptant"
+    },
+    "tests": {
+      "status": "executed_bounded_checks",
+      "path": "model.md#tests"
+    },
+    "obernants": [
+      {
+        "id": "behavior-complement",
+        "type": "behavior_complement",
+        "required": true,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "scope": "all finite weighted directed adjacency lists with u64 weights and usize source on <=64-bit usize targets; outputs are tagged errors or optional u128 distance vectors"
+      },
+      {
+        "id": "reverse-reconstruction",
+        "type": "reverse_reconstruction",
+        "required": true,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "scope": "all finite weighted directed adjacency lists with u64 weights and usize source on <=64-bit usize targets; outputs are tagged errors or optional u128 distance vectors"
+      },
+      {
+        "id": "zero-fiber",
+        "type": "zero_distance_preimage",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "zero-fiber",
+        "scope": "all finite weighted directed adjacency lists with u64 weights and usize source on <=64-bit usize targets; outputs are tagged errors or optional u128 distance vectors"
+      },
+      {
+        "id": "cost-fiber",
+        "type": "shortest_cost_preimage",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "cost-fiber",
+        "scope": "all finite weighted directed adjacency lists with u64 weights and usize source on <=64-bit usize targets; outputs are tagged errors or optional u128 distance vectors"
+      },
+      {
+        "id": "weight-scaling",
+        "type": "counterfactual_weight_scaling",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "weight-scaling",
+        "scope": "all finite weighted directed adjacency lists with u64 weights and usize source on <=64-bit usize targets; outputs are tagged errors or optional u128 distance vectors"
+      }
+    ]
+  }
+}

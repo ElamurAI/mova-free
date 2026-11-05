@@ -414,3 +414,40 @@ pub fn ask_tmpl(p: &Prob, w: &World, t: Tmpl) -> Option<(Q, String, Vec<usize>)>
         }
     }
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn script_templates_follow_last_definition() {
+        assert_eq!(script_template(""), None);
+        assert_eq!(
+            script_template("@1 set a = 8\n@2 add a = 3\n@3 ask a"),
+            Some(Tmpl::Sum)
+        );
+        assert_eq!(
+            script_template("@1 set a = (8 + 3) / 2\n@2 ask a"),
+            Some(Tmpl::Ratio)
+        );
+        assert_eq!(
+            script_template("@1 set a = 8\n@2 sub a = 3\n@3 ask a"),
+            Some(Tmpl::Diff)
+        );
+    }
+    #[test]
+    fn exact_world_overwrites_and_labels_duplicates() {
+        let p = crate::steps::wave28::problem(&[8, 3, 3]);
+        let w = write(&p);
+        assert_eq!(w.state[&("sam".into(), "apple".into())], q(3));
+        assert_eq!(w.cmds.len(), 3);
+        assert_eq!(ask(&p, &w).unwrap().0, q(3));
+        let labs = script_labels("@1 set sam.apple = 3\n@2 sub sam.apple = 3", &p);
+        assert_eq!(labs[0], None);
+        assert_eq!(labs[1], Some(('=', "sam.apple".into())));
+        assert_eq!(labs[2], Some(('-', "sam.apple".into())));
+        assert_eq!(WorldModel::default().op(&p, 0), 'r');
+        assert_eq!(AskModel::default().predict(&p), Tmpl::Product);
+        assert!(write_learned(&p, &WorldModel::default()).state.is_empty());
+        assert_eq!(ask_tmpl(&p, &w, Tmpl::Ratio).unwrap().0, q(8) / q(3));
+    }
+}

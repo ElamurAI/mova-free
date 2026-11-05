@@ -64,3 +64,28 @@ pub fn str_key(s: &str) -> u64 {
     h.write_usize(s.len());
     h.0
 }
+
+#[cfg(test)]
+mod wave27_tests {
+    use super::*;
+    #[test]
+    fn chunks_seed_and_length() {
+        let mut h = Fx::default();
+        h.write(&[1]);
+        assert_eq!(h.finish(), K);
+        let a = h.finish();
+        h.write(&[]);
+        assert_eq!(h.finish(), a);
+        let mut padded = Fx::default();
+        padded.write(&[1, 0]);
+        assert_eq!(padded.finish(), a);
+        assert_ne!(str_key("a"), str_key("a\0"));
+        assert_eq!(key(&[]), 0x9e37_79b9_7f4a_7c15);
+        let mut split = Fx::default();
+        split.write(&[1]);
+        split.write(&[2]);
+        let mut whole = Fx::default();
+        whole.write(&[1, 2]);
+        assert_ne!(split.finish(), whole.finish());
+    }
+}

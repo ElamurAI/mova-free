@@ -573,3 +573,54 @@ impl Kb {
         self.ancestors(a).chain(b)
     }
 }
+
+#[cfg(test)]
+mod wave29_tests {
+    use super::*;
+    #[test]
+    fn layers_precedence_and_rejected_cycle() {
+        let mut k = Kb::new(crate::wave29_tests::graph());
+        k.layers.push(Layer {
+            name: "fable".into(),
+            kind: LayerKind::Genre,
+            parent: Some(0),
+            note: String::new(),
+        });
+        k.add_assert(crate::wave29_tests::seed("real", 0, 0, false))
+            .unwrap();
+        k.add_assert(crate::wave29_tests::seed("tale", 1, 0, true))
+            .unwrap();
+        assert!(matches!(
+            k.prop(1, Prop::CanSpeak, 0),
+            PropAnswer::Known { value: false, .. }
+        ));
+        assert!(matches!(
+            k.prop(1, Prop::CanSpeak, 1),
+            PropAnswer::Known { value: true, .. }
+        ));
+        assert_eq!(k.ancestors(1).chain(0).unwrap().steps.len(), 1);
+        let n = k.extra.len();
+        assert!(
+            k.add_extra(Extra {
+                id: "cycle".into(),
+                rel: Rel::IsA,
+                from: 0,
+                to: 1,
+                source: "synthetic".into()
+            })
+            .is_err()
+        );
+        assert_eq!(k.extra.len(), n);
+    }
+    #[test]
+    fn partial_layer_load_retains_valid_prefix() {
+        let dir = crate::wave29_tests::temp("layers");
+        let p = dir.join("layers.tsv");
+        std::fs::write(&p, "fable\tgenre\treal\nbad\ttale\tmissing\n").unwrap();
+        let mut k = Kb::new(crate::wave29_tests::graph());
+        assert!(k.load_layers(&p).is_err());
+        assert_eq!(k.layer_id("fable"), Some(1));
+        assert_eq!(k.layer_id("bad"), None);
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+}

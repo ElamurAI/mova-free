@@ -1,0 +1,21 @@
+{
+  "id": "algorithm-boyer-moore-horspool",
+  "source": "algorithms/src/boyer_moore_horspool/mod.rs",
+  "description": "Exact overlapping byte search with Horspool terminal-byte shifts.",
+  "state": "Immutable finite slices; local rows or hash/shift state; returned witness, distance or offsets.",
+  "cost": "O(m+256+n*m) worst-case time; 256 shift words plus result.",
+  "forward": [
+    "M(t,p) is the increasing list of all byte-equal windows; empty p yields every boundary."
+  ],
+  "inverse": [
+    "behavior_complement and reverse_reconstruction are distinct first two typed models; see model.md."
+  ],
+  "checks": [
+    "cargo test --offline -p mova-algorithms boyer_moore_horspool::tests",
+    "Compiled mutation must fail an assertion; see model.md#tests."
+  ],
+  "limitations": [
+    "Finite native evidence is not universal verification.",
+    "Syntax projection excludes expansion and semantic resolution."
+  ]
+}

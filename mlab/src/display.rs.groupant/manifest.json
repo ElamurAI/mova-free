@@ -1,0 +1,104 @@
+{
+  "children": [
+    {
+      "id": "mlab-display-format-choice",
+      "path": "format-choice.groupant"
+    },
+    {
+      "id": "mlab-display-matrix-layout",
+      "path": "matrix-layout.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Numeric zero formatting excludes a printed negative sign; scalar complex imaginary -0 permits minus while matrix complex comparison excludes it. Empty numeric disp excludes a newline, empty char disp includes one.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Printed rounded values admit all floating inputs sharing chosen format and rounding bins; labels do not recover types uniquely. unparse loses closure captures and is not a precedence-repairing inverse parser.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_invariant",
+        "path": "model.md",
+        "scope": "Cells use index col*rows+row. All matrix cells share format widths computed across data. Nonfinite names are NaN/Inf/-Inf.",
+        "section": "state_invariant",
+        "status": "partial_source_derived_model",
+        "type": "state_invariant"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Public Mat dimensions/storage and scalar index must be valid; inconsistent lengths can panic. Width and formatting allocation are unchecked; no I/O performed here.",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Logical values use nonzero predicate; char values map codepoints. Precision controls significant digits, but exact integer branch remains integer up to 15 digits.",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "O(elements + emitted characters), O(elements + text) cell buffering; recursive unparse may repeatedly concatenate subtree strings. No measured speed or general relative numeric-error guarantee for text.",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "mlab-display",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../display.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "7c29a46772ca4d47ff5e01fc4b3ed1bf38fab6a6b3bce0a41c99332ece8926b5"
+  },
+  "status": "partial_source_bound_model"
+}

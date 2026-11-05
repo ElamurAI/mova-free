@@ -12,7 +12,7 @@
 //! - `reciprocate` — X, whom A helped, later helped A → friendship;
 //! - `spare_enemy` — A, who harmed X, later removed the harm from X himself → forgiveness and concord.
 
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 
 #[derive(Clone, Debug)]
 pub struct Judgment {
@@ -32,9 +32,9 @@ struct Ev {
     line: usize,
 }
 
-fn fields(line: &str) -> (Vec<String>, HashMap<String, String>) {
+fn fields(line: &str) -> (Vec<String>, BTreeMap<String, String>) {
     let mut pos = Vec::new();
-    let mut kv = HashMap::new();
+    let mut kv = BTreeMap::new();
     let cs: Vec<char> = line.chars().collect();
     let mut i = 0;
     while i < cs.len() {
@@ -97,6 +97,8 @@ pub fn gaps(cmds: &str) -> Vec<String> {
 }
 
 /// Compute values over the world commands (`world` format, change language v1–v3).
+/// Fields and same-goal peers are visited by key. Help/mercy eligibility uses
+/// history before each set command: its fields do not establish an earlier event.
 pub fn judge(cmds: &str) -> Vec<Judgment> {
     let mut out: Vec<Judgment> = Vec::new();
     let mut names: HashMap<String, String> = HashMap::new();
@@ -104,7 +106,7 @@ pub fn judge(cmds: &str) -> Vec<Judgment> {
     let mut holder: HashMap<String, String> = HashMap::new();
     let mut harmed: HashMap<String, Vec<String>> = HashMap::new(); // X → who caused harm
     let mut helped: Vec<(String, String, usize)> = Vec::new(); // (who, to whom, line)
-    let mut goals: HashMap<String, (String, usize)> = HashMap::new(); // X → (goal, line)
+    let mut goals: BTreeMap<String, (String, usize)> = BTreeMap::new(); // X → (goal, line)
     let mut said: HashMap<String, (String, String)> = HashMap::new(); // speech id → (who, to whom)
     let mut rivals: Vec<(String, String, usize)> = Vec::new(); // (scorner, scorned, line): rivalry caused by the first one's speech
     let mut rests: Vec<(String, usize)> = Vec::new(); // (who, line): actions from the concept "rest"
@@ -225,6 +227,9 @@ pub fn judge(cmds: &str) -> Vec<Judgment> {
                 if !is_char(&x) || !is_char(&e.agent) || e.agent == x {
                     continue;
                 }
+                // A set describes one event. Freeze prior harm before any field updates.
+                let had_harm = harmed.contains_key(&x);
+                let had_harmed_by_agent = harmed.get(&x).is_some_and(|l| l.contains(&e.agent));
                 for (k, v) in &kv {
                     if matches!(k.as_str(), "cause" | "goal" | "belief" | "name" | "trait") {
                         continue;
@@ -237,7 +242,7 @@ pub fn judge(cmds: &str) -> Vec<Judgment> {
                                 out.push(Judgment { principle: p.id, name: p.name, agent: nm(&e.agent, &names), violated: true, because: format!("{} → {} {k}={v} (event \"{}\", line {})", nm(&e.agent, &names), nm(&x, &names), e.verb, e.line), line: no });
                             }
                         }
-                    } else if global::state_is("relief_state", v) && harmed.contains_key(&x) {
+                    } else if global::state_is("relief_state", v) && had_harm {
                         if helped.iter().any(|(a, b, _)| *a == e.agent && *b == x) {
                             continue;
                         }
@@ -246,7 +251,7 @@ pub fn judge(cmds: &str) -> Vec<Judgment> {
                             out.push(Judgment { principle: p.id, name: p.name, agent: nm(&e.agent, &names), violated: false, because: format!("{} removed harm from {}: {k}={v} (event \"{}\")", nm(&e.agent, &names), nm(&x, &names), e.verb), line: no });
                         }
                         // the one who caused the harm himself and has now removed it — showed mercy
-                        if harmed.get(&x).is_some_and(|l| l.contains(&e.agent)) {
+                        if had_harmed_by_agent {
                             if let Some(p) = rule("spare_enemy") {
                                 out.push(Judgment { principle: p.id, name: p.name, agent: nm(&e.agent, &names), violated: false, because: format!("{} had harmed {} himself, and later showed mercy", nm(&e.agent, &names), nm(&x, &names)), line: no });
                             }
@@ -306,5 +311,72 @@ mod tests {
         // the words "flatter", "steal" in field values switch nothing on — only the state does
         let calm = "char C1 name=\"A\"\nchar C2 name=\"B\"\nevent E1 verb=flatter agent=C1 patient=C2\nsay C1 to=C2 act=evaluate sincere=1 means=\"you sing well\"\nobj O1 name=\"apple\" at=C1\nevent E2 verb=give agent=C1 patient=O1\nmove O1 to=C2 cause=E2\n";
         assert!(judge(calm).is_empty(), "{:?}", judge(calm));
+    }
+
+    fn permutations(items: &[&str]) -> Vec<Vec<String>> {
+        if items.is_empty() { return vec![Vec::new()]; }
+        let mut out = Vec::new();
+        for i in 0..items.len() {
+            let rest: Vec<_> = items.iter().enumerate().filter(|(j, _)| *j != i).map(|(_, x)| *x).collect();
+            for mut tail in permutations(&rest) {
+                tail.insert(0, items[i].to_string());
+                out.push(tail);
+            }
+        }
+        out
+    }
+
+    #[test]
+    fn simultaneous_fields_use_prior_harm_and_canonical_order() {
+        let relief = global::principle_by_rule("relieve_harm_state").unwrap().id;
+        for prior in [None, Some("C3"), Some("C1")] {
+            let mut prefix = "char C1 name=A\nchar C2 name=B\nchar C3 name=C\n".to_string();
+            if let Some(agent) = prior {
+                prefix += &format!("event E0 verb=catch agent={agent}\nset C2 freedom=captive cause=E0\n");
+            }
+            prefix += "event E2 verb=change agent=C1 patient=C2\n";
+            for fields in [["freedom=captive", "status=free", "belief=none", "cause=E2"], ["freedom=free", "status=captive", "belief=none", "cause=E2"]] {
+                let mut reference = None;
+                for permutation in permutations(&fields) {
+                    let input = format!("{prefix}set C2 {}\n", permutation.join(" "));
+                    let result = judge(&input);
+                    let current: Vec<_> = result.iter().filter(|j| j.line == input.lines().count()).collect();
+                    let count = |id| current.iter().filter(|j| j.principle == id).count();
+                    assert_eq!(count("do-no-harm"), usize::from(prior != Some("C1")), "{input}{result:?}");
+                    assert_eq!(count(relief), usize::from(prior.is_some()), "same-command harm is not prior harm: {input}{result:?}");
+                    assert_eq!(count("forgiveness"), usize::from(prior == Some("C1")), "same-command agent is not a prior harmer: {input}{result:?}");
+                    let full = format!("{result:?}");
+                    if let Some(expected) = &reference { assert_eq!(&full, expected); } else { reference = Some(full); }
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn later_relief_uses_mixed_command_history_once() {
+        let mixed = "event E1 verb=change agent=C1\nset C2 freedom=captive status=free cause=E1\n";
+        let relief = "event E2 verb=release agent=C1\nset C2 freedom=free cause=E2\n";
+        let input = format!("{mixed}{relief}{mixed}{relief}");
+        let j = judge(&input);
+        let help = global::principle_by_rule("relieve_harm_state").unwrap().id;
+        for principle in ["do-no-harm", help, "forgiveness"] {
+            let rows: Vec<_> = j.iter().filter(|x| x.principle == principle).collect();
+            assert_eq!(rows.len(), 1, "{j:?}");
+            assert_eq!(rows[0].line, if principle == "do-no-harm" { 2 } else { 4 });
+        }
+    }
+
+    #[test]
+    fn goals_gaps_and_duplicate_fields_have_explicit_order() {
+        let t = "set C3 goal=win\nset C2 goal=win\nset C10 goal=win\nset C1 goal=win\nevent R3 verb=sleep agent=C3\nevent R2 verb=sleep agent=C2\nevent R10 verb=sleep agent=C10\nevent E1 verb=win agent=C1\nset C1 status=winner cause=E1\n";
+        let j = judge(t);
+        let agents: Vec<_> = j.iter().filter(|j| j.principle == "perseverance" && j.violated).map(|j| j.agent.as_str()).collect();
+        assert_eq!(agents, ["C10", "C2", "C3"]);
+        let expected = ["feeling", "freedom", "health", "sleep", "status"].map(|k| format!("state {k}=\"zzzz_unknown_state\": the global level does not know whether it is harm or relief"));
+        for fields in permutations(&["status=zzzz_unknown_state", "health=zzzz_unknown_state", "feeling=zzzz_unknown_state", "freedom=zzzz_unknown_state", "sleep=zzzz_unknown_state"]) {
+            assert_eq!(gaps(&format!("set C1 {}", fields.join(" "))), expected);
+        }
+        assert_eq!(judge("say C1 sincere=1 sincere=0").len(), 1);
+        assert!(judge("say C1 sincere=0 sincere=1").is_empty());
     }
 }

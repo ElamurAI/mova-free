@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p en --lib construct::wave27::bounded_contract",
+    "Paired partial syntax; debug/release repeated outcomes; see receipt"
+  ],
+  "children": [],
+  "cost": "Read O(B) bytes plus token/arc parsing and map O(log C) per construction. recall builds token references in O(total token count), calls the supplied parser once per Item, performs O(A) arc indexing, and pays construction-key cloning/map lookup costs. misses likewise traverses tokens and invokes the callback once per Item, then repeats sentence joining/rendering for each missed arc, proportional to emitted bytes. report O(C+output bytes). usize totals can overflow; percentages cast to f64 and accept nonfinite floors.",
+  "description": "load reads UTF-8, skips blank and column-zero # lines, requires exactly3 tab fields, splits nonempty space-delimited tokens/arcs, resolves relation then head then dependent. node rsplit_once('-') supports hyphenated forms; Root-0 is special. recall accumulates exact (head,relation) matches. pct=round(10000*ok/max(n,1))/100; report flags pct<floor.",
+  "forward": [
+    "load reads UTF-8, skips blank and column-zero # lines, requires exactly3 tab fields, splits nonempty space-delimited tokens/arcs, resolves relation then head then dependent. node rsplit_once('-') supports hyphenated forms; Root-0 is special. recall accumulates exact (head,relation) matches. pct=round(10000*ok/max(n,1))/100; report flags pct<floor."
+  ],
+  "id": "en-construct",
+  "inverse": [
+    "Given per-construction counts, compatible inputs are all Item/tree pairs with identical aggregate exact arc successes and totals; token identities and failure placement are unrecoverable. Rounded percentage admits intervals of underlying ratios. Report cannot recover omitted floor entries or parse trees.",
+    "A known floor equal to rounded recall is not red. Missing floors produce no rejection. Unknown relations or mismatched token spelling cannot produce a successfully loaded Item. Loader does not exclude root-0 as dependent; downstream recall is not safe for that item."
+  ],
+  "limitations": [
+    "Partial source-bound model, not full proof. No useful executable percentage surrogate established for these categorical decisions/effects; budgets1/2/5/10% require a future observation metric. No corpus/API/GPU/teacher, allocation fault injection, adversarial size exhaustion or broad accuracy claim."
+  ],
+  "source": "en/src/construct.rs",
+  "state": "Item is construction name, token strings and target (head,dependent,Rel) arcs; report consumes ordered count/floor maps."
+}

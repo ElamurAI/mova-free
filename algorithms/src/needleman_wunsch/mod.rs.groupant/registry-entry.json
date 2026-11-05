@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline needleman_wunsch::tests::; twice debug and twice release",
+    "15 binary words through length 3 per side, 64 scoring triples: 14,400 independent complete-path oracle comparisons. Every returned alignment is reconstructed and rescored. Budget equality, empty input, signed overflow and tie ordering covered. Mutation changes deletion > to >=; deterministic_ties fails."
+  ],
+  "children": [],
+  "cost": "O((n+1)(m+1)) time and score/step storage, O(n+m) traceback space. Checked cell count precedes max_cells check and reservations. All candidate additions are checked, including losing candidates. Allocation errors are returned; positive gaps are supported.",
+  "description": "needleman_wunsch exact byte algorithm",
+  "forward": [
+    "Maximize the sum of match/mismatch/gap signed i64 scores over all global monotone paths. Store one deterministic optimum, preferring diagonal then deletion then insertion at every traceback cell. Origin: Needleman-Wunsch, JMB 48 (1970).",
+    "Cell (i,j) is the best representable prefix score; all three candidate additions are checked before selection. Traceback steps consume one or both input bytes and never produce gap-gap. Every path terminates at (0,0)."
+  ],
+  "id": "algorithm-needleman-wunsch",
+  "inverse": [
+    "Successful results cannot omit input bytes, contain gap-gap columns, or have a suboptimal score. This is global linear-gap byte alignment; there are no affine gaps, local alignment or sequence-specific assumptions.",
+    "Deleting None entries independently from each column side uniquely reconstructs the two inputs. A score alone admits many input pairs; even complete columns do not recover scoring parameters uniquely.",
+    "Checked dimensions precede CellLimit and allocations. Boundary scores are checked before interior cells. ScoreOverflow may reject even when the mathematically best path fits, because every candidate addition is checked.",
+    "Strict greater-than replacement preserves diagonal on a tie; deletion wins a deletion/insertion tie when diagonal is worse. This local traceback rule selects one optimal path, not a lexicographically minimum forward alignment.",
+    "A table cell retains every optimal path to its two prefixes, but only one predecessor is recorded. Discarded optimal alternatives cannot be recovered from that predecessor alone.",
+    "Multiplying all scores by a positive integer preserves the chosen path when every intermediate checked sum remains representable. Overflow changes the admissible domain, so this is a conditional law."
+  ],
+  "limitations": [
+    "Partial Rust syntax projection excludes macro expansion and semantic resolution. Finite tests do not prove general correctness or linear cost. No executable approximation profile: outputs are discrete exact objects and no useful certified surrogate metric is proposed."
+  ],
+  "source": "algorithms/src/needleman_wunsch/mod.rs",
+  "state": "Finite byte inputs with explicitly documented limits and allocation outcomes."
+}

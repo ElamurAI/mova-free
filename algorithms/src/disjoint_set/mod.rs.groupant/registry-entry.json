@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "disjoint_set::tests (ten tests in sibling tests.rs)",
+    "Exhaustive mixed traces n=0..3 through length 3",
+    "Wrong-merge and wrong-count negative controls",
+    "mova-modelcheck syntax and groupants",
+    "5,400 seeded operations; balanced-tree source-mutation rejection; edge-order invariance"
+  ],
+  "cost": "O(n) initialization/storage, O(log(n+1)) worst-case operation, inverse-Ackermann amortized valid operations.",
+  "description": "Union-by-size disjoint sets with iterative full path compression and atomic index validation.",
+  "forward": [
+    "Valid union coarsens exactly its two classes; larger size wins and equal size chooses smaller root.",
+    "Invalid calls preserve complete state; queries compress paths and preserve partition."
+  ],
+  "id": "algorithm-disjoint-set",
+  "inverse": [
+    "The complement inner bound excludes split classes, wrong merges/counts and invalid-call mutation.",
+    "A partition admits multiple reachable forests; reverse reconstruction preserves that ambiguity."
+  ],
+  "limitations": [
+    "Bounded tests are not proof.",
+    "Reverse reachable-forest preimage is declarative, not enumerated.",
+    "Partial AST has no macro expansion or semantic resolution."
+  ],
+  "source": "algorithms/src/disjoint_set/mod.rs",
+  "state": "(parent forest, historical/root sizes, component count) over 0..n"
+}

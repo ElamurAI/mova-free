@@ -1,0 +1,28 @@
+{
+  "checks": [
+    "Twice debug/release; compiled production mutant and restoration",
+    "Strict all-target Clippy; twice-identical syntax"
+  ],
+  "children": [],
+  "cost": "O(budget*columns*rows) time; O(rows*columns) worst-case branch stack space.",
+  "description": "exact_cover exact algorithm",
+  "forward": [
+    "Bitmask Algorithm X chooses minimum compatible-row-count uncovered column, ascending column and row ties; recurse only on disjoint rows; every visited state consumes budget."
+  ],
+  "id": "algorithm-exact-cover",
+  "inverse": [
+    "Exclude overlapping/incomplete witnesses, invalid row acceptance, None from interrupted search, or zero-budget success.",
+    "For Some(indices), row families must partition all columns at those indices and deterministic branch order must select them within budget. Unselected rows and additional sufficient budget are generally unrecoverable. None requires exhausted complete search, not exhausted budget.",
+    "Budget extension preserves successful witness or completed infeasibility, but exhausted runs may resolve either way.",
+    "Empty rows never participate; adding empty rows changes later original indices but not feasibility.",
+    "Permuting columns preserves feasibility, but minimum-column tie decisions can change witness order.",
+    "Every recursive branch removes at least one bit, bounding recursion depth by 64 independent of row count.",
+    "Public size caps precede input-order validation, then arithmetic/search. Exact cover budget exhaustion is not infeasibility; closure capacity overflow is not infeasibility. Bounded index arithmetic cannot overflow. Checked i128 arborescence arithmetic remains defensive. Allocation failure is process-level, not returned; no callbacks or external writes. Empty cases and deterministic ties follow API docs."
+  ],
+  "limitations": [
+    "Finite evidence and partial syntax only",
+    "No allocation-failure coverage or numerical surrogate"
+  ],
+  "source": "algorithms/src/exact_cover/mod.rs",
+  "state": "<=64 columns, <=4096 rows of distinct valid coordinates; finite u64 node budget; Option row-index witness or ResourceExhausted."
+}

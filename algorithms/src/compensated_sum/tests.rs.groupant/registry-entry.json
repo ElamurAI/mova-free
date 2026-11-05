@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cancellation_oracle covers both magnitude branches and exact i64 sums for 100 finite integer fixtures; subnormal/empty/overflow fixtures.",
+    "Replace final total+correction with total-correction; cancellation_oracle fails"
+  ],
+  "children": [],
+  "cost": "O(n) validation and reduction, O(1) state, no allocation.",
+  "description": "Executable finite checks for compensated_sum: cancellation_oracle covers both magnitude branches and exact i64 sums for 100 finite integer fixtures; subnormal/empty/overflow fixtures.",
+  "forward": [
+    "Executable finite checks for compensated_sum: cancellation_oracle covers both magnitude branches and exact i64 sums for 100 finite integer fixtures; subnormal/empty/overflow fixtures."
+  ],
+  "id": "algorithm-compensated-sum-tests",
+  "inverse": [
+    "Pass reconstructs the set of implementations consistent with these finite assertions; it does not identify one implementation. Untested inputs remain arbitrary. [1,2] and [3] both map to 3; zero-sum insertions preserve real totals but may change rounded traversal. The fiber contains many lengths/orders and cannot recover terms or correction state from final sum."
+  ],
+  "limitations": [
+    "Rounded arithmetic not real exactness; no universal relative accuracy bound",
+    "Finite fixtures and partial syntax do not prove correctness",
+    "Callback determinism and bounded resource use outside Simpson are caller assumptions",
+    "No executable cheaper surrogate or performance claim"
+  ],
+  "source": "algorithms/src/compensated_sum/tests.rs",
+  "state": "Finite f64 slices or bounded panel stack; tests observe tagged results and assertion outcomes"
+}

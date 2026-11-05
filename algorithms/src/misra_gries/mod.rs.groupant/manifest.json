@@ -1,0 +1,139 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "No macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "descriptant",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Inner excluded relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-misra-gries-behavior-complement",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/misra_gries/mod.rs sha256:ec15a021514e89b99e1e888498e67ab4c8ec9d9642366b2dced2697ec543d367",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Set-valued compatible antecedents",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-misra-gries-reverse-reconstruction",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/misra_gries/mod.rs sha256:ec15a021514e89b99e1e888498e67ab4c8ec9d9642366b2dced2697ec543d367",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped conditional relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-misra-gries-cancellation-mass",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md cancellation-mass",
+        "path": "model.md",
+        "required": false,
+        "section": "cancellation-mass",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/misra_gries/mod.rs sha256:ec15a021514e89b99e1e888498e67ab4c8ec9d9642366b2dced2697ec543d367",
+        "type": "cancellation_conservation"
+      },
+      {
+        "approximation_semantics": "Scoped conditional relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-misra-gries-frequency-envelope",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md frequency-envelope",
+        "path": "model.md",
+        "required": false,
+        "section": "frequency-envelope",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/misra_gries/mod.rs sha256:ec15a021514e89b99e1e888498e67ab4c8ec9d9642366b2dced2697ec543d367",
+        "type": "additive_frequency_certificate"
+      },
+      {
+        "approximation_semantics": "Scoped conditional relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-misra-gries-bounded-state",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md bounded-state",
+        "path": "model.md",
+        "required": false,
+        "section": "bounded-state",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/misra_gries/mod.rs sha256:ec15a021514e89b99e1e888498e67ab4c8ec9d9642366b2dced2697ec543d367",
+        "type": "resource_envelope"
+      },
+      {
+        "approximation_semantics": "Scoped conditional relation",
+        "assumptions": "Trusted Rust/IEEE semantics, reachable state and successful runtime allocation",
+        "domain": "See domain and corresponding section in model.md",
+        "evidence": "model.md#evidence; repeated debug/release and compiled mutant controls",
+        "id": "algorithm-misra-gries-atomic-count",
+        "observation_scope": "Declared stream summaries and transitions",
+        "operator": "Relation in model.md atomic-count",
+        "path": "model.md",
+        "required": false,
+        "section": "atomic-count",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/misra_gries/mod.rs sha256:ec15a021514e89b99e1e888498e67ab4c8ec9d9642366b2dced2697ec543d367",
+        "type": "checked_transition"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "tests",
+      "status": "partial"
+    }
+  },
+  "id": "algorithm-misra-gries",
+  "kind": "groupant",
+  "registry": {
+    "node": "algorithm-misra-gries",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "ec15a021514e89b99e1e888498e67ab4c8ec9d9642366b2dced2697ec543d367"
+  },
+  "status": "partial"
+}

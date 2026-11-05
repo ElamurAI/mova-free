@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "Selected onto wave29_tests / hs::t:: actual-code tests; repeated debug/release and compiled controls"
+  ],
+  "children": [],
+  "cost": "Lookup sense dedup O(S²); rank O(S log S); ancestry O(Va+Ea), repeated target BFS and broad3-level parts product costs; output-sized proof memory.",
+  "description": "lookup explicit ID/POS→merged exact/lower/capitalized→first successful noun plural fallback. Context/core/prior rank retains within0.3. ask resolves first --layer before command. Property verdict preserves Kb distinction. parts sorted ancestor(depth,id), PartOf<=3, MemberOf/MadeOf depth0.",
+  "forward": [
+    "lookup=ordered_unique_senses(exact,lower,capitalized) ⊕ first successful noun singular candidate. rank retains s(c)≥max(s)-0.3. Parts=first unique(part,rel) across sorted ancestor owners and≤3 incoming part edges."
+  ],
+  "id": "onto-query",
+  "inverse": [
+    "Unknown word excludes guessed Boolean; no part witness excludes No; direct form excludes plural; MemberOf cannot recursively traverse.",
+    "Found allows case/underscore aliases and plural forms with earlier fallback misses. Yes admits compatible paths; No constrains selected senses only; answers lose unseen paths/seeds/extra args."
+  ],
+  "limitations": [
+    "Partial lexical AST, no semantic proof",
+    "No live teacher/corpus/model/DB execution",
+    "No validated executable percentage surrogate",
+    "Synthetic finite tests do not cover all public malformed states"
+  ],
+  "source": "onto/src/query.rs",
+  "state": "Valid lookup ordering/nonempty senses assumed. IsA miss No, parts miss Unknown. Dedup(part,rel) retains first owner/path. Ranking may load global prior; one-sense fixture avoids. ## Ranking score domain  Multi-candidate ranking claims additionally require finite per-candidate scores (finite prior shares and finite weighted sums). The prior parser can accept NaN: total_cmp may place NaN first, then every `score >= best - 0.3` comparison fails, producing an empty ranked vector; isa/has_part can subsequently panic at cands[0]. Nonfinite scores are an explicit unverified failure domain, not a successful unknown-answer policy. Executed query fixtures have one sense and bypass rank_candidates scoring/global prior loading."
+}

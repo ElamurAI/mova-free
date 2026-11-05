@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "robots::wave33::tie_specificity_and_literal_pattern",
+    "robots::wave33::delay_and_url_without_dns"
+  ],
+  "children": [],
+  "cost": "Parsing O(text+compiled regex bytes). allowed scans all rules, regex cost depends on pattern and path lengths. Gate storage O(hosts+rules); DNS, HTTP and sleeps unbounded externally. Nonfinite/negative crawl-delay can panic in Duration conversion.",
+  "description": "Robots parses user-agent groups, selects all matching specific agents else wildcard groups, compiles literal/glob path patterns, and evaluates longest byte-length match with allow tie. Gate caches host rules, rejects GitHub names/addresses, fetches robots on first host and paces approved requests.",
+  "forward": [
+    "Robots parses user-agent groups, selects all matching specific agents else wildcard groups, compiles literal/glob path patterns, and evaluates longest byte-length match with allow tie. Gate caches host rules, rejects GitHub names/addresses, fetches robots on first host and paces approved requests."
+  ],
+  "id": "mathlib-robots",
+  "inverse": [
+    "Within valid finite-delay states, denied path cannot pass Gate.check; known GitHub host rejects before robots request. A 4xx robots response becomes allow-all, including 403/429, while 5xx/transport errors cache deny-all. No DNS or HTTP routes are executed here.",
+    "An allowed boolean has many compatible rule sets and paths; false constrains the maximal matching raw pattern length to a disallow with no tied allow. Gate result cannot reconstruct fetch history without cache/clock state."
+  ],
+  "limitations": [
+    "No network/DNS/download, real catalog/corpus/model/teacher or database execution. Effect paths are source-derived; finite helper tests are not universal verification. No executable percentage surrogate or speed claim; future caps require metric/domain/reference and remain 1/2/5/10%."
+  ],
+  "source": "tools/mathlib/src/robots.rs",
+  "state": "Specific agent selection excludes wildcard groups when any specific match exists. Rule length counts raw pattern bytes including wildcard/end marker. Cache keys are lowercased host strings, not complete origins; clock pacing uses request-start timestamps at Gate and completion timestamps in Polite."
+}

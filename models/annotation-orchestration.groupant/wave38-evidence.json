@@ -1,0 +1,223 @@
+{
+  "audit_counts": {
+    "all_rust_registered": true,
+    "diagnostics": [],
+    "distinct_type_labels": 4290,
+    "full_semantic_review": false,
+    "manifest_counts": {
+      "file": 980,
+      "group": 95,
+      "nested": 899,
+      "private_manifests": 106,
+      "public_manifests": 1868
+    },
+    "nested_fragments": 899,
+    "obernants": 11685,
+    "registered_groups": 95,
+    "registered_sources": 980,
+    "required_types_missing": 0,
+    "rust_profile_owners": 7,
+    "rust_profiles": 32
+  },
+  "baseline": "02f3d0931aa2122f3537e0f6a5d2d2c3f4f45867",
+  "date": "2026-10-31",
+  "distinct_test_identities": 31,
+  "full_semantic_verification": false,
+  "limitations": [
+    "Imported duplicate metadata and historical ambiguous files are not migrated.",
+    "Strict physical-line consumers have a narrower domain than trim-filtered worker parsing.",
+    "No crash/concurrency/teacher-quality or end-to-end throughput guarantee.",
+    "Mechanical groupant coverage is separate from complete semantic modeling."
+  ],
+  "native": [
+    {
+      "package": "kg",
+      "runs": [
+        {
+          "elapsed_seconds": 0.049491613,
+          "exit": 0,
+          "profile": "debug",
+          "test_identities": [
+            "id::tests::id_parts",
+            "id::wave29::global_heap_exhaustion_preserves_state",
+            "id::wave29::registry_persistence_and_corruption",
+            "id::wave37::admitted_unicode_keys_reopen_with_exact_ids",
+            "id::wave37::legacy_trailing_carriage_return_remains_decode_ambiguous",
+            "id::wave37::rejected_key_separators_preserve_registry_state",
+            "id::wave37::rejected_keys_precede_lazy_io_and_legacy_lookup",
+            "id::wave38::heap_name_admission_precedes_kind_conflict_and_exhaustion",
+            "id::wave38::legacy_heap_files_decode_unchanged_and_ambiguous_forms_stay_rejected",
+            "id::wave38::lossy_heap_names_are_rejected_without_state_or_file_change",
+            "id::wave38::unusual_exact_heap_names_reopen_with_stable_numbers"
+          ]
+        },
+        {
+          "elapsed_seconds": 0.064617573,
+          "exit": 0,
+          "profile": "release",
+          "test_identities": [
+            "id::tests::id_parts",
+            "id::wave29::global_heap_exhaustion_preserves_state",
+            "id::wave29::registry_persistence_and_corruption",
+            "id::wave37::admitted_unicode_keys_reopen_with_exact_ids",
+            "id::wave37::legacy_trailing_carriage_return_remains_decode_ambiguous",
+            "id::wave37::rejected_key_separators_preserve_registry_state",
+            "id::wave37::rejected_keys_precede_lazy_io_and_legacy_lookup",
+            "id::wave38::heap_name_admission_precedes_kind_conflict_and_exhaustion",
+            "id::wave38::legacy_heap_files_decode_unchanged_and_ambiguous_forms_stay_rejected",
+            "id::wave38::lossy_heap_names_are_rejected_without_state_or_file_change",
+            "id::wave38::unusual_exact_heap_names_reopen_with_stable_numbers"
+          ]
+        }
+      ],
+      "scope": "Actual binary id:: unit tests"
+    },
+    {
+      "package": "annot",
+      "runs": [
+        {
+          "elapsed_seconds": 3.196213081,
+          "exit": 0,
+          "profile": "debug",
+          "test_identities": [
+            "async_worker_publishes_only_complete_results",
+            "batch::tests::request_has_cached_fixed_block_and_same_prompt",
+            "batch::tests::results_parse_and_patch",
+            "batch::tests::state_roundtrip_and_epoch",
+            "batch::wave27_tests::duplicate_result_last_wins_and_price_boundary",
+            "changed_requests_cannot_reuse_partial_answers",
+            "failure_requires_explicit_resume_and_never_repeats_successes",
+            "hints::tests::hints_fire_only_on_violations",
+            "legacy_teacher_is_rejected_before_launch",
+            "llm::wave27_tests::closed_pragmatic_domains_and_fixed_tokens",
+            "partial_boundary_shapes_and_failed_next_request",
+            "partial_without_final_lf_keeps_record_separation_on_resume",
+            "repair::tests::repairs_with_negative_controls",
+            "repair::wave27_tests::malformed_word_aborts_before_repair_and_ranges_survive",
+            "stale_worker_lock_is_reported",
+            "strict_line_consumers_see_only_json_rows_after_resume",
+            "tests::prag_patches_are_checked",
+            "tests::seed_examples_skip_ungrammatical",
+            "timeout_is_a_failure_without_partial_publication",
+            "wave27_tests::shuffle_seed_zero_alias_and_permutation"
+          ]
+        },
+        {
+          "elapsed_seconds": 3.124964135,
+          "exit": 0,
+          "profile": "release",
+          "test_identities": [
+            "async_worker_publishes_only_complete_results",
+            "batch::tests::request_has_cached_fixed_block_and_same_prompt",
+            "batch::tests::results_parse_and_patch",
+            "batch::tests::state_roundtrip_and_epoch",
+            "batch::wave27_tests::duplicate_result_last_wins_and_price_boundary",
+            "changed_requests_cannot_reuse_partial_answers",
+            "failure_requires_explicit_resume_and_never_repeats_successes",
+            "hints::tests::hints_fire_only_on_violations",
+            "legacy_teacher_is_rejected_before_launch",
+            "llm::wave27_tests::closed_pragmatic_domains_and_fixed_tokens",
+            "partial_boundary_shapes_and_failed_next_request",
+            "partial_without_final_lf_keeps_record_separation_on_resume",
+            "repair::tests::repairs_with_negative_controls",
+            "repair::wave27_tests::malformed_word_aborts_before_repair_and_ranges_survive",
+            "stale_worker_lock_is_reported",
+            "strict_line_consumers_see_only_json_rows_after_resume",
+            "tests::prag_patches_are_checked",
+            "tests::seed_examples_skip_ungrammatical",
+            "timeout_is_a_failure_without_partial_publication",
+            "wave27_tests::shuffle_seed_zero_alias_and_permutation"
+          ]
+        }
+      ],
+      "scope": "Actual annot binary selected unit tests and codex_batches fake-process integration tests; no real teacher/API"
+    }
+  ],
+  "new_obernant_declarations": 15,
+  "parent_obernants_added": 4,
+  "profile_test_executions": 62,
+  "receipts": [
+    {
+      "name": "public-groupants-final.json",
+      "sha256": "d33fd45af87461d6be90801f2681f7574e0c16a1d9dcb1c4b8ca6df57f3e55cc"
+    },
+    {
+      "name": "combined-groupants-final.json",
+      "sha256": "9a8a58896098abd5fb8d098e435bd1e6a4c68647daafe50565f4cd8b57c958be"
+    },
+    {
+      "name": "public-inventory.json",
+      "sha256": "32b377a444d1956359fa1e7a0dd7893433cbd8ae1d25625eb70ae865b1a846c5"
+    },
+    {
+      "name": "combined-inventory.json",
+      "sha256": "b5cee5e5bb1c9edda86a68321f36dc32c15e76eaa4ec309be729ecd7a5d2c33a"
+    },
+    {
+      "name": "kg-native.json",
+      "sha256": "cb43c928d5321d6349b83e79ddf0075960291270cfdc2b607d72a5a95b86c38c"
+    },
+    {
+      "name": "annot-native.json",
+      "sha256": "80c16b3fda3bb4315487a9429a5e563e8c4407cc5a150d4c053a81d5905c2bcc"
+    },
+    {
+      "name": "public-scan-1.json",
+      "sha256": "9f17401b62bfb303616782fb28a243a9c01462784c65471ea8f3eba5bf0b6ff6"
+    },
+    {
+      "name": "combined-scan-1.json",
+      "sha256": "6bb6ad9d0f9dd9c3a7d311f0681aa380735bc1292d6eade26059f3f24d0b3894"
+    }
+  ],
+  "retained_failures": [
+    "Baseline heap admission accepted lossy LF and terminal-CR names; valid unusual names pin the preserved domain.",
+    "Initial separator repair created blank physical lines for whitespace-only tails. A strict-reader test turned red before the refinement.",
+    "A key-codec TAB-loss explanation was corrected: split_once retains the full remainder; stronger admission is policy."
+  ],
+  "scans": [
+    {
+      "coverage": {
+        "algorithm_implementations": 200,
+        "catalog_formulas": 19,
+        "compared_formula_pairs": 11,
+        "missing_typed_roles": 2199,
+        "mixed_groups": 3,
+        "nonalgorithm_groups": 57,
+        "nonalgorithm_sources": 478
+      },
+      "sha256": "9f17401b62bfb303616782fb28a243a9c01462784c65471ea8f3eba5bf0b6ff6",
+      "tier": "public"
+    },
+    {
+      "coverage": {
+        "algorithm_implementations": 200,
+        "catalog_formulas": 19,
+        "compared_formula_pairs": 11,
+        "missing_typed_roles": 2493,
+        "mixed_groups": 4,
+        "nonalgorithm_groups": 71,
+        "nonalgorithm_sources": 561
+      },
+      "sha256": "6bb6ad9d0f9dd9c3a7d311f0681aa380735bc1292d6eade26059f3f24d0b3894",
+      "tier": "combined"
+    }
+  ],
+  "schema": 1,
+  "scope": "Source-bound registry and JSONL framing repairs, leaf and composed-parent models, independent review and finite actual-source tests.",
+  "source_bindings": [
+    {
+      "path": "kg/src/id.rs",
+      "sha256": "2d9a9d00550ecd11000c8885ddb3418afd6835bd06c1a52f057a191145d4db52"
+    },
+    {
+      "path": "annot/src/codex_batch.rs",
+      "sha256": "67e8ff51c6fa7dcf31089eb8d9b6db64e76c4af8d40093af9b602edc86b7df20"
+    },
+    {
+      "path": "annot/tests/codex_batches.rs",
+      "sha256": "243929fbe42a3afeb294c966d8674fbd4a147a11e4138c7c4f888fb7f5aaf00c"
+    }
+  ],
+  "syntax_pairs": 3
+}

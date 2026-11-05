@@ -1,0 +1,112 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Within the fixed test transcript universe, pass excludes executions containing any failed assertion; fail excludes executions satisfying all checks under normal completion. Outside the finite schedules no acceptance restriction is established. Panic, allocation and infrastructure failures have distinct causes although all prevent a pass.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "ec9b288bd79834f2cbe68e5ca09f6d9193cd8ee9fc84c74decff51fb583a53ce",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "An observed pass has a nonunique preimage: all implementations that satisfy every finite fixture, including implementations wrong elsewhere. A failed named assertion narrows the fiber to executions violating that check but cannot uniquely locate production versus oracle defects. Compiled mutants witness distinct failing implementations.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "ec9b288bd79834f2cbe68e5ca09f6d9193cd8ee9fc84c74decff51fb583a53ce",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "independent_oracle",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Partition enumeration minimizes squared loss without PAVA; support masks solve simplex KKT without sorting; L1 stationarity uses a recovered common multiplier; soft compares subgradients and a separate candidate-objective grid. Each is independent of its production control flow.",
+        "path": "model.md",
+        "section": "independent_oracle",
+        "status": "partial_relational_specification",
+        "subject_revision": "ec9b288bd79834f2cbe68e5ca09f6d9193cd8ee9fc84c74decff51fb583a53ce",
+        "type": "independent_oracle"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "adversarial_domain",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Fixtures cover ties, empty input, zero parameters, nonfinite values and extreme scales. Length caps are directly tested except L1 which delegates tested validation. Allocation refusal is not forced; finite sample success is not universal numerical certification.",
+        "path": "model.md",
+        "section": "adversarial_domain",
+        "status": "partial_relational_specification",
+        "subject_revision": "ec9b288bd79834f2cbe68e5ca09f6d9193cd8ee9fc84c74decff51fb583a53ce",
+        "type": "adversarial_domain"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "mutation_observability",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Mutants reverse the PAVA comparison, bias simplex threshold, erase L1 signs, or add soft threshold. Named partition_oracle, active_set_oracle, kkt_grid and subgradient_grid respectively detect them. Positive restoration and source hashes bind observations.",
+        "path": "model.md",
+        "section": "mutation_observability",
+        "status": "partial_relational_specification",
+        "subject_revision": "ec9b288bd79834f2cbe68e5ca09f6d9193cd8ee9fc84c74decff51fb583a53ce",
+        "type": "mutation_observability"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-soft-threshold-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "ec9b288bd79834f2cbe68e5ca09f6d9193cd8ee9fc84c74decff51fb583a53ce"
+  },
+  "status": "partial_source_derived_instance"
+}

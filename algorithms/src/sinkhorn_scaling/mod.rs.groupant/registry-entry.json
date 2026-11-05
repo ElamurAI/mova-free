@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms sinkhorn_scaling::tests",
+    "Repeated debug/release, paired syntax, compiled mutant and restored rerun"
+  ],
+  "children": [],
+  "cost": "O(K*r*c) time, O(r*c) space, K<=10000. Standard allocation; no callbacks.",
+  "description": "Dimensions1..64; all matrix and marginal values finite in[1e-100,1e100]. Shape then finite positive tolerance/budget<=10000 then values then marginal mass agreement within1e-12 relative. Alternate row scaling and column scaling. Report max absolute marginal discrepancy, iteration count and convergence flag.",
+  "forward": [
+    "Dimensions1..64; all matrix and marginal values finite in[1e-100,1e100]. Shape then finite positive tolerance/budget<=10000 then values then marginal mass agreement within1e-12 relative. Alternate row scaling and column scaling. Report max absolute marginal discrepancy, iteration count and convergence flag."
+  ],
+  "id": "algorithm-sinkhorn-scaling",
+  "inverse": [
+    "Positive diagonal row/column rescalings share cross ratios and may converge to the same balanced matrix; original matrix and scaling factors are not recoverable uniquely. At budget0 the exact input matrix is retained."
+  ],
+  "limitations": [
+    "Partial syntax not semantic proof",
+    "Finite oracle coverage not universal numerical accuracy",
+    "No certified surrogate, timing or allocator fault injection"
+  ],
+  "source": "algorithms/src/sinkhorn_scaling/mod.rs",
+  "state": "Bounded validated numeric inputs, deterministic recurrence, explicit errors/status and standard allocation policy"
+}

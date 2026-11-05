@@ -1,0 +1,22 @@
+{
+  "id": "algorithm-strongly-connected-components",
+  "source": "algorithms/src/strongly_connected_components/mod.rs",
+  "description": "Original strongly_connected_components implementation with explicit domain and deterministic output.",
+  "state": "finite directed adjacency lists, including empty graphs, loops and parallel arcs",
+  "forward": [
+    "Validate every endpoint in adjacency order before traversal; first invalid arc returns InvalidEdge(from,to,V). Otherwise return the unique partition with u,v in the same block iff both are mutually reachable. Sort each block ascending and order blocks by their smallest element."
+  ],
+  "inverse": [
+    "In the explicit one-call universe U of finite directed adjacency lists, including empty graphs, loops and parallel arcs crossed with declared returned values, C=U minus R for the forward relation R. C includes incorrect partitions/forests/distances, wrong error details or wrong first-failure precedence. This is the exact specification complement and a partial source-derived approximant of Rust behavior. Allocation failures, panics, timing and traces are outside U.",
+    "For each returned y, Pre(y)={x in domain | R(x,y)} retains ALL compatible inputs. For success, preserve every graph satisfying the forward equations and observable canonical ordering; for errors, preserve every graph matching that exact first-failure condition. Parallel alternatives, internal representations and unobserved edge choices are retained whenever compatible. No unique input recovery or executable inverse is claimed."
+  ],
+  "cost": "O(V+E+V log(V+1)) time, O(V+E) auxiliary space; sorting is included, so canonical output is not claimed linear-time.",
+  "checks": [
+    "cargo test -p mova-algorithms strongly_connected_components::tests",
+    "four targeted tests twice; strict Clippy; compiled filtered mutation"
+  ],
+  "limitations": [
+    "Bounded correspondence is not unrestricted proof.",
+    "Partial syntax excludes macro expansion and semantic resolution."
+  ]
+}

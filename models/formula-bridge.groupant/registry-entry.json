@@ -1,0 +1,37 @@
+{
+  "checks": [
+    "Selected actual tests twice debug and release with sorted names retained",
+    "Math doc composition and no-default-features compilation",
+    "Paired identical lexical source projections",
+    "Seven compiled assertion controls with exact restoration and positive reruns"
+  ],
+  "children": [
+    "latex-corpus",
+    "latex-extract",
+    "latex-gate",
+    "latex-lib",
+    "latex-main",
+    "latex-tomath",
+    "latex-test-bridge",
+    "latex-test-vmm-latex"
+  ],
+  "cost": "Repeated unmatched extraction suffixes/nested bridge groups can cause quadratic rescanning. Recursive parsing/printing/conversion add tree/string work. Corpus retains IDs/hashes and one file; CLI tex retains all texts. Ordered file writes are not atomic; no speed claim.",
+  "description": "Text→extract borrowed bodies/byte offsets→macro-aware parse→structural print/reparse gate→optional restricted Expr/relation transport. CLI/corpus aggregate separate parse/unknown/gate/bridge outcomes; feature math controls API and command branches.",
+  "forward": [
+    "Text→extract borrowed bodies/byte offsets→macro-aware parse→structural print/reparse gate→optional restricted Expr/relation transport. CLI/corpus aggregate separate parse/unknown/gate/bridge outcomes; feature math controls API and command branches.",
+    "extract bodies exclude delimiters, start in bytes. corpus tex scans macros per file versus CLI tex all files before formulas. Canonical gate reparses without original macros. Corpus falls back to to_relation only on to_expr relation category. Reexports add no adapter. Empty Add/Mul output empty Node but inverse/roundtrip reject."
+  ],
+  "id": "formula-bridge",
+  "inverse": [
+    "Parse failure excludes gate/bridge counting; tex success does not exclude formula failure. Unsupported conversion cannot be numeric success; absent math hides tomath.",
+    "Compatible documents for one Expr include alternate presentation/grouping and ignored prose; byte offsets and macros constrain but do not uniquely recover original. Counters lose further identity."
+  ],
+  "limitations": [
+    "No executable percentage surrogate for categorical semantics",
+    "Finite fixture agreement not universal inverse proof",
+    "Hash collisions and partial/stale output files modeled",
+    "Frozen VMM hash/classification and DATA-based control unexecuted",
+    "Reexport/feature compilation distinguished from semantic execution"
+  ],
+  "state": "Gate Node equality and bridge fold_literals Expr equality differ from numeric truth and definedness: 1/0 may structurally roundtrip but evaluation rejects. Corpus processed formulas partition parsed/errors and parsed partition gate outcomes. CLI success does not imply formula success."
+}

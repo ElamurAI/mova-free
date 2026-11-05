@@ -1,0 +1,98 @@
+{
+  "children": [
+    {
+      "id": "ocrfix-text-command-alignment",
+      "path": "alignment.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "ocrfix-text-command-behavior_complement",
+        "path": "model.md",
+        "scope": "UTF-8 Hebrew text, finite positive lexicon total/oov and nonnegative finite costs for score interpretation; lengths/boxes bounded against u32/i32 overflow. Raw parsers do not enforce all premises.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "ocrfix-text-command-reverse_reconstruction",
+        "path": "model.md",
+        "scope": "UTF-8 Hebrew text, finite positive lexicon total/oov and nonnegative finite costs for score interpretation; lengths/boxes bounded against u32/i32 overflow. Raw parsers do not enforce all premises.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "ocrfix-text-command-channel_budget",
+        "path": "model.md",
+        "scope": "UTF-8 Hebrew text, finite positive lexicon total/oov and nonnegative finite costs for score interpretation; lengths/boxes bounded against u32/i32 overflow. Raw parsers do not enforce all premises.",
+        "section": "channel_budget",
+        "status": "partial_source_derived_model",
+        "type": "channel_budget"
+      },
+      {
+        "id": "ocrfix-text-command-score_margin",
+        "path": "model.md",
+        "scope": "UTF-8 Hebrew text, finite positive lexicon total/oov and nonnegative finite costs for score interpretation; lengths/boxes bounded against u32/i32 overflow. Raw parsers do not enforce all premises.",
+        "section": "score_margin",
+        "status": "partial_source_derived_model",
+        "type": "score_margin"
+      },
+      {
+        "id": "ocrfix-text-command-mask_coordinate_join",
+        "path": "model.md",
+        "scope": "UTF-8 Hebrew text, finite positive lexicon total/oov and nonnegative finite costs for score interpretation; lengths/boxes bounded against u32/i32 overflow. Raw parsers do not enforce all premises.",
+        "section": "mask_coordinate_join",
+        "status": "partial_source_derived_model",
+        "type": "mask_coordinate_join"
+      },
+      {
+        "id": "ocrfix-text-command-effect_cleanup_order",
+        "path": "model.md",
+        "scope": "UTF-8 Hebrew text, finite positive lexicon total/oov and nonnegative finite costs for score interpretation; lengths/boxes bounded against u32/i32 overflow. Raw parsers do not enforce all premises.",
+        "section": "effect_cleanup_order",
+        "status": "partial_source_derived_model",
+        "type": "effect_cleanup_order"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "ocrfix-text-command",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../main.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "c0912bb251c79fa61d4601c1a4d5954189ea77b73a96302504f6841b8cca3ab8"
+  },
+  "status": "partial_source_bound_model"
+}

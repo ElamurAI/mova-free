@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Representation: paired syntax and source inspection. Cargo cycle compilation exercises build integration without executing cycle entry."
+  ],
+  "children": [],
+  "cost": "O(file bytes) scan/read and O(value bytes) allocation; build I/O only.",
+  "description": "Read manifest-relative peta/paths.env if possible; first line whose trim starts MOVA_BIG= supplies trimmed value. Unreadable/non-UTF8/missing or no match yields empty. Emit rerun-if-changed (only for an existing file) then rustc-env.",
+  "forward": [
+    "Read manifest-relative peta/paths.env if possible; first line whose trim starts MOVA_BIG= supplies trimmed value. Unreadable/non-UTF8/missing or no match yields empty. Emit rerun-if-changed (only for an existing file) then rustc-env."
+  ],
+  "id": "cycle-build",
+  "inverse": [
+    "Default v admits all files whose first recognized value trims to v. Empty also admits missing/unreadable/non-UTF8/no-match files; no unique recovery.",
+    "Later assignment cannot replace first recognized line. Missing file does not fail helper, but emits empty default."
+  ],
+  "limitations": [
+    "Partial syntax, bounded synthetic helper coverage; no live teacher, corpus, model, lesson or benchmark CLI. No numerical approximation budget claimed."
+  ],
+  "source": "tools/cycle/build.rs",
+  "state": "First assignment wins even empty; shell export and quotes are not interpreted."
+}

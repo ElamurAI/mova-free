@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "license::tests::commercial_gate_blocks_nc",
+    "license::wave27::empty_and_first_failure"
+  ],
+  "children": [],
+  "cost": "O(table bytes+total path bytes) expected hashing, O(table bytes) temporary storage per call; bounded embedded table but no caching. No model I/O/training inside gate.",
+  "description": "Embedded training-source commercial-use admission gate with first-failure path diagnostics.",
+  "forward": [
+    "train_source takes lossy file stem, removes initial en_, then sequentially strips suffixes -ud-train,-ud-dev,-ud-test,-train,-dev,-test. Gate skips leading-# and trimmed-empty lines, keeps >=3 tab fields, yes after trim admits. Iterates training paths in order and errors first denied or absent source."
+  ],
+  "id": "en-license",
+  "inverse": [
+    "R(Ok)={ordered path lists whose normalized sources all map yes}, including empty and arbitrary directories/extensions sharing stem. R(error at p) consists of accepted prefixes followed by p as first failing path and arbitrary suffixes; cannot recover hidden suffix."
+  ],
+  "limitations": [
+    "Embedded licensing policy treated as configured input, not legal verification",
+    "Lossy filesystem stem conversion and duplicate-table behavior source-derived",
+    "No live training execution"
+  ],
+  "source": "en/src/license.rs",
+  "state": "Path basenames and compile-time train-licenses.tsv projected to map(source,(license,bool))."
+}

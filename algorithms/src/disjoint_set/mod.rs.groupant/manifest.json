@@ -1,0 +1,124 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-disjoint-set",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "e59fc0865a910e341d3e20ac382a40fbf1a6572d876f8385ec024a7e231d72b4"
+  },
+  "registry": {
+    "path": "../../../../models/contracts.json",
+    "node": "algorithm-disjoint-set"
+  },
+  "status": "partial",
+  "components": {
+    "ast": {
+      "status": "partial",
+      "format": "rust_syntax_projection",
+      "path": "ast.json",
+      "scope": "source syntax; macros opaque; no expansion or semantic resolution"
+    },
+    "approximant": {
+      "status": "partial",
+      "path": "model.md",
+      "section": "forward"
+    },
+    "invariant": {
+      "status": "partial",
+      "path": "model.md",
+      "section": "invariant"
+    },
+    "cost": {
+      "status": "partial",
+      "path": "model.md",
+      "section": "cost"
+    },
+    "descriptant": {
+      "status": "partial",
+      "path": "model.md",
+      "section": "descriptant"
+    },
+    "tests": {
+      "status": "partial",
+      "path": "model.md",
+      "section": "tests"
+    },
+    "obernants": [
+      {
+        "id": "algorithm-disjoint-set-behavior-complement",
+        "type": "behavior_complement",
+        "required": true,
+        "status": "partial_source_model",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "subject_revision": "algorithms/src/disjoint_set/mod.rs sha256:e59fc0865a910e341d3e20ac382a40fbf1a6572d876f8385ec024a7e231d72b4",
+        "domain": "Fixed finite universe; API-reachable forests and usize call arguments",
+        "observation_scope": "One call, with projection specified in model section",
+        "operator": "Defined in model.md behavior-complement",
+        "approximation_semantics": "Inner bound of U minus R",
+        "assumptions": "Reachable forest invariants; successful allocation; no process interruption",
+        "evidence": "Ten tests in sibling tests.rs, including 5,400 seeded mixed calls, balanced compression, order invariance and compiled negative control; see tests section"
+      },
+      {
+        "id": "algorithm-disjoint-set-reverse-reconstruction",
+        "type": "reverse_reconstruction",
+        "required": true,
+        "status": "partial_source_model",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "subject_revision": "algorithms/src/disjoint_set/mod.rs sha256:e59fc0865a910e341d3e20ac382a40fbf1a6572d876f8385ec024a7e231d72b4",
+        "domain": "Fixed finite universe; API-reachable forests and usize call arguments",
+        "observation_scope": "One call, with projection specified in model section",
+        "operator": "Defined in model.md reverse-reconstruction",
+        "approximation_semantics": "Declarative set-valued partition preimage; forest reachability not enumerated",
+        "assumptions": "Reachable forest invariants; successful allocation; no process interruption",
+        "evidence": "Ten tests in sibling tests.rs, including 5,400 seeded mixed calls, balanced compression, order invariance and compiled negative control; see tests section"
+      },
+      {
+        "id": "algorithm-disjoint-set-partition",
+        "type": "partition_transition",
+        "required": false,
+        "status": "partial_source_model",
+        "path": "model.md",
+        "section": "partition",
+        "subject_revision": "algorithms/src/disjoint_set/mod.rs sha256:e59fc0865a910e341d3e20ac382a40fbf1a6572d876f8385ec024a7e231d72b4",
+        "domain": "Fixed finite universe; API-reachable forests and usize call arguments",
+        "observation_scope": "One call, with projection specified in model section",
+        "operator": "Defined in model.md partition",
+        "approximation_semantics": "Source-derived scoped relation; bounded empirical Rust correspondence",
+        "assumptions": "Reachable forest invariants; successful allocation; no process interruption",
+        "evidence": "Ten tests in sibling tests.rs, including 5,400 seeded mixed calls, balanced compression, order invariance and compiled negative control; see tests section"
+      },
+      {
+        "id": "algorithm-disjoint-set-frame",
+        "type": "mutation_frame",
+        "required": false,
+        "status": "partial_source_model",
+        "path": "model.md",
+        "section": "frame",
+        "subject_revision": "algorithms/src/disjoint_set/mod.rs sha256:e59fc0865a910e341d3e20ac382a40fbf1a6572d876f8385ec024a7e231d72b4",
+        "domain": "Fixed finite universe; API-reachable forests and usize call arguments",
+        "observation_scope": "One call, with projection specified in model section",
+        "operator": "Defined in model.md frame",
+        "approximation_semantics": "Source-derived scoped relation; bounded empirical Rust correspondence",
+        "assumptions": "Reachable forest invariants; successful allocation; no process interruption",
+        "evidence": "Ten tests in sibling tests.rs, including 5,400 seeded mixed calls, balanced compression, order invariance and compiled negative control; see tests section"
+      },
+      {
+        "id": "algorithm-disjoint-set-tie",
+        "type": "deterministic_representative",
+        "required": false,
+        "status": "partial_source_model",
+        "path": "model.md",
+        "section": "tie",
+        "subject_revision": "algorithms/src/disjoint_set/mod.rs sha256:e59fc0865a910e341d3e20ac382a40fbf1a6572d876f8385ec024a7e231d72b4",
+        "domain": "Fixed finite universe; API-reachable forests and usize call arguments",
+        "observation_scope": "One call, with projection specified in model section",
+        "operator": "Defined in model.md tie",
+        "approximation_semantics": "Source-derived scoped relation; bounded empirical Rust correspondence",
+        "assumptions": "Reachable forest invariants; successful allocation; no process interruption",
+        "evidence": "Ten tests in sibling tests.rs, including 5,400 seeded mixed calls, balanced compression, order invariance and compiled negative control; see tests section"
+      }
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "checks": [
+    "25 exact selected tests, twice debug and twice release with sorted named outcomes",
+    "treebanks wave33_tests::readme_collect_render_join actual Readme/Matcher/collect/Card join",
+    "treeagree tests::swap_needs_both_edits and tests::retag_rides_with_the_relation actual proposal/gate joins",
+    "parsecmp wave33_tests::score_and_bracket_multiset_boundaries and conllu_fixture_filters_and_missing_file",
+    "Ten paired current-source syntax projections and ten exact byte-scoped children",
+    "Compiled actual behavior mutations with byte-exact restoration and positive reruns; see fresh external receipts"
+  ],
+  "children": [
+    "parsecmp-main",
+    "treeagree-dispute",
+    "treeagree-main",
+    "treeagree-rules",
+    "treeagree-tree",
+    "treebanks-main",
+    "treebanks-readme",
+    "treebanks-refs",
+    "treebanks-release",
+    "treebanks-render"
+  ],
+  "cost": "Treeagree per sentence conservatively O(e*(n²+e*n+registry)) for apply; next_conj can make proposal O(n³) on acyclic trees. Treebanks streams archive bytes but retains metadata, index, audit and card strings; candidate matching cost depends on trigram collisions and scans, not just bytes. Parsecmp pairwise reporting O(systems²*tokens), bracket multiset intersection O((a+b)log distinct_a). No measured performance gain claimed.",
+  "description": "Tagged paths: treeagree read_ref→aligned View→propose→apply/no_worse→serialized tree; dispute path read_ref/read_wit→disputes→prompt→parse_answers→apply with group-local ids. Treebanks release::read→count/check_stats and Readme::parse gate feed Matcher::item→collect→Card render. Parsecmp independently maps aligned trees to Score and bracket multisets; it is not invoked by treeagree or treebanks.",
+  "forward": [
+    "Tagged paths: treeagree read_ref→aligned View→propose→apply/no_worse→serialized tree; dispute path read_ref/read_wit→disputes→prompt→parse_answers→apply with group-local ids. Treebanks release::read→count/check_stats and Readme::parse gate feed Matcher::item→collect→Card render. Parsecmp independently maps aligned trees to Score and bracket multisets; it is not invoked by treeagree or treebanks.",
+    "Actual joins are proposal Edit positions into trial head/relation/retag vectors; baseline Bad equality into acceptance; Readme Item text/bib into Matcher with raw byte boundaries; Hit (Src,index,How,fuzzy) into collect Found and Card rendering; Counts into stats tuple and render totals. Synthetic readme_collect_render_join checks deduplication and rendering method/title. Parsecmp uses its own permissive reader and cannot substitute for treeagree read_ref: it skips range/dotted rows and uses sentinel heads where treeagree rejects nonsequential ten-column input."
+  ],
+  "id": "treebank-comparison-tools",
+  "inverse": [
+    "On admitted aligned shape-valid tree state, failed no_worse trial excludes candidate commit; treebank stats/meta rejection excludes all card writes. Parsecmp diagnostics exclude parser invocation and never repair trees. This inner exclusion is path-tagged; successful helper calls do not imply atomic release output.",
+    "Output tree plus kept edits constrains compatible draft/witness/lex histories but loses rejected candidates and old MISC. Rendered reference list constrains selected indexed papers but not duplicate paragraphs or raw normalization fibers. Aggregate scores/bracket counts admit many trees; no unique cross-path inverse."
+  ],
+  "limitations": [
+    "Finite fixtures and source-derived partial relations; no universal proof or full CLI coverage",
+    "No numerical approximation metric or executable surrogate established; future caps only 1/2/5/10%",
+    "No corpus, downloads, live teacher, model loads, real release, site effects or publication",
+    "Malformed length/head arrays and Unicode-expanding URL prefixes are not accepted-domain guarantees; no unsolicited production repairs"
+  ],
+  "state": "Tree agreement commits only shape-valid candidates whose full violation identities belong to original baseline, under valid equal lengths and indices. Reference collections preserve (Src,index) identity when rendering, deduplicate explicit reference keys and retain selected match method. Streaming release token count is words+fused-range_widths; rendered totals sum split Counts. Bracket intersection is multiplicity-aware and no larger than either count."
+}

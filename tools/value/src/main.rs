@@ -7,7 +7,7 @@
 //! 1) system copy — a git worktree in $MOVA_DATA/work/value-<name> (its own target);
 //! 2) build with GLOBAL_EXCLUDE (the component's seeds are not built) and the env that disables the module;
 //! 3) bench (tools/bench) in the copy and in the main system — the same measurements;
-//! 4) report docs/value/<name>.md: metric, with component, without, delta, conclusion;
+//! 4) report $MOVA_DATA/runs/value/<name>.md: metric, with component, without, delta, conclusion;
 //! 5) the copy and intermediate results are deleted — only the report remains.
 
 use std::path::PathBuf;
@@ -82,7 +82,7 @@ fn main() -> Result<()> {
         rep.push_str(&format!("| {k} | {a} | {b} | {d} |\n"));
     }
     rep.push_str(&format!("\n**Conclusion:** metrics where the component helps — {gains}; where it hurts — {losses}. (For gaps and wrong answers lower is better: read the delta according to the metric's meaning.)\n"));
-    let out = main_root.join(format!("docs/value/{name}.md"));
+    let out = mova_data().join(format!("runs/value/{name}.md"));
     std::fs::create_dir_all(out.parent().unwrap())?;
     std::fs::write(&out, &rep)?;
     println!("{rep}");
@@ -92,4 +92,33 @@ fn main() -> Result<()> {
     std::fs::remove_dir_all(&runs)?;
     println!("copy and intermediate results deleted; report — {}", out.display());
     Ok(())
+}
+#[cfg(test)]
+mod wave33_tests {
+    use super::*;
+    #[test]
+    fn subprocess_status_precedes_stdout_and_reverses_stderr_tail() {
+        let dir = std::env::temp_dir();
+        let ok = sh(
+            &dir,
+            "/bin/sh",
+            &["-c", "printf '%s' \"$WAVE33_VALUE\""],
+            &[("WAVE33_VALUE".into(), "bounded".into())],
+        )
+        .unwrap();
+        assert_eq!(ok, "bounded");
+        let err = sh(
+            &dir,
+            "/bin/sh",
+            &[
+                "-c",
+                "printf 'ignored'; printf 'one\\ntwo\\nthree\\nfour\\nfive\\nsix\\n' >&2; exit 7",
+            ],
+            &[],
+        )
+        .unwrap_err()
+        .to_string();
+        assert!(err.ends_with("six | five | four | three | two"), "{err}");
+        assert!(!err.ends_with("ignored"));
+    }
 }

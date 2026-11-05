@@ -1,13 +1,15 @@
 # coref — SLM coreference: a sieve of rules with a reason for every link
 
-**Design note:** the annotator must be able to keep context and resolve pronouns (`docs/context.md`, "Document memory").
+The annotator keeps context and resolves pronouns (`docs/context.md`, "Document memory").
 
 A separate crate that depends on `en` (`en = { path = "../en" }`), not the other way round.
 
-This is the first in-house coreference of the small language model (SLM):
-- classical and deterministic, without Opus, without `claude -p` and at no cost;
+This is the in-house coreference of the small language model (SLM):
+- classical and deterministic, without the teacher and at no cost;
 - transparent: every link carries the sieve id and its evidence;
 - evaluation — GUM from UD 2.18, MUC / B³ / CEAF-e / CoNLL F1 scorer in Rust.
+
+The frame reader has its own pronoun resolver and can call this crate's sieve instead (`PRAG_COREF`; see [how roles and links are found](../docs/pragmatics.md#how-roles-and-links-are-found)).
 
 ## How it works
 
@@ -40,27 +42,95 @@ UD tree (gold or en annotate) → mentions (mention.rs) → sieves (sieve.rs) �
 
 **Coordination** "John and Mary" gives two mentions with one head: the whole group and the first conjunct. The CRAC scorer tells them apart by span. The group is output only when something refers to it.
 
-On GUM dev with gold trees:
-- mentions (by head): recall 92.8%, precision 89.9%;
-- exact span — 95.5% among matches.
-
-**Features** — only from UD FEATS (Number, Gender, Person, PronType, Poss, Reflex) and hand-made closed lists:
+**Features** — from UD FEATS (Number, Gender, Person, PronType, Poss, Reflex), hand-made closed lists and the noun lexicon Mova counted from its own parses (below):
 - pronoun table;
 - titles;
 - 60 nouns with gender in the word itself (mother, king…);
 - speech verbs;
 - idioms.
 
-What is not known stays unknown and matches anything, like "unknown" in Lee et al. 2013. **Gender is not guessed from a name** (`docs/context.md`, "Document level"). Instead there are:
+What is not known stays unknown and matches anything, like "unknown" in Lee et al. 2013. **Gender is not guessed from a name** ([context](../docs/context.md#document-memory)). Instead there are:
 - a name from `# speaker` / `# addressee` — evidence of animacy;
 - "who" or "which" in a relative clause — animate or not;
 - Mr./Mrs. — gender.
 
 Cluster features are the union of the features of its mentions.
 
+### The noun lexicon (`src/lexicon.rs`)
+
+When the tree, the closed lists and titles say nothing, a common noun takes gender and animacy from a lexicon that
+Mova counted from its **own parses** (after Bergsma & Lin 2006, `bergsma-2006-bootstrapping-path-based-pronoun-resolution`;
+Lee et al. 2013 use their table the same way):
+
+- **paths** — a noun and a third-person pronoun joined by a dependency path that rarely joins two entities, each with a
+  test: `refl` («the farmer hurt himself», «the king himself»), `poss` («the hen sat on her eggs»), `say` («the miller
+  said he was poor», outside quotes), `pred` («she was a widow», no negation, no preposition), `appos`, and `relpron`
+  (a relative clause on the noun starting with who/whom/whose or which);
+- **counts** — classes he, she, it, they, who, which per noun lemma; only NOUN (never a name: gender is not guessed
+  from a name), not in a compound, a flat name or a coordination; a plural noun with a singular pronoun is dropped;
+- **decision** — smoothed shares p = (n + α·prior) / (N + α), α = 2: animate if he+she+who ≥ 0.8, inanimate if
+  it+which ≥ 0.8, gender he / she / it / he-or-she at 0.8, at least 3 counts; mixed nouns (cat, horse, ship, sun, family)
+  stay unknown;
+- **transparency** — every row keeps its sources, paths and one example sentence id; a link the lexicon helped carries
+  its counts in `explain` («lexicon «farmer»: he 702 she 18 it 13 …»).
+
+```
+en annotate $MOVA_DATA/en/models/en.bin pool.tsv | coref lexicon count tales - > part.tsv   # one part per corpus chunk
+coref lexicon build $MOVA_DATA/coref/gender.tsv part-*.tsv --label "<provenance>"
+coref lexicon paths <gold.conllu> [--trees f]      # precision of each path against gold coreference
+coref lexicon rotate <table> <out> <k>             # negative control: every row moved k lemmas on
+coref lexicon show <table> <lemma>…  |  coref lexicon compare <a> <b>
+```
+
+The table is data, outside the repository: `$MOVA_DATA/coref/gender.tsv`, or `COREF_GENDER=<path>`. `COREF_GENDER=off`
+turns it off everywhere, `COREF_X=no-gender-table` in the sieve only; `COREF_GENDER_TAU`, `COREF_GENDER_MIN`,
+`COREF_GENDER_ALPHA` change the decision. An internal-only table (counted from Wikipedia: a `# source wikipedia` line, `# use: internal`, or a licence line
+that says internal) is refused unless `COREF_GENDER_INTERNAL=1`; CC BY-SA alone is not internal — the released
+table is a public CC BY-SA file. Without a table the sieve is byte for byte the sieve without the lexicon (GUM dev, both
+tree sources, 2026-11-04).
+
+**The table of 2026-11-04**: 13.87 million sentences parsed by `en.bin` — 5 110 public-domain (EU/UA) Project Gutenberg
+books of `corpora/tales/free` (13.51 million) and the school's lessons (0.36 million); 23 666 lemmas, 6 222 decided;
+pairs: poss 336 169, pred 257 958, refl 62 016, say 33 005, appos 2 360, who 187 237, which 302 652. Parsing took
+45 minutes on 6 CPU processes. Two counts of the school part and two builds were byte-identical. The internal
+comparison table from the Wikipedia school's 127 096 sentences (CC BY-SA, never shipped) decides 199 lemmas; of 140
+decided in both, animacy agrees on 124 (88.6%).
+
+**Measured** (2026-11-04, dev only; the switch off = main):
+
+| measure | without | with the table | rotated table (control) |
+|---|---|---|---|
+| GUM dev, gold trees: CoNLL F1 with / without singletons | 75.25 / 64.36 | 75.22 / 64.29 | 74.86 / 63.74 |
+| GUM dev, gold trees: 3rd-person pronouns right | 498 of 741 | 500 | 481 |
+| GUM dev, SLM trees: CoNLL F1 | 70.60 / 58.81 | 70.69 / 58.87 | 70.29 / 58.33 |
+| GUM dev, SLM trees: 3rd-person pronouns right | 470 of 743 | 478 | 454 |
+
+Precision of the paths on GUM dev gold (`coref lexicon paths`): poss 20 of 25, pred 22 of 25. τ from 0.7 to 0.9 and
+the minimum from 3 to 30 move CoNLL F1 by at most 0.1. The lexicon fixes pronouns whose antecedent is a person noun
+(«his», «him», «he»); most «it» errors on GUM are events, statements and inanimate rivals, which gender cannot tell
+apart.
+
+The frame reader (`prag`) can use the same table (`PRAG_VN=gender-table`, opt-in). Measured 2026-11-04 on the school
+(CPU, train and cv courses only):
+
+| measure | without | with the table | rotated table (control) |
+|---|---|---|---|
+| frame bench dev (`world frames bench dev prons`): overall F1 / coref F1 | 0.738 / 0.471 (89 right) | 0.741 / 0.489 (92) | 0.737 / 0.466 (88) |
+| 24 primary courses: tests right (odd / even), exam | 12 306 (6 162 / 6 144), 3 564 | 12 305 (6 156 / 6 149), 3 562 | 12 285, 3 560 |
+| the books' course: tests right (odd / even), exam | 7 339 (3 721 / 3 618), 2 195 | 7 339 (3 704 / 3 635), 2 179 | 7 283, 2 191 |
+| Wikipedia school: train / cv-a / cv-b | 15 672 / 7 654 / 8 014 | 15 671 / 7 653 / 8 013 | 15 672 / 7 650 / 8 018 |
+
+All course controls stayed red. The rotated table loses 21 and 56 tests, the real table neither gains nor loses: the
+pupil reads a few pronouns better (the bench) but its answers rarely depend on them; 557 tests of the 24 courses
+flip, 280 one way and 277 the other, as often with a pronoun in the question as without. So the reader keeps the
+lexicon opt-in. The Wikipedia school's lead «It» goes to the nearest noun («It sits on …» → «state») for another
+reason: the frame reader never resolves «it» to a name (a name is a person to it), and the lexicon has no names.
+Two runs with the table gave byte-identical traces (24 courses and the Wikipedia courses); the runs without it were
+byte-identical across two builds.
+
 ### Sieves — from the most precise
 
-The architecture follows Raghunathan et al. 2010 (`papers/r/ra/raghunathan-2010-multi-pass-sieve-coreference-resolution`) and Lee et al. 2013 (`papers/l/le/lee-2013-deterministic-coreference-resolution-based-entity`):
+The architecture follows Raghunathan et al. 2010 ([raghunathan-2010-multi-pass-sieve-coreference-resolution](https://research.elamur.ai/free/en/papers/raghunathan-2010-multi-pass-sieve-coreference-resolution/)) and Lee et al. 2013 ([lee-2013-deterministic-coreference-resolution-based-entity](https://research.elamur.ai/free/en/papers/lee-2013-deterministic-coreference-resolution-based-entity/)):
 - only a mention that is first in its cluster is linked;
 - an indefinite one (a/an, quantified, bare plural) is not linked, except on an exact match.
 
@@ -69,11 +139,11 @@ The architecture follows Raghunathan et al. 2010 (`papers/r/ra/raghunathan-2010-
 - first the mention's clause, then the rest of the sentence, then previous sentences;
 - in previous sentences, left to right for pronouns (subject first), right to left for nominals.
 
-Heads higher in the tree come first, as in Haghighi & Klein 2009 (`papers/h/ha/haghighi-2009-simple-coreference-resolution-rich-syntactic`).
+Heads higher in the tree come first, as in Haghighi & Klein 2009 ([haghighi-2009-simple-coreference-resolution-rich-syntactic](https://research.elamur.ai/free/en/papers/haghighi-2009-simple-coreference-resolution-rich-syntactic/)).
 
 | id | what it does | default |
 |---|---|---|
-| `speaker` | "I" of one voice is one person. A voice is a speaker from `# speaker`, a separate quotation or the narrator. "I" in a quotation is its author, i.e. the subject of the speech verb outside the quotes. "we" and "you" of one voice go together. "you" addressed to an addressee is that addressee's earlier "I". Rules follow Lee 2013, §3.3.1 and Baldwin 1997 (`papers/b/ba/baldwin-1997-cogniac-high-precision-coreference-limited`) | yes |
+| `speaker` | "I" of one voice is one person. A voice is a speaker from `# speaker`, a separate quotation or the narrator. "I" in a quotation is its author, i.e. the subject of the speech verb outside the quotes. "we" and "you" of one voice go together. "you" addressed to an addressee is that addressee's earlier "I". Rules follow Lee 2013, §3.3.1 and Baldwin 1997 ([baldwin-1997-cogniac-high-precision-coreference-limited](https://research.elamur.ai/free/en/papers/baldwin-1997-cogniac-high-precision-coreference-limited/)) | yes |
 | `exact` | exact text match of nominal mentions | yes |
 | `relaxed` | text match up to and including the head. After the head — only relative clauses (acl); a quantified antecedent — no | yes |
 | `appos` | `appos` in the tree | yes |
@@ -83,18 +153,29 @@ Heads higher in the tree come first, as in Haghighi & Klein 2009 (`papers/h/ha/h
 | `reflexive` | reflexive pronoun → subject of its predicate (principle A) | yes |
 | `strict_a` | head is among the cluster heads + cluster words ⊆ + modifiers ⊆ + not i-within-i | yes |
 | `strict_b` | the same without modifiers | yes |
-| `strict_c` | the same without words | no: 31% on dev |
+| `strict_c` | the same without words | no |
 | `proper_head` | the same proper head, without conflicting proper names and numbers in modifiers | yes |
-| `relaxed_head` | the proper head is among the cluster words | no: 24% on dev |
+| `relaxed_head` | the proper head is among the cluster words | no |
+| `deixis` | an event «it» and a bare «this/that» → the clause before it, added as a mention (details below) | no |
 | `pronoun` | 3rd-person pronoun, details below | yes |
 | `nearest` | baseline: nearest preceding agreeing mention | baseline only |
+
+**What «it» is** (`src/it.rs`, before the sieves; `PRAG_OFF=it-class` turns it off, `it-pleonastic` and `it-event` each half). Tests on the predicate, after Loáiciga et al. 2017 and Eckert and Strube's context test in Kolhatkar et al. 2018:
+- **pleonastic**, refers to nothing: weather verbs («it rained»), a copula with a time or weather word («it was late»), a copula, a raising verb or a passive with a clause («it is clear that…», «it seems that…», «it takes years to…»), an object before a small clause («made it clear that…»). Such an «it» is not output: in GUM it is not a mention;
+- **event**, refers to a clause: the subject of *happen, occur, mean, matter*, of a copula with *true, false, right, wrong, possible, a pity, the problem, the reason, a mistake…*, or of «it is because…». Such an «it» is kept from nominal antecedents;
+- **anaphoric**: the rest, for the `pronoun` sieve.
+
+The SLM's frame reader does not use this test.
+
+**The `deixis` sieve** (off): an event «it» or a bare «this/that» (not before a noun) is linked to the clause before it — the clause to the left in the same sentence, else the main clause of the previous sentence (Yu et al. 2022's baseline, Kolhatkar et al. 2018's search order). The clause is added as a mention with the predicate as its head. The right clause is rarely the nearest one, so the sieve is not in the default.
 
 **The `pronoun` sieve:**
 - **cluster agreement** in number, gender, animacy and person;
 - **principle B** at cluster level: a personal pronoun is not bound by a co-argument of its predicate. The test `principle_b_is_what_blocks_who` is the negative control;
 - **ban on quantified antecedents** (everyone, every country) — a bound variable;
 - **window ≤ 3 sentences** (Lee 2013);
-- **animacy preference for he/she**: first a cluster with evidence of animacy, then any agreeing one.
+- **animacy preference for he/she**: first a cluster with evidence of animacy, then any agreeing one;
+- **notional «they»** (Zeldes 2018, `PRAG_OFF=coref-notional`): only when no candidate agrees strictly, *they / them / their* may take a singular collective noun (*family, government, team, company, police…*, a hand-made list). The SLM's frame reader does not use this fallback: in the everyday lessons «they» is mostly people in general.
 
 The speaker constraint (Lee 2013) lives in `compatible`: clusters with "I" of different voices do not merge.
 
@@ -113,9 +194,7 @@ The speaker constraint (Lee 2013) lives in `compatible`: clusters with "I" of di
   - GUM_bio_emperor-6:1-1 «Norton» ← [strict_a] head «norton» is in the cluster; words ⊆ ["born", "england", "norton"]; modifiers [] ⊆ []; …
 ```
 
-Full output — `$MOVA_DATA/runs/coref-2026-09-26/explain-dev-GUM_bio_emperor.txt`.
-
-**`coref resolve`** — CoNLL-U with `Entity=` in MISC (CorefUD, `papers/n/ne/nedoluzhko-2022-corefud-1-0-coreference-meets`):
+**`coref resolve`** — CoNLL-U with `Entity=` in MISC (CorefUD, [nedoluzhko-2022-corefud-1-0-coreference-meets](https://research.elamur.ai/free/en/papers/nedoluzhko-2022-corefud-1-0-coreference-meets/)):
 - header `# global.Entity = eid-etype-head-other`;
 - `head` — position of the head within the span;
 - `other` — id of the sieve that attached the mention: `new` — first in the chain, `sgl` — singleton;
@@ -126,15 +205,15 @@ The resolver does not see the gold standard: test `resolver_ignores_gold_entitie
 ## Scorer
 
 **Metrics** (`src/score.rs`):
-- MUC — Vilain et al. 1995 (`papers/v/vi/vilain-1995-model-theoretic-coreference-scoring-scheme`);
+- MUC — Vilain et al. 1995 ([vilain-1995-model-theoretic-coreference-scoring-scheme](https://research.elamur.ai/free/en/papers/vilain-1995-model-theoretic-coreference-scoring-scheme/));
 - B³ — Bagga & Baldwin 1998;
-- CEAF-e and CEAF-m — Luo 2005 (`papers/l/lu/luo-2005-coreference-resolution-performance-metrics`). The best entity assignment is Kuhn–Munkres, separately per connected component of the overlap;
+- CEAF-e and CEAF-m — Luo 2005 ([luo-2005-coreference-resolution-performance-metrics](https://research.elamur.ai/free/en/papers/luo-2005-coreference-resolution-performance-metrics/)). The best entity assignment is Kuhn–Munkres, separately per connected component of the overlap;
 - CoNLL F1 — mean of MUC, B³ and CEAF-e.
 
-**Formulas** for predicted mentions without manipulations — Pradhan et al. 2014 (`papers/p/pr/pradhan-2014-scoring-coreference-partitions-predicted-mentions`).
+**Formulas** for predicted mentions without manipulations — Pradhan et al. 2014 ([pradhan-2014-scoring-coreference-partitions-predicted-mentions](https://research.elamur.ai/free/en/papers/pradhan-2014-scoring-coreference-partitions-predicted-mentions/)).
 
-**Mention matching** — by head, as in the main CRAC 2023–2026 metric (`papers/n/no/novak-2025-findings-fourth-shared-task-multilingual`, `papers/n/no/novak-2026-findings-fifth-shared-task-multilingual`):
-- the span head as in udapi `corefud.MoveHead` (`papers/p/po/popel-2017-udapi-universal-api-universal-dependencies`): the word whose head is outside the span; among several — the highest, then non-punctuation, then the first;
+**Mention matching** — by head, as in the main CRAC 2023–2026 metric ([novak-2025-findings-fourth-shared-task-multilingual](https://research.elamur.ai/free/en/papers/novak-2025-findings-fourth-shared-task-multilingual/), [novak-2026-findings-fifth-shared-task-multilingual](https://research.elamur.ai/free/en/papers/novak-2026-findings-fifth-shared-task-multilingual/)):
+- the span head as in udapi `corefud.MoveHead` ([popel-2017-udapi-universal-api-universal-dependencies](https://research.elamur.ai/free/en/papers/popel-2017-udapi-universal-api-universal-dependencies/)): the word whose head is outside the span; among several — the highest, then non-punctuation, then the first;
 - several mentions with one head are told apart by span: first exact, then the largest overlap;
 - exact span is also available for reference.
 
@@ -152,14 +231,14 @@ The resolver does not see the gold standard: test `resolver_ignores_gold_entitie
   - everything separate: MUC 0, B³ precision 1, CoNLL < 0.6;
 - **Kuhn–Munkres versus brute force** over permutations;
 - **before every evaluation — a self-check:** the Pradhan example and "gold against itself = 100" (fail-fast);
-- **`coref score gold output`** (from files) gives the same numbers as the in-memory `eval`. Verified on dev.
+- **`coref score gold output`** (from files) gives the same numbers as the in-memory `eval`.
 
 ## Data and licenses
 
 **GUM** (UD 2.18, `UD_English-GUM`) — CC BY-NC-SA:
 - evaluation and research only;
 - rules and thresholds were tuned on dev only;
-- test was run once, after freezing the code (`runs/coref-2026-09-26/test/RUN-ONCE.txt`);
+- test is run once, after freezing the code;
 - no lexicons from GUM.
 
 **SLM trees** — `en annotate $MOVA_DATA/en/models/en.bin` on gold tokens (EWT + ESLSpok, CC BY-SA 4.0). Trees are supplied with `--trees`:
@@ -174,137 +253,9 @@ The resolver does not see the gold standard: test `resolver_ignores_gold_entitie
 - speech verbs;
 - idioms.
 
-No third-party lexicons. What is missing is listed under "What next".
+**The noun lexicon** (`$MOVA_DATA/coref/gender.tsv`, not in git) is counted by Mova from its own parses of public-domain books and its own lessons; never from GUM, and the Wikipedia table only for an internal comparison.
 
-## Results — GUM test (UD 2.18: 30 documents, 7,955 mentions, 4,330 entities, of which 1,104 non-singleton)
-
-Matching by head. The row "sieve (12)" is the default system. Reports:
-- `$MOVA_DATA/runs/coref-2026-09-26/test/en_gum-ud-test.{gold,slm}-trees.md`;
-- CoNLL-U output and errors are in the same place.
-
-### CoNLL F1 (MUC / B³ / CEAF-e — F1)
-
-| system | gold trees, with singletons | gold, without singletons | SLM trees, with singletons | SLM, without singletons |
-|---|---|---|---|---|
-| everything separate | 40.17 (0 / 63.65 / 56.85) | 0.00 | 38.81 | 0.00 |
-| exact string match only | 53.07 (29.98 / 67.32 / 61.90) | 27.88 (29.98 / 23.23 / 30.42) | 49.89 | 24.42 |
-| pronoun → nearest agreeing | 57.73 (40.39 / 68.32 / 64.46) | 32.67 (40.39 / 31.87 / 25.74) | 55.80 | 32.08 |
-| sieve (all 14) | 72.22 | 59.10 | 67.54 | 53.83 |
-| **sieve (12)** | **73.04** (69.18 / 75.26 / 74.68) | **60.31** (69.24 / 58.79 / 52.89) | **67.90** (63.36 / 70.68 / 69.65) | **54.03** (63.42 / 52.87 / 45.81) |
-| sieve (12), exact span | 68.82 | 58.33 | 57.81 | 49.73 |
-
-**Mention detection (F1, by head):**
-- with singletons: 90.7 on gold trees, 87.6 on SLM trees;
-- without singletons: 77.6 and 73.7.
-
-**Dev, for comparison** (tuned on it):
-- gold trees: 75.18 / 64.30;
-- SLM trees: 69.70 / 57.57.
-
-### 3rd-person pronouns by form (test, sieve (12))
-
-Precision is the share of linked pronouns whose antecedent is in the same gold chain.
-
-| form | linked | precision % (gold trees) | precision % (SLM trees) | baseline "nearest", % (gold) |
-|---|---|---|---|---|
-| it | 194 | 41.2 | 30.1 | 29.9 |
-| he | 125 | 81.6 | 80.8 | 37.8 |
-| they | 93 | 50.5 | 47.9 | 52.1 |
-| his | 89 | 91.0 | 89.9 | 42.7 |
-| them | 55 | 67.3 | 64.3 | 51.8 |
-| their | 51 | 68.6 | 71.2 | 62.7 |
-| she | 37 | 54.1 | 59.0 | 33.3 |
-| its | 36 | 47.2 | 33.3 | 30.6 |
-| her | 23 | 65.2 | 75.0 | 33.3 |
-| him | 24 | 62.5 | 73.9 | 25.0 |
-| himself / themselves / itself | 6 / 6 / 4 | 100 / 100 / 75 | 100 / 67 / 25 | 50 / 100 / 50 |
-| **total** | 743 | **62.4** | **57.7** | **40.4** |
-
-### Precision and contribution of each sieve (test, gold trees; contribution is cumulative, CoNLL F1 without singletons)
-
-| sieve | links | precision % | Δ CoNLL without singletons (gold / SLM) |
-|---|---|---|---|
-| speaker | 771 | 90.7 | +21.88 / +21.99 |
-| exact | 964 | 69.6 | +20.94 / +18.07 |
-| relaxed | 24 | 54.2 | +0.26 / +0.28 |
-| appos | 89 | 75.3 (SLM: 16.7) | +2.33 / +0.18 |
-| pred | 157 | 58.0 | +2.33 / +2.03 |
-| relpron | 150 | n/a (not annotated in GUM) | +0.14 / −0.00 |
-| acronym | 2 | 100 | +0.03 / +0.01 |
-| reflexive | 15 | 73.3 | +0.15 / +0.07 |
-| strict_a | 391 | 54.7 | +5.18 / +4.55 |
-| strict_b | 1 | 100 | +0.05 / +0.11 |
-| strict_c (disabled) | 105 | 21.9 | −0.50 / +0.31 |
-| proper_head | 41 | 61.0 | +0.54 / +0.30 |
-| relaxed_head (disabled) | 54 | 3.7 | −0.62 / −0.43 |
-| pronoun | 758 | 59.5 | +6.38 / +6.36 |
-
-Sieve precision is the share of links where both mentions are in the gold standard (by head) and in the same chain. It is computed on the full sieve (all 14), so that the disabled ones are visible too.
-
-### What dev decided (gold trees, CoNLL F1 with / without singletons)
-
-**Hobbs order versus pure recency:**
-- pronoun precision 64.2% versus 55.4%;
-- CoNLL 73.43 / 63.34 versus 72.23 / 61.33.
-
-**Animacy preference for he/she:** +0.8 / +1.0. **Pronoun window** of 1–4 sentences — the same (±0.1); kept 3 (Lee 2013).
-
-**Mentions:**
-- **spans:** a whitelist of nominal dependents, `case` outside the span, appos separate — exact span 59.6% → 95.3%;
-- **compound:** PROPN only gives +0.6 / +0.9; all NOUN-compounds would add another +0.1 / +0.3, but `exact` precision drops 79.7% → 73.6%;
-- **a singleton coordination group** is not output: +1.1 with singletons, 0 without.
-
-**Sieves:**
-- exact without indefinites — worse (−0.4 / −0.9); kept as in Lee;
-- pred without it/this subjects — worse (−0.5 / −0.9); kept;
-- relaxed with only relative clauses after the head — +0.14 / +0.14, precision 45% → 53%;
-- strict_c and relaxed_head disabled: precision 31% and 24%, contribution ≤ 0.
-
-### CRAC on GUM — for reference
-
-**CRAC 2025**, table 8 in `papers/n/no/novak-2025-findings-fourth-shared-task-multilingual/text.md` — en_gum, CoNLL F1, by head, without singletons:
-
-| system | CoNLL F1 |
-|---|---|
-| CorPipeEnsemble | 76.1 |
-| CorPipeSingle | 75.2 |
-| LLM-UWB | 73.6 |
-| LLM-NUST-FewShot | 69.8 |
-| Stanza | 69.0 |
-| BASELINE (mBERT end-to-end) | 61.7 |
-
-**CRAC 2026** (`novak-2026-findings-fifth-shared-task-multilingual`, table 7): the row with CorPipeEnsemble 76.1, Stanza 73.0 and baselines 62.4 is most likely en_gum. The row label is lost in the extracted text, so the attribution is not certain.
-
-**The settings differ — compare only roughly:**
-- they use CorefUD 1.3 / 1.4 (GUM v11) and a reduced mini-test; we use the full UD 2.18 test;
-- they use UDPipe or their own trees; we use gold trees (ceiling) or SLM trees;
-- they use trained neural networks; we use deterministic rules without training.
-
-Our 60.3 on gold trees and 54.0 on SLM trees are below the CRAC baseline (61.7). But the system is transparent, runs the whole test in 13 s on one core and was not trained on GUM.
-
-## Three main error types (test)
-
-1. **"it" / "its" → wrong noun** (precision 41%, on SLM trees 30%). Among the causes:
-   - "it" often refers to an event or a statement, and we do not build event mentions (VERB head);
-   - a semantic class of nouns is missing.
-
-   Examples:
-   - `GUM_academic_eegimaa-2`: «its» → «This section»;
-   - `GUM_bio_dvorak-11`: «it» → «1874»;
-   - `GUM_conversation_lambada-21`: «it» → «this person» — without a lexicon "person" is not known to be animate.
-
-2. **Same text or head, different entities** (`exact` 69.6%, `strict_a` 54.7%). These are generic and repeated groups, different persons with one head, part versus whole:
-   - «some politicians» ~ «some politicians», «those days» ~ «those days»;
-   - «[George W.] Bush» ~ «[George H. W.] Bush»;
-   - «Senegal» ~ «Southern Senegal»;
-   - «the first shuttle mission» ~ «the first space shuttle mission».
-
-3. **Wrong relations in SLM trees.** The parser attaches reference numbers "[1–3]" as appos to nouns: `GUM_academic_discrimination-4`, «1 - 3» ~ «much social science research». Because of this:
-   - `appos` drops from 75% to 17%;
-   - `pronoun` — from 59.5% to 54.6%;
-   - CoNLL without singletons loses 6.3.
-
-   This also covers name gender without a lexicon: «she» → «that» (`GUM_conversation_lambada-57`) — a demonstrative pronoun without gender wins in Hobbs order.
+No third-party lexicons. What is missing is listed under "Limits".
 
 ## How to run
 
@@ -320,30 +271,27 @@ G=$MOVA_DATA/en/ud/ud-treebanks-v2.18/UD_English-GUM
 ../target/release/coref mentions <gold.conllu> [--trees f]              # mention detection against gold
 ```
 
+`coref eval … --label <name>` names the input in the report header (default «gold trees» or «SLM trees»).
+
 **Dev experiment switches** — environment variables; the defaults are what dev selected:
 - `COREF_MD` (mentions): `compound`, `nopcompound`, `appos-in`, `advmod`, `desc`, `adv`, `noidiom`;
-- `COREF_X` (sieves): `pron-recency`, `win=N`, `itwin=N`, `no-anim-pref`, `exact-noindef`, `pred-noit`, `relaxed-any`, `quant-ante`, `indef-ante`, `coord-sgl`.
+- `COREF_X` (sieves): `pron-recency`, `win=N`, `itwin=N`, `no-anim-pref`, `exact-noindef`, `pred-noit`, `relaxed-any`, `quant-ante`, `indef-ante`, `coord-sgl`;
+- `PRAG_OFF` (steps that are on, the same switch as the frame reader's): `it-class`, `it-pleonastic`, `it-event`, `it-ev-verb`, `it-ev-pred`, `it-ev-because`, `dem-deixis`, `coref-notional`.
 
-**Speed:** the whole test (30 documents, 28k words) — all systems and tables in 13 s on one core.
+## Limits
 
-## What next (needed)
-
-- **A noun gender and animacy lexicon** with a commercial license: person, customer, doctor — animate; section, table — not. Without it "it" / "she" make the most errors.
-- **Semantic classes of mentions** (person, place, organization, time…) — for "it" and for `relaxed_head` (in Lee — the NER type).
-- **Event mentions and discourse deixis** (VERB head; "this" / "it" → clause). In GUM `link=disc` — 113 on dev.
-- **Demonyms** (Israel ~ Israeli) — a list with a commercial license. Lee's `demonym` sieve was not implemented.
-- **Cleanly licensed data for a trained model**, to move from rules to candidate ranking:
-  - GUM — NC;
-  - OntoNotes — LDC;
-  - candidates — LitBank, FantasyCoref, GAP; licenses to be checked.
-
-  The scorer and `link_stats` are already ready for such training.
-- **Salience weights of Lappin & Leass 1994** (`papers/l/la/lappin-1994-algorithm-pronominal-anaphora-resolution`) as a replacement for or addition to Hobbs order. Parameters from the paper:
+- **The noun lexicon is counted, not checked.** Parser errors become counts: an adjective tagged NOUN after a copula («he was content») gets person counts, and a relative clause attached to the wrong noun gives a wrong who/which. Animals and ships stay mixed and unknown. It cannot help «it» that refers to an event or a statement, the commonest «it» error, and a demonstrative without gender can still win in Hobbs order.
+- **The lexicon's licence.** The released lexicon, counted from public-domain tales and the school's lessons, is distributed separately under CC BY-SA 4.0 (in the model archive, not in the repository); the Wikipedia-derived comparison table stays internal and is not shipped. See `licence/DATA.md`.
+- **Same text or head, different entities.** Generic and repeated groups («some politicians» ~ «some politicians»), different persons with one head («[George W.] Bush» ~ «[George H. W.] Bush») and part versus whole («Senegal» ~ «Southern Senegal») are linked by `exact` and `strict_a`.
+- **Parser errors carry over on SLM trees.** The parser can attach reference numbers "[1–3]" as appos to nouns, which misleads `appos` and `pronoun`.
+- **No semantic classes of mentions** (person, place, organization, time…) for "it" and for `relaxed_head` (in Lee — the NER type).
+- **Discourse deixis is weak.** The `deixis` sieve exists but is off: the right clause is rarely the nearest one.
+- **No demonyms** (Israel ~ Israeli): Lee's `demonym` sieve is not implemented, and a list with a commercial licence is missing.
+- **Rules, not a trained model.** Moving to candidate ranking needs cleanly licensed data: GUM is NC, OntoNotes is LDC; LitBank, FantasyCoref and GAP are candidates with licences to check. The scorer and `link_stats` are ready for such training.
+- **Salience weights of Lappin & Leass 1994** ([lappin-1994-algorithm-pronominal-anaphora-resolution](https://research.elamur.ai/free/en/papers/lappin-1994-algorithm-pronominal-anaphora-resolution/)) are not tried as a replacement for or addition to Hobbs order. Parameters from the paper:
   - weights: recency 100, subject 80, existential 70, object 50, indirect object and oblique 40, head 80, non-adverbial 50;
   - halving per sentence;
   - parallelism +35, cataphora −175.
-
-  Not tried.
-- **Demonstrative pronoun sieves** (`demonstratives` in `Config`, disabled) and cataphora.
-- **Preposed acl in the span** ("Born in England, Norton") — in GUM the mention is only "Norton".
-- **A second parsing pass with memory** (`docs/context.md`, "Multi-pass parsing"): the clusters exist already, but the tree is not re-parsed yet.
+- **Demonstrative pronoun sieves** (`demonstratives` in `Config`) are disabled; no cataphora.
+- **Preposed acl in the span** ("Born in England, Norton"): in GUM the mention is only "Norton".
+- **No second parsing pass with memory** (`docs/context.md`, "Multi-pass parsing"): the clusters exist, but the tree is not re-parsed.

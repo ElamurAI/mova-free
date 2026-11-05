@@ -622,3 +622,79 @@ pub fn show(f: &QFrame) -> String {
     }
     s
 }
+
+#[cfg(test)]
+mod wave7_qframe {
+    use super::*;
+    use en::annotate::Word;
+    fn word(form: &str, head: usize, rel: Rel, upos: UPos) -> Word {
+        Word { form: form.into(), lemma: form.into(), head, rel, upos, tag: PTag::NN, feats: Default::default() }
+    }
+    fn make(wh: Wh, focus: Focus, lemma: &str, words: &[&str]) -> QFrame {
+        frame("fixture",wh,Clause { lemma:lemma.into(),..Default::default() },focus,false,false,None,None,None,&words.iter().map(|s|s.to_string()).collect::<Vec<_>>())
+    }
+    #[test]
+    fn kind_fibers_and_priority() {
+        let whs=[Wh::Who,Wh::Whose,Wh::What,Wh::Where,Wh::When,Wh::Why,Wh::How,Wh::HowMany,Wh::None];
+        let fs=[Focus::Subj,Focus::Obj,Focus::Attr,Focus::Adv,Focus::None];
+        let table=[
+            [QKind::WhoSubj,QKind::WhoObj,QKind::WhoIs,QKind::WhoObj,QKind::WhoObj],
+            [QKind::WhoSubj,QKind::WhoObj,QKind::WhoIs,QKind::WhoObj,QKind::WhoObj],
+            [QKind::WhatSubj,QKind::Obj,QKind::Describe,QKind::Obj,QKind::Obj],
+            [QKind::Where;5],[QKind::When;5],[QKind::Why;5],[QKind::How;5],[QKind::Num;5],[QKind::Generic;5]];
+        let mut obj_fiber=vec![];
+        for (i,w) in whs.iter().enumerate() { for (j,f) in fs.iter().enumerate() {
+            let result=make(*w,f.clone(),"walk",&[]);
+            assert_eq!(result.kind,table[i][j]);
+            if result.kind==QKind::WhoObj { obj_fiber.push((i,j)); }
+            for candidate in [QKind::WhoObj,QKind::Obj,QKind::Generic] {
+                assert_eq!(result.kind!=candidate,table[i][j]!=candidate);
+            }
+        }}
+        assert_eq!(obj_fiber,vec![(0,1),(0,3),(0,4),(1,1),(1,3),(1,4)]);
+        assert_eq!(make(Wh::Why,Focus::Obj,"feel",&["special"]).kind,QKind::Why);
+        assert_eq!(make(Wh::What,Focus::Obj,"feel",&["special"]).kind,QKind::Feel);
+        assert_eq!(make(Wh::What,Focus::Subj,"feel",&["special"]).kind,QKind::Describe);
+        for (l,k) in [("say",QKind::Say),("want",QKind::Want),("think",QKind::Think),("see",QKind::Obj),("do",QKind::Do),("happen",QKind::Happen)] {
+            assert_eq!(make(Wh::What,Focus::Obj,l,&[]).kind,k);
+        }
+    }
+    #[test]
+    fn clause_roles_ties_and_invalid_predicate() {
+        let t=Tree::of_words(vec![
+            word("give",0,Rel::Root,UPos::VERB),word("alice",1,Rel::Nsubj,UPos::PROPN),
+            word("bob",1,Rel::Nsubj,UPos::PROPN),word("gift",1,Rel::Obj,UPos::NOUN),
+            word("coin",1,Rel::Obj,UPos::NOUN),word("king",1,Rel::Obl,UPos::NOUN),
+            word("to",6,Rel::Case,UPos::ADP),word("never",1,Rel::Advmod,UPos::ADV)]);
+        let c=decl_clause(t.clone(),None);
+        assert_eq!(c.pred,Some(0)); assert_eq!(c.subj,vec!["alice"]); assert_eq!(c.obj,vec!["gift"]);
+        assert_eq!(c.obl,vec![("to".to_string(),vec!["king".to_string()])]); assert!(c.neg);
+        assert_eq!(c.content,vec!["give","bob","gift","coin","king"]);
+        let invalid=decl_clause(t,Some(99)); assert_eq!(invalid.pred,None); assert!(invalid.content.is_empty());
+        assert_eq!(decl_clause(Tree::default(),None).pred,None);
+    }
+    #[test]
+    fn causative_rewrite_and_suffix_witnesses() {
+        let t=Tree::of_words(vec![word("make",0,Rel::Root,UPos::VERB),word("child",1,Rel::Obj,UPos::NOUN),word("feel",1,Rel::Xcomp,UPos::VERB)]);
+        let mut c=decl_clause(t,Some(0)); c.neg=true;
+        let f=frame("fixture",Wh::What,c,Focus::Subj,true,true,None,None,None,&[]);
+        assert_eq!(f.kind,QKind::Feel); assert_eq!(f.main.lemma,"feel"); assert_eq!(f.main.subj,vec!["child"]);
+        assert!(f.main.neg && f.fut); assert!(!f.passive); assert_eq!(f.focus,Focus::Adv);
+        let f=make(Wh::What,Focus::Obj,"happen",&["to","alice","to","bob","about","rain"]);
+        assert_eq!(f.target,vec!["alice","to","bob","about","rain"]);
+        assert_eq!(f.about,vec!["rain"]); assert_eq!(f.kind,QKind::HappenTo);
+    }
+    #[test]
+    fn predicate_projection_and_display() {
+        for l in ["","be","do","have","walk"] {
+            let c=Clause { lemma:l.into(),xcomp:vec!["run".into(),"run".into(),"jump".into()],..Default::default() };
+            let expected=if l=="walk" { vec!["walk","run","jump"] } else { vec!["run","jump"] };
+            assert_eq!(c.preds(),expected);
+        }
+        assert_eq!(Clause { lemma:"be".into(),..Default::default() }.preds(),vec!["be"]);
+        assert_eq!(wh_of("whom"),Some(Wh::Who)); assert_eq!(wh_of("Who"),None);
+        assert_eq!(aux_want("did"),Some(&[PTag::VB][..])); assert_eq!(aux_want("had"),Some(&[PTag::VBN][..])); assert_eq!(aux_want("xyz"),None);
+        let f=make(Wh::Where,Focus::Adv,"walk",&[]);
+        assert_eq!(show(&f),"where Adv | pred walk | subj «» | obj «» | c «»");
+    }
+}

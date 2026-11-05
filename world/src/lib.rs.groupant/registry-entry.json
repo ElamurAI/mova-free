@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "Selected wave28_dialogue inline tests; lib compile only",
+    "Paired source syntax generation"
+  ],
+  "children": [],
+  "cost": "O(number of module declarations) syntax; transitive compile/link costs delegated.",
+  "description": "Module declarations expose world dialogue, nerves, ideas and VMM; induce_gpu exists only under gpu and test modules only under cfg(test).",
+  "forward": [
+    "Module declarations expose world dialogue, nerves, ideas and VMM; induce_gpu exists only under gpu and test modules only under cfg(test)."
+  ],
+  "id": "world-lib",
+  "inverse": [
+    "Compatible builds share the same enabled feature set and resolved sibling modules; binary behavior cannot recover which unused exports were linked."
+  ],
+  "limitations": [
+    "Module representation only; no fabricated runtime test or mutant.",
+    "No executable surrogate, semantic proof, live teacher, corpus, GPU or held-out execution"
+  ],
+  "source": "world/src/lib.rs",
+  "state": "Compilation maps module names to sibling sources; this file performs no runtime dispatch."
+}

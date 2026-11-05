@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p world --lib primers::wave11_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "Inline processing linear text scans plus allocations; paged extraction can scan every section/problem per answer; reachability O(U^3) time and O(U^2) intermediates for U distinct parsed numbers. No runtime improvement claimed.",
+  "description": "Extract numbered OCR arithmetic stories and whole answers, associate page/chapter keys, and optionally filter by a bounded two-operation numeric reachability heuristic. All execution evidence uses supplied strings.",
+  "forward": [
+    "Extract numbered OCR arithmetic stories and whole answers, associate page/chapter keys, and optionally filter by a bounded two-operation numeric reachability heuristic. All execution evidence uses supplied strings.",
+    "main.rs dispatches main_args; extraction reads sorted file paths, then problems -> answer/story helpers -> reachable -> JSON. Paged and OpenStax extraction attach answers by keys before story filtering. Native fixtures exercise string helpers and numeric normalization only."
+  ],
+  "id": "world-primers",
+  "inverse": [
+    "Accepted records preserve source book tag and observed numeric answer under the scoped parser. Acceptance is not proof of correct OCR, story semantics, mathematical solvability or external source provenance.",
+    "All OCR strings and book/section metadata whose selected records and reachability checks yield an observed tuple. Punctuation, ignored lines and book association ambiguities prevent a unique original."
+  ],
+  "limitations": [
+    "Finite synthetic fixtures and partial syntax only; live parser, teacher, external books, heldout and active school state excluded.",
+    "No general semantic AST, proof, speedup or approximation-error guarantee.",
+    "See local fragments for duplicate IDs, malformed metadata, numeric grammar and serialization precision boundaries."
+  ],
+  "source": "world/src/primers.rs",
+  "state": "Accepted records preserve source book tag and observed numeric answer under the scoped parser. Acceptance is not proof of correct OCR, story semantics, mathematical solvability or external source provenance."
+}

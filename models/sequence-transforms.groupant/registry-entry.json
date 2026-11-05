@@ -1,0 +1,35 @@
+{
+  "checks": [
+    "14 source-local tests; five compiled mutation controls",
+    "composition_wave25: bpe_codec_model_bound_join, patience_myers_edit_observations_join",
+    "Full library: 782 checks twice debug and twice release; see model.md"
+  ],
+  "children": [
+    "algorithm-myers-bitvector",
+    "algorithm-myers-bitvector-tests",
+    "algorithm-byte-pair-encoding",
+    "algorithm-byte-pair-encoding-tests",
+    "algorithm-lz77",
+    "algorithm-lz77-tests",
+    "algorithm-lzw",
+    "algorithm-lzw-tests",
+    "algorithm-patience-diff",
+    "algorithm-patience-diff-tests"
+  ],
+  "cost": "Myers O(pattern+text+256) time/constant storage. BPE training O(merges*n*log n), encoding O(merges*n), decoding O(model+tokens+output). LZ77 greedy encoding O(n*window*max_match), decoding O(tokens+output). LZW uses phrase-vector ordered maps with O(n*phrase_length*log4096) encoding and bounded dictionary phrase storage; decoding includes phrase copying. Patience conservative O(n³) time/O(n²) stack/storage, apply O(source+edits+output). No compression ratio or speed claim.",
+  "description": "Compute exact single-word global byte Levenshtein distance, train/apply an ordered byte-pair model, encode/decode bounded LZ77/LZW streams, and build/apply deterministic patience patches. Lossless reconstruction, token identity, edit count and distance are separately tagged.",
+  "forward": [
+    "Compute exact single-word global byte Levenshtein distance, train/apply an ordered byte-pair model, encode/decode bounded LZ77/LZW streams, and build/apply deterministic patience patches. Lossless reconstruction, token identity, edit count and distance are separately tagged.",
+    "The five leaves are std-only; BPE/LZW use BTreeMap but no intermodule production calls. Codec composition takes decoded bytes or an explicit reversible u16 serialization, never an unchecked cast of token IDs to bytes. Patience apply reconstructs a target whose byte distance can be independently checked by Myers only when its chosen pattern fits64."
+  ],
+  "id": "sequence-transforms",
+  "inverse": [
+    "Exclude a Myers value different from global unit-cost Levenshtein distance; canonical codec round trips changing bytes; invalid token/code/match accepted; decoded output exceeding cap; or a patch that does not fully consume matching source bytes. Exclude model-free BPE decoding, interpreting u16 IDs as bytes by truncation, and claiming patience edit count equals Levenshtein distance.",
+    "Distance0 admits every equal byte pair and does not recover inputs. BPE literals[97,98] and merged[256] both decode ab under a model whose first merge is(97,98). LZ77 aaaa admits four literals or literal(a),match(1,3); LZW AAA admits[65,65,65] or[65,256]. A full patch's Equal/Delete projection recovers source and Equal/Insert projection recovers target, but target alone admits many sources/scripts."
+  ],
+  "limitations": [
+    "All inputs are bytes, not Unicode scalar sequences or lines. Allocation may panic/abort except Myers allocation-free path. Decode admits valid noncanonical streams, so decode/encode is not a universal stream identity. Output caps and model/config identity must be propagated through every join. No callbacks or executable percentage profiles.",
+    "Finite tests and source-derived models are not a universal proof."
+  ],
+  "state": "Decoding canonical encodings recovers original bytes on admitted bounds; malformed streams and output-budget failures remain errors. BPE tokens carry their exact ordered model; LZW freezes dictionary at4096 and has no packing/clear/end codes. Patience patches consume the source exactly and reconstruct the target without a minimality promise."
+}

@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms gaussian_elimination_modular::tests"
+  ],
+  "children": [],
+  "cost": "RREF over fixed prime998244353. First available nonzero row pivot; normalize and eliminate all other rows. Inconsistent zero coefficient row=>None; otherwise free variables0 yield particular, each free variable1 yields one nullspace vector. Explicit variable count handles no equations. rows/variables<=128. O(rows*(vars+1)*(min(rows,vars)+1)+vars²) work O(rows*(vars+1)+vars²) memory. Golub and Van Loan, Matrix Computations (4th ed.), Gaussian elimination; exact field adaptation.",
+  "description": "Original bounded algebra algorithm with independent finite checks",
+  "forward": [
+    "RREF over fixed prime998244353. First available nonzero row pivot; normalize and eliminate all other rows. Inconsistent zero coefficient row=>None; otherwise free variables0 yield particular, each free variable1 yields one nullspace vector. Explicit variable count handles no equations. rows/variables<=128. O(rows*(vars+1)*(min(rows,vars)+1)+vars²) work O(rows*(vars+1)+vars²) memory. Golub and Van Loan, Matrix Computations (4th ed.), Gaussian elimination; exact field adaptation."
+  ],
+  "id": "algorithm-gaussian-elimination-modular",
+  "inverse": [
+    "For accepted affine solution (v,N), Av!=b or any column vector u with Au!=0 is excluded; missing nullspace dimension n-rank(A) is excluded. None is excluded for a consistent system.",
+    "Observed (v,N) admits all matrices and rhs whose deterministic RREF selection yields that affine basis; multiplying a row and its rhs by nonzero c preserves the result. None has many inconsistent preimages, e.g. 0*x=1 and 0*x=2."
+  ],
+  "limitations": [
+    "Partial syntax; finite tests do not prove universal correctness; no allocator failure injection; no executable surrogate"
+  ],
+  "source": "algorithms/src/gaussian_elimination_modular/mod.rs",
+  "state": "Deterministic values and explicit validation"
+}

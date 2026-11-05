@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "Two debug and two release runs with identical normalized outcomes",
+    "Named compiled mutation rejected by assertion; exact source restoration",
+    "Source syntax projected twice identically"
+  ],
+  "cost": "Bounded finite oracle work; concrete domains and costs in model.md",
+  "description": "Branching Vec snapshots and atomic persistence checks",
+  "forward": [
+    "See model.md forward and invariant"
+  ],
+  "id": "algorithm-persistent-segment-tree-tests",
+  "inverse": [
+    "Behavior complement and compatible-input reconstruction are distinct relations in model.md"
+  ],
+  "limitations": [
+    "Finite tests are not all-input proof",
+    "Allocation failure outside Result/Option contract",
+    "Partial syntax is not semantic AST",
+    "No certified executable numerical approximant"
+  ],
+  "source": "algorithms/src/persistent_segment_tree/tests.rs",
+  "state": "Immutable node arena and historical root list"
+}

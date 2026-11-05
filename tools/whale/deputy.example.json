@@ -1,0 +1,74 @@
+{
+  "model": "/ABSOLUTE/PATH/en.bin",
+  "model_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "ledger": "/ABSOLUTE/PATH/whale-english/ledger",
+  "followup_queue": "/ABSOLUTE/PATH/whale-english/review",
+  "capabilities": {
+    "describe": {
+      "handler": "whale",
+      "parameters": {"operation": "describe"},
+      "intent": {
+        "request_predicates": ["describe", "survey", "summarize", "review"],
+        "observations": ["describe", "survey", "summarize", "review"],
+        "entities": ["whale"],
+        "addressee": true
+      },
+      "slots": [{"name": "sources", "kinds": ["url", "id"], "min": 1, "max": 8}]
+    },
+    "count": {
+      "handler": "whale",
+      "parameters": {"operation": "count"},
+      "intent": {
+        "observes": true,
+        "request_predicates": ["count"],
+        "observations": ["many", "number", "count", "describe", "survey", "summarize", "review"],
+        "entities": ["whale"],
+        "addressee": true
+      }
+    },
+    "status": {
+      "handler": "whale",
+      "parameters": {"operation": "status"},
+      "intent": {
+        "observes": true,
+        "request_predicates": ["show", "tell", "report", "give"],
+        "observations": ["status", "progress", "state", "busy", "queue", "idle"],
+        "entities": ["whale"],
+        "addressee": true
+      },
+      "slots": [{"name": "source", "kinds": ["url", "id"], "min": 0, "max": 1}]
+    },
+    "show": {
+      "handler": "whale",
+      "parameters": {"operation": "show"},
+      "intent": {
+        "observes": true,
+        "request_predicates": ["show", "give", "read", "tell", "display", "print"],
+        "observations": ["description", "summary", "bundle", "write"],
+        "entities": ["whale"],
+        "addressee": true
+      },
+      "slots": [{"name": "source", "kinds": ["url", "id"], "min": 1, "max": 1}]
+    },
+    "pause": {
+      "handler": "whale",
+      "parameters": {"operation": "pause"},
+      "intent": {
+        "request_predicates": ["pause", "halt", "suspend"],
+        "observations": ["pause", "halt", "suspend"],
+        "entities": ["whale"],
+        "addressee": true
+      }
+    },
+    "resume": {
+      "handler": "whale",
+      "parameters": {"operation": "resume"},
+      "intent": {
+        "request_predicates": ["resume", "unpause", "continue"],
+        "observations": ["resume", "unpause", "continue"],
+        "entities": ["whale"],
+        "addressee": true
+      }
+    }
+  }
+}

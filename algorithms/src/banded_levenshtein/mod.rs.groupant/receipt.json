@@ -1,0 +1,68 @@
+{
+  "compiled_mutant": "Invert substitution comparison; unit_cost_boundaries_and_byte_semantics fails",
+  "date": "2026-10-30",
+  "evidence": [
+    {
+      "name": "check.log",
+      "sha256": "95f71963cf3ef73ed116ba167ff754f2332eec9b843a0984fdce82dfb05b1e0d"
+    },
+    {
+      "name": "clippy.log",
+      "sha256": "b3bc1add9e1d37a10ea0e105c717c93381825a79bb210eff35735bf10f70f1e5"
+    },
+    {
+      "name": "fmt.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "mutant-banded_levenshtein.log",
+      "sha256": "f4111d911e5223474d46b949e497c01efbec1ebfb136ed85dbe7bfa92f59206e"
+    },
+    {
+      "name": "groupants1.json",
+      "sha256": "b1d919ff1db48f41579d46c0afac98c66fc7559a4c67e8fa1390332e6db12e30"
+    },
+    {
+      "name": "groupants2.json",
+      "sha256": "b1d919ff1db48f41579d46c0afac98c66fc7559a4c67e8fa1390332e6db12e30"
+    },
+    {
+      "name": "changed.json",
+      "sha256": "137b6a21280988552c2e51bf80ffe8c10e90986318702878fca46eb05cc387f1"
+    },
+    {
+      "name": "banded_levenshtein-debug-1.log",
+      "sha256": "9240fd5b2a869889000cf6012e182bf96909799a76ee73bd3bf25197b324f083"
+    },
+    {
+      "name": "banded_levenshtein-debug-2.log",
+      "sha256": "210fe91e5cc4b50ff40ac7d1db45e560a02547f57e7f7d9fe899c01a9f670af3"
+    },
+    {
+      "name": "banded_levenshtein-release-1.log",
+      "sha256": "31cf60cc289d12a058d5c7cdc9b450b64dbf15c5940091ee0cacc5aeac0e2bd2"
+    },
+    {
+      "name": "banded_levenshtein-release-2.log",
+      "sha256": "0735e00596051cbbee0a195e876eea35fef00751cb60232d1900a0df7a71860e"
+    },
+    {
+      "name": "banded_levenshtein-mod.rs-syntax1.json",
+      "sha256": "d68d26e5a7303cd040cbaad8710509cfd9af3672f8dbd42144dcddfd1fa2768a"
+    },
+    {
+      "name": "banded_levenshtein-mod.rs-syntax2.json",
+      "sha256": "d68d26e5a7303cd040cbaad8710509cfd9af3672f8dbd42144dcddfd1fa2768a"
+    }
+  ],
+  "external_run": "$MOVA_DATA/runs/octopus-wave16-strings-2026-10-30",
+  "limitations": [
+    "Finite evidence not semantic proof",
+    "No performance or live service run"
+  ],
+  "native_tests_per_module": 4,
+  "repetitions": "twice debug and twice release; equal normalized names/results",
+  "source": "algorithms/src/banded_levenshtein/mod.rs",
+  "source_sha256": "b848d6edce86819e23f140bee8a37054ebb930e5d414a5bec1617c8c1f99b690",
+  "structure": "Four source syntax pairs and full-registry groupants pair identical; temporary parent scaffolds restored"
+}

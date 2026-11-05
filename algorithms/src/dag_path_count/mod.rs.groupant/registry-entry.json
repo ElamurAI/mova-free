@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms dag_path_count::tests"
+  ],
+  "children": [],
+  "cost": "O(E+V log(V+1)) time and O(V) auxiliary space from the reused heap-based topological_sort, plus O(V+E) checked DP. Output has V u128 values. Counts cannot wrap: checked_add returns an error at the first overflow. Unreachable components can have exponentially many internal paths without overflow because all propagated source counts there are zero.",
+  "description": "Reject an invalid source before inspecting edges. Run topological_sort on the entire graph: first invalid adjacency target precedes any cycle error. In a globally valid DAG set c[source]=1, then add c[u] once along each arc u->v with checked u128 addition. Count includes the empty path; unreachable vertices get zero. Overflow is the first failing (from,to) in smallest-available topological order and input adjacency order.",
+  "forward": [
+    "Reject an invalid source before inspecting edges. Run topological_sort on the entire graph: first invalid adjacency target precedes any cycle error. In a globally valid DAG set c[source]=1, then add c[u] once along each arc u->v with checked u128 addition. Count includes the empty path; unreachable vertices get zero. Overflow is the first failing (from,to) in smallest-available topological order and input adjacency order."
+  ],
+  "id": "algorithm-dag-path-count",
+  "inverse": [
+    "For domain D and Result space Y let R be the stated exact forward relation. The behavior complement is (D x Y) minus R, including wrong memberships/counts, malformed canonical outputs, wrong errors and wrong precedence. This is a specification complement; correspondence to source is partial and is not a proof.",
+    "For successful c and source s retain every DAG whose arc multiplicities satisfy c[v]=[v=s]+sum incoming c[u], within u128. Counts do not reconstruct edges; zero-count components are especially ambiguous. Error fibers retain inputs with the stated validation failure or first ordered overflowing addition."
+  ],
+  "limitations": [
+    "Finite checks do not prove unrestricted correctness.",
+    "Partial syntax has no macro expansion or semantic resolution.",
+    "Allocation failure and executable approximation profiles are outside this model."
+  ],
+  "source": "algorithms/src/dag_path_count/mod.rs",
+  "state": "Finite materialized ordered graphs and machine-sized indices, fixed input, successful allocation. Observations are returned Result values; allocator failure and wall-clock timing are outside the relation."
+}

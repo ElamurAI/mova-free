@@ -1,0 +1,233 @@
+{
+  "children": [
+    {
+      "id": "world-store-publication",
+      "path": "publication.groupant"
+    },
+    {
+      "id": "world-store-lookup",
+      "path": "lookup.groupant"
+    },
+    {
+      "id": "world-store-selection",
+      "path": "selection.groupant"
+    },
+    {
+      "id": "world-store-order",
+      "path": "order.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: model.md#tests distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "Let U be finite call/input/filesystem x return/final-filesystem observations; R is the source transition relation with dependencies fixed. A candidate inner bound of U minus R includes a successful records lookup returning ancestor payload bytes different from the nearest child's payload when that child dictionary contains the ID; a metadata-only stable set rewriting itself on unchanged load; and a successful ref_get returning leading/trailing whitespace. This bound excludes unknown I/O/crash schedules. Oracle: conflicting child/base fixture, byte-preserved stable load, whitespace reference.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: model.md#tests distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "R^-1(y)={x: R(x,y)} retains all input files, args, unobserved ancestors and prior overwritten reference bytes compatible with y. A returned tree constrains only the first matching dictionary on the version chain; a reference string determines trimmed content, not original whitespace. Oracle: distinct whitespace refs and distinct unused parents have the same observation.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: model.md#tests distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "model.md#tests",
+        "id": "publication",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "For successful update the actual write order is trees, dict, lemmas, append versions row, index_full, branch ref. build likewise appends versions before index. Contrary to nearby comments, a versions reader may see an unindexed version; only branch-ref publication is last. Oracle proposed: fail index creation and inspect the earlier versions row; not executed because update requires annotator.",
+        "path": "model.md",
+        "section": "publication",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "publication_order"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: model.md#tests distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "model.md#tests",
+        "id": "atomicity",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "write_atomic writes path.with_extension(tmp-PID) then renames it. On a single-writer same-filesystem POSIX success the pathname switches to completed bytes; neither file nor parent directory is fsynced. No power-loss durability or multi-file transaction follows. Same-process same-stem extensions share a temporary path. Oracle: replacement and rename failure fixture; concurrent collision remains untested.",
+        "path": "model.md",
+        "section": "atomicity",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "failure_boundary"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: model.md#tests distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "model.md#tests",
+        "id": "paths",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "ref name and set name are joined without normalization or confinement. Empty, slash-containing, absolute or parent-relative strings are not validated here. Model domain restricts names to one safe component; this is a caller obligation, not an enforced protection. Oracle proposed: inspect join results without writing outside scratch.",
+        "path": "model.md",
+        "section": "paths",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "admission_constraint"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: model.md#tests distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "model.md#tests",
+        "id": "layout",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "Meta uses 24 bytes, dictionary 16, token 8 and posting 5; integers are little-endian. len floors meta bytes/24; dictionary loops floor bytes/16, but nonmultiple token lengths can panic. Casts truncate sentence/head/lemma widths (lemma24). Decoder enum indexes can panic; tag alone falls back to NN. Oracle: records bytes and meta-tail fixture; enum limits remain inspected.",
+        "path": "model.md",
+        "section": "layout",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "serialization_projection"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: model.md#tests distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "model.md#tests",
+        "id": "snapshot",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "Store::open captures meta, versions and main once; dictionaries/file handles populate a mutex cache lazily. latest prefers any nonempty main ref even if absent from versions. New refs do not update an existing handle. open reads version rows before main: an append-only concurrent update can interleave these reads so old rows coexist with the new main, preventing parent fallback for an inherited ID. Lazy file opens introduce further snapshot limitations under overwrite. Oracle: old/new handle ref comparison executed; interleaved-open failure source-derived, not executed.",
+        "path": "model.md",
+        "section": "snapshot",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "state_projection"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: model.md#tests distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "model.md#tests",
+        "id": "delta-identity",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "The repaired identity gate compares token count, UPOS, relation, head, tag and parent-resolved normalized lemma. Forms/feats remain outside the stored projection. Historical structural-only equality missed lemma/tag differences; that information loss is a rejected baseline. Native helper/decoder fixtures with independent test packing establish bounded correspondence; full update still depends on successful reads, table extension, annotation and publication.",
+        "path": "model.md",
+        "section": "delta-identity",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "information_loss"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: model.md#tests distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "model.md#tests",
+        "id": "set-carry",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "Current/stable stamps retain parsed rows. Stale sampled or prefix queries recompute full selection; order stamps refresh on order/base mismatch. Only eligible pointwise ancestor queries merge (old minus C) union (select(new) intersect C), sorted and unique. Merge equality with fresh membership holds iff old minus C equals fresh minus C. The historical sampled mismatch is now a regression expecting [2]. The identity repair now detects normalized lemma/tag differences; carry completeness additionally requires successful reads, complete deltas and inherited lemma-ID meaning preservation. Native synthetic fixtures and abstract closure laws do not verify whole update.",
+        "path": "model.md",
+        "section": "set-carry",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "membership_transfer"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: model.md#tests distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "model.md#tests",
+        "id": "query-order",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "Terms apply left to right. Feature and book filters retain candidate order; sample chooses from the current candidates then sorts; prefix replaces order with global block order intersected with current candidates. sample and filter generally do not commute. The documented book<N has no metadata implementation and a bare < term fails operator parsing. Oracle: sample=1 versus later book filter.",
+        "path": "model.md",
+        "section": "query-order",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "noncommutative_composition"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: model.md#tests distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "model.md#tests",
+        "id": "ordering-key",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "order key hashes sentence count, books.tsv length, first version and UTC day; size is absent. A valid cached order ignores the new size argument; equal key does not imply equal corpus content. Prefix takes whole blocks until ceil(n*pct/100) is reached, so may overshoot. Oracle: size1 then size400 and prefix-one-percent fixture.",
+        "path": "model.md",
+        "section": "ordering-key",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "cache_identity"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: model.md#tests distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "model.md#tests",
+        "id": "parallel-build",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "Book output is drained in book index order, but lemma IDs are allocated at first arrival under a mutex and limit admission checks a shared count once per book. Parallel scheduling can alter lemma bytes and admitted books; limit can overshoot by a whole book or concurrent books. Worker flush errors are discarded. No unconditional deterministic-build or strict cap claim. Oracle proposed: controlled scheduler and injected sink failure.",
+        "path": "model.md",
+        "section": "parallel-build",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "schedule_dependence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "id": "world-store",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../store.rs",
+    "sha256": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9"
+  },
+  "status": "partial_source_derived_instance"
+}

@@ -1,21 +1,23 @@
 # Execution modes: CPU only and GPU enhanced
 
-The rule since 2026-10-15: Mova always has two modes.
+This page describes Mova's two execution modes, how to build and run each, what every GPU stage does and how it is checked against the CPU, and the reference switches that select the exact path.
 
-- **CPU only** is the default. It builds without CUDA, runs anywhere, and is exact. This is the reference.
-- **GPU enhanced** needs a build with `--features gpu` and `MOVA_EXEC=gpu` at run time. Batch stages run on the GPU (RTX 4000 SFF Ada, 20 GB). This mode is for executing pipelines, not for training.
+## The two modes
+
+- **CPU only** is the default. It builds without CUDA, runs anywhere, and is exact. It is the reference.
+- **GPU enhanced** needs a build with `--features gpu` and `MOVA_EXEC=gpu` at run time. Batch stages run on a CUDA GPU. The mode is for executing pipelines; GPU training is configured separately (see [training.md](training.md)).
 
 Each GPU stage is one of three kinds:
 
 | kind | what it means | gate |
 |---|---|---|
 | **exact** | the same result as on the CPU | byte-identical output on a full run |
-| **approximant** | a GPU model stands in for a CPU one (e.g. the GPU parser for the perceptron) | agreement and task score measured against the CPU mode, and reported |
-| **hybrid** | the GPU does the bulk and the CPU does the rest (tokens, lemmas, decoding), in threads | as for its GPU part |
+| **approximant** | a GPU model or kernel stands in for a CPU one | agreement and task score measured against the CPU mode, and reported |
+| **hybrid** | the GPU does the bulk and the CPU threads do the rest (tokens, lemmas, decoding) | as for its GPU part |
 
-Approximants fit tasks that tolerate small differences: bulk runs, training pipelines (drafts, silver data), and debugging. Releases and measured claims are made in CPU mode, or in GPU mode with its delta stated.
+Approximants fit tasks that tolerate small differences: bulk runs, training pipelines (drafts, silver data) and debugging. Training speed and test-pass speed take priority over byte-identical GPU results; small numerical or task-score deltas are acceptable when they are reported. Releases and measured claims are made in CPU mode, or in GPU mode with its delta stated.
 
-If you ask for `MOVA_EXEC=gpu` from a CPU-only build, the program stops with an error (fail-fast). It does not quietly fall back to the CPU.
+Asking for `MOVA_EXEC=gpu` from a CPU-only build stops the program with an error (fail-fast). It never falls back to the CPU quietly.
 
 ## Build and run
 
@@ -27,68 +29,90 @@ cargo build --release -p world --features gpu --target-dir target/gpu
 MOVA_EXEC=gpu MOVA_GPARSE_MODEL=$MOVA_DATA/en/models/gparse target/gpu/release/world knowledge course biology
 ```
 
-`MOVA_TIMING=1` shows where a course's time goes. `GP_TIMING=1` splits the GPU parser's time into forward pass, Eisner decoding and relations.
+`MOVA_TIMING=1` shows where a course's (or `world induce`'s) time goes. `GP_TIMING=1` splits the GPU parser's time into forward pass, Eisner decoding and relations.
 
-## Stages (2026-10-15)
+## Stages
 
-### world: parse ahead (approximant + hybrid)
+### world: parse ahead (hybrid approximant)
 
 `exec::parse_many` serves the student's parse-ahead step (`PragStudent::preparse`).
 
-- CPU mode runs the `en` perceptron on 12 threads, exactly as before.
-- GPU mode is a hybrid. `gparse` (now also a library, `gparse::load` / `parse_forms`) predicts XPOS and the tree. `en` supplies tokens, UPOS, FEATS and lemmas (`Annotator::complete`), with tokenizing, completion and Eisner decoding spread over threads.
+- CPU mode runs the `en` perceptron on threads, exactly.
+- GPU mode is a hybrid. `gparse` (also a library: `gparse::load`, `parse_forms`) predicts XPOS and the tree. `en` supplies tokens, UPOS, FEATS and lemmas (`Annotator::complete`); tokenizing, completion and Eisner decoding are spread over threads.
 
-| | CPU mode | GPU mode |
-|---|---|---|
-| 25 primary courses, test questions right | 11 730 / 26 992 (43.46%) | **11 817** (43.78%) |
-| biology, parse-ahead time (68 512 units) | 2.8 s (12 threads) | 6.4 s (forward + copy 3.6 s) |
-| deterministic | yes | yes: two runs are identical, and batch size does not change the output |
+Both paths preserve input order and return `Result`: a missing or corrupt model, a failed worker or a malformed GPU batch stops the course, trace or diagnosis before it writes a score or report. Workers preserve input order and return the whole batch, so a worker failure cannot silently drop sentences. Regression tests are in `world/tests/parser_failures.rs`; model-dependent agreement and repeatability checks run explicitly with `--ignored`. These finite checks do not establish batch-size or cross-device identity in general.
 
-The GPU parser is the more accurate one (school LAS 88 against 84), and the student gains +87 questions from it. 13 courses gain and 7 lose (everyday −35, books −12). For short units the 20-core CPU parses faster. The GPU starts to pay off on bulk input with long sentences: 266 k words in 1.5 s of prediction (`gparse annotate`, 10 k school sentences), about 180 k words/s.
+CPU and GPU mode use different parsing models, so they can give different school answers. School result, 2026-10-15, the 25 primary courses' test questions: CPU mode 43.46%, GPU mode 43.78%.
 
-### world: the student's frame matching (CPU, exact; applies in both modes)
+### gparse: prediction without unused scores (exact)
 
-This was measured first, because a GPU only helps where the time actually goes. On biology, 34 s per course broke down as: align 13 s (31 M calls), re-reading the same questions and options 11 s, parsing 3 s. Two exact CPU fixes, now in both modes:
+Ordinary prediction (`gparse::predict`, `parse_forms`) does not compute the tag and relation log-probability reductions or copy those unused scores to the host. `predict_scored` still computes them. Both paths share batching and decoding, and give the same trees and tags. The check is `gparse/tests/predict_paths.rs`: set `GP_TEST_MODEL` to the model directory and `GP_TEST_CORPUS` to a training CoNLL-U file (optionally `GP_TEST_SENTENCES`, default 1024), then run `cargo test --release -p gparse --test predict_paths -- --ignored --nocapture`. Empty batches and the overlength fallback are covered too.
 
-- **frames as numbers** (`MCode` for remembered frames, `QCode` for question frames, `align_mask` returning bits): 13 → 3.8 s;
-- **readings remembered** by (what was read before, text, question?): 12 → 7 s.
+### gparse: fused attention softmax (approximant)
 
-All 25 courses give byte-identical results to the string path (`MOVA_ALIGN=str`, `MOVA_NOREADMEMO=1`, which also serve as the negative control).
+On CUDA, `gparse` uses a fused row softmax by default, for all callers including `world`. CUDA training uses a separate wrapper with an analytical backward pass. It is an approximant because floating-point reductions differ, so output agreement is checked on the intended model and inputs. Implementation, citations and the reproducible probe: [gparse README](../gparse/README.md#fused-inference-softmax).
 
-On numbers, align is a set of integer comparisons. An exact GPU kernel is possible (question frames × the whole memory, bit masks), but at 31 M pairs per course the CPU does it in about 3 s. A kernel pays only on bulk sets, such as many students or a large memory.
+Empty tokenized sentences are left out of GPU work; their empty results and zero scores keep their original positions. CUDA regression tests cover entirely empty and mixed batches.
+
+### world: the student's frame matching (CPU, exact, both modes)
+
+Frame matching runs on the CPU in both modes, with two exact optimisations:
+
+- **frames as numbers**: `MCode` for remembered frames, `QCode` for question frames, `align_mask` returning bits, so align is a set of integer comparisons;
+- **readings remembered** by (what was read before, text, question?).
+
+All courses give byte-identical results to the string path, which is the reference and the negative control. An exact GPU kernel for align (question frames × the whole memory, bit masks) is possible, but pays only on bulk sets, such as many students or a large memory.
+
+The exact bit-mask strength path (`MOVA_STRENGTH=mask`) avoids temporary feature vectors for strength-only queries. An exhaustive mask test and matched course traces establish equivalence. It is opt-in; `vec` is the default.
+
+### world: lesson training reuse (exact, both modes)
+
+Lesson training reuses evaluations under exact dependency checks. Reuse is on by default; traces, reports and post-lesson weights are identical to the reference.
 
 ### prag: the pragmatic witnesses (approximant)
 
-`prag/witness/witness.py` runs the cycle's open witnesses: two zero-shot NLI DeBERTas, a certainty model, politeness and irony. `WITNESS_FAST=1` or `MOVA_EXEC=gpu` turns on three changes: inputs sorted by length (less padding), fp16 weights, and batches of 256 instead of 64. The slow path stays byte-identical to the earlier rounds.
+`prag/witness/witness.py` runs the open witnesses: two zero-shot NLI DeBERTa models, a certainty model, politeness and irony. `WITNESS_FAST=1` or `MOVA_EXEC=gpu` turns on three changes: inputs sorted by length (less padding), fp16 weights, and batches of 256 instead of 64. The slow path (fp32, batches of 64, unsorted) is the reference. Compare labels, scores and the agreed pragmatics (`prag agree`) before using the fast path; no general agreement or score-error bound is established. The witnesses need a GPU in either mode.
 
-| cycle round 27, 2 200 sentences | fp32 (slow) | fast |
-|---|---|---|
-| time | 3 min 16 s | **59 s** |
-| label agreement with fp32 | — | act 99.91 / 99.55, polarity 99.95 / 99.82, uncertainty 99.95 / 100, polite 99.95, irony 100%; certainty within 0.01 |
-| agreed pragmatics (`prag agree`) differing | — | 3 of 2 200 (P2 fired 619 times instead of 621) |
+### world induce and selfplay (exact)
 
-The witnesses need a GPU in either mode. The slow path is the reference.
+`world induce` is transformation-based learning (Brill 1995). Every conjunction of one to three feature atoms of a mislabelled word becomes a candidate label rule. Each candidate's fixes and breaks are counted over all words, the best one is applied, and the loop repeats. `world selfplay` tests deltas over a rule set: remove, relax or add a rule.
 
-### world induce / selfplay: the SLM finding its own rules (exact)
+- **CPU (both modes):** atoms as 21-bit codes and conjunctions as one u64 key, with a fast deterministic hasher. Atoms are cached across iterations and recomputed only for sentences a rule changed; the fix table is updated incrementally. Parsing, atoms and counting run on threads.
+- **GPU (`MOVA_EXEC=gpu`):** break counting runs as one CUDA kernel (`world/src/induce_gpu.rs`, nvrtc through candle's cudarc). Each thread takes one correctly labelled word and probes every one-to-three subset of its atoms in an open-addressing table of candidate groups with `atomicAdd`. These are integer counts, so the result matches the CPU number for number.
 
-`world induce` is transformation-based learning (Brill 1995). Every 1–3 conjunction of a mislabelled word's feature atoms becomes a candidate label rule. Each candidate's fixes and breaks are counted over all words, the best one is applied, and the loop repeats. `world selfplay` tests deltas over a rule set: remove, relax or add a rule.
+`rules.tsv`, `report.txt`, `rules.machine.tsv` and `selfplay.jsonl` are identical between CPU and GPU.
 
-- **CPU (both modes):** atoms as 21-bit codes and conjunctions as one u64 key, with a fast deterministic hasher. Atoms are cached across iterations and recomputed only for sentences a rule changed. The fix table is updated incrementally: only the changed sentences are counted again. Parsing, atoms and counting run on threads.
-- **GPU (`MOVA_EXEC=gpu`):** the break counting runs as one CUDA kernel (`world/src/induce_gpu.rs`, nvrtc through candle's cudarc). Each thread takes one correctly labelled word and probes every 1–3 subset of its atoms in an open-addressing table of candidate groups, using `atomicAdd` of ones. These are integer counts, so the result matches the CPU number for number.
+### Not on the GPU
 
-| run (train EWT + ESLSpok + school-agreed train; parser en-school.bin) | original | CPU now | GPU |
-|---|---|---|---|
-| 54 k sentences, 3 iterations | ~20 min per iteration (one thread) | 34 s (break counting 19.1 s) | **18 s** (break counting 1.5 s) |
-| 54 k sentences, full run (stops after 3 rules) | — | 46 s (break counting 28 s) | **19 s** (1.7 s) |
-| + parsedb history, 152 k sentences, 10 iterations | — | 5 min 39 s (break counting 287 s; fix counting 15 → 3.3 s incrementally) | **33 s** (break counting 7.6 s) |
-| selfplay (EWT dev / school test, 14 rules, 61 deltas) | 16.7 s | 6.9 s | 6.9 s |
+- Cycle drafts: `gparse` drafts on the GPU; Stanza and Trankit run as Python on the GPU, outside these modes.
+- `prag world` and `prag label` are CPU code.
+- Align over a whole memory, absurdity-matrix lookups over many pairs and index scoring have no GPU kernels. They are integer work, so a kernel could be gated byte for byte.
 
-`rules.tsv`, `report.txt` and `rules.machine.tsv` are identical between CPU and GPU, as are `selfplay.jsonl` and the log against the original binary. In GPU mode, break counting runs 34× faster at scale. At 152 k sentences, the remaining time in GPU mode goes mostly to parsing (13 s on the CPU threads).
+## Reference switches
 
-## Next candidates
+Every faster path keeps a switch to its reference, for comparisons and as a negative control.
 
-Ordered by how much time each saves:
+| switch | reference it selects |
+|---|---|
+| (no `MOVA_EXEC`) | CPU-only execution |
+| `GP_FUSED_SOFTMAX=0` | unfused inference softmax (CPU always uses it) |
+| `GP_TRAIN_FUSED_SOFTMAX=0` | unfused training softmax |
+| `MOVA_ALIGN=str` | string frame matching |
+| `MOVA_NOREADMEMO=1` | no remembered readings |
+| `MOVA_STRENGTH=vec` (default) | vector strength path; `mask` is the opt-in exact alternative |
+| `MOVA_LEARN_REUSE=0` | no evaluation reuse in lesson training |
+| `WITNESS_FAST` unset, CPU mode | fp32 witnesses, batches of 64, unsorted |
+| `GP_DEV_EVERY=1` (default) | full development check every epoch |
+| `GP_SUBWORD` unset or `0` | word, prefix-3, suffix-3 and shape input without character n-grams |
+| `GP_PA` unset or `0` | every word in the arc and relation losses |
+| `GP_GELU` unset (erf) | exact GELU; `GP_GELU=tanh` is an experimental approximation, persisted in newly saved models |
 
-1. **Cycle drafts**: `gparse` already drafts on the GPU. Stanza and Trankit are Python on the GPU.
-2. **`prag world` (61 s / 48 k sentences)** and **`prag label` (27 s / 2.2 k)**: profile first. They are CPU code, so threads and numbers come before any GPU work.
-3. **Exact integer kernels on the GPU** for bulk scoring: align over a whole memory, absurdity-matrix lookups over many pairs, index scoring. Integers keep the GPU result exact, so these can be gated byte-for-byte.
+The [Lean neural specifications](../formal/README.md#neural-mathematics) derive softmax's derivative and factor its reverse-mode Jacobian product. CUDA gradient tests remain the check of the implementation and its floating-point behaviour.
+
+## Fast iterative measurements
+
+Quick probes serve iterative work; larger and full checks run periodically and before any claim. School sampling
+(`world knowledge bench`, its tiers and parse cache) is in [training probes](training.md#fast-probes-and-full-runs);
+parser checkpoint selection with `GP_DEV_EVERY` and `GP_DEV_QUICK` is in
+[gparse development evaluation](../gparse/README.md#periodic-development-evaluation). Both are separate from the
+execution mode.

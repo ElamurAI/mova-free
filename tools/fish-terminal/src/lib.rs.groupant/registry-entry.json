@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test --manifest-path tools/fish-terminal/Cargo.toml --offline --locked -j2",
+    "cargo test --manifest-path tools/fish-terminal/Cargo.toml --release --offline --locked -j2"
+  ],
+  "cost": "At most8Fish and1024tasks/reservations; queue/config/report128KiB,32input files per task, each128KiB. Each active pass performs bounded rehashing, JSON work and terminal observations; source I/O and external scheduling remain separate. Poll interval is between passes, not an instantaneous deadline guarantee.",
+  "description": "Configuration, immutable queue and job/report lifecycle. The operator assigns canonical disjoint workdirs and unique fixed sessions. Config hash fixes the run; queue hash fixes ordered task admission. Pending tasks are reserved before any terminal effect, and unresolved tasks block their Fish. A report advances only after unchanged inputs, stable idle observation and nonce/task/digest/schema checks. A separate root decision can free the Fish but never trains or imports.",
+  "forward": [
+    "Configuration, immutable queue and job/report lifecycle. The operator assigns canonical disjoint workdirs and unique fixed sessions. Config hash fixes the run; queue hash fixes ordered task admission. Pending tasks are reserved before any terminal effect, and unresolved tasks block their Fish. A report advances only after unchanged inputs, stable idle observation and nonce/task/digest/schema checks. A separate root decision can free the Fish but never trains or imports."
+  ],
+  "id": "private-fish-terminal-core",
+  "inverse": [
+    "Under the trusted filesystem/config premises, no terminal rejected by the recognized busy/modal predicate, foreign ownership check or launch record passes dispatch; no known interrupted reservation is replayed; no mismatched report enters review; one unresolved task per Fish and the lifetime reservation cap are maintained. This is a partial exclusion over the implemented state machine, not a whole-model behavior complement.",
+    "A valid review report constrains task ID, deterministic nonce, canonical task digest and observed input hashes. Several model executions, waiting durations and scientific reasoning paths can produce the same report. A reserved/uncertain stage retains both sent and not-sent terminal histories; it does not justify a unique replay decision."
+  ],
+  "limitations": [
+    "Partial source-derived model",
+    "No formal proof or automatic root review",
+    "Root two-task smoke used preceding binary; revised binary cutover remains root-owned",
+    "Cooperative local stability; no hostile concurrent rename/session replacement guarantee"
+  ],
+  "source": "tools/fish-terminal/src/lib.rs",
+  "state": "Explicit job/session/report states; review-only, no automatic training or DB admission."
+}

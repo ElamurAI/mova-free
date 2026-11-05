@@ -1,0 +1,32 @@
+{
+  "clippy": "strict all targets passed",
+  "clippy_log_sha256": "e48fdcbc229e1b97d87c9359a9b2eba2660460760256fd3ad0c3bb9f87875bb2",
+  "date": "2026-10-30",
+  "evidence": "$MOVA_DATA/runs/octopus-wave20-interpolation-2026-10-30/",
+  "limitations": [
+    "Finite absolute-tolerance observations, no general machine error guarantee",
+    "No certified executable surrogate",
+    "No timing benchmark or throughput claim"
+  ],
+  "mutant": {
+    "change": "halve numerator terms",
+    "compiled": true,
+    "failed_assertion": "barycentric_lagrange::tests::polynomial_oracle",
+    "log_sha256": "b4651fcedbba230c05df11d7bc829ea57d2aba44c054d58d20ae89db11247503",
+    "restored_positive_sha256": "fdfbc2b9b4c10cc72614d373500be87af4d5af306621c03aa5d8cec6e9f02780",
+    "source_bytes_restored": true
+  },
+  "native_module_tests": 2,
+  "normalized_outcomes_sha256": "7310f78ab4c8a4183faaa86b4a8df0da4e70df5c509183a01f8fce0ac5258202",
+  "paired_syntax_sha256": "4b565602f0364f3d7b25ea263bd1fc61a60f2e0360a1f5a9750aebadaf8a9050",
+  "profiles": [
+    "debug1",
+    "debug2",
+    "release1",
+    "release2"
+  ],
+  "source": "algorithms/src/barycentric_lagrange/mod.rs",
+  "source_sha256": "4e0af865c14faf28be87fb9960905fc5fb387a7f0876ef932a3ad97bd68ccae0",
+  "syntax_scope": "partial lexical Rust projection, no macro expansion or semantic proof",
+  "whole_library_tests": 560
+}

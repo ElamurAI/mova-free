@@ -1,0 +1,21 @@
+{
+  "id": "crab-tmux-worker",
+  "source": "tools/crab/src/tmux_worker.rs",
+  "children": [],
+  "description": "Holder of one Dolphin terminal as a Crab worker: host-wide singleton lock, create or adopt a tmux session running the configured command, optional pin of a self-updating CLI, graceful SIGTERM stop, exit when the session or command ends; never sends keys.",
+  "state": "Exclusive flock held for the holder's lifetime (owner record pid/session/socket), the held command's (pid, starttime), pin recheck clock.",
+  "forward": [
+    "lock busy -> AlreadyRunning(5); pin fails -> Unpinned(6); session exists: one live pane whose pane process or direct child runs the command (basename of argv0, equal arguments, #! interpreter prefix allowed) -> adopted, else Conflict(3) untouched; else new-session -d with command plus rendered prompt argument, owner option. Poll: stop flag -> SIGTERM command, wait grace 1..8 s, kill-session; session gone or command gone -> Ended(0); pin recheck every 60 s, failure -> stop and Unpinned."
+  ],
+  "inverse": [
+    "Excluded: a second holder of one lock, keystrokes (send-keys/load-buffer/paste-buffer), touching a conflicting session, starting an unpinned program, an unbound or unused prompt placeholder.",
+    "From an exit status one recovers the outcome class only; the owner record names the last holder, not earlier ones."
+  ],
+  "cost": "Per poll: has-session (one tmux client) and one /proc stat read; adoption scans /proc once for direct children (bounded 65536 entries); the pin hashes one file and runs one bounded version command (15 s) per check.",
+  "checks": [
+    "2026-11-04: 10 tests on private tmux servers (create/stop, session ends, adopt under a shell, conflict untouched, command ends inside a surviving shell, singleton across two tmux servers with an in-test --no-singleton red control, lock release, prompt as argument with a keystroke audit, pin/login refusal, argument refusals); red controls: lock disabled, match always true, send-keys added, pin check removed."
+  ],
+  "limitations": [
+    "Cooperative same-user processes; the lock is per lock file, not per session name; real Claude/Copilot TUIs and their idle markers are not exercised; tool restriction flags of a CLI are the deployment's responsibility."
+  ]
+}

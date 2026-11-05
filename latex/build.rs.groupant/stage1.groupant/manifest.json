@@ -1,0 +1,82 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "first_claim_policy",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "first_claim_policy",
+        "status": "partial_source_derived_model",
+        "type": "first_claim_policy"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 9949,
+      "start": 2877
+    },
+    "description": "main reads commands.txt, skips trimmed empty/comment rows, and processes remaining rows in order. sym requires>=5 columns, valid unique ID and known class before registering each form. Other enum rows require>=3 and a valid ID; font switches defer primary-variant validation. Explicit character registrations are completed before unclaimed Unicode text fallbacks are inserted.",
+    "source_bytes_sha256": "af1ac9639dfcd95b27c9449e657bbd772caa10dd22c6fd915b25579500032676"
+  },
+  "id": "latex-build-stage1",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../build.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "39a1feed1af329d1fb109ab5a2483512ad3e46419a0c2d0bd608921a78357808"
+  },
+  "status": "partial_source_bound_model"
+}

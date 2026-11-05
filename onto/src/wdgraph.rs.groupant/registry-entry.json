@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "wdgraph::t::cycles_gate"
+  ],
+  "children": [],
+  "cost": "Sort O(E log E), binary endpoint lookup O(E log V), SCC/Kahn O(V+E). Closure worst O(V(V+E)), worker arrays O(TV), output O(reachable pairs). u32 offsets/u16 depths and allocations finite.",
+  "description": "from_edges sort/dedup triples, sort Q endpoints, build upward CSR. ancestors BFS shortest proper depths. Tarjan labels SCCs; break_cycles removes all internal edges of nontrivial SCC/self-loop and rebuilds. Kahn residual count; closure repeated parallel BFS counts/histograms and optional TSV. run_closure auto chooses All iff pairs<=limit else Wiki and writes before final gate refusal.",
+  "forward": [
+    "from_edges sort/dedup triples, sort Q endpoints, build upward CSR. ancestors BFS shortest proper depths. Tarjan labels SCCs; break_cycles removes all internal edges of nontrivial SCC/self-loop and rebuilds. Kahn residual count; closure repeated parallel BFS counts/histograms and optional TSV. run_closure auto chooses All iff pairs<=limit else Wiki and writes before final gate refusal.",
+    "Remove R={(s,o,p)∈E:comp(s)=comp(o)∧(size(comp)>1∨s=o)}; keep E\\R, sort audit records and rebuild CSR. Kahn returns None iff all n vertices eliminated via indegree-zero queue."
+  ],
+  "id": "onto-wdgraph",
+  "inverse": [
+    "Exclude retained SCC-internal edges; do not exclude node deletion/index changes. Kahn residual includes blocked downstream nodes, not just cycle members. Duplicate exact triples excluded but differing p retained.",
+    "edges(from_edges(E)) determines unique triples, not multiplicity/order/isolated vertices. Kept edges plus cycle records reconstruct original unique edges; kept alone admits arbitrary removed components. Reachability admits transitive edge variants."
+  ],
+  "limitations": [
+    "cycles_gate covers removal/renumber, BFS, two-thread count-only closure and injected cycle. Deep200000 chain skipped, no dumps/materialization.",
+    "Executable approximant gap: no useful percentage metric established for these categorical/effectful observations. No surrogate or production substitution. Future caps 1/2/5/10% require a metric/domain and evidence; no numerical error bound follows here.",
+    "Partial lexical AST, no macro expansion/semantic proof; no live teacher/dump/corpus/database execution"
+  ],
+  "source": "onto/src/wdgraph.rs",
+  "state": "Identity across rebuild uses Q, never old index. Different edge kinds remain parallel. Orphan nodes disappear. max_depth0 returns empty. threads0 closure returns zeros without processing; meaningful domain requires workers>0. Histogram depth saturates63; u16 depth arithmetic not guarded."
+}

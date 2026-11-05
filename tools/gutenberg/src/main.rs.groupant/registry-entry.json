@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "tests::csv_and_death_years",
+    "wave33::csv_boundaries_and_date_fibers"
+  ],
+  "children": [],
+  "cost": "For B input bytes, R rows, G groups, K keywords and S skip entries: O(B+S log S+R*G*K*Brow) comparisons, O(B+S) memory plus output; fetch at most3 external attempts per selected book with unbounded process/network latency and pause.",
+  "description": "csv_rows feeds select rows; validate requested groups, collect existing ids, require header columns, create JSONL, then first group match -> disaster war rejection -> all-person death gate -> existing-id rejection -> emit. fetch is independent list -> existing-file skip -> ordered three URL attempts -> rename or append missing; ten consecutive unavailable books abort.",
+  "forward": [
+    "csv_rows feeds select rows; validate requested groups, collect existing ids, require header columns, create JSONL, then first group match -> disaster war rejection -> all-person death gate -> existing-id rejection -> emit. fetch is independent list -> existing-file skip -> ordered three URL attempts -> rename or append missing; ten consecutive unavailable books abort."
+  ],
+  "id": "gutenberg-text-command",
+  "inverse": [
+    "Within admitted selection traces no non-English/non-Text row, later matching group or dated author above cutoff reaches normal PD output. not_pd selects the opposite date predicate. Fetch success excludes missing-log append for that attempt.",
+    "A JSONL row permits any catalog with the matching selected fields and first-match/PD/skip predicates; unselected rows and prior skip entries are ambiguous. Missing log only identifies unavailable attempt, not remote absence forever."
+  ],
+  "limitations": [
+    "UTF-8 catalogs; exact header names and row width; u32 dates; bounded counters and filesystem availability. Malformed CSV is tolerated. Fetch paths/id safety and live HTTP remain unexecuted.",
+    "Partial syntax and bounded synthetic helper checks; no command/corpus/model/download effects, universal proof or percentage surrogate."
+  ],
+  "source": "tools/gutenberg/src/main.rs",
+  "state": "Selection keeps source row order and assigns at most one group per row. Header errors precede output creation, later write failures need not roll back. PD is an author-date heuristic, not legal certification. Existing skip entries match digit strings after the last pg occurrence."
+}

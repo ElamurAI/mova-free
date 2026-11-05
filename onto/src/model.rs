@@ -408,3 +408,30 @@ impl Graph {
         (0..self.n_concepts()).find(|&i| self.src[i] == Src::Oewn && self.key[i] == key && self.pos[i] == pos).map(|i| i as Cid)
     }
 }
+
+#[cfg(test)]
+mod wave29 {
+    use super::*;
+    #[test]
+    fn representation_and_lookup_boundaries() {
+        let mut g = Graph::default();
+        assert_eq!(g.n_words(), 0);
+        assert_eq!(g.word_id(""), None);
+        g.words = "antbee".into();
+        g.word_off = vec![0, 3, 6];
+        assert_eq!(g.word_id("ant"), Some(0));
+        assert_eq!(g.word_id("bee"), Some(1));
+        assert_eq!(g.word_id("bat"), None);
+        assert_eq!(g.word(1), "bee");
+        assert!(Pos::Adj.same_word_class(Pos::Sat));
+        assert!(!Pos::Noun.same_word_class(Pos::Verb));
+        for (i, p) in Pos::ALL.iter().enumerate() {
+            assert_eq!(Pos::from_u8(i as u8), Some(*p));
+        }
+        assert_eq!(Pos::from_u8(7), None);
+        assert_eq!(Rel::from_u8(15), None);
+        assert_eq!(Src::from_u8(4), None);
+        assert!(Rel::InstanceOf.is_taxonomic());
+        assert!(!Rel::PartOf.is_taxonomic());
+    }
+}

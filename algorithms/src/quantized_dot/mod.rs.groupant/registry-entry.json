@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms quantized_dot::tests",
+    "Repeated debug/release, compiled production mutant and restored hashes; see model.md#tests"
+  ],
+  "children": [],
+  "cost": "O(n) time, O(1) storage, no allocation. Checked i128 accumulation and u128 certificate sums. Quotient/remainder certification avoids overflow from multiplying L1 by100. Work budget bounds pairs; unsupported and uncertified domains fail with no hidden fallback.",
+  "description": "Equal-length i64 arrays, positive u64 step and supported percent. Let qa=trunc(a/step)*step and ra=a-qa. Accumulate approximate sum qa*qb and E=sum(|qa|*|rb|+|qb|*|ra|+|ra*rb|). L1=sum|a*b|. Return only if E<=floor(percent*L1/100).",
+  "forward": [
+    "Equal-length i64 arrays, positive u64 step and supported percent. Let qa=trunc(a/step)*step and ra=a-qa. Accumulate approximate sum qa*qb and E=sum(|qa|*|rb|+|qb|*|ra|+|ra*rb|). L1=sum|a*b|. Return only if E<=floor(percent*L1/100)."
+  ],
+  "id": "algorithm-quantized-dot",
+  "inverse": [
+    "Changing both vector signs preserves exact and quantized products. Permutations preserve sums and L1 but may change checked intermediate-overflow behavior. Opposing equal products can produce value0 with positive absolute certificate; value0 also admits all-zero inputs. Scalar output cannot reconstruct vectors or cancellation structure."
+  ],
+  "limitations": [
+    "Partial syntax, not semantic proof",
+    "Finite oracles do not establish universal accuracy",
+    "No performance measurement or automatic substitution",
+    "Allocator failure not experimentally injected"
+  ],
+  "source": "algorithms/src/quantized_dot/mod.rs",
+  "state": "Validated integer inputs and checked exact arithmetic states"
+}

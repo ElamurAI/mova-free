@@ -1,0 +1,113 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived relation with finite tests; not universal verification.",
+        "assumptions": "Rust slice, integer and allocation semantics; standard comparison sort oracle.",
+        "domain": "Finite deterministic test fixtures and implementation observations.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One test suite execution.",
+        "operator": "In the universe of implementation behaviors and test outcomes, a passing outcome excludes disagreements observed by the enumerated fixtures and their independent oracle. Untested behaviors remain compatible; passing does not exclude every incorrect implementation.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "b83bc0e799f54a9b2309803d360f446fa19b60dbc7d9deaf4fbcaaf020e15649",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived relation with finite tests; not universal verification.",
+        "assumptions": "Rust slice, integer and allocation semantics; standard comparison sort oracle.",
+        "domain": "Finite deterministic test fixtures and implementation observations.",
+        "evidence": "model.md#evidence",
+        "id": "preimages",
+        "observation_scope": "One test suite execution.",
+        "operator": "A passing test outcome admits all implementations agreeing on the finite observed fixtures, including implementations differing elsewhere. A failed assertion constrains a compatible mismatch to its reported fixture. The test outcome cannot reconstruct unique implementation code.",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "b83bc0e799f54a9b2309803d360f446fa19b60dbc7d9deaf4fbcaaf020e15649",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived relation with finite tests; not universal verification.",
+        "assumptions": "Rust slice, integer and allocation semantics; standard comparison sort oracle.",
+        "domain": "Finite deterministic test fixtures and implementation observations.",
+        "evidence": "model.md#evidence",
+        "id": "idempotence",
+        "observation_scope": "One test suite execution.",
+        "operator": "S(S(x))=S(x). Each byte pass preserves every digit subsequence. Tests use distinct scalar values sharing selected byte keys to observe internal pass stability; scalar full-sort equality cannot demonstrate attached payload stability.",
+        "path": "model.md",
+        "section": "idempotence",
+        "status": "partial_source_derived",
+        "subject_revision": "b83bc0e799f54a9b2309803d360f446fa19b60dbc7d9deaf4fbcaaf020e15649",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Finite observation only; incomplete outside tested cases.",
+        "assumptions": "Independent histogram, stable comparison oracle and valid fixture encoding.",
+        "domain": "Finite fixtures and explicit alternative implementations.",
+        "evidence": "model.md#evidence",
+        "id": "relation-observation",
+        "observation_scope": "New relation tests and separate compiled mutants.",
+        "operator": "Passing relation tests admits implementations agreeing on the enumerated histogram or digit-subsequence fibers, mapped fixtures and resource or pass-order observations. It excludes only detected mismatches; whole-code equivalence and untested allocator outcomes remain unknown.",
+        "path": "model.md",
+        "section": "relation-observation",
+        "status": "bounded_checked",
+        "subject_revision": "b83bc0e799f54a9b2309803d360f446fa19b60dbc7d9deaf4fbcaaf020e15649",
+        "type": "observational_equivalence"
+      },
+      {
+        "approximation_semantics": "Finite observation only; incomplete outside tested cases.",
+        "assumptions": "Independent histogram, stable comparison oracle and valid fixture encoding.",
+        "domain": "Finite fixtures and explicit alternative implementations.",
+        "evidence": "model.md#evidence",
+        "id": "countermodel-sensitivity",
+        "observation_scope": "New relation tests and separate compiled mutants.",
+        "operator": "The tests deliberately reject support-only inverse fibers and transformations with dropped domain premises. Compiled production mutants are tested separately against the new relation assertions. Their rejection establishes sensitivity to those faults, not completeness against all incorrect implementations.",
+        "path": "model.md",
+        "section": "countermodel-sensitivity",
+        "status": "bounded_checked",
+        "subject_revision": "b83bc0e799f54a9b2309803d360f446fa19b60dbc7d9deaf4fbcaaf020e15649",
+        "type": "counterfactual_model"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-radix-sort-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "b83bc0e799f54a9b2309803d360f446fa19b60dbc7d9deaf4fbcaaf020e15649"
+  },
+  "status": "partial_source_derived_instance"
+}

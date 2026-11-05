@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline burrows_wheeler::tests::",
+    "Twice per debug/release; identical normalized identities. Compiled per-source mutation and exact restoration; strict Clippy; narrow rustfmt; repeated syntax."
+  ],
+  "children": [],
+  "cost": "Finite exhaustive enumeration; exponential in fixture word length, with explicit caps in source. BWT oracle materializes n rotations; wildcard recursive oracle enumerates star partitions. No production cost or broad performance claim follows.",
+  "description": "burrows_wheeler finite independent tests",
+  "forward": [
+    "Execute finite oracle, boundary, fiber and conditional-law assertions. Success reports agreement only on their enumerated observations.",
+    "Fixtures and expected results are deterministic. Independent reference construction avoids reusing the production state transition being tested."
+  ],
+  "id": "algorithm-burrows-wheeler-tests",
+  "inverse": [
+    "Within finite tested observations, exclude suite acceptance if any expected value disagrees with its independently specified oracle or asserted conditional law. Unvisited cases are not excluded by finite testing.",
+    "The preimage of a passing test report includes every implementation agreeing on the observed fixtures, even implementations differing outside this domain. Failing reports identify a violated assertion, not a unique faulty program.",
+    "Materialize all rotations and sort (rotation,offset), independently of doubling. Enumerate ternary words through length eight; enumerate every column through length five and every primary 0..=n, comparing inverse to a complete independently constructed reachable map.",
+    "The column bbaa has at least the two texts abab and baba; full canonical primary distinguishes them. Exhaustive reachability search detects empty inverse fibers for invalid pairs.",
+    "A compiled production mutation and a separate false test expectation each fail a named assertion; exact original bytes are restored and the selected tests pass. This establishes these controls are detectable, not complete mutation coverage."
+  ],
+  "limitations": [
+    "Partial syntax excludes macro expansion and semantic resolution. Finite enumeration is not a general proof; allocation exhaustion and throughput are untested. No executable approximation profile or downstream inference claim."
+  ],
+  "source": "algorithms/src/burrows_wheeler/tests.rs",
+  "state": "Finite declared fixture executions with successful compilation and allocation."
+}

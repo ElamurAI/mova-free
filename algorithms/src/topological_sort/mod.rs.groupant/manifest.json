@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-topological-sort",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "c0621a09327b1b3a07f8daadaa85d44a4e948f8b1013770b2a6be42d47787baf",
+    "raw_code_location": "outside_this_sidecar"
+  },
+  "status": "partial_descriptive_instance",
+  "components": {
+    "ast": {
+      "status": "partial",
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "partial source syntax; no macro expansion or semantic resolution"
+    },
+    "approximant": {
+      "status": "partial",
+      "path": "model.md#approximant"
+    },
+    "invariant": {
+      "status": "partial",
+      "path": "model.md#invariant"
+    },
+    "descriptant": {
+      "status": "present",
+      "path": "model.md#descriptant"
+    },
+    "tests": {
+      "status": "executed_bounded_checks",
+      "path": "model.md#tests"
+    },
+    "obernants": [
+      {
+        "id": "behavior-complement",
+        "type": "behavior_complement",
+        "required": true,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "scope": "all finite directed adjacency lists with duplicates and self loops; outputs are tagged errors or vertex permutations"
+      },
+      {
+        "id": "reverse-reconstruction",
+        "type": "reverse_reconstruction",
+        "required": true,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "scope": "all finite directed adjacency lists with duplicates and self loops; outputs are tagged errors or vertex permutations"
+      },
+      {
+        "id": "order-fiber",
+        "type": "ordering_preimage",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "order-fiber",
+        "scope": "all finite directed adjacency lists with duplicates and self loops; outputs are tagged errors or vertex permutations"
+      },
+      {
+        "id": "cycle-fiber",
+        "type": "failure_preimage",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "cycle-fiber",
+        "scope": "all finite directed adjacency lists with duplicates and self loops; outputs are tagged errors or vertex permutations"
+      },
+      {
+        "id": "parallel-edge-quotient",
+        "type": "multiplicity_equivalence",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "parallel-edge-quotient",
+        "scope": "all finite directed adjacency lists with duplicates and self loops; outputs are tagged errors or vertex permutations"
+      }
+    ]
+  }
+}

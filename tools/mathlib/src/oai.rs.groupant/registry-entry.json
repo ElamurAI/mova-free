@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "oai::tests::tokens_and_errors",
+    "oai::wave33::state_resume_and_stop_without_requests"
+  ],
+  "children": [],
+  "cost": "last_state O(state bytes); token/error substring scans O(body), gzip O(body) and full body memory. At most 20 waits for consecutive 503 before 21st abort; each clamped 5..600 seconds. Successful pagination itself unbounded.",
+  "description": "run creates directory, replays state, returns early for terminal token; otherwise initializes state, checks STOP/page limit, forms encoded URL, handles bounded consecutive 503 responses, parses OAI error/token, writes compressed page before durable state append.",
+  "forward": [
+    "run creates directory, replays state, returns early for terminal token; otherwise initializes state, checks STOP/page limit, forms encoded URL, handles bounded consecutive 503 responses, parses OAI error/token, writes compressed page before durable state append."
+  ],
+  "id": "mathlib-oai",
+  "inverse": [
+    "Terminal empty state token and STOP prevent requests. >20 consecutive 503 cannot continue sleeping; other HTTP status errors abort without checkpoint of that failed response. Source-derived network bounds.",
+    "Last-state tuple admits many earlier lines, ignored short/header rows and unparseable counts mapped zero. Gzip page plus state constrains body/token at commit but cannot determine all request timing or discarded failed responses."
+  ],
+  "limitations": [
+    "No network/DNS/download, real catalog/corpus/model/teacher or database execution. Effect paths are source-derived; finite helper tests are not universal verification. No executable percentage surrogate or speed claim; future caps require metric/domain/reference and remain 1/2/5/10%."
+  ],
+  "source": "tools/mathlib/src/oai.rs",
+  "state": "Resume uses last valid >=3-cell nonheader line's page/token and cumulative parsed record counts. noRecordsMatch appends terminal state without gzip page. Successful page commit stores body before token checkpoint; crash can leave page ahead of state."
+}

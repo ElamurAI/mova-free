@@ -1,0 +1,21 @@
+{
+  "id": "algorithm-rabin-karp",
+  "source": "algorithms/src/rabin_karp/mod.rs",
+  "description": "Verified wrapping polynomial hash search over bytes.",
+  "state": "Immutable finite slices; local rows or hash/shift state; returned witness, distance or offsets.",
+  "cost": "O(n+m+c*m) byte/hash work, c hash candidates; O(n*m) worst case and O(1) auxiliary words plus output.",
+  "forward": [
+    "M(t,p)=[i in increasing order: 0<=i<=|t|-|p| and t[i..i+|p|]=p]; empty p yields all boundaries."
+  ],
+  "inverse": [
+    "behavior_complement and reverse_reconstruction are distinct first two typed models; see model.md."
+  ],
+  "checks": [
+    "cargo test --offline -p mova-algorithms rabin_karp::tests",
+    "Compiled mutation must fail an assertion; see model.md#tests."
+  ],
+  "limitations": [
+    "Finite native evidence is not universal verification.",
+    "Syntax projection excludes expansion and semantic resolution."
+  ]
+}

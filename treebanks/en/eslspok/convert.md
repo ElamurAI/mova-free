@@ -2,11 +2,11 @@
 
 The rule language is `docs/dialect.md`, "Converter rule language". Conventions beyond the specification (`require:` as a condition, ```` ```convert-todo ````) are in `../seeds-overview.md`. Matches were counted by `en expert-check`: `eslspok → mova` on all parts of ESLSpok, `mova → eslspok` on EWT.
 
-ESLSpok has no lemmas, FEATS, MISC or MWT (`seeds/data.md`). The converter does not invent these layers: in `mova` they stay «_», and training skips them (`Sentence::has_lemmas`, `has_feats`).
+ESLSpok has no lemmas, FEATS, MISC or MWT (`seeds.md#data`). The converter does not invent these layers: in `mova` they stay «_», and training skips them (`Sentence::has_lemmas`, `has_feats`).
 
 ## eslspok → mova
 
-### 1. `:tmod`/`:npmod` → `:unmarked` (`seeds/tmod-npmod.md`)
+### 1. `:tmod`/`:npmod` → `:unmarked` (`seeds.md#tmod-npmod`)
 
 ```convert
 rule: eslspok.obl-tmod
@@ -50,7 +50,7 @@ source: UD 2.15, docs#1028
 
 Matches: 77 + 20 + 50 + 4 = 151.
 
-### 2. Prepositional *to* (`seeds/to-part.md`)
+### 2. Prepositional *to* (`seeds.md#to-part`)
 
 ```convert
 rule: eslspok.to-case
@@ -64,7 +64,7 @@ source: UD en pos/ADP; EWT 2.18 (to with a noun — ADP/IN)
 
 Matches: 224.
 
-### 3. UD 2.0 customs (`seeds/old-ud.md`)
+### 3. UD 2.0 customs (`seeds.md#old-ud`)
 
 ```convert
 rule: eslspok.wh-advmod
@@ -110,7 +110,7 @@ Matches: `wh-advmod` 41, `so-parataxis` 33, `so-adv` another 27 (7 `cc` not on `
 
 **Not converted:**
 - `dep` on Japanese insertions (26): the word's role in the sentence is unknown.
-- **MWT and `SpaceAfter`** (`seeds/tokenization.md`). The `convert` language does not create MWT lines. An action like `mwt+=v..w` by the forms *n't, 's, 'm, 're, 'll, 've, 'd* is needed. `SpaceAfter=No` before them can be set by a rule: `t[form=n't|'s|'m|'re|'ll|'ve|'d]; p[next=…]` → `p[misc+=SpaceAfter=No]`. But the tokenized `# text` did not preserve spaces before punctuation, so the text cannot be reconstructed anyway.
+- **MWT and `SpaceAfter`** (`seeds.md#tokenization`). The `convert` language does not create MWT lines. An action like `mwt+=v..w` by the forms *n't, 's, 'm, 're, 'll, 've, 'd* is needed. `SpaceAfter=No` before them can be set by a rule: `t[form=n't|'s|'m|'re|'ll|'ve|'d]; p[next=…]` → `p[misc+=SpaceAfter=No]`. But the tokenized `# text` did not preserve spaces before punctuation, so the text cannot be reconstructed anyway.
 - Lemmas and FEATS: the layers do not exist.
 
 ## mova → eslspok
@@ -122,7 +122,7 @@ from: mova
 to: eslspok
 match: t[rel=nmod:unmarked, form=week|weeks|day|days|time|today|tomorrow|tonight|yesterday|night|morning|afternoon|evening|weekend|everyday|year|month]
 set: t[rel=nmod:tmod]
-source: seeds/tmod-npmod.md
+source: seeds.md#tmod-npmod
 ```
 
 ```convert
@@ -132,7 +132,7 @@ from: mova
 to: eslspok
 match: t[rel=obl:unmarked, form=week|weeks|day|days|time|today|tomorrow|tonight|yesterday|night|morning|afternoon|evening|weekend|everyday|sunday|monday|tuesday|wednesday|thursday|friday|saturday|year|month|now]
 set: t[rel=obl:tmod]
-source: seeds/tmod-npmod.md
+source: seeds.md#tmod-npmod
 ```
 
 ```convert
@@ -142,7 +142,7 @@ from: mova
 to: eslspok
 match: t[rel=obl:unmarked]
 set: t[rel=obl:npmod]
-source: seeds/tmod-npmod.md
+source: seeds.md#tmod-npmod
 ```
 
 ```convert
@@ -152,7 +152,7 @@ from: mova
 to: eslspok
 match: t[rel=nmod:unmarked]
 set: t[rel=nmod:npmod]
-source: seeds/tmod-npmod.md
+source: seeds.md#tmod-npmod
 ```
 
 The remaining `:unmarked` (rules `npmod` and `nmod-npmod`) — `:npmod`, because the temporal ones have already been renamed. More precisely — by the trace in MISC:
@@ -167,7 +167,7 @@ set: t[rel=obl:tmod]; t[misc-=TemporalNPAdjunct]
 source: EWT README v2.15
 ```
 
-Needs a condition on MISC (`misc.K=V`), which the rule language does not have yet (`docs/expert.md`, "Not done yet").
+Needs a condition on MISC (`misc.K=V`), which the rule language does not have yet (`docs/english.md`, "Not done yet").
 
 ```convert
 rule: mova.eslspok.to-case
@@ -176,7 +176,7 @@ from: mova
 to: eslspok
 match: t[form=to, rel=case]
 set: t[upos=PART]; t[xpos=TO]
-source: seeds/to-part.md
+source: seeds.md#to-part
 ```
 
 ```convert
@@ -186,7 +186,7 @@ from: mova
 to: eslspok
 match: v[rel=advcl]; w[form=when, rel=advmod, head=v]
 set: w[upos=SCONJ]; w[rel=mark]
-source: seeds/old-ud.md
+source: seeds.md#old-ud
 ```
 
 ```convert
@@ -197,7 +197,7 @@ to: eslspok
 match: y[rel=parataxis]; s[form=so, rel=advmod, head=y, upos=ADV]
 require: none c[rel=cc, head=y]
 set: s[upos=CCONJ]; s[xpos=CC]; s[rel=cc]; y[rel=conj]
-source: seeds/old-ud.md
+source: seeds.md#old-ud
 ```
 
 ```convert
@@ -207,7 +207,7 @@ from: mova
 to: eslspok
 match: f[rel=flat, upos=X, xpos=FW]
 set: f[rel=flat:foreign]
-source: seeds/old-ud.md
+source: seeds.md#old-ud
 ```
 
 ```convert
@@ -217,7 +217,7 @@ from: mova
 to: eslspok
 match: t[rel=obl:agent]
 set: t[rel=obl]
-source: seeds/old-ud.md
+source: seeds.md#old-ud
 ```
 
 ```convert
@@ -227,7 +227,7 @@ from: mova
 to: eslspok
 match: t[rel=nsubj:outer]
 set: t[rel=nsubj]
-source: seeds/old-ud.md
+source: seeds.md#old-ud
 ```
 
 ```convert
@@ -237,7 +237,7 @@ from: mova
 to: eslspok
 match: t[rel=advcl:relcl]
 set: t[rel=advcl]
-source: seeds/old-ud.md
+source: seeds.md#old-ud
 ```
 
 ```convert
@@ -247,7 +247,7 @@ from: mova
 to: eslspok
 match: q[xpos=``|'']
 set: q[xpos="]
-source: seeds/data.md
+source: seeds.md#data
 ```
 
 ```convert-todo
@@ -257,7 +257,7 @@ from: mova
 to: eslspok
 match: t[]
 set: t[lemma=_]; t[feats=_]; t[misc=_]
-source: seeds/data.md
+source: seeds.md#data
 ```
 
 Needs the actions `feats=_` and `misc=_`: clear the whole column, not one feature at a time. Removing MWT lines is also needed.

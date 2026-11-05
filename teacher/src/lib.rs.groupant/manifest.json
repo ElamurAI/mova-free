@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "teacher-transport",
+  "source": {
+    "path": "../lib.rs",
+    "sha256": "199397384b039e25912422d73c0c6af805e5e381ea4815a574c032acb380f768",
+    "raw_code_location": "outside_this_sidecar"
+  },
+  "status": "partial_source_derived_instance",
+  "components": {
+    "ast": {"status": "partial", "format": "rust_syntax_projection", "path": "syntax.json"},
+    "approximant": {"status": "partial", "path": "model.md#approximant"},
+    "invariant": {"status": "partial", "path": "model.md#approximant"},
+    "descriptant": {"status": "present", "path": "model.md#descriptant"},
+    "tests": {"status": "bounded_offline_checks", "path": "model.md#tests"},
+    "obernants": [
+      {"id":"nonbehavior","type":"behavior_complement","required":true,"status":"partial_source_derived_model","path":"model.md","section":"nonbehavior"},
+      {"id":"antecedents","type":"reverse_reconstruction","required":true,"status":"partial_relational_specification","path":"model.md","section":"antecedents"},
+      {"id":"model-precedence","type":"configuration_preimage","status":"partial_source_derived_model","path":"model.md","section":"model-precedence"},
+      {"id":"model-name","type":"lexical_acceptance_complement","status":"partial_source_derived_model","path":"model.md","section":"model-name"},
+      {"id":"effort-domain","type":"effort_reachability","status":"partial_source_derived_model","path":"model.md","section":"effort-domain"},
+      {"id":"timeout-domain","type":"timeout_budget_preimage","status":"partial_source_derived_model","path":"model.md","section":"timeout-domain"},
+      {"id":"parse-prefix","type":"first_failure_partition","status":"partial_source_derived_model","path":"model.md","section":"parse-prefix"},
+      {"id":"item-kind","type":"capability_event_complement","status":"partial_source_derived_model","path":"model.md","section":"item-kind"},
+      {"id":"answer-fiber","type":"last_assignment_preimage","status":"partial_source_derived_model","path":"model.md","section":"answer-fiber"},
+      {"id":"usage-fiber","type":"single_completion_preimage","status":"partial_source_derived_model","path":"model.md","section":"usage-fiber"},
+      {"id":"blank-answer","type":"whitespace_boundary","status":"partial_source_derived_model","path":"model.md","section":"blank-answer"},
+      {"id":"unknown-events","type":"extension_invariance","status":"partial_source_derived_model","path":"model.md","section":"unknown-events"},
+      {"id":"ordering-gap","type":"temporal_identity_complement","status":"finite_correspondence_checked","path":"model.md","section":"ordering-gap"},
+      {"id":"accounting-loss","type":"lossy_projection_preimage","status":"partial_source_derived_model","path":"model.md","section":"accounting-loss"},
+      {"id":"subscription-command","type":"launch_policy_constraint","status":"partial_source_derived_model","path":"model.md","section":"subscription-command"},
+      {"id":"prompt-channel","type":"information_flow_projection","status":"partial_source_derived_model","path":"model.md","section":"prompt-channel"},
+      {"id":"output-budget","type":"resource_budget_complement","status":"partial_source_derived_model","path":"model.md","section":"output-budget"},
+      {"id":"lifecycle","type":"cleanup_reachability","status":"partial_source_derived_model","path":"model.md","section":"lifecycle"},
+      {"id":"timeout-boundary","type":"liveness_counterexample","status":"partial_hypothesis","path":"model.md","section":"timeout-boundary"},
+      {"id":"log-fiber","type":"provenance_projection_preimage","status":"partial_source_derived_model","path":"model.md","section":"log-fiber"}
+    ]
+  },
+  "registry": {"path":"../../../models/contracts.json","node":"teacher-transport"},
+  "extensions": {"epoch_memory":"model.md#descriptant","cost":"model.md#approximant","probe_source":"probe.rs.txt"}
+}

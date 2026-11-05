@@ -1,0 +1,91 @@
+{
+  "children": [
+    {
+      "id": "world-fbench-sampling",
+      "path": "sampling.groupant"
+    },
+    {
+      "id": "world-fbench-loading",
+      "path": "loading.groupant"
+    },
+    {
+      "id": "world-fbench-measurement",
+      "path": "measurement.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-fbench-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-fbench-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-fbench-coupling",
+        "path": "model.md",
+        "section": "coupling",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      },
+      {
+        "id": "world-fbench-observation-fiber",
+        "path": "model.md",
+        "section": "observation-fiber",
+        "status": "partial_source_model",
+        "type": "information_loss"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "id": "world-fbench",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../fbench.rs",
+    "sha256": "cc89a6255dc4c886743ed97825a00fbc0a6312257a96e65f3dc7d6ff82b24c14"
+  },
+  "status": "partial_source_bound_model"
+}

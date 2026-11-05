@@ -1,0 +1,98 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical projection only; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "interpolation_boundary",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "interpolation_boundary",
+        "status": "partial_source_derived_model",
+        "type": "interpolation_boundary"
+      },
+      {
+        "id": "suffix_backoff",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "suffix_backoff",
+        "status": "partial_source_derived_model",
+        "type": "suffix_backoff"
+      },
+      {
+        "id": "emission_precedence",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "emission_precedence",
+        "status": "partial_source_derived_model",
+        "type": "emission_precedence"
+      },
+      {
+        "id": "viterbi_ties",
+        "path": "model.md",
+        "scope": "Source-derived relation; bounded tests are not a proof",
+        "section": "viterbi_ties",
+        "status": "partial_source_derived_model",
+        "type": "viterbi_ties"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 6558,
+      "start": 2272
+    },
+    "description": "Tagged sentences accumulate uni/bi/tri counts including BOS. Deleted interpolation estimates lambda with trigram-first ties; transitions are log mixtures. Rare word suffix counts and theta construct unknown emissions. Empty input has no finite probability guarantee.",
+    "source_bytes_sha256": "4b10880efcf8e768bc701a98a0f36631fab144484562f4eda693ca55e6dbd3ea"
+  },
+  "id": "en-tag-training",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../tag.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "4e58a3ac65d63ae7988a7bfce3c3f78cf58fefaf1a2e7ea202554dd8e9f407b6"
+  },
+  "status": "partial_source_bound_model"
+}

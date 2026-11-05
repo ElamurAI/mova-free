@@ -1,0 +1,264 @@
+{
+  "children": [
+    {
+      "id": "retention-checkpoint",
+      "path": "checkpoint.groupant"
+    },
+    {
+      "id": "retention-material",
+      "path": "material.groupant"
+    },
+    {
+      "id": "retention-exam",
+      "path": "exam.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Shared whole-source partial projection; fragment byte_range narrows source scope. Macro expansion and semantic analysis absent.",
+      "status": "partial"
+    },
+    "checkpoint_audit": {
+      "path": "model.md#audit",
+      "status": "bounded_executable_evidence"
+    },
+    "complementer": {
+      "path": "model.md#complementer",
+      "role": "legacy_pointer",
+      "status": "partial_relational_specification",
+      "type": "reverse_reconstruction"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition (composition)",
+      "status": "partial_source_derived"
+    },
+    "cost": {
+      "path": "model.md#invariants-cost",
+      "status": "source_derived_conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariants-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md#nonbehavior",
+        "required": true,
+        "scope": "One-call gate and successful retained-payload transition projection",
+        "status": "partial_source_derived_inner_bound",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md#complementer",
+        "required": true,
+        "scope": "Compatible checkpoint states, teaching identities and exam antecedents",
+        "status": "partial_relational_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "evidence": "model.md#tests",
+        "id": "checkpoint-loss",
+        "path": "model.md#persistence",
+        "required": false,
+        "scope": "Persisted payload equivalence classes and rebuilt derived indexes",
+        "status": "partial_specification_with_bounded_executable_witnesses",
+        "type": "persistence_information_loss"
+      },
+      {
+        "id": "identity-partitions",
+        "path": "model.md#identities",
+        "required": false,
+        "scope": "Teaching and scored-assessment identity dependencies",
+        "status": "partial_projection_specification",
+        "type": "identity_partition"
+      },
+      {
+        "id": "schema-layout-boundary",
+        "path": "model.md",
+        "required": false,
+        "scope": "Envelope schema and runtime weight-layout admissibility",
+        "section": "schema-layout-boundary",
+        "status": "partial_source_derived_specification",
+        "type": "compatibility_boundary"
+      },
+      {
+        "id": "provenance-reconstruction",
+        "path": "model.md",
+        "required": false,
+        "scope": "Necessary ledger/text antecedents of accepted graph sources",
+        "section": "provenance-reconstruction",
+        "status": "partial_source_derived_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "edge-topology-boundary",
+        "path": "model.md",
+        "required": false,
+        "scope": "Global-edge range exclusion without topology guarantees",
+        "section": "edge-topology-boundary",
+        "status": "partial_source_derived_specification",
+        "type": "behavior_complement"
+      },
+      {
+        "evidence": "model.md#tests",
+        "id": "canonical-payload-fiber",
+        "path": "model.md",
+        "required": false,
+        "scope": "Accepted vector orders mapping to one canonical payload",
+        "section": "canonical-payload-fiber",
+        "status": "partial_specification_with_bounded_executable_witnesses",
+        "type": "canonicalization_preimage"
+      },
+      {
+        "id": "index-order-reconstruction",
+        "path": "model.md",
+        "required": false,
+        "scope": "Ordered frame folds and quote-owner overwrite semantics",
+        "section": "index-order-reconstruction",
+        "status": "partial_source_derived_specification",
+        "type": "derived_index_reconstruction"
+      },
+      {
+        "id": "checkpoint-write-effects",
+        "path": "model.md",
+        "required": false,
+        "scope": "Exclusive save failure prefixes and durability limits",
+        "section": "checkpoint-write-effects",
+        "status": "partial_source_derived_specification",
+        "type": "failure_effect_relation"
+      },
+      {
+        "id": "split-write-effects",
+        "path": "model.md",
+        "required": false,
+        "scope": "Two sequential artifact writes without rollback",
+        "section": "split-write-effects",
+        "status": "partial_source_derived_specification",
+        "type": "partial_commit_relation"
+      },
+      {
+        "id": "split-input-fiber",
+        "path": "model.md",
+        "required": false,
+        "scope": "Compatible source lines behind separated material",
+        "section": "split-input-fiber",
+        "status": "partial_source_derived_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "practice-transition-boundary",
+        "path": "model.md",
+        "required": false,
+        "scope": "Admissible new-ingestion and deliberate-practice states",
+        "section": "practice-transition-boundary",
+        "status": "partial_source_derived_specification",
+        "type": "behavior_complement"
+      },
+      {
+        "evidence": "model.md#tests",
+        "id": "lesson-reuse-selection",
+        "path": "model.md",
+        "required": false,
+        "scope": "Smallest ledger match under number substitution",
+        "section": "lesson-reuse-selection",
+        "status": "partial_specification_with_bounded_executable_witnesses",
+        "type": "ordered_match_relation"
+      },
+      {
+        "evidence": "model.md#tests",
+        "id": "lesson-number-frontier",
+        "path": "model.md",
+        "required": false,
+        "scope": "Maximum-key successor, overflow and reserved number",
+        "section": "lesson-number-frontier",
+        "status": "partial_specification_with_bounded_executable_witnesses",
+        "type": "allocation_boundary"
+      },
+      {
+        "id": "exam-score-passivity",
+        "path": "model.md",
+        "required": false,
+        "scope": "Payload preservation and limits of gold-label passivity",
+        "section": "exam-score-passivity",
+        "status": "partial_source_derived_specification",
+        "type": "observation_noninterference"
+      },
+      {
+        "id": "assessment-presentation-order",
+        "path": "model.md",
+        "required": false,
+        "scope": "Test/exam traversal and deterministic shuffle seed",
+        "section": "assessment-presentation-order",
+        "status": "partial_source_derived_specification",
+        "type": "ordering_relation"
+      },
+      {
+        "id": "diagnosis-partition",
+        "path": "model.md",
+        "required": false,
+        "scope": "Ordered diagnostic branch predicates over answer evidence",
+        "section": "diagnosis-partition",
+        "status": "partial_source_derived_specification",
+        "type": "decision_partition"
+      },
+      {
+        "id": "training-report-fiber",
+        "path": "model.md",
+        "required": false,
+        "scope": "Aggregate training reports and ambiguous learned changes",
+        "section": "training-report-fiber",
+        "status": "partial_source_derived_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "exam-focus-boundary",
+        "path": "model.md",
+        "required": false,
+        "scope": "Neutral-focus guarantee from constructors versus public mutation",
+        "section": "exam-focus-boundary",
+        "status": "partial_source_derived_specification",
+        "type": "entry_precondition_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_executable_oracles_passed"
+    },
+    "wave34_evidence": {
+      "path": "model.md#wave34-evidence",
+      "status": "bounded_source_bound_execution"
+    }
+  },
+  "extensions": {
+    "epoch_memory": "model.md#descriptant",
+    "mathematical_specification": "../../../../formal/Retention.lean",
+    "notes": "Open container; no new automatic generator, reverse solver or full Rust correspondence proof."
+  },
+  "id": "retained-student",
+  "kind": "groupant",
+  "registry": {
+    "node": "retained-student",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../retention.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "revision": "sha256:89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34",
+    "sha256": "89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34"
+  },
+  "status": "partial_source_reviewed_instance"
+}

@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms lu_decomposition::tests"
+  ],
+  "children": [],
+  "cost": "algorithms/src/lu_decomposition/mod.rs.groupant/model.md#approximant",
+  "description": "Partial-pivot LU with explicit permutation and fresh reconstruction",
+  "forward": [
+    "algorithms/src/lu_decomposition/mod.rs.groupant/model.md#approximant"
+  ],
+  "id": "algorithm-lu-decomposition",
+  "inverse": [
+    "algorithms/src/lu_decomposition/mod.rs.groupant/model.md: behavior_complement then reverse_reconstruction"
+  ],
+  "limitations": [
+    "Partial syntax, finite observations; no universal solution-error or allocator-failure proof",
+    "Unsupported generic accuracy profiles remain gaps"
+  ],
+  "source": "algorithms/src/lu_decomposition/mod.rs",
+  "state": "Deterministic bounded f64; allocation failures environmental"
+}

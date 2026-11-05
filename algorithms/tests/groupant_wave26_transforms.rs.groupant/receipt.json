@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-30",
+  "evidence": [
+    {
+      "name": "composition-debug1.log",
+      "sha256": "a2929a10f6ccf5dcc22594c1ba7b13a766b8497358119c2834c8d92f970f1041"
+    },
+    {
+      "name": "composition-debug2.log",
+      "sha256": "f5a2a99d864ae62d752ea78165ca970dcc257f328d5b5cda96f2663933aa3f03"
+    },
+    {
+      "name": "composition-release1.log",
+      "sha256": "33299ed3b6d95ad9ab5e61f8b4255c635154152023bf9060eac9467cb3a7020c"
+    },
+    {
+      "name": "composition-release2.log",
+      "sha256": "e5ece2ae3ab4f1ffc31584ab81925d8a2923e0f3847cbb61848b9e3c04f7670a"
+    },
+    {
+      "name": "composition-clippy.log",
+      "sha256": "04a0fdc2387f0f73994ba1a65017ecdd03539fe2119383651ae24839aa1de553"
+    },
+    {
+      "name": "composition-controls.log",
+      "sha256": "8cfaaf0a72d1188871d3f6460561e8c08059f0f1560e091bb61df7eb3bdf88fa"
+    },
+    {
+      "name": "composition-mutant.log",
+      "sha256": "62d82deb57149366a1b030a67686832ada48132f9caa62d9d65c23cfce8dbe84"
+    },
+    {
+      "name": "composition-restored.log",
+      "sha256": "a51fe485df13c245f31ae5f92f95ff391eaaf4398d45eb56ffcf7780dee037bc"
+    },
+    {
+      "name": "composition-syntax1.json",
+      "sha256": "59b3bf98b1813212a7b00cfe7da7b6d80a7ce3229228ba3c60de30c9972c705a"
+    },
+    {
+      "name": "composition-syntax2.json",
+      "sha256": "59b3bf98b1813212a7b00cfe7da7b6d80a7ce3229228ba3c60de30c9972c705a"
+    }
+  ],
+  "external_run": "$MOVA_DATA/runs/octopus-wave26-transforms-2026-10-30",
+  "limitations": [
+    "Finite checks only; no timing"
+  ],
+  "observations": "Three tests twice debug and twice release, normalized pass records identical; Goertzel production imaginary-sign mutant compiled and failed selected_spectrum_matches_bluestein_and_direct_dft, restored exact source and all three positives pass. Strict focused Clippy and formatting pass; paired source syntax byte-identical.",
+  "source": "algorithms/tests/groupant_wave26_transforms.rs",
+  "source_sha256": "0b5fc070748b9ceb3502d12b9fc488ce8f5815a34c8991765aeb5174c7af82f7"
+}

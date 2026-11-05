@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named tests in native-commands.json; paired source syntax"
+  ],
+  "children": [],
+  "cost": "Path assembly O(environment string bytes), allocation proportional to returned path. Module declarations have compile/representation evidence only; no runtime codec cost is implied.",
+  "description": "Publishes layer modules and conditionally test module. model_path reads MOVA_DATA; absent or non-Unicode value falls back to HOME plus /mova-data, then appends en/models/en.bin.",
+  "forward": [
+    "Publishes layer modules and conditionally test module. model_path reads MOVA_DATA; absent or non-Unicode value falls back to HOME plus /mova-data, then appends en/models/en.bin."
+  ],
+  "id": "roundtrip-lib",
+  "inverse": [
+    "A resulting PathBuf admits different environment assignments: explicit MOVA_DATA and fallback HOME can yield same path. No unique environment or model contents can be recovered from the path.",
+    "model_path performs no existence check, file open, model load or directory creation. Exports do not themselves run a roundtrip."
+  ],
+  "limitations": [
+    "No annotator/model loading, live corpus, full suite, teacher, GPU or persistent-learning evidence. No executable percentage surrogate: categorical codecs/effects need a useful metric before future caps 1/2/5/10%."
+  ],
+  "source": "tools/roundtrip/src/lib.rs",
+  "state": "Layer representations, diagnostic residuals and fixed environment state; see scoped catalog."
+}

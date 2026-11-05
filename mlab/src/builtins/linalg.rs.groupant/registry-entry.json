@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "builtins::linalg::wave30_tests::transport_and_rectangular_solve plus existing builtins::linalg::tests::lu_perm_convention: representation, QR/SVD agreement, rank-deficient fallback boundary, empty solve and LU permutation."
+  ],
+  "children": [],
+  "cost": "Dense decomposition roughly O(mn min(m,n)), square O(n^3), O(mn+n^2) workspaces; residual products add matrix multiplication. QR custom reflectors and SVD solves scale with RHS count. Backend convergence and allocations remain delegated.",
+  "description": "Public builtins adapt column-major Mat to faer. Real square mldivide uses LU and reciprocal condition estimate, switching to minimum-norm SVD when rc<eps; tall full-rank uses pivoted QR, otherwise SVD. Complex square solve is separate elimination. Factor/eigen/SVD outputs vary by nargout; gates warn on residuals rather than reject.",
+  "forward": [
+    "Public builtins adapt column-major Mat to faer. Real square mldivide uses LU and reciprocal condition estimate, switching to minimum-norm SVD when rc<eps; tall full-rank uses pivoted QR, otherwise SVD. Complex square solve is separate elimination. Factor/eigen/SVD outputs vary by nargout; gates warn on residuals rather than reject."
+  ],
+  "id": "mlab-numerics-linalg",
+  "inverse": [
+    "Given A and exact full-rank X solving AX=B, B=AX is reconstructible; given B and X alone many A fit. Rank-deficient solves choose a minimum-norm representative only under finite numerical thresholds. LU factors with P imply A=P^T LU; eigenvalues alone define a broad similarity fiber."
+  ],
+  "limitations": [
+    "Partial source model; finite synthetic tests only",
+    "No executable surrogate, global numerical proof or resource-failure guarantee"
+  ],
+  "source": "mlab/src/builtins/linalg.rs",
+  "state": "Matrices, backend factors, permutations, nargout, interpreter warnings/fault"
+}

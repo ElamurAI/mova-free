@@ -1,0 +1,28 @@
+{
+  "id": "algorithm-chinese-remainder",
+  "source": "algorithms/src/chinese_remainder/mod.rs",
+  "children": [],
+  "description": "chinese_remainder exact std-only implementation",
+  "state": "Finite slices of u64 congruences and candidate Result<Option<Congruence>,Error> observations, with normal terminating execution.",
+  "cost": "For k constraints and U=u64::MAX, O(k log U) word operations, O(1) auxiliary storage. Preflight O(k). No benchmark or numerical approximation claim.",
+  "forward": [
+    "Preflight the entire list for the first zero modulus and return ZeroModulus{index}. Otherwise fold from (0,1). For current (a,m) and normalized next (b,n), set g=gcd(m,n). If g does not divide b-a, return None. Otherwise L=m*(n/g); if L>u64::MAX return ModulusOverflow. Let t=(((b-a)/g) * inverse(m/g modulo n/g)) modulo n/g, using the Bezout coefficient of m for gcd(m,n). Return updated ((a+m*t) modulo L,L), eventually Some. Modulus one uses the sole zero residue. This operational error policy is part of the target."
+  ],
+  "inverse": [
+    "U minus graph(S) excludes unnormalized Some, wrong LCM or wrong solution class, None for compatible reached prefix, accepting a zero modulus, wrong first zero index, and an overflow not selected by the left-to-right policy. Mathematical unsatisfiability of the entire list alone does not force None when an earlier merge overflows.",
+    "For Some(r,M), all compatible input lists whose total LCM is M and whose intersection is r+M*Z reconstruct the output, with r<M and M>0. Many lists fit: [(8,18)] and [(2,6),(8,9)]. Prefix LCM divides final M, hence no overflow occurs for these valid lists. Error and None preimages additionally obey the preflight and first terminal prefix policy; they do not uniquely recover inputs.",
+    "For Some(r,M), integer solutions are exactly x=r+k*M for k in Z. This family uses mathematical integers; no arbitrary machine multiplication is implied.",
+    "Two positive-modulus constraints intersect iff their residue difference is divisible by gcd(m,n). For a successful list, output satisfies every input and output modulus equals LCM, jointly certifying equality of solution classes rather than mere membership.",
+    "On positive-modulus lists whose total mathematical LCM fits u64, permutations preserve Some or None. Outside this domain, overflow can precede a contradiction in one order and follow it in another. Zero error indices also change under permutation.",
+    "Replacing an input residue by any u64 value congruent modulo its positive modulus preserves output. All Some residues are canonical in [0,M). Residue addition must remain within u64 when used as a machine transformation.",
+    "Within positive-modulus lists of representable total LCM, duplicate constraints and insertion of any residue modulo one preserve output. Adding the returned class to a successful list preserves it. Outside the domain error ordering must be rechecked.",
+    "Any zero modulus wins globally, choosing smallest index. With positive moduli each merge checks incompatibility before overflow, but an earlier overflow masks later contradictions. Empty input is Some(0,1)."
+  ],
+  "checks": [
+    "Five tests per module; debug/release twice; strict Clippy; fmt; compiled production mutant; syntax regenerated twice."
+  ],
+  "limitations": [
+    "Finite observations are not universal proof.",
+    "Partial syntax excludes macro expansion and semantic AST analysis."
+  ]
+}

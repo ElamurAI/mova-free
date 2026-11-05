@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "id": "algorithm-suffix-array-tests",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "a2c7d645ae0f50941e54d074f01f49dd9d50ed2c607fbf638afbb2930c05e89b"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "a2c7d645ae0f50941e54d074f01f49dd9d50ed2c607fbf638afbb2930c05e89b",
+        "domain": "Finite deterministic fixtures and test executions; no arbitrary programs or hidden production state.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "Finite test observations.",
+        "operator": "Exclude acceptance when an asserted production output differs from the independent oracle, a stated conditional law fails under its premises, or a compatible-output fiber differs from direct constraints. Unvisited inputs are outside this finite acceptance claim.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "preimages",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "a2c7d645ae0f50941e54d074f01f49dd9d50ed2c607fbf638afbb2930c05e89b",
+        "domain": "Finite deterministic fixtures and test executions; no arbitrary programs or hidden production state.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "Finite test observations.",
+        "operator": "A passing observation admits every implementation agreeing on the tested fixture observations. Many implementations may differ elsewhere; test success cannot uniquely reconstruct source or establish universal correctness.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "oracle-agreement",
+        "type": "correspondence_relation",
+        "path": "model.md",
+        "section": "oracle-agreement",
+        "status": "partial_source_derived",
+        "subject_revision": "a2c7d645ae0f50941e54d074f01f49dd9d50ed2c607fbf638afbb2930c05e89b",
+        "domain": "Finite deterministic fixtures and test executions; no arbitrary programs or hidden production state.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "Finite test observations.",
+        "operator": "Direct byte-window equality or repeated minimum of complete suffixes supplies the independent specification; production rank and failure-link machinery is not reused.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "premise-boundary",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "premise-boundary",
+        "status": "partial_source_derived",
+        "subject_revision": "a2c7d645ae0f50941e54d074f01f49dd9d50ed2c607fbf638afbb2930c05e89b",
+        "domain": "Finite deterministic fixtures and test executions; no arbitrary programs or hidden production state.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "Finite test observations.",
+        "operator": "Tests pair valid relabel/extension transformations with explicit invalid-premise counterexamples; an oracle equality does not license dropping injectivity or byte-order conditions.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "mutation-detection",
+        "type": "distinguishability_relation",
+        "path": "model.md",
+        "section": "mutation-detection",
+        "status": "partial_source_derived",
+        "subject_revision": "a2c7d645ae0f50941e54d074f01f49dd9d50ed2c607fbf638afbb2930c05e89b",
+        "domain": "Finite deterministic fixtures and test executions; no arbitrary programs or hidden production state.",
+        "assumptions": "Rust byte-slice semantics and successful allocation; transformation premises as stated.",
+        "observation_scope": "Finite test observations.",
+        "operator": "Reversing the returned suffix order must fail the boundary test; compilation success and assertion failure, not compilation error, establish this control.",
+        "approximation_semantics": "Source-derived relation; bounded checks are not universal proofs.",
+        "evidence": "model.md#evidence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "tests::format_is_strict",
+    "tests::rejected_command_leaves_world_unchanged",
+    "tests::old_states_stay_immutable",
+    "tests::verdict_respects_order_and_alternatives"
+  ],
+  "children": [],
+  "cost": "Finite fixtures plus delegated parse/apply/snapshot/link costs; no timing/scalability claim.",
+  "description": "text generates numbered sentences; line requires one accepted command; world parses all commands then applies sequentially with panic on first rejection. gate_of requires Err and returns its Gate. Selected checks cover strict format, rollback after bad have/give, immutable versions after later deltas, and ordered/alternative verdict matching. Other v1/v2 examples and natural-language reader cases remain unexecuted. Observation relation for rejection: O(apply(W,c))=O(W) for the tested rejected c, O=(character versions,event count,links-valid). Historical relation snap(W_after,C1,v_saved)=snap(W_before,C1,v_saved).",
+  "forward": [
+    "text generates numbered sentences; line requires one accepted command; world parses all commands then applies sequentially with panic on first rejection. gate_of requires Err and returns its Gate. Selected checks cover strict format, rollback after bad have/give, immutable versions after later deltas, and ordered/alternative verdict matching. Other v1/v2 examples and natural-language reader cases remain unexecuted. Observation relation for rejection: O(apply(W,c))=O(W) for the tested rejected c, O=(character versions,event count,links-valid). Historical relation snap(W_after,C1,v_saved)=snap(W_before,C1,v_saved).",
+    "Version comparisons are value equality, not pointer identity; format failures precede execution. New current snapshot differs while historical snapshot/delta stays equal."
+  ],
+  "id": "world-tests",
+  "inverse": [
+    "Selected fixture relation excludes successful mismatched have C2 O1, mutation of an old C1 snapshot, accepting duplicate to= fields and matching fox>crow against crow then fox evidence. These finite assertions do not prove all states.",
+    "Passing rollback constrains observed character versions, event count and link validity for two rejected commands, leaving unobserved fields unconstrained. Verdict Hit admits any answer containing the matched ordered alternatives; original question cannot be reconstructed."
+  ],
+  "limitations": [
+    "Only four synthetic tests executed; no model, stored VMM replay or held-out fixtures",
+    "Finite assertions not executor proof; executable percentage approximant unsupported"
+  ],
+  "source": "world/src/tests.rs",
+  "state": "Synthetic Text/World, parsed Lines, gates, version snapshots and query Verdicts; also unexecuted saved fixtures/parser-dependent tests."
+}

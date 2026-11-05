@@ -1,0 +1,85 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-fbench-loading-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-fbench-loading-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-fbench-loading-coupling",
+        "path": "model.md",
+        "section": "coupling",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      },
+      {
+        "id": "world-fbench-loading-observation-fiber",
+        "path": "model.md",
+        "section": "observation-fiber",
+        "status": "partial_source_model",
+        "type": "information_loss"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 5697,
+      "start": 3999
+    },
+    "description": "Items skip the first line, skip exactly empty lines, parse five tab-separated metadata cells and keep the remaining text verbatim. Gold skips short rows, parses ID/index, inserts ID before frame validity, stably sorts frames by numeric index."
+  },
+  "id": "world-fbench-loading",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../fbench.rs",
+    "sha256": "cc89a6255dc4c886743ed97825a00fbc0a6312257a96e65f3dc7d6ff82b24c14"
+  },
+  "status": "partial_source_bound_model"
+}

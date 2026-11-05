@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test --offline --locked -p onto --bin onto -- --exact --test-threads=1 model::wave29::representation_and_lookup_boundaries",
+    "Paired source syntax; repeated bounded debug/release tests; mapped compiled controls"
+  ],
+  "children": [],
+  "cost": "Slices O(1), word lookup O(log W) string comparisons, LU lookup O(log L), synset O(C); rendering allocates; no validation cost inside accessors.",
+  "description": "Public SoA/CSR graph accesses off[i]..off[i+1]; binary word search needs sorted dictionary; LU lookup uses two word partition points. find_synset returns first matching OEWN key/POS. Enum byte decoders return None outside table.",
+  "forward": [
+    "Public SoA/CSR graph accesses off[i]..off[i+1]; binary word search needs sorted dictionary; LU lookup uses two word partition points. find_synset returns first matching OEWN key/POS. Enum byte decoders return None outside table."
+  ],
+  "id": "onto-model",
+  "inverse": [
+    "Lookup result constrains observed dictionary location only; unobserved arrays arbitrary. cid_str is not unique for duplicate keys; first matching Cid chosen."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no semantic proof",
+    "Categorical/structural/effect semantics lack executable percent surrogate",
+    "Only selected synthetic branches tested; external effects unexecuted"
+  ],
+  "source": "onto/src/model.rs",
+  "state": "Offsets/dimensions/UTF8 boundaries and IDs assumed valid via external store::check; public mutation can violate them. Default graph has zero words/concepts; n_words saturating subtraction."
+}

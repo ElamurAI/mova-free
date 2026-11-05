@@ -241,6 +241,7 @@ pub fn run(cmds: &[Cmd], sents: &[String]) -> Run {
     let mut answer = None;
     let mut seen: Vec<Q> = Vec::new();
     let mut upto = 0;
+    let mut prefix_ends = vec![0];
     for c in cmds {
         if c.sent == 0 || c.sent > sents.len() {
             errors.push(format!("{}: sentence @{} does not exist (there are {})", c.line, c.sent, sents.len()));
@@ -248,12 +249,13 @@ pub fn run(cmds: &[Cmd], sents: &[String]) -> Run {
         }
         while upto < c.sent {
             seen.extend(sent_numbers(&sents[upto]));
+            prefix_ends.push(seen.len());
             upto += 1;
         }
         let mut ns = Vec::new();
         nums_of(&c.expr, &mut ns);
         for (v, s) in &ns {
-            let ok = seen.contains(v) || IMPLIED.iter().any(|k| q(*k) == *v) || *v == q(1) || *v == q(0) || IMPLIED.iter().any(|k| q(1) / q(*k) == *v);
+            let ok = seen[..prefix_ends[c.sent]].contains(v) || IMPLIED.iter().any(|k| q(*k) == *v) || *v == q(1) || *v == q(0) || IMPLIED.iter().any(|k| q(1) / q(*k) == *v);
             if !ok {
                 errors.push(format!("{}: number {s} not from the text up to sentence @{}", c.line, c.sent));
             }
@@ -277,7 +279,10 @@ pub fn run(cmds: &[Cmd], sents: &[String]) -> Run {
                     Some(x) => {
                         st.insert(f, x - val.clone());
                     }
-                    None => errors.push(format!("{}: transfer from «{f}», which does not exist yet", c.line)),
+                    None => {
+                        errors.push(format!("{}: transfer from «{f}», which does not exist yet", c.line));
+                        continue;
+                    }
                 }
                 let t = cur(&c.target, &st).unwrap_or(q(0));
                 st.insert(c.target.clone(), t + val);
@@ -626,4 +631,86 @@ pub fn stats(dir: &std::path::Path) -> Result<()> {
     println!("principles: {kinds:?}");
     println!("actions: {verbs:?}");
     Ok(())
+}
+
+#[cfg(test)]
+mod wave8_models {
+    use super::*;
+
+    #[test]
+    fn bounded_expression_oracle() {
+        for a in 0..=8 {
+            for b in 1..=8 {
+                for c in 0..=8 {
+                    let text = format!("({a} + {c}) / {b} - {c} * {a}");
+                    let expected = q(a + c - c * a * b) / q(b);
+                    assert_eq!(eval(&parse_expr(&text).unwrap(), &HashMap::new()).unwrap(), expected);
+                }
+            }
+        }
+        for bad in ["-2", "1 +", "(2 + 3", "2 3", "a", "a."] {
+            assert!(parse_expr(bad).is_err(), "{bad}");
+        }
+        assert!(eval(&parse_expr("1 / 0").unwrap(), &HashMap::new()).is_err());
+    }
+
+    #[test]
+    fn transfer_conservation_and_alias() {
+        for initial in 0..=8 {
+            for amount in 0..=8 {
+                for target in ["b.x", "a.x"] {
+                    let script = format!("@1 set a.x = {initial} k=given\n@1 move a.x -> {target} = {amount} k=transfer\n@1 ask a.x");
+                    let (cs, errors) = parse_script(&script);
+                    assert!(errors.is_empty());
+                    let r = run(&cs, &["There are 0 1 2 3 4 5 6 7 8.".into()]);
+                    assert!(r.errors.is_empty(), "{:?}", r.errors);
+                    assert_eq!(r.state.values().cloned().fold(q(0), |a, b| a + b), q(initial));
+                    assert_eq!(r.state["a.x"], q(if target == "a.x" { initial } else { initial - amount }));
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn backward_anchor_cannot_borrow_future_number() {
+        let (cs, errors) = parse_script("@2 set a.x = 19 k=given\n@1 set b.x = 19 k=given\n@2 ask a.x");
+        assert!(errors.is_empty());
+        let r = run(&cs, &["There are 11 apples.".into(), "There are 19 pears.".into()]);
+        assert_eq!(r.errors.iter().filter(|e| e.contains("not from the text")).count(), 1);
+    }
+
+    #[test]
+    fn backward_anchor_references_use_command_order_state() {
+        // Literal provenance is sentence-local; references carry no anchor provenance.
+        let script = "@2 set a.x = 19 k=given\n@1 set b.x = a.x k=given\n@1 ask b.x";
+        let (answer, errors) = check(script, "There are 11 apples. There are 19 pears.", &q(19));
+        assert!(errors.is_empty(), "{errors:?}");
+        assert_eq!(answer, Some(q(19)));
+    }
+
+    #[test]
+    fn missing_transfer_source_preserves_state() {
+        let (cs, _) = parse_script("@1 set b.x = 7 k=given\n@1 move a.x -> b.x = 2 k=transfer\n@1 ask b.x");
+        let r = run(&cs, &["There are 7 things.".into()]);
+        assert_eq!(r.state["b.x"], q(7));
+        assert_eq!(r.answer, Some(q(7)));
+        assert_eq!(r.errors.len(), 1);
+        assert!(r.errors[0].contains("does not exist"));
+    }
+
+    #[test]
+    fn answer_fibers_and_text_boundaries() {
+        let mut fiber = Vec::new();
+        for a in 0..=4 {
+            for b in 0..=4 {
+                let (cs, _) = parse_script(&format!("@1 set a.x = {a} k=given\n@1 add a.x = {b} k=gain\n@1 ask a.x"));
+                let r = run(&cs, &["0 1 2 3 4".into()]);
+                if r.answer == Some(q(4)) { fiber.push((a, b)); }
+            }
+        }
+        assert_eq!(fiber, vec![(0,4), (1,3), (2,2), (3,1), (4,0)]);
+        assert_eq!(sentences("It costs $2.50. Why? Yes! tail"), vec!["It costs $2.50.", "Why?", "Yes!", "tail"]);
+        let blocks = split_blocks("ignored\n=== x\nfirst\n=== x\n```text\nsecond\n```");
+        assert_eq!(blocks["x"], "second\n");
+    }
 }

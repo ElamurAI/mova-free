@@ -1,0 +1,46 @@
+{
+  "checks": [
+    "cargo test -p qagen --test groupant_wave17",
+    "cargo test -p qagen --test groupant_wave18",
+    "cargo test -p qagen --test groupant_wave20"
+  ],
+  "children": [
+    "qagen-schema",
+    "qagen-prompt",
+    "qagen-gate",
+    "qagen-select",
+    "qagen-groupant-wave17",
+    "qagen-run",
+    "qagen-report",
+    "qagen-groupant-wave18",
+    "qagen-fix",
+    "qagen-lemma",
+    "qagen-lib",
+    "qagen-main",
+    "question-generation-composition-wave20"
+  ],
+  "cost": "Reached selection, prompt rendering and gate costs; no measured throughput or full pipeline bound.",
+  "description": "Supplied paragraph selection, versioned prompt/schema and gated question coordinates.",
+  "forward": [
+    "Select indices retain original ordering; prompts and supplied answers share one-based batch/sentence coordinates and rule version.",
+    "Wave18 question-generation integration reaches run retry resolution, report gathering and collection on synthetic Rule V1 supplied inputs. One join connects retry selection, accepted s1 answer and persisted ledger aggregates; another checks malformed-ledger and u64-overflow preflight errors preserve all three existing report artifacts; a Unix join propagates retry metadata ELOOP through gather despite a valid primary. Costs cover reached raw/ledger parsing, aggregation and output bytes, not transport or model inference. These are distinct supplied-input observations, with no live teacher, model, database or corpus operation.",
+    "Three synthetic joins compose real Fixes validation, prompt numbering, repair gating, anchor-ID mapping, span checking and injected lemma classification. They preserve admitted behavior and exclude invalid preflight side effects without teacher/model execution."
+  ],
+  "id": "question-generation",
+  "inverse": [
+    "Universe: supplied Para/Sent/Pick/skip, versioned schema/prompt and independent TSV observations. Exclude skipped/ineligible selections, source-coordinate substitution for local p/anchors, invented labels, V2 explicit nonanchor/context spans and punctuation-changing spans. Prompt semantic constraints not enforced by the gate remain outside this complement; no acquisition/teacher behavior is inferred.",
+    "Retain every input vector, metadata, raw sentence text, Pick/skip and response sharing selected identities, prompt/gate observations and quotas. The same retained batch plus p/anchor recovers source doc/para/sent_id; gate output alone cannot. Case/quote/whitespace normalization has many raw preimages, selection loses rejected content and quotas lose weight/cap details.",
+    "Extend question-generation's complement with choosing primary over a valid retry, dropping source/batch/sentence identity, inconsistent collected/disk accounting, report artifact modification before the tested malformed/overflow ledger preflight completes, and retry metadata errors reclassified as absence or fallback. This preflight relation excludes concurrent writers, late-write rollback, semantic QA accuracy and unexecuted acquisition paths; it is not full transactional reporting.",
+    "Retain all directory/raw/ledger antecedents consistent with selected retry identity, accepted row coordinates, returned aggregates and persisted bytes. Aggregate totals cannot recover call order, discarded primary/rejected text or unique token allocations. A preflight failure plus unchanged artifacts reconstructs only the observed old bytes under the tested error condition. Metadata failure constrains the observed error path without uniquely identifying filesystem topology.",
+    "Admissible repair outputs retain item and paragraph identity, valid one-based anchors, gate-approved spans or preserved implicit answers. Its complement includes dropped/misaligned items, out-of-range anchors, invalid UTF-8 slicing, callback effects before invalid-input rejection and explicit outputs failing the span relation. Synthetic checks cover only selected branches.",
+    "A repaired explicit span identifies compatible sentences/anchors but not a unique old answer; implicit output preserves the chosen old answer and anchors but loses generating prompt provenance. Lemma coverage is many-to-one in forms, order and content labels. Validation errors retain many malformed antecedents; no inverse dataset reconstruction."
+  ],
+  "limitations": [
+    "Bounded native and partial syntax evidence is recorded in model.md#wave17-evidence.",
+    "Prompt semantics exceed executable gate guarantees; no teacher, database or full generation pipeline is tested.",
+    "Wave18 finite evidence recorded; supplied-input checks do not execute acquisition or establish semantic accuracy.",
+    "Wave20 repeated supplied-input evidence is recorded in model.md#wave20-evidence; no full-school, teacher/model or universal accuracy conclusion follows."
+  ],
+  "source": null,
+  "state": "Synthetic Para/Sent/Pick, explicit skip identities, rule versions and independently supplied TSV; no live teacher or corpus."
+}

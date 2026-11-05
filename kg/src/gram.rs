@@ -190,3 +190,23 @@ mod tests {
         assert_eq!(Gram::from_vesum("verb:perf:past:f").to_string(), "verb.s.f.past.perf");
     }
 }
+
+#[cfg(test)]
+mod wave29 {
+    use super::*;
+    #[test]
+    fn ordered_tags_and_implicit_projection() {
+        assert_eq!(Gram::from_vesum("").pos(), 0);
+        assert_eq!(Gram::from_vesum("alien:unknown").pos(), 13);
+        assert_eq!(Gram::from_vesum("noun:p:f:v_rod:v_naz").num(), PL);
+        assert_eq!(Gram::from_vesum("noun:p:f:v_rod:v_naz").case(), NAZ);
+        let p = Gram::from_vesum("verb:perf:past:f:2").with(NEG);
+        let s = Gram::implicit_subject(p);
+        assert_eq!(
+            (s.pos(), s.case(), s.num(), s.gender(), s.person()),
+            (NOUN, NAZ, SG, 2, 2)
+        );
+        assert!(s.flag(PRON) && s.flag(IMPLICIT) && !s.flag(NEG));
+        assert_eq!(s.tense(), 0);
+    }
+}

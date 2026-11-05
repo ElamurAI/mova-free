@@ -72,6 +72,10 @@ pub fn checked() -> Vec<(String, char, String, String, String)> {
 /// The derived principles not yet checked, in a fixed order.
 pub fn pending(k: &crate::know::Knowledge, n: usize) -> Vec<Fact> {
     let done: BTreeSet<String> = checked().into_iter().map(|x| x.0).collect();
+    pending_with(k, &done, n)
+}
+
+fn pending_with(k: &crate::know::Knowledge, done: &BTreeSet<String>, n: usize) -> Vec<Fact> {
     let mut v: Vec<Fact> = k.by_subj.values().flatten().filter(|f| f.source.starts_with("derived from")).filter(|f| !done.contains(&key(f))).cloned().collect();
     v.sort_by(|a, b| key(a).cmp(&key(b)));
     v.dedup_by(|a, b| key(a) == key(b));
@@ -169,6 +173,10 @@ pub fn write_world() -> Result<usize> {
     Ok(good.len())
 }
 
+fn list_step(len: usize, n: usize) -> usize {
+    len.checked_div(n).unwrap_or(1).max(1)
+}
+
 /// `world principles` — what is checked and what waits; `world principles --round` — one batch now.
 pub fn main_args(args: &[String]) -> Result<()> {
     if args.get(1).map(String::as_str) == Some("--round") {
@@ -181,7 +189,7 @@ pub fn main_args(args: &[String]) -> Result<()> {
     if args.get(1).map(String::as_str) == Some("--list") {
         let n: usize = args.get(2).and_then(|x| x.parse().ok()).unwrap_or(40);
         let all = pending(&crate::know::knowledge(), 100_000);
-        for f in all.iter().step_by((all.len() / n).max(1)).take(n) {
+        for f in all.iter().step_by(list_step(all.len(), n)).take(n) {
             let first = f.source.trim_start_matches("derived from «").split("» and «").next().unwrap_or("");
             println!("{}\t{}\t{}", crate::know::world_of(first), statement(f), f.source);
         }
@@ -194,4 +202,113 @@ pub fn main_args(args: &[String]) -> Result<()> {
         println!("  next: {} ({})", statement(&f), f.source);
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod wave12_models {
+    use super::*;
+    use crate::know::{KnowRules, Knowledge, Often};
+
+    fn fact(subj: &str, source: &str) -> Fact {
+        Fact {
+            subj: subj.into(),
+            link: Link::Has,
+            obj: "wings".into(),
+            negated: false,
+            often: Often::Generic,
+            count: None,
+            source: source.into(),
+        }
+    }
+
+    #[test]
+    fn statement_polarity_table_and_provenance_loss() {
+        let rows = [
+            (Link::IsA, "is a", "is not a"),
+            (Link::Has, "has", "does not have"),
+            (Link::Can, "can", "cannot"),
+            (Link::Does, "does this:", "does not do this:"),
+        ];
+        for (link, yes, no) in rows {
+            for negated in [false, true] {
+                let mut f = fact("éagle", "lesson A");
+                f.link = link;
+                f.negated = negated;
+                assert_eq!(
+                    statement(&f),
+                    format!("A éagle {} wings.", if negated { no } else { yes })
+                );
+                let old = statement(&f);
+                f.source = "assessment B".into();
+                f.often = Often::Rarely;
+                f.count = Some("3".into());
+                assert_eq!(
+                    statement(&f),
+                    old,
+                    "surface text does not encode frequency/provenance"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn pending_finite_subset_order_and_stable_provenance() {
+        for mask in 0..8 {
+            for limit in 0..5 {
+                let mut rows = vec![
+                    fact("c", "derived from C"),
+                    fact("a", "derived from first"),
+                    fact("a", "derived from second"),
+                    fact("b", "derived from B"),
+                    fact("d", "lesson only"),
+                ];
+                let mut done = BTreeSet::new();
+                for (i, name) in ["a", "b", "c"].into_iter().enumerate() {
+                    if mask & (1 << i) != 0 {
+                        done.insert(format!("{name}|Has|wings|false"));
+                    }
+                }
+                let k = Knowledge {
+                    by_subj: [("fixture".into(), std::mem::take(&mut rows))].into(),
+                    n: 5,
+                    rules: KnowRules::default(),
+                };
+                let expected: Vec<_> = ["a", "b", "c"]
+                    .into_iter()
+                    .enumerate()
+                    .filter(|(i, _)| mask & (1 << i) == 0)
+                    .map(|(_, s)| s)
+                    .take(limit)
+                    .collect();
+                let got = pending_with(&k, &done, limit);
+                assert_eq!(
+                    got.iter().map(|f| f.subj.as_str()).collect::<Vec<_>>(),
+                    expected
+                );
+                if let Some(a) = got.iter().find(|f| f.subj == "a") {
+                    assert_eq!(a.source, "derived from first");
+                }
+                assert_eq!(k.n, 5);
+            }
+        }
+    }
+
+    #[test]
+    fn zero_list_limit_has_no_division() {
+        for len in 0..20 {
+            for n in 0..20 {
+                let got: Vec<_> = (0..len).step_by(list_step(len, n)).take(n).collect();
+                let expected: Vec<_> = if n == 0 {
+                    vec![]
+                } else {
+                    let stride = (len / n).max(1);
+                    (0..n)
+                        .map(|i| i * stride)
+                        .take_while(|i| *i < len)
+                        .collect()
+                };
+                assert_eq!(got, expected);
+            }
+        }
+    }
 }

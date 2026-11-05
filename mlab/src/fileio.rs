@@ -579,3 +579,35 @@ pub fn value_to_json(v: &Value) -> J {
         _ => J::Null,
     }
 }
+
+#[cfg(test)]
+mod wave30_tests {
+    use super::*;
+    #[test]
+    fn csv_inference_and_json_loss() {
+        let rows = parse_csv("\u{feff}a,b\r\n\"x\ny\",\"q\"\"r\"\n", ',', "fixture").unwrap();
+        assert_eq!(rows.len(), 2);
+        assert_eq!(rows[1].fields[0].text, "x\ny");
+        assert_eq!(rows[1].fields[1].text, "q\"r");
+        assert_eq!(rows[1].fields[1].line, 3);
+        let table = read_csv_table("a,b\n\"1\",\n", ',', "fixture").unwrap();
+        assert!(matches!(table.kinds[0], ColKind::Text));
+        assert!(matches!(table.kinds[1], ColKind::Num));
+        assert!(parse_csv("\"x\"z", ',', "fixture").is_err());
+        let j = parse_json("[{\"a\":1,\"a\":2},{\"b\":true}]", "fixture").unwrap();
+        let t = json_to_table(&j, "fixture").unwrap();
+        assert_eq!(t.names, ["a", "b"]);
+        match &t.columns[0] {
+            Value::Mat(m) => {
+                assert_eq!(m.re[0], 1.0);
+                assert!(m.re[1].is_nan());
+            }
+            _ => panic!("numeric"),
+        }
+        assert_eq!(json_text(&J::Num(f64::INFINITY), false), "null");
+        assert_eq!(
+            write_json_table(&read_csv_table("", ',', "fixture").unwrap()),
+            "[]\n"
+        );
+    }
+}

@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "cargo test -p mova-approx --example groupants",
+    "cargo run --release -p mova-approx --example groupants"
+  ],
+  "cost": "Fixed fixture checks plus seven timing rounds.",
+  "description": "Executable companion/reference validation and bounded CPU timing.",
+  "forward": [
+    "Validate four companions with scoped metrics before timing.",
+    "Separate deterministic checks and timing observations.",
+    "Emit fixed metric/method/assurance classes for caps 1%, 2%, 5%, 10%; finite observations remain separately labeled."
+  ],
+  "id": "approximation-runner",
+  "inverse": [
+    "Retain all inputs matching aggregate projections.",
+    "No timing speedup follows from acceptance."
+  ],
+  "limitations": [
+    "Finite fixtures do not prove universal accuracy or whole-Mova throughput.",
+    "Rank surrogate does not supply partitioning.",
+    "Partial syntax projection present; semantic AST missing."
+  ],
+  "source": "tools/approx/examples/groupants.rs",
+  "state": "(fixed fixtures, four budgets, metric checks, paired durations)"
+}

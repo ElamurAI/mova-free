@@ -1,0 +1,175 @@
+{
+  "children": [
+    "algorithm-kd-tree",
+    "algorithm-kd-tree-tests",
+    "algorithm-bk-tree",
+    "algorithm-bk-tree-tests",
+    "algorithm-interval-tree",
+    "algorithm-interval-tree-tests",
+    "algorithm-treap",
+    "algorithm-treap-tests",
+    "algorithm-splay-tree",
+    "algorithm-splay-tree-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child partial syntax; no composed semantic AST",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Bounded 2D integer points, bounded byte words, closed i64 intervals, or unique i64 ordered keys under each leaf's caps. Query and constructor caps differ.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "search-indexes-behavior-complement",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "Exclude y!=Q(A,x), invalid inputs paired with Ok, missing duplicate indexes, larger-index KD ties, or wrong splay resulting root. Metric/radius units and mutation behavior remain tagged.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_relational_specification",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Bounded 2D integer points, bounded byte words, closed i64 intervals, or unique i64 ordered keys under each leaf's caps. Query and constructor caps differ.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "search-indexes-reverse-reconstruction",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "Q^-1(y)={(A,x):Q(A,x)=y}. Nearest constrains one distance and competitor inequalities, leaving farther coordinates ambiguous. Empty matches admit empty or nonempty disjoint/far data. Key sets forget insertion order/priorities; membership forgets tree shape.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_relational_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Bounded 2D integer points, bounded byte words, closed i64 intervals, or unique i64 ordered keys under each leaf's caps. Query and constructor caps differ.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "search-indexes-metric_units",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "Squared distances, byte edits and endpoint order cannot be substituted; selected indexes require explicit identity mapping.",
+        "path": "model.md",
+        "section": "metric_units",
+        "status": "partial_relational_specification",
+        "type": "metric_units"
+      },
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Bounded 2D integer points, bounded byte words, closed i64 intervals, or unique i64 ordered keys under each leaf's caps. Query and constructor caps differ.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "search-indexes-occurrence_to_set",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "Set insertion can collapse duplicate occurrences; reconstruct all original matches only if a reverse multiplicity map is retained.",
+        "path": "model.md",
+        "section": "occurrence_to_set",
+        "status": "partial_relational_specification",
+        "type": "occurrence_to_set"
+      },
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Bounded 2D integer points, bounded byte words, closed i64 intervals, or unique i64 ordered keys under each leaf's caps. Query and constructor caps differ.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "search-indexes-stateful_access",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "Splay misses change root to last visited; caching by returned boolean alone loses state. Treap observation is shape-neutral.",
+        "path": "model.md",
+        "section": "stateful_access",
+        "status": "partial_relational_specification",
+        "type": "stateful_access"
+      },
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Bounded 2D integer points, bounded byte words, closed i64 intervals, or unique i64 ordered keys under each leaf's caps. Query and constructor caps differ.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "search-indexes-height_resources",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "Explicit priorities have no random balancing guarantee; splay amortization includes initial potential and excludes output traversal.",
+        "path": "model.md",
+        "section": "height_resources",
+        "status": "partial_relational_specification",
+        "type": "height_resources"
+      }
+    ],
+    "tests": {
+      "path": "model.md#wave26-evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "search-indexes",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/bk_tree/mod.rs",
+      "sha256": "0a7f8f3af54eeb8261c40986b4efea131cf9cdcc91e49a5c650c17012d68999d"
+    },
+    {
+      "path": "algorithms/src/bk_tree/tests.rs",
+      "sha256": "d5bdf7651a00bb79c1961466d9bbcee17b6034732f4d75c3d07138cfacfc1ce3"
+    },
+    {
+      "path": "algorithms/src/interval_tree/mod.rs",
+      "sha256": "5e70fe6d2bec67a9635fb9365755eb098208cbc605b19d3aa7041ba2f6cc2595"
+    },
+    {
+      "path": "algorithms/src/interval_tree/tests.rs",
+      "sha256": "80327fc665e74075590803e158ea7d99c33cc75c8c96ff2e2b3e1b91119a253d"
+    },
+    {
+      "path": "algorithms/src/kd_tree/mod.rs",
+      "sha256": "bb55b55591fb5ea0191886202c577ee182c5cf6f029084a622acb93140d0dc1d"
+    },
+    {
+      "path": "algorithms/src/kd_tree/tests.rs",
+      "sha256": "49b56daf2903d56c6cf9d256ccf17aa94064cec398f0305d08864a19155f5f01"
+    },
+    {
+      "path": "algorithms/src/splay_tree/mod.rs",
+      "sha256": "44739bc86ee3edbeb84ad2cb2fd94df5e738b428dc0010db04d56aa95f82607c"
+    },
+    {
+      "path": "algorithms/src/splay_tree/tests.rs",
+      "sha256": "0e5f113072c71967730a1a9192fc1d5c12a05ad4cc4cb72fbd06decf92cc3260"
+    },
+    {
+      "path": "algorithms/src/treap/mod.rs",
+      "sha256": "4311480f9c23dd2b75fc07137e9db0e127683f1a83cf6886fc8a7589d299db3e"
+    },
+    {
+      "path": "algorithms/src/treap/tests.rs",
+      "sha256": "99553fa8bbb480a78e5844b92d5ba6970b3f498a392d245a05af8e0eb6de3dd8"
+    }
+  ],
+  "status": "partial_source_bound_group"
+}

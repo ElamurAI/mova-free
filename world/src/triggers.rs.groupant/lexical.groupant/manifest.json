@@ -1,0 +1,125 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "For lexical helper inputs exclude numeric digit strings and a/an from number_word; exclude unknown unit strings from quantities. Internal number differs and admits a/an.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Given quantities retain every string whose token words carry the same recognized preceding numbers and unit indices, including arbitrary ignored words elsewhere. Given rendered duration retain all seconds in the same formatting fiber.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "unit_lookup",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "quantities emits units in text order, recognizes only exact singular/plural spelling after lowercasing, and attaches only the immediately preceding number. Unit table index and multiplier remain coupled.",
+        "path": "model.md",
+        "section": "unit_lookup",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "dimensional_projection"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "number_grammar",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "number_word lowercases, rejects a/an and numeric digits, recursively adds hyphen-separated known words. Internal number accepts comma-stripped f64 or table entries including a/an. quantities splits hyphens, so twenty-four hours uses four. No full compositional English number parser is claimed.",
+        "path": "model.md",
+        "section": "number_grammar",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "lexical_admission"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "duration_render",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "show_duration chooses largest table unit <= seconds, else nanosecond; formats near-integers exactly else two decimals, singular only when displayed num equals '1'. Multiple seconds values can share text, including a rounded singular; no unique numeric inverse.",
+        "path": "model.md",
+        "section": "duration_render",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "rounding_fiber"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 12877,
+      "start": 10395
+    },
+    "description": "Logical source region \"const NUMBER_WORDS\" through before \"/// What fires\". quantities emits units in text order, recognizes only exact singular/plural spelling after lowercasing, and attaches only the immediately preceding number. Unit table index and multiplier remain coupled. number_word lowercases, rejects a/an and numeric digits, recursively adds hyphen-separated known words. Internal number accepts comma-stripped f64 or table entries including a/an. quantities splits hyphens, so twenty-four hours uses four. No full compositional English number parser is claimed. show_duration chooses largest table unit <= seconds, else nanosecond; formats near-integers exactly else two decimals, singular only when displayed num equals '1'. Multiple seconds values can share text, including a rounded singular; no unique numeric inverse. Parent composition retains shared text/clock/intermediate values. Full-file wrapper and test gaps remain in the root."
+  },
+  "id": "world-triggers-lexical",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../triggers.rs",
+    "sha256": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2"
+  },
+  "status": "partial_source_derived_instance"
+}

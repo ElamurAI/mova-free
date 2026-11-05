@@ -1045,3 +1045,49 @@ impl UkAgg {
         }))
     }
 }
+#[cfg(test)]
+mod wave33 {
+    use super::*;
+    #[test]
+    fn entities_sections_and_translation_partition() {
+        assert_eq!(unescape(b"&amp;lt; &#x41; &bogus;"), "&lt; A &bogus;");
+        assert_eq!(heading("===Noun=="), Some((2, "Noun")));
+        assert_eq!(first_param("|uk|word}}"), "uk");
+        assert_eq!(strip_templates("a{{outer|{{inner}}}}b"), "ab");
+        let mut e = EnAgg::default();
+        e.page(
+            "word",
+            "==English==\n===Noun===\n# A thing.\n# {{plural of|en|thing}}\n{{t|uk|x}}",
+        );
+        let l = &e.langs["English"];
+        assert_eq!(
+            (
+                l.sections,
+                l.pos,
+                l.defs,
+                l.defs_formof,
+                l.trans,
+                l.trans_uk
+            ),
+            (1, 1, 2, 1, 1, 1)
+        );
+        e.page("word/translations", "{{t|uk|x}}{{t|fr|y}}");
+        assert_eq!(
+            (e.pages, e.trans_pages, e.trans_items, e.trans_items_uk),
+            (2, 1, 2, 1)
+        );
+        assert_eq!(e.langs["English"].sections, 1);
+        let mut u = UkAgg::default();
+        u.page(
+            "x",
+            "{{=uk=}}\n===Значення===\n# слово\n===Етимологія===\nВід abcdef",
+        );
+        assert_eq!(
+            (u.langs["uk"].defs_filled, u.langs["uk"].sec_etym_text),
+            (1, 1)
+        );
+        let mut years = BTreeMap::new();
+        assert_eq!(sumcite("A, 1952, 75; B, 1700, 9", &mut years), 1);
+        assert_eq!(years["1952"], 1);
+    }
+}

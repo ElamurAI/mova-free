@@ -1,0 +1,896 @@
+{
+  "children": [
+    "placement-metadata",
+    "global-catalog",
+    "hot-state",
+    "world-principles",
+    "graph-language-encoding",
+    "ontology-core-selection",
+    "ontology-query-state",
+    "ontology-external-alignment",
+    "annotation-store-adapters",
+    "add-on-modules"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "status": "scoped_specification"
+    },
+    "ast": {
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition and invariant",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "status": "scoped_specification"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "Operation-tagged metadata, compiled catalog and bounded local-state observations.",
+        "evidence": "Child finite tests and source-level scope checks; global-storage oracles remain prospective.",
+        "id": "nonbehavior",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Tagged child complement inner bounds without sequential-composition inference.",
+        "path": "model.md",
+        "required": true,
+        "scope": "Operation-tagged metadata, compiled catalog and bounded local-state observations.",
+        "section": "nonbehavior",
+        "status": "scoped_specification",
+        "subject_revision": "Parent source_bindings with explicit child domains.",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "Operation-tagged metadata, compiled catalog and bounded local-state observations.",
+        "evidence": "Child finite tests and source-level scope checks; global-storage oracles remain prospective.",
+        "id": "antecedents",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Tagged child preimages retain ambiguity; erased tags widen antecedents.",
+        "path": "model.md",
+        "required": true,
+        "scope": "Operation-tagged metadata, compiled catalog and bounded local-state observations.",
+        "section": "antecedents",
+        "status": "scoped_specification",
+        "subject_revision": "Parent source_bindings with explicit child domains.",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "prospective admitted record q with identity",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "durability-handoff",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Desired accept(q) -> q in G after durable acknowledgment. g=1 is a recommendation, not acknowledgment; no such write transition is implemented here.",
+        "path": "model.md",
+        "required": false,
+        "scope": "prospective admitted record q with identity",
+        "section": "durability-handoff",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "interaction_obligation"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "eligible records and prospective RAM set H",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "eligibility-residency",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "h=1 licenses consideration; desired H subset of eligible durable records under a separate budget. h does not imply q in H.",
+        "path": "model.md",
+        "required": false,
+        "scope": "eligible records and prospective RAM set H",
+        "section": "eligibility-residency",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "projection_boundary"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "prospective eviction of q",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "eviction-conservation",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Desired evict(q):(G,H)->(G,H minus {q}); global content and provenance unchanged.",
+        "path": "model.md",
+        "required": false,
+        "scope": "prospective eviction of q",
+        "section": "eviction-conservation",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "interaction_obligation"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "prospective skeleton promotion",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "compile-conservation",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Desired promote(q):(G,H,K)->(G,H,K') retaining q and evidence; k=1 is only a proposal.",
+        "path": "model.md",
+        "required": false,
+        "scope": "prospective skeleton promotion",
+        "section": "compile-conservation",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "interaction_obligation"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "leaf flags consumed by two hypothetical downstream handlers",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "conflict-independent-activation",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Conflict handler consumes a, activation handler consumes h. For equal i and differing t, residency eligibility is equal even when alternatives differ.",
+        "path": "model.md",
+        "required": false,
+        "scope": "leaf flags consumed by two hypothetical downstream handlers",
+        "section": "conflict-independent-activation",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "wiring_constraint"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "review metadata joined to evidence",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "review-not-truth",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "r is reviewed applicability/evidence status; neither r nor k implies truth. Equal flags can describe mutually inconsistent assertions.",
+        "path": "model.md",
+        "required": false,
+        "scope": "review metadata joined to evidence",
+        "section": "review-not-truth",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "information_loss"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "prospective derived claim q",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "premise-lineage",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Desired durable record carries premise IDs, derivation rule and model version; Boolean Decision has no encoding for these.",
+        "path": "model.md",
+        "required": false,
+        "scope": "prospective derived claim q",
+        "section": "premise-lineage",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "provenance_obligation"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "prospective G revision with resident q",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "revision-refresh",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Desired cached(q.version)=G(q).version or mark stale before use; metadata F does not inspect versions.",
+        "path": "model.md",
+        "required": false,
+        "scope": "prospective G revision with resident q",
+        "section": "revision-refresh",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "version_coherence"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "prospective changed premise p",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "derivation-invalidation",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Desired affected derived records reachable from p become invalid or revalidated with history retained; metadata does not discover dependency edges.",
+        "path": "model.md",
+        "required": false,
+        "scope": "prospective changed premise p",
+        "section": "derivation-invalidation",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "dependency_obligation"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "record scope and recommendation scope",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "scope-join",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Intended consumer must bind Candidate.scope to the same record/version being considered; otherwise Instance can borrow a general mechanism decision.",
+        "path": "model.md",
+        "required": false,
+        "scope": "record scope and recommendation scope",
+        "section": "scope-join",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "identity_coherence"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "prospective resident selection x",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "budget-feasibility",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "For m_j>=0 and M>=0 require sum x_j*m_j<=M and x_j<=eligible_j; policy supplies eligibility only.",
+        "path": "model.md",
+        "required": false,
+        "scope": "prospective resident selection x",
+        "section": "budget-feasibility",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "resource_constraint"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "prospective eligible records with fixed costs",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "utility-choice",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Proposed maximize sum x_j*(p_j*c_j-r_j) under budget; alternatives can tie, so no unique selected set is claimed.",
+        "path": "model.md",
+        "required": false,
+        "scope": "prospective eligible records with fixed costs",
+        "section": "utility-choice",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "counterfactual_objective"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "prospective ingest -> admitted -> recommend",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "admission-order",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Candidate contract begins after admission; recording unverified claims must retain their unverified status. F cannot implement admission or downgrade evidence.",
+        "path": "model.md",
+        "required": false,
+        "scope": "prospective ingest -> admitted -> recommend",
+        "section": "admission-order",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "stage_order_obligation"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "prospective write then activate sequence",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "failure-atomicity",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Desired failed durable write cannot produce a falsely durable success receipt; tentative working memory needs distinct status. No transaction implementation is modeled.",
+        "path": "model.md",
+        "required": false,
+        "scope": "prospective write then activate sequence",
+        "section": "failure-atomicity",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "failure_prefix"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "knowledge-memory versus retained school checkpoint",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "checkpoint-boundary",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Registered closure contains placement-metadata and compiled global-catalog. Neither catalog tables nor a school checkpoint graph establish a durable global store, resident cache or automatic skeleton generator.",
+        "path": "model.md",
+        "required": false,
+        "scope": "knowledge-memory versus retained school checkpoint",
+        "section": "checkpoint-boundary",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "scope_boundary"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "prospective duplicate admitted record/version",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "replay-idempotence",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Desired replay preserves one canonical identity and provenance history; pure repeated F outputs do not establish idempotent persistence.",
+        "path": "model.md",
+        "required": false,
+        "scope": "prospective duplicate admitted record/version",
+        "section": "replay-idempotence",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "interaction_obligation"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "n independent recommendations plus hypothetical downstream work",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "aggregate-cost",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Metadata work O(n); total cost n*O(1)+write+fetch+refresh+training terms, all downstream terms unknown here. No RAM-speedup claim.",
+        "path": "model.md",
+        "required": false,
+        "scope": "n independent recommendations plus hypothetical downstream work",
+        "section": "aggregate-cost",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "cost_composition"
+      },
+      {
+        "approximation_semantics": "See catalog relation and shared evidence boundary",
+        "assumptions": "model.md and catalog domain",
+        "domain": "decision history under a known policy version",
+        "evidence": "model.md#tests; prospective oracles unexecuted",
+        "id": "versioned-policy-recovery",
+        "observation_scope": "single transition unless catalog specifies a trace",
+        "operator": "Compatible histories require each d_j=F_version(c_j); without version, union over possible policies enlarges fibers. Current manifest hash binds only current metadata policy.",
+        "path": "model.md",
+        "required": false,
+        "scope": "decision history under a known policy version",
+        "section": "versioned-policy-recovery",
+        "status": "partial_interaction_specification",
+        "subject_revision": "global/src/placement.rs sha256:63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "tagged-state-fibers",
+        "path": "model.md",
+        "scope": "Compatible antecedents retain operation tags and child domains; decoded text is not a unique stored history or semantic state.",
+        "section": "tagged-state-fibers",
+        "status": "partial_source_derived",
+        "type": "tagged_reconstruction_boundary"
+      },
+      {
+        "id": "line-codec-composition",
+        "path": "model.md",
+        "scope": "Within bounded line fixtures, apply(a,diff(a,b))=b; no claim that arbitrary malformed deltas or persisted artifacts represent learned knowledge.",
+        "section": "line-codec-composition",
+        "status": "partial_source_derived",
+        "type": "generated_delta_reconstruction"
+      },
+      {
+        "id": "ancestry-before-decoding",
+        "path": "model.md",
+        "scope": "Checked ancestry terminates on finite parent maps and rejects reachable cycles; unvisited components and filesystem publication remain distinct.",
+        "section": "ancestry-before-decoding",
+        "status": "partial_source_derived",
+        "type": "validated_history_path"
+      },
+      {
+        "id": "knowledge-memory-wave12-principle-review-projection",
+        "path": "model.md",
+        "scope": "Supplied knowledge facts pass through statement rendering and derived/not-yet-checked key selection before optional review and publication. Rendering retains the selected link and negation but discards frequency, source and derivation metadata; it is not a replacement for the durable fact. Selection and review cannot by themselves establish truth or promote every derived claim to the skeleton. Leaf fixtures execute the pure rendering/selection relations; know storage, teacher/cache I/O and multi-file publication remain external dependencies.",
+        "section": "knowledge-memory-wave12-principle-review-projection",
+        "status": "partial_source_model",
+        "type": "derived_knowledge_review_boundary"
+      },
+      {
+        "assumptions": "No live datasets/DB/teacher/GPU/held-out execution. Tatoeba ingestion/show/stats and nonempty optional build tables remain unexecuted. Hash-map frequency tie order in stats is not deterministic; float/u32 frequency overflow and nontransactional persistence have no new guarantee. Exact categorical semantics have no useful executable percentage approximant established.",
+        "domain": "Finite UTF-8 synthetic text, unchanged tiny bz2 dictionary between passes, valid parser-derived Gram,1..8 word parse gate,1..12 explicit generation heads, aligned edge vectors below2^32, sorted src for out, valid unique registry files under single writer. Build fixtures use isolated temporary seed/out directories with absent optional closed tables. Resource exhaustion outside tested domain.",
+        "id": "wave29-graph-language-encoding-grammar-transport",
+        "operator": "Morph Gram::from_vesum keys meet uk analysis grammar and textgen synth grammar after NEG/IMPLICIT masking. Implicit subject copies predicate person/number/gender; main stores fact gram in every gs and member gram in gd. This preserves packed bits, not original VESUM tags, discarded xp tags in Gram, or semantic correctness.",
+        "path": "model.md",
+        "section": "wave29-graph-language-encoding-grammar-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No live datasets/DB/teacher/GPU/held-out execution. Tatoeba ingestion/show/stats and nonempty optional build tables remain unexecuted. Hash-map frequency tie order in stats is not deterministic; float/u32 frequency overflow and nontransactional persistence have no new guarantee. Exact categorical semantics have no useful executable percentage approximant established.",
+        "domain": "Finite UTF-8 synthetic text, unchanged tiny bz2 dictionary between passes, valid parser-derived Gram,1..8 word parse gate,1..12 explicit generation heads, aligned edge vectors below2^32, sorted src for out, valid unique registry files under single writer. Build fixtures use isolated temporary seed/out directories with absent optional closed tables. Resource exhaustion outside tested domain.",
+        "id": "wave29-graph-language-encoding-identity-boundary",
+        "operator": "Registry::Id=(heap<<32)|local is split exactly; relation edges use local only and require separate rel heap context. Global concept IDs are lexical vector positions with no heap/local encoding. Equating these numbers would fail even for a one-concept compiler and first global heap2^27.",
+        "path": "model.md",
+        "section": "wave29-graph-language-encoding-identity-boundary",
+        "status": "partial_composition_model",
+        "type": "identity_transport"
+      },
+      {
+        "assumptions": "No live datasets/DB/teacher/GPU/held-out execution. Tatoeba ingestion/show/stats and nonempty optional build tables remain unexecuted. Hash-map frequency tie order in stats is not deterministic; float/u32 frequency overflow and nontransactional persistence have no new guarantee. Exact categorical semantics have no useful executable percentage approximant established.",
+        "domain": "Finite UTF-8 synthetic text, unchanged tiny bz2 dictionary between passes, valid parser-derived Gram,1..8 word parse gate,1..12 explicit generation heads, aligned edge vectors below2^32, sorted src for out, valid unique registry files under single writer. Build fixtures use isolated temporary seed/out directories with absent optional closed tables. Resource exhaustion outside tested domain.",
+        "id": "wave29-graph-language-encoding-completeness-vs-realization",
+        "operator": "render_check sorts normalized words; generate chooses conditional/global-frequency variants and DP order. Therefore render_check(text,Fact)=Ok does not imply generate(Fact)=text, nor does generation establish role correctness. Synthetic tests separately witness each actual function.",
+        "path": "model.md",
+        "section": "wave29-graph-language-encoding-completeness-vs-realization",
+        "status": "partial_composition_model",
+        "type": "observation_projection"
+      },
+      {
+        "assumptions": "No live datasets/DB/teacher/GPU/held-out execution. Tatoeba ingestion/show/stats and nonempty optional build tables remain unexecuted. Hash-map frequency tie order in stats is not deterministic; float/u32 frequency overflow and nontransactional persistence have no new guarantee. Exact categorical semantics have no useful executable percentage approximant established.",
+        "domain": "Finite UTF-8 synthetic text, unchanged tiny bz2 dictionary between passes, valid parser-derived Gram,1..8 word parse gate,1..12 explicit generation heads, aligned edge vectors below2^32, sorted src for out, valid unique registry files under single writer. Build fixtures use isolated temporary seed/out directories with absent optional closed tables. Resource exhaustion outside tested domain.",
+        "id": "wave29-graph-language-encoding-effect-frontiers",
+        "operator": "sub bad mask precedes reads; parse_lines loads input/names/Morph before output creation; ingestion creates names before Registry open and writes columns before registry save. Build expressions writes before global.rs. Success/failure does not compose into a transaction across these files.",
+        "path": "model.md",
+        "section": "wave29-graph-language-encoding-effect-frontiers",
+        "status": "partial_composition_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "Resources available; u32 offsets and enum widths representable, CSR externally validated. Live writes, worker races, write-error handling and full data ingestion are modeled but not run.",
+        "domain": "Synthetic UTF8 helper inputs and valid bounded CSR. No teacher/held-out/DB execution. Initial query allowed ambient sense-prior lookup; corrected four isolated runs use absent ONTO_PRIOR.",
+        "id": "wave29-ontology-core-selection-categorical-state-transport",
+        "operator": "TSV known/unknown/n/a transports to Field Known/Unknown/NotApplicable; risk none to Known(empty), never Unknown. coregate validates complete categorical cells but not field-value grammar.",
+        "path": "model.md",
+        "section": "wave29-ontology-core-selection-categorical-state-transport",
+        "status": "partial_composition_model",
+        "type": "categorical_state_transport"
+      },
+      {
+        "assumptions": "Resources available; u32 offsets and enum widths representable, CSR externally validated. Live writes, worker races, write-error handling and full data ingestion are modeled but not run.",
+        "domain": "Synthetic UTF8 helper inputs and valid bounded CSR. No teacher/held-out/DB execution. Initial query allowed ambient sense-prior lookup; corrected four isolated runs use absent ONTO_PRIOR.",
+        "id": "wave29-ontology-core-selection-sense-identity",
+        "operator": "coresel filters exact synset; q_synsets accepts noun accepted/also mapping; Core SynMap collect last duplicate vs Graph find first means unique key/POS is necessary for agreement.",
+        "path": "model.md",
+        "section": "wave29-ontology-core-selection-sense-identity",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Resources available; u32 offsets and enum widths representable, CSR externally validated. Live writes, worker races, write-error handling and full data ingestion are modeled but not run.",
+        "domain": "Synthetic UTF8 helper inputs and valid bounded CSR. No teacher/held-out/DB execution. Initial query allowed ambient sense-prior lookup; corrected four isolated runs use absent ONTO_PRIOR.",
+        "id": "wave29-ontology-core-selection-csr-join",
+        "operator": "Builder dedups(s,r,t) and builds both orientations; model borrowing assumes valid offsets. store validation belongs between loaded bytes and Kb queries; builder does not itself exclude cycles.",
+        "path": "model.md",
+        "section": "wave29-ontology-core-selection-csr-join",
+        "status": "partial_composition_model",
+        "type": "csr_transport"
+      },
+      {
+        "assumptions": "Resources available; u32 offsets and enum widths representable, CSR externally validated. Live writes, worker races, write-error handling and full data ingestion are modeled but not run.",
+        "domain": "Synthetic UTF8 helper inputs and valid bounded CSR. No teacher/held-out/DB execution. Initial query allowed ambient sense-prior lookup; corrected four isolated runs use absent ONTO_PRIOR.",
+        "id": "wave29-ontology-core-selection-teacher-effect",
+        "operator": "corevmm/judge prompts and pure parsers can be tested without wdvmm::ask. Output append errors and in-flight worker effects remain outside demonstrated contracts; probability estimates are not measured frequencies.",
+        "path": "model.md",
+        "section": "wave29-ontology-core-selection-teacher-effect",
+        "status": "partial_composition_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "No live CSV/model/prior/teacher/corpus/DB effects executed. Native env ONTO_PRIOR points to isolated missing fixture; tested one-sense query avoids global prior path. main tested opt/wd_cfg only. Build/judge/confirm/load_kb live paths remain model-only; trusted malformed TSV/public graph may panic outside stated domain.",
+        "domain": "Finite synthetic checked four-node graph, sorted unique words/synset keys, valid Cids/CSR/UTF8, one-sense queries, valid short HS code strings, finite representable rationals, colon depth<=255, valid Kb layer parents, temp local files only. Layer-chain visibility assumes leak_all_layers=false. Multi-sense ranking additionally assumes finite scores; executed fixtures use one sense.",
+        "id": "wave29-ontology-query-state-layer-proof-transport",
+        "operator": "Known(value,win,chain,beaten,l)→query Yes/No plus seed/chain text; pron maps value to Tri and persona; describe counts only noncharacter applicable-known props. Undetermined and Unknown both map Tri Unknown but why differs.",
+        "path": "model.md",
+        "section": "wave29-ontology-query-state-layer-proof-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No live CSV/model/prior/teacher/corpus/DB effects executed. Native env ONTO_PRIOR points to isolated missing fixture; tested one-sense query avoids global prior path. main tested opt/wd_cfg only. Build/judge/confirm/load_kb live paths remain model-only; trusted malformed TSV/public graph may panic outside stated domain.",
+        "domain": "Finite synthetic checked four-node graph, sorted unique words/synset keys, valid Cids/CSR/UTF8, one-sense queries, valid short HS code strings, finite representable rationals, colon depth<=255, valid Kb layer parents, temp local files only. Layer-chain visibility assumes leak_all_layers=false. Multi-sense ranking additionally assumes finite scores; executed fixtures use one sense.",
+        "id": "wave29-ontology-query-state-unit-gate-join",
+        "operator": "Rat endpoint values already in base units before hsmap compares shared attr/base intervals. Numeric overlap formula is dimensionless; basis compatibility is not checked by current hsmap shared predicate.",
+        "path": "model.md",
+        "section": "wave29-ontology-query-state-unit-gate-join",
+        "status": "partial_composition_model",
+        "type": "dimension_transport"
+      },
+      {
+        "assumptions": "No live CSV/model/prior/teacher/corpus/DB effects executed. Native env ONTO_PRIOR points to isolated missing fixture; tested one-sense query avoids global prior path. main tested opt/wd_cfg only. Build/judge/confirm/load_kb live paths remain model-only; trusted malformed TSV/public graph may panic outside stated domain.",
+        "domain": "Finite synthetic checked four-node graph, sorted unique words/synset keys, valid Cids/CSR/UTF8, one-sense queries, valid short HS code strings, finite representable rationals, colon depth<=255, valid Kb layer parents, temp local files only. Layer-chain visibility assumes leak_all_layers=false. Multi-sense ranking additionally assumes finite scores; executed fixtures use one sense.",
+        "id": "wave29-ontology-query-state-snapshot-cursor",
+        "operator": "p0=0≤B; guarded n≤B-p yields p'=p+n≤B, establishing safe addition/slicing. Typed enum and shape checks then feed Kb but do not establish graph DAG/CSR inverse semantics.",
+        "path": "model.md",
+        "section": "wave29-ontology-query-state-snapshot-cursor",
+        "status": "partial_composition_model",
+        "type": "resource_boundary"
+      },
+      {
+        "assumptions": "No live CSV/model/prior/teacher/corpus/DB effects executed. Native env ONTO_PRIOR points to isolated missing fixture; tested one-sense query avoids global prior path. main tested opt/wd_cfg only. Build/judge/confirm/load_kb live paths remain model-only; trusted malformed TSV/public graph may panic outside stated domain.",
+        "domain": "Finite synthetic checked four-node graph, sorted unique words/synset keys, valid Cids/CSR/UTF8, one-sense queries, valid short HS code strings, finite representable rationals, colon depth<=255, valid Kb layer parents, temp local files only. Layer-chain visibility assumes leak_all_layers=false. Multi-sense ranking additionally assumes finite scores; executed fixtures use one sense.",
+        "id": "wave29-ontology-query-state-hs-selection",
+        "operator": "hs main=first deepest Item else Head; hsmap matches original kind/level/NP then compounds candidate phrases. State key live/food separates confirmations; first accepted Q vs last confirmation rules cannot be interchanged.",
+        "path": "model.md",
+        "section": "wave29-ontology-query-state-hs-selection",
+        "status": "partial_composition_model",
+        "type": "ordered_selection"
+      },
+      {
+        "assumptions": "All21 tests inspected and repeated; per-source compiled mutants/restored positives. External orchestration remains source-derived only. No whole-composition correctness or executable percentage surrogate claim.",
+        "domain": "Finite synthetic UTF8/JSON/TSV, fresh tiny temporary zstd and ZIP fixtures, well-formed graph CSR/rank coordinates, representable u32 offsets/u16 depths, positive workers/chunk where invoked. No live datasets or teacher.",
+        "id": "wave29-ontology-external-alignment-identity-transport",
+        "operator": "Q→idx_g(Q)→nodes_g(index) is identity for present Q; idx_before cannot be reused in rebuilt g2. Rank vector must be recomputed in g2.nodes order.",
+        "path": "model.md",
+        "section": "wave29-ontology-external-alignment-identity-transport",
+        "status": "partial_composition_model",
+        "type": "coordinate_transport"
+      },
+      {
+        "assumptions": "All21 tests inspected and repeated; per-source compiled mutants/restored positives. External orchestration remains source-derived only. No whole-composition correctness or executable percentage surrogate claim.",
+        "domain": "Finite synthetic UTF8/JSON/TSV, fresh tiny temporary zstd and ZIP fixtures, well-formed graph CSR/rank coordinates, representable u32 offsets/u16 depths, positive workers/chunk where invoked. No live datasets or teacher.",
+        "id": "wave29-ontology-external-alignment-source-count-join",
+        "operator": "n_sources(mask)=1[label]+1[lex]+1[ili∨wn]=n_sources_str(src_names(mask)); all16 masks checked. This agreement does not validate candidate factual truth.",
+        "path": "model.md",
+        "section": "wave29-ontology-external-alignment-source-count-join",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "All21 tests inspected and repeated; per-source compiled mutants/restored positives. External orchestration remains source-derived only. No whole-composition correctness or executable percentage surrogate claim.",
+        "domain": "Finite synthetic UTF8/JSON/TSV, fresh tiny temporary zstd and ZIP fixtures, well-formed graph CSR/rank coordinates, representable u32 offsets/u16 depths, positive workers/chunk where invoked. No live datasets or teacher.",
+        "id": "wave29-ontology-external-alignment-numeric-join",
+        "operator": "wdx quantities preserve amount/unit/bounds strings; wdwalk converts value and bounds using property-specific factor, computes mean/sample sd on values only, min/max on union. Unsupported units skipped; finite values not universally gated.",
+        "path": "model.md",
+        "section": "wave29-ontology-external-alignment-numeric-join",
+        "status": "partial_composition_model",
+        "type": "unit_transport"
+      },
+      {
+        "assumptions": "All21 tests inspected and repeated; per-source compiled mutants/restored positives. External orchestration remains source-derived only. No whole-composition correctness or executable percentage surrogate claim.",
+        "domain": "Finite synthetic UTF8/JSON/TSV, fresh tiny temporary zstd and ZIP fixtures, well-formed graph CSR/rank coordinates, representable u32 offsets/u16 depths, positive workers/chunk where invoked. No live datasets or teacher.",
+        "id": "wave29-ontology-external-alignment-effect-precedence",
+        "operator": "wdvmm cap guard precedes mkdir/teacher; append log precedes is_error. Extractors may partly write before refusal; Zip slices precede compression dispatch. Compiled controls test selected boundaries, not live transactional behavior.",
+        "path": "model.md",
+        "section": "wave29-ontology-external-alignment-effect-precedence",
+        "status": "partial_composition_model",
+        "type": "failure_precedence"
+      },
+      {
+        "domain": "Tiny synthetic CSR graph, explicit layered defaults, isolated temporary kg registry/columns and finite length-boundary fixtures",
+        "evidence": "wave29 root actual-source join probe; five tests twice debug/release",
+        "id": "wave29-snapshot-forgetting",
+        "operator": "Let pi(K)=K.g and S(G)=pack(G). On the tested valid three-concept graph, unpack(S(G))=G preserves concept ids, words and CSR edges. The composite Kb::new(unpack(S(pi(K)))) discards K's assertions, additional layers and extra edges. Its preimage includes all admitted K states sharing G; the snapshot alone cannot recover a learned or layer-specific answer. Property specificity and layer visibility were observed only after explicit synthetic assertions were supplied.",
+        "path": "model.md",
+        "section": "wave29-snapshot-forgetting",
+        "status": "bounded_actual_source_witness",
+        "type": "state_projection_preimage"
+      },
+      {
+        "domain": "Tiny synthetic CSR graph, explicit layered defaults, isolated temporary kg registry/columns and finite length-boundary fixtures",
+        "evidence": "wave29 root actual-source join probe; five tests twice debug/release",
+        "id": "wave29-shape-versus-edge-duality",
+        "operator": "Let V(G)=store::check(G). V checks array lengths, offsets and reference/string bounds; unpack separately checks encoded enum discriminants. V does not impose in(v)={(r,u): (u,r,v) in out}. A three-concept graph with a mismatched but in-bounds incoming edge passes V and pack/unpack, while ancestors follows outgoing edges. Therefore V=Ok excludes tested structural corruption but admits relational inconsistencies; it is not a certificate of complete graph semantics.",
+        "path": "model.md",
+        "section": "wave29-shape-versus-edge-duality",
+        "status": "bounded_actual_source_witness",
+        "type": "structural_semantic_boundary"
+      },
+      {
+        "domain": "Tiny synthetic CSR graph, explicit layered defaults, isolated temporary kg registry/columns and finite length-boundary fixtures",
+        "evidence": "wave29 root actual-source join probe; five tests twice debug/release",
+        "id": "wave29-identifier-namespace",
+        "operator": "kg Id(h,l)=(h<<32)|l is injective over two u32 components. With equal l and distinct h, the tested identifiers remain distinct through edge sort, flags filter and column persistence; a reopening of the temporary registry retains both keys. onto Cid is an index into a particular graph and has no implemented identity-preserving conversion from Id. Dropping h identifies distinct vertices; any future adapter must supply namespace and provenance explicitly.",
+        "path": "model.md",
+        "section": "wave29-identifier-namespace",
+        "status": "bounded_actual_source_witness",
+        "type": "representation_transport"
+      },
+      {
+        "domain": "Tiny synthetic CSR graph, explicit layered defaults, isolated temporary kg registry/columns and finite length-boundary fixtures",
+        "evidence": "wave29 root actual-source join probe; five tests twice debug/release",
+        "id": "wave29-allocation-rejection",
+        "operator": "The tested 46-byte checksum-valid snapshot requesting an array of length u64::MAX and registry containing global heap u32::MAX must return errors before successful state extension. Old code panicked on unchecked cursor/successor addition; repaired code rejects these finite boundary fixtures in debug and release. This constrains integer-boundary handling, not allocation exhaustion, malformed-file completeness, transactionality or crash durability.",
+        "path": "model.md",
+        "section": "wave29-allocation-rejection",
+        "status": "bounded_actual_source_witness",
+        "type": "resource_failure_partition"
+      },
+      {
+        "assumptions": "DuckDB executable absent from PATH and bounded known bin paths; no download/install, no mock subprocess SQL evidence. Source-derived transaction statements are not observed database guarantees. Tests inspected before selection. All production prefixes preserved byte-for-byte; additions are cfg(test) checks only. Partial syntax excludes macro expansion/name/type resolution.",
+        "domain": "Finite CPU inputs; valid UTF-8 and representable signed IDs/counters; temp filesystem fixtures under isolated run TMPDIR; no production DB/corpus/jobs or annotator training. Database relations are conditional on real CLI/schema/SQL ordering and writer isolation, not established by this helper evidence.",
+        "id": "wave31-annotation-store-adapters-representation-transport",
+        "operator": "Tsv::row encodes Null as backslash-N, rejects sentinel string, preserves empty string and writes header at creation. COPY-to read has no header skip. JSON serializes anchor arrays and comments before TSV so control characters travel as JSON escapes.",
+        "path": "model.md",
+        "section": "wave31-annotation-store-adapters-representation-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "DuckDB executable absent from PATH and bounded known bin paths; no download/install, no mock subprocess SQL evidence. Source-derived transaction statements are not observed database guarantees. Tests inspected before selection. All production prefixes preserved byte-for-byte; additions are cfg(test) checks only. Partial syntax excludes macro expansion/name/type resolution.",
+        "domain": "Finite CPU inputs; valid UTF-8 and representable signed IDs/counters; temp filesystem fixtures under isolated run TMPDIR; no production DB/corpus/jobs or annotator training. Database relations are conditional on real CLI/schema/SQL ordering and writer isolation, not established by this helper evidence.",
+        "id": "wave31-annotation-store-adapters-identity-coordinate-join",
+        "operator": "load matches (sent_id,text) against pre-state while qa maps doc_key then insists each anchor has unique sid with same doc and Some(para). Equal annotation bytes alone cannot identify a sentence; matching sent_id alone can admit an incorrect text.",
+        "path": "model.md",
+        "section": "wave31-annotation-store-adapters-identity-coordinate-join",
+        "status": "partial_composition_model",
+        "type": "identity_coordinate_join"
+      },
+      {
+        "assumptions": "DuckDB executable absent from PATH and bounded known bin paths; no download/install, no mock subprocess SQL evidence. Source-derived transaction statements are not observed database guarantees. Tests inspected before selection. All production prefixes preserved byte-for-byte; additions are cfg(test) checks only. Partial syntax excludes macro expansion/name/type resolution.",
+        "domain": "Finite CPU inputs; valid UTF-8 and representable signed IDs/counters; temp filesystem fixtures under isolated run TMPDIR; no production DB/corpus/jobs or annotator training. Database relations are conditional on real CLI/schema/SQL ordering and writer isolation, not established by this helper evidence.",
+        "id": "wave31-annotation-store-adapters-effect-frontier",
+        "operator": "Parse/duplicate/state checks and TSV validation precede write exec. Post TSV parsing/counts follow exec, and batch file loops preserve earlier effects after later failure. Partial TSV row buffers may contain prefixes even when count remains zero.",
+        "path": "model.md",
+        "section": "wave31-annotation-store-adapters-effect-frontier",
+        "status": "partial_composition_model",
+        "type": "effect_frontier"
+      },
+      {
+        "assumptions": "DuckDB executable absent from PATH and bounded known bin paths; no download/install, no mock subprocess SQL evidence. Source-derived transaction statements are not observed database guarantees. Tests inspected before selection. All production prefixes preserved byte-for-byte; additions are cfg(test) checks only. Partial syntax excludes macro expansion/name/type resolution.",
+        "domain": "Finite CPU inputs; valid UTF-8 and representable signed IDs/counters; temp filesystem fixtures under isolated run TMPDIR; no production DB/corpus/jobs or annotator training. Database relations are conditional on real CLI/schema/SQL ordering and writer isolation, not established by this helper evidence.",
+        "id": "wave31-annotation-store-adapters-tagged-independent-paths",
+        "operator": "Prag label schema, QA question schema, CoNLL load/export and tales segmentation are separate dispatched paths sharing transport utilities. One schema's parser success does not imply another's admission or DB table constraints.",
+        "path": "model.md",
+        "section": "wave31-annotation-store-adapters-tagged-independent-paths",
+        "status": "partial_composition_model",
+        "type": "tagged_independent_paths"
+      },
+      {
+        "assumptions": "DuckDB executable absent from PATH and bounded known bin paths; no download/install, no mock subprocess SQL evidence. Source-derived transaction statements are not observed database guarantees. Tests inspected before selection. All production prefixes preserved byte-for-byte; additions are cfg(test) checks only. Partial syntax excludes macro expansion/name/type resolution.",
+        "domain": "Finite CPU inputs; valid UTF-8 and representable signed IDs/counters; temp filesystem fixtures under isolated run TMPDIR; no production DB/corpus/jobs or annotator training. Database relations are conditional on real CLI/schema/SQL ordering and writer isolation, not established by this helper evidence.",
+        "id": "wave31-annotation-store-adapters-fixture-observation-limit",
+        "operator": "Existing DB integration tests are modeled but not run; new safe tests in those files exercise actual en::conllu Doc parsing and fixture layout only. They do not evaluate query strings, views, migrations or transactional behavior.",
+        "path": "model.md",
+        "section": "wave31-annotation-store-adapters-fixture-observation-limit",
+        "status": "partial_composition_model",
+        "type": "fixture_observation_limit"
+      },
+      {
+        "assumptions": "DuckDB executable absent from PATH and bounded known bin paths; no download/install, no mock subprocess SQL evidence. Source-derived transaction statements are not observed database guarantees. Tests inspected before selection. All production prefixes preserved byte-for-byte; additions are cfg(test) checks only. Partial syntax excludes macro expansion/name/type resolution.",
+        "domain": "Finite CPU inputs; valid UTF-8 and representable signed IDs/counters; temp filesystem fixtures under isolated run TMPDIR; no production DB/corpus/jobs or annotator training. Database relations are conditional on real CLI/schema/SQL ordering and writer isolation, not established by this helper evidence.",
+        "id": "wave31-annotation-store-adapters-cost-composition",
+        "operator": "Sum actual invoked helper costs plus process/SQL costs on the selected tagged path; do not add all CLI branches as if executed together. Full input/result materialization and sequential per-file DB calls remain, with no measured optimization claim.",
+        "path": "model.md",
+        "section": "wave31-annotation-store-adapters-cost-composition",
+        "status": "partial_composition_model",
+        "type": "cost_composition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_probe"
+    }
+  },
+  "id": "knowledge-memory",
+  "kind": "groupant_group",
+  "registry": {
+    "node": "knowledge-memory",
+    "path": "../contracts.json"
+  },
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "global/build.rs",
+      "sha256": "1b6ce3b580039cf908cfc1f1bfc281a728a2c7b3c5c7d26fb4da3ca2d614fd37"
+    },
+    {
+      "path": "global/src/lib.rs",
+      "sha256": "f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907"
+    },
+    {
+      "path": "global/src/placement.rs",
+      "sha256": "63a5c497aeaa06ea23f632656093be4e0bad439de68a3f771b0b76f07b245e19"
+    },
+    {
+      "path": "kg/src/cols.rs",
+      "sha256": "70bf9a9666a1726974e3f926c4bed6c5df615d3b2dbf3e66b956a929c2a90778"
+    },
+    {
+      "path": "kg/src/gram.rs",
+      "sha256": "a344ab06f5816ca7a55e7108921f693608315fa0f8156033fceed706dbf1ccc3"
+    },
+    {
+      "path": "kg/src/id.rs",
+      "sha256": "2d9a9d00550ecd11000c8885ddb3418afd6835bd06c1a52f057a191145d4db52"
+    },
+    {
+      "path": "kg/src/main.rs",
+      "sha256": "2b0c3334d8294c57354f5b7815bbddc7093c462d66e41dbc600045ed82e5f0fe"
+    },
+    {
+      "path": "kg/src/morph.rs",
+      "sha256": "cfa483216783580f0ccf414ffdf5750a80fb0cdb9f9736f894a5a571a6373514"
+    },
+    {
+      "path": "kg/src/textgen.rs",
+      "sha256": "c3e9c00982be1bbd5ad27429054234388c6ebca5f155e85bbdc2a2cdc0be0469"
+    },
+    {
+      "path": "kg/src/uk.rs",
+      "sha256": "f2c9f7b2877f239aa2971b1b96cf8dc94d6d30e8304201c9bf37630a6ae877f9"
+    },
+    {
+      "path": "onto/build.rs",
+      "sha256": "439c6f933d542e7a8e680e7a8c89d56fbe3383b8df6f7c5904c2f397a6f5ed37"
+    },
+    {
+      "path": "onto/src/bridge.rs",
+      "sha256": "b9df59904a00c9ad8cd343a4baf01f7b54eee6d7fa8da28988cd41e669f92a8c"
+    },
+    {
+      "path": "onto/src/build.rs",
+      "sha256": "8970f801835615c8e0257e138060c2b0abed1cd4c20ff5630e50c3f99a2f50e3"
+    },
+    {
+      "path": "onto/src/core.rs",
+      "sha256": "467680ae687e0fa23854fdcda8f5b4f516c05d7aaaa0627000dc5836f5556f2f"
+    },
+    {
+      "path": "onto/src/coregate.rs",
+      "sha256": "31631d014f9c0c1c1ea1590f95b500cd23343fe3ec2756a174a375be1cf5c2b5"
+    },
+    {
+      "path": "onto/src/coresel.rs",
+      "sha256": "eba8bb318c0d5b43c51db0c35a7eefb527e793ff86f0666ffc16b8492a874d7a"
+    },
+    {
+      "path": "onto/src/corevmm.rs",
+      "sha256": "d7523b9db18a7a06d19398ca9ccd0e1ad7e6b68b015c73e2a8fff5418103bb0c"
+    },
+    {
+      "path": "onto/src/describe.rs",
+      "sha256": "b1e054a392c1f8b6d8cf0fdc4c97aeb767018e73fefde26c490e73e27eb6fb02"
+    },
+    {
+      "path": "onto/src/eval.rs",
+      "sha256": "71b3589b0af820daaf069c96a8c35ecd5670cab34b8efb510bf6b7d3c5269ef8"
+    },
+    {
+      "path": "onto/src/hs.rs",
+      "sha256": "92e3961f025bb2d04ce2b0f7f19cb1e33a1da7d8fe0d0d5f6ed106d1e81d305d"
+    },
+    {
+      "path": "onto/src/hsmap.rs",
+      "sha256": "7ae1e9362cb8f9ce0d9e2472d73252ca5385c689dd7efad9657265f6ae553a68"
+    },
+    {
+      "path": "onto/src/judge.rs",
+      "sha256": "90c6e6dc9343201b3a82e5da024efa5c1252619dafbc1c4ec74a377986c1c606"
+    },
+    {
+      "path": "onto/src/kb.rs",
+      "sha256": "8b200aa63ee08b6668a9e0b5c4adc78e8fd520a0139e133a8b860bd97e385cf1"
+    },
+    {
+      "path": "onto/src/main.rs",
+      "sha256": "5c2c10af94c4e04b46786bee61fc2f26667931d666d3414f5015a48806ace855"
+    },
+    {
+      "path": "onto/src/model.rs",
+      "sha256": "2a6d7c57582f7724942f439050bcc6aa2573131bca594a96688ee14c19c9b29a"
+    },
+    {
+      "path": "onto/src/pron.rs",
+      "sha256": "58269d22bbd6e6362d382e15ea169cb0cdb51debfa12014a2f229d22b07996ac"
+    },
+    {
+      "path": "onto/src/query.rs",
+      "sha256": "c1e3d46ec350cc30a83d1584167a7c1393836fa6b1eea69eed68942ffd2854b5"
+    },
+    {
+      "path": "onto/src/store.rs",
+      "sha256": "19eeabb5cd6e93adc2ace73ee61067765db1ead68aa6d38517648cdb00ad1823"
+    },
+    {
+      "path": "onto/src/tests.rs",
+      "sha256": "5e6ede24ca951f504198d9f80207be2b2e137c1f51b2dcdc6e3887a4fcd924d6"
+    },
+    {
+      "path": "onto/src/wdalign.rs",
+      "sha256": "74e040a730e3215e036551de8ea00a291313e881f42f4254a5dc0a67a1f667ec"
+    },
+    {
+      "path": "onto/src/wdgraph.rs",
+      "sha256": "8c08bdded398bc138e66786f33caebe172acb83939607541a619d46676923e7e"
+    },
+    {
+      "path": "onto/src/wdlex.rs",
+      "sha256": "27a4a39d903e00e580cf1bf1401b46fb3475d1ad563d31061cd6cef5033bb3e8"
+    },
+    {
+      "path": "onto/src/wdvmm.rs",
+      "sha256": "184942c7a2af028812b0014ecdd58f7183406cdcd63d4dcc90697163900f7f5f"
+    },
+    {
+      "path": "onto/src/wdwalk.rs",
+      "sha256": "c4ee5e881b2a8f4f100c90d5386cf43fc82790f19cf092fef0bcd3ea91d8dfde"
+    },
+    {
+      "path": "onto/src/wdx.rs",
+      "sha256": "3a6abab00d2c23881264fd0ed211c913fbfc79a296c156c8373a40b5fa1b0619"
+    },
+    {
+      "path": "onto/src/wikidata.rs",
+      "sha256": "0b9532455e97a88c0a6856fcf18c0858f0b1d38593f2caf1ed08678e14ee7f1d"
+    },
+    {
+      "path": "onto/src/wsd.rs",
+      "sha256": "d1909a52c54bb15a1e9f4e0df616c9319c0ee11d7f82cf44e31af7c678a58936"
+    },
+    {
+      "path": "onto/src/zip.rs",
+      "sha256": "f1ecc64bbcb7da2c5ff9c870f84bc3dcb5554acd605cb571e911093b22c1bb27"
+    },
+    {
+      "path": "tools/db/src/duck.rs",
+      "sha256": "4268f3da56edbc80675150e760cf85c1dea195c5dc8ad4913d3d77cdcb35a302"
+    },
+    {
+      "path": "tools/db/src/export.rs",
+      "sha256": "9e71e63e9a3a65eed5aca1bb650858072e0cd3abf5dff759f54215e5adfc997d"
+    },
+    {
+      "path": "tools/db/src/load.rs",
+      "sha256": "144f8e81de9c58435cc18a2a138f4e4777201c715183470d0a4b597dc39b53a8"
+    },
+    {
+      "path": "tools/db/src/main.rs",
+      "sha256": "82708640553be11397b2ed51eb21076c7b59f4bf1435d8365e34b0f7f6c662d1"
+    },
+    {
+      "path": "tools/db/src/prag.rs",
+      "sha256": "21242d408f81a8b965a795069da351ee16ab0e414607104ef0f8555b3ecbc0b3"
+    },
+    {
+      "path": "tools/db/src/qa.rs",
+      "sha256": "94da9edd7288165780ac86beff687333d29ff3b4bdc783f1cb631fafbe7c531e"
+    },
+    {
+      "path": "tools/db/src/tales.rs",
+      "sha256": "e5d6d925a1877564e36de47fadd740a68dc0dd4909c68d1ad37ac2004adba346"
+    },
+    {
+      "path": "tools/db/src/tsv.rs",
+      "sha256": "ae03009ea628e1b487c668519a8146e435ac9ed887f2fbdc031ccf176e9986cc"
+    },
+    {
+      "path": "tools/db/src/util.rs",
+      "sha256": "4da8e31f83442c17fa6d60fa41d496ec945a1ad48bd8c7d3fd46cae03b982d23"
+    },
+    {
+      "path": "tools/db/tests/prag.rs",
+      "sha256": "74cc0d7e38714dfdd1806a27e3c6367bb17cfea6de60857c2d31c963165a9d1c"
+    },
+    {
+      "path": "tools/db/tests/qa.rs",
+      "sha256": "d5ee5f0d4811fdbead2adc5d3cc52b393bb4d805d32c64559f695afde73369b4"
+    },
+    {
+      "path": "tools/db/tests/roundtrip.rs",
+      "sha256": "32a4dc30a9e54cccb6a8f8891c40998f00b507e6ea1b1987759cfc91af0971c8"
+    },
+    {
+      "path": "tools/modules/src/fetch.rs",
+      "sha256": "ae1f136b5e4350069574fc0cc14882f7b5714718c0a6c713c161dfc85b27883e"
+    },
+    {
+      "path": "world/src/principles.rs",
+      "sha256": "cdb5ef0db3da9ca5761580326e66abbbfbbb8e69414a57485adf5fc5b1aa8c42"
+    },
+    {
+      "path": "world/src/state.rs",
+      "sha256": "135a1beeb0da2a0d86fdde81a66c9ffbffa3f6783abee5fa666e0e3dfd5a778e"
+    },
+    {
+      "path": "tools/modules/src/lib.rs",
+      "sha256": "2136a592745a0caf7a58b4e3a65c35e03056d9d3da6a2a005569b6090bee8af9"
+    },
+    {
+      "path": "tools/modules/src/main.rs",
+      "sha256": "657e45204ffe9a424d6c3e0521f0729c90d00521f8c99e840ade9b575acde1c5"
+    },
+    {
+      "path": "tools/modules/src/oewn.rs",
+      "sha256": "8d73e0b4b8ebba150efd2834246c533467d5bd9ed38659ca31da8f86dff22166"
+    },
+    {
+      "path": "tools/modules/src/torrent.rs",
+      "sha256": "eda41c12a40d54d7c23e8d0b0777f18326eb4fcba3462bbf264eec255502ecfc"
+    }
+  ],
+  "status": "partial"
+}

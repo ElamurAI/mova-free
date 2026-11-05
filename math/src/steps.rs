@@ -1445,3 +1445,77 @@ pub fn merge_votes(lists: Vec<Vec<Cand>>) -> Vec<Cand> {
     }
     out
 }
+
+#[cfg(test)]
+pub(crate) mod wave28 {
+    use super::*;
+    pub(crate) fn problem(values: &[i64]) -> Prob {
+        let text = values
+            .iter()
+            .map(i64::to_string)
+            .collect::<Vec<_>>()
+            .join(" ");
+        let (mut qs, _) = arith::quantities(&text);
+        qs.retain(|x| !x.name.starts_with("const"));
+        assert_eq!(qs.len(), values.len());
+        let descs = qs
+            .iter()
+            .map(|_| Desc {
+                subj: "sam".into(),
+                unit: "apples".into(),
+                verb: "have".into(),
+                ..Default::default()
+            })
+            .collect();
+        Prob {
+            arith_ans: None,
+            shapes: Default::default(),
+            world_ans: None,
+            forbid: vec![],
+            qtargets: vec![],
+            qcontent: vec![],
+            qsubj: "sam".into(),
+            qvclass: String::new(),
+            qs,
+            descs,
+            qwords: vec![],
+            sent_feats: vec![],
+            sent_k: vec![],
+        }
+    }
+    #[test]
+    fn equation_oracle_and_exact_replay() {
+        let p = problem(&[8, 3, 2]);
+        let tree = tree_from_equation("(8 - 3) * 2", &p.qs).unwrap();
+        assert_eq!(exact_answer(&tree, &p.qs), Some(q(10)));
+        let acts = oracle(&tree, p.qs.len()).unwrap();
+        assert_eq!(oracle_value(&acts, &p), Some(10.0));
+        assert_eq!(tree_of(&p, &acts).unwrap().exact(&p.qs), Some(q(10)));
+        assert_eq!(used_leaves(&acts), vec![0, 1, 2]);
+        let repeat = Tree::Node(Op::Add, Box::new(Tree::Leaf(0)), Box::new(Tree::Leaf(0)));
+        assert!(oracle(&repeat, 3).is_none());
+        assert!(tree_from_equation("8 + 99", &p.qs).is_none());
+        assert!(tree_from_equation("8 + 3 trailing", &p.qs).is_none());
+    }
+    #[test]
+    fn calculator_validation_and_script_bounds() {
+        let p = problem(&[8, 3, 2]);
+        assert_eq!(
+            tree_from_calcs("<<8-3=5>> <<5*2=10>>", &p.qs)
+                .unwrap()
+                .exact(&p.qs),
+            Some(q(10))
+        );
+        assert!(tree_from_calcs("<<8-3=6>>", &p.qs).is_none());
+        assert_eq!(
+            script_kinds(
+                "@0 set x=1 k=bad\n@1 set x=1 k=given\n@1 add x=2 k=gain\n@1 add x=3 k=gain\n@3 ask x k=bad",
+                2
+            ),
+            vec![vec!["gain".to_string()], vec![]]
+        );
+        let empty = problem(&[]);
+        assert!(Model::new(2).predict(&empty).is_none());
+        assert_eq!(Rerank::default().pick(&[vec![], vec![]]), 1);
+    }
+}

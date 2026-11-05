@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "id": "algorithm-convex-hull",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "a0f03e4bb4f03e2b62889a5baf8c504f2607880f6d1353924816a6798b49949e"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "a0f03e4bb4f03e2b62889a5baf8c504f2607880f6d1353924816a6798b49949e",
+        "domain": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+        "operator": "Exclude absent-source vertices, nonminimal first point, repeats, clockwise/non-strict polygon turns, or input strictly right of an edge. For a segment exclude off-line points or points beyond endpoints. Empty output requires empty input.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "One public call, with explicitly identified internal chain or strip states.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "preimages",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "a0f03e4bb4f03e2b62889a5baf8c504f2607880f6d1353924816a6798b49949e",
+        "domain": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+        "operator": "For canonical strict convex polygon H, compatible inputs are finite sequences containing every H vertex, with remaining points inside/on H, arbitrary order/multiplicity. Segment output admits points on its closed segment containing both ends. Singleton admits nonempty repetitions; empty admits only empty. Length and interior data are not recoverable.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "One public call, with explicitly identified internal chain or strip states.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "permutation",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "permutation",
+        "status": "partial_source_derived",
+        "subject_revision": "a0f03e4bb4f03e2b62889a5baf8c504f2607880f6d1353924816a6798b49949e",
+        "domain": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+        "operator": "Permutation or duplication preserves output since sorted distinct support is unchanged.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "One public call, with explicitly identified internal chain or strip states.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "affine",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "affine",
+        "status": "partial_source_derived",
+        "subject_revision": "a0f03e4bb4f03e2b62889a5baf8c504f2607880f6d1353924816a6798b49949e",
+        "domain": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+        "operator": "Positive uniform integer scaling k and translation t, with all images in i32, maps H to kH+t and preserves its canonical start. Reflection requires reversing orientation and recanonicalization.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "One public call, with explicitly identified internal chain or strip states.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "idempotence",
+        "type": "fixed_point",
+        "path": "model.md",
+        "section": "idempotence",
+        "status": "partial_source_derived",
+        "subject_revision": "a0f03e4bb4f03e2b62889a5baf8c504f2607880f6d1353924816a6798b49949e",
+        "domain": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+        "operator": "H(H(P))=H(P); its extreme vertices have identical convex support, and collinear interior points cannot return.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "One public call, with explicitly identified internal chain or strip states.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "support",
+        "type": "support_relation",
+        "path": "model.md",
+        "section": "support",
+        "status": "partial_source_derived",
+        "subject_revision": "a0f03e4bb4f03e2b62889a5baf8c504f2607880f6d1353924816a6798b49949e",
+        "domain": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+        "operator": "For every integer direction d, max dot(d,P)=max dot(d,H(P)) on nonempty input. Strict turns, source membership, supporting edges and minimal start certify polygons; degenerates require separate conditions.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "One public call, with explicitly identified internal chain or strip states.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "stack",
+        "type": "state_invariant",
+        "path": "model.md",
+        "section": "stack",
+        "status": "partial_source_derived",
+        "subject_revision": "a0f03e4bb4f03e2b62889a5baf8c504f2607880f6d1353924816a6798b49949e",
+        "domain": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+        "operator": "Each processed sorted prefix has a lower-boundary stack with strict positive consecutive turns. Each point is pushed once and popped at most once per chain. Reversal builds the upper boundary; dropping terminal endpoints prevents repeated joins.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "One public call, with explicitly identified internal chain or strip states.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "arithmetic",
+        "type": "range_bound",
+        "path": "model.md",
+        "section": "arithmetic",
+        "status": "partial_source_derived",
+        "subject_revision": "a0f03e4bb4f03e2b62889a5baf8c504f2607880f6d1353924816a6798b49949e",
+        "domain": "Finite slices of i32-coordinate points under ordinary allocation-success Rust execution.",
+        "operator": "Each coordinate difference magnitude <=2^32-1; product <=(2^32-1)^2; cross magnitude <=2(2^32-1)^2<2^65. Widening before subtraction gives exact i128 predicates. Allocation failure is not a Result.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "One public call, with explicitly identified internal chain or strip states.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      }
+    ]
+  }
+}

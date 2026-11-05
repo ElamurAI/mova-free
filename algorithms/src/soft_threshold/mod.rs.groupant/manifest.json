@@ -1,0 +1,126 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Within valid inputs and real candidate outputs, complement contains infeasible or KKT-incompatible pairs and incorrect error outcomes. This is a relational complement of the unique real solution graph, not just a list of negative examples. For the concrete implementation the complement additionally excludes outputs differing from rounded evaluation and includes arithmetic/resource error partitions; real KKT alone is not a full f64 acceptance predicate.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "44bfa53a12c010db3f574857fc5a4a28491c7d5f8f34d4c5dec9849477892bc3",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "At fixed lambda, nonzero y has the unique real antecedent y+lambda sign(y); zero y has every x in [-lambda,lambda]. Whole-vector fiber is the Cartesian product. lambda0 is identity mathematically and concretely. Rounded nonzero fibers can include neighboring representable inputs.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "44bfa53a12c010db3f574857fc5a4a28491c7d5f8f34d4c5dec9849477892bc3",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "subgradient_stationarity",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "0 belongs to y-x+lambda partial|y|. For nonzero y the subgradient is sign(y); for zero y it ranges over [-1,1]. This is sufficient for the unique real minimizer by strong convexity.",
+        "path": "model.md",
+        "section": "subgradient_stationarity",
+        "status": "partial_relational_specification",
+        "subject_revision": "44bfa53a12c010db3f574857fc5a4a28491c7d5f8f34d4c5dec9849477892bc3",
+        "type": "subgradient_stationarity"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "zero_plateau",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Every |x|<=lambda maps to a signed zero matching x. Threshold equality belongs to the zero plateau. At lambda0 signed zero input remains signed zero.",
+        "path": "model.md",
+        "section": "zero_plateau",
+        "status": "partial_relational_specification",
+        "subject_revision": "44bfa53a12c010db3f574857fc5a4a28491c7d5f8f34d4c5dec9849477892bc3",
+        "type": "zero_plateau"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "composition_and_contraction",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Real maps satisfy S_a(S_b(x))=S_{a+b}(x) and are nonexpansive in Euclidean norm. These identities concern representable finite parameters and exact arithmetic; extra rounding can break bitwise composition.",
+        "path": "model.md",
+        "section": "composition_and_contraction",
+        "status": "partial_relational_specification",
+        "subject_revision": "44bfa53a12c010db3f574857fc5a4a28491c7d5f8f34d4c5dec9849477892bc3",
+        "type": "composition_and_contraction"
+      },
+      {
+        "approximation_semantics": "Exact-real model distinguished from deterministic f64 evaluation; finite correspondence only",
+        "assumptions": "Declared resource cap, finite inputs and successful allocations",
+        "domain": "Finite validated f64 API and separately exact-real target",
+        "evidence": "model.md#evidence",
+        "id": "arithmetic_resource_partition",
+        "observation_scope": "Return values, errors, rounded arithmetic and named finite assertions",
+        "operator": "Length, finite scalar/vector and nonnegative lambda validate before fallible reservation. Finite max-magnitude subtraction cannot overflow. Underflow and cancellation remain, but no iterative convergence failure or Arithmetic error variant is needed.",
+        "path": "model.md",
+        "section": "arithmetic_resource_partition",
+        "status": "partial_relational_specification",
+        "subject_revision": "44bfa53a12c010db3f574857fc5a4a28491c7d5f8f34d4c5dec9849477892bc3",
+        "type": "arithmetic_resource_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-soft-threshold",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "44bfa53a12c010db3f574857fc5a4a28491c7d5f8f34d4c5dec9849477892bc3"
+  },
+  "status": "partial_source_derived_instance"
+}

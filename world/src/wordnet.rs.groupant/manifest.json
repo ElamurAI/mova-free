@@ -1,0 +1,91 @@
+{
+  "children": [
+    {
+      "id": "world-wordnet-loader",
+      "path": "loader.groupant"
+    },
+    {
+      "id": "world-wordnet-lookup",
+      "path": "lookup.groupant"
+    },
+    {
+      "id": "world-wordnet-ancestry",
+      "path": "ancestry.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-wordnet-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-wordnet-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-wordnet-cache-epoch",
+        "path": "model.md",
+        "section": "cache-epoch",
+        "status": "partial_source_model",
+        "type": "state_transition"
+      },
+      {
+        "id": "world-wordnet-first-kind-divergence",
+        "path": "model.md",
+        "section": "first-kind-divergence",
+        "status": "partial_source_model",
+        "type": "priority_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "id": "world-wordnet",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../wordnet.rs",
+    "sha256": "e8dbeac7b6cb80d09870f57ce7372cef48c48b79638451f59d857b1f0e4c3597"
+  },
+  "status": "partial_source_bound_model"
+}

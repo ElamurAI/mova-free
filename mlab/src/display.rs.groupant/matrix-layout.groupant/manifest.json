@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Matrix complex -0 excludes minus separator because only <0 is checked. Block headers are absent when all columns fit.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Aligned row strings admit matrices of compatible shape and quantized scalar cells; common width and block headers constrain shape but not original floats.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_invariant",
+        "path": "model.md",
+        "scope": "Every row visits columns in increasing order. Last two-column block uses and rather than through header.",
+        "section": "state_invariant",
+        "status": "partial_source_derived_model",
+        "type": "state_invariant"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Invalid Mat storage can panic during indexing; output buffering has no fallible allocation API.",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Logical width is 3, real width is 2+field width, complex adds signs/imaginary field; terminal width is nominal characters.",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "O(rows*cols + output bytes) time and buffered cells; no streaming interface.",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 9134,
+      "start": 6537
+    },
+    "description": "Map storage j*r+i into row vectors with common field width, then partition columns into blocks of max(1,80/width).",
+    "source_bytes_sha256": "43b815182ec74cf74d0762dd7cdca7597794db6448c8db035ae4ca1ce32a4360"
+  },
+  "id": "mlab-display-matrix-layout",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../display.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "7c29a46772ca4d47ff5e01fc4b3ed1bf38fab6a6b3bce0a41c99332ece8926b5"
+  },
+  "status": "partial_source_bound_model"
+}

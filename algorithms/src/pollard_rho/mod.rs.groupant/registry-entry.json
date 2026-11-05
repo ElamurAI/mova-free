@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "Five tests per algorithm, debug/release twice with normalized equality; compiled control and restored rerun; Clippy, formatting, syntax twice."
+  ],
+  "children": [],
+  "cost": "At most budget Floyd iterations across splits and restarts, each three modular squarings and one Euclidean gcd. At most 127 pending-node visits for a u64 factor tree, each Miller-Rabin O(log(n+1)) word work. Conservative O((budget+64)*log(n+1)) word operations, O(log(n+1)) pending/output words. This is a hard work cap, not an expected success claim.",
+  "description": "pollard_rho mod.rs exact std-only bounded implementation and checks",
+  "forward": [
+    "Reject n=0, then excessive budget. Traverse pending divisors: skip one; emit deterministic Miller-Rabin primes; split even composites for free; otherwise run x<-f(x),y<-f(f(y)), f(t)=t*t+c mod value, gcd(|x-y|,value). Start c=1 and x=y=2; restart with next c when gcd equals value. Consume one global budget unit before each Floyd iteration. Proper factors split pending value; finally sort."
+  ],
+  "id": "algorithm-pollard-rho",
+  "inverse": [
+    "Excluded successes are unsorted lists, composite factors, missing multiplicity, or product unequal to n. Success on zero/excessive budget, unbounded rho execution, and partial factor vectors labeled successful are excluded.",
+    "A successful prime multiset reconstructs n uniquely by its product (empty reconstructs one), but does not reconstruct the budget: any accepted larger budget than a successful one follows the same deterministic path and succeeds. BudgetExhausted covers many composite n and budgets and reveals no unique factor.",
+    "Sorted primes with u128 product equal to input certify complete factorization by unique factorization. Checking factors with the production primality routine is only an invariant, so small fixtures additionally use independent trial factorization.",
+    "If budget b succeeds and b<=b'<=MAX_STEPS, b' returns identical factors. Budget affects only stopping, never seeds or arithmetic. Failure at b makes no claim about success at b'.",
+    "For n=p^k within u64 with prime p, successful output contains exactly k copies of p. Powers of two need no rho budget; odd powers may exhaust it. Prime inputs use no rho budget.",
+    "gcd=1 continues, gcd=value restarts with c+1, and 1<gcd<value splits. Every path through a collision or continuation consumes an iteration; all restarts share one decreasing counter, ensuring deterministic termination. No randomized success probability is claimed."
+  ],
+  "limitations": [
+    "Finite observations are not a universal proof.",
+    "Partial syntax excludes macro expansion and semantic AST analysis.",
+    "Allocation abort is outside normal-return relations."
+  ],
+  "source": "algorithms/src/pollard_rho/mod.rs",
+  "state": "All u64 n and budgets, with zero invalid and maximum allowed budget 10000000. Result<Vec<u64>,FactorError> on normal execution."
+}

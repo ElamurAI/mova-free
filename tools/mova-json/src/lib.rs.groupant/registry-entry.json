@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test --offline --release --manifest-path tools/mova-json/Cargo.toml",
+    "2026-11-05: real-file round trips (contracts.json, groupant manifests, crab.json, deputy.json) with layout-mutation red controls; 4793 of 4863 tracked JSON files reproduced byte for byte."
+  ],
+  "children": [],
+  "cost": "O(bytes) parse/render; at most six candidate renderings per load; 2.5 MB contracts.json about 25 ms (2026-11-05).",
+  "description": "Ordered JSON value with lexeme/escape preservation, layout detection and byte-identical rendering, path selectors and edits, JSONL tallies.",
+  "forward": [
+    "Canonical documents render back byte for byte; edits change only edited values; selectors and anchors must match exactly one element; non-canonical layouts are refused for edit without --reformat."
+  ],
+  "id": "mova-json-library",
+  "inverse": [
+    "Typed behavior complement first and nonunique reverse reconstruction second; see model.md.",
+    "Excluded: silent first-match selection, writes of non-reproducible layouts, number normalization, key edits by replace_str; set over an existing value and remove_value are many-to-one."
+  ],
+  "limitations": [
+    "Duplicate keys, inline arrays in pretty layouts, tab indentation and concurrent writers are not handled."
+  ],
+  "source": "tools/mova-json/src/lib.rs",
+  "state": "Value tree, detected style, canonical flag; files written only through sibling temp file and rename."
+}

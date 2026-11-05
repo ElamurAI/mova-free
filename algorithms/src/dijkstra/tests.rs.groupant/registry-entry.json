@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "rustc --edition 2024 --test algorithms/src/dijkstra/mod.rs",
+    "two runs; strict Clippy; filtered new-test compiled mutant"
+  ],
+  "cost": "All-source reference work O(sum V^2 E). Wider cases: 36 with V<=16. Transform cases: 24 with V<=9,E=2V; splitting produces V+E vertices. Memory O(V+E) outside result copies.",
+  "description": "Five dijkstra tests with independent oracle and transformations.",
+  "forward": [
+    "Two original tests plus 36 generated graphs with 4..16 vertices and full-width u64/zero/MAX weights, 24 scaling/splitting graphs with 4..9 vertices, all sources, and a zero-cycle/stale-entry chain with sums beyond two u64::MAX. Seeds 0xd15120261029 and 0xd15220261029; diagnostics include case/source.",
+    "Synchronous Bellman-Ford copies the previous distance vector for each of V-1 rounds and relaxes from that previous vector only. Its path-length recurrence shares neither heap ordering nor stale-entry handling with production; sums are u128. An explicit wide-sum fixture adds hand-computed expected values."
+  ],
+  "id": "algorithm-dijkstra-tests",
+  "inverse": [
+    "Universe U is deterministic terminating candidate return tables on the fixed fixture schedule crossed with five test verdicts. R maps each table to exact assertion verdicts. C=U minus R excludes passing when any assertion disagrees with expected values and failing when all executed assertions pass. This is exact at assertion-specification level, partial for actual runners; compilation failure, timeout and resource failure are outside U.",
+    "Pre(y) retains ALL candidate return tables giving observed verdict vector y. Passing constrains only checked calls; all untested inputs remain free. A failure retains every compatible first failing assertion and earlier passing return. No unique implementation or source reconstruction follows."
+  ],
+  "limitations": [
+    "Finite evidence, not unrestricted proof.",
+    "Partial syntax excludes macro expansion and semantic resolution."
+  ],
+  "source": "algorithms/src/dijkstra/tests.rs",
+  "state": "Fixed fixture schedule, candidate returns and verdicts."
+}

@@ -1,0 +1,116 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Partial source syntax; no macro expansion/resolution/semantic proof.",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Invariant and cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant and cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Observed busy/uncertain/storage/cooldown callback exclusions",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Durable round/counter/proposed-versus-actual-parent lineage",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "planned_experiment_complement",
+        "path": "model.md",
+        "scope": "Rejected experiment terminality and explicit new seeded sampled round",
+        "section": "planned_experiment_complement",
+        "status": "partial_source_derived_model",
+        "type": "partial_exclusion"
+      },
+      {
+        "id": "lease_gap_partition",
+        "path": "model.md",
+        "scope": "Observed-idle probe versus independent trainer lease race",
+        "section": "lease_gap_partition",
+        "status": "partial_source_derived_model",
+        "type": "error_partition"
+      },
+      {
+        "id": "retention_exclusion",
+        "path": "model.md",
+        "scope": "Only safe owned successful artifacts beyond eight, no referenced sources",
+        "section": "retention_exclusion",
+        "status": "partial_source_derived_model",
+        "type": "partial_exclusion"
+      },
+      {
+        "id": "absolute_developer_anchor",
+        "path": "model.md",
+        "scope": "Repeated Eel installs on a fixed pinned developer metric",
+        "section": "absolute_developer_anchor",
+        "status": "partial_source_derived_model",
+        "type": "partial_exclusion"
+      },
+      {
+        "id": "terminal_evidence_partition",
+        "path": "model.md",
+        "scope": "Declared domain, observation, assumptions, relation, counterexample and evidence in named section.",
+        "section": "terminal_evidence_partition",
+        "status": "partial_source_derived_finite_checks",
+        "subject_revision": "39ec2429e3ee636c2fa16a45bd9d27ffae51ca446a181864fdf65500e2bb98fd",
+        "type": "evidence_strength_partition"
+      },
+      {
+        "id": "priority_wait_complement",
+        "path": "model.md",
+        "scope": "Declared domain, observation, assumptions, relation, counterexample and evidence in named section.",
+        "section": "priority_wait_complement",
+        "status": "partial_source_derived_finite_checks",
+        "subject_revision": "39ec2429e3ee636c2fa16a45bd9d27ffae51ca446a181864fdf65500e2bb98fd",
+        "type": "partial_exclusion"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_or_representation"
+    }
+  },
+  "id": "mova-eel-controller",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../lib.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "39ec2429e3ee636c2fa16a45bd9d27ffae51ca446a181864fdf65500e2bb98fd"
+  },
+  "status": "partial_source_bound_model"
+}

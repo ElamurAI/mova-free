@@ -160,3 +160,23 @@ fn readdir(it: &mut Interp, a: &[Value], nargout: usize) -> Result<Vec<Value>, M
         }
     }
 }
+
+#[cfg(test)]
+mod wave30_tests {
+    use super::*;
+    #[test]
+    fn status_and_partial_delete() {
+        let mut it = Interp::capture();
+        mkdir(&mut it, &[Value::str("/d")], 0).unwrap();
+        assert_eq!(exist_path(&mut it, "/d"), 7.0);
+        assert!(rmdir(&mut it, &[Value::str("/missing")], 0).is_err());
+        let out = rmdir(&mut it, &[Value::str("/missing")], 2).unwrap();
+        assert_eq!(super::super::scalar_arg(&out, 0, "probe").unwrap(), 0.0);
+        it.fs.write("/first", b"x").unwrap();
+        assert!(delete(&mut it, &[Value::str("/first"), Value::str("/d")], 0).is_err());
+        assert_eq!(exist_path(&mut it, "/first"), 0.0);
+        assert_eq!(exist_path(&mut it, "/d"), 7.0);
+        let out = readdir(&mut it, &[Value::str("/missing")], 3).unwrap();
+        assert_eq!(super::super::scalar_arg(&out, 1, "probe").unwrap(), -1.0);
+    }
+}

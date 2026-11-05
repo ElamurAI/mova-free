@@ -1,0 +1,31 @@
+{
+  "id": "algorithm-a-star",
+  "source": "algorithms/src/a_star/mod.rs",
+  "children": [
+    
+  ],
+  "description": "a_star original exact algorithm",
+  "state": "Finite directed adjacency lists of usize endpoints and u64 weights, usize start and goal, a u64 heuristic vector. Input remains immutable; allocations succeed. Observations are typed errors, None, or a u128 distance with a vertex witness.",
+  "cost": "Validation O(V+E); each vertex row is expanded at most once under consistency and there are at most E successful relaxations. Heap work O((V+E) log(V+E+1)), space O(V+E). These are symbolic operation bounds, not measured wall-clock predictions.",
+  "forward": [
+    "Validate start then goal, heuristic length, zero goal heuristic, all endpoints, then all edge inequalities h(u)<=w(u,v)+h(v). On admitted inputs A* orders snapshots by (g+h,g,vertex), discards stale distances and strictly relaxes edges. Return the first fresh goal pop with its predecessor chain; exhaustion means unreachable."
+  ],
+  "inverse": [
+    "Within the declared input/result universe, excluded transitions include accepting a failed validation, incorrect first-error payloads, returning a non-realizable or nonminimal path, a cyclic witness, None for a reachable goal, and wrapped arithmetic. This is a source-derived inner description of semantic nonbehavior, not an empirical complement of sampled outcomes.",
+    "For a distance-only observation d, candidate antecedents are every admitted graph/start/goal/heuristic with a realizing path of cost d and no cheaper path; None has precisely unreachable-goal antecedents. For a full Path observation additionally require the deterministic heap/strict-parent trace to select those vertices. Omitting this trace is explicitly an outer reconstruction approximation. Errors recover inputs with exactly the first failing check. Self-loop changes and multiple consistent heuristics give nonunique fibers.",
+    "For every admitted arc define reduced cost w+h(v)-h(u)>=0 in mathematical integers. A start-to-v path has reduced sum g+h(v)-h(start), so the A* priority differs from reduced distance by the fixed constant h(start). This explains settlement; it does not admit merely guessed heuristic values.",
+    "On a fixed graph/start/goal every two admitted heuristic vectors produce the same distance or None. Their witness paths may differ because heap order changes. Zero heuristic is always admitted after endpoint validation and recovers Dijkstra distance semantics.",
+    "A returned vertex list begins at start, ends at goal, contains no repeated vertex and traverses actual arcs. With parallel arcs the minimum capacity-free edge weight between successive vertices sums to the returned distance. This realizes an upper bound; optimality additionally requires the settlement argument or an independent lower-bound oracle.",
+    "Increasing edge weights on fixed topology cannot reduce the optimal distance. A previously consistent heuristic stays consistent under increases. Reachability stays fixed. Witness equality is not implied; decreasing weights can invalidate a previously admitted heuristic.",
+    "Start and goal errors precede vector-length and goal-value errors. Endpoints are checked globally before any consistency inequality, including disconnected components. Within each scan stored row and edge order fixes the first failure. ArithmeticOverflow is a defensive checked-sum error; current bounded fixtures exceed u64 but do not reach u128 exhaustion.",
+    "Adding nonnegative self loops preserves consistency, reachability, shortest distance and the chosen strict-improvement trace. Duplicating an identical arc also preserves strict improvements. This supplies concrete many-to-one full-output preimages rather than a claim of unique graph recovery."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline --lib (debug/release twice)",
+    "Focused rustfmt, strict all-target Clippy, repeated syntax, compiled production mutant"
+  ],
+  "limitations": [
+    "Finite correspondence only; partial syntax; no general proof or approximate profile",
+    "Allocation failure and u128 exhaustion are not exercised"
+  ]
+}

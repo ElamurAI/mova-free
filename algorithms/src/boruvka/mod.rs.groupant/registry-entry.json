@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --lib boruvka --offline"
+  ],
+  "children": [],
+  "cost": "O((V+E) log(V+1) alpha(V)) time including component scans and final O(V log(V+1)) sort; O(V) auxiliary plus output. V<=1000000, E<=4000000. Resource caps reject before allocation/endpoint scans. Allocation exhaustion is not a recoverable API error.",
+  "description": "Validated signed multigraph G maps to one minimum spanning forest F. Repeatedly choose each DSU component's least outgoing (weight,input index), union candidates in ascending root order, and stop at an unchanged partition; sort selected original indices. Minimize sum of edge weights separately in every connected component; retain isolates. The distinct total order resolves ties.",
+  "forward": [
+    "Validated signed multigraph G maps to one minimum spanning forest F. Repeatedly choose each DSU component's least outgoing (weight,input index), union candidates in ascending root order, and stop at an unchanged partition; sort selected original indices. Minimize sum of edge weights separately in every connected component; retain isolates. The distinct total order resolves ties."
+  ],
+  "id": "algorithm-boruvka",
+  "inverse": [
+    "Fix observed F. The fiber includes every ordered multigraph whose deterministic rounds select those indices, whose selected weights sum to F.total_weight, and whose connectivity gives F.components. Unselected heavier edges, loops, and redistributed selected weights may be invisible. Even fixing n and selected indices does not reconstruct edge endpoints or all weights."
+  ],
+  "limitations": [
+    "Finite oracle coverage is not proof.",
+    "Partial syntax leaves macros opaque; no performance claim."
+  ],
+  "source": "algorithms/src/boruvka/mod.rs",
+  "state": "Every selected edge joins distinct current components. Cut-minimal edges are safe; each successful round reduces every nonisolated remaining component population by at least a factor two. |F|=n-components. Sum uses i128 and at most 999999 signed i64 terms, so no arithmetic overflow."
+}

@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "id": "algorithm-chinese-remainder-tests",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "575b14a4890fe379dc9d19267b7771fc6081097c38937f69b8f2620589baffed"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "operator": "Over terminating candidate implementations paired with pass/fail, excluded observations comprise pass with any failed assertion and fail with every assertion satisfied. Aborts/nontermination are outside this binary domain.",
+        "domain": "Five tests: exhaustive pairs m,n=1..10 and a=0..m,b=0..n; empty, modulus one, normalization and shared factors; full-width equal/dividing moduli, wide products, overflow and zero precedence; all six permutations and redundancy for 432 triples with moduli 6,8,9; distinct input fibers reconstructing (8,18).",
+        "assumptions": "Standard Rust arithmetic, successful resources and terminating harness.",
+        "observation_scope": "One complete finite harness run.",
+        "approximation_semantics": "Finite correspondence evidence only.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "575b14a4890fe379dc9d19267b7771fc6081097c38937f69b8f2620589baffed",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "failure_fibers",
+        "type": "reverse_reconstruction",
+        "operator": "A pass reconstructs all implementations agreeing with every finite fixture, leaving arbitrary off-fixture behavior. Failure reconstructs implementations or faulty oracle premises causing the mismatch, never uniquely identifies a defect.",
+        "domain": "Five tests: exhaustive pairs m,n=1..10 and a=0..m,b=0..n; empty, modulus one, normalization and shared factors; full-width equal/dividing moduli, wide products, overflow and zero precedence; all six permutations and redundancy for 432 triples with moduli 6,8,9; distinct input fibers reconstructing (8,18).",
+        "assumptions": "Standard Rust arithmetic, successful resources and terminating harness.",
+        "observation_scope": "One complete finite harness run.",
+        "approximation_semantics": "Finite correspondence evidence only.",
+        "path": "model.md",
+        "section": "failure_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "575b14a4890fe379dc9d19267b7771fc6081097c38937f69b8f2620589baffed",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "oracle",
+        "type": "oracle_correspondence",
+        "operator": "Independently scan 1..product(moduli) for the least common positive period, then 0..period for the first simultaneous residue. Bounded fixtures keep this brute force finite without Euclidean coefficients or production merge recurrence.",
+        "domain": "Five tests: exhaustive pairs m,n=1..10 and a=0..m,b=0..n; empty, modulus one, normalization and shared factors; full-width equal/dividing moduli, wide products, overflow and zero precedence; all six permutations and redundancy for 432 triples with moduli 6,8,9; distinct input fibers reconstructing (8,18).",
+        "assumptions": "Standard Rust arithmetic, successful resources and terminating harness.",
+        "observation_scope": "One complete finite harness run.",
+        "approximation_semantics": "Finite correspondence evidence only.",
+        "path": "model.md",
+        "section": "oracle",
+        "status": "partial_source_derived",
+        "subject_revision": "575b14a4890fe379dc9d19267b7771fc6081097c38937f69b8f2620589baffed",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "mutation",
+        "type": "counterfactual_boundary",
+        "operator": "Change compatibility check difference % gcd != 0 to == 0. This compiled production-source mutant rejects compatible constraints and is rejected by neutral_normalization_and_non_coprime.",
+        "domain": "Five tests: exhaustive pairs m,n=1..10 and a=0..m,b=0..n; empty, modulus one, normalization and shared factors; full-width equal/dividing moduli, wide products, overflow and zero precedence; all six permutations and redundancy for 432 triples with moduli 6,8,9; distinct input fibers reconstructing (8,18).",
+        "assumptions": "Standard Rust arithmetic, successful resources and terminating harness.",
+        "observation_scope": "One complete finite harness run.",
+        "approximation_semantics": "Finite correspondence evidence only.",
+        "path": "model.md",
+        "section": "mutation",
+        "status": "partial_source_derived",
+        "subject_revision": "575b14a4890fe379dc9d19267b7771fc6081097c38937f69b8f2620589baffed",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "schedule",
+        "type": "metamorphic_relation",
+        "operator": "Single-thread repeated debug/release runs preserve normalized test records, excluding timestamps, build progress and elapsed time. This is finite evidence, not universal equivalence.",
+        "domain": "Five tests: exhaustive pairs m,n=1..10 and a=0..m,b=0..n; empty, modulus one, normalization and shared factors; full-width equal/dividing moduli, wide products, overflow and zero precedence; all six permutations and redundancy for 432 triples with moduli 6,8,9; distinct input fibers reconstructing (8,18).",
+        "assumptions": "Standard Rust arithmetic, successful resources and terminating harness.",
+        "observation_scope": "One complete finite harness run.",
+        "approximation_semantics": "Finite correspondence evidence only.",
+        "path": "model.md",
+        "section": "schedule",
+        "status": "partial_source_derived",
+        "subject_revision": "575b14a4890fe379dc9d19267b7771fc6081097c38937f69b8f2620589baffed",
+        "evidence": "model.md#evidence"
+      }
+    ]
+  }
+}

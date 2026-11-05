@@ -361,3 +361,39 @@ pub fn time_answer(member: &str, q: &str) -> Option<String> {
     }
     None
 }
+
+#[cfg(test)]
+mod wave28_dialogue {
+    use super::*;
+    #[test]
+    fn act_precedence_and_indirect_gate() {
+        assert_eq!(act_of("How much love?").act, Act::Ask);
+        assert_eq!(act_of("Hello?").act, Act::Greet);
+        assert_eq!(act_of("My mistake").act, Act::Disagree);
+        assert_eq!(act_of("").act, Act::Assert);
+        assert_eq!(act_of("good but wrong").polarity, -1);
+        assert!(
+            indirect_request("Could you rollback?", true)
+                .unwrap()
+                .is_err()
+        );
+        assert_eq!(
+            indirect_request("Can you show the pool?", true)
+                .unwrap()
+                .unwrap()
+                .0,
+            "pool"
+        );
+        assert!(indirect_request("Can you fly?", false).unwrap().is_err());
+        assert!(indirect_request("pool", false).is_none());
+    }
+    #[test]
+    fn civil_negative_seconds_and_politeness() {
+        assert_eq!(civil(0), (1970, 1, 1, 0, 0, 3));
+        assert_eq!(civil(-1), (1969, 12, 31, 23, 59, 2));
+        assert_eq!(politeness("Please check").0, -30);
+        assert_eq!(politeness("Check please").0, 49);
+        assert!(distress("undying").is_empty());
+        assert_eq!(distress("afraid").len(), 1);
+    }
+}

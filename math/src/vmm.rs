@@ -1,12 +1,8 @@
-//! v2: LLM (Opus) via `claude -p` — the same approach as in `annot/src/llm.rs` and `prag/src/opus.rs`:
-//! an empty directory (no project context), no tools, effort via `--settings` (the box-wide
-//! `settings.json` sets `CLAUDE_CODE_EFFORT_LEVEL` and overrides `--effort`), output — JSON with
-//! the result, time, tokens and cost. API key — from `~/Mova/local.md` (`api_env`), never printed.
-//! Spending cap: before each call — the sum of `cost_usd` from the wave log plus reserve ≤ cap.
+//! Teacher calls through the shared Codex CLI transport (mova-teacher).
+//! Existing result/accounting formats remain readable; subscription dollar cost is not reported.
 
 use std::io::Write as _;
 use std::path::{Path, PathBuf};
-use std::process::{Command, Stdio};
 use std::sync::Mutex;
 use std::time::Instant;
 
@@ -43,7 +39,7 @@ impl Vmm {
     pub fn new(cwd: PathBuf, log: PathBuf, cap_usd: f64) -> Result<Vmm> {
         let spent = read_calls(&log)?.iter().map(|c| c.cost_usd).sum();
         Ok(Vmm {
-            model: std::env::var("MATH_MODEL").unwrap_or_else(|_| "claude-haiku-5-5".into()),
+            model: mova_teacher::model("MATH_MODEL"),
             effort: std::env::var("MATH_EFFORT").unwrap_or_else(|_| "medium".into()),
             cwd,
             log,
@@ -67,23 +63,7 @@ impl Vmm {
         }
         std::fs::create_dir_all(&self.cwd)?;
         let t0 = Instant::now();
-        let mut child = Command::new("claude")
-            .args(["-p", "--model", &self.model, "--effort", &self.effort, "--output-format", "json"])
-            .args(["--settings", &format!("{{\"env\":{{\"CLAUDE_CODE_EFFORT_LEVEL\":\"{}\"}}}}", self.effort)])
-            .args(["--disallowedTools", "Bash,Edit,Write,Read,Glob,Grep,WebFetch,WebSearch,Agent,NotebookEdit"])
-            .envs(api_env())
-            .current_dir(&self.cwd)
-            .stdin(Stdio::piped())
-            .stdout(Stdio::piped())
-            .stderr(Stdio::piped())
-            .spawn()
-            .context("claude -p")?;
-        child.stdin.take().context("stdin")?.write_all(prompt.as_bytes())?;
-        let out = child.wait_with_output()?;
-        if !out.status.success() {
-            bail!("claude -p ({step} {batch}): {} {}", String::from_utf8_lossy(&out.stderr).trim(), String::from_utf8_lossy(&out.stdout).chars().take(400).collect::<String>());
-        }
-        let v: serde_json::Value = serde_json::from_slice(&out.stdout).context("JSON from claude -p")?;
+        let v = mova_teacher::ask(&self.cwd, &self.model, &self.effort, prompt)?;
         let u = &v["usage"];
         let tok = |k: &str| u[k].as_u64().unwrap_or(0);
         let call = Call {
@@ -119,19 +99,36 @@ pub fn read_calls(path: &Path) -> Result<Vec<Call>> {
     std::fs::read_to_string(path)?.lines().filter(|l| !l.trim().is_empty()).map(|l| Ok(serde_json::from_str(l)?)).collect()
 }
 
-/// API key for `claude -p` ("let them work through the API from now on"): the line
-/// `ANTHROPIC_API_KEY=…` in `~/Mova/local.md` (outside git, guarded by `secret-guard.sh`). No line or
-/// `MOVA_SUBSCRIPTION=1` — the call goes through the subscription. The key is never printed.
-fn api_env() -> Vec<(String, String)> {
-    if std::env::var("MOVA_SUBSCRIPTION").as_deref() == Ok("1") {
-        return Vec::new();
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn accounting_and_cap_before_effect() {
+        let dir = std::env::temp_dir().join(format!("mova-wave28-vmm-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir(&dir).unwrap();
+        let log = dir.join("calls");
+        assert!(read_calls(&log).unwrap().is_empty());
+        append_call(
+            &log,
+            &Call {
+                cost_usd: 2.0,
+                ..Default::default()
+            },
+        )
+        .unwrap();
+        let v = Vmm::new(dir.join("not-created"), log.clone(), 2.5).unwrap();
+        assert_eq!(v.spent(), 2.0);
+        assert!(
+            v.ask("synthetic", 0, 0, "", 1.0)
+                .unwrap_err()
+                .to_string()
+                .contains("cap")
+        );
+        assert!(!v.cwd.exists());
+        assert_eq!(read_calls(&log).unwrap().len(), 1);
+        std::fs::write(&log, "not json").unwrap();
+        assert!(read_calls(&log).is_err());
+        std::fs::remove_dir_all(dir).unwrap();
     }
-    let Ok(home) = std::env::var("HOME") else { return Vec::new() };
-    let text = std::fs::read_to_string(Path::new(&home).join("Mova/local.md")).unwrap_or_default();
-    text.lines()
-        .find_map(|l| l.strip_prefix("ANTHROPIC_API_KEY="))
-        .map(str::trim)
-        .filter(|k| !k.is_empty())
-        .map(|k| vec![("ANTHROPIC_API_KEY".to_string(), k.to_string())])
-        .unwrap_or_default()
 }

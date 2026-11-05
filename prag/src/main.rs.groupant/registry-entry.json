@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p prag --bin prag wave17_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "Options O(bytes+K log D); segmentation O(text); files parse full input then order retained sentences and delegate context work; saved-run reporting scans batch/call bytes.",
+  "description": "CLI option projection and dispatch compose supplied file adapters, sentence segmentation and saved-run reporting. Live select/silver/eval/lens/infer branches are described only by their dispatch, not executed.",
+  "forward": [
+    "CLI option projection and dispatch compose supplied file adapters, sentence segmentation and saved-run reporting. Live select/silver/eval/lens/infer branches are described only by their dispatch, not executed."
+  ],
+  "id": "prag-main",
+  "inverse": [
+    "Options admit overwritten flags and interleavings; numeric outputs merge default/present spellings; selected world rows constrain prior document histories but omit filtered documents; aggregate accounting admits many per-call decompositions."
+  ],
+  "limitations": [
+    "Finite supplied fixtures, no semantic proof.",
+    "Syntax partial, macro bodies opaque; external services unexecuted."
+  ],
+  "source": "prag/src/main.rs",
+  "state": "Partial supplied-input boundary models; live acquisition excluded."
+}

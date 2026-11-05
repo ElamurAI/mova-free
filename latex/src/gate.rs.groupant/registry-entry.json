@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p latex --features math --lib gate::tests"
+  ],
+  "children": [],
+  "cost": "Tprint(N)+Tparse(L)+Teq plus O(L+N') storage; affected visits all nodes O(N), no early exit.",
+  "description": "check_printed parses printer output: Err→ReparseError, equal→Ok, unequal→Mismatch retaining candidate. check/check_faulty select printer. affected ORs structural fault predicates during walk; roundtrip first parses original source.",
+  "forward": [
+    "check_printed parses printer output: Err→ReparseError, equal→Ok, unequal→Mismatch retaining candidate. check/check_faulty select printer. affected ORs structural fault predicates during walk; roundtrip first parses original source."
+  ],
+  "id": "latex-gate",
+  "inverse": [
+    "Ok preimage trees equal to reparse chosen print; many original spellings share tree. Mismatch/ReparseError lose original tree, admitting every original producing stored candidate under selected print.",
+    "Failed candidate parse or unequal tree cannot return Ok. Original parse error excludes printing. affected false does not prove arbitrary AST printer correctness."
+  ],
+  "limitations": [
+    "Partial source-derived model and finite synthetic checks",
+    "No universal proof or executable percentage surrogate",
+    "No live corpus, frozen VMM, teacher/API, training or GPU execution"
+  ],
+  "source": "latex/src/gate.rs",
+  "state": "Failure retains exact printed string; equality structural per AST contract, not numeric truth. No I/O. Arbitrary empty/manual trees not promised accepted."
+}

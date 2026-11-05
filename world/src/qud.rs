@@ -524,3 +524,97 @@ mod tests {
         assert!(givenness(&["wolf"], &given, &ans)[0].contains("hallucination"));
     }
 }
+
+#[cfg(test)]
+mod wave8_models {
+    use super::*;
+
+    fn sentence(pred: &str, question: bool, hedge: bool) -> (String, Vec<Tok>) {
+        let mut ts = vec![Tok::new(pred, pred, UPos::VERB, Rel::Root, 0)];
+        if hedge { ts.push(Tok::new("maybe", "maybe", UPos::ADV, Rel::Advmod, 1)); }
+        (format!("{pred}{}", if question { "?" } else { "." }), ts)
+    }
+
+    #[test]
+    fn bounded_stack_matches_independent_latest_eligible_oracle() {
+        // Every length-six history over two predicates and question/assertion/hedged assertion.
+        for mut code in 0usize..6usize.pow(6) {
+            let mut input = Vec::new();
+            let mut expected = Vec::new();
+            let mut pending: Vec<(usize, usize)> = Vec::new();
+            for n in 1..=6 {
+                let digit = code % 6;
+                code /= 6;
+                let predicate = digit % 2;
+                let kind = digit / 2;
+                input.push(sentence(["sleep", "jump"][predicate], kind == 0, kind == 2));
+                let (attach, answer) = if kind == 0 {
+                    pending.push((n, predicate));
+                    (Attach::Pushed(n), Answer::Question)
+                } else {
+                    let eligible: Vec<_> = pending.iter().filter(|(_, p)| *p == predicate).map(|(id, _)| *id).collect();
+                    match eligible.iter().max().copied() {
+                        Some(id) => {
+                            if kind == 1 { pending.retain(|(q, _)| *q != id); }
+                            (Attach::Explicit(id), if kind == 2 { Answer::Partial } else { Answer::Complete })
+                        }
+                        None => (Attach::Implicit(if n == 1 { "What happened?" } else { "What happened next?" }.into()), Answer::Complete),
+                    }
+                };
+                expected.push((attach, answer, pending.iter().map(|(id, _)| *id).collect::<Vec<_>>()));
+            }
+            let actual: Vec<_> = track_toks(&input).into_iter().map(|s| (s.attach, s.answer, s.stack)).collect();
+            assert_eq!(actual, expected);
+        }
+    }
+
+    #[test]
+    fn uncertainty_is_slot_specific_and_newer_partial_blocks_older() {
+        let input = vec![sentence("sleep", true, false), sentence("sleep", true, false), sentence("sleep", false, true)];
+        let steps = track_toks(&input);
+        assert_eq!((steps[2].attach.clone(), steps[2].answer, steps[2].stack.clone()),
+                   (Attach::Explicit(2), Answer::Partial, vec![1, 2]));
+        let toks = vec![Tok::new("sleep", "sleep", UPos::VERB, Rel::Root, 0),
+                        Tok::new("Ada", "ada", UPos::PROPN, Rel::Nsubj, 1),
+                        Tok::new("maybe", "maybe", UPos::ADV, Rel::Advmod, 1)];
+        let s = prepare(&toks, &None);
+        let q = Question { id: 1, wh: Wh::Who, lemmas: ["sleep".into()].into(), pred: Some("sleep".into()), words: ["sleep".into()].into() };
+        // A generic hedge is not applied to the Who slot by the current code.
+        assert!(congruent(&q, &s).unwrap().0);
+    }
+
+    #[test]
+    fn empty_question_content_relaxes_overlap_but_not_filler() {
+        let q = Question { id: 1, wh: Wh::Where, lemmas: BTreeSet::new(), pred: None, words: BTreeSet::new() };
+        let here = vec![Tok::new("here", "here", UPos::ADV, Rel::Advmod, 0)];
+        assert!(congruent(&q, &prepare(&here, &None)).unwrap().0);
+        assert!(congruent(&q, &prepare(&[], &None)).is_err());
+        let mut repeated = q.clone();
+        repeated.words.insert("here".into());
+        assert!(congruent(&repeated, &prepare(&here, &None)).is_err());
+    }
+
+    #[test]
+    fn projected_answer_has_multiple_negation_preimages() {
+        let mut observations = Vec::new();
+        for neg in [None, Some("not"), Some("never"), Some("no")] {
+            let mut a = sentence("sleep", false, false);
+            if let Some(n) = neg { a.1.push(Tok::new(n, n, UPos::PART, Rel::Advmod, 1)); }
+            let steps = track_toks(&[sentence("sleep", true, false), a]);
+            observations.push((steps[1].attach.clone(), steps[1].answer, steps[1].stack.clone()));
+        }
+        assert!(observations.windows(2).all(|w| w[0] == w[1]));
+        assert_eq!(observations[0], (Attach::Explicit(1), Answer::Complete, vec![]));
+    }
+
+    #[test]
+    fn givenness_preserves_order_duplicates_and_case() {
+        let given = ["fox".into()].into();
+        let answer = ["crow".into()].into();
+        let result = givenness(&["crow", "fox", "Crow", "crow"], &given, &answer);
+        assert_eq!(result.len(), 3);
+        assert_eq!(result[0], result[2]);
+        assert!(result[0].contains("leakage"));
+        assert!(result[1].contains("hallucination"));
+    }
+}

@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms piecewise_linear::tests",
+    "Repeated debug/release, compiled production mutant and restored hashes; see model.md#tests"
+  ],
+  "children": [],
+  "cost": "O(n) validation and O(log n) binary search, O(1) storage, no allocation. Caller budget bounds validated knots; overflow rejects rather than wrapping. Work budget is not a wall-clock deadline. No approximate floating evaluation or relative error tier is advertised.",
+  "description": "Deterministic executable assertions for piecewise_linear; finite fixtures observe production outputs against independent masks or exact arithmetic. Passing is a finite evidence claim, not universal correctness.",
+  "forward": [
+    "Deterministic executable assertions for piecewise_linear; finite fixtures observe production outputs against independent masks or exact arithmetic. Passing is a finite evidence claim, not universal correctness."
+  ],
+  "id": "algorithm-piecewise-linear-tests",
+  "inverse": [
+    "All implementations producing the same finite assertion vector belong to one nonunique fiber. Original production and a mutant differing only on untested data may both pass; the compiled mutant (Increment interior rational denominator; affine reproduction assertion fails.) is separated by affine_exact. A pass vector cannot reconstruct source, runtime or behavior on unseen inputs."
+  ],
+  "limitations": [
+    "Partial syntax, not semantic proof",
+    "Finite oracles do not establish universal accuracy",
+    "No performance measurement or automatic substitution",
+    "Allocator failure not experimentally injected"
+  ],
+  "source": "algorithms/src/piecewise_linear/tests.rs",
+  "state": "Named assertions and finite fixtures"
+}

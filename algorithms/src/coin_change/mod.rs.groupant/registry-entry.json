@@ -1,0 +1,23 @@
+{
+  "id": "algorithm-coin-change",
+  "source": "algorithms/src/coin_change/mod.rs",
+  "description": "Original std-only coin_change dynamic program.",
+  "state": "Finite input slice, checked storage dimensions, typed numeric or error result.",
+  "forward": [
+    "best[0]=0; best[a]=min over d<=a of 1+best[a-d], unreachable=None. Positive d makes ascending a a dependency order. Every finite previous<=a-d<a, so increment cannot overflow."
+  ],
+  "inverse": [
+    "behavior_complement precedes reverse_reconstruction; see model.md.",
+    "Output admits nonunique compatible antecedents; no general inverse claimed."
+  ],
+  "cost": "O((A+1)*(D.len()+1)) time and O(A+1) space, including validation and initialization.",
+  "checks": [
+    "rustc --edition 2024 --test algorithms/src/coin_change/mod.rs; debug and optimized binaries twice.",
+    "Strict clippy-driver -D warnings; rustfmt; syntax twice; compiled mutant rejection."
+  ],
+  "limitations": [
+    "Finite checks do not prove all inputs.",
+    "Syntax omits expansion and semantic resolution.",
+    "Allocation refusal not injected."
+  ]
+}

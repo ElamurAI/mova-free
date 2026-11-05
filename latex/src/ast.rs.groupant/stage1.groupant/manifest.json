@@ -1,0 +1,82 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "preorder_recurrence",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "preorder_recurrence",
+        "status": "partial_source_derived_model",
+        "type": "preorder_recurrence"
+      },
+      {
+        "id": "borrowed_projection",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "borrowed_projection",
+        "status": "partial_source_derived_model",
+        "type": "borrowed_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 5489,
+      "start": 3766
+    },
+    "description": "items(Row(v)) borrows v; items(other) borrows a one-element slice. walk visits self then children: binary a,b; optional index then body; Scripts base,sub,sup; Env row-major cells; Unknown args in vector order.",
+    "source_bytes_sha256": "1d17571ef0a7d2494a8f8eaf45046e3e0595a9a0506a77f61fc59b57517e7d93"
+  },
+  "id": "latex-ast-stage1",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../ast.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "88786b90964d7ee3438883e97716def3e8076003e6739a53f1232bd9e4cf8599"
+  },
+  "status": "partial_source_bound_model"
+}

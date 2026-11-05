@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "display::tests::scalars_short",
+    "display::tests::matrix_rows"
+  ],
+  "children": [],
+  "cost": "O(elements + emitted characters), O(elements + text) cell buffering; recursive unparse may repeatedly concatenate subtree strings. No measured speed or general relative numeric-error guarantee for text.",
+  "description": "Octave-style textual display of values, real/complex common formats and function expression unparse.",
+  "forward": [
+    "Choose real common format from finite extrema/integrality and precision 5 or 16; render column-major cells as rows, split blocks by floor(80/cell_width). Named output adds labels/blank lines; disp omits numeric empty values and prints char rows."
+  ],
+  "id": "mlab-display",
+  "inverse": [
+    "Numeric zero formatting excludes a printed negative sign; scalar complex imaginary -0 permits minus while matrix complex comparison excludes it. Empty numeric disp excludes a newline, empty char disp includes one.",
+    "Printed rounded values admit all floating inputs sharing chosen format and rounding bins; labels do not recover types uniquely. unparse loses closure captures and is not a precedence-repairing inverse parser."
+  ],
+  "limitations": [
+    "Partial source-bound model, not semantic proof",
+    "No executable percentage surrogate",
+    "Finite synthetic fixtures only; frozen suites/external measurement unexecuted"
+  ],
+  "source": "mlab/src/display.rs",
+  "state": "Logical values use nonzero predicate; char values map codepoints. Precision controls significant digits, but exact integer branch remains integer up to 15 digits."
+}

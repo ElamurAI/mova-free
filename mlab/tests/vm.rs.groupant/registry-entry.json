@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "wave30_bounded_state_and_fallback",
+    "wave30_parse_runtime_and_output_state",
+    "wave30_synthetic_gate_fail_fast",
+    "vm_workspace_is_visible_after_run"
+  ],
+  "children": [],
+  "cost": "Selected fixtures bounded by seven tiny programs plus state/fault cases. Existing frozen and recursion tests have separate unmeasured costs; no whole-harness coverage claim.",
+  "description": "VM/tree equivalence test harness: frozen suites and large edge library coexist with selected bounded synthetic state/fallback/fault checks.",
+  "forward": [
+    "run creates capture interpreter with vm/fault then returns output and state. Selected wave30 tests assert expected bytes, tree/VM parity, fallback counters, parse/runtime workspace behavior and fail-fast fault mismatch."
+  ],
+  "id": "mlab-tests-vm",
+  "inverse": [
+    "Passing selected assertions admits untested divergent programs; parity alone admits shared wrong output, so synthetic cases also assert independent expected strings."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no macro expansion or semantic resolution. Finite synthetic CPU checks are not a proof. Frozen suites, corpus, teacher, GPU, allocation exhaustion and host IO failure injection were not run. No useful executable percent surrogate for categorical control/effects; unsupported gap, no 1/2/5/10% claim."
+  ],
+  "source": "mlab/tests/vm.rs",
+  "state": "Selected synthetic tests use memory filesystem and finite small loops; frozen suite and EDGE recursion functions remain unexecuted in this epoch."
+}

@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "hints::tests::hints_fire_only_on_violations"
+  ],
+  "children": [],
+  "cost": "A annotation tokens, V violation bindings and H rendered bytes: projection O(A), delegated expert rule evaluation cost E(rules,A), render O(H), sorting O(V log V) string comparisons and O(A+H) retained memory. No practical bound on expert joins is established.",
+  "description": "Optional expert-rule hints on Rust drafts. Rules are loaded strictly, severity filtered, evaluated over an Ann-to-Sentence projection, then rendered in sorted unique order. Hints are advisory, not annotations or acceptance gates.",
+  "forward": [
+    "load rejects if expert::load reports any parse error, otherwise from_rules retains r when warn or severity==error. for_ann projects every token with space_after=true and all layer flags=true, iterates rule violation bindings, renders one-based token coordinates and sorts/deduplicates lines."
+  ],
+  "id": "annot-hints",
+  "inverse": [
+    "A hint constrains at least one retained rule id/what and one violation binding with those forms, but different rules or repeated bindings can render the same deduplicated string. An empty result is compatible with no rules, no violations or empty matching domains; it does not reconstruct a correct annotation."
+  ],
+  "limitations": [
+    "Rule-file error and warn=true paths are source modeled, not directly executed here.",
+    "No arbitrary expert binding safety or linguistic accuracy claim."
+  ],
+  "source": "annot/src/hints.rs",
+  "state": "Output is lexicographically sorted with no duplicate strings; no mutation of Ann. Rule binding indices must be in 1..=a.len() or indexing panics. warn=true retains every severity, not only error/warn. Empty rules yields empty output."
+}

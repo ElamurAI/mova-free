@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p prag --offline --lib schema:: -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "O(input/output bytes) codecs; O(1) coordinate update; O(k) classes allocation.",
+  "description": "Finite closed vocabularies, coordinate updates and domain-restricted label transport.",
+  "forward": [
+    "Closed finite tables; six independent coordinates; ordered first-error parse and verbatim TSV output."
+  ],
+  "id": "prag-schema",
+  "inverse": [
+    "Whitespace and overwritten-coordinate fibers retain ambiguity; exact row inverse only for canonical safe means."
+  ],
+  "limitations": [
+    "Partial syntax with opaque macros; finite native fixtures.",
+    "JSON and TSV use distinct alphabets; arbitrary means is not safe row transport.",
+    "Caller inspection is not live classifier/agreement execution."
+  ],
+  "source": "prag/src/schema.rs",
+  "state": "Supplied labels and columns; indices valid or panic; canonical means required for TSV roundtrip."
+}

@@ -1,0 +1,184 @@
+{
+  "children": [
+    "gparse-data",
+    "gparse-eisner",
+    "gparse-library",
+    "gparse-cli",
+    "gparse-model",
+    "gparse-softmax",
+    "gparse-test-empty-sentences",
+    "gparse-test-gelu-paths",
+    "gparse-test-gpu-gradients",
+    "gparse-test-inference-softmax",
+    "gparse-test-predict-paths",
+    "gparse-test-softmax-backward",
+    "gparse-test-training-speed"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "CPU/GPU runtime and Candle kernels trusted beyond finite checks. CUDA tests serial on RTX4000 SFF Ada, compile cap89, two build jobs. Explicit CUDA Device::new_cuda calls do not depend on GP_CPU; CPU prediction uses GP_FUSED_SOFTMAX=0. Original model/corpus timing and optimizer experiments not executed. No full mathematical/semantic AST proof or percent-error surrogate.",
+        "domain": "UTF-8 and valid Sent/Batch coordinates; Eisner square matrices with representable finite intermediate candidate sums for chart/backtrace tie guarantees, with special empty/singleton early branches. Exact-real maximum-tree interpretation additionally requires exact arithmetic or order-preservation across every rounded comparison. Net requires max_len>0, heads>0,d divisible heads, valid indices, resources and CUDA for selected ignored synthetic tests. No live model/corpus.",
+        "id": "behavior-complement",
+        "observation_scope": "data::batch roles index (k*T+d)*T+p; Net attention uses B,H,T,dh and masks head/key columns. lib transposes arcs dependent-major into Eisner head-major and maps local decoded h to flattened k*T+h for Net::rels. An adapter using raw h for k>0 gathers another sentence's encoder state. Vocs labels require same ordering as model output dimensions; load files independently and missing weights are not consistency proof. CLI score zips and can hide length mismatches, so output-length invariants must be checked before claiming dataset coverage. Existing world GPU caller uses parse_forms; tokenization remains caller-owned. Tests are sibling observers, not runtime production stages.",
+        "operator": "Within representable finite candidate sums, decoded tree cannot have multiple roots; no analogous guarantee is made for nonfinite recurrence defaults or copied overlength trees. Empty slots never enter reductions. Public training fusion uses differentiable softmax. Missing tensors preserve initialization, without rollback promise.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "CPU/GPU runtime and Candle kernels trusted beyond finite checks. CUDA tests serial on RTX4000 SFF Ada, compile cap89, two build jobs. Explicit CUDA Device::new_cuda calls do not depend on GP_CPU; CPU prediction uses GP_FUSED_SOFTMAX=0. Original model/corpus timing and optimizer experiments not executed. No full mathematical/semantic AST proof or percent-error surrogate.",
+        "domain": "UTF-8 and valid Sent/Batch coordinates; Eisner square matrices with representable finite intermediate candidate sums for chart/backtrace tie guarantees, with special empty/singleton early branches. Exact-real maximum-tree interpretation additionally requires exact arithmetic or order-preservation across every rounded comparison. Net requires max_len>0, heads>0,d divisible heads, valid indices, resources and CUDA for selected ignored synthetic tests. No live model/corpus.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "data::batch roles index (k*T+d)*T+p; Net attention uses B,H,T,dh and masks head/key columns. lib transposes arcs dependent-major into Eisner head-major and maps local decoded h to flattened k*T+h for Net::rels. An adapter using raw h for k>0 gathers another sentence's encoder state. Vocs labels require same ordering as model output dimensions; load files independently and missing weights are not consistency proof. CLI score zips and can hide length mismatches, so output-length invariants must be checked before claiming dataset coverage. Existing world GPU caller uses parse_forms; tokenization remains caller-owned. Tests are sibling observers, not runtime production stages.",
+        "operator": "Output preimages include discarded text fields, vocab/hash collisions and rounded f32 decoder decision regions; exact-real score cones describe them only under order-preservation. Softmax positive rows admit log(p)+constant; f32 zero can be underflow. Checkpoints omit optimizer moments, corpus and RNG history.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "CPU/GPU runtime and Candle kernels trusted beyond finite checks. CUDA tests serial on RTX4000 SFF Ada, compile cap89, two build jobs. Explicit CUDA Device::new_cuda calls do not depend on GP_CPU; CPU prediction uses GP_FUSED_SOFTMAX=0. Original model/corpus timing and optimizer experiments not executed. No full mathematical/semantic AST proof or percent-error surrogate.",
+        "domain": "UTF-8 and valid Sent/Batch coordinates; Eisner square matrices with representable finite intermediate candidate sums for chart/backtrace tie guarantees, with special empty/singleton early branches. Exact-real maximum-tree interpretation additionally requires exact arithmetic or order-preservation across every rounded comparison. Net requires max_len>0, heads>0,d divisible heads, valid indices, resources and CUDA for selected ignored synthetic tests. No live model/corpus.",
+        "id": "coordinate-join",
+        "observation_scope": "data::batch roles index (k*T+d)*T+p; Net attention uses B,H,T,dh and masks head/key columns. lib transposes arcs dependent-major into Eisner head-major and maps local decoded h to flattened k*T+h for Net::rels. An adapter using raw h for k>0 gathers another sentence's encoder state. Vocs labels require same ordering as model output dimensions; load files independently and missing weights are not consistency proof. CLI score zips and can hide length mismatches, so output-length invariants must be checked before claiming dataset coverage. Existing world GPU caller uses parse_forms; tokenization remains caller-owned. Tests are sibling observers, not runtime production stages.",
+        "operator": "Batch row=k*T+i; tensor arc cell=(k*T+d)*T+h; decoder sc[h][d] receives that cell; relation head=k*T+h. Root index0 is local per sentence and never a real loss row.",
+        "path": "model.md",
+        "required": false,
+        "section": "coordinate-join",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "CPU/GPU runtime and Candle kernels trusted beyond finite checks. CUDA tests serial on RTX4000 SFF Ada, compile cap89, two build jobs. Explicit CUDA Device::new_cuda calls do not depend on GP_CPU; CPU prediction uses GP_FUSED_SOFTMAX=0. Original model/corpus timing and optimizer experiments not executed. No full mathematical/semantic AST proof or percent-error surrogate.",
+        "domain": "UTF-8 and valid Sent/Batch coordinates; Eisner square matrices with representable finite intermediate candidate sums for chart/backtrace tie guarantees, with special empty/singleton early branches. Exact-real maximum-tree interpretation additionally requires exact arithmetic or order-preservation across every rounded comparison. Net requires max_len>0, heads>0,d divisible heads, valid indices, resources and CUDA for selected ignored synthetic tests. No live model/corpus.",
+        "id": "gradient-join",
+        "observation_scope": "data::batch roles index (k*T+d)*T+p; Net attention uses B,H,T,dh and masks head/key columns. lib transposes arcs dependent-major into Eisner head-major and maps local decoded h to flattened k*T+h for Net::rels. An adapter using raw h for k>0 gathers another sentence's encoder state. Vocs labels require same ordering as model output dimensions; load files independently and missing weights are not consistency proof. CLI score zips and can hide length mismatches, so output-length invariants must be checked before claiming dataset coverage. Existing world GPU caller uses parse_forms; tokenization remains caller-owned. Tests are sibling observers, not runtime production stages.",
+        "operator": "Train=true selects custom fused VJP or reference attention, retaining Q/K/V plus embedding/LN gradients; inference fused loses Q/K gradient while V still reaches loss. Checking any QKV gradient alone is insufficient.",
+        "path": "model.md",
+        "required": false,
+        "section": "gradient-join",
+        "status": "partial_source_derived_model",
+        "type": "gradient_transport"
+      },
+      {
+        "assumptions": "CPU/GPU runtime and Candle kernels trusted beyond finite checks. CUDA tests serial on RTX4000 SFF Ada, compile cap89, two build jobs. Explicit CUDA Device::new_cuda calls do not depend on GP_CPU; CPU prediction uses GP_FUSED_SOFTMAX=0. Original model/corpus timing and optimizer experiments not executed. No full mathematical/semantic AST proof or percent-error surrogate.",
+        "domain": "UTF-8 and valid Sent/Batch coordinates; Eisner square matrices with representable finite intermediate candidate sums for chart/backtrace tie guarantees, with special empty/singleton early branches. Exact-real maximum-tree interpretation additionally requires exact arithmetic or order-preservation across every rounded comparison. Net requires max_len>0, heads>0,d divisible heads, valid indices, resources and CUDA for selected ignored synthetic tests. No live model/corpus.",
+        "id": "checkpoint-effects",
+        "observation_scope": "data::batch roles index (k*T+d)*T+p; Net attention uses B,H,T,dh and masks head/key columns. lib transposes arcs dependent-major into Eisner head-major and maps local decoded h to flattened k*T+h for Net::rels. An adapter using raw h for k>0 gathers another sentence's encoder state. Vocs labels require same ordering as model output dimensions; load files independently and missing weights are not consistency proof. CLI score zips and can hide length mismatches, so output-length invariants must be checked before claiming dataset coverage. Existing world GPU caller uses parse_forms; tokenization remains caller-owned. Tests are sibling observers, not runtime production stages.",
+        "operator": "CLI metadata writes precede epoch loop, checkpoints only strict improvements on full-dev/no-dev epochs, log follows. Failures may leave partial output. Selected synthetic optimizer mutates only ephemeral variables.",
+        "path": "model.md",
+        "required": false,
+        "section": "checkpoint-effects",
+        "status": "partial_source_derived_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "CPU/GPU runtime and Candle kernels trusted beyond finite checks. CUDA tests serial on RTX4000 SFF Ada, compile cap89, two build jobs. Explicit CUDA Device::new_cuda calls do not depend on GP_CPU; CPU prediction uses GP_FUSED_SOFTMAX=0. Original model/corpus timing and optimizer experiments not executed. No full mathematical/semantic AST proof or percent-error surrogate.",
+        "domain": "UTF-8 and valid Sent/Batch coordinates; Eisner square matrices with representable finite intermediate candidate sums for chart/backtrace tie guarantees, with special empty/singleton early branches. Exact-real maximum-tree interpretation additionally requires exact arithmetic or order-preservation across every rounded comparison. Net requires max_len>0, heads>0,d divisible heads, valid indices, resources and CUDA for selected ignored synthetic tests. No live model/corpus.",
+        "id": "score-metric",
+        "observation_scope": "data::batch roles index (k*T+d)*T+p; Net attention uses B,H,T,dh and masks head/key columns. lib transposes arcs dependent-major into Eisner head-major and maps local decoded h to flattened k*T+h for Net::rels. An adapter using raw h for k>0 gathers another sentence's encoder state. Vocs labels require same ordering as model output dimensions; load files independently and missing weights are not consistency proof. CLI score zips and can hide length mismatches, so output-length invariants must be checked before claiming dataset coverage. Existing world GPU caller uses parse_forms; tokenization remains caller-owned. Tests are sibling observers, not runtime production stages.",
+        "operator": "Scored prediction sums arc and raw relation plus half tag log probabilities before root/dep label rewriting. CLI percentage metrics count zipped tokens, whereas source tests assert prediction lengths explicitly; neither is normalized tree posterior.",
+        "path": "model.md",
+        "required": false,
+        "section": "score-metric",
+        "status": "partial_source_derived_model",
+        "type": "observation_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "neural-parser-paths",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "gparse/src/data.rs",
+      "sha256": "f115aeb0613b1ac5c59ff58216cbdc2bb795bf30eb4ace96d9ac2cf0ae29a942"
+    },
+    {
+      "path": "gparse/src/eisner.rs",
+      "sha256": "10e4a00f4c14c9132ed2c6c7a83692c73fb3c4f90352b94bfdcc9b5e998c1b47"
+    },
+    {
+      "path": "gparse/src/lib.rs",
+      "sha256": "8facccb4431513212d1fcfa99cc25e478f11c3660a67992befebd0b1643c6f95"
+    },
+    {
+      "path": "gparse/src/main.rs",
+      "sha256": "e42b84f188b56efd06083ab570a50c7c152896916d0b48aa4c369a6ef831dc91"
+    },
+    {
+      "path": "gparse/src/model.rs",
+      "sha256": "a380c81aa11433fd9e4efcfaad81abfd55fe79b896d628ee1368f8de8081c941"
+    },
+    {
+      "path": "gparse/src/softmax.rs",
+      "sha256": "61d258172479e2c336a46f46435af63c49cae79446392d942b7638d55fbef143"
+    },
+    {
+      "path": "gparse/tests/empty_sentences.rs",
+      "sha256": "688b8506e066f8dec836a08a5cae71681a482f2484af543c29274b026e5bffe2"
+    },
+    {
+      "path": "gparse/tests/gelu_paths.rs",
+      "sha256": "2b94e6f07726a682cfcede671c08c659a82178cc6dc77efc91aaec238d93949e"
+    },
+    {
+      "path": "gparse/tests/gpu_gradients.rs",
+      "sha256": "72152a3e69fc7ea7ad1a63840821fba81c686400328541ce50ab9ba3f655dc73"
+    },
+    {
+      "path": "gparse/tests/inference_softmax.rs",
+      "sha256": "45f0dbb793a0b01b1aae91c5ee1d53f3dc238a78dce8138b5ad57544f5220031"
+    },
+    {
+      "path": "gparse/tests/predict_paths.rs",
+      "sha256": "c036e107ffbb5bd916ece88da30ce952938411ca0ed12bf7c0bbdd94fac84a44"
+    },
+    {
+      "path": "gparse/tests/softmax_backward.rs",
+      "sha256": "280e3f8eb33bed3dfe9b898f3e0ba60ffd5a3c4d5d1dfa47b8ce2d1997cec4e6"
+    },
+    {
+      "path": "gparse/tests/training_speed.rs",
+      "sha256": "6ee300cfcccce2095cce02974a8fc0d03a644f7da62676c2d5eedae36abe4f32"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

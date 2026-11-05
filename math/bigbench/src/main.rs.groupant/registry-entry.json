@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p bigbench wave28",
+    "two identical syntax projections"
+  ],
+  "children": [],
+  "cost": "Product tree has O(n) factors with size-dependent multiplication; repeats multiply work. Conversion/GCD delegated; no timing performed this epoch.",
+  "description": "best(n,f) returns LAST result and MIN duration across n invocations; n=0 panics. Product tree multiplies1..n for n>=1, splits width>=16. big2048 uses32 wrapping LCG steps, shift right1, set low bit. main runs large factorial/power/GCD/modpow/harmonic comparisons.",
+  "forward": [
+    "best(n,f) returns LAST result and MIN duration across n invocations; n=0 panics. Product tree multiplies1..n for n>=1, splits width>=16. big2048 uses32 wrapping LCG steps, shift right1, set low bit. main runs large factorial/power/GCD/modpow/harmonic comparisons."
+  ],
+  "id": "math-bigbench-main",
+  "inverse": [
+    "Returned pair admits any n-output sequence ending with result and durations having given minimum, not necessarily timing of returned result. Decimal arithmetic outputs discard computation path."
+  ],
+  "limitations": [
+    "Large benchmark main and large GCD/modpow unexecuted; no speed claim.",
+    "Partial lexical AST; no semantic proof or executable percentage surrogate"
+  ],
+  "source": "math/bigbench/src/main.rs",
+  "state": "Three exact libraries, last output and minimum elapsed seconds"
+}

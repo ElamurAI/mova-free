@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "INDEX-CORRESPONDENCE-001 remains open for extraction and full semantic correspondence; bounded score/rank/label observations are recorded in the sidecar evidence.",
+    "External source-bound probe.rs.txt: 432 scores, three rankings, eight label preimages; false predicate-weight formula rejected.",
+    "Six native index::groupant_tests; debug/release repeated; compiled predicate-weight mutant must fail the integer oracle."
+  ],
+  "children": [],
+  "cost": "Build scans events, states and deltas, performs lexical/entity expansions, then O(F log F) sorting. Search scans kept facts with role/word membership work and sorts K scores in O(K log K). Hash-set membership is expected-time; lexical dependency cost is separate.",
+  "description": "Build typed facts from world events and entity histories, sort by (line,insertion n), renumber, then score admitted facts and sort by descending score and ascending fact n.",
+  "forward": [
+    "Build typed facts from world events and entity histories, sort by (line,insertion n), renumber, then score admitted facts and sort by descending score and ascending fact n."
+  ],
+  "id": "fact-index",
+  "inverse": [
+    "Let U be valid World/query/filter to fact-and-score observations with sent>=1 and finite totals. R builds, scores and sorts. U minus R includes a kept result violating deterministic score ordering or equal-score n ordering, and built n values unequal to positions. Semantic truth and public malformed facts remain outside this projection.",
+    "For an observed ranked projection y, R^-1(y) includes all worlds, queries and filters producing y. Dropped fields, unmatched query alternatives and omitted facts create ambiguity; rank or score never uniquely recovers world history."
+  ],
+  "limitations": [
+    "AST and semantic proof absent; parent inference-core composition required.",
+    "Catalog experiments are prospective unless explicitly executed in model.md#evidence.",
+    "One-based Fact.sent domain retained; sent=0 is malformed by TextPos/world anchor contract. No extraction oracle or whole-world Clippy claim."
+  ],
+  "source": "world/src/index.rs",
+  "state": "Source-bound input, intermediate and output observations; see adjacent descriptant."
+}

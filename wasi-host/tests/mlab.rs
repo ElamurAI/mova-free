@@ -176,3 +176,79 @@ fn guest_limits_vfs_memory_and_fuel() {
     assert!(trap.to_lowercase().contains("fuel"), "{trap}");
     assert!(o.fuel_used.is_some_and(|f| f > 49_000_000 && f <= 50_000_000), "{:?}", o.fuel_used);
 }
+
+#[test]
+fn wave31_newest_mtime_isolated_tree() {
+    let root = std::env::temp_dir().join(format!("mova-wave31-wasi-mtime-{}", std::process::id()));
+    std::fs::create_dir(&root).unwrap();
+    let result = std::panic::catch_unwind(|| {
+        assert_eq!(newest_mtime(&root), std::time::UNIX_EPOCH);
+        std::fs::create_dir(root.join("sub")).unwrap();
+        std::fs::write(root.join("a"), b"a").unwrap();
+        std::fs::write(root.join("sub/b"), b"b").unwrap();
+        let a = std::fs::metadata(root.join("a")).unwrap().modified().unwrap();
+        let b = std::fs::metadata(root.join("sub/b")).unwrap().modified().unwrap();
+        assert_eq!(newest_mtime(&root), a.max(b));
+    });
+    std::fs::remove_dir_all(&root).unwrap();
+    result.unwrap();
+}
+
+#[test]
+fn wave31_cli_tiny_guest_isolated_effects() {
+    let root = std::env::temp_dir().join(format!("mova-wave31-wasi-cli-{}", std::process::id()));
+    std::fs::create_dir(&root).unwrap();
+    let result = std::panic::catch_unwind(|| {
+        let wasm = b"\0asm\x01\0\0\0\x01\x04\x01\x60\0\0\x03\x02\x01\0\x07\x0a\x01\x06_start\0\0\x0a\x04\x01\x02\0\x0b";
+        let module = root.join("tiny.wasm");
+        std::fs::write(&module, wasm).unwrap();
+        let input = root.join("input");
+        let output = root.join("output");
+        let journal = root.join("journal.tsv");
+        std::fs::create_dir(&input).unwrap();
+        std::fs::write(input.join("fixture"), b"bounded").unwrap();
+        let cli = env!("CARGO_BIN_EXE_wasi-run");
+        let o = std::process::Command::new(cli)
+            .args([
+                "--fs-import",
+                input.to_str().unwrap(),
+                "--fs-export",
+                output.to_str().unwrap(),
+                "--journal",
+                journal.to_str().unwrap(),
+                "--stats",
+                "--fuel",
+                "100",
+            ])
+            .arg(&module)
+            .arg("guest-argument")
+            .output()
+            .unwrap();
+        assert_eq!(o.status.code(), Some(0), "{:?}", o.stderr);
+        assert_eq!(std::fs::read(output.join("fixture")).unwrap(), b"bounded");
+        assert!(journal.is_file());
+        assert!(String::from_utf8_lossy(&o.stderr).contains("code 0"));
+        let o = std::process::Command::new(cli).args(["--unknown", "x"]).output().unwrap();
+        assert_eq!(o.status.code(), Some(2));
+        let o = std::process::Command::new(cli).arg("--seed").output().unwrap();
+        assert_eq!(o.status.code(), Some(2));
+        let mut trap = wasm.to_vec();
+        let n = trap.len();
+        trap[n - 3] = 3;
+        trap.insert(n - 1, 0);
+        trap[n - 5] = 5;
+        std::fs::write(&module, trap).unwrap();
+        let denied = root.join("skipped");
+        let o = std::process::Command::new(cli)
+            .arg("--fs-export")
+            .arg(&denied)
+            .arg(&module)
+            .output()
+            .unwrap();
+        assert_eq!(o.status.code(), Some(134));
+        assert!(!denied.exists());
+        assert!(String::from_utf8_lossy(&o.stderr).contains("skipped"));
+    });
+    std::fs::remove_dir_all(&root).unwrap();
+    result.unwrap();
+}

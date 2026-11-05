@@ -1,0 +1,51 @@
+{
+  "logs": [
+    {
+      "exit": 0,
+      "receipt": "debug-1-02.log",
+      "sha256": "0c828ae3bc74548f6c1668e32d60815a7a50ebd2c4c6f0bd1d756f9e127ddfb5"
+    },
+    {
+      "exit": 0,
+      "receipt": "debug-2-02.log",
+      "sha256": "0c828ae3bc74548f6c1668e32d60815a7a50ebd2c4c6f0bd1d756f9e127ddfb5"
+    },
+    {
+      "exit": 0,
+      "receipt": "release-1-02.log",
+      "sha256": "de34256eb39f96c61e97f06cf869a7d58931ef47b791f39c12aecd91db9411f7"
+    },
+    {
+      "exit": 0,
+      "receipt": "release-2-02.log",
+      "sha256": "de34256eb39f96c61e97f06cf869a7d58931ef47b791f39c12aecd91db9411f7"
+    },
+    {
+      "exit": 101,
+      "receipt": "mutant-seg.log",
+      "sha256": "d65539e2a9d26f044e67b02db2002ed178f0cd16580fb114683bd0cb9ff014d5"
+    },
+    {
+      "exit": 0,
+      "receipt": "restored-seg.log",
+      "sha256": "ea576c50bf64825b64824ee405aa6826d9b6b118a853303fb6fc8c10beae7a05"
+    }
+  ],
+  "mutation": {
+    "kind": "compiled_source_behavior",
+    "new": "let q = 0.0;",
+    "old": "let q = (n as f64 + k * x.p) / (total as f64 + k);",
+    "original_sha256": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d",
+    "restoration_exact": true,
+    "restored_sha256": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d",
+    "source": "tools/hbo/src/seg.rs",
+    "status": 101
+  },
+  "primary_test": "seg::wave32::supplied_states_context_fallback_and_codec",
+  "production_prefix_preserved": true,
+  "schema": 1,
+  "scope": "Finite synthetic actual-code observations, no semantic correctness proof or percent surrogate",
+  "source": "tools/hbo/src/seg.rs",
+  "source_sha256": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d",
+  "syntax_sha256": "dbab88f85b02b256ec24eaa40fd2444592fcbf240b57056bb7f439add557fe54"
+}

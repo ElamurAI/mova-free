@@ -1,0 +1,239 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "domain": "All u64 input/output pairs.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One scalar call.",
+        "operator": "U=u64 x u64; R(n,r) iff r^2<=n<(r+1)^2. U minus R contains exactly candidates violating either inequality. Evaluate candidate squares mathematically, including invalid large r; exact target with bounded evidence.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "791a2a301deae7501202ba9ed6fa0452eec327dfc391f396fc5a3fca609926f4",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "domain": "All u64 input/output pairs.",
+        "evidence": "model.md#evidence",
+        "id": "square_fibers",
+        "observation_scope": "One scalar call.",
+        "operator": "Observed r<=u32::MAX admits all n in [r^2,min((r+1)^2-1,u64::MAX)]; other r admit none. Many inputs share a root, except zero.",
+        "path": "model.md",
+        "section": "square_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "791a2a301deae7501202ba9ed6fa0452eec327dfc391f396fc5a3fca609926f4",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "domain": "All u64 input/output pairs.",
+        "evidence": "model.md#evidence",
+        "id": "square_boundary",
+        "observation_scope": "One scalar call.",
+        "operator": "For r<=u32::MAX, root(r^2)=r; if r>0, root(r^2-1)=r-1. Explicit square-neighbor tests check inclusive equality.",
+        "path": "model.md",
+        "section": "square_boundary",
+        "status": "partial_source_derived",
+        "subject_revision": "791a2a301deae7501202ba9ed6fa0452eec327dfc391f396fc5a3fca609926f4",
+        "type": "boundary_specialization"
+      },
+      {
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "domain": "All u64 input/output pairs.",
+        "evidence": "model.md#evidence",
+        "id": "adjacent_inputs",
+        "observation_scope": "One scalar call.",
+        "operator": "For n<u64::MAX, root(n)<=root(n+1)<=root(n)+1; increments occur only when n+1 is a square. Fixed-seed checks exercise the inequality.",
+        "path": "model.md",
+        "section": "adjacent_inputs",
+        "status": "partial_source_derived",
+        "subject_revision": "791a2a301deae7501202ba9ed6fa0452eec327dfc391f396fc5a3fca609926f4",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "domain": "All u64 input/output pairs.",
+        "evidence": "model.md#evidence",
+        "id": "search_budget",
+        "observation_scope": "One scalar call.",
+        "operator": "Initial width 2^32 shrinks through binary splitting; at most 33 iterations with u128 comparisons and O(1) state. This is a source-derived bound, not measured throughput.",
+        "path": "model.md",
+        "section": "search_budget",
+        "status": "partial_source_derived",
+        "subject_revision": "791a2a301deae7501202ba9ed6fa0452eec327dfc391f396fc5a3fca609926f4",
+        "type": "resource_observation"
+      }
+    ],
+    "rust_approximants": [
+      {
+        "assumptions": [
+          "Standard Rust integer semantics",
+          "Target usize width <=64 bits",
+          "Successful ordinary execution"
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 1,
+        "classification": {
+          "assurance_kind": "analytical",
+          "method_kind": "quantized_numeric",
+          "metric_kind": "scalar_relative"
+        },
+        "domain": "All u64 inputs; zero is exact",
+        "error_percent": 0.78125,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md",
+            "sha256": "67679a6a84e67dd717375ecdef0a392f53e1d639939db7e66d6676b7b08dcb17"
+          }
+        ],
+        "id": "integer_sqrt-1pct",
+        "metric": "abs(result-floor(sqrt(n)))/floor(sqrt(n)); zero input has zero error",
+        "path": "rust_approximant.rs",
+        "sha256": "801e5fd8c8a93bb25dc0bd78241634df8ea9ff81d7fde5ea8890e0fa4befa54b",
+        "source": {
+          "path": "../mod.rs",
+          "sha256": "791a2a301deae7501202ba9ed6fa0452eec327dfc391f396fc5a3fca609926f4"
+        },
+        "status": "experimental_executable_standalone"
+      },
+      {
+        "assumptions": [
+          "Standard Rust integer semantics",
+          "Target usize width <=64 bits",
+          "Successful ordinary execution"
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 2,
+        "classification": {
+          "assurance_kind": "analytical",
+          "method_kind": "quantized_numeric",
+          "metric_kind": "scalar_relative"
+        },
+        "domain": "All u64 inputs; zero is exact",
+        "error_percent": 1.5625,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md",
+            "sha256": "67679a6a84e67dd717375ecdef0a392f53e1d639939db7e66d6676b7b08dcb17"
+          }
+        ],
+        "id": "integer_sqrt-2pct",
+        "metric": "abs(result-floor(sqrt(n)))/floor(sqrt(n)); zero input has zero error",
+        "path": "rust_approximant.rs",
+        "sha256": "801e5fd8c8a93bb25dc0bd78241634df8ea9ff81d7fde5ea8890e0fa4befa54b",
+        "source": {
+          "path": "../mod.rs",
+          "sha256": "791a2a301deae7501202ba9ed6fa0452eec327dfc391f396fc5a3fca609926f4"
+        },
+        "status": "experimental_executable_standalone"
+      },
+      {
+        "assumptions": [
+          "Standard Rust integer semantics",
+          "Target usize width <=64 bits",
+          "Successful ordinary execution"
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 5,
+        "classification": {
+          "assurance_kind": "analytical",
+          "method_kind": "quantized_numeric",
+          "metric_kind": "scalar_relative"
+        },
+        "domain": "All u64 inputs; zero is exact",
+        "error_percent": 3.125,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md",
+            "sha256": "67679a6a84e67dd717375ecdef0a392f53e1d639939db7e66d6676b7b08dcb17"
+          }
+        ],
+        "id": "integer_sqrt-5pct",
+        "metric": "abs(result-floor(sqrt(n)))/floor(sqrt(n)); zero input has zero error",
+        "path": "rust_approximant.rs",
+        "sha256": "801e5fd8c8a93bb25dc0bd78241634df8ea9ff81d7fde5ea8890e0fa4befa54b",
+        "source": {
+          "path": "../mod.rs",
+          "sha256": "791a2a301deae7501202ba9ed6fa0452eec327dfc391f396fc5a3fca609926f4"
+        },
+        "status": "experimental_executable_standalone"
+      },
+      {
+        "assumptions": [
+          "Standard Rust integer semantics",
+          "Target usize width <=64 bits",
+          "Successful ordinary execution"
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 10,
+        "classification": {
+          "assurance_kind": "analytical",
+          "method_kind": "quantized_numeric",
+          "metric_kind": "scalar_relative"
+        },
+        "domain": "All u64 inputs; zero is exact",
+        "error_percent": 6.25,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md",
+            "sha256": "67679a6a84e67dd717375ecdef0a392f53e1d639939db7e66d6676b7b08dcb17"
+          }
+        ],
+        "id": "integer_sqrt-10pct",
+        "metric": "abs(result-floor(sqrt(n)))/floor(sqrt(n)); zero input has zero error",
+        "path": "rust_approximant.rs",
+        "sha256": "801e5fd8c8a93bb25dc0bd78241634df8ea9ff81d7fde5ea8890e0fa4befa54b",
+        "source": {
+          "path": "../mod.rs",
+          "sha256": "791a2a301deae7501202ba9ed6fa0452eec327dfc391f396fc5a3fca609926f4"
+        },
+        "status": "experimental_executable_standalone"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-integer-sqrt",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "791a2a301deae7501202ba9ed6fa0452eec327dfc391f396fc5a3fca609926f4"
+  },
+  "status": "partial_source_derived_instance"
+}

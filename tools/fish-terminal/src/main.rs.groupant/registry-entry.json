@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test --manifest-path tools/fish-terminal/Cargo.toml --offline --locked -j2",
+    "cargo test --manifest-path tools/fish-terminal/Cargo.toml --release --offline --locked -j2"
+  ],
+  "cost": "CLI config/queue reads are bounded; a watch iteration pays the core pass plus configured100–60000ms delay. No wall-clock throughput or continuous root-chat availability is established.",
+  "description": "CLI parses prepare, launch, once, watch, status and bound report review commands. Config loading occurs before dispatch. Watch is one independent Rust process; it stops at a run-root STOP marker between passes, otherwise invokes one core pass and sleeps the configured interval. No arbitrary client program, prompt path or shell command is accepted.",
+  "forward": [
+    "CLI parses prepare, launch, once, watch, status and bound report review commands. Config loading occurs before dispatch. Watch is one independent Rust process; it stops at a run-root STOP marker between passes, otherwise invokes one core pass and sleeps the configured interval. No arbitrary client program, prompt path or shell command is accepted."
+  ],
+  "id": "private-fish-terminal-cli",
+  "inverse": [
+    "Exclude unknown commands and wrong arities reaching a terminal action. Only prepare/launch explicitly create run/session state; watch never launches or adopts missing sessions. Root review does not apply code, admit annotations or train. A STOP marker does not promise interruption of an active model.",
+    "CLI JSON output is compatible with several earlier terminal histories, especially waiting and quarantined effects. A status value records durable job state and last redacted observation rather than proving the terminal is currently idle or that root has read the report."
+  ],
+  "limitations": [
+    "Partial source-derived model",
+    "No formal proof or automatic root review",
+    "Root two-task smoke used preceding binary; revised binary cutover remains root-owned",
+    "Cooperative local stability; no hostile concurrent rename/session replacement guarantee"
+  ],
+  "source": "tools/fish-terminal/src/main.rs",
+  "state": "Explicit job/session/report states; review-only, no automatic training or DB admission."
+}

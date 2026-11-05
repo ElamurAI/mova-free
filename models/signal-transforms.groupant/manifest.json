@@ -1,0 +1,175 @@
+{
+  "children": [
+    "algorithm-discrete-cosine-transform",
+    "algorithm-discrete-cosine-transform-tests",
+    "algorithm-haar-wavelet",
+    "algorithm-haar-wavelet-tests",
+    "algorithm-bluestein-fft",
+    "algorithm-bluestein-fft-tests",
+    "algorithm-goertzel",
+    "algorithm-goertzel-tests",
+    "algorithm-savitzky-golay",
+    "algorithm-savitzky-golay-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child partial syntax; no composed semantic AST",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Bounded finite sample vectors, complex components, admitted lengths and window/degree/frequency parameters as each leaf declares.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "signal-transforms-behavior-complement",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "Exclude wrong normalization/phase/length, replacing complex bin by magnitude without projection, or reconstruction after dropping Haar details. Savitzky-Golay polynomial reproduction requires admitted degree/window/boundary conventions; rounding is separate.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_relational_specification",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Bounded finite sample vectors, complex components, admitted lengths and window/degree/frequency parameters as each leaf declares.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "signal-transforms-reverse-reconstruction",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "Full exact orthonormal y uniquely reconstructs x=Q^Ty at fixed convention. Goertzel bin z has fiber {x:sum_j x_j exp(-2πijk/n)=z}, generally nontrivial nullspace. Smoothing admits {x:Sx=y}; rank determines uniqueness. Rounded outputs have rounding-compatible fibers.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_relational_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Bounded finite sample vectors, complex components, admitted lengths and window/degree/frequency parameters as each leaf declares.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "signal-transforms-normalization_phase",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "Transform comparisons must preserve Fourier sign, frequency units and normalization; raw coefficient equality across conventions is excluded.",
+        "path": "model.md",
+        "section": "normalization_phase",
+        "status": "partial_relational_specification",
+        "type": "normalization_phase"
+      },
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Bounded finite sample vectors, complex components, admitted lengths and window/degree/frequency parameters as each leaf declares.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "signal-transforms-extension_padding",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "DCT even extension and Bluestein convolution padding have different purposes; padding must not alter interpreted sample count.",
+        "path": "model.md",
+        "section": "extension_padding",
+        "status": "partial_relational_specification",
+        "type": "extension_padding"
+      },
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Bounded finite sample vectors, complex components, admitted lengths and window/degree/frequency parameters as each leaf declares.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "signal-transforms-lossy_fiber",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "A single Goertzel bin, omitted Haar details or smoothed output admits many input signals; no unique inverse is claimed.",
+        "path": "model.md",
+        "section": "lossy_fiber",
+        "status": "partial_relational_specification",
+        "type": "lossy_fiber"
+      },
+      {
+        "approximation_semantics": "Scoped relation, not a universal numerical certificate",
+        "assumptions": "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+        "domain": "Bounded finite sample vectors, complex components, admitted lengths and window/degree/frequency parameters as each leaf declares.",
+        "evidence": "model.md#wave26-evidence; transitive source_bindings",
+        "id": "signal-transforms-polynomial_boundary",
+        "observation_scope": "Tagged API values, states, errors and separately recorded finite joins",
+        "operator": "Polynomial reproduction depends on degree and boundary window semantics; interior identities do not justify edge extrapolation.",
+        "path": "model.md",
+        "section": "polynomial_boundary",
+        "status": "partial_relational_specification",
+        "type": "polynomial_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#wave26-evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "signal-transforms",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/bluestein_fft/mod.rs",
+      "sha256": "9f77f746e9d12b8a6bf934f06e37122e8520e256f04a5f8e34373915c1d74366"
+    },
+    {
+      "path": "algorithms/src/bluestein_fft/tests.rs",
+      "sha256": "ddfdc4931789c13807fc524d15cf62061bdf94cf73569cbc05fd96a398422fcf"
+    },
+    {
+      "path": "algorithms/src/discrete_cosine_transform/mod.rs",
+      "sha256": "aeebcd801b6a9a438d1bf776c9db41c9b138cc41b0b5633330fb4a1c2c6952e1"
+    },
+    {
+      "path": "algorithms/src/discrete_cosine_transform/tests.rs",
+      "sha256": "8df2debf4f4064a49db9cc10a1b8fe65c22098c3552a80704d86bd43fd505b9e"
+    },
+    {
+      "path": "algorithms/src/goertzel/mod.rs",
+      "sha256": "f23a568c0349fae96af5b03dfdaa6d85ff84d9eacfca7552a92e6986e335dae1"
+    },
+    {
+      "path": "algorithms/src/goertzel/tests.rs",
+      "sha256": "067b6507939d39960027a7e933ca7734c0a838cc2bcb7c51cdd723de71d68d22"
+    },
+    {
+      "path": "algorithms/src/haar_wavelet/mod.rs",
+      "sha256": "7c06f6dc4fbc08bf93fdcb98150b5fb76dc03853c208eadb25fa3e1c7ee01fc9"
+    },
+    {
+      "path": "algorithms/src/haar_wavelet/tests.rs",
+      "sha256": "ea0ea74e6217e9ec511a3b75ab4accfbc9b11bcc47dbb7b6a5edefdeebf6e23e"
+    },
+    {
+      "path": "algorithms/src/savitzky_golay/mod.rs",
+      "sha256": "5888243da4b9e97a468f6fdff48ffafe2df8cb343d8f56e2dc07fc76d0f68160"
+    },
+    {
+      "path": "algorithms/src/savitzky_golay/tests.rs",
+      "sha256": "079030940f51e0b5f8d718d2a46df379f546bc858c97aed7aca7e75a2172349b"
+    }
+  ],
+  "status": "partial_source_bound_group"
+}

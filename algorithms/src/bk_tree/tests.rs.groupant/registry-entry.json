@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms bk_tree::tests"
+  ],
+  "children": [],
+  "cost": "Bounded finite enumeration plus production/oracle work; exhaustive here means the documented small fixture universe only. Runs use ordinary allocator behavior; resource failure is not injected.",
+  "description": "Exact byte metric BK tree finite independent oracle tests",
+  "forward": [
+    "Execute deterministic fixtures, compare exact API values and state against independent finite oracles, then report success iff all assertions hold. 31 binary byte words of lengths0..4, all31 cyclic insertion orders plus duplicate empty word, all31 queries and radii0,1,2,4,usize::MAX. Independent full2D dynamic programming oracle does not reuse production rolling-row kernel. Explicit255/NUL cases,256-byte and4096-entry boundaries."
+  ],
+  "id": "algorithm-bk-tree-tests",
+  "inverse": [
+    "Typed behavior complement, ambiguous reverse reconstruction and specializations in model.md"
+  ],
+  "limitations": [
+    "Exact bounded APIs only. No generic 1/2/5/10% accuracy surrogate is supported. Finite tests do not prove universal correctness or runtime gains. Standard Vec/Box/BTreeMap allocation failure may abort or panic; allocator refusal is not injected. No callbacks, I/O or concurrency effects.",
+    "Partial syntax only; no semantic proof"
+  ],
+  "source": "algorithms/src/bk_tree/tests.rs",
+  "state": "Bounded deterministic exact data structure; explicit validation and standard allocation behavior"
+}

@@ -1,0 +1,59 @@
+{
+  "model": "/ABSOLUTE/PATH/en.bin",
+  "model_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "ledger": "/ABSOLUTE/PATH/turtle/ledger",
+  "followup_queue": "/ABSOLUTE/PATH/turtle/review",
+  "capabilities": {
+    "commands-check": {
+      "handler": "turtle",
+      "parameters": {
+        "operation": "check",
+        "course": "commands"
+      },
+      "intent": {
+        "request_predicates": [
+          "check",
+          "verify",
+          "validate",
+          "lint",
+          "review"
+        ],
+        "observations": [
+          "check",
+          "verify",
+          "validate",
+          "lint",
+          "review"
+        ],
+        "entities": [
+          "command"
+        ]
+      }
+    },
+    "made": {
+      "handler": "turtle",
+      "parameters": {
+        "operation": "made"
+      },
+      "intent": {
+        "observes": true,
+        "request_predicates": [
+          "make",
+          "write",
+          "create",
+          "produce",
+          "ask"
+        ],
+        "observations": [
+          "many",
+          "number",
+          "count"
+        ],
+        "entities": [
+          "turtle"
+        ],
+        "addressee": true
+      }
+    }
+  }
+}

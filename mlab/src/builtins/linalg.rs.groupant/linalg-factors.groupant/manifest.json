@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "lu_output_arity",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "lu_output_arity",
+        "status": "partial_source_derived_model",
+        "type": "lu_output_arity"
+      },
+      {
+        "id": "chol_failure",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "chol_failure",
+        "status": "partial_source_derived_model",
+        "type": "chol_failure"
+      },
+      {
+        "id": "eigen_symmetry",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "eigen_symmetry",
+        "status": "partial_source_derived_model",
+        "type": "eigen_symmetry"
+      },
+      {
+        "id": "residual_limits",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "residual_limits",
+        "status": "partial_source_derived_model",
+        "type": "residual_limits"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 27310,
+      "start": 19693
+    },
+    "description": "lu returns packed L/U for <=1 output, P^T L and U for2, or L,U,P for3+. qr computes full/thin Q/R and zeros below R diagonal. chol symmetrizes upper input triangle, returning R with R^T R=upper-symmetric A or empty,status1 on two-output failure. eig dispatches exact symmetry then returns values or V,D and warning residuals.",
+    "source_bytes_sha256": "d47d50b74208af4a798c62a7f3b37eb611fd28eda00d4b9b7e777b6fe9ecbeb6"
+  },
+  "id": "mlab-numerics-linalg-factors",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../linalg.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "f3579e5bd4a5ee898096bb912061bc751a0d48e294cd3062452e5ca38546d178"
+  },
+  "status": "partial_source_bound_model"
+}

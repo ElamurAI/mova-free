@@ -1,0 +1,159 @@
+{
+  "children": [
+    "latex-corpus",
+    "latex-extract",
+    "latex-gate",
+    "latex-lib",
+    "latex-main",
+    "latex-tomath",
+    "latex-test-bridge",
+    "latex-test-vmm-latex"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "External parser/printer/AST equality/macros/Rat/evaluator contracts delegated. No live corpus, frozen VMM DATA execution, teacher/API, training or GPU. Timing and tied error ranks may vary.",
+        "domain": "Bounded UTF-8 synthetic text/files and supported parser-produced Nodes/Exprs with finite Rat values. Arbitrary public AST constructor states not certified total. math/gz features select adapters.",
+        "id": "behavior-complement",
+        "observation_scope": "extract bodies exclude delimiters, start in bytes. corpus tex scans macros per file versus CLI tex all files before formulas. Canonical gate reparses without original macros. Corpus falls back to to_relation only on to_expr relation category. Reexports add no adapter. Empty Add/Mul output empty Node but inverse/roundtrip reject.",
+        "operator": "Parse failure excludes gate/bridge counting; tex success does not exclude formula failure. Unsupported conversion cannot be numeric success; absent math hides tomath.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "External parser/printer/AST equality/macros/Rat/evaluator contracts delegated. No live corpus, frozen VMM DATA execution, teacher/API, training or GPU. Timing and tied error ranks may vary.",
+        "domain": "Bounded UTF-8 synthetic text/files and supported parser-produced Nodes/Exprs with finite Rat values. Arbitrary public AST constructor states not certified total. math/gz features select adapters.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "extract bodies exclude delimiters, start in bytes. corpus tex scans macros per file versus CLI tex all files before formulas. Canonical gate reparses without original macros. Corpus falls back to to_relation only on to_expr relation category. Reexports add no adapter. Empty Add/Mul output empty Node but inverse/roundtrip reject.",
+        "operator": "Compatible documents for one Expr include alternate presentation/grouping and ignored prose; byte offsets and macros constrain but do not uniquely recover original. Counters lose further identity.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "External parser/printer/AST equality/macros/Rat/evaluator contracts delegated. No live corpus, frozen VMM DATA execution, teacher/API, training or GPU. Timing and tied error ranks may vary.",
+        "domain": "Bounded UTF-8 synthetic text/files and supported parser-produced Nodes/Exprs with finite Rat values. Arbitrary public AST constructor states not certified total. math/gz features select adapters.",
+        "id": "byte-transport",
+        "observation_scope": "extract bodies exclude delimiters, start in bytes. corpus tex scans macros per file versus CLI tex all files before formulas. Canonical gate reparses without original macros. Corpus falls back to to_relation only on to_expr relation category. Reexports add no adapter. Empty Add/Mul output empty Node but inverse/roundtrip reject.",
+        "operator": "tex[start..start+body.len()]==body; parser error positions body-relative versus CLI outer body start.",
+        "path": "model.md",
+        "required": false,
+        "section": "byte-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "External parser/printer/AST equality/macros/Rat/evaluator contracts delegated. No live corpus, frozen VMM DATA execution, teacher/API, training or GPU. Timing and tied error ranks may vary.",
+        "domain": "Bounded UTF-8 synthetic text/files and supported parser-produced Nodes/Exprs with finite Rat values. Arbitrary public AST constructor states not certified total. math/gz features select adapters.",
+        "id": "gate-bridge",
+        "observation_scope": "extract bodies exclude delimiters, start in bytes. corpus tex scans macros per file versus CLI tex all files before formulas. Canonical gate reparses without original macros. Corpus falls back to to_relation only on to_expr relation category. Reexports add no adapter. Empty Add/Mul output empty Node but inverse/roundtrip reject.",
+        "operator": "Node and folded Expr equivalence have different classes. Clean syntax may contain unsupported math variables; structural roundtrip does not prove denominator nonzero.",
+        "path": "model.md",
+        "required": false,
+        "section": "gate-bridge",
+        "status": "partial_source_derived_model",
+        "type": "equivalence_boundary"
+      },
+      {
+        "assumptions": "External parser/printer/AST equality/macros/Rat/evaluator contracts delegated. No live corpus, frozen VMM DATA execution, teacher/API, training or GPU. Timing and tied error ranks may vary.",
+        "domain": "Bounded UTF-8 synthetic text/files and supported parser-produced Nodes/Exprs with finite Rat values. Arbitrary public AST constructor states not certified total. math/gz features select adapters.",
+        "id": "macro-scope",
+        "observation_scope": "extract bodies exclude delimiters, start in bytes. corpus tex scans macros per file versus CLI tex all files before formulas. Canonical gate reparses without original macros. Corpus falls back to to_relation only on to_expr relation category. Reexports add no adapter. Empty Add/Mul output empty Node but inverse/roundtrip reject.",
+        "operator": "Corpus per-file versus CLI document-global macro scanning invalidates substituting one adapter for other when definitions cross files.",
+        "path": "model.md",
+        "required": false,
+        "section": "macro-scope",
+        "status": "partial_source_derived_model",
+        "type": "state_scope"
+      },
+      {
+        "assumptions": "External parser/printer/AST equality/macros/Rat/evaluator contracts delegated. No live corpus, frozen VMM DATA execution, teacher/API, training or GPU. Timing and tied error ranks may vary.",
+        "domain": "Bounded UTF-8 synthetic text/files and supported parser-produced Nodes/Exprs with finite Rat values. Arbitrary public AST constructor states not certified total. math/gz features select adapters.",
+        "id": "output-prefix",
+        "observation_scope": "extract bodies exclude delimiters, start in bytes. corpus tex scans macros per file versus CLI tex all files before formulas. Canonical gate reparses without original macros. Corpus falls back to to_relation only on to_expr relation category. Reexports add no adapter. Empty Add/Mul output empty Node but inverse/roundtrip reject.",
+        "operator": "Corpus writes can leave prefix on failure; CLI exit does not imply atomicity or deterministic elapsed report text.",
+        "path": "model.md",
+        "required": false,
+        "section": "output-prefix",
+        "status": "partial_source_derived_model",
+        "type": "effect_prefix"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "formula-bridge",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "latex/src/corpus.rs",
+      "sha256": "ae16662c288257b4a21a231297daa510094ff9a6801f3ae5672a355463ec62dc"
+    },
+    {
+      "path": "latex/src/extract.rs",
+      "sha256": "b717bad28ee0917ed90161e6dffd3e4874869f1168eb2f7c1850c833832c13d2"
+    },
+    {
+      "path": "latex/src/gate.rs",
+      "sha256": "b82aa2f9a602c9367ef2b897c5e0ad3de1fa18cf64730ab36ce5cd99d044edb3"
+    },
+    {
+      "path": "latex/src/lib.rs",
+      "sha256": "edd5e24bb4706ffec37b501da5336a0fbad877c95fa3fe2b65e825a3970cf066"
+    },
+    {
+      "path": "latex/src/main.rs",
+      "sha256": "c6e1b8a765da5f40d326f48b38dfb848de42337c586abfaadd62e06d1475891d"
+    },
+    {
+      "path": "latex/src/tomath.rs",
+      "sha256": "794488f6ec9ddcdf02f1e70e30a49bad4fbfade117ca82b25f5d82e90b3cb197"
+    },
+    {
+      "path": "latex/tests/bridge.rs",
+      "sha256": "962766193d79b93fcd9b5bebb0ac44bdff22cbb9f80797a622e39d71fbaddde7"
+    },
+    {
+      "path": "latex/tests/vmm_latex.rs",
+      "sha256": "62b39e9533b40131002baaebb0f4efd164ddc59838aa39a382175450e2be6a76"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

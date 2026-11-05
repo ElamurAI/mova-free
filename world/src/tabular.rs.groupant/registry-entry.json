@@ -1,0 +1,21 @@
+{
+  "id": "world-tabular",
+  "source": "world/src/tabular.rs",
+  "description": "Permissive CSV records, transductive row-world features and deterministic explained decision lists.",
+  "state": "Raw UTF-8 CSV, header/rows, attribute/link world, known outcomes and ordered rules.",
+  "cost": "For N rows, H columns and B bytes, splitting is O(B). read_world numeric sorting O(H*N log N); identifier branch recomputes an alphabetic count for every row O(H*N^2). Group expansion bounds groups to <=12, plus linear duplicate membership scans. Let A attributes and R rules: candidate generation O(R*N*sum_{j=1..min(k,3)} choose(A,j)) times BTreeMap comparison costs; rare learning stops at 14 and only enumerates up to pairs. run invokes repeated learners over 10 outer/inner folds and 15 settings. IO costs unmeasured.",
+  "forward": [
+    "split_csv is a quote-toggle scanner: commas split only outside quotes, doubled quotes within quoted mode emit one quote, unmatched quotes are tolerated. read_csv removes blank physical lines, takes the first as header, and parses each remaining physical line independently. read_world selects name (>half), numeric (>=90% parseable and >12 distinct), category (<=12 distinct), or identifier paths in that order. learn_kc greedily chooses Laplace accuracy above majority+0.02 with support/min and cap; predict returns the first covering rule else default. run aligns test columns, builds joint train/test features, tunes folds and optionally writes output."
+  ],
+  "inverse": [
+    "Behavior complement U minus scoped forward relation with dependencies fixed.",
+    "Reverse reconstruction retains all compatible antecedents; lossy fibers need not be singleton."
+  ],
+  "checks": [
+    "cargo test -p world --lib tabular::wave8_models -- --test-threads=1"
+  ],
+  "limitations": [
+    "read_csv does not support quoted multiline records or validate width/quotes. run can panic on empty combined rows or malformed teacher/test indices, and output IDs are not CSV escaped. Numeric NaN may panic in partial_cmp unwrap. Features are inferred jointly on train/test, despite the old module prose claiming train-only. No live teacher, training corpus, file IO or CLI run is exercised.",
+    "Partial syntax projection; no semantic AST, broad accuracy claim or executable approximation."
+  ]
+}

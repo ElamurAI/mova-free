@@ -1,0 +1,85 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Declared dispatch/handler domain; downstream semantics excluded",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Compatible input/configuration and downstream histories",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "native_dispatch_partition",
+        "type": "command_effect_partition",
+        "path": "model.md",
+        "section": "native_dispatch_partition",
+        "status": "source_derived_bounded_checked",
+        "domain": "Declared native bridge domain and assumptions in the referenced model section.",
+        "observation_scope": "Structural evidence and selected native effects; semantic approval remains separate.",
+        "evidence": "Focused local Rust checks; no operational training or daemon invocation."
+      },
+      {
+        "id": "native_reverse_reconstruction",
+        "type": "dispatch_preimage",
+        "path": "model.md",
+        "section": "native_reverse_reconstruction",
+        "status": "source_derived_bounded_checked",
+        "domain": "Declared native bridge domain and assumptions in the referenced model section.",
+        "observation_scope": "Structural evidence and selected native effects; semantic approval remains separate.",
+        "evidence": "Focused local Rust checks; no operational training or daemon invocation."
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "finite_checks"
+    }
+  },
+  "id": "crab-main",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../main.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "1d8845b5eb4b9ccd04e9584f62a4167da875a05b8a7ccf35681b94ca1d8c1487"
+  },
+  "status": "partial_source_bound_model"
+}

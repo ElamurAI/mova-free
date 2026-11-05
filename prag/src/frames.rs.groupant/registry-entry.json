@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p prag --lib frames::wave15_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "Tree assembly O(W); predicate reading includes repeated scans, recursive phrase copying and lexicon lookup. Conservative cost O(W squared plus recursion/lexicon/rule work plus output); no finite global bound for arbitrary dependency cycles, effectful parser callbacks or configured resources.",
+  "description": "Supplied trees into discourse frames",
+  "forward": [
+    "On finite acyclic supplied UD trees and fixed configuration/lexicons/rules, compose lexical entities, predicate frames, clause links, question gaps and sentence offsets. read_with snapshots salient before-context, calls the supplied parser per unit, skips empty parses, concatenates frames and shifts local indices by preceding frame count. scored optionally removes nominal frames and remaps retained edges. lex_table(entity) gives a common noun's animacy and he/she gender from coref::lexicon (never for names; opt-in with PRAG_VN=gender-table, otherwise None): he/she fall back to it when the closed lists are silent, and it never takes an entity the lexicon calls animate.",
+    "Pipeline composition requires shared context/configuration and preserved predicate order, not independent child marginals. The seven fragments are partial projections; recursive malformed trees, full lexicon role ranking, all TAM/repair/quotation cases and external active-rule effects remain gaps."
+  ],
+  "id": "prag-frames",
+  "inverse": [
+    "Universe U pairs admitted supplied inputs/configuration with candidate observations. Exclude a retained local link shifted by any amount other than the preceding frame count, a right unresolved head matching coordination, or a nominal target surviving scored when score-nouns is off. These are inner exclusions for selected projections, not all absent reader behavior.",
+    "For observation y retain every supplied tree/context/configuration yielding y under the selected projections. Different surface forms and modifier/provenance fields can share head identity; dropped nominal frames and empty parses leave ambiguous antecedents. No inverse parser or complete antecedent solver is supplied."
+  ],
+  "limitations": [
+    "Finite supplied trees and fixed configuration; full recursive reader semantics are not modeled.",
+    "No live parser/teacher/corpus/GPU; syntax is partial.",
+    "Acyclic/resource/counter premises and active-rule effects remain explicit."
+  ],
+  "source": "prag/src/frames.rs",
+  "state": "Token and frame coordinates must be kept distinct. Sentence-local anchors correspond to last sentence only; Read.pred carries sentence/token coordinates and frame links carry global frame coordinates."
+}

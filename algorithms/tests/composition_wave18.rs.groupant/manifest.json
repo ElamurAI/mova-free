@@ -1,0 +1,147 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived relational specification; bounded native evidence in model.md#evidence; no general proof.",
+        "assumptions": "Identical shared coordinates and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "Named check: all five named algorithm joins; bounded execution receipts in model.md#evidence",
+        "id": "algorithm-composition-wave18-behavior-complement",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "For the tagged finite input domains of the five tests, let R contain exactly the adapter outputs satisfying the stated literal or independent oracle relations. The complement (D x O) minus R includes dropped or duplicated edge IDs, treating loops as singleton bridges, incorrect incidence-to-DAG coordinates, lost parallel arc choices, shifted byte offsets, incorrect alignment reconstruction or score, composite sieve entries, wrong factor products, incorrect threshold inequalities, and reading the wrong immutable version or half-open range. Invalid large-resource domains, signed-to-unsigned casts of negative snapshots and unrestricted algorithm behavior are outside D. A red adapter control is evidence about this complement, not its definition.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "subject_revision": "f202dd5b2c21c0211ebbf5b762a8f77c92e0a1abb49bfccdd028ab98c372f566",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived relational specification; bounded native evidence in model.md#evidence; no general proof.",
+        "assumptions": "Identical shared coordinates and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "Named check: all five named algorithm joins; bounded execution receipts in model.md#evidence",
+        "id": "algorithm-composition-wave18-reverse-reconstruction",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "Given observed passing outputs retain all compatible tagged antecedents: edge partitions and path counts leave many endpoint graphs possible; alignment columns recover the two supplied byte sequences by deleting gaps, while an optimal score alone does not recover sequences or a unique traceback. Canonical encoded runs decode to the original bytes, but arbitrary noncanonical run streams need not have unique encodings. Factors recover n by product within the supplied range, whereas aggregate floor sums do not recover progression parameters. Wavelet multisets and persistent range sums generally leave permutations and update histories ambiguous. The fixture fixes coordinates and version identities externally; a finite pass constrains only these tested antecedents.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "subject_revision": "f202dd5b2c21c0211ebbf5b762a8f77c92e0a1abb49bfccdd028ab98c372f566",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived relational specification; bounded native evidence in model.md#evidence; no general proof.",
+        "assumptions": "Identical shared coordinates and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "Named check: block_forest_join_path_counts; bounded execution receipts in model.md#evidence",
+        "id": "algorithm-composition-wave18-edge-block-path-join",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "Domain is the literal undirected graph with six vertices and seven ordered edge identities: one triangle, one bridge, two parallel edges, one loop, and one isolate. Assert the exact canonical blocks [[0,1,2],[3],[4,5],[6]] and coverage of all IDs. Non-loop singleton blocks, explicitly excluding the loop, must equal bridges. Construct incidence nodes at vertex offset six from actual block membership, omit loop incidence, orient only newly visited incidences from vertex zero, and count on the resulting ten-node DAG. Expected counts [1,1,1,1,1,0,1,1,1,0] retain the original isolate and the omitted loop block node as zeros. A separate three-node DAG with duplicate 0->1 arcs must count [1,2,2]. Coordinates and original edge IDs must agree across modules. The orientation adapter builds a spanning traversal; these finite assertions do not independently prove every possible incidence graph is a forest. Cost is linear traversal plus BTreeSet membership construction O(E log(V+1)) and DAG ordering O(E+V log(V+1)) on these fixed tiny fixtures.",
+        "path": "model.md",
+        "section": "edge-block-path-join",
+        "status": "partial_source_model",
+        "subject_revision": "f202dd5b2c21c0211ebbf5b762a8f77c92e0a1abb49bfccdd028ab98c372f566",
+        "type": "edge_partition_incidence_path_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived relational specification; bounded native evidence in model.md#evidence; no general proof.",
+        "assumptions": "Identical shared coordinates and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "Named check: run_decode_join_byte_search_and_edit_alignment; bounded execution receipts in model.md#evidence",
+        "id": "algorithm-composition-wave18-byte-codec-search-alignment",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "Domain is six byte words (empty, a, b, aaabaaa, abababa and [0,255,0,0]), all 36 ordered pairs, lengths at most seven. Encode then decode with output cap equal to the original byte length; decoded bytes must equal the original. Feed decoded bytes to Two-Way matching and compare every overlapping original byte offset to literal slice equality; empty patterns match all boundaries 0..=length. Align decoded bytes against the other word under match 0, mismatch -1 and gap -1, with cap 1024 and at most 64 DP cells. Score must equal negative Levenshtein distance; projecting each traceback column reconstructs the respective original word, no column is (None,None), and independently summed column scores match. This relation uses bytes, not Unicode character positions, and equal optimal scores do not imply identical traceback choices. Per pair cost includes O(nm) alignment and distance, linear codec/search work plus output, and bounded literal-search comparisons; storage includes the DP table, runs, decoded bytes, offsets and traceback.",
+        "path": "model.md",
+        "section": "byte-codec-search-alignment",
+        "status": "partial_source_model",
+        "subject_revision": "f202dd5b2c21c0211ebbf5b762a8f77c92e0a1abb49bfccdd028ab98c372f566",
+        "type": "byte_coordinate_traceback_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived relational specification; bounded native evidence in model.md#evidence; no general proof.",
+        "assumptions": "Identical shared coordinates and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "Named check: segmented_primes_join_factorization_and_literal_divisibility; bounded execution receipts in model.md#evidence",
+        "id": "algorithm-composition-wave18-prime-factor-product",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "Domain is sieve interval [0,160] and every n=1..160, factorization budget 10000. Compare sieve output to independent literal trial divisibility over 2..n; require sorted factors, every factor in the verified prime list, product exactly n, and singleton factorization iff n is prime. The empty factorization of one has product one and is not prime. All factors and the entire product fit u64 in this bounded domain; no overflowing-product claim extends beyond it. Product reconstructs n but does not recover a factorization execution or consumed budget. Cost includes bounded segmented sieve construction, at most the supplied factorization budget per n plus its validation/primality work, and the deliberately quadratic-scale literal trial-divisibility oracle over the fixed bound; no factorization throughput or general budget-success theorem follows.",
+        "path": "model.md",
+        "section": "prime-factor-product",
+        "status": "partial_source_model",
+        "subject_revision": "f202dd5b2c21c0211ebbf5b762a8f77c92e0a1abb49bfccdd028ab98c372f566",
+        "type": "prime_membership_factor_product_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived relational specification; bounded native evidence in model.md#evidence; no general proof.",
+        "assumptions": "Identical shared coordinates and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "Named check: floor_sum_join_wavelet_threshold_counts; bounded execution receipts in model.md#evidence",
+        "id": "algorithm-composition-wave18-floor-wavelet-threshold",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "Domain comprises exactly 2275 tuples n=0..12, m=1..7, a,b=0..4. Materialize v_i=a*i+b for 0<=i<n, so 0<=v_i<=48. On the same full half-open range [0,n), use wavelet count_less with threshold k*m to count v_i>=k*m as n-count_less; sum for k=1..floor(60/m). Since every value is at most 48, this finite threshold cap includes every possible positive crossing and equals sum_i floor(v_i/m). Compare the u128 sum to floor_sum. Strict less-than is essential at exact multiples, n=0 gives zero, and m is never zero. Equal sums leave many progression tuples compatible. Per tuple cost is O(64n) wavelet construction, O(64*floor(60/m)) threshold queries, materialization O(n), and logarithmic Euclidean floor_sum work; the 2275 finite comparisons are not a general truncation guarantee for larger values.",
+        "path": "model.md",
+        "section": "floor-wavelet-threshold",
+        "status": "partial_source_model",
+        "subject_revision": "f202dd5b2c21c0211ebbf5b762a8f77c92e0a1abb49bfccdd028ab98c372f566",
+        "type": "horizontal_threshold_count_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived relational specification; bounded native evidence in model.md#evidence; no general proof.",
+        "assumptions": "Identical shared coordinates and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "Named check: persistent_versions_join_wavelet_order_statistics; bounded execution receipts in model.md#evidence",
+        "id": "algorithm-composition-wave18-persistent-wavelet-versions",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "Domain is five snapshots of length five: initial [3,1,3,0,5] and four point updates branching from versions 0,0,1,2. The returned version ID must equal the appended snapshot index; original versions remain queryable. Every value is nonnegative (0..9), so the i64-to-u64 cast preserves value; this adapter must not be generalized to negative values. For each of the five versions and all 21 half-open ranges [start,end), build a wavelet matrix from that exact snapshot, compare kth results with an independently sorted slice, sum all kth values in i128 and compare to persistent range_sum for the same version and endpoints. kth at rank equal to range length must be None, including empty ranges. Compare rank equality counts for values 0..10; version_count must be five. Order-statistic multisets and sums do not uniquely recover element order or branching history. Cost includes path-copy updates O(log 5), five O(64*5) wavelet constructions, all bounded range sorts and O(64) kth/rank queries, persistent O(log 5) sums, and retained snapshot/version storage.",
+        "path": "model.md",
+        "section": "persistent-wavelet-versions",
+        "status": "partial_source_model",
+        "subject_revision": "f202dd5b2c21c0211ebbf5b762a8f77c92e0a1abb49bfccdd028ab98c372f566",
+        "type": "immutable_snapshot_order_statistic_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed_evidence"
+    }
+  },
+  "id": "algorithm-composition-wave18",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../composition_wave18.rs",
+    "sha256": "f202dd5b2c21c0211ebbf5b762a8f77c92e0a1abb49bfccdd028ab98c372f566"
+  },
+  "status": "partial_source_bound_model"
+}

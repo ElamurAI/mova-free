@@ -387,3 +387,21 @@ pub fn gamma(x: f64) -> f64 {
     libm::tgamma(x)
 }
 
+
+#[cfg(test)]
+mod wave30_tests {
+    use super::*;
+    #[test]
+    fn complex_mapping_contract() {
+        assert_eq!(csqrt((-9.0, 0.0)), (0.0, 3.0));
+        let z = csqrt((3.0, -4.0));
+        assert!((z.0 - 2.0).abs() < 1e-14 && (z.1 + 1.0).abs() < 1e-14);
+        let m = Mat::complex(1, 2, vec![3.0, -9.0], vec![-4.0, 0.0]);
+        let out = cmap(&m, csqrt);
+        assert_eq!((out.rows, out.cols), (1, 2));
+        assert_eq!(out.re, vec![2.0, 0.0]);
+        assert_eq!(out.im.unwrap(), vec![-1.0, 3.0]);
+        assert!(gamma(-2.0).is_infinite());
+        assert_eq!(gamma(5.0), 24.0);
+    }
+}

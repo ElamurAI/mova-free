@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "bounded Rust differential tests twice debug/release",
+    "compiled reverse-scan mutant rejected and restored",
+    "paired source-bound syn projection"
+  ],
+  "children": [],
+  "cost": "Finite fixture construction plus actual gate and old reference work over enumerated heads and threshold/budget cases; ignored benchmark repeats are explicit and not ordinary tests.",
+  "description": "Bounded exact converter gate differential checks and an ignored manual benchmark.",
+  "forward": [
+    "The old tree_gate body is retained as baseline; 126126 head vectors for n=0..6 compare exact error strings. Named precedence and long-shape tests cover empty success and self cycles. An ignored benchmark compares full production and baseline gates on preconstructed chain/star fixtures; fixture parsing is outside timed loops.",
+    "\n\n## Hybrid amendment 2026-10-30\n\nFor n<=64 the original ordered cycle walks run unchanged. For n>64, ordered walks share a saturating 4*n step budget. A detected cycle returns the original diagnostic immediately. Completion returns Ok without BFS. Exhaustion discards partial reachability work and invokes the exact reverse-head BFS adapter over the whole input, preserving the least failing start even when exhaustion happened on an earlier rooted prefix. Prior input/head/root predicates are unchanged. Budget exhaustion is not an error and never implies a cycle.\n\nCost: tiny input work is bounded by 65*n; larger prefixes perform at most 4*n head steps before O(n) BFS. Thus worst-case cycle-phase time is O(n). Auxiliary space is constant for the walk-only branch and O(n) on fallback; converter's preexisting heads vector remains O(n). Saturation cannot increase work beyond the mathematical 4*n bound. Stars complete their walks without adjacency allocation. No universal throughput gain follows from this bound.\n"
+  ],
+  "id": "en-convert-bfs-checks",
+  "inverse": [
+    "In supplied fixtures, an accepted mismatched full Result or missed active-BFS mutation is excluded; passing summaries without executing relevant paths are not evidence.",
+    "A passing finite observation admits every implementation agreeing on these cases, including divergent unsampled inputs; benchmark times do not reconstruct universal cost."
+  ],
+  "limitations": [
+    "partial legacy semantic coverage",
+    "no macro expansion or semantic AST",
+    "finite evidence, not universal verification"
+  ],
+  "source": "en/src/convert.rs.groupant/checks.rs",
+  "state": "finite typed inputs; successful allocation; ordered source predicates; normal outputs"
+}

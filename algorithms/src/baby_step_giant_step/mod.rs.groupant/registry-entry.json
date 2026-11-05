@@ -1,0 +1,21 @@
+{
+  "id": "algorithm-baby-step-giant-step",
+  "source": "algorithms/src/baby_step_giant_step/mod.rs",
+  "children": [],
+  "description": "Original bounded algebra algorithm with independent finite checks",
+  "state": "Deterministic values and explicit validation",
+  "cost": "Fixed prime998244353. Solve g^x=t; n=ceil sqrt(p-1), store least j for g^j then scan t*(g^-n)^i. First matching block gives least exponent. Nonzero group exponent range0..p-2; zero base: t=1=>0,t=0=>1, otherwise none. O(sqrt(p)log p) BTreeMap work O(sqrt(p)) memory. Shanks, Class number, a theory of factorization, and genera (1971).",
+  "forward": [
+    "Fixed prime998244353. Solve g^x=t; n=ceil sqrt(p-1), store least j for g^j then scan t*(g^-n)^i. First matching block gives least exponent. Nonzero group exponent range0..p-2; zero base: t=1=>0,t=0=>1, otherwise none. O(sqrt(p)log p) BTreeMap work O(sqrt(p)) memory. Shanks, Class number, a theory of factorization, and genera (1971)."
+  ],
+  "inverse": [
+    "Some(x) with g^x!=target or with a smaller valid exponent is excluded. None is excluded when any exponent0..p-2 solves for nonzero g. Zero base explicitly adds exponent1 for target0.",
+    "For output Some(0), every base paired with target1 is compatible. For x>0 retain pairs (g,g^x) whose multiplicative order exceeds x, plus (0,0) at x1. None admits nonmembers of generated subgroups, including (1,2)."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms baby_step_giant_step::tests"
+  ],
+  "limitations": [
+    "Partial syntax; finite tests do not prove universal correctness; no allocator failure injection; no executable surrogate"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms li_chao_tree::tests"
+  ],
+  "children": [],
+  "cost": "Raw n<=2^18, distinct m<=n. Sort O(n log(n+1)), storage 4m nodes plus m coordinates; insertion/query O(log(m+1)), recursion depth O(log(m+1)); insertion count<=2^20. Allocator failure follows std and is not a typed recoverable result.",
+  "description": "li_chao_tree mod.rs: exact structure and independent oracle",
+  "forward": [
+    "Given fixed sorted distinct coordinates X and insertion sequence L, query x in X returns lexicographic min (a*x+b,insertion_id) over L, evaluated exactly in i128. Unknown x returns UnknownCoordinate before NoLines. Constructor caps raw input before sorting/deduplication; cap-rejected insertion preserves tree and IDs."
+  ],
+  "id": "algorithm-li-chao-tree",
+  "inverse": [
+    "Concrete behavior complement and ambiguous reverse reconstruction in adjacent model.md"
+  ],
+  "limitations": [
+    "Finite observations are not a proof; std allocation failure not injected; partial syntax has opaque macros and no semantic AST"
+  ],
+  "source": "algorithms/src/li_chao_tree/mod.rs",
+  "state": "Bounded deterministic supplied-input observations"
+}

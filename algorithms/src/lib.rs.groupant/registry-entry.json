@@ -1,0 +1,29 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline; parent records actual integrated counts and new joins",
+    "Regenerate final lib source syntax twice and compare identical JSON",
+    "Parent source/child binding and mutation controls"
+  ],
+  "children": [],
+  "cost": "Reached calls only: ordering may include cubic all-rank verification; graph joins combine cubic all-pairs work with per-source oracles; prefix reconstruction/sparse construction are O(n log(n+1)). See model.md for assumptions and fixture costs.",
+  "description": "200 public modules; 413 bound algorithm source leaves; 15 internal and 91 external literal test declarations across 12 external harnesses, totaling 106 bounded composition checks. Five wave26 families organize 25 new modules. Counts use literal #[test] markers, not expanded macros. Mova checks are separate.",
+  "forward": [
+    "Exports 200 modules without runtime initialization; fifteen test-only compositions model selected joins.",
+    "Preserve ordered values/ranks, graph identities and connectivity, original selected-edge accounting, and exact update/reconstruction snapshots.",
+    "Checked no-reduction squaring admits a left inverse; minimum, residue, floor-root and graph projections are generally lossy.",
+    "Additional joins preserve signed-distance embeddings, residual matching paths, byte prefix/palindrome semantics, range snapshots, integer sort ranks and prime inverse residues."
+  ],
+  "id": "algorithm-library-api",
+  "inverse": [
+    "Complement excludes violations of each declared successful-observation relation within explicit domains; it is not an all-Rust-behavior claim.",
+    "Sort/search retains input permutations and target fibers; graphs and histories remain ambiguous. Valid complete prefixes recover one value sequence, not update history."
+  ],
+  "limitations": [
+    "Models describe test-exercised client compositions, not new exported wrapper APIs.",
+    "Finite oracles and passing composition agreement do not prove correctness on all inputs.",
+    "Syntax omits macro expansion, cfg evaluation, external module loading and semantic resolution.",
+    "Parent library group must bind external leaf revisions; this source hash alone does not."
+  ],
+  "source": "algorithms/src/lib.rs",
+  "state": "Tagged successful observations of ordering, distances, partitions, selected edges, exact prefix snapshots, ranges and restricted integer-square identities."
+}

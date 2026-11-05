@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Expression precedence ladder",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Expression precedence ladder",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Expression precedence ladder",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Expression precedence ladder",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "resource_domain",
+        "path": "model.md",
+        "scope": "Expression precedence ladder",
+        "section": "resource_domain",
+        "status": "partial_source_derived_model",
+        "type": "resource_domain"
+      },
+      {
+        "id": "interaction_relation",
+        "path": "model.md",
+        "scope": "Expression precedence ladder",
+        "section": "interaction_relation",
+        "status": "partial_source_derived_model",
+        "type": "interaction_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 22899,
+      "start": 18030
+    },
+    "description": "oror→andand→or→and→cmp→range→additive→mult→unary→power establishes binding. power repeatedly folds left over power_operand; unary recursively prefixes before power. range accepts one or two colons.",
+    "source_bytes_sha256": "56ac26b89c957a5008c0c285f8bea853684b345371a9ca85d3bde956e5df53c0"
+  },
+  "id": "mlab-parser-expression-precedence",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../parser.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "264bd8e53dd7900714d501cf4d523d9f9fd70f7a948b3491cb43def7fc208583"
+  },
+  "status": "partial_source_bound_model"
+}

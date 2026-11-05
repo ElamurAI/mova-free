@@ -1,0 +1,29 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline lcp_array::tests::",
+    "Twice per debug/release; identical normalized identities. Compiled per-source mutation and exact restoration; strict Clippy; narrow rustfmt; repeated syntax."
+  ],
+  "children": [],
+  "cost": "Existing suffix_array costs O(n log² n); the Kasai phase costs O(n) time and O(n) auxiliary space. Each successful byte comparison increases common and each outer iteration decreases it by at most one. This is not an overall linear suffix constructor. Allocation exhaustion is outside the terminating domain.",
+  "description": "lcp_array exact byte algorithm",
+  "forward": [
+    "For finite byte text T of length n, return (A,L): A sorts the nonempty suffixes, L[0]=0 if n>0, and L[r]=max k with T[A[r-1]..A[r-1]+k]=T[A[r]..A[r]+k]. Empty input returns two empty vectors.",
+    "A is a permutation of 0..n; rank[A[r]]=r. The carried prefix is a lower bound for the next comparison after subtracting one. All comparisons obey common<n-start and common<n-previous, bounding additions by n-1."
+  ],
+  "id": "algorithm-lcp-array",
+  "inverse": [
+    "Within U = finite input texts paired with arbitrary vector pairs, absent behaviors include unequal output lengths, nonpermutation A, L[0]!=0, and any adjacent L value differing from direct byte-prefix equality. This is a source-derived inner characterization of excluded outputs under successful allocation.",
+    "For fixed (A,L), retain every length-n byte text whose suffix order is A and whose adjacent common-prefix lengths are L. The fiber is usually non-singleton: ([1,0],[0,1]) admits every equal-byte pair, including three pairs over {0,1,2}. Order/LCP do not recover byte labels.",
+    "Fix suffix order A. The inverse-rank vector is uniquely rank[A[r]]=r; an inconsistent rank is excluded. Fix rank without T and the compatible inputs remain all texts inducing that suffix order; rank does not supply byte identity.",
+    "At each start with positive rank, common is a lower bound on LCP with its lexicographic predecessor. After measuring h, the next candidate starts at max(h-1,0); encountering the least suffix resets the bound. This relies on suffix-order predecessor constraints, not arbitrary permutations.",
+    "For fixed ranks a<b, LCP(T[A[a]..],T[A[b]..]) = min L[a+1..=b]. The interval is nonempty and the suffix order must correspond to this exact text; swapping a suffix array from another text invalidates the premise.",
+    "A strictly increasing byte map on the observed alphabet preserves both A and L. Injective decreasing maps preserve equality lengths only for a fixed pair of offsets, not the ordered arrays; noninjective maps can lengthen prefixes.",
+    "For fixed n and L, the number of distinct nonempty substrings is n(n+1)/2 - sum L. This mathematical integer identity is tested with explicit substring sets at n=5; API does not perform the potentially overflowing product.",
+    "For n equal bytes, A=[n-1,...,0] and L=[0,1,...,n-1]. For n=0 both vectors are empty. Long constant fixtures exercise maximal carried prefixes and finite suffix bounds."
+  ],
+  "limitations": [
+    "Partial syntax excludes macro expansion and semantic resolution. Finite enumeration is not a general proof; allocation exhaustion and throughput are untested. No executable approximation profile or downstream inference claim."
+  ],
+  "source": "algorithms/src/lcp_array/mod.rs",
+  "state": "Finite byte slices and ordinary terminating Rust calls with successful allocation."
+}

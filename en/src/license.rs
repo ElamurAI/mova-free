@@ -59,3 +59,21 @@ mod tests {
         assert!(commercial_gate(&[PathBuf::from("mystery.conllu")]).is_err());
     }
 }
+
+#[cfg(test)]
+mod wave27 {
+    use super::*;
+    #[test]
+    fn empty_and_first_failure() {
+        assert!(commercial_gate(&[]).is_ok());
+        assert_eq!(train_source(Path::new("")), "");
+        assert_eq!(train_source(Path::new("en_x-test-train.conllu")), "x");
+        let e = commercial_gate(&[
+            PathBuf::from("mystery.conllu"),
+            PathBuf::from("en_gum-ud-train.conllu"),
+        ])
+        .unwrap_err()
+        .to_string();
+        assert!(e.contains("mystery") && e.contains("unknown"));
+    }
+}

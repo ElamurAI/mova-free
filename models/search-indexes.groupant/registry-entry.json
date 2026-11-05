@@ -1,0 +1,38 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms kd_tree::tests",
+    "cargo test -p mova-algorithms bk_tree::tests",
+    "cargo test -p mova-algorithms interval_tree::tests",
+    "cargo test -p mova-algorithms treap::tests",
+    "cargo test -p mova-algorithms splay_tree::tests",
+    "13 local tests; 877 integrated checks twice debug/release; source-bound compiled controls; see model.md#wave26-evidence."
+  ],
+  "children": [
+    "algorithm-kd-tree",
+    "algorithm-kd-tree-tests",
+    "algorithm-bk-tree",
+    "algorithm-bk-tree-tests",
+    "algorithm-interval-tree",
+    "algorithm-interval-tree-tests",
+    "algorithm-treap",
+    "algorithm-treap-tests",
+    "algorithm-splay-tree",
+    "algorithm-splay-tree-tests"
+  ],
+  "cost": "Build/query costs stay tagged: KD median build O(n log²n), worst query O(n); BK worst quadratic number of metric calls at build and linear at query; balanced interval queries may inspect O(n), plus output sorting. Treap height may be n with explicit priorities; splay operations may be linear individually and only sequence amortization gives logarithmic bounds. Sum only calls actually executed; reused indexes amortize build, not correctness checks.",
+  "description": "Tagged exact search interfaces: nearest point, metric-radius word matches, closed interval overlap, explicit-priority set updates and stateful splay access. They share query/result identity obligations, not one interchangeable metric or one automatic pipeline. Define Q(A,x): KD argmin_i(||A_i-x||²,i); BK sorted {(i,d_byte(A_i,x)):d<=r}; intervals sorted {i:a_i<=q_hi && q_lo<=b_i}. Trees map (state,key) to (new state,membership).",
+  "forward": [
+    "Tagged exact search interfaces: nearest point, metric-radius word matches, closed interval overlap, explicit-priority set updates and stateful splay access. They share query/result identity obligations, not one interchangeable metric or one automatic pipeline. Define Q(A,x): KD argmin_i(||A_i-x||²,i); BK sorted {(i,d_byte(A_i,x)):d<=r}; intervals sorted {i:a_i<=q_hi && q_lo<=b_i}. Trees map (state,key) to (new state,membership).",
+    "Potential adapter boundaries are candidate-index lookup followed by exact source projection and optional ordered-set deduplication. Original indexes and key values require an explicit mapping; deduplication loses occurrence multiplicity. KD squared Euclidean radius is not BK byte-edit radius. Interval boundaries are closed. Splay access changes future shape while Treap contains does not."
+  ],
+  "id": "search-indexes",
+  "inverse": [
+    "Exclude y!=Q(A,x), invalid inputs paired with Ok, missing duplicate indexes, larger-index KD ties, or wrong splay resulting root. Metric/radius units and mutation behavior remain tagged.",
+    "Q^-1(y)={(A,x):Q(A,x)=y}. Nearest constrains one distance and competitor inequalities, leaving farther coordinates ambiguous. Empty matches admit empty or nonempty disjoint/far data. Key sets forget insertion order/priorities; membership forgets tree shape."
+  ],
+  "limitations": [
+    "Successful allocations and each leaf's finite domain/error precedence. These are tagged relations, not automatic production adoption. Floating residuals are not solution-error guarantees. No generic 1/2/5/10% composition-wide profile; finite evidence remains separate from analytical claims.",
+    "Finite observations and partial syntax do not establish universal proof."
+  ],
+  "state": "KD/BK/interval indexes retain original occurrence indexes; ordered trees retain unique keys. Tie order, duplicate policy and state mutation follow the selected API. Validation errors and allocator failure never become empty successful answers."
+}

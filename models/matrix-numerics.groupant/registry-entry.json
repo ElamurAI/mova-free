@@ -1,0 +1,36 @@
+{
+  "checks": [
+    "Eight exact named native tests, twice debug and twice release; same ordered named outcomes",
+    "Seven production compiled mutants, one per owned source; expected assertion failure exit101, exact-byte restoration and positive rerun in both profiles",
+    "Seven lexical syntax projections generated twice identically; fragments reference parent projection with SHA256 byte scopes",
+    "Focused rustfmt on added inline test blocks only; guarded own-source commit"
+  ],
+  "children": [
+    "mlab-numerics-bench",
+    "mlab-numerics-elem",
+    "mlab-numerics-fft",
+    "mlab-numerics-linalg",
+    "mlab-numerics-numeric",
+    "mlab-numerics-poly",
+    "mlab-numerics-reduce"
+  ],
+  "cost": "Elementwise O(N); slice construction/reductions/cumulative O(N+S), S=number of slices, including shaped empties N0,S>0. Sort O(N log(max(L,2))+S); FFT O(S*N log N) plus planning. Horner O(PX), convolution O(PQ); fit/eigen/dense solves O(mn min(m,n)) or square O(n^3) plus residual products. GK at most650 intervals with O(I) scans, Brent1000 iterations, ODE1e6 attempts plus callback cost. Bench helpers use n² samples/three callbacks only. No timings or speed claims; dimension overflow and allocations remain explicit.",
+  "description": "Registry-bound matrix functions share column-major index k=j*rows+i. Element maps apply scalar real/complex functions; reductions aggregate dimension slices. FFT computes F_N(P_N(x)) and inverse F_N^-1/N over those slices. Polynomial Horner uses descending coefficients; polyfit creates V[i,j]=x_i^(d-j), returns retained-SVD V^+ y, while roots builds companion C and calls eig. Dense solve chooses LU/QR/SVD by shape/rank and records warning residuals. Numeric callbacks implement GK15, Brent, Nelder-Mead and Dormand-Prince; trapz sums adjacent sample averages times spacing. Bench data/best are a separate diagnostic path, not runtime dispatch.",
+  "forward": [
+    "Registry-bound matrix functions share column-major index k=j*rows+i. Element maps apply scalar real/complex functions; reductions aggregate dimension slices. FFT computes F_N(P_N(x)) and inverse F_N^-1/N over those slices. Polynomial Horner uses descending coefficients; polyfit creates V[i,j]=x_i^(d-j), returns retained-SVD V^+ y, while roots builds companion C and calls eig. Dense solve chooses LU/QR/SVD by shape/rank and records warning residuals. Numeric callbacks implement GK15, Brent, Nelder-Mead and Dormand-Prince; trapz sums adjacent sample averages times spacing. Bench data/best are a separate diagnostic path, not runtime dispatch.",
+    "polyfit→lstsq_svd joins real column-major Vandermonde with real y; roots/poly→Interp::call_function(eig) joins registry to linalg checks. ops routes matrix division to mldivide. elem cmap and FFT Mat::complex narrow zero im while explicit complex retains storage. FFT dim>=2 uses row slices, whereas reduce dims>2 use singleton slices. Local sort indices differ from global find indices. eval_nodes repeats callbacks after unsuitable vector attempt. Bench same column-major buffers feed both backends; main unexecuted."
+  ],
+  "id": "matrix-numerics",
+  "inverse": [
+    "Wrong shape/order adapters are incompatible with bounded transport fixtures. FFT inverse without1/N violates impulse reconstruction. Long deconv division and executed diff/trapz arithmetic do not preserve imaginary parts, but cloned passthrough branches do. Callback retry excludes exactly-once effects. Warning gates and fzero success flag1 do not exclude nonzero residual results.",
+    "Fixed-N Fourier outputs identify padded/truncated slices up to rounding, leaving arbitrary truncated tails. Poly quotient/remainder plus real divisor reconstructs dividend via padded convolution; short dividends clone remainder. Least-squares B lies in AX plus residual orthogonal to retained columns. Sort values plus permutation recover slices; sums have zero-sum fibers. fzero output is compatible with bracket-width stopping or1000-iteration exhaustion and nonzero residual, even discontinuous functions without a root; only sampled fb==0 establishes an observed zero."
+  ],
+  "limitations": [
+    "Partial coverage of seven existing files, not complete semantic proof",
+    "Numeric adaptive convergence, root search/optimization/ODE stepping and callback effects remain source-modeled except bounded maps/trapz/arity checks",
+    "Polynomial companion eigen/polyfit and most linear algebra factorizations remain partial; LU permutation and QR/SVD solve fixtures executed",
+    "No benchmark main, held-out suites, GPU or resource-failure injection",
+    "No executable approximate surrogate or composed accuracy guarantee"
+  ],
+  "state": "Well-formed Mat vectors match rows*cols and optional im length. Coordinates are column-major except explicit reshaping. FFT dim>=2 aliases dim2, unlike reduction singleton slices for dim>2. Finite fixtures preserve stated values/tolerances; warnings do not imply rejection. Long deconv division, executed nonempty diff steps, cumulative and trapz read real parts; deconv short-dividend remainder and diff order0/zero-length-axis branches clone input and preserve imaginary storage. Callback retry is not transactional."
+}

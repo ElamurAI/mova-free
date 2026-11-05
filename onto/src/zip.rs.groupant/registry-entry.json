@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "zip::wave29_ontowiki::stored_archive_and_method_gate"
+  ],
+  "children": [],
+  "cost": "O(archive bytes) retained; EOCD<=65557-byte window; entry/name scan; read lookup O(N), decode O(compressed+output). Declared size can allocate huge, no zip-bomb cap.",
+  "description": "open whole-file read, backwards EOCD within comment window, ZIP64 sentinel check, central signature/name/encryption records. names central order. read first matching name→local signature→payload slice→stored0/deflate8→size equality; other method refused.",
+  "forward": [
+    "open whole-file read, backwards EOCD within comment window, ZIP64 sentinel check, central signature/name/encryption records. names central order. read first matching name→local signature→payload slice→stored0/deflate8→size equality; other method refused.",
+    "e=first entry name; start=e.off+30+local_namelen+local_extralen; raw=data[start..start+csize]. Require local magic; method0 copy or8 inflate else error; require |out|=size."
+  ],
+  "id": "onto-zip",
+  "inverse": [
+    "For in-bounds structures exclude success with encrypted central flag, unsupported read method, wrong decoded size. CRC corruption/duplicate names/panic on offsets not excluded.",
+    "Payload/names admit different comments/CRC/extra fields/compression bytes. First duplicate controls lookup; decoded bytes cannot recover headers/method."
+  ],
+  "limitations": [
+    "Tiny stored archive open/name/read, absent, method99 and encryption tested. Deflate/size mismatch/malformed offsets/FrameNet file unexecuted.",
+    "Executable approximant gap: no useful percentage metric established for these categorical/effectful observations. No surrogate or production substitution. Future caps 1/2/5/10% require a metric/domain and evidence; no numerical error bound follows here.",
+    "Partial lexical AST, no macro expansion/semantic proof; no live teacher/dump/corpus/database execution"
+  ],
+  "source": "onto/src/zip.rs",
+  "state": "CRC unchecked; no full bounds or central/local consistency checks. Malformed names/offsets can panic. Encryption bit1 refused open; unsupported method only read. Duplicate names first. Valid empty central accepted."
+}

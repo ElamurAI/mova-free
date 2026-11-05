@@ -1,0 +1,816 @@
+{
+  "children": [
+    "math-arith",
+    "math-big",
+    "math-err",
+    "math-eval",
+    "math-expr",
+    "math-rat",
+    "math-units",
+    "symbolic-computation",
+    "math-orchestration",
+    "formula-bridge",
+    "matrix-expression",
+    "computing-execution",
+    "matrix-numerics",
+    "statistical-computing",
+    "computing-io"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "No corpus, teacher, GPU, persistent model or external mutation; approximate branch finite tests do not prove error bounds.",
+        "domain": "Bounded synthetic expressions/quantities, normalized representable rationals, finite numeric fixtures, representable i8 unit exponents, n<32 search masks. Public malformed trees/states and huge counts remain explicit gaps.",
+        "id": "behavior-complement",
+        "observation_scope": "expr supplies trees; eval joins rat and units with err taxonomy, then external fcheck SI comparison. arith uses big plus external memory NUM_WORDS. understand constructs Expr; solve consumes big helpers. Rat and big are not interchangeable representations: units remain checked i128.",
+        "operator": "On supported states zero division, dimension mismatch and point scaling exclude successful outputs; gate excludes false checks/SI mismatch. Float beam pruning can exclude mathematically valid alternatives.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "No corpus, teacher, GPU, persistent model or external mutation; approximate branch finite tests do not prove error bounds.",
+        "domain": "Bounded synthetic expressions/quantities, normalized representable rationals, finite numeric fixtures, representable i8 unit exponents, n<32 search masks. Public malformed trees/states and huge counts remain explicit gaps.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "expr supplies trees; eval joins rat and units with err taxonomy, then external fcheck SI comparison. arith uses big plus external memory NUM_WORDS. understand constructs Expr; solve consumes big helpers. Rat and big are not interchangeable representations: units remain checked i128.",
+        "operator": "Outputs admit sets of trees, texts and unit representations; fixed exact affine conversion is invertible subject to representability; category codes cannot recover diagnostics.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "No corpus, teacher, GPU, persistent model or external mutation; approximate branch finite tests do not prove error bounds.",
+        "domain": "Bounded synthetic expressions/quantities, normalized representable rationals, finite numeric fixtures, representable i8 unit exponents, n<32 search masks. Public malformed trees/states and huge counts remain explicit gaps.",
+        "id": "representation-transport",
+        "observation_scope": "expr supplies trees; eval joins rat and units with err taxonomy, then external fcheck SI comparison. arith uses big plus external memory NUM_WORDS. understand constructs Expr; solve consumes big helpers. Rat and big are not interchangeable representations: units remain checked i128.",
+        "operator": "Q.base joins Rat value with Mono factor or affine offset; gate compares this SI observation with fcheck. big Q used in arith has no automatic unit or checked-i128 transport.",
+        "path": "model.md",
+        "required": false,
+        "section": "representation-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No corpus, teacher, GPU, persistent model or external mutation; approximate branch finite tests do not prove error bounds.",
+        "domain": "Bounded synthetic expressions/quantities, normalized representable rationals, finite numeric fixtures, representable i8 unit exponents, n<32 search masks. Public malformed trees/states and huge counts remain explicit gaps.",
+        "id": "failure-order",
+        "observation_scope": "expr supplies trees; eval joins rat and units with err taxonomy, then external fcheck SI comparison. arith uses big plus external memory NUM_WORDS. understand constructs Expr; solve consumes big helpers. Rat and big are not interchangeable representations: units remain checked i128.",
+        "operator": "Children precede parent validation; prior Ctx updates survive failure. Thermal kind rejection precedes numerical zero division. Units reject dimensions before scale arithmetic.",
+        "path": "model.md",
+        "required": false,
+        "section": "failure-order",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "No corpus, teacher, GPU, persistent model or external mutation; approximate branch finite tests do not prove error bounds.",
+        "domain": "Bounded synthetic expressions/quantities, normalized representable rationals, finite numeric fixtures, representable i8 unit exponents, n<32 search masks. Public malformed trees/states and huge counts remain explicit gaps.",
+        "id": "exact-replay",
+        "observation_scope": "expr supplies trees; eval joins rat and units with err taxonomy, then external fcheck SI comparison. arith uses big plus external memory NUM_WORDS. understand constructs Expr; solve consumes big helpers. Rat and big are not interchangeable representations: units remain checked i128.",
+        "operator": "Selected arith Tree exact replay certifies only its arithmetic over retained quantities, not float beam completeness, learned relevance or gold tolerance equality.",
+        "path": "model.md",
+        "required": false,
+        "section": "exact-replay",
+        "status": "partial_source_derived_model",
+        "type": "search_certificate"
+      },
+      {
+        "assumptions": "No corpus, teacher, GPU, persistent model or external mutation; approximate branch finite tests do not prove error bounds.",
+        "domain": "Bounded synthetic expressions/quantities, normalized representable rationals, finite numeric fixtures, representable i8 unit exponents, n<32 search masks. Public malformed trees/states and huge counts remain explicit gaps.",
+        "id": "resources",
+        "observation_scope": "expr supplies trees; eval joins rat and units with err taxonomy, then external fcheck SI comparison. arith uses big plus external memory NUM_WORDS. understand constructs Expr; solve consumes big helpers. Rat and big are not interchangeable representations: units remain checked i128.",
+        "operator": "No general allocation/depth cap; subset masks assume n<32 and unit exponents assume representability. Existing probability enumeration bounded to16 only after count sum.",
+        "path": "model.md",
+        "required": false,
+        "section": "resources",
+        "status": "partial_source_derived_model",
+        "type": "resource_domain"
+      },
+      {
+        "assumptions": "No teacher/API/corpus/GPU/heldout/expensive benchmark execution. Tests inspected first. One root-authorized checker shape repair; otherwise production semantics retained. No new executable percent surrogate.",
+        "domain": "Finite synthetic fixtures, normalized Poly, matched rectangular gauss inputs, supported expression and canonical digit domains. Resource/overflow assumptions are source-specific.",
+        "id": "wave28-symbolic-computation-exact-transport",
+        "operator": "calc Q feeds exact big Q/Z; poly/linsys reject R constants. fcheck uses legacy Rat/SI scales; f64 magnitude is not a lossless dimensional/calculation adapter.",
+        "path": "model.md",
+        "section": "wave28-symbolic-computation-exact-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No teacher/API/corpus/GPU/heldout/expensive benchmark execution. Tests inspected first. One root-authorized checker shape repair; otherwise production semantics retained. No new executable percent surrogate.",
+        "domain": "Finite synthetic fixtures, normalized Poly, matched rectangular gauss inputs, supported expression and canonical digit domains. Resource/overflow assumptions are source-specific.",
+        "id": "wave28-symbolic-computation-certificate-join",
+        "operator": "Exact substitution/product, modular collision-prone fingerprint, probable labels, finite floating samples and unavailable routes have distinct assurance. Boolean conjunction alone cannot prove the composition.",
+        "path": "model.md",
+        "section": "wave28-symbolic-computation-certificate-join",
+        "status": "partial_composition_model",
+        "type": "evidence_composition"
+      },
+      {
+        "assumptions": "No teacher/API/corpus/GPU/heldout/expensive benchmark execution. Tests inspected first. One root-authorized checker shape repair; otherwise production semantics retained. No new executable percent surrogate.",
+        "domain": "Finite synthetic fixtures, normalized Poly, matched rectangular gauss inputs, supported expression and canonical digit domains. Resource/overflow assumptions are source-specific.",
+        "id": "wave28-symbolic-computation-state-prefix",
+        "operator": "poly/linsys constant eval can retain calc effects on failure; ranged errors retain binding. Capped traces omit work; local resource gates do not bound all callees.",
+        "path": "model.md",
+        "section": "wave28-symbolic-computation-state-prefix",
+        "status": "partial_composition_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "No teacher/API/corpus/GPU/heldout/expensive benchmark execution. Tests inspected first. One root-authorized checker shape repair; otherwise production semantics retained. No new executable percent surrogate.",
+        "domain": "Finite synthetic fixtures, normalized Poly, matched rectangular gauss inputs, supported expression and canonical digit domains. Resource/overflow assumptions are source-specific.",
+        "id": "wave28-symbolic-computation-domain-provenance",
+        "operator": "Retain ratfunc dens across cancellation/solving. Derivative simplify forgets singularities and SI projection forgets units representation. Arithmetic checks must be joined with original domain obligations.",
+        "path": "model.md",
+        "section": "wave28-symbolic-computation-domain-provenance",
+        "status": "partial_composition_model",
+        "type": "domain_transport"
+      },
+      {
+        "assumptions": "Finite test floats, local compiler/filesystem; delegated arithmetic retains own limits. Lexical AST lacks semantic resolution/macros. No-panic perceptron comparisons require comparable non-NaN accumulated scores and weights; finite weights alone do not prevent score overflow/NaN.",
+        "domain": "Bounded synthetic helpers/plans/records. Public module compile-only, classic CLI usage-only. Live teacher/Lean/models/corpora/held/DB/GPU and large benchmark excluded.",
+        "id": "wave28-math-orchestration-expectation-join",
+        "operator": "Expect integer for int or number from TheoremQA, options verbatim. Numeric gate and grading differ in tolerance/normalization.",
+        "path": "model.md",
+        "section": "wave28-math-orchestration-expectation-join",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Finite test floats, local compiler/filesystem; delegated arithmetic retains own limits. Lexical AST lacks semantic resolution/macros. No-panic perceptron comparisons require comparable non-NaN accumulated scores and weights; finite weights alone do not prevent score overflow/NaN.",
+        "domain": "Bounded synthetic helpers/plans/records. Public module compile-only, classic CLI usage-only. Live teacher/Lean/models/corpora/held/DB/GPU and large benchmark excluded.",
+        "id": "wave28-math-orchestration-fallback-state",
+        "operator": "Fallback copies answer/option/verified/correct/cost/tokens/secs/method, not B trace/history; keeps C config and by_slm=false.",
+        "path": "model.md",
+        "section": "wave28-math-orchestration-fallback-state",
+        "status": "partial_composition_model",
+        "type": "state_transition"
+      },
+      {
+        "assumptions": "Finite test floats, local compiler/filesystem; delegated arithmetic retains own limits. Lexical AST lacks semantic resolution/macros. No-panic perceptron comparisons require comparable non-NaN accumulated scores and weights; finite weights alone do not prevent score overflow/NaN.",
+        "domain": "Bounded synthetic helpers/plans/records. Public module compile-only, classic CLI usage-only. Live teacher/Lean/models/corpora/held/DB/GPU and large benchmark excluded.",
+        "id": "wave28-math-orchestration-effect-order",
+        "operator": "Vmm cap→mkdir→teacher→spent→append→is_error; Lean bans→write→process→diagnostics. Failed append not rollback.",
+        "path": "model.md",
+        "section": "wave28-math-orchestration-effect-order",
+        "status": "partial_composition_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "Finite test floats, local compiler/filesystem; delegated arithmetic retains own limits. Lexical AST lacks semantic resolution/macros. No-panic perceptron comparisons require comparable non-NaN accumulated scores and weights; finite weights alone do not prevent score overflow/NaN.",
+        "domain": "Bounded synthetic helpers/plans/records. Public module compile-only, classic CLI usage-only. Live teacher/Lean/models/corpora/held/DB/GPU and large benchmark excluded.",
+        "id": "wave28-math-orchestration-budget-composition",
+        "operator": "Per-plan limits/reserve estimates do not bound parallel composition; concurrent prechecks can overspend.",
+        "path": "model.md",
+        "section": "wave28-math-orchestration-budget-composition",
+        "status": "partial_composition_model",
+        "type": "resource_boundary"
+      },
+      {
+        "assumptions": "External parser/printer/AST equality/macros/Rat/evaluator contracts delegated. No live corpus, frozen VMM DATA execution, teacher/API, training or GPU. Timing and tied error ranks may vary.",
+        "domain": "Bounded UTF-8 synthetic text/files and supported parser-produced Nodes/Exprs with finite Rat values. Arbitrary public AST constructor states not certified total. math/gz features select adapters.",
+        "id": "wave28-formula-bridge-byte-transport",
+        "operator": "tex[start..start+body.len()]==body; parser error positions body-relative versus CLI outer body start.",
+        "path": "model.md",
+        "section": "wave28-formula-bridge-byte-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "External parser/printer/AST equality/macros/Rat/evaluator contracts delegated. No live corpus, frozen VMM DATA execution, teacher/API, training or GPU. Timing and tied error ranks may vary.",
+        "domain": "Bounded UTF-8 synthetic text/files and supported parser-produced Nodes/Exprs with finite Rat values. Arbitrary public AST constructor states not certified total. math/gz features select adapters.",
+        "id": "wave28-formula-bridge-gate-bridge",
+        "operator": "Node and folded Expr equivalence have different classes. Clean syntax may contain unsupported math variables; structural roundtrip does not prove denominator nonzero.",
+        "path": "model.md",
+        "section": "wave28-formula-bridge-gate-bridge",
+        "status": "partial_composition_model",
+        "type": "equivalence_boundary"
+      },
+      {
+        "assumptions": "External parser/printer/AST equality/macros/Rat/evaluator contracts delegated. No live corpus, frozen VMM DATA execution, teacher/API, training or GPU. Timing and tied error ranks may vary.",
+        "domain": "Bounded UTF-8 synthetic text/files and supported parser-produced Nodes/Exprs with finite Rat values. Arbitrary public AST constructor states not certified total. math/gz features select adapters.",
+        "id": "wave28-formula-bridge-macro-scope",
+        "operator": "Corpus per-file versus CLI document-global macro scanning invalidates substituting one adapter for other when definitions cross files.",
+        "path": "model.md",
+        "section": "wave28-formula-bridge-macro-scope",
+        "status": "partial_composition_model",
+        "type": "state_scope"
+      },
+      {
+        "assumptions": "External parser/printer/AST equality/macros/Rat/evaluator contracts delegated. No live corpus, frozen VMM DATA execution, teacher/API, training or GPU. Timing and tied error ranks may vary.",
+        "domain": "Bounded UTF-8 synthetic text/files and supported parser-produced Nodes/Exprs with finite Rat values. Arbitrary public AST constructor states not certified total. math/gz features select adapters.",
+        "id": "wave28-formula-bridge-output-prefix",
+        "operator": "Corpus writes can leave prefix on failure; CLI exit does not imply atomicity or deterministic elapsed report text.",
+        "path": "model.md",
+        "section": "wave28-formula-bridge-output-prefix",
+        "status": "partial_composition_model",
+        "type": "effect_prefix"
+      },
+      {
+        "domain": "Selected synthetic closed formulas and exact zero-rational environment; not arbitrary Expr/calc::E states",
+        "id": "wave28-roundtrip-definedness",
+        "operator": "For Expr, let R(e)=to_expr(parse(to_latex(from_expr(e)))). The successful R fiber contains unevaluable expressions: Div(1,0) roundtrips but answer rejects DivZero. Empty Add emits an empty Node yet has no successful inverse. Replacing numerical acceptance with structural roundtrip is excluded. Four bounded closed formulas preserve their independently stated exact values through both adapters; a foreign value is rejected by eval::gate.",
+        "path": "model.md",
+        "section": "wave28-roundtrip-definedness",
+        "status": "bounded_actual_source_witness",
+        "type": "domain_boundary"
+      },
+      {
+        "domain": "Selected synthetic closed formulas and exact zero-rational environment; not arbitrary Expr/calc::E states",
+        "id": "wave28-sampled-domain-preimage",
+        "operator": "For the distinct calc::E representation, simplify(0/x)=0 broadens the evaluation domain to include x=0. The eight-point derivative checker can accept the derivative because its sampled antecedents avoid that hole. A passing sampled check admits functions/domains differing elsewhere; it does not reconstruct or preserve the original domain. No automatic adapter between Expr and calc::E is implied.",
+        "path": "model.md",
+        "section": "wave28-sampled-domain-preimage",
+        "status": "bounded_actual_source_witness",
+        "type": "sampled_observation_preimage"
+      },
+      {
+        "assumptions": "Source-derived relations; caller enforces valid buffers and resources. f64 NaNs, infinities, casts and zero behavior follow source branches, not mathematical ideal arithmetic. Seven tests observe specific contracts, not all source branches.",
+        "domain": "CPU synthetic bounded strings and well-formed matrices with finite modest indices/dimensions/range spans; no GPU, datasets, external API or live filesystem effects.",
+        "id": "wave30-matrix-expression-layout-transport",
+        "operator": "Mat index k=j*r+i is preserved by reshape buffers, permuted to i*c+j by transpose and gathered by index; substituting row-major storage breaks all three joins.",
+        "path": "model.md",
+        "section": "wave30-matrix-expression-layout-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Source-derived relations; caller enforces valid buffers and resources. f64 NaNs, infinities, casts and zero behavior follow source branches, not mathematical ideal arithmetic. Seven tests observe specific contracts, not all source branches.",
+        "domain": "CPU synthetic bounded strings and well-formed matrices with finite modest indices/dimensions/range spans; no GPU, datasets, external API or live filesystem effects.",
+        "id": "wave30-matrix-expression-syntax-context",
+        "operator": "Lexer preserves whitespace and newline observations; parser contextual sign boundary and index_depth transform them into Matrix/Unary/End versus subtraction/identifier branches.",
+        "path": "model.md",
+        "section": "wave30-matrix-expression-syntax-context",
+        "status": "partial_composition_model",
+        "type": "context_partition"
+      },
+      {
+        "assumptions": "Source-derived relations; caller enforces valid buffers and resources. f64 NaNs, infinities, casts and zero behavior follow source branches, not mathematical ideal arithmetic. Seven tests observe specific contracts, not all source branches.",
+        "domain": "CPU synthetic bounded strings and well-formed matrices with finite modest indices/dimensions/range spans; no GPU, datasets, external API or live filesystem effects.",
+        "id": "wave30-matrix-expression-validation-order",
+        "operator": "Whole lex precedes parse; index validates selected shape before growth; core reshape computes its unchecked known-dimension product before hole counting, then on bounded arithmetic checks hole count before divisibility/rank/product; error order cannot be commuted across adapters.",
+        "path": "model.md",
+        "section": "wave30-matrix-expression-validation-order",
+        "status": "partial_composition_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "Source-derived relations; caller enforces valid buffers and resources. f64 NaNs, infinities, casts and zero behavior follow source branches, not mathematical ideal arithmetic. Seven tests observe specific contracts, not all source branches.",
+        "domain": "CPU synthetic bounded strings and well-formed matrices with finite modest indices/dimensions/range spans; no GPU, datasets, external API or live filesystem effects.",
+        "id": "wave30-matrix-expression-effects",
+        "operator": "Most value/lexer/parser paths allocate only; index mutates target after bounded checks; ops linalg may warn; core can mutate interpreter/RNG and inspect files/time or invoke callbacks. Pure helper test evidence never certifies those effects.",
+        "path": "model.md",
+        "section": "wave30-matrix-expression-effects",
+        "status": "partial_composition_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "No frozen VMM/Octave/Boost/NIST or mlab suite evaluation, corpus, Monte Carlo defaults, teacher, GPU, real model or host filesystem execution. Nonfinite coverage ordering, arbitrary malformed public bytecode, overflow/allocation exhaustion and unrestricted Domain callbacks remain outside checked claims. f64 arithmetic admits NaN/Inf; no blanket finite-output guarantee.",
+        "domain": "CPU-only bounded synthetic programs, in-memory Vfs, valid parser-generated AST/VM prototypes and well-formed Value matrices within integer/memory limits; finite coverage scores and finite threshold for stable threshold claims. Empty programs/scenarios/output, zero-length loops and missing-variable errors explicitly represented.",
+        "id": "wave30-computing-execution-frame-register-transport",
+        "operator": "sync_out(regs,names) moves defined values into frame and removes U names; sync_in removes frame values back into Reg. Fallback wraps actual tree execution with this transport, including returned errors. Reg scalar packing is bit-sensitive for logical0/1 and preserves f64 scalar observations.",
+        "path": "model.md",
+        "section": "wave30-computing-execution-frame-register-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No frozen VMM/Octave/Boost/NIST or mlab suite evaluation, corpus, Monte Carlo defaults, teacher, GPU, real model or host filesystem execution. Nonfinite coverage ordering, arbitrary malformed public bytecode, overflow/allocation exhaustion and unrestricted Domain callbacks remain outside checked claims. f64 arithmetic admits NaN/Inf; no blanket finite-output guarantee.",
+        "domain": "CPU-only bounded synthetic programs, in-memory Vfs, valid parser-generated AST/VM prototypes and well-formed Value matrices within integer/memory limits; finite coverage scores and finite threshold for stable threshold claims. Empty programs/scenarios/output, zero-length loops and missing-variable errors explicitly represented.",
+        "id": "wave30-computing-execution-parse-runtime-boundary",
+        "operator": "Entire parse precedes registration/execution. Runtime failure follows already executed assignments and precedes remaining statements. Ordinary indexed '=' assignment orders RHS type, target type, then indices; compound indexed assignment first reads the indexed old value and applies its binary operation, then invokes the assignment helper, evaluating indices again; user calls order excess inputs, excess outputs, depth.",
+        "path": "model.md",
+        "section": "wave30-computing-execution-parse-runtime-boundary",
+        "status": "partial_composition_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "No frozen VMM/Octave/Boost/NIST or mlab suite evaluation, corpus, Monte Carlo defaults, teacher, GPU, real model or host filesystem execution. Nonfinite coverage ordering, arbitrary malformed public bytecode, overflow/allocation exhaustion and unrestricted Domain callbacks remain outside checked claims. f64 arithmetic admits NaN/Inf; no blanket finite-output guarantee.",
+        "domain": "CPU-only bounded synthetic programs, in-memory Vfs, valid parser-generated AST/VM prototypes and well-formed Value matrices within integer/memory limits; finite coverage scores and finite threshold for stable threshold claims. Empty programs/scenarios/output, zero-length loops and missing-variable errors explicitly represented.",
+        "id": "wave30-computing-execution-scenario-gate-join",
+        "operator": "run_fs maps each Scenario to fresh engine output and compares expected exact/prefix lines; vm_gate compares tree bytes to VM bytes without expectations. check strips exactly one terminal LF; first difference is1-based. Gate total increments before first mismatch break.",
+        "path": "model.md",
+        "section": "wave30-computing-execution-scenario-gate-join",
+        "status": "partial_composition_model",
+        "type": "observation_relation"
+      },
+      {
+        "assumptions": "No frozen VMM/Octave/Boost/NIST or mlab suite evaluation, corpus, Monte Carlo defaults, teacher, GPU, real model or host filesystem execution. Nonfinite coverage ordering, arbitrary malformed public bytecode, overflow/allocation exhaustion and unrestricted Domain callbacks remain outside checked claims. f64 arithmetic admits NaN/Inf; no blanket finite-output guarantee.",
+        "domain": "CPU-only bounded synthetic programs, in-memory Vfs, valid parser-generated AST/VM prototypes and well-formed Value matrices within integer/memory limits; finite coverage scores and finite threshold for stable threshold claims. Empty programs/scenarios/output, zero-length loops and missing-variable errors explicitly represented.",
+        "id": "wave30-computing-execution-separate-routing-selection",
+        "operator": "For finite scores and finite threshold, stable descending sort retains equal-score registration order; a0.9 solver returning None permits0.5 first solver at threshold0.5, and raising threshold0.5001 yields escalation. This relation is tagged separately and has no mlab transport edge.",
+        "path": "model.md",
+        "section": "wave30-computing-execution-separate-routing-selection",
+        "status": "partial_composition_model",
+        "type": "stable_selection"
+      },
+      {
+        "assumptions": "Backend faer/rustfft semantics are dependencies; lexical projections do not resolve macros/types. Public malformed Mat storage, huge dimensions, allocation failure, nonfinite convergence, callback side effects and arbitrary complex support are not certified. Native benchmark helper selection uses cargo --bin because this package has no library target.",
+        "domain": "Bounded synthetic CPU matrices and functions, valid storage, finite small arithmetic where required; no network, corpus, teacher, GPU, benchmark main or held-out suites. Models describe broader source branches with explicitly partial execution.",
+        "id": "wave30-matrix-numerics-column-major-transport",
+        "operator": "Mat k=j*r+i, faer view and Vandermonde columns share layout. FFT dim1 gathers s*r+t; all admitted dim>=2 gather t*r+s and change cols toN. reduce::slices dims>2 instead emits singleton slices. Layout adapters must preserve these distinct rules.",
+        "path": "model.md",
+        "section": "wave30-matrix-numerics-column-major-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Backend faer/rustfft semantics are dependencies; lexical projections do not resolve macros/types. Public malformed Mat storage, huge dimensions, allocation failure, nonfinite convergence, callback side effects and arbitrary complex support are not certified. Native benchmark helper selection uses cargo --bin because this package has no library target.",
+        "domain": "Bounded synthetic CPU matrices and functions, valid storage, finite small arithmetic where required; no network, corpus, teacher, GPU, benchmark main or held-out suites. Models describe broader source branches with explicitly partial execution.",
+        "id": "wave30-matrix-numerics-rank-and-coefficients",
+        "operator": "polyfit uses lstsq_svd threshold max(m,n)*smax*eps; rank builtin uses spacing-based tolerance and therefore is not a certified identical rank selector. roots scaling to monic companion discards nonzero leading coefficient scale.",
+        "path": "model.md",
+        "section": "wave30-matrix-numerics-rank-and-coefficients",
+        "status": "partial_composition_model",
+        "type": "threshold_transport"
+      },
+      {
+        "assumptions": "Backend faer/rustfft semantics are dependencies; lexical projections do not resolve macros/types. Public malformed Mat storage, huge dimensions, allocation failure, nonfinite convergence, callback side effects and arbitrary complex support are not certified. Native benchmark helper selection uses cargo --bin because this package has no library target.",
+        "domain": "Bounded synthetic CPU matrices and functions, valid storage, finite small arithmetic where required; no network, corpus, teacher, GPU, benchmark main or held-out suites. Models describe broader source branches with explicitly partial execution.",
+        "id": "wave30-matrix-numerics-callback-effects",
+        "operator": "eval_nodes vector attempt can mutate Interp before fallback; subsequent scalar calls add effects. Model callback count separately from mathematical integrand evaluation. Bench helper best similarly calls exactly3 times, returns last value and independent minimum time.",
+        "path": "model.md",
+        "section": "wave30-matrix-numerics-callback-effects",
+        "status": "partial_composition_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "Backend faer/rustfft semantics are dependencies; lexical projections do not resolve macros/types. Public malformed Mat storage, huge dimensions, allocation failure, nonfinite convergence, callback side effects and arbitrary complex support are not certified. Native benchmark helper selection uses cargo --bin because this package has no library target.",
+        "domain": "Bounded synthetic CPU matrices and functions, valid storage, finite small arithmetic where required; no network, corpus, teacher, GPU, benchmark main or held-out suites. Models describe broader source branches with explicitly partial execution.",
+        "id": "wave30-matrix-numerics-error-observations",
+        "operator": "linalg gate tolerance1000*n*eps concerns selected residuals, not component relative error. GK embedded K-G is estimated error and its650-interval exit warns. These do not compose into a percent bound for roots/fit/numeric callbacks.",
+        "path": "model.md",
+        "section": "wave30-matrix-numerics-error-observations",
+        "status": "partial_composition_model",
+        "type": "residual_observation"
+      },
+      {
+        "assumptions": "IEEE f64/transcendentals and statrs/faer behavior delegated. Direct public helper dimension preconditions and overflow-sensitive dates/windows are partial. No universal numerical accuracy or significance calibration claim. Physical file backend and frozen NIST/Boost suites unexecuted.",
+        "domain": "CPU-only bounded synthetic values, well-shaped Mat/Table structures, practical finite dimensions, seed42, Monte Carlo K=0 and2, synthetic2x2 NIST-like text and special-function known points. Host datasets, GPU and external services excluded.",
+        "id": "wave30-statistical-computing-missingness-transport",
+        "operator": "table::groups(NaN,NaN) puts both rows together; row_key(NaN)=None removes both from join indexes. stats::clean drops NaNs while cov_matrix sums them; passing grouped data into stats requires method-specific policy, not blanket missing equivalence.",
+        "path": "model.md",
+        "section": "wave30-statistical-computing-missingness-transport",
+        "status": "partial_composition_model",
+        "type": "missingness_transport"
+      },
+      {
+        "assumptions": "IEEE f64/transcendentals and statrs/faer behavior delegated. Direct public helper dimension preconditions and overflow-sensitive dates/windows are partial. No universal numerical accuracy or significance calibration claim. Physical file backend and frozen NIST/Boost suites unexecuted.",
+        "domain": "CPU-only bounded synthetic values, well-shaped Mat/Table structures, practical finite dimensions, seed42, Monte Carlo K=0 and2, synthetic2x2 NIST-like text and special-function known points. Host datasets, GPU and external services excluded.",
+        "id": "wave30-statistical-computing-random-calibration",
+        "operator": "Rng uniform consumes one integer transition; normal may consume cached spare without transition. mcgate reuses one RNG sequentially across scenarios, so modifying one scenario's draws changes later samples; per-row calibration is only a finite random experiment, and K=2 tests validate wiring only.",
+        "path": "model.md",
+        "section": "wave30-statistical-computing-random-calibration",
+        "status": "partial_composition_model",
+        "type": "state_transition"
+      },
+      {
+        "assumptions": "IEEE f64/transcendentals and statrs/faer behavior delegated. Direct public helper dimension preconditions and overflow-sensitive dates/windows are partial. No universal numerical accuracy or significance calibration claim. Physical file backend and frozen NIST/Boost suites unexecuted.",
+        "domain": "CPU-only bounded synthetic values, well-shaped Mat/Table structures, practical finite dimensions, seed42, Monte Carlo K=0 and2, synthetic2x2 NIST-like text and special-function known points. Host datasets, GPU and external services excluded.",
+        "id": "wave30-statistical-computing-table-statistic-shape",
+        "operator": "Table numeric columns are n-by1. categories groups keys into0-based IDs, crosstab counts into row/column categories then emits column-major Mat; stats tables wrap numeric summaries as aligned columns. sortrows output permutation adds1; it cannot be reused as an internal index without subtracting1.",
+        "path": "model.md",
+        "section": "wave30-statistical-computing-table-statistic-shape",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "IEEE f64/transcendentals and statrs/faer behavior delegated. Direct public helper dimension preconditions and overflow-sensitive dates/windows are partial. No universal numerical accuracy or significance calibration claim. Physical file backend and frozen NIST/Boost suites unexecuted.",
+        "domain": "CPU-only bounded synthetic values, well-shaped Mat/Table structures, practical finite dimensions, seed42, Monte Carlo K=0 and2, synthetic2x2 NIST-like text and special-function known points. Host datasets, GPU and external services excluded.",
+        "id": "wave30-statistical-computing-error-metric-boundaries",
+        "operator": "Boost e=abs((got-want)/want)/EPS excludes nonnormal reference values; NIST LRE=-log10(relative error) capped15 uses absolute error at certified zero. These metrics are not interchangeable, and neither finite synthetic observations nor source-bound models establishes a supported executable-surrogate percent cap.",
+        "path": "model.md",
+        "section": "wave30-statistical-computing-error-metric-boundaries",
+        "status": "partial_composition_model",
+        "type": "metric_transport"
+      },
+      {
+        "assumptions": "Delegated VFS and interpreter contracts are required; allocation and host fault injection absent. No external Octave corpus, VMM400 evaluation, benchmark or Monte Carlo run.",
+        "domain": "Valid Value/Mat/Table storage, UTF-8 input, synthetic in-memory or owned temporary filesystem fixtures, bounded output widths and available resources. CPU only.",
+        "id": "wave30-computing-io-value-transport",
+        "operator": "sprintf flattens m.re column-major, display accesses j*rows+i into row strings, JSON vectors collapse orientation. Matching scalar numbers is insufficient to prove shape-preserving adapters.",
+        "path": "model.md",
+        "section": "wave30-computing-io-value-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Delegated VFS and interpreter contracts are required; allocation and host fault injection absent. No external Octave corpus, VMM400 evaluation, benchmark or Monte Carlo run.",
+        "domain": "Valid Value/Mat/Table storage, UTF-8 input, synthetic in-memory or owned temporary filesystem fixtures, bounded output widths and available resources. CPU only.",
+        "id": "wave30-computing-io-effect-order",
+        "operator": "parse FS flags -> open/import -> run -> conditional export -> journal. Export failure can suppress journal; failed script skips each export but still attempts journal. Delete loops preserve earlier removals on later error.",
+        "path": "model.md",
+        "section": "wave30-computing-io-effect-order",
+        "status": "partial_composition_model",
+        "type": "effect_order"
+      },
+      {
+        "assumptions": "Delegated VFS and interpreter contracts are required; allocation and host fault injection absent. No external Octave corpus, VMM400 evaluation, benchmark or Monte Carlo run.",
+        "domain": "Valid Value/Mat/Table storage, UTF-8 input, synthetic in-memory or owned temporary filesystem fixtures, bounded output widths and available resources. CPU only.",
+        "id": "wave30-computing-io-failure-precedence",
+        "operator": "CLI limit parsing precedes mem/import compatibility; atom validation precedes output; CSV syntax precedes table-width validation. These branches must be preserved across caller wiring.",
+        "path": "model.md",
+        "section": "wave30-computing-io-failure-precedence",
+        "status": "partial_composition_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "Delegated VFS and interpreter contracts are required; allocation and host fault injection absent. No external Octave corpus, VMM400 evaluation, benchmark or Monte Carlo run.",
+        "domain": "Valid Value/Mat/Table storage, UTF-8 input, synthetic in-memory or owned temporary filesystem fixtures, bounded output widths and available resources. CPU only.",
+        "id": "wave30-computing-io-resource-composition",
+        "operator": "Captured strings plus serialized buffers plus VFS memory add rather than cancel; repeated format/flag scans, requested precision/width, JSON subtree copying and key lookup amplify input cost. No measured latency or global cap is supplied.",
+        "path": "model.md",
+        "section": "wave30-computing-io-resource-composition",
+        "status": "partial_composition_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "symbolic-arithmetic",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "latex/src/corpus.rs",
+      "sha256": "ae16662c288257b4a21a231297daa510094ff9a6801f3ae5672a355463ec62dc"
+    },
+    {
+      "path": "latex/src/extract.rs",
+      "sha256": "b717bad28ee0917ed90161e6dffd3e4874869f1168eb2f7c1850c833832c13d2"
+    },
+    {
+      "path": "latex/src/gate.rs",
+      "sha256": "b82aa2f9a602c9367ef2b897c5e0ad3de1fa18cf64730ab36ce5cd99d044edb3"
+    },
+    {
+      "path": "latex/src/lib.rs",
+      "sha256": "edd5e24bb4706ffec37b501da5336a0fbad877c95fa3fe2b65e825a3970cf066"
+    },
+    {
+      "path": "latex/src/main.rs",
+      "sha256": "c6e1b8a765da5f40d326f48b38dfb848de42337c586abfaadd62e06d1475891d"
+    },
+    {
+      "path": "latex/src/tomath.rs",
+      "sha256": "794488f6ec9ddcdf02f1e70e30a49bad4fbfade117ca82b25f5d82e90b3cb197"
+    },
+    {
+      "path": "latex/tests/bridge.rs",
+      "sha256": "962766193d79b93fcd9b5bebb0ac44bdff22cbb9f80797a622e39d71fbaddde7"
+    },
+    {
+      "path": "latex/tests/vmm_latex.rs",
+      "sha256": "62b39e9533b40131002baaebb0f4efd164ddc59838aa39a382175450e2be6a76"
+    },
+    {
+      "path": "layers/src/lib.rs",
+      "sha256": "f7a2576c1bcd7945f960c030276bf99662c34ee3858fd2116983e3e80be3afb9"
+    },
+    {
+      "path": "math/bigbench/src/main.rs",
+      "sha256": "ffb223536d6a9ed638d3f3a4905c7570d9376febb87e0ec64c6b33d5481a8b81"
+    },
+    {
+      "path": "math/build.rs",
+      "sha256": "5d33383e33141189251926b14e7ff2639e0885e02ec7ef8faca2771ff151f7e2"
+    },
+    {
+      "path": "math/src/arith.rs",
+      "sha256": "5d4c9c6eef03f4cf38d3e5d93665dab4aabb6f9a03063cb6691eff4958493437"
+    },
+    {
+      "path": "math/src/big.rs",
+      "sha256": "cdce09295f9aa48bd3288762aa47902e24ed6034d2f6b23a282168b7ff3b027e"
+    },
+    {
+      "path": "math/src/bin/mathsolve.rs",
+      "sha256": "05b820b20dcb3adfce38c86bc561077db7ad3fb752adba3cd8b41887da4f382e"
+    },
+    {
+      "path": "math/src/bin/vmmtests.rs",
+      "sha256": "957a5c7a678f235ea0b9c3d3bcbdf48aec6be7ae1dfc4ca0e7c1b88981baff5b"
+    },
+    {
+      "path": "math/src/calc.rs",
+      "sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e"
+    },
+    {
+      "path": "math/src/comb.rs",
+      "sha256": "c5937a3576697c052a6de3ce4c9763d806b35105d1ef08a90c525b7f0603055d"
+    },
+    {
+      "path": "math/src/curric.rs",
+      "sha256": "01ecd25d533bc2f38795f1014ded3ed4e8b4baa2ec88a57b34c5a31e1a6f0d6b"
+    },
+    {
+      "path": "math/src/deriv.rs",
+      "sha256": "0ea96ef4d7df85aa6e234618664e368c594bef2280d7689b5a989da4d31c1f48"
+    },
+    {
+      "path": "math/src/err.rs",
+      "sha256": "7fd87462dd4ffaa71b33f948cf6387402830b5b26729dd8eee7f8f33452651f7"
+    },
+    {
+      "path": "math/src/eval.rs",
+      "sha256": "8b593135200d357abd66fe833bc6ad1577dcdcdb7f67cf94ac5bac2748a28597"
+    },
+    {
+      "path": "math/src/expr.rs",
+      "sha256": "78101164302d336acc46bd862c186cc641a65219ef0b2764148fd848f81a62cb"
+    },
+    {
+      "path": "math/src/fcheck.rs",
+      "sha256": "e16a631c5a71bb3e7ac769703c386098859bb31541bb69e8e697103ee8a32d3a"
+    },
+    {
+      "path": "math/src/lean.rs",
+      "sha256": "ab208a49bf717b021d0b55817d3968040a40bf4fe3086d4416844121521db723"
+    },
+    {
+      "path": "math/src/lib.rs",
+      "sha256": "e8c39418e25d103f3b328e161ceca4920014b34ba908183175b7117d9f909994"
+    },
+    {
+      "path": "math/src/linsys.rs",
+      "sha256": "dd9f5f6f6c55e4f91db8f8be82b3a0472be600f245de26372c417224d22fdc2b"
+    },
+    {
+      "path": "math/src/main.rs",
+      "sha256": "3c64c4781a16e80fbe9e753f28a4f9dd9aad95fecdd4f1d1bae0c6fd8dfcd3df"
+    },
+    {
+      "path": "math/src/memory.rs",
+      "sha256": "7460dfd37079795d3dd42b1808b36c28aa558a094f7ae7bd034669f9c80e0bd9"
+    },
+    {
+      "path": "math/src/nt.rs",
+      "sha256": "27f4bf91578ab245e6b50f5f880126990b73b93b46882c37127e241031c359fe"
+    },
+    {
+      "path": "math/src/plan.rs",
+      "sha256": "f0ee9d51c4e793cce9e3aadc19877be19e3e692f9e829861f1746a198277dff0"
+    },
+    {
+      "path": "math/src/poly.rs",
+      "sha256": "28c7c69c8282270b6ac3bde99e6947108ec5be0f908d510806c4aefdfad61fca"
+    },
+    {
+      "path": "math/src/rat.rs",
+      "sha256": "b766e527432c703cf934226408ef811aa1e11ab32227e3b9485d0da61b37de18"
+    },
+    {
+      "path": "math/src/solve.rs",
+      "sha256": "e6b60f9cdd4e36eb00d0528079c7a2cfabff94a8bd4f7d3ff0d5f79a41009a9d"
+    },
+    {
+      "path": "math/src/suite.rs",
+      "sha256": "9a21b9e3ccf76069058b9adf1ffb07ca84b06f5eed69a71ce4f13d87958ad0f1"
+    },
+    {
+      "path": "math/src/units.rs",
+      "sha256": "91c124010d03de16a04caaf69473101bfd4af02538c7e1292e6dbac933a96d6b"
+    },
+    {
+      "path": "math/src/vmm.rs",
+      "sha256": "ccae6302f74422ec6b1686ce9f41a3eb51841bf01007b42d016982943fb48ffd"
+    },
+    {
+      "path": "math/tests/vmm_calc.rs",
+      "sha256": "39c056827032ed3dfe3981b3faeb3cb9db823642bd622a10204f171b87a716cc"
+    },
+    {
+      "path": "mlab/bench/src/main.rs",
+      "sha256": "78398060b7ccba1c8168560a12002cc55c27dc3fd11761b494bca7f2968d2819"
+    },
+    {
+      "path": "mlab/src/ast.rs",
+      "sha256": "80c1551d46e07871a8060229cd08749c17ac9e6efb01c7e0a2a9c8f7a4caf2ac"
+    },
+    {
+      "path": "mlab/src/builtins/core.rs",
+      "sha256": "8d26d9c57654af7591dfa87298cce7f55541f4d17d513f5e2ddf31f71a8caf15"
+    },
+    {
+      "path": "mlab/src/builtins/elem.rs",
+      "sha256": "09570b244d52019b5a08f99b48dd7fc01d163a267c89b0580689a53db36a0e8e"
+    },
+    {
+      "path": "mlab/src/builtins/fft.rs",
+      "sha256": "43baadabdaa0104c0cad53bd525e02c7a6bdcb77682bc2ca707df3fa1e61c790"
+    },
+    {
+      "path": "mlab/src/builtins/files.rs",
+      "sha256": "c66336a9d4bf2e948158e64f1b02e1f9b80bfc42949cb019fd11d3f70c66cfd4"
+    },
+    {
+      "path": "mlab/src/builtins/io.rs",
+      "sha256": "474fbd7e9d27e2e2333b4e7324f348d79475aef977847e353b8c363a6f9f23ed"
+    },
+    {
+      "path": "mlab/src/builtins/linalg.rs",
+      "sha256": "f3579e5bd4a5ee898096bb912061bc751a0d48e294cd3062452e5ca38546d178"
+    },
+    {
+      "path": "mlab/src/builtins/mod.rs",
+      "sha256": "5e593db042fb0f9c24284b0dfff423735d458b3b3f9a4d5fe269c2ea32af1770"
+    },
+    {
+      "path": "mlab/src/builtins/numeric.rs",
+      "sha256": "f6fa5b4a76ef32afd0991224f982804b325a757adab149969712eb344640c466"
+    },
+    {
+      "path": "mlab/src/builtins/poly.rs",
+      "sha256": "19ff6f221e4a7f3984115436092a1b36ea6a18222cbf8f76fc0b6fd53c13a287"
+    },
+    {
+      "path": "mlab/src/builtins/reduce.rs",
+      "sha256": "0f9cbbd92e1b1868cc508fb251339295057ed96751b3f3e85325c03ee563da5c"
+    },
+    {
+      "path": "mlab/src/builtins/stats.rs",
+      "sha256": "bdc3772b09d9113e108afa29e391fee97a5372caf9052bb1689996c41c94116f"
+    },
+    {
+      "path": "mlab/src/builtins/table.rs",
+      "sha256": "f1b0959092cfcdd3cbd171a48d252ce4c1e652b1e56ed030c160e7667d8cbb54"
+    },
+    {
+      "path": "mlab/src/display.rs",
+      "sha256": "7c29a46772ca4d47ff5e01fc4b3ed1bf38fab6a6b3bce0a41c99332ece8926b5"
+    },
+    {
+      "path": "mlab/src/fileio.rs",
+      "sha256": "547a25932643243689a8ee9f5b0cc0d2cc85923d37edeff35c2d7833d8f488dd"
+    },
+    {
+      "path": "mlab/src/index.rs",
+      "sha256": "dccd47c7d5a96caaf6583aa82cc003b0236ce035f4ffb3dcec85532379debba8"
+    },
+    {
+      "path": "mlab/src/interp.rs",
+      "sha256": "5c4d879d116b5fa07a27053b458c50f25736526b10e84ca189f825a3e3da1af8"
+    },
+    {
+      "path": "mlab/src/lexer.rs",
+      "sha256": "ac652c6bc998f3fe37335b5f158ff8ca8228a08318ee977f2976131468100f3d"
+    },
+    {
+      "path": "mlab/src/lib.rs",
+      "sha256": "32ec0f3c8dbdbb216496e4160a46e3c96aac0090f30b9086803408059917adf6"
+    },
+    {
+      "path": "mlab/src/main.rs",
+      "sha256": "b378db9adacc941133989b5ae41704694f01a38870bc24b36a637f251c6ea03f"
+    },
+    {
+      "path": "mlab/src/mcgate.rs",
+      "sha256": "367b5b5a047a1c38b6d47c2d19978efd2f0274468ffc4375c4c6cc08d3426bc9"
+    },
+    {
+      "path": "mlab/src/ops.rs",
+      "sha256": "d0d25c3a91fa1ef8763f81388f344f366b88b572e5b835ce6f7598bf04428ab0"
+    },
+    {
+      "path": "mlab/src/parser.rs",
+      "sha256": "264bd8e53dd7900714d501cf4d523d9f9fd70f7a948b3491cb43def7fc208583"
+    },
+    {
+      "path": "mlab/src/rng.rs",
+      "sha256": "dccb613f518f32218a910c4eca3ad31df44347dd38b90d431833558e995a2046"
+    },
+    {
+      "path": "mlab/src/suite.rs",
+      "sha256": "9f7b9b196ad8e83e9ed4dd9c544d42b0495f04ed57c268126e091b52493d1f8e"
+    },
+    {
+      "path": "mlab/src/table.rs",
+      "sha256": "7af3a65aabe33226d39f741909fd08d74c3b3e43390417c64e617a10704ac26b"
+    },
+    {
+      "path": "mlab/src/value.rs",
+      "sha256": "557205bca121d43307f9439fa899934fd773fe408c5ec3444988f9be8bbb815c"
+    },
+    {
+      "path": "mlab/src/vm.rs",
+      "sha256": "04ee871c37021946be0ea1feccd1b34fcc214765fb1cdcf78293c747320bf183"
+    },
+    {
+      "path": "mlab/tests/ext_boost.rs",
+      "sha256": "7fa4b847808f0a485411988bb342bd0b0540d350c50e6166f08224c1dbac9dfc"
+    },
+    {
+      "path": "mlab/tests/ext_nist.rs",
+      "sha256": "82ac1127de001872692aa31cc92c6bf01f367afe18cfbd08941641a96851256c"
+    },
+    {
+      "path": "mlab/tests/fs.rs",
+      "sha256": "97102d6c4f35ec52fad226eb7a21dc0f2577e63693f5981b91fff6dc7a964203"
+    },
+    {
+      "path": "mlab/tests/octave_ext.rs",
+      "sha256": "083430129fcb3a8656178a4c528228635665bacc2c3946a93327966b0947bcee"
+    },
+    {
+      "path": "mlab/tests/suite.rs",
+      "sha256": "44bf1111361f38af56288671607c9669b173753da07152c00641627e7091a3bf"
+    },
+    {
+      "path": "mlab/tests/vm.rs",
+      "sha256": "752cb721b2bda77ee9b797cde810ad959a74341f31a7e1b2c62f5ca60c773fbe"
+    },
+    {
+      "path": "mlab/tests/vmm_suites.rs",
+      "sha256": "4d19f5e104903cb517a2ecf919fb7bfefe82a7577e33b30acf962c0c35fd44ec"
+    },
+    {
+      "path": "vfs/examples/snapbench.rs",
+      "sha256": "df7ed460def0653789b6f33967fa58474d125c02c9fbbe9b33dd063be4132579"
+    },
+    {
+      "path": "vfs/src/error.rs",
+      "sha256": "014e34da6df423523e02b9c8f1683d6762f8c29b3f83401b321afa136d382dac"
+    },
+    {
+      "path": "vfs/src/host.rs",
+      "sha256": "d7a0bb0efff6f8f477ede3d425e9e7340f555a79891bf436985944d23b5c12fc"
+    },
+    {
+      "path": "vfs/src/journal.rs",
+      "sha256": "c6c2ac019263f12fbff99c8fdd94e12ba6b4a17fafb77a6f19e99834338daf1d"
+    },
+    {
+      "path": "vfs/src/lib.rs",
+      "sha256": "815d266a4f655f394cffdf7af67bb88468908ac9edadbffebdebe0fd419fd4ed"
+    },
+    {
+      "path": "vfs/src/mem.rs",
+      "sha256": "d97f98687ddc88ba17464b64dadc223583c39dcfa90f14bc44410cada557ca95"
+    },
+    {
+      "path": "vfs/src/path.rs",
+      "sha256": "6ccba30c719a6edef0250d92427618fc4a91ef1b4d097d65ffa3b9b70f95ba59"
+    },
+    {
+      "path": "vfs/tests/vfs.rs",
+      "sha256": "698bd9736a44e4242956651b41ab29138dd247738ff68b0009efb44cfb0aa0a2"
+    },
+    {
+      "path": "wasi-host/examples/mlab_gate.rs",
+      "sha256": "a7947069ab507ffd5ad7b71ae9146bca16e08b827af78bc5961993c788b699b8"
+    },
+    {
+      "path": "wasi-host/src/lib.rs",
+      "sha256": "91213ce9038107912c2dd707c3a6639a2d723cdfceb02981a166a6853800248e"
+    },
+    {
+      "path": "wasi-host/src/main.rs",
+      "sha256": "2200229297d1dde6d9f8477a577a7320c854d0db4fb3ea450b457a9858107122"
+    },
+    {
+      "path": "wasi-host/src/tests.rs",
+      "sha256": "74685e5440b3b7df7f40518395e62d6cd68a60e80ff71e87b772f020c80bec8d"
+    },
+    {
+      "path": "wasi-host/tests/mlab.rs",
+      "sha256": "e3b35b1a315b6d995fd3cb8e590209d9f57141b89d9def132cd733f31d8f2db8"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

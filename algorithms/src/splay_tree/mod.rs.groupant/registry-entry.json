@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms splay_tree::tests"
+  ],
+  "children": [],
+  "cost": "Individual access/insertion O(n), n<=4096. Standard splay potential sum(log subtree size) gives amortized O(log n) per access/insertion under sequence accounting, including initial potential. No worst-case per-call logarithmic guarantee. O(n) arena and iterative O(1) rotation scratch; keys uses O(height+n) traversal/output.",
+  "description": "Stateful iterative splay search tree",
+  "forward": [
+    "Locate key with ordinary BST search. Access splays the matching node, or last visited node on miss, using zig/zig-zig/zig-zag rotations. New insert attaches a leaf and splays it; duplicate insert splays the existing node. root and keys only observe state."
+  ],
+  "id": "algorithm-splay-tree",
+  "inverse": [
+    "Typed behavior complement, ambiguous reverse reconstruction and specializations in model.md"
+  ],
+  "limitations": [
+    "Exact bounded APIs only. No generic 1/2/5/10% accuracy surrogate is supported. Finite tests do not prove universal correctness or runtime gains. Standard Vec/Box/BTreeMap allocation failure may abort or panic; allocator refusal is not injected. No callbacks, I/O or concurrency effects.",
+    "Partial syntax only; no semantic proof"
+  ],
+  "source": "algorithms/src/splay_tree/mod.rs",
+  "state": "Bounded deterministic exact data structure; explicit validation and standard allocation behavior"
+}

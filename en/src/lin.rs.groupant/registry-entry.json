@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p en --lib lin::wave27::bounded_contract",
+    "Paired partial syntax; debug/release repeated outcomes; see receipt"
+  ],
+  "children": [],
+  "cost": "Child grouping O(n); repeated construction/heavy scans can be quadratic at high degree. Each side degree k<=10 costs O(2^k*k^2) time/O(2^k*k) memory; k>10 greedy O(k^2), not exact optimum. Emission depth bounded201. u32 count arithmetic is unchecked.",
+  "description": "Train tagged sentences into five side key levels and three Markov levels. left chooses first key with count>=3 and left>right; otherwise right. order groups heads clamped to n, recursively emits left subtree/head/right subtree. sort_side maximizes interpolated log-probability with subset DP for k<=10, greedy next-link for k>10. punctuate uses learned majority when known else structural rules.",
+  "forward": [
+    "Train tagged sentences into five side key levels and three Markov levels. left chooses first key with count>=3 and left>right; otherwise right. order groups heads clamped to n, recursively emits left subtree/head/right subtree. sort_side maximizes interpolated log-probability with subset DP for k<=10, greedy next-link for k>10. punctuate uses learned majority when known else structural rules."
+  ],
+  "id": "en-lin",
+  "inverse": [
+    "An output ordering admits all tree/side/chain table states whose local choices emit it; many weights preserve the same order. PunctTable write/read recovers represented map state but malformed lines are skipped and duplicate keys overwrite. Order alone cannot recover original sentence order or counts.",
+    "Tied side counts cannot choose left. PunctTable total<3 or best*2<=total cannot override rules. OnceLock cannot be replaced by later set calls. order does not guarantee permutation for invalid cyclic/disconnected inputs or depth>200."
+  ],
+  "limitations": [
+    "Partial source-bound model, not full proof. No useful executable percentage surrogate established for these categorical decisions/effects; budgets1/2/5/10% require a future observation metric. No corpus/API/GPU/teacher, allocation fault injection, adversarial size exhaustion or broad accuracy claim."
+  ],
+  "source": "en/src/lin.rs",
+  "state": "Linearizer stores side counts and interpolated bigram/context counts. PunctTable stores ordered signatures and a process-global first-set OnceLock."
+}

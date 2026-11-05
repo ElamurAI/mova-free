@@ -1,0 +1,155 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived relation and finite assertions; not a formal proof.",
+        "assumptions": "Trusted Rust/std and successful allocations; parser/gate/decomposition dependencies.",
+        "domain": "Finite CoNLL-U strings; exhaustive 3413 head vectors on 1..5 tokens with exactly one zero head and matching root/dep labels, plus explicit empty, malformed, multiword/empty-node and 64/65/66-token cases. Original word IDs are one-based; virtual graph vertex zero maps to itself.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "Five named finite integration tests.",
+        "operator": "Within admitted preflight-valid vectors, exclude a passing gate with a nonzero eventual cycle, an incorrect first failure coordinate, or a parser serialization that loses retained rows. Exclude treating refreshed numeric head zero as proof that raw HEAD was valid. Assertions constrain only finite fixtures.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "5ae1c16e48817d1b23bd298a50d5232d26be893f34837571b60de190566f33a5",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived relation and finite assertions; not a formal proof.",
+        "assumptions": "Trusted Rust/std and successful allocations; parser/gate/decomposition dependencies.",
+        "domain": "Finite CoNLL-U strings; exhaustive 3413 head vectors on 1..5 tokens with exactly one zero head and matching root/dep labels, plus explicit empty, malformed, multiword/empty-node and 64/65/66-token cases. Original word IDs are one-based; virtual graph vertex zero maps to itself.",
+        "evidence": "model.md#evidence",
+        "id": "preimages",
+        "observation_scope": "Five named finite integration tests.",
+        "operator": "A pass reconstructs implementations agreeing on all finite representation, error, coordinate and graph observations; it does not uniquely recover source behavior elsewhere. A gate Ok maps to many rooted trees and many preserved comments/MWT rows. A cycle-through-word-k error maps to all preflight-valid graphs whose least nonroot-basin word is k; it does not identify the actual cycle entry or edge.",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "5ae1c16e48817d1b23bd298a50d5232d26be893f34837571b60de190566f33a5",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived relation and finite assertions; not a formal proof.",
+        "assumptions": "Trusted Rust/std and successful allocations; parser/gate/decomposition dependencies.",
+        "domain": "Finite CoNLL-U strings; exhaustive 3413 head vectors on 1..5 tokens with exactly one zero head and matching root/dep labels, plus explicit empty, malformed, multiword/empty-node and 64/65/66-token cases. Original word IDs are one-based; virtual graph vertex zero maps to itself.",
+        "evidence": "model.md#evidence",
+        "id": "root_basin",
+        "observation_scope": "Five named finite integration tests.",
+        "operator": "After root-count and raw-head preflight, tree_gate accepts iff every syntactic vertex shares cycle_id[0]. Since successor[0]=0, this cycle is exactly [0]. Exact first cycle error is min i>=1 with cycle_id[i]!=cycle_id[0]; tails into a nonroot cycle are included.",
+        "path": "model.md",
+        "section": "root_basin",
+        "status": "partial_source_derived",
+        "subject_revision": "5ae1c16e48817d1b23bd298a50d5232d26be893f34837571b60de190566f33a5",
+        "type": "composition_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived relation and finite assertions; not a formal proof.",
+        "assumptions": "Trusted Rust/std and successful allocations; parser/gate/decomposition dependencies.",
+        "domain": "Finite CoNLL-U strings; exhaustive 3413 head vectors on 1..5 tokens with exactly one zero head and matching root/dep labels, plus explicit empty, malformed, multiword/empty-node and 64/65/66-token cases. Original word IDs are one-based; virtual graph vertex zero maps to itself.",
+        "evidence": "model.md#evidence",
+        "id": "independent_walk",
+        "observation_scope": "Five named finite integration tests.",
+        "operator": "For each start, at most n head steps reach zero iff it terminates; otherwise a nonzero vertex repeats. This independent bounded-walk predicate corroborates cycle membership without using production decomposition state or tree-gate internals.",
+        "path": "model.md",
+        "section": "independent_walk",
+        "status": "partial_source_derived",
+        "subject_revision": "5ae1c16e48817d1b23bd298a50d5232d26be893f34837571b60de190566f33a5",
+        "type": "oracle_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived relation and finite assertions; not a formal proof.",
+        "assumptions": "Trusted Rust/std and successful allocations; parser/gate/decomposition dependencies.",
+        "domain": "Finite CoNLL-U strings; exhaustive 3413 head vectors on 1..5 tokens with exactly one zero head and matching root/dep labels, plus explicit empty, malformed, multiword/empty-node and 64/65/66-token cases. Original word IDs are one-based; virtual graph vertex zero maps to itself.",
+        "evidence": "model.md#evidence",
+        "id": "error_order",
+        "observation_scope": "Five named finite integration tests.",
+        "operator": "Doc rejects malformed field count, nonconsecutive IDs and unknown relations before a gate call. Accepted representation can still contain malformed HEAD, range errors, relation/root mismatch, zero/multiple roots or cycles. Gate preflight scans all raw rows before cycle detection; a later malformed head therefore precedes an earlier self-loop.",
+        "path": "model.md",
+        "section": "error_order",
+        "status": "partial_source_derived",
+        "subject_revision": "5ae1c16e48817d1b23bd298a50d5232d26be893f34837571b60de190566f33a5",
+        "type": "error_partition"
+      },
+      {
+        "approximation_semantics": "Source-derived relation and finite assertions; not a formal proof.",
+        "assumptions": "Trusted Rust/std and successful allocations; parser/gate/decomposition dependencies.",
+        "domain": "Finite CoNLL-U strings; exhaustive 3413 head vectors on 1..5 tokens with exactly one zero head and matching root/dep labels, plus explicit empty, malformed, multiword/empty-node and 64/65/66-token cases. Original word IDs are one-based; virtual graph vertex zero maps to itself.",
+        "evidence": "model.md#evidence",
+        "id": "discarded_rows",
+        "observation_scope": "Five named finite integration tests.",
+        "operator": "Doc retains MWT range and decimal empty-node rows. words indexes only syntactic rows, while head coordinates refer to one-based syntactic words, never raw row offsets. Adding ignored rows preserves gate result and decomposition while changing raw row indices.",
+        "path": "model.md",
+        "section": "discarded_rows",
+        "status": "partial_source_derived",
+        "subject_revision": "5ae1c16e48817d1b23bd298a50d5232d26be893f34837571b60de190566f33a5",
+        "type": "coordinate_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived relation and finite assertions; not a formal proof.",
+        "assumptions": "Trusted Rust/std and successful allocations; parser/gate/decomposition dependencies.",
+        "domain": "Finite CoNLL-U strings; exhaustive 3413 head vectors on 1..5 tokens with exactly one zero head and matching root/dep labels, plus explicit empty, malformed, multiword/empty-node and 64/65/66-token cases. Original word IDs are one-based; virtual graph vertex zero maps to itself.",
+        "evidence": "model.md#evidence",
+        "id": "negative_control",
+        "observation_scope": "Five named finite integration tests.",
+        "operator": "Compile a harness adapter mutant replacing extend_from_slice(heads) by extending heads mapped with saturating_sub(1). The named coordinates_first_failure_and_threshold exact adapter assertion must fail; restore byte-identical source and rerun positively.",
+        "path": "model.md",
+        "section": "negative_control",
+        "status": "partial_source_derived",
+        "subject_revision": "5ae1c16e48817d1b23bd298a50d5232d26be893f34837571b60de190566f33a5",
+        "type": "counterfactual_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived relation and finite assertions; not a formal proof.",
+        "assumptions": "Trusted Rust/std and successful allocations; parser/gate/decomposition dependencies.",
+        "domain": "Finite CoNLL-U strings; exhaustive 3413 head vectors on 1..5 tokens with exactly one zero head and matching root/dep labels, plus explicit empty, malformed, multiword/empty-node and 64/65/66-token cases. Original word IDs are one-based; virtual graph vertex zero maps to itself.",
+        "evidence": "model.md#evidence",
+        "id": "finite_coverage",
+        "observation_scope": "Five named finite integration tests.",
+        "operator": "Exhaustive small vectors cover all self-loops, multiple cycles and tails compatible with one root. Fixed 64/65/66 cases cross the production gate implementation threshold. Passing does not establish large-input correctness, arbitrary parser equivalence, allocation safety or formal proof.",
+        "path": "model.md",
+        "section": "finite_coverage",
+        "status": "partial_source_derived",
+        "subject_revision": "5ae1c16e48817d1b23bd298a50d5232d26be893f34837571b60de190566f33a5",
+        "type": "coverage_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "en-groupant-wave26",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../groupant_wave26.rs",
+    "sha256": "5ae1c16e48817d1b23bd298a50d5232d26be893f34837571b60de190566f33a5"
+  },
+  "status": "partial_source_derived_instance"
+}

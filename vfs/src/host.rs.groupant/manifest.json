@@ -1,0 +1,101 @@
+{
+  "children": [
+    {
+      "id": "vfs-host-confinement",
+      "path": "confinement.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Partial lexical syntax, no expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Confined DirFs and explicit unrestricted RealFs adapters.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Confined DirFs and explicit unrestricted RealFs adapters.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "canonical_preflight",
+        "path": "model.md",
+        "scope": "Confined DirFs and explicit unrestricted RealFs adapters.",
+        "section": "canonical_preflight",
+        "status": "partial_source_derived_model",
+        "type": "canonical_preflight"
+      },
+      {
+        "id": "race_boundary",
+        "path": "model.md",
+        "scope": "Confined DirFs and explicit unrestricted RealFs adapters.",
+        "section": "race_boundary",
+        "status": "partial_source_derived_model",
+        "type": "race_boundary"
+      },
+      {
+        "id": "metadata_projection",
+        "path": "model.md",
+        "scope": "Confined DirFs and explicit unrestricted RealFs adapters.",
+        "section": "metadata_projection",
+        "status": "partial_source_derived_model",
+        "type": "metadata_projection"
+      },
+      {
+        "id": "temp_effects",
+        "path": "model.md",
+        "scope": "Confined DirFs and explicit unrestricted RealFs adapters.",
+        "section": "temp_effects",
+        "status": "partial_source_derived_model",
+        "type": "temp_effects"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "vfs-host",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../host.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "d7a0bb0efff6f8f477ede3d425e9e7340f555a79891bf436985944d23b5c12fc"
+  },
+  "status": "partial_source_bound_model"
+}

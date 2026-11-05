@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "path::wave31::lexical_boundaries_and_fibers"
+  ],
+  "children": [],
+  "cost": "O(path bytes+cwd bytes) time/storage; join/child/base_name linear in observed string lengths.",
+  "description": "Lexical path validation and normalization.",
+  "forward": [
+    "check rejects empty, NUL, then length>4096 in that order. normalize starts at [] for absolute else cwd clone; drops empty/dot; dotdot pops or escapes unless clamp; other components checked<=255 bytes. join([])=/."
+  ],
+  "id": "vfs-path",
+  "inverse": [
+    "Normalized /b/c admits /b//c, /b/./c and relative spellings with suitable cwd; canceled prefix information cannot be reconstructed. Empty output admits /, /., and balanced paths."
+  ],
+  "limitations": [
+    "Finite checks only; partial source syntax, no expanded semantic AST.",
+    "No numerical surrogate: categorical/effect semantics lack useful metric; future caps 1/2/5/10 require domain and reference."
+  ],
+  "source": "vfs/src/path.rs",
+  "state": "Successful normalization under clamp=false never pops above root. UTF8 lengths are bytes; lexical normalization does not resolve links. Caller-provided cwd is assumed canonical."
+}

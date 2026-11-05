@@ -1,0 +1,161 @@
+{
+  "children": [
+    "hbo-conllu",
+    "hbo-lattice",
+    "hbo-library",
+    "hbo-cli",
+    "hbo-seg",
+    "hbo-text"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "No external models, gparse annotate, real corpora, teacher, training, lesson workflows or GPU executed. Existing learn-based tests were inspected but not selected. Model::load handles synthetic in-memory TSV only. Filesystem/parser effects modeled by inspection. Source production prefixes remain byte-identical to base; added tests only.",
+        "domain": "Bounded synthetic UTF-8/CoNLL strings, manually supplied tiny model TSVs/states and parsed score comments. Valid indices; nonempty callback outputs; k>=1 for nonpunctuation; every alternative has a base. Finite gain arithmetic and u32/usize/i64 representability. Explicit panic/error witnesses explore selected invalid boundaries without production repair.",
+        "id": "behavior-complement",
+        "observation_scope": "Real joins: text::norm/units -> seg key and Piece semantics; conllu Token/Word -> gold and segmenter evaluation; lib::cut_with passed as callback by main lattice_cmd/choose_cmd; lib::segment_line calls split_in and cut_as; main score uses conllu heads and text normalization. Tagged independent paths: main split/prepare/Part partitioning, main score diagnostics, model TSV codec and annotate filesystem/subprocess adapter. Independent per-token lattice choices do not imply jointly optimal tree; positional merge count equality is not parser identity verification.",
+        "operator": "On admitted valid cuts consonant-checked results cannot alter unpointed written letters after removing H; finite nonpositive gains cannot leave lattice base; merge cannot copy FORM/MISC from parser. Empty-form fallback Cut(0) is explicitly outside the spelling guarantee.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "No external models, gparse annotate, real corpora, teacher, training, lesson workflows or GPU executed. Existing learn-based tests were inspected but not selected. Model::load handles synthetic in-memory TSV only. Filesystem/parser effects modeled by inspection. Source production prefixes remain byte-identical to base; added tests only.",
+        "domain": "Bounded synthetic UTF-8/CoNLL strings, manually supplied tiny model TSVs/states and parsed score comments. Valid indices; nonempty callback outputs; k>=1 for nonpunctuation; every alternative has a base. Finite gain arithmetic and u32/usize/i64 representability. Explicit panic/error witnesses explore selected invalid boundaries without production repair.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Real joins: text::norm/units -> seg key and Piece semantics; conllu Token/Word -> gold and segmenter evaluation; lib::cut_with passed as callback by main lattice_cmd/choose_cmd; lib::segment_line calls split_in and cut_as; main score uses conllu heads and text normalization. Tagged independent paths: main split/prepare/Part partitioning, main score diagnostics, model TSV codec and annotate filesystem/subprocess adapter. Independent per-token lattice choices do not imply jointly optimal tree; positional merge count equality is not parser identity verification.",
+        "operator": "Final trees admit compatible raw texts, normalized forms, count tables, contextual score states and parser annotations under successive preimages. Whitespace/marks, old annotations, overwritten IDs and omitted TSV fallback are not recoverable uniquely; shared token and unit coordinates constrain composition fibers.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "No external models, gparse annotate, real corpora, teacher, training, lesson workflows or GPU executed. Existing learn-based tests were inspected but not selected. Model::load handles synthetic in-memory TSV only. Filesystem/parser effects modeled by inspection. Source production prefixes remain byte-identical to base; added tests only.",
+        "domain": "Bounded synthetic UTF-8/CoNLL strings, manually supplied tiny model TSVs/states and parsed score comments. Valid indices; nonempty callback outputs; k>=1 for nonpunctuation; every alternative has a base. Finite gain arithmetic and u32/usize/i64 representability. Explicit panic/error witnesses explore selected invalid boundaries without production repair.",
+        "id": "piece-coordinate-join",
+        "observation_scope": "Real joins: text::norm/units -> seg key and Piece semantics; conllu Token/Word -> gold and segmenter evaluation; lib::cut_with passed as callback by main lattice_cmd/choose_cmd; lib::segment_line calls split_in and cut_as; main score uses conllu heads and text normalization. Tagged independent paths: main split/prepare/Part partitioning, main score diagnostics, model TSV codec and annotate filesystem/subprocess adapter. Independent per-token lattice choices do not imply jointly optimal tree; positional merge count equality is not parser identity verification.",
+        "operator": "text::units gives source slices; Cut advances unit counts while H inserts article and lead shifts selected vowels. CoNLL written tokens retain forms while words can include an unwritten H; comparing byte counts to Piece counts is invalid.",
+        "path": "model.md",
+        "required": false,
+        "section": "piece-coordinate-join",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No external models, gparse annotate, real corpora, teacher, training, lesson workflows or GPU executed. Existing learn-based tests were inspected but not selected. Model::load handles synthetic in-memory TSV only. Filesystem/parser effects modeled by inspection. Source production prefixes remain byte-identical to base; added tests only.",
+        "domain": "Bounded synthetic UTF-8/CoNLL strings, manually supplied tiny model TSVs/states and parsed score comments. Valid indices; nonempty callback outputs; k>=1 for nonpunctuation; every alternative has a base. Finite gain arithmetic and u32/usize/i64 representability. Explicit panic/error witnesses explore selected invalid boundaries without production repair.",
+        "id": "context-lattice-join",
+        "observation_scope": "Real joins: text::norm/units -> seg key and Piece semantics; conllu Token/Word -> gold and segmenter evaluation; lib::cut_with passed as callback by main lattice_cmd/choose_cmd; lib::segment_line calls split_in and cut_as; main score uses conllu heads and text normalization. Tagged independent paths: main split/prepare/Part partitioning, main score diagnostics, model TSV codec and annotate filesystem/subprocess adapter. Independent per-token lattice choices do not imply jointly optimal tree; positional merge count equality is not parser identity verification.",
+        "operator": "Lex candidate p is updated previous then next via (n+K*p)/(total+K); lattice ratios use these contextual p values, clamp at1e-12 and serialize log ratio to four decimals. Choice consumes this rounded lr, not exact original p.",
+        "path": "model.md",
+        "required": false,
+        "section": "context-lattice-join",
+        "status": "partial_source_derived_model",
+        "type": "sequential_smoothing"
+      },
+      {
+        "assumptions": "No external models, gparse annotate, real corpora, teacher, training, lesson workflows or GPU executed. Existing learn-based tests were inspected but not selected. Model::load handles synthetic in-memory TSV only. Filesystem/parser effects modeled by inspection. Source production prefixes remain byte-identical to base; added tests only.",
+        "domain": "Bounded synthetic UTF-8/CoNLL strings, manually supplied tiny model TSVs/states and parsed score comments. Valid indices; nonempty callback outputs; k>=1 for nonpunctuation; every alternative has a base. Finite gain arithmetic and u32/usize/i64 representability. Explicit panic/error witnesses explore selected invalid boundaries without production repair.",
+        "id": "parser-merge-join",
+        "observation_scope": "Real joins: text::norm/units -> seg key and Piece semantics; conllu Token/Word -> gold and segmenter evaluation; lib::cut_with passed as callback by main lattice_cmd/choose_cmd; lib::segment_line calls split_in and cut_as; main score uses conllu heads and text normalization. Tagged independent paths: main split/prepare/Part partitioning, main score diagnostics, model TSV codec and annotate filesystem/subprocess adapter. Independent per-token lattice choices do not imply jointly optimal tree; positional merge count equality is not parser identity verification.",
+        "operator": "parser_view clears UPOS and normalizes FORM; merge trusts equal sentence/word counts and copies2..7. Wrong equal-sized parser order may be accepted; failure on later sentence leaves prior updates.",
+        "path": "model.md",
+        "required": false,
+        "section": "parser-merge-join",
+        "status": "partial_source_derived_model",
+        "type": "positional_annotation_transport"
+      },
+      {
+        "assumptions": "No external models, gparse annotate, real corpora, teacher, training, lesson workflows or GPU executed. Existing learn-based tests were inspected but not selected. Model::load handles synthetic in-memory TSV only. Filesystem/parser effects modeled by inspection. Source production prefixes remain byte-identical to base; added tests only.",
+        "domain": "Bounded synthetic UTF-8/CoNLL strings, manually supplied tiny model TSVs/states and parsed score comments. Valid indices; nonempty callback outputs; k>=1 for nonpunctuation; every alternative has a base. Finite gain arithmetic and u32/usize/i64 representability. Explicit panic/error witnesses explore selected invalid boundaries without production repair.",
+        "id": "lattice-selection",
+        "observation_scope": "Real joins: text::norm/units -> seg key and Piece semantics; conllu Token/Word -> gold and segmenter evaluation; lib::cut_with passed as callback by main lattice_cmd/choose_cmd; lib::segment_line calls split_in and cut_as; main score uses conllu heads and text normalization. Tagged independent paths: main split/prepare/Part partitioning, main score diagnostics, model TSV codec and annotate filesystem/subprocess adapter. Independent per-token lattice choices do not imply jointly optimal tree; positional merge count equality is not parser identity verification.",
+        "operator": "variants changes one token at a time against base. Strict positive gain and strict incumbent comparison retain first equal winner; apply combines winners without validating joint parsed score. No global optimum follows.",
+        "path": "model.md",
+        "required": false,
+        "section": "lattice-selection",
+        "status": "partial_source_derived_model",
+        "type": "independent_choice_limit"
+      },
+      {
+        "assumptions": "No external models, gparse annotate, real corpora, teacher, training, lesson workflows or GPU executed. Existing learn-based tests were inspected but not selected. Model::load handles synthetic in-memory TSV only. Filesystem/parser effects modeled by inspection. Source production prefixes remain byte-identical to base; added tests only.",
+        "domain": "Bounded synthetic UTF-8/CoNLL strings, manually supplied tiny model TSVs/states and parsed score comments. Valid indices; nonempty callback outputs; k>=1 for nonpunctuation; every alternative has a base. Finite gain arithmetic and u32/usize/i64 representability. Explicit panic/error witnesses explore selected invalid boundaries without production repair.",
+        "id": "codec-effects",
+        "observation_scope": "Real joins: text::norm/units -> seg key and Piece semantics; conllu Token/Word -> gold and segmenter evaluation; lib::cut_with passed as callback by main lattice_cmd/choose_cmd; lib::segment_line calls split_in and cut_as; main score uses conllu heads and text normalization. Tagged independent paths: main split/prepare/Part partitioning, main score diagnostics, model TSV codec and annotate filesystem/subprocess adapter. Independent per-token lattice choices do not imply jointly optimal tree; positional merge count equality is not parser identity verification.",
+        "operator": "CoNLL write renumbers ID without remapping HEAD; TSV save omits fallback/lex/rest flags. annotate writes input before spawning and cleanup happens only on full success; main choose can emit study before choosing fails.",
+        "path": "model.md",
+        "required": false,
+        "section": "codec-effects",
+        "status": "partial_source_derived_model",
+        "type": "information_loss_and_effect_order"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "hebrew-segmentation-lattice",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "tools/hbo/src/conllu.rs",
+      "sha256": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7"
+    },
+    {
+      "path": "tools/hbo/src/lattice.rs",
+      "sha256": "eeec78ace6a0dadfcff75205bc3718b223cf89d05fc8df94ea2884272f033fbf"
+    },
+    {
+      "path": "tools/hbo/src/lib.rs",
+      "sha256": "660faca62417f9a1eb9807a014127f1b4b868caf5e3f488a8cd6a1e716572143"
+    },
+    {
+      "path": "tools/hbo/src/main.rs",
+      "sha256": "0c6745dd24d6be0c80fc44c855adc88cceb66e5faf0890747f4e93c1cf49d62a"
+    },
+    {
+      "path": "tools/hbo/src/seg.rs",
+      "sha256": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d"
+    },
+    {
+      "path": "tools/hbo/src/text.rs",
+      "sha256": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

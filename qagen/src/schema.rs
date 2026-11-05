@@ -15,7 +15,15 @@ pub enum QType {
 }
 
 impl QType {
-    pub const ALL: [QType; 7] = [QType::Character, QType::Setting, QType::Action, QType::Feeling, QType::Causal, QType::Outcome, QType::Prediction];
+    pub const ALL: [QType; 7] = [
+        QType::Character,
+        QType::Setting,
+        QType::Action,
+        QType::Feeling,
+        QType::Causal,
+        QType::Outcome,
+        QType::Prediction,
+    ];
 
     pub fn name(self) -> &'static str {
         match self {
@@ -109,5 +117,59 @@ mod tests {
         assert_eq!(QType::parse("who"), None);
         assert_eq!(ExIm::parse("implicit"), Some(ExIm::Implicit));
         assert_eq!(ExIm::parse("inferred"), None);
+    }
+}
+
+#[cfg(test)]
+mod wave17_models {
+    use super::*;
+    #[test]
+    fn literal_alphabet_and_normalization_oracle() {
+        let names = [
+            "character",
+            "setting",
+            "action",
+            "feeling",
+            "causal relationship",
+            "outcome resolution",
+            "prediction",
+        ];
+        for (t, name) in QType::ALL.into_iter().zip(names) {
+            assert_eq!(t.name(), name);
+            assert_eq!(
+                QType::parse(&format!("\u{2003}{}\t", name.to_uppercase())),
+                Some(t)
+            );
+        }
+        for (t, name) in ExIm::ALL.into_iter().zip(["explicit", "implicit"]) {
+            assert_eq!(t.name(), name);
+            assert_eq!(ExIm::parse(&format!(" {}\n", name.to_uppercase())), Some(t));
+        }
+        for rejected in [
+            "",
+            "causal",
+            "outcome",
+            "causal  relationship",
+            "prediction!",
+            "character\0",
+            "im",
+            "inferred",
+        ] {
+            assert_eq!(QType::parse(rejected), None);
+            assert_eq!(ExIm::parse(rejected), None);
+        }
+    }
+    #[test]
+    fn exhaustive_rule_byte_domain() {
+        for byte in u8::MIN..=u8::MAX {
+            let expected = match byte {
+                1 => Some(Rule::V1),
+                2 => Some(Rule::V2),
+                _ => None,
+            };
+            assert_eq!(Rule::of(byte), expected);
+        }
+        assert_eq!(Rule::V1.num(), 1);
+        assert_eq!(Rule::V2.num(), 2);
     }
 }

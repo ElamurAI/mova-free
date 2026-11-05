@@ -8,6 +8,8 @@
 pub mod corefud;
 pub mod doc;
 pub mod eval;
+pub mod it;
+pub mod lexicon;
 pub mod mention;
 pub mod score;
 pub mod sieve;

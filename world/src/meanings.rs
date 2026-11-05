@@ -23,16 +23,17 @@ const CUES: [(char, &[&str]); 4] = [
 /// The cues that name an operation outright.
 const STRONG: [&str; 26] = ["add", "adds", "added", "adding", "total", "sum", "plus", "subtract", "subtracts", "subtracting", "minus", "difference", "multiply", "multiplies", "multiplying", "multiplied", "times", "share", "shares", "shared", "sharing", "divide", "divides", "dividing", "divided", "equally"];
 
-/// The single words of the register of euphemisms (`data/school/euphemisms/register.tsv`): their records came for the
-/// euphemism and must not hide the meaning of the word they are a form of.
+/// The single words of the register of euphemisms (`courses/euphemisms/register.tsv` of the school data,
+/// `knowledge::school_data`): their records came for the euphemism and must not hide the meaning of the word they are a
+/// form of. Without the school data the register is empty, so no record is dropped for it.
 fn euphemisms() -> &'static std::collections::BTreeSet<String> {
     static E: std::sync::OnceLock<std::collections::BTreeSet<String>> = std::sync::OnceLock::new();
-    E.get_or_init(|| include_str!("../data/school/euphemisms/register.tsv").lines().skip(1).filter_map(|l| l.split('\t').next()).map(|w| w.trim().to_lowercase()).filter(|w| !w.contains(' ')).collect())
+    E.get_or_init(|| std::fs::read_to_string(crate::knowledge::courses_root().join("euphemisms/register.tsv")).unwrap_or_default().lines().skip(1).filter_map(|l| l.split('\t').next()).map(|w| w.trim().to_lowercase()).filter(|w| !w.contains(' ')).collect())
 }
 
 fn records() -> &'static BTreeMap<String, [String; 6]> {
     static R: std::sync::OnceLock<BTreeMap<String, [String; 6]>> = std::sync::OnceLock::new();
-    R.get_or_init(crate::dictionary::improved)
+    R.get_or_init(improved)
 }
 
 /// The plain form of a word as the dictionary keeps it («cookies» → cookie, «shared» → share, «hours» → hour).
@@ -108,8 +109,11 @@ fn base_word(word: &str) -> Option<String> {
 }
 
 fn op_in(entry: Option<String>) -> Option<char> {
-    let v = entry.and_then(|w| {
-        let rec = &records()[&w];
+    entry.and_then(|w| operation_record(&w, &records()[&w]))
+}
+
+/// Pure operation projection of a supplied dictionary record.
+fn operation_record(w: &str, rec: &[String; 6]) -> Option<char> {
         // the first sense for a pupil and the opening of the sense in the lessons say what the word does in a problem
         // («the operation + ; also, …»); the rest of a rich entry (other senses, everyday uses) names operations by the way
         let first = |t: &str| t.split(" 2) ").next().unwrap_or("").split([';', '.']).next().unwrap_or("").to_lowercase();
@@ -120,8 +124,6 @@ fn op_in(entry: Option<String>) -> Option<char> {
         let mut counts: Vec<(char, usize)> = CUES.iter().map(|(op, cues)| (*op, sense.iter().filter(|x| cues.contains(&x.as_str())).count() + pupil.iter().filter(|x| cues.contains(&x.as_str()) && STRONG.contains(&x.as_str())).count())).collect();
         counts.sort_by(|a, b| b.1.cmp(&a.1));
         (counts[0].1 > 0 && counts[0].1 > counts[1].1).then_some(counts[0].0)
-    });
-    v
 }
 
 /// The counted facts a word's explanation states: (how many, of what — a plain noun, or empty for a bare number).
@@ -186,6 +188,28 @@ pub fn main_args(args: &[String]) -> anyhow::Result<()> {
     Ok(())
 }
 
+/// The records improved by the large model for the words of the school lessons (public, `data/dictionary-improved.tsv`):
+/// word → [date (closed build only, from its list), part of speech, meaning for a pupil, sense in the lessons, examples, note].
+pub fn improved() -> BTreeMap<String, [String; 6]> {
+    improved_from(include_str!("../data/dictionary-improved.tsv"))
+}
+
+/// The improved records parsed from a text in the format of `data/dictionary-improved.tsv`.
+pub fn improved_from(text: &str) -> BTreeMap<String, [String; 6]> {
+    let dates = improved_dates();
+    text.lines().filter(|l| !l.starts_with('#')).filter_map(|l| {
+        let c: Vec<&str> = l.split('\t').collect();
+        let w = c.first()?.to_lowercase();
+        (c.len() >= 6).then(|| (w.clone(), [dates.get(&w).cloned().unwrap_or_default(), c[1].into(), c[2].into(), c[3].into(), c[4].into(), c[5].into()]))
+    }).collect()
+}
+
+/// The list of improved words with the dates of their improvement is kept apart, outside the release; the records
+/// never carry a date.
+fn improved_dates() -> BTreeMap<String, String> {
+    BTreeMap::new()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -200,5 +224,78 @@ mod tests {
         // the negative control: a word the dictionary does not explain
         assert_eq!(op_of("zorp"), None);
         assert!(facts_of("zorp").is_empty());
+    }
+}
+
+#[cfg(test)]
+mod wave9_models {
+    use super::*;
+    fn record(pupil: &str, sense: &str) -> [String; 6] {
+        [String::new(), "noun".into(), pupil.into(), sense.into(), String::new(), String::new()]
+    }
+    #[test]
+    fn unique_plurality_oracle_and_fibers() {
+        let cues = ["plus", "minus", "times", "divide"];
+        let ops = ['+', '-', '*', '/'];
+        let mut none = 0;
+        for mask in 0u32..256 {
+            let counts: Vec<usize> = (0..4).map(|i| ((mask >> (2*i)) & 3) as usize).collect();
+            let text = (0..4).flat_map(|i| std::iter::repeat_n(cues[i], counts[i])).collect::<Vec<_>>().join(" ");
+            let max = *counts.iter().max().unwrap();
+            let winners: Vec<_> = (0..4).filter(|i| counts[*i] == max).collect();
+            let expected = if max > 0 && winners.len() == 1 { Some(ops[winners[0]]) } else { None };
+            let actual = operation_record("token", &record("", &text));
+            assert_eq!(actual, expected, "{counts:?}");
+            if actual.is_none() { none += 1; }
+        }
+        assert!(none > 1);
+    }
+    #[test]
+    fn sense_opening_strength_and_self_exclusion() {
+        assert_eq!(operation_record("token", &record("more parts", "")), None);
+        assert_eq!(operation_record("token", &record("plus", "")), Some('+'));
+        for delimiter in [";", ".", " 2) "] {
+            assert_eq!(operation_record("token", &record("", &format!("plus{delimiter} divide divide"))), Some('+'));
+        }
+        assert_eq!(operation_record("plus", &record("plus", "plus")), None);
+        assert_eq!(operation_record("token", &record("DIVIDE", "plus")), None);
+    }
+    #[test]
+    fn numeric_gate_oracle() {
+        for prefix in ["is", "has", "have", "of", "(", "equals", "makes", "was", "near"] {
+            for n in -2..5 {
+                let toks = vec![prefix.into(), n.to_string(), "days".into()];
+                let mut out = vec![];
+                facts_in(&toks, 0, &mut out);
+                let accepted = ["is", "has", "have", "of", "(", "equals", "makes"].contains(&prefix) && n > 1;
+                assert_eq!(out, if accepted { vec![(n, "day".into())] } else { vec![] });
+            }
+        }
+    }
+    #[test]
+    fn units_offsets_and_append_identity() {
+        for unit in ["and", "or", "of", "a", "the", "it", "is", "equal", "same", "parts", "3"] {
+            let toks = vec!["is".into(), "7".into(), unit.into()];
+            let mut out = vec![(2,"seed".into())];
+            facts_in(&toks, 1, &mut out);
+            assert_eq!(out, vec![(2,"seed".into()),(7,String::new())]);
+            let before = out.clone();
+            facts_in(&toks, toks.len(), &mut out);
+            assert_eq!(out, before);
+        }
+        let mut out=vec![];
+        facts_in(&["7".into(),"days".into()],0,&mut out);
+        assert!(out.is_empty());
+    }
+    #[test]
+    fn tsv_override_and_projection_fibers() {
+        let row = "Word\tnoun\tpupil\tsense\texample\tnote";
+        let first = improved_from(row);
+        for suffix in ["", "\textra", "\textra\tignored"] {
+            assert_eq!(improved_from(&format!("{row}{suffix}")), first);
+        }
+        let result=improved_from(&format!("# ignored\nshort\trow\n{row}\nWORD\tverb\tnew\tother\tex\tlast\n"));
+        assert_eq!(result.len(),1);
+        assert_eq!(result["word"], ["","verb","new","other","ex","last"].map(String::from));
     }
 }

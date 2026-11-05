@@ -768,3 +768,56 @@ fn string_b(_: &mut Interp, a: &[Value], _: usize) -> Result<Vec<Value>, MError>
     };
     Ok(vec![Value::Str(Rc::new(s))])
 }
+
+#[cfg(test)]
+mod wave30 {
+    use super::*;
+    #[test]
+    fn aggregation_join_and_options() {
+        assert_eq!(agg("mode", &[2.0, 1.0, 2.0, 1.0, f64::NAN]).unwrap(), 1.0);
+        assert_eq!(agg("count", &[1.0, f64::NAN]).unwrap(), 2.0);
+        assert_eq!(agg("nummissing", &[1.0, f64::NAN]).unwrap(), 1.0);
+        assert_eq!(agg("sum", &[]).unwrap(), 0.0);
+        assert!(agg("mean", &[]).unwrap().is_nan());
+        let o = opts(
+            &[
+                Value::str("Alpha"),
+                Value::num(1.0),
+                Value::str("ALPHA"),
+                Value::num(2.0),
+            ],
+            0,
+            "fixture",
+        )
+        .unwrap();
+        assert!(matches!(opt(&o, "alpha"), Some(Value::Mat(m)) if m.re == vec![2.0]));
+        let l = tval(
+            tb::make(
+                vec!["k".into()],
+                &[Value::Mat(Mat::col(vec![2.0, 1.0, f64::NAN]))],
+            )
+            .unwrap(),
+        );
+        let r = tval(
+            tb::make(
+                vec!["k".into()],
+                &[Value::Mat(Mat::col(vec![1.0, 1.0, 2.0]))],
+            )
+            .unwrap(),
+        );
+        let mut it = Interp::capture();
+        let out = innerjoin(&mut it, &[l.clone(), r.clone()], 1).unwrap();
+        assert!(
+            matches!(&out[0], Value::Table(t) if height(t) == 3 && tb::num_col(t, 0).unwrap().re == vec![1.0, 1.0, 2.0])
+        );
+        assert!(join(&mut it, &[l, r], 1).is_err());
+        let out = moving(
+            &mut it,
+            &[Value::Mat(Mat::row(vec![1.0, 3.0, 5.0])), Value::num(2.0)],
+            1,
+            "movmean",
+        )
+        .unwrap();
+        assert!(matches!(&out[0], Value::Mat(m) if m.re == vec![1.0, 2.0, 4.0]));
+    }
+}

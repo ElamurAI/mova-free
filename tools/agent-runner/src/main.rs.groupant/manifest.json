@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "agent-runner-cli",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../main.rs",
+    "sha256": "8413b14a747b38e6f0107af4c9ab8cf4d7a551624ddad0f0559a0885dee8f746"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "path": "syntax.json",
+      "format": "rust_syntax_projection",
+      "scope": "Selected source-bound Rust syntax; macro expansion and semantic extraction absent",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_derived"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_executable_cli_fixtures"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "subject_revision": "8413b14a747b38e6f0107af4c9ab8cf4d7a551624ddad0f0559a0885dee8f746",
+        "domain": "Admitted typed queue/configuration and stated trusted-local-filesystem/native-API premises.",
+        "observation_scope": "CLI dispatch, delegated effects, process lifetime and observation limits.",
+        "evidence": "model.md#tests"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "subject_revision": "8413b14a747b38e6f0107af4c9ab8cf4d7a551624ddad0f0559a0885dee8f746",
+        "domain": "Admitted typed queue/configuration and stated trusted-local-filesystem/native-API premises.",
+        "observation_scope": "CLI dispatch, delegated effects, process lifetime and observation limits.",
+        "evidence": "model.md#tests"
+      },
+      {
+        "id": "stop_boundary",
+        "type": "process_stop_boundary",
+        "path": "model.md",
+        "section": "stop-boundary",
+        "status": "partial_source_derived_model",
+        "subject_revision": "8413b14a747b38e6f0107af4c9ab8cf4d7a551624ddad0f0559a0885dee8f746",
+        "domain": "Admitted typed queue/configuration and stated trusted-local-filesystem/native-API premises.",
+        "observation_scope": "CLI dispatch, delegated effects, process lifetime and observation limits.",
+        "evidence": "model.md#tests"
+      },
+      {
+        "id": "read_only_example",
+        "type": "preparation_effect_exclusion",
+        "path": "model.md",
+        "section": "read-only-example",
+        "status": "partial_source_derived_model",
+        "subject_revision": "8413b14a747b38e6f0107af4c9ab8cf4d7a551624ddad0f0559a0885dee8f746",
+        "domain": "Admitted typed queue/configuration and stated trusted-local-filesystem/native-API premises.",
+        "observation_scope": "CLI dispatch, delegated effects, process lifetime and observation limits.",
+        "evidence": "model.md#tests"
+      },
+      {
+        "id": "zero_work_health_transition",
+        "type": "observation_change_detection",
+        "path": "model.md",
+        "section": "zero-work-health-transition",
+        "status": "partial_source_derived_model",
+        "subject_revision": "8413b14a747b38e6f0107af4c9ab8cf4d7a551624ddad0f0559a0885dee8f746",
+        "domain": "Successful CLI watch passes over an admitted immutable queue; trusted local filesystem and writable stdout.",
+        "observation_scope": "Returned summaries, emitted health transitions and zero-work cached integrity changes.",
+        "evidence": "model.md#tests"
+      },
+      {
+        "id": "suppressed_observation_fiber",
+        "type": "partial_observation_exclusion",
+        "path": "model.md",
+        "section": "suppressed-observation-fiber",
+        "status": "partial_source_derived_model",
+        "subject_revision": "8413b14a747b38e6f0107af4c9ab8cf4d7a551624ddad0f0559a0885dee8f746",
+        "domain": "Successful CLI watch passes over an admitted immutable queue; trusted local filesystem and writable stdout.",
+        "observation_scope": "Identical idle summaries, counter decay, restart ambiguity and unobserved changes.",
+        "evidence": "model.md#tests"
+      }
+    ]
+  }
+}

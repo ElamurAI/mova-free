@@ -1,0 +1,164 @@
+{
+  "children": [
+    "translation-meta-fwt",
+    "translation-meta-heb_enc",
+    "translation-meta-hebrew",
+    "translation-meta-ibm",
+    "translation-meta-logic",
+    "translation-meta-meta",
+    "translation-meta-profile",
+    "translation-meta-rules",
+    "translation-meta-strong"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "Real annotator/morph loading, corpus filesystem parsing, full training/evaluation and teacher paths remain unexecuted. Residual exactness is diagnostic reconstruction, not semantic understanding.",
+        "domain": "Small synthetic tokens, initialized tables, finite nonnegative weights, valid coordinates; Rule Drop acyclic; LCS <=65535 and counts/arithmetic representable.",
+        "id": "behavior-complement",
+        "observation_scope": "Hebrew Reader train owns meta tokens through IBM then Strong override; owners feed HebEncoder train. meta MTok ctx_keys feed profile and HebEncoder; Fw/Rule remap their heads. Logic consumes event concepts via Lexicon and LCS. Strong is optional alignment input, not a translation oracle.",
+        "operator": "Valid head-remapping transforms do not retain deleted coordinates; exact residual gates do not entail exact normal translation. Logical-word equality does not imply equal propositions.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "Real annotator/morph loading, corpus filesystem parsing, full training/evaluation and teacher paths remain unexecuted. Residual exactness is diagnostic reconstruction, not semantic understanding.",
+        "domain": "Small synthetic tokens, initialized tables, finite nonnegative weights, valid coordinates; Rule Drop acyclic; LCS <=65535 and counts/arithmetic representable.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Hebrew Reader train owns meta tokens through IBM then Strong override; owners feed HebEncoder train. meta MTok ctx_keys feed profile and HebEncoder; Fw/Rule remap their heads. Logic consumes event concepts via Lexicon and LCS. Strong is optional alignment input, not a translation oracle.",
+        "operator": "Compatible antecedents include lost surface spellings, metadata/switches, dropped tokens and hidden owner assignments; uniqueness requires full stored scripts and source-side parameters.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "Real annotator/morph loading, corpus filesystem parsing, full training/evaluation and teacher paths remain unexecuted. Residual exactness is diagnostic reconstruction, not semantic understanding.",
+        "domain": "Small synthetic tokens, initialized tables, finite nonnegative weights, valid coordinates; Rule Drop acyclic; LCS <=65535 and counts/arithmetic representable.",
+        "id": "owner-signature",
+        "observation_scope": "Hebrew Reader train owns meta tokens through IBM then Strong override; owners feed HebEncoder train. meta MTok ctx_keys feed profile and HebEncoder; Fw/Rule remap their heads. Logic consumes event concepts via Lexicon and LCS. Strong is optional alignment input, not a translation oracle.",
+        "operator": "Reader owners map each meta token to optional Hebrew index; HebEncoder emits only first encounter per owner, losing later assignments.",
+        "path": "model.md",
+        "required": false,
+        "section": "owner-signature",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Real annotator/morph loading, corpus filesystem parsing, full training/evaluation and teacher paths remain unexecuted. Residual exactness is diagnostic reconstruction, not semantic understanding.",
+        "domain": "Small synthetic tokens, initialized tables, finite nonnegative weights, valid coordinates; Rule Drop acyclic; LCS <=65535 and counts/arithmetic representable.",
+        "id": "head-coordinate",
+        "observation_scope": "Hebrew Reader train owns meta tokens through IBM then Strong override; owners feed HebEncoder train. meta MTok ctx_keys feed profile and HebEncoder; Fw/Rule remap their heads. Logic consumes event concepts via Lexicon and LCS. Strong is optional alignment input, not a translation oracle.",
+        "operator": "MTok uses1-based heads/root0; each structural transform must renumber positions after dropping/reordering, while span retains source coordinates.",
+        "path": "model.md",
+        "required": false,
+        "section": "head-coordinate",
+        "status": "partial_source_derived_model",
+        "type": "coordinate_transport"
+      },
+      {
+        "assumptions": "Real annotator/morph loading, corpus filesystem parsing, full training/evaluation and teacher paths remain unexecuted. Residual exactness is diagnostic reconstruction, not semantic understanding.",
+        "domain": "Small synthetic tokens, initialized tables, finite nonnegative weights, valid coordinates; Rule Drop acyclic; LCS <=65535 and counts/arithmetic representable.",
+        "id": "logical-gate",
+        "observation_scope": "Hebrew Reader train owns meta tokens through IBM then Strong override; owners feed HebEncoder train. meta MTok ctx_keys feed profile and HebEncoder; Fw/Rule remap their heads. Logic consumes event concepts via Lexicon and LCS. Strong is optional alignment input, not a translation oracle.",
+        "operator": "Delta gate compares sorted logical_words of bare concept and chunk, preserving duplicates and normalizing selected numerals. Event comparison is separate: permutations preserve verb-multiset gaps, while LCS pairing (including repeated-verb ties) can change contradictions and distance.",
+        "path": "model.md",
+        "required": false,
+        "section": "logical-gate",
+        "status": "partial_source_derived_model",
+        "type": "logical_multiset_gate"
+      },
+      {
+        "assumptions": "Real annotator/morph loading, corpus filesystem parsing, full training/evaluation and teacher paths remain unexecuted. Residual exactness is diagnostic reconstruction, not semantic understanding.",
+        "domain": "Small synthetic tokens, initialized tables, finite nonnegative weights, valid coordinates; Rule Drop acyclic; LCS <=65535 and counts/arithmetic representable.",
+        "id": "normal-versus-residual",
+        "observation_scope": "Hebrew Reader train owns meta tokens through IBM then Strong override; owners feed HebEncoder train. meta MTok ctx_keys feed profile and HebEncoder; Fw/Rule remap their heads. Logic consumes event concepts via Lexicon and LCS. Strong is optional alignment input, not a translation oracle.",
+        "operator": "Hebrew measure computes ordinary text exact/chrf before diagnostic target residual reconstruction; gate_ok can hold for empty learned encoder.",
+        "path": "model.md",
+        "required": false,
+        "section": "normal-versus-residual",
+        "status": "partial_source_derived_model",
+        "type": "residual_conditioned_identity"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "translation-meta-codecs",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "tools/translate/src/fwt.rs",
+      "sha256": "9e51710f505e2d8f8b7670267a6b3e592e99df9db2c307ea8b45586492b4e8aa"
+    },
+    {
+      "path": "tools/translate/src/heb_enc.rs",
+      "sha256": "2f0f60f06bb0e1612c25ecd9d5ac9722be5de662669850655a75f068cbbeda50"
+    },
+    {
+      "path": "tools/translate/src/hebrew.rs",
+      "sha256": "d9774c9554b2ad1dc49751750c00beec8d65122b76247445ca1b991ebeb80f06"
+    },
+    {
+      "path": "tools/translate/src/ibm.rs",
+      "sha256": "57fbc820f996dbfae692ab8cd02adaf7f21055983a7b6674a9dea25d2d312740"
+    },
+    {
+      "path": "tools/translate/src/logic.rs",
+      "sha256": "351fcf53ede0be127b000e0ff4b953d4d6b76e5327a16ad040183437c0c77a19"
+    },
+    {
+      "path": "tools/translate/src/meta.rs",
+      "sha256": "706841e2ffb22744366da30f546d3db048fa8d5b80ace22ab06f8c2d18c3ac1f"
+    },
+    {
+      "path": "tools/translate/src/profile.rs",
+      "sha256": "8ee4aaf549eecf58bc67d54725d2922bc8519c181eec147778ce7d4863767d09"
+    },
+    {
+      "path": "tools/translate/src/rules.rs",
+      "sha256": "75efe37eaf50694d9b46bbea101e7f52b143a58b02f2aaec50a6e30b1c228345"
+    },
+    {
+      "path": "tools/translate/src/strong.rs",
+      "sha256": "c71599a55642bc5e4b6f148ca0eba6f631abb45ddce98370586c5fcbeaae1163"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

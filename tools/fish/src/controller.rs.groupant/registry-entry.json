@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Offline guard negative control and finite fake-cycle lifecycle checks; see model.md#tests"
+  ],
+  "children": [],
+  "cost": "Startup O(source bytes + queue bytes), source/index retained in memory. Per job includes bounded context, GPU witnesses and one small teacher batch; campaign disk traversal adds O(total files) per job. No throughput improvement claimed.",
+  "description": "An immutable snapshot and queue are joined by IDs and source hashes; batches of at most eight queue entries are reserved before one isolated cycle. Accepted, refused, missing and uncertain results are distinct. Durable receipts precede advancing the logical cursor; prior receipts are skipped only under the pinned campaign identity.",
+  "forward": [
+    "An immutable snapshot and queue are joined by IDs and source hashes; batches of at most eight queue entries are reserved before one isolated cycle. Accepted, refused, missing and uncertain results are distinct. Durable receipts precede advancing the logical cursor; prior receipts are skipped only under the pinned campaign identity."
+  ],
+  "id": "annotation-review-controller",
+  "inverse": [
+    "behavior_complement: excluded, oversized, invalid or unreserved states cannot be counted as completed accepted work.",
+    "reverse_reconstruction: a receipt and pinned identities constrain compatible inputs and outcomes, but do not uniquely reconstruct hidden model computation or interrupted process histories."
+  ],
+  "limitations": [
+    "Audit controller and transport boundaries; source-derived partial model. Fake local child checks are finite evidence, not a proof of semantic annotation quality or general crash recovery."
+  ],
+  "source": "tools/fish/src/controller.rs",
+  "state": "Audit-only; outputs isolated; no automatic production training or promotion."
+}

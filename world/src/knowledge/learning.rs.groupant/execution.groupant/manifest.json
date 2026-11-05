@@ -1,0 +1,93 @@
+{
+  "children": [
+    {
+      "id": "learning-memo-execution-memo-policy",
+      "path": "memo-policy.groupant"
+    },
+    {
+      "id": "learning-memo-execution-ordered-visits",
+      "path": "ordered-visits.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Whole-source partial syntax artifact; coverage.syntax_nodes selects this fragment's nodes. No expanded or semantic AST.",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "excluded-traces",
+        "path": "model.md",
+        "required": true,
+        "scope": "Explicit inner approximation of U \\ R; see model universe and assumptions.",
+        "section": "Behavior complement",
+        "status": "partial_source_derived",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "compatible-antecedents",
+        "path": "model.md",
+        "required": true,
+        "scope": "B(final weights,work) is the set of initial weights, ordered exercises, pass counts, reuse choices and compatible evaluator answers producing that observation. Configuration is not uniquely recoverable: disabled reuse and all-invalid memos can both evaluate every visit.",
+        "section": "Reverse reconstruction",
+        "status": "partial_source_derived",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "lifetime-boundary",
+        "path": "model.md",
+        "required": false,
+        "scope": "New calls allocate Empty slots even when the previous call concluded Inert. New supporting facts may therefore change eligibility; unchanged weights alone cannot justify cross-call reuse.",
+        "section": "Specialized relation",
+        "status": "partial_source_derived",
+        "type": "lifetime_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "references_only"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4323,
+      "start": 886
+    },
+    "description": "Memo states, configuration latch and PragStudent lesson execution implementation.",
+    "syntax_nodes": {
+      "node_ids": [
+        63,
+        67,
+        135,
+        157
+      ],
+      "path": "../syntax.json"
+    }
+  },
+  "id": "learning-memo-execution",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../learning.rs",
+    "sha256": "27a2ad1ec4a2548c007ea360fb817b65843a89a8424910de9ba2b54534459c05"
+  },
+  "status": "partial_source_derived"
+}

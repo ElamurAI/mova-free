@@ -505,3 +505,44 @@ mod tests {
         assert!(!allowed("cc-by-nc-sa-4.0") && !allowed("arxiv-1.0") && !allowed("none") && !allowed("cc-by-nd"));
     }
 }
+
+#[cfg(test)]
+mod wave33 {
+    use super::*;
+    #[test]
+    fn list_signature_hash_and_existing() {
+        let dir = std::env::temp_dir().join(format!("mathlib-wave33-fetch-{}", std::process::id()));
+        fs::create_dir_all(&dir).unwrap();
+        let list = dir.join("list.tsv");
+        let header = "slug\tkey\turl\tsave_as\tlicense\tlicense_url\ttitle\tsource_page\n";
+        fs::write(
+            &list,
+            format!("{header}s\tk\thttps://invalid\ta.pdf\tcc-by\t\tT\t\n"),
+        )
+        .unwrap();
+        let rows = read_list(&list).unwrap();
+        assert_eq!(rows.len(), 1);
+        fs::write(
+            &list,
+            format!("{header}s\tk\thttps://invalid\ta.pdf\tother\t\tT\t\n"),
+        )
+        .unwrap();
+        assert!(read_list(&list).is_err());
+        let pdf = dir.join("a.pdf");
+        fs::write(&pdf, b"%PDF").unwrap();
+        assert!(magic_ok(&pdf).unwrap());
+        fs::write(&pdf, b"abc").unwrap();
+        assert!(!magic_ok(&pdf).unwrap());
+        let (n, sha, md5) = hash_file(&pdf).unwrap();
+        assert_eq!(n, 3);
+        assert_eq!(
+            sha,
+            "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+        );
+        assert_eq!(md5, "900150983cd24fb0d6963f7d28e17f72");
+        fs::write(dir.join("skip.part"), "").unwrap();
+        assert_eq!(existing(&dir, "a.*"), Some(pdf));
+        assert_eq!(existing(&dir, "skip.*"), None);
+        fs::remove_dir_all(dir).unwrap();
+    }
+}

@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "grid_domain",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "grid_domain",
+        "status": "partial_source_derived_model",
+        "type": "grid_domain"
+      },
+      {
+        "id": "numerical_metric",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "numerical_metric",
+        "status": "partial_source_derived_model",
+        "type": "numerical_metric"
+      },
+      {
+        "id": "derivative_reference",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "derivative_reference",
+        "status": "partial_source_derived_model",
+        "type": "derivative_reference"
+      },
+      {
+        "id": "effect_boundary",
+        "path": "model.md",
+        "scope": "Exact byte scope; parent composition remains separate",
+        "section": "effect_boundary",
+        "status": "partial_source_derived_model",
+        "type": "effect_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "partial_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 2069,
+      "start": 494
+    },
+    "description": "cuda_values_and_derivatives evaluates 16001 f32 inputs i*0.001-8 on CUDA for erf/tanh GELU and their summed-output gradients; f64 central differences use epsilon=1e-4.",
+    "source_bytes_sha256": "63b22d619314803a0f750f6e1dfe3e52daa75646676a210bb573d034b17e1a47"
+  },
+  "id": "gparse-test-gelu-paths-bounded-check",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../gelu_paths.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "2b94e6f07726a682cfcede671c08c659a82178cc6dc77efc91aaec238d93949e"
+  },
+  "status": "partial_source_bound_model"
+}

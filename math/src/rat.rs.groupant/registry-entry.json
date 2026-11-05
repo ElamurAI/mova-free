@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p math --lib rat::",
+    "paired syntax and compiled controls; external receipts"
+  ],
+  "children": [],
+  "cost": "GCD/comparison O(log magnitude) fixed-width iterations; power O(log|e|) checked multiplications; parse O(L), formatting O(places). No all-input rounding bound.",
+  "description": "Checked reduced i128 rationals and overflow-free comparison",
+  "forward": [
+    "new checks denominator zero before MIN, divides gcd and normalizes sign. add uses denominator gcd, mul cross-cancels, power squares. cmp compares Euclidean quotients and reverses remainder ordering. int directly creates n/1 without MIN rejection."
+  ],
+  "id": "math-rat",
+  "inverse": [
+    "For reduced n/d, new antecedents are fitting pairs(kn,kd) passing zero/MIN checks. Fixed-b addition inverse a=y-b is constrained by checked intermediates. Rounded decimal output has intervals of antecedents, not a unique rational."
+  ],
+  "limitations": [
+    "Partial lexical projection; no semantic proof",
+    "No useful executable percentage surrogate",
+    "Bounded synthetic fixtures; resource/malformed-state gaps in models"
+  ],
+  "source": "math/src/rat.rs",
+  "state": "new checks denominator zero before MIN, divides gcd and normalizes sign. add uses denominator gcd, mul cross-cancels, power squares. cmp compares Euclidean quotients and reverses remainder ordering. int directly creates n/1 without MIN rejection."
+}

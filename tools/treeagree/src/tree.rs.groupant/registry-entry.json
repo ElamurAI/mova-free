@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named synthetic native tests; paired syntax projection"
+  ],
+  "children": [],
+  "cost": "Parsing O(bytes); shape O(n²) parent hops and O(n) temporary vectors in callers; crossings O(n²) worst. Registry cost additional; Lex learning ordered maps O(tokens*log distinct) with string copies, get scans candidate counts. u32 frequency counters assume no overflow.",
+  "description": "blocks groups comments/rows; final comments-only suffix drops while a blank-terminated comments block remains. read_ref enforces ten columns and sequential ids then UPOS/FEATS/DEPREL/HEAD parsing; read_wit defaults missing fields. shape checks paired range/self/root-relation first, root count next and bounded parent walks last. violations emits first registry complaint per token, POS mismatches, then one shape error or punctuation crossings. no_worse requires shape and subset by exact Bad equality. Lex chooses maximum count then smallest key.",
+  "forward": [
+    "blocks groups comments/rows; final comments-only suffix drops while a blank-terminated comments block remains. read_ref enforces ten columns and sequential ids then UPOS/FEATS/DEPREL/HEAD parsing; read_wit defaults missing fields. shape checks paired range/self/root-relation first, root count next and bounded parent walks last. violations emits first registry complaint per token, POS mismatches, then one shape error or punctuation crossings. no_worse requires shape and subset by exact Bad equality. Lex chooses maximum count then smallest key."
+  ],
+  "id": "treeagree-tree",
+  "inverse": [
+    "Parsed tokens preserve raw columns but comments metadata selects first matching key. Lex summaries admit permutations and count-preserving corpora; max/tie observations do not identify full learned distribution.",
+    "With equal-length head/rel vectors, shape rejects self/out-of-range before cycles. no_worse never accepts malformed shape even when same error is in base. Successful read_ref does not establish shape validity."
+  ],
+  "limitations": [
+    "Partial source models and finite fixtures only. No corpus/model/network/site/release execution or universal proof."
+  ],
+  "source": "tools/treeagree/src/tree.rs",
+  "state": "Bounded helper inputs and source-derived CLI state/effects; see catalog."
+}

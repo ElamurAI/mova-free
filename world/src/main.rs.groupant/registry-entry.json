@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "Selected wave28_dialogue inline tests; lib compile only",
+    "Paired source syntax generation"
+  ],
+  "children": [],
+  "cost": "Argument scans O(A) per option; corpus/teacher/model and report costs delegated to selected command. No uniform bounded runtime.",
+  "description": "Startup extracts first complete --state pair, activates requested or stable state, sets MOVA_PROCESSING_STATE, then dispatches on first remaining argument. Folder helpers precede selected reads; load variants parse commands then run selected world executor.",
+  "forward": [
+    "Startup extracts first complete --state pair, activates requested or stable state, sets MOVA_PROCESSING_STATE, then dispatches on first remaining argument. Folder helpers precede selected reads; load variants parse commands then run selected world executor."
+  ],
+  "id": "world-main",
+  "inverse": [
+    "A given folder result admits every argument vector with that value at the selected index; errors admit vectors too short. A report cannot recover ignored options, defaults or rejected command text."
+  ],
+  "limitations": [
+    "Only private dir_at and usage runtime tests; no startup/state activation, corpus, training or dispatch execution.",
+    "No executable surrogate, semantic proof, live teacher, corpus, GPU or held-out execution"
+  ],
+  "source": "world/src/main.rs",
+  "state": "Unknown command reaches usage only after state activation; missing folder in dir_at returns error, supplied empty folder stays empty. Main is not effect-free even for usage."
+}

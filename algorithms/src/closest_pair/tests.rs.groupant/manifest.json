@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "id": "algorithm-closest-pair-tests",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "05af4c161af6c0767be550e6079302936c59239631196a6d52fb726b26a9418d"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "05af4c161af6c0767be550e6079302936c59239631196a6d52fb726b26a9418d",
+        "domain": "Deterministic finite fixtures in tests.rs; ordinary terminating allocation-success execution.",
+        "operator": "Within deterministic fixture runs, exclude a passing assertion when its compared oracle/result values differ. Passing output excludes only exercised counterexamples; it does not imply correctness on unenumerated coordinates or allocator failures.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "Assertions and fixture generation in this source.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "preimages",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "05af4c161af6c0767be550e6079302936c59239631196a6d52fb726b26a9418d",
+        "domain": "Deterministic finite fixtures in tests.rs; ordinary terminating allocation-success execution.",
+        "operator": "A passing test transcript admits every implementation agreeing with all exercised observations, including incorrect implementations differing elsewhere. Exact test output therefore cannot reconstruct source or universal behavior; independent oracles narrow this equivalence class.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "Assertions and fixture generation in this source.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "oracle",
+        "type": "oracle_relation",
+        "path": "model.md",
+        "section": "oracle",
+        "status": "partial_source_derived",
+        "subject_revision": "05af4c161af6c0767be550e6079302936c59239631196a6d52fb726b26a9418d",
+        "domain": "Deterministic finite fixtures in tests.rs; ordinary terminating allocation-success execution.",
+        "operator": "Independent all-pairs enumeration uses i64 unsigned absolute differences and u128 powers, minimizes (distance,index tuple), and compares every sequence of length <=6 over four points (5461 sequences). It does not use production square_delta, candidate or better.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "Assertions and fixture generation in this source.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "transform",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "transform",
+        "status": "partial_source_derived",
+        "subject_revision": "05af4c161af6c0767be550e6079302936c59239631196a6d52fb726b26a9418d",
+        "domain": "Deterministic finite fixtures in tests.rs; ordinary terminating allocation-success execution.",
+        "operator": "Translation with quarter-turn preserves selected result; scaling by three multiplies distance by nine; a different-length fixture has the same result. These test selected members of the ambiguous preimage relation.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "Assertions and fixture generation in this source.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "boundary",
+        "type": "boundary_partition",
+        "path": "model.md",
+        "section": "boundary",
+        "status": "partial_source_derived",
+        "subject_revision": "05af4c161af6c0767be550e6079302936c59239631196a6d52fb726b26a9418d",
+        "domain": "Deterministic finite fixtures in tests.rs; ordinary terminating allocation-success execution.",
+        "operator": "Extremal coordinate pairs require a 65-bit squared distance. Rotated 25-point extremal grids, deterministic full-width clouds, vertical lines and multiple duplicate groups exercise index ties and strip recursion. A wrong distance metric must fail independent oracle assertions.",
+        "assumptions": "Exact Rust integer operations within stated bounds; successful allocation and terminating execution.",
+        "observation_scope": "Assertions and fixture generation in this source.",
+        "approximation_semantics": "Source-derived conditional relations; finite evidence is not universal proof.",
+        "evidence": "model.md#evidence"
+      }
+    ]
+  }
+}

@@ -1,6 +1,12 @@
 //! Compare many parsers with the reference (Haiku) trees of the school corpus.
 //!
 //!   parsecmp <run dir>
+//!   parsecmp agree <dir> <a> <b> [<c>]   — per file, how far parsers agree on the same tokens
+//!
+//! `agree`: `<dir>/<a>/*.conllu`, `<dir>/<b>/*.conllu` (and `<c>`) parse the same sentences with the same words;
+//! for each file name, the UAS and LAS (universal relation, punctuation left out) of a against b, a against c, b
+//! against c. Where two independent witnesses agree with each other but not with a, a misreads that text; where the
+//! witnesses disagree too, the text itself is hard to parse.
 //!
 //! The run dir holds `in/haiku.conllu` (reference), `in/course.txt` (course per sentence, same order) and
 //! `out/` with the parser outputs (see `SYSTEMS`, `CONSTITUENCY`). Sentences are aligned by order; a
@@ -173,7 +179,54 @@ fn bracket_f1(a: &[(String, u32, u32)], b: &[(String, u32, u32)]) -> (u64, u64, 
     (hit, a.len() as u64, b.len() as u64)
 }
 
+/// `parsecmp agree`: pairwise agreement of parsers per file (see the head of the file).
+fn agree(dir: &Path, names: &[String]) {
+    let files: std::collections::BTreeSet<String> = fs::read_dir(dir.join(&names[0])).into_iter().flatten().flatten().map(|e| e.file_name().to_string_lossy().into_owned()).filter(|f| f.ends_with(".conllu")).collect();
+    let pairs: Vec<(usize, usize)> = (0..names.len()).flat_map(|i| (i + 1..names.len()).map(move |j| (i, j))).collect();
+    let mut head = String::from("file\tsentences\twords");
+    for &(i, j) in &pairs {
+        head.push_str(&format!("\tUAS {0}-{1}\tLAS {0}-{1}", names[i], names[j]));
+    }
+    println!("{head}");
+    for f in &files {
+        let ps: Vec<Vec<Sent>> = names.iter().map(|n| read_conllu(&dir.join(n).join(f))).collect();
+        let mut sc = vec![(0u64, 0u64, 0u64); pairs.len()];
+        let (mut sents, mut words) = (0, 0);
+        for k in 0..ps[0].len() {
+            let ss: Vec<&Sent> = ps.iter().filter_map(|p| p.get(k)).collect();
+            if ss.len() != ps.len() || ss.iter().any(|x| x.toks.len() != ss[0].toks.len()) {
+                continue;
+            }
+            sents += 1;
+            for t in 0..ss[0].toks.len() {
+                if ss[0].toks[t].upos == "PUNCT" {
+                    continue;
+                }
+                words += 1;
+                for (q, &(i, j)) in pairs.iter().enumerate() {
+                    let (a, b) = (&ss[i].toks[t], &ss[j].toks[t]);
+                    let h = a.head == b.head;
+                    sc[q].0 += 1;
+                    sc[q].1 += h as u64;
+                    sc[q].2 += (h && base(&a.rel) == base(&b.rel)) as u64;
+                }
+            }
+        }
+        let mut row = format!("{}\t{sents}\t{words}", f.trim_end_matches(".conllu"));
+        for (n, u, l) in sc {
+            row.push_str(&format!("\t{:.2}\t{:.2}", 100.0 * u as f64 / n.max(1) as f64, 100.0 * l as f64 / n.max(1) as f64));
+        }
+        println!("{row}");
+    }
+}
+
 fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    if args.get(1).map(String::as_str) == Some("agree") {
+        assert!(args.len() >= 5, "usage: parsecmp agree <dir> <a> <b> [<c>]");
+        agree(Path::new(&args[2]), &args[3..]);
+        return;
+    }
     let run = PathBuf::from(std::env::args().nth(1).expect("usage: parsecmp <run dir>"));
     let gold = read_conllu(&run.join("in/haiku.conllu"));
     let courses: Vec<String> = fs::read_to_string(run.join("in/course.txt")).unwrap().lines().map(String::from).collect();
@@ -466,4 +519,61 @@ fn main() {
     fs::write(run.join("suspects.tsv"), sus).unwrap();
     fs::write(run.join("per-course.tsv"), tsv).unwrap();
     eprintln!("wrote report.md, suspects.tsv, per-course.tsv");
+}
+#[cfg(test)]
+mod wave33_tests {
+    use super::*;
+
+    #[test]
+    fn score_and_bracket_multiset_boundaries() {
+        let g = Tok {
+            form: "x".into(),
+            upos: "NOUN".into(),
+            head: 0,
+            rel: "nmod:poss".into(),
+        };
+        let mut s = g.clone();
+        s.rel = "nmod".into();
+        let mut score = Score::default();
+        score.add(&g, &s, true);
+        score.add(&g, &s, false);
+        s.upos = "PUNCT".into();
+        score.add(&s, &g, true);
+        assert_eq!(
+            (score.n, score.uas, score.las, score.n_np, score.uas_np),
+            (3, 3, 2, 2, 2)
+        );
+        assert_eq!(pct(0, 0), "—");
+        assert_eq!(pct(1, 4), "25.0");
+        let a = spans("(ROOT (S (NP-SBJ (NN cats)) (VP (VB sleep))))");
+        assert_eq!(
+            a,
+            vec![("NP".into(), 0, 1), ("S".into(), 0, 2), ("VP".into(), 1, 2)]
+        );
+        let duplicate = vec![a[0].clone(), a[0].clone()];
+        assert_eq!(bracket_f1(&a, &duplicate), (1, 3, 2));
+        assert_eq!(bracket_f1(&[], &[]), (0, 0, 0));
+        assert!(spans("(ROOT (NN word))").is_empty());
+    }
+
+    #[test]
+    fn conllu_fixture_filters_and_missing_file() {
+        let dir = std::env::temp_dir().join(format!("mova-wave33-parsecmp-{}", std::process::id()));
+        fs::create_dir(&dir).unwrap();
+        let file = dir.join("tiny.conllu");
+        fs::write(&file, "# sent_id = tiny\n# text = word\n1-2\tx\t_\t_\t_\t_\t_\t_\n1\tword\tword\tNOUN\t_\t_\tbad\tNMOD:POSS\n1.1\tx\t_\t_\t_\t_\t0\tdep\n").unwrap();
+        let got = read_conllu(&file);
+        assert_eq!(got.len(), 1);
+        assert_eq!(
+            (
+                got[0].id.as_str(),
+                got[0].toks.len(),
+                got[0].toks[0].head,
+                got[0].toks[0].rel.as_str()
+            ),
+            ("tiny", 1, u32::MAX, "nmod:poss")
+        );
+        assert!(read_conllu(&dir.join("missing")).is_empty());
+        fs::remove_dir_all(dir).unwrap();
+    }
 }

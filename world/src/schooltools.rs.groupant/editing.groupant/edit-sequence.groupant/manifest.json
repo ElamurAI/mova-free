@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-schooltools-editing-edit-sequence-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-schooltools-editing-edit-sequence-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-schooltools-editing-edit-sequence-ordered_replacements",
+        "path": "model.md",
+        "section": "ordered_replacements",
+        "status": "partial_source_model",
+        "type": "state_transition"
+      },
+      {
+        "id": "world-schooltools-editing-edit-sequence-diagnostic_accumulation",
+        "path": "model.md",
+        "section": "diagnostic_accumulation",
+        "status": "partial_source_model",
+        "type": "failure_order"
+      },
+      {
+        "id": "world-schooltools-editing-edit-sequence-answer_marker",
+        "path": "model.md",
+        "section": "answer_marker",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      },
+      {
+        "id": "world-schooltools-editing-edit-sequence-casefold_uniqueness",
+        "path": "model.md",
+        "section": "casefold_uniqueness",
+        "status": "partial_source_model",
+        "type": "domain_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 22026,
+      "start": 19469
+    },
+    "description": "Start with split newline buffer. For each edit validate line bounds, option recognition, nonempty separator-free new text, exactly one old option match after stripping stars, actual change, five fields, right-answer protection and casefold uniqueness. Successful edits rebuild that line preserving CR/star position; errors accumulate and later edits still run. Return buffer only if no errors."
+  },
+  "id": "world-schooltools-editing-edit-sequence",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../schooltools.rs",
+    "sha256": "69490a8577d28eda24da4a4357f1eb59ef56982a1f5d1895fac9f0987c43bf2f"
+  },
+  "status": "partial_source_bound_model"
+}

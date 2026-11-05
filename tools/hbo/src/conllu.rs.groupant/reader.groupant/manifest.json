@@ -1,0 +1,138 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "UTF-8 strings; representable b+1 and ID/count sums. Rows may carry arbitrary IDs/HEAD; this codec does not validate trees. Empty MWT tokens survive read but emit no row. Comment-only sentences disappear.",
+        "evidence": "model.md#tests",
+        "id": "behavior_complement",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Malformed-width and decimal rows cannot decrement owed or append a word.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "UTF-8 strings; representable b+1 and ID/count sums. Rows may carry arbitrary IDs/HEAD; this codec does not validate trees. Empty MWT tokens survive read but emit no row. Comment-only sentences disappear.",
+        "evidence": "model.md#tests",
+        "id": "reverse_reconstruction",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Same decoded tokens admit arbitrarily many skipped rows and nonnumeric ordinary IDs.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "UTF-8 strings; representable b+1 and ID/count sums. Rows may carry arbitrary IDs/HEAD; this codec does not validate trees. Empty MWT tokens survive read but emit no row. Comment-only sentences disappear.",
+        "evidence": "model.md#tests",
+        "id": "blank_reset",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Blank drops comment-only cur and resets owed even for unfinished MWT.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "blank_reset",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7",
+        "type": "blank_reset"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "UTF-8 strings; representable b+1 and ID/count sums. Rows may carry arbitrary IDs/HEAD; this codec does not validate trees. Empty MWT tokens survive read but emit no row. Comment-only sentences disappear.",
+        "evidence": "model.md#tests",
+        "id": "range_replace",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "New range pushes a token and overwrites owed; no nested range validation.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "range_replace",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7",
+        "type": "range_replace"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "UTF-8 strings; representable b+1 and ID/count sums. Rows may carry arbitrary IDs/HEAD; this codec does not validate trees. Empty MWT tokens survive read but emit no row. Comment-only sentences disappear.",
+        "evidence": "model.md#tests",
+        "id": "comment_order",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Comments append in encounter order and do not consume owed.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "comment_order",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7",
+        "type": "comment_order"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "UTF-8 strings; representable b+1 and ID/count sums. Rows may carry arbitrary IDs/HEAD; this codec does not validate trees. Empty MWT tokens survive read but emit no row. Comment-only sentences disappear.",
+        "evidence": "model.md#tests",
+        "id": "owed_count",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "owed=b+1-min(a,b+1); valid reverse ranges yield0 unless b+1 overflow.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "owed_count",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7",
+        "type": "owed_count"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 3321,
+      "start": 1894
+    },
+    "description": "Read loops blank/comments/column check/MWT/ordinary rows in that order, maintaining owed and cur."
+  },
+  "id": "hbo-conllu-reader",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../conllu.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7"
+  },
+  "status": "partial_source_bound_model"
+}

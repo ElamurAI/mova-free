@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "slot_identity",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "slot_identity",
+        "status": "partial_source_derived_model",
+        "type": "slot_identity"
+      },
+      {
+        "id": "panic_payload",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "panic_payload",
+        "status": "partial_source_derived_model",
+        "type": "panic_payload"
+      },
+      {
+        "id": "join_before_error",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "join_before_error",
+        "status": "partial_source_derived_model",
+        "type": "join_before_error"
+      },
+      {
+        "id": "thread_floor",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "thread_floor",
+        "status": "partial_source_derived_model",
+        "type": "thread_floor"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 6489,
+      "start": 4998
+    },
+    "description": "par wraps par_each and collects its ordered Result vector. Atomic fetch_add assigns each in-range index once; f is caught individually; join happens before unwrap of every slot."
+  },
+  "id": "roundtrip-block-hebrew-ordered-jobs",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../heb.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "5f4eb0e21c8dfbfef387d2faa75aaa9ebfd2cf748d94cef3bbc2d526572b6d44"
+  },
+  "status": "partial_source_bound_model"
+}

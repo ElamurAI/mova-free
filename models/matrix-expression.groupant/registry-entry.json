@@ -1,0 +1,38 @@
+{
+  "checks": [
+    "ast::wave30::representation",
+    "lexer::wave30::context",
+    "parser::wave30::precedence",
+    "value::wave30::layout",
+    "index::wave30::gather_update",
+    "ops::wave30::arithmetic",
+    "builtins::core::wave30::constructors"
+  ],
+  "children": [
+    "mlab-ast",
+    "mlab-builtins-core",
+    "mlab-index",
+    "mlab-lexer",
+    "mlab-ops",
+    "mlab-parser",
+    "mlab-value"
+  ],
+  "cost": "Lexing O(chars+tokens); ordinary parsing O(tokens) with speculative reparsing and unbounded nesting caveat. Matrix storage/transforms O(cells); indexing O(indices+output/growth), deletion may sort; broadcast O(output), multiplication O(mnk) or delegated faer; callbacks, allocation and effects add unbounded costs. No speed measurements.",
+  "description": "text --lexer(context,space,line)--> tokens --parser(precedence,index_depth)--> AST --interp/vm caller--> column-major Value; index selects/mutates k=j*r+i; ops broadcasts or multiplies values; core creates/reshapes and delegates range/concat. Shape is part of output: vector selection, colon columnization, reshape and transpose differ.",
+  "forward": [
+    "text --lexer(context,space,line)--> tokens --parser(precedence,index_depth)--> AST --interp/vm caller--> column-major Value; index selects/mutates k=j*r+i; ops broadcasts or multiplies values; core creates/reshapes and delegates range/concat. Shape is part of output: vector selection, colon columnization, reshape and transpose differ.",
+    "lexer space_before distinguishes [1 -2] from [1 - 2]; Caret and DotCaret are both left-folded by the parser, retaining distinct Pow and EPow tags. Interp resolves End to dimensions and dispatches index/ops/core. value column-major layout must survive index gather and core reshape; transpose permutes it. ops short-circuit logic belongs to interp/vm; core callbacks, files, RNG and timer effects cross group and remain unexecuted here."
+  ],
+  "id": "matrix-expression",
+  "inverse": [
+    "Accepted bounded composition excludes erased matrix whitespace, right-associated unparenthesized powers, row-major reinterpretation, broadcast of incompatible non-singleton dimensions and successful shape-changing reshape with unequal numel. It does not exclude public malformed values, nonfinite arithmetic or core side effects.",
+    "For observation y, compatible antecedents are text/AST/state triples whose parse/evaluation gives y. Comments and spellings, overwritten/deleted cells, broadcast operand factorizations and reshape dimension syntax cause ambiguity. Transpose is uniquely invertible only on valid recorded Mat; reshape requires original shape; indexing fixes selected cells only."
+  ],
+  "limitations": [
+    "No executable percentage surrogate or global numerical bound",
+    "Unchecked size products, infinite range count, zero-argument null assignment and malformed buffers remain outside tested domains",
+    "Core effects/callbacks/RNG/time and large faer branch are unexecuted",
+    "Syntax projection lacks macro expansion and semantic resolution"
+  ],
+  "state": "On bounded well-formed matrices len(re)=r*c and optional im same length; transpose is a permutation, reshape retains flattened data, ordinary bounded assignment validation errors precede mutation. No universal validity from public fields, no finite arithmetic guarantee, and AST representation is distinct from evaluation."
+}

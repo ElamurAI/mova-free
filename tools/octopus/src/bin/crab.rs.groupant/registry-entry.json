@@ -1,0 +1,22 @@
+{
+  "id": "crab-mova-deputy",
+  "source": "tools/octopus/src/bin/crab.rs",
+  "children": [],
+  "description": "Crab with Mova understanding: the single Rust deputy answering arbitrary text with priority over Crab's socket.",
+  "state": "Loaded deputy (pinned syntax model) installed as Crab's prompt handler.",
+  "forward": [
+    "ask: Deputy::run_with(prompt, id, run, crab_observe and crab_control in-process); compact reply within 64 KiB."
+  ],
+  "inverse": [
+    "Refusals carry stage and review candidate; full report recoverable from the deputy ledger by id."
+  ],
+  "cost": "One model load; per ask native parsing plus configured adapters.",
+  "checks": [
+    "2026-11-03: Crab ask tests (long text, priority without preemption, in-process read-only, refusals) with red control; 78 Crab + 9 deputy tests; live trial and deployment.",
+    "2026-11-03: crab_control installed; worker prompt path covered by Crab and deputy fixtures.",
+    "2026-11-04: exercised on the live corpora read-only (observed 33 lines → 14 open texts; seed + exercises exam)."
+  ],
+  "limitations": [
+    "NoExternalRoles: whales/external roles not managed; understanding limited to configured capabilities; no semantic proof."
+  ]
+}

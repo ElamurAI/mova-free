@@ -1,0 +1,40 @@
+{
+  "control": "control-induce: compiled source mutation failed with exit101; source restored byte-for-byte and15positive tests passed",
+  "kind": "finite_actual_code_checks",
+  "limitations": "Pure codes/counting/parsing/changes/threshold tests; feature extraction, persistent effects and live learning remain partial, no surrogate.",
+  "logs": [
+    {
+      "exit": 0,
+      "label": "final-debug1",
+      "sha256": "b943ad3dd14bb19ff8102bc1c21c1f368f0d264f0ace8186a0ae7b87240e25f5"
+    },
+    {
+      "exit": 0,
+      "label": "final-debug2",
+      "sha256": "fac6f0fc7241faa89d615875477abb359b8d597ee4a70096997802af9a35ff93"
+    },
+    {
+      "exit": 0,
+      "label": "final-release1",
+      "sha256": "9e7f61a15fbb424bf929d9d20b8e7e1b15d4d04903fb2df25f43e79a9b9804f0"
+    },
+    {
+      "exit": 0,
+      "label": "final-release2",
+      "sha256": "0b11339ddd6132bea81dea8f16d9a594b3e4be2ab16760e42531a2f39719be1a"
+    }
+  ],
+  "profiles": [
+    "final-debug1",
+    "final-debug2",
+    "final-release1",
+    "final-release2"
+  ],
+  "source": "world/src/induce.rs",
+  "source_sha256": "0297cbe15b922cb5aeebd8632fbb9bcb3d0d8da3e6a6dd287b0978638c1fe2ee",
+  "tests": [
+    "induce::wave29_worldlearn::counting_requires_correct_heads_and_orders_candidates",
+    "induce::wave29_worldlearn::packed_subsets_and_empty_bootstrap",
+    "induce::wave29_worldlearn::permissive_parse_and_set_valued_changes"
+  ]
+}

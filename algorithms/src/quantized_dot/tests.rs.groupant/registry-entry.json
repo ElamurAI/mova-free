@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms quantized_dot::tests",
+    "Repeated debug/release, compiled production mutant and restored hashes; see model.md#tests"
+  ],
+  "children": [],
+  "cost": "O(n) time, O(1) storage, no allocation. Checked i128 accumulation and u128 certificate sums. Quotient/remainder certification avoids overflow from multiplying L1 by100. Work budget bounds pairs; unsupported and uncertified domains fail with no hidden fallback.",
+  "description": "Deterministic executable assertions for quantized_dot; finite fixtures observe production outputs against independent masks or exact arithmetic. Passing is a finite evidence claim, not universal correctness.",
+  "forward": [
+    "Deterministic executable assertions for quantized_dot; finite fixtures observe production outputs against independent masks or exact arithmetic. Passing is a finite evidence claim, not universal correctness."
+  ],
+  "id": "algorithm-quantized-dot-tests",
+  "inverse": [
+    "All implementations producing the same finite assertion vector belong to one nonunique fiber. Original production and a mutant differing only on untested data may both pass; the compiled mutant (Disable certificate rejection; unsupported5% result violates named boundary assertion.) is separated by tier_boundary_and_validation. A pass vector cannot reconstruct source, runtime or behavior on unseen inputs."
+  ],
+  "limitations": [
+    "Partial syntax, not semantic proof",
+    "Finite oracles do not establish universal accuracy",
+    "No performance measurement or automatic substitution",
+    "Allocator failure not experimentally injected"
+  ],
+  "source": "algorithms/src/quantized_dot/tests.rs",
+  "state": "Named assertions and finite fixtures"
+}

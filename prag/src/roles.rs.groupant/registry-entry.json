@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p prag --lib roles::wave12_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "For S sentences, ordering O(S log S), plus annotation cloning and frame-reader/context-summary dependency costs. Per sentence F frames and N tokens: O(FN) scans per fixed primary slot, plus attributes/obliques and O(R log R) emitted-tuple sorting. Recent queue stores O(b) event strings; output summary bytes add their own cost.",
+  "description": "Domain X is tagged calls roles(W), roles_docs(S), world_docs(S,b), doc_key(id), with finite supplied annotations and fixed frame-reader dependencies. For documents, pi is stable sort by doc_key; C resets at document-key changes. At each pi(i), world_docs first emits summary(C,6) plus bounded prior event queue, then frames_of_tree updates C, event/speech verb frames append event strings and queue truncates to last b, then C.new_line. roles_docs reads in the same context order, projects frames, then restores original input row order. Projection chooses first unused eligible predicate token matching first verb lemma component and closest nonpredicate matching slot token (earlier tie), preserving Ent.pron for primary slots; sort/deduplicate triples.",
+  "forward": [
+    "Domain X is tagged calls roles(W), roles_docs(S), world_docs(S,b), doc_key(id), with finite supplied annotations and fixed frame-reader dependencies. For documents, pi is stable sort by doc_key; C resets at document-key changes. At each pi(i), world_docs first emits summary(C,6) plus bounded prior event queue, then frames_of_tree updates C, event/speech verb frames append event strings and queue truncates to last b, then C.new_line. roles_docs reads in the same context order, projects frames, then restores original input row order. Projection chooses first unused eligible predicate token matching first verb lemma component and closest nonpredicate matching slot token (earlier tie), preserving Ent.pron for primary slots; sort/deduplicate triples."
+  ],
+  "id": "prag-roles",
+  "inverse": [
+    "B(tag,y) retains all supplied IDs/annotations, stable ordering pi, initial/reset contexts, frame sequences and queue histories satisfying the child transitions and the observed y. roles(W) fixes initial C=default; document APIs fix per-key resets. Tuple deduplication loses repeated emissions; lexical matching loses unmatched fillers and competing parses. Summaries lose entities beyond six and event prefixes beyond b; b=0 loses every event string. Equal parsed document keys, duplicate IDs and original vs sorted row order remain distinct tagged antecedents."
+  ],
+  "limitations": [
+    "Finite supplied fixtures; compiled lexical snapshot; partial syntax macro bodies opaque.",
+    "No live parser/teacher/corpus, retained exam, intent guarantee or speed claim."
+  ],
+  "source": "prag/src/roles.rs",
+  "state": "Role triples (d+1,p+1,role) are sorted unique and within supplied token positions, and no predicate is reused across selected frames. roles_docs/world_docs preserve original ID sequence including duplicates. Context and recent queue never cross document-key transitions. world_docs observation is before the current frame update; b=0 gives 'none yet' for recent events. doc_key parsing and token choice use the child relations, not semantic identity guarantees."
+}

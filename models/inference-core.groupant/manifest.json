@@ -1,0 +1,3366 @@
+{
+  "children": [
+    "execution-dispatch",
+    "fact-index",
+    "parse-cache",
+    "world-query",
+    "frame-adapter",
+    "answer-span",
+    "world-types",
+    "lexical-semantics",
+    "world-store",
+    "rule-derivation",
+    "corpus-statistics",
+    "world-tree",
+    "world-qframe",
+    "world-state-core",
+    "quantity-reading",
+    "answer-observation",
+    "world-md",
+    "world-tabular",
+    "world-groupant-joins",
+    "narrative-state",
+    "world-groupant-wave9",
+    "world-rerank",
+    "world-absurd",
+    "pragmatic-observation",
+    "world-mind",
+    "world-groupant-wave12",
+    "world-groupant-wave14",
+    "syntax-validation",
+    "coreference-observation",
+    "spatial-inference",
+    "en-conllu",
+    "en-groupant-wave26",
+    "english-orchestration",
+    "symbolic-arithmetic",
+    "world-dialogue",
+    "world-rule-learning",
+    "world-evaluation-boundaries",
+    "neural-parser-paths",
+    "rule-court-evaluation",
+    "hebrew-corpus-adapters",
+    "hebrew-segmentation-lattice",
+    "roundtrip-layer-residuals",
+    "roundtrip-document-codecs",
+    "roundtrip-mixed-routing",
+    "translation-meta-codecs",
+    "translation-evaluation-pipeline",
+    "math-library-ingestion",
+    "cycle-teacher-diagnostics",
+    "treebank-comparison-tools",
+    "text-corpus-tools",
+    "bibliography-value-tools",
+    "crab-orchestration"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "No composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "excluded-stage-observations",
+        "path": "model.md",
+        "required": true,
+        "scope": "U contains tagged finite observations of registered APIs under child domains and fixed dependencies/schedules. An inner bound on U minus R excludes changed-cardinality successful worker mapping, reversed equal-score fact-number ordering and successful cache admission of partial parse batches. Child complements do not compose by simple union.",
+        "section": "excluded-stage-observations",
+        "status": "partial_source_derived",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "compatible-worlds",
+        "path": "model.md",
+        "required": true,
+        "scope": "For a tagged observation retain every compatible input, world/history, typed value, lexical dependency and latent schedule. Join identities along actual call edges. Formatting, projection and duplicate-key overwrite lose information; unique full reconstruction is not established.",
+        "section": "compatible-worlds",
+        "status": "partial_source_derived",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "sentence-anchors",
+        "path": "model.md",
+        "required": false,
+        "scope": "The caller must preserve source order and map valid one-based fact sentence anchors into world text. Fact.sent=0 is outside the normal scoring domain because subtracting one can underflow; valid local parsing does not establish this caller obligation.",
+        "section": "sentence-anchors",
+        "status": "partial_source_derived",
+        "type": "interface_obligation"
+      },
+      {
+        "id": "score-fibers",
+        "path": "model.md",
+        "required": false,
+        "scope": "A total score has many predicate/participant/word/section decompositions. Duplicate other-participant or word-query entries can contribute repeatedly; no set-quotient equivalence is assumed.",
+        "section": "score-fibers",
+        "status": "partial_source_derived",
+        "type": "score_preimage"
+      },
+      {
+        "id": "rank-fibers",
+        "path": "model.md",
+        "required": false,
+        "scope": "Search orders scores descending, then fact number ascending. Equal score and equal fact number preserve stable input order; a rank position cannot determine a unique source chronology or score decomposition.",
+        "section": "rank-fibers",
+        "status": "partial_source_derived",
+        "type": "tie_order_preimage"
+      },
+      {
+        "id": "cost-decomposition",
+        "path": "model.md",
+        "required": false,
+        "scope": "Sum only reached parsing, unknown world-building, extraction and scoring/sorting work. Worker balance, allocator costs and parser model loading remain separate. Nested models of scoring must not be counted twice.",
+        "section": "cost-decomposition",
+        "status": "partial_source_derived",
+        "type": "resource_approximation"
+      },
+      {
+        "id": "cache-execution-join",
+        "path": "model.md",
+        "scope": "Cache::parse sends ordered missing texts including duplicates to exec::parse_many. Exact-length success inserts pairs; the last duplicate key wins and every corresponding output clones it. Counters advance before parser errors; finish separately checks identity. Oracle: distinct duplicate parses, wrong cardinality and failure counters.",
+        "section": "cache-execution-join",
+        "status": "partial_source_derived",
+        "type": "duplicate_write_projection"
+      },
+      {
+        "id": "frame-parser-boundary",
+        "path": "model.md",
+        "scope": "frames::read preflights tree::annotator and uses read_with through parse_words/Tree::parse_cased rather than locally calling cache or exec. Shared configuration does not prove path equivalence, especially with GPU/repairs. Oracle: independent agreement fixtures before equating outputs.",
+        "section": "frame-parser-boundary",
+        "status": "partial_source_derived",
+        "type": "pipeline_non_equivalence"
+      },
+      {
+        "id": "historical-query-fiber",
+        "path": "model.md",
+        "scope": "where_at selects an object version at requested sentence; where_ver uses that version's sentence for holder location. Labels/place chains use current snapshots. Output does not uniquely reconstruct a consistent historical snapshot. Oracle: holder movement after the object's last version.",
+        "section": "historical-query-fiber",
+        "status": "partial_source_derived",
+        "type": "mixed_time_projection"
+      },
+      {
+        "id": "span-selection-boundary",
+        "path": "model.md",
+        "scope": "span::extract sees one supplied tree/QFrame. Reader selection is external. Num bypasses predicate/clean/qlem; Feel may scan the whole tree; early rejected candidates can return None without alternatives. Oracle: controlled trees for bypass/rejection and separate selection checks.",
+        "section": "span-selection-boundary",
+        "status": "partial_source_derived",
+        "type": "caller_selection_obligation"
+      },
+      {
+        "id": "typed-display-boundary",
+        "path": "model.md",
+        "scope": "Public types admit values beyond parser/constructor canonical subsets. Display collides across fields/values; Id round trips need a bounded domain. Preserve typed identities instead of rebuilding them uniquely from labels. Oracle: colliding variants and out-of-range IDs.",
+        "section": "typed-display-boundary",
+        "status": "partial_source_derived",
+        "type": "representation_preimage"
+      },
+      {
+        "id": "determinism-domain-meet",
+        "path": "model.md",
+        "scope": "Canonical value fields/goals and prior-command harm yield deterministic judgments under fixed tables. Group-wide determinism does not follow: parallel store construction and separately read filesystem metadata retain scheduling/snapshot assumptions.",
+        "section": "determinism-domain-meet",
+        "status": "partial_source_derived",
+        "type": "latent_schedule_constraint"
+      },
+      {
+        "id": "cache-storage-join",
+        "path": "model.md",
+        "scope": "Cache finish validates dependency identity, serializes an envelope and calls store::write_atomic. A successful same-filesystem rename replaces one path under single-writer assumptions; no fsync, multi-file transaction or stale-writer union follows. Errors may leave temp bytes; same-PID names with a shared stem can alias.",
+        "section": "cache-storage-join",
+        "status": "partial_source_derived",
+        "type": "publication_trace"
+      },
+      {
+        "id": "sampled-set-consistency",
+        "path": "model.md",
+        "scope": "Under child valid-files, fixed-corpus and single-writer assumptions, a stale sampled set returns and persists the complete selected vector for the new model. Current/stable stamps trust stored IDs; this relation does not authenticate an edited saved set. Pointwise carry still requires exact deltas outside which membership agrees.",
+        "section": "sampled-set-consistency",
+        "status": "partial_source_derived",
+        "type": "materialized_view_consistency"
+      },
+      {
+        "id": "annotation-derivation-join",
+        "path": "model.md",
+        "scope": "Update compares stored structure, tag and parent-resolved normalized lemma. Under valid stable lemma IDs, the resulting deltas preserve changes consumed by lexical feature indexing and derive::scan_store class/finite projections. The current scan caller separately reloads latest lemmas; coherent version identity is a precondition, not an enforced snapshot. Local tests and abstract delta completeness do not prove whole update or learning quality.",
+        "section": "annotation-derivation-join",
+        "status": "partial_source_derived",
+        "type": "annotation_projection_join"
+      },
+      {
+        "id": "history-display-boundary",
+        "path": "model.md",
+        "scope": "Native query fixtures distinguish repeated state updates, current labels, lexical resolution and attention threshold projections.",
+        "section": "history-display-boundary",
+        "status": "partial_source_derived",
+        "type": "mixed_time_observation_boundary"
+      },
+      {
+        "id": "span-projection-boundary",
+        "path": "model.md",
+        "scope": "Synthetic Tree observations expose cleanup fibers, predicate priority and branch shadowing; parser accuracy and caller sentence choice remain external.",
+        "section": "span-projection-boundary",
+        "status": "partial_source_derived",
+        "type": "normalized_span_preimage"
+      },
+      {
+        "id": "tree-question-world-boundary",
+        "path": "model.md",
+        "scope": "Tree, question and world command observations retain different validity premises and state projections.",
+        "section": "tree-question-world-boundary",
+        "status": "partial_source_correspondence",
+        "type": "validated_representation_boundary"
+      },
+      {
+        "id": "cached-child-cycle-cut",
+        "path": "model.md",
+        "scope": "Constructor-built cached child graphs have indegree at most one; every reachable cycle contains the traversal start.",
+        "section": "cached-child-cycle-cut",
+        "status": "partial_source_correspondence",
+        "type": "functional_graph_cycle_cut"
+      },
+      {
+        "id": "current-history-display",
+        "path": "model.md",
+        "scope": "Parsed command history maps to Markdown snapshots with current-label and lossy formatting premises.",
+        "section": "current-history-display",
+        "status": "partial_source_correspondence",
+        "type": "snapshot_display_join"
+      },
+      {
+        "id": "quantity-observation-tags",
+        "path": "model.md",
+        "scope": "Integer candidate, supplied-tree schema and rational script outputs have distinct validity domains.",
+        "section": "quantity-observation-tags",
+        "status": "partial_source_correspondence",
+        "type": "numeric_language_boundary"
+      },
+      {
+        "id": "reader-question-ownership",
+        "path": "model.md",
+        "scope": "The answer subtree preserves shared fact world, own-text anchors, lexical snapshot and supplied frame identity.",
+        "section": "reader-question-ownership",
+        "status": "partial_source_correspondence",
+        "type": "dependency_identity_join"
+      },
+      {
+        "id": "restricted-csv-join",
+        "path": "model.md",
+        "scope": "Only valid single-line quoted records are compared across tabular and Fairytale parsers; ftqa remains an unregistered dependency.",
+        "section": "restricted-csv-join",
+        "status": "partial_source_correspondence",
+        "type": "restricted_format_equivalence"
+      },
+      {
+        "id": "narrative-time-boundary",
+        "path": "model.md",
+        "scope": "Narrative time and canonical event identities preserve observer, frame and world scope; text order is not universal story order.",
+        "section": "narrative-time-boundary",
+        "status": "partial_source_correspondence",
+        "type": "partial_order_world_identity"
+      },
+      {
+        "id": "rerank-score-domain",
+        "path": "model.md",
+        "scope": "Rerank preserves parser scores, penalties and development-selected lambda. NaN inputs and invalid penalties/lambda reject; infinite parser scores retain comparison behavior. The configured grid avoids extreme finite-product overflow; arbitrary magnitudes remain limited. Finite choice/bootstrap fixtures do not validate significance or held-out accuracy; parser/repair paths remain source-inspected.",
+        "section": "rerank-score-domain",
+        "status": "partial_source_correspondence",
+        "type": "score_selection_domain"
+      },
+      {
+        "id": "argument-score-domain",
+        "path": "model.md",
+        "scope": "Supplied Word annotations preserve positions through Node projection, Matrix lookup, judge and sense argument reasons. Unsupported roles return None. A missing matrix cell can abstain without gap provenance; an unrated idiomatic object can bypass the known layer. The configured lexical judgment is not a universal semantic truth. Finite native joins exercise supplied annotations; parser and repair callers were inspected, not executed.",
+        "section": "argument-score-domain",
+        "status": "partial_source_correspondence",
+        "type": "configured_argument_judgment"
+      },
+      {
+        "id": "inference-core-wave12-mind-input-partition",
+        "path": "model.md",
+        "scope": "Mind segments supplied text before sequential Story reads; heading/blank-only inputs project to no sentences and preserve the supplied Story identity/state. A trailing question selects ask rather than tell; response wording projects returned answers/gaps. Empty-input identity is executed in leaf checks. Nonempty parsing, socket handling, prompt loading and persistent state are source-inspected only. Equal replies cannot reconstruct input text, prior Story or lost gap provenance.",
+        "section": "inference-core-wave12-mind-input-partition",
+        "status": "partial_source_model",
+        "type": "supplied_story_transition"
+      },
+      {
+        "id": "inference-core-wave13-pragmatic-identity-coupling",
+        "path": "model.md",
+        "scope": "Pragmatic feature/classifier/schema/inference observations compose with existing inference-core branches only through explicit identical dictionary snapshots, field class alphabets, row IDs and supplied schedules. Numeric feature IDs from distinct dictionaries cannot be substituted; missing-prefix start fallback cannot be treated as gold or future context. eval.rs fit_set/predict_seq/scores and data.rs Item are inspected unregistered dependencies, not newly owned leaves. Preserve established frame/lexical dependencies and avoid treating these tagged tests as a single CLI pipeline. Reverse composition retains all compatible shared dictionaries/schedules and antecedent rows; equal outputs do not recover training history or unique text.",
+        "section": "inference-core-wave13-pragmatic-identity-coupling",
+        "status": "partial_source_model",
+        "type": "shared_coordinate_composition"
+      },
+      {
+        "id": "inference-core-wave15-frame-rule-lexicon-coordinates",
+        "path": "model.md",
+        "scope": "Shared coordinates are Read frame i, Read.pred[i]=(sentence s, zero-based predicate token p), Tree.w[p] with one-based UD heads, participant slot k, and local Lex indices (class,fclass,frame). Conversion output TSV feeds that same local Lex; global Match accessors do not resolve local indices. Rule edits preserve sentence-qualified lookup; deletion maps retained frame references through one survivor map; rendering and schema views preserve selected roles/acts. The seven tagged fixtures are separate joins, not a general parser pipeline. Universe U consists of the seven tagged supplied-input fixtures and candidate observations at their declared APIs. R requires local Lex class/frame (1,1,0), ordered Agent/Theme/Recipient roles and score 8; active/passive subject roles Agent/Theme and scores 4/8; sentence-1 Bob copied at frame 3; survivor frame map 0->0,3->1 with unchanged predicate token pairs; only sentence-0 participle added; only oblique slot 5 resolved; and accepted/proposed role transfers with exact Frame JSON preservation. U minus R excludes swapped lexical roles, global-Lex index substitution, Alice copied across sentences, dangling deleted frame indices, altered token coordinates, adding the wrong sentence token, changing recipient while resolving an oblique, rejected/off rule execution and changed non-target Frame fields. This is a source-derived assertion relation, not a proven complement for all Rust paths; malformed domains and unexecuted branches remain unknown. Reverse composition retains compatible supplied XML/table, clause, frame/tree and rule states sharing these coordinates; discarded frames, unmatched words and original XML layout are not recovered. Cost is reached conversion, matching, rule/remap and rendering work; no whole-system bound follows.",
+        "section": "inference-core-wave15-frame-rule-lexicon-coordinates",
+        "status": "partial_source_model",
+        "type": "supplied_pragmatic_coordinate_composition"
+      },
+      {
+        "id": "inference-core-wave16-scorer-silver-coordinates",
+        "path": "model.md",
+        "scope": "Shared coordinates are the supplied Frame list and explicit permutation, scorer role/link indices, one-based retained Item batch positions, closed Act alphabet and source/document/paragraph identity. Notation precedes scoring; numbered rows precede TSV/metrics; batching precedes prompt numbering. These are separate tagged joins. Exclude unremapped links, duplicate occurrence overcredit, row/class substitution and cross-source/wrapping context suppression. Reverse fibers retain omitted frame detail, raw row order/text and unprinted metadata ambiguity. Costs include reached parsing/alignment/maps/rendering only; no general pipeline proof.",
+        "section": "inference-core-wave16-scorer-silver-coordinates",
+        "status": "partial_source_model",
+        "type": "supplied_scoring_annotation_coordinates"
+      },
+      {
+        "id": "inference-core-wave17-teacher-accounting-label-coordinates",
+        "path": "model.md",
+        "scope": "The pragmatic-observation child binds the CLI/library boundary and supplied Codex events -> validated reply -> attempted-call accounting -> numbered labels over the same Item batch. Retain batch identity, attempted cardinality, row positions and source/voice policy. Decode rejection precedes accounting in the tested adapter. Attempted counts do not establish accepted labels; ledger values and normalized rows have nonunique antecedents. Cost includes reached decoding, projection, sequential ledger I/O and gate work. No live teacher, corpus acquisition, durability or school-learning claim follows. Question-generation belongs to the separate school-support subtree.",
+        "section": "inference-core-wave17-teacher-accounting-label-coordinates",
+        "status": "partial_source_model",
+        "type": "teacher_annotation_boundary"
+      },
+      {
+        "id": "inference-core-wave26-en-src-conllu-rs-file_layers",
+        "path": "model.md",
+        "scope": "Source relation en/src/conllu.rs; Layers are computed over all returned syntactic words: nonempty parsed known FEATS, lemma != underscore, form != underscore; present iff count*20>=W, inclusive 5%. read emits no sentence at W0; comment-only Doc sentences exist and all three flags become true because 0>=0. Refresh preserves existing flags rather than recomputing a file-wide decision.",
+        "section": "inference-core-wave26-en-src-conllu-rs-file_layers",
+        "status": "partial_source_bound_model",
+        "type": "file_layers"
+      },
+      {
+        "id": "inference-core-wave26-en-src-conllu-rs-head_gate_boundary",
+        "path": "model.md",
+        "scope": "Source relation en/src/conllu.rs; Both read and refresh parse raw HEAD using usize.parse().unwrap_or(0), so malformed raw strings can look like roots in the derived view. Doc keeps the raw string losslessly. Consumers needing trees must validate raw heads through tree_gate; Doc acceptance and a derived zero are not a certificate.",
+        "section": "inference-core-wave26-en-src-conllu-rs-head_gate_boundary",
+        "status": "partial_source_bound_model",
+        "type": "head_gate_boundary"
+      },
+      {
+        "id": "inference-core-wave26-en-src-conllu-rs-failure_precedence",
+        "path": "model.md",
+        "scope": "Source relation en/src/conllu.rs; read opens/streams the file, skips short and range/decimal lines before relation parsing. Doc performs the whole lexical scan before refreshing sentences, so a later lexical error can precede an earlier semantic ID/relation error. Refresh checks each word ID before that word relation. I/O errors propagate, vector allocation may abort; no callbacks are invoked.",
+        "section": "inference-core-wave26-en-src-conllu-rs-failure_precedence",
+        "status": "partial_source_bound_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "inference-core-wave26-en-src-conllu-rs-finite_checks",
+        "path": "model.md",
+        "scope": "Source relation en/src/conllu.rs; Four bounded tests cover synthetic byte round trips, lexical/semantic rejections and two repaired state transitions. Embedded full-treebank test is explicitly skipped. Passing finite fixtures neither proves the parser for every UTF-8 string nor observes external corpora.",
+        "section": "inference-core-wave26-en-src-conllu-rs-finite_checks",
+        "status": "partial_source_bound_model",
+        "type": "finite_checks"
+      },
+      {
+        "id": "inference-core-wave26-en-tests-groupant_wave26-rs-root_basin",
+        "path": "model.md",
+        "scope": "Source relation en/tests/groupant_wave26.rs; Type: composition_relation.\n\nAfter root-count and raw-head preflight, tree_gate accepts iff every syntactic vertex shares cycle_id[0]. Since successor[0]=0, this cycle is exactly [0]. Exact first cycle error is min i>=1 with cycle_id[i]!=cycle_id[0]; tails into a nonroot cycle are included.",
+        "section": "inference-core-wave26-en-tests-groupant_wave26-rs-root_basin",
+        "status": "partial_source_bound_model",
+        "type": "composition_relation"
+      },
+      {
+        "id": "inference-core-wave26-en-tests-groupant_wave26-rs-independent_walk",
+        "path": "model.md",
+        "scope": "Source relation en/tests/groupant_wave26.rs; Type: oracle_relation.\n\nFor each start, at most n head steps reach zero iff it terminates; otherwise a nonzero vertex repeats. This independent bounded-walk predicate corroborates cycle membership without using production decomposition state or tree-gate internals.",
+        "section": "inference-core-wave26-en-tests-groupant_wave26-rs-independent_walk",
+        "status": "partial_source_bound_model",
+        "type": "oracle_relation"
+      },
+      {
+        "id": "inference-core-wave26-en-tests-groupant_wave26-rs-error_order",
+        "path": "model.md",
+        "scope": "Source relation en/tests/groupant_wave26.rs; Type: error_partition.\n\nDoc rejects malformed field count, nonconsecutive IDs and unknown relations before a gate call. Accepted representation can still contain malformed HEAD, range errors, relation/root mismatch, zero/multiple roots or cycles. Gate preflight scans all raw rows before cycle detection; a later malformed head therefore precedes an earlier self-loop.",
+        "section": "inference-core-wave26-en-tests-groupant_wave26-rs-error_order",
+        "status": "partial_source_bound_model",
+        "type": "error_partition"
+      },
+      {
+        "id": "inference-core-wave26-en-tests-groupant_wave26-rs-discarded_rows",
+        "path": "model.md",
+        "scope": "Source relation en/tests/groupant_wave26.rs; Type: coordinate_relation.\n\nDoc retains MWT range and decimal empty-node rows. words indexes only syntactic rows, while head coordinates refer to one-based syntactic words, never raw row offsets. Adding ignored rows preserves gate result and decomposition while changing raw row indices.",
+        "section": "inference-core-wave26-en-tests-groupant_wave26-rs-discarded_rows",
+        "status": "partial_source_bound_model",
+        "type": "coordinate_relation"
+      },
+      {
+        "id": "inference-core-wave26-en-tests-groupant_wave26-rs-negative_control",
+        "path": "model.md",
+        "scope": "Source relation en/tests/groupant_wave26.rs; Type: counterfactual_relation.\n\nCompile a harness adapter mutant replacing extend_from_slice(heads) by extending heads mapped with saturating_sub(1). The named coordinates_first_failure_and_threshold exact adapter assertion must fail; restore byte-identical source and rerun positively.",
+        "section": "inference-core-wave26-en-tests-groupant_wave26-rs-negative_control",
+        "status": "partial_source_bound_model",
+        "type": "counterfactual_relation"
+      },
+      {
+        "id": "inference-core-wave26-en-tests-groupant_wave26-rs-finite_coverage",
+        "path": "model.md",
+        "scope": "Source relation en/tests/groupant_wave26.rs; Type: coverage_relation.\n\nExhaustive small vectors cover all self-loops, multiple cycles and tails compatible with one root. Fixed 64/65/66 cases cross the production gate implementation threshold. Passing does not establish large-input correctness, arbitrary parser equivalence, allocation safety or formal proof.",
+        "section": "inference-core-wave26-en-tests-groupant_wave26-rs-finite_coverage",
+        "status": "partial_source_bound_model",
+        "type": "coverage_relation"
+      },
+      {
+        "assumptions": "No corpus, teacher, API, GPU, held-out or training run. Existing compiled dictionary/registry tables participate only where safe tests call ordinary functions; dictionary-sensitive early-return tests excluded. u32 narrowing, allocation failure, arbitrary malformed heads and environment OnceLock alternate modes remain gaps.",
+        "domain": "Bounded synthetic strings, valid aligned token arrays and in-range heads for geometry; valid System shapes with >=1 baseline and seeds, bootstrap B>=1 for comparison. Effects limited in tests to isolated temporary synthetic build/fold/report files. Real training/model/corpus paths are source-derived only.",
+        "id": "wave27-english-orchestration-context-transport",
+        "operator": "Doc nonempty sentence order→Ctx/docs; train_ctx filters tagged sentences and offsets document IDs; test_ctx validates pass1 IDs/counts; masking occurs after derivation/shuffle. ctxeval System loader checks IDs/counts but not forms. Crossing these adapters requires explicit order alignment, not just equal lengths.",
+        "path": "model.md",
+        "section": "wave27-english-orchestration-context-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No corpus, teacher, API, GPU, held-out or training run. Existing compiled dictionary/registry tables participate only where safe tests call ordinary functions; dictionary-sensitive early-return tests excluded. u32 narrowing, allocation failure, arbitrary malformed heads and environment OnceLock alternate modes remain gaps.",
+        "domain": "Bounded synthetic strings, valid aligned token arrays and in-range heads for geometry; valid System shapes with >=1 baseline and seeds, bootstrap B>=1 for comparison. Effects limited in tests to isolated temporary synthetic build/fold/report files. Real training/model/corpus paths are source-derived only.",
+        "id": "wave27-english-orchestration-effect-prefix",
+        "operator": "Build reads then writes lexicon/layout/words sequentially; folds creates dir then fold/rest files; train saves before reload comparison; conversion streams completed files before later failure. A failure may retain prefixes and no rollback is modeled.",
+        "path": "model.md",
+        "section": "wave27-english-orchestration-effect-prefix",
+        "status": "partial_composition_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "No corpus, teacher, API, GPU, held-out or training run. Existing compiled dictionary/registry tables participate only where safe tests call ordinary functions; dictionary-sensitive early-return tests excluded. u32 narrowing, allocation failure, arbitrary malformed heads and environment OnceLock alternate modes remain gaps.",
+        "domain": "Bounded synthetic strings, valid aligned token arrays and in-range heads for geometry; valid System shapes with >=1 baseline and seeds, bootstrap B>=1 for comparison. Effects limited in tests to isolated temporary synthetic build/fold/report files. Real training/model/corpus paths are source-derived only.",
+        "id": "wave27-english-orchestration-coordinate-join",
+        "operator": "Token vector index i maps head ID i+1; zero is root. Context entity features use zero/no-layer, one/outside, >=2 encoded type/status. Build offsets distinguish byte offsets from record counts and symbol IDs; none are interchangeable.",
+        "path": "model.md",
+        "section": "wave27-english-orchestration-coordinate-join",
+        "status": "partial_composition_model",
+        "type": "coordinate_system"
+      },
+      {
+        "assumptions": "No corpus, teacher, API, GPU, held-out or training run. Existing compiled dictionary/registry tables participate only where safe tests call ordinary functions; dictionary-sensitive early-return tests excluded. u32 narrowing, allocation failure, arbitrary malformed heads and environment OnceLock alternate modes remain gaps.",
+        "domain": "Bounded synthetic strings, valid aligned token arrays and in-range heads for geometry; valid System shapes with >=1 baseline and seeds, bootstrap B>=1 for comparison. Effects limited in tests to isolated temporary synthetic build/fold/report files. Real training/model/corpus paths are source-derived only.",
+        "id": "wave27-english-orchestration-uncertainty-join",
+        "operator": "Compile visibility of lib is not execution evidence. Fourteen finite tests and seven mutants falsify selected contracts only; unknown live paths and unsupported percentage approximants remain explicit. Bootstrap intervals are sampling summaries, not proofs of real-task improvement.",
+        "path": "model.md",
+        "section": "wave27-english-orchestration-uncertainty-join",
+        "status": "partial_composition_model",
+        "type": "assurance_boundary"
+      },
+      {
+        "assumptions": "No corpus, teacher, GPU, persistent model or external mutation; approximate branch finite tests do not prove error bounds.",
+        "domain": "Bounded synthetic expressions/quantities, normalized representable rationals, finite numeric fixtures, representable i8 unit exponents, n<32 search masks. Public malformed trees/states and huge counts remain explicit gaps.",
+        "id": "wave27-symbolic-arithmetic-representation-transport",
+        "operator": "Q.base joins Rat value with Mono factor or affine offset; gate compares this SI observation with fcheck. big Q used in arith has no automatic unit or checked-i128 transport.",
+        "path": "model.md",
+        "section": "wave27-symbolic-arithmetic-representation-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No corpus, teacher, GPU, persistent model or external mutation; approximate branch finite tests do not prove error bounds.",
+        "domain": "Bounded synthetic expressions/quantities, normalized representable rationals, finite numeric fixtures, representable i8 unit exponents, n<32 search masks. Public malformed trees/states and huge counts remain explicit gaps.",
+        "id": "wave27-symbolic-arithmetic-failure-order",
+        "operator": "Children precede parent validation; prior Ctx updates survive failure. Thermal kind rejection precedes numerical zero division. Units reject dimensions before scale arithmetic.",
+        "path": "model.md",
+        "section": "wave27-symbolic-arithmetic-failure-order",
+        "status": "partial_composition_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "No corpus, teacher, GPU, persistent model or external mutation; approximate branch finite tests do not prove error bounds.",
+        "domain": "Bounded synthetic expressions/quantities, normalized representable rationals, finite numeric fixtures, representable i8 unit exponents, n<32 search masks. Public malformed trees/states and huge counts remain explicit gaps.",
+        "id": "wave27-symbolic-arithmetic-exact-replay",
+        "operator": "Selected arith Tree exact replay certifies only its arithmetic over retained quantities, not float beam completeness, learned relevance or gold tolerance equality.",
+        "path": "model.md",
+        "section": "wave27-symbolic-arithmetic-exact-replay",
+        "status": "partial_composition_model",
+        "type": "search_certificate"
+      },
+      {
+        "assumptions": "No corpus, teacher, GPU, persistent model or external mutation; approximate branch finite tests do not prove error bounds.",
+        "domain": "Bounded synthetic expressions/quantities, normalized representable rationals, finite numeric fixtures, representable i8 unit exponents, n<32 search masks. Public malformed trees/states and huge counts remain explicit gaps.",
+        "id": "wave27-symbolic-arithmetic-resources",
+        "operator": "No general allocation/depth cap; subset masks assume n<32 and unit exponents assume representability. Existing probability enumeration bounded to16 only after count sum.",
+        "path": "model.md",
+        "section": "wave27-symbolic-arithmetic-resources",
+        "status": "partial_composition_model",
+        "type": "resource_domain"
+      },
+      {
+        "assumptions": "No live API/teacher, DB, corpus, model mutation, GPU or full-school run; lib visibility compile only, main startup excluded.",
+        "domain": "Bounded UTF-8 synthetic inputs and fresh temporary files; finite representable integer intermediates, positive max for nonempty VMM parts and sentence counts within u16 for intended ranges.",
+        "id": "wave28-world-dialogue-normalization-join",
+        "operator": "ideas words = set(filter_map(nerves::norm, alphanumeric tokens)); talk cue matching has different boundaries and cannot substitute for nerves normalization.",
+        "path": "model.md",
+        "section": "wave28-world-dialogue-normalization-join",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No live API/teacher, DB, corpus, model mutation, GPU or full-school run; lib visibility compile only, main startup excluded.",
+        "domain": "Bounded UTF-8 synthetic inputs and fresh temporary files; finite representable integer intermediates, positive max for nonempty VMM parts and sentence counts within u16 for intended ranges.",
+        "id": "wave28-world-dialogue-coordinate-join",
+        "operator": "VMM splice uses 1-based physical lines while prompt partitions use 1-based inclusive sentence anchors; changing line N does not imply changing sentence N.",
+        "path": "model.md",
+        "section": "wave28-world-dialogue-coordinate-join",
+        "status": "partial_composition_model",
+        "type": "coordinate_transport"
+      },
+      {
+        "assumptions": "No live API/teacher, DB, corpus, model mutation, GPU or full-school run; lib visibility compile only, main startup excluded.",
+        "domain": "Bounded UTF-8 synthetic inputs and fresh temporary files; finite representable integer intermediates, positive max for nonempty VMM parts and sentence counts within u16 for intended ranges.",
+        "id": "wave28-world-dialogue-effect-order",
+        "operator": "Main activates state before dispatch; VMM done refusal precedes partition and teacher; ideas atomic write failure is swallowed, unlike VMM file errors.",
+        "path": "model.md",
+        "section": "wave28-world-dialogue-effect-order",
+        "status": "partial_composition_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "No live API/teacher, DB, corpus, model mutation, GPU or full-school run; lib visibility compile only, main startup excluded.",
+        "domain": "Bounded UTF-8 synthetic inputs and fresh temporary files; finite representable integer intermediates, positive max for nonempty VMM parts and sentence counts within u16 for intended ranges.",
+        "id": "wave28-world-dialogue-resource-join",
+        "operator": "Three diffusion frontiers bounded at 4000 coexist with unbounded total activation and whole-file ideas/memory loading; teacher cost has no measured time bound.",
+        "path": "model.md",
+        "section": "wave28-world-dialogue-resource-join",
+        "status": "partial_composition_model",
+        "type": "cost_composition"
+      },
+      {
+        "assumptions": "Runtime fixtures cover pure helpers plus fresh list/book and early CLI failures. Nonempty CUDA route source-modeled only; no kernel compile/execution. Actual training/state transitions/assessments and successful retained probe unexecuted.",
+        "domain": "Finite synthetic tests and explicit temporary fixtures; rule atoms within internal21bit encoding for subset claims, aligned sentence/feature arrays, bounded counters and valid tree heads for traversal. No live corpus/teacher/school/GPU effects.",
+        "id": "wave29-world-rule-learning-rule-scope-join",
+        "operator": "Change carries Rule but not scope; family separately serializes scope and reattaches it. Replace retains each preexisting scope. Applying ordered labels need not commute, so independent candidate gains do not sum; combined child guard required.",
+        "path": "model.md",
+        "section": "wave29-world-rule-learning-rule-scope-join",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Runtime fixtures cover pure helpers plus fresh list/book and early CLI failures. Nonempty CUDA route source-modeled only; no kernel compile/execution. Actual training/state transitions/assessments and successful retained probe unexecuted.",
+        "domain": "Finite synthetic tests and explicit temporary fixtures; rule atoms within internal21bit encoding for subset claims, aligned sentence/feature arrays, bounded counters and valid tree heads for traversal. No live corpus/teacher/school/GPU effects.",
+        "id": "wave29-world-rule-learning-count-kernel-join",
+        "operator": "CPU Feats[si][i] nonzero21bit codes -> GPU flat codes plusu32 offsets and enum labelu8->u32; group dense index determines count slot. Correctness assumes offset/count widths and unique table keys; no GPU execution witness.",
+        "path": "model.md",
+        "section": "wave29-world-rule-learning-count-kernel-join",
+        "status": "partial_composition_model",
+        "type": "coordinate_transport"
+      },
+      {
+        "assumptions": "Runtime fixtures cover pure helpers plus fresh list/book and early CLI failures. Nonempty CUDA route source-modeled only; no kernel compile/execution. Actual training/state transitions/assessments and successful retained probe unexecuted.",
+        "domain": "Finite synthetic tests and explicit temporary fixtures; rule atoms within internal21bit encoding for subset claims, aligned sentence/feature arrays, bounded counters and valid tree heads for traversal. No live corpus/teacher/school/GPU effects.",
+        "id": "wave29-world-rule-learning-brain-book-join",
+        "operator": "worldbook write emits<=3citation notes/fact, brain_body takes first note and<=12lines/part but returns total cited lines. family uses total as report and truncated body as stored knowledge; neither recovers all Fact attrs/support.",
+        "path": "model.md",
+        "section": "wave29-world-rule-learning-brain-book-join",
+        "status": "partial_composition_model",
+        "type": "projection_loss"
+      },
+      {
+        "assumptions": "Runtime fixtures cover pure helpers plus fresh list/book and early CLI failures. Nonempty CUDA route source-modeled only; no kernel compile/execution. Actual training/state transitions/assessments and successful retained probe unexecuted.",
+        "domain": "Finite synthetic tests and explicit temporary fixtures; rule atoms within internal21bit encoding for subset claims, aligned sentence/feature arrays, bounded counters and valid tree heads for traversal. No live corpus/teacher/school/GPU effects.",
+        "id": "wave29-world-rule-learning-effect-order",
+        "operator": "Family hot write precedes state transition/guard; ignored rollback errors prevent transaction claim. Retention probe rejects argc before reads, parses train before exam, saves before equality. Teacher failure and filesystem failure are not numerical approximation errors.",
+        "path": "model.md",
+        "section": "wave29-world-rule-learning-effect-order",
+        "status": "partial_composition_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "Global compiled relation metadata supplies north/east and inverse/step knowledge for bAbI graph fixtures; it is read-only compiled source data. General bAbI read/ask and live parsing remain unexecuted. Tests.rs saved Wen and natural-language model paths, tests3 saved merchant, legacy parser_failures/school_bench school commands, StepGame train/eval/contrast are excluded. No percentage executable surrogate metric for these categorical/effect relations.",
+        "domain": "Finite UTF-8 literals, bounded synthetic Word/Item/World fixtures, coherent internal Story maps and available host temp directory; default CPU build. Integer operations within range and successful allocation. Selected library tests do not load parser models, datasets, saved VMM test fixtures or teacher. Integration helpers never spawn world binary.",
+        "id": "wave29-world-evaluation-boundaries-coordinate-transport",
+        "operator": "bAbI offset from reference subtracts relation adjacency vectors; StepGame edge reference→subject adds Reader vector. Both mean subject minus reference but edge storage is opposite. Model each adapter explicitly; tests use c→a displacement(1,1) and C→A displacement(-2,0).",
+        "path": "model.md",
+        "section": "wave29-world-evaluation-boundaries-coordinate-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Global compiled relation metadata supplies north/east and inverse/step knowledge for bAbI graph fixtures; it is read-only compiled source data. General bAbI read/ask and live parsing remain unexecuted. Tests.rs saved Wen and natural-language model paths, tests3 saved merchant, legacy parser_failures/school_bench school commands, StepGame train/eval/contrast are excluded. No percentage executable surrogate metric for these categorical/effect relations.",
+        "domain": "Finite UTF-8 literals, bounded synthetic Word/Item/World fixtures, coherent internal Story maps and available host temp directory; default CPU build. Integer operations within range and successful allocation. Selected library tests do not load parser models, datasets, saved VMM test fixtures or teacher. Integration helpers never spawn world binary.",
+        "id": "wave29-world-evaluation-boundaries-transaction-boundary",
+        "operator": "Command fixture world parses all lines before any apply; tests record unchanged observed state on rejects. bAbI read increments t before annotator and may update subjects before unknown-class failure. CLI Command setup has no binary startup; successful setup does not certify failed model handling.",
+        "path": "model.md",
+        "section": "wave29-world-evaluation-boundaries-transaction-boundary",
+        "status": "partial_composition_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "Global compiled relation metadata supplies north/east and inverse/step knowledge for bAbI graph fixtures; it is read-only compiled source data. General bAbI read/ask and live parsing remain unexecuted. Tests.rs saved Wen and natural-language model paths, tests3 saved merchant, legacy parser_failures/school_bench school commands, StepGame train/eval/contrast are excluded. No percentage executable surrogate metric for these categorical/effect relations.",
+        "domain": "Finite UTF-8 literals, bounded synthetic Word/Item/World fixtures, coherent internal Story maps and available host temp directory; default CPU build. Integer operations within range and successful allocation. Selected library tests do not load parser models, datasets, saved VMM test fixtures or teacher. Integration helpers never spawn world binary.",
+        "id": "wave29-world-evaluation-boundaries-observation-fibers",
+        "operator": "World test snapshots omit K for claim invariance and inspect only selected version/event observations for rollback. Partial time order preserves Unknown for incomparable events; no numeric duration inferred. Story state_lines is a different lossy projection and cannot be substituted.",
+        "path": "model.md",
+        "section": "wave29-world-evaluation-boundaries-observation-fibers",
+        "status": "partial_composition_model",
+        "type": "state_projection"
+      },
+      {
+        "assumptions": "Global compiled relation metadata supplies north/east and inverse/step knowledge for bAbI graph fixtures; it is read-only compiled source data. General bAbI read/ask and live parsing remain unexecuted. Tests.rs saved Wen and natural-language model paths, tests3 saved merchant, legacy parser_failures/school_bench school commands, StepGame train/eval/contrast are excluded. No percentage executable surrogate metric for these categorical/effect relations.",
+        "domain": "Finite UTF-8 literals, bounded synthetic Word/Item/World fixtures, coherent internal Story maps and available host temp directory; default CPU build. Integer operations within range and successful allocation. Selected library tests do not load parser models, datasets, saved VMM test fixtures or teacher. Integration helpers never spawn world binary.",
+        "id": "wave29-world-evaluation-boundaries-execution-scope",
+        "operator": "17 selected bounded tests and four compiled controls exercise helpers/state/grammar. The two integration sources' legacy process-running tests remain excluded, as do model-backed readers and stored corpus fixtures. Scratch cleanup is observed under normal OS success only.",
+        "path": "model.md",
+        "section": "wave29-world-evaluation-boundaries-execution-scope",
+        "status": "partial_composition_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "CPU/GPU runtime and Candle kernels trusted beyond finite checks. CUDA tests serial on RTX4000 SFF Ada, compile cap89, two build jobs. Explicit CUDA Device::new_cuda calls do not depend on GP_CPU; CPU prediction uses GP_FUSED_SOFTMAX=0. Original model/corpus timing and optimizer experiments not executed. No full mathematical/semantic AST proof or percent-error surrogate.",
+        "domain": "UTF-8 and valid Sent/Batch coordinates; Eisner square matrices with representable finite intermediate candidate sums for chart/backtrace tie guarantees, with special empty/singleton early branches. Exact-real maximum-tree interpretation additionally requires exact arithmetic or order-preservation across every rounded comparison. Net requires max_len>0, heads>0,d divisible heads, valid indices, resources and CUDA for selected ignored synthetic tests. No live model/corpus.",
+        "id": "wave30-neural-parser-paths-coordinate-join",
+        "operator": "Batch row=k*T+i; tensor arc cell=(k*T+d)*T+h; decoder sc[h][d] receives that cell; relation head=k*T+h. Root index0 is local per sentence and never a real loss row.",
+        "path": "model.md",
+        "section": "wave30-neural-parser-paths-coordinate-join",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "CPU/GPU runtime and Candle kernels trusted beyond finite checks. CUDA tests serial on RTX4000 SFF Ada, compile cap89, two build jobs. Explicit CUDA Device::new_cuda calls do not depend on GP_CPU; CPU prediction uses GP_FUSED_SOFTMAX=0. Original model/corpus timing and optimizer experiments not executed. No full mathematical/semantic AST proof or percent-error surrogate.",
+        "domain": "UTF-8 and valid Sent/Batch coordinates; Eisner square matrices with representable finite intermediate candidate sums for chart/backtrace tie guarantees, with special empty/singleton early branches. Exact-real maximum-tree interpretation additionally requires exact arithmetic or order-preservation across every rounded comparison. Net requires max_len>0, heads>0,d divisible heads, valid indices, resources and CUDA for selected ignored synthetic tests. No live model/corpus.",
+        "id": "wave30-neural-parser-paths-gradient-join",
+        "operator": "Train=true selects custom fused VJP or reference attention, retaining Q/K/V plus embedding/LN gradients; inference fused loses Q/K gradient while V still reaches loss. Checking any QKV gradient alone is insufficient.",
+        "path": "model.md",
+        "section": "wave30-neural-parser-paths-gradient-join",
+        "status": "partial_composition_model",
+        "type": "gradient_transport"
+      },
+      {
+        "assumptions": "CPU/GPU runtime and Candle kernels trusted beyond finite checks. CUDA tests serial on RTX4000 SFF Ada, compile cap89, two build jobs. Explicit CUDA Device::new_cuda calls do not depend on GP_CPU; CPU prediction uses GP_FUSED_SOFTMAX=0. Original model/corpus timing and optimizer experiments not executed. No full mathematical/semantic AST proof or percent-error surrogate.",
+        "domain": "UTF-8 and valid Sent/Batch coordinates; Eisner square matrices with representable finite intermediate candidate sums for chart/backtrace tie guarantees, with special empty/singleton early branches. Exact-real maximum-tree interpretation additionally requires exact arithmetic or order-preservation across every rounded comparison. Net requires max_len>0, heads>0,d divisible heads, valid indices, resources and CUDA for selected ignored synthetic tests. No live model/corpus.",
+        "id": "wave30-neural-parser-paths-checkpoint-effects",
+        "operator": "CLI metadata writes precede epoch loop, checkpoints only strict improvements on full-dev/no-dev epochs, log follows. Failures may leave partial output. Selected synthetic optimizer mutates only ephemeral variables.",
+        "path": "model.md",
+        "section": "wave30-neural-parser-paths-checkpoint-effects",
+        "status": "partial_composition_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "CPU/GPU runtime and Candle kernels trusted beyond finite checks. CUDA tests serial on RTX4000 SFF Ada, compile cap89, two build jobs. Explicit CUDA Device::new_cuda calls do not depend on GP_CPU; CPU prediction uses GP_FUSED_SOFTMAX=0. Original model/corpus timing and optimizer experiments not executed. No full mathematical/semantic AST proof or percent-error surrogate.",
+        "domain": "UTF-8 and valid Sent/Batch coordinates; Eisner square matrices with representable finite intermediate candidate sums for chart/backtrace tie guarantees, with special empty/singleton early branches. Exact-real maximum-tree interpretation additionally requires exact arithmetic or order-preservation across every rounded comparison. Net requires max_len>0, heads>0,d divisible heads, valid indices, resources and CUDA for selected ignored synthetic tests. No live model/corpus.",
+        "id": "wave30-neural-parser-paths-score-metric",
+        "operator": "Scored prediction sums arc and raw relation plus half tag log probabilities before root/dep label rewriting. CLI percentage metrics count zipped tokens, whereas source tests assert prediction lengths explicitly; neither is normalized tree posterior.",
+        "path": "model.md",
+        "section": "wave30-neural-parser-paths-score-metric",
+        "status": "partial_composition_model",
+        "type": "observation_projection"
+      },
+      {
+        "assumptions": "Dependency semantics unchanged; deterministic BTree ordering and fixed fixture order. Partial syntax has no macro expansion or semantic resolution. Existing source production bytes unchanged; only tests appended in extract.rs/main.rs/tests/court.rs. Repeated successful tests are finite correspondence. No meaningful executable approximate metric established.",
+        "domain": "Tiny manually constructed cases/rules, finite nonnegative statistical weights with finite positive total where defined, valid lattice indices/options, representable shifts/products, successful allocations. Selected tests use at most a few rules; explicit enumeration<=128 assignments. Parser-model initialization, real corpus/gold and full CLI side effects excluded.",
+        "id": "wave31-rule-court-evaluation-clause-boolean-transport",
+        "operator": "Rule codec preserves nested grouping only on delimiter-safe canonical domain. Conditions use semicolon groups with pipe alternatives; exceptions semicolon groups with plus conjunctions. court chooses max condition Status and min exception Status. Swapping separators is a counterexample to correct wiring.",
+        "path": "model.md",
+        "section": "wave31-rule-court-evaluation-clause-boolean-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Dependency semantics unchanged; deterministic BTree ordering and fixed fixture order. Partial syntax has no macro expansion or semantic resolution. Existing source production bytes unchanged; only tests appended in extract.rs/main.rs/tests/court.rs. Repeated successful tests are finite correspondence. No meaningful executable approximate metric established.",
+        "domain": "Tiny manually constructed cases/rules, finite nonnegative statistical weights with finite positive total where defined, valid lattice indices/options, representable shifts/products, successful allocations. Selected tests use at most a few rules; explicit enumeration<=128 assignments. Parser-model initialization, real corpus/gold and full CLI side effects excluded.",
+        "id": "wave31-rule-court-evaluation-duty-anchor-projection",
+        "operator": "An obligation anchored on its act records duty0 when positive and duty2 when negated; completed duty is skipped before cap/evaluation. Condition-anchored duty uses clause_status, with Unknown/Broad ->1. Verdict label uses first act_verb, not patient text; no retained matched-rule witness exists for skipped duty.",
+        "path": "model.md",
+        "section": "wave31-rule-court-evaluation-duty-anchor-projection",
+        "status": "partial_composition_model",
+        "type": "duty_completion"
+      },
+      {
+        "assumptions": "Dependency semantics unchanged; deterministic BTree ordering and fixed fixture order. Partial syntax has no macro expansion or semantic resolution. Existing source production bytes unchanged; only tests appended in extract.rs/main.rs/tests/court.rs. Repeated successful tests are finite correspondence. No meaningful executable approximate metric established.",
+        "domain": "Tiny manually constructed cases/rules, finite nonnegative statistical weights with finite positive total where defined, valid lattice indices/options, representable shifts/products, successful allocations. Selected tests use at most a few rules; explicit enumeration<=128 assignments. Parser-model initialization, real corpus/gold and full CLI side effects excluded.",
+        "id": "wave31-rule-court-evaluation-lookup-to-precedence",
+        "operator": "Jurisdiction Cover selects anchor strength and potential Reading point; authority first substring supplies rank; severity last max-rank match supplies Liability severity. Evaluate applies chosen principle strict key comparison with earlier-body ties, then suspension. Changing one order changes winning trace even if same rule set.",
+        "path": "model.md",
+        "section": "wave31-rule-court-evaluation-lookup-to-precedence",
+        "status": "partial_composition_model",
+        "type": "ordered_lookup_composition"
+      },
+      {
+        "assumptions": "Dependency semantics unchanged; deterministic BTree ordering and fixed fixture order. Partial syntax has no macro expansion or semantic resolution. Existing source production bytes unchanged; only tests appended in extract.rs/main.rs/tests/court.rs. Repeated successful tests are finite correspondence. No meaningful executable approximate metric established.",
+        "domain": "Tiny manually constructed cases/rules, finite nonnegative statistical weights with finite positive total where defined, valid lattice indices/options, representable shifts/products, successful allocations. Selected tests use at most a few rules; explicit enumeration<=128 assignments. Parser-model initialization, real corpus/gold and full CLI side effects excluded.",
+        "id": "wave31-rule-court-evaluation-count-to-report",
+        "operator": "count groups local assignment fibers and full global Cartesian assignments, while tipping explores only limited distinct-point alternatives. Report reachability within depth is a subset observation, not full-lattice exclusion; sensitivity compares one-tip verdicts to other counted verdicts.",
+        "path": "model.md",
+        "section": "wave31-rule-court-evaluation-count-to-report",
+        "status": "partial_composition_model",
+        "type": "finite_fiber_aggregation"
+      },
+      {
+        "assumptions": "Dependency semantics unchanged; deterministic BTree ordering and fixed fixture order. Partial syntax has no macro expansion or semantic resolution. Existing source production bytes unchanged; only tests appended in extract.rs/main.rs/tests/court.rs. Repeated successful tests are finite correspondence. No meaningful executable approximate metric established.",
+        "domain": "Tiny manually constructed cases/rules, finite nonnegative statistical weights with finite positive total where defined, valid lattice indices/options, representable shifts/products, successful allocations. Selected tests use at most a few rules; explicit enumeration<=128 assignments. Parser-model initialization, real corpus/gold and full CLI side effects excluded.",
+        "id": "wave31-rule-court-evaluation-protocol-state-boundary",
+        "operator": "protocol hashes currently read disk rules.tsv, default empty on read failure, while lattice records use current in-memory Jurisdiction rules and caller-supplied report text. Coherence requires these independently supplied observations to refer to the same snapshot; FNV collisions and concurrent file changes defeat unique reconstruction.",
+        "path": "model.md",
+        "section": "wave31-rule-court-evaluation-protocol-state-boundary",
+        "status": "partial_composition_model",
+        "type": "effect_observation"
+      },
+      {
+        "assumptions": "Source inspection covers CLI effects, but actual live corpus, teacher, frozen assessments, production DB/model data, downloads and lesson workflows excluded. No parser completeness, language accuracy or universal safety inferred from finite checks. Existing audit-before-guard and transitive-invalid-head caveats retained.",
+        "domain": "Small synthetic strings/XML/arrays and tempfile model roundtrip under dedicated temp root. Scoring requires representable counts, column bounds, finite alpha>0 and nonnegative switch costs for objective model; rows nonempty10 fields, heads valid for tree/CoNLL-U helpers. Raw adversarial input outside those premises is not certified.",
+        "id": "wave31-hebrew-corpus-adapters-byte-coordinate",
+        "operator": "Token boundaries are UTF-8 source offsets; Segmenter spans last token end but talmud slices to next start/text length. Punctuation stays preceding segment; no leading-neutral recovery law.",
+        "path": "model.md",
+        "section": "wave31-hebrew-corpus-adapters-byte-coordinate",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Source inspection covers CLI effects, but actual live corpus, teacher, frozen assessments, production DB/model data, downloads and lesson workflows excluded. No parser completeness, language accuracy or universal safety inferred from finite checks. Existing audit-before-guard and transitive-invalid-head caveats retained.",
+        "domain": "Small synthetic strings/XML/arrays and tempfile model roundtrip under dedicated temp root. Scoring requires representable counts, column bounds, finite alpha>0 and nonnegative switch costs for objective model; rows nonempty10 fields, heads valid for tree/CoNLL-U helpers. Raw adversarial input outside those premises is not certified.",
+        "id": "wave31-hebrew-corpus-adapters-dependency-coordinate",
+        "operator": "Old word head h maps0->0 else p(h-1)+1, then emitted-row head first[h-1]+1. Valid heads and shared word sequence are required; interpreting Node0-based ids as heads is invalid.",
+        "path": "model.md",
+        "section": "wave31-hebrew-corpus-adapters-dependency-coordinate",
+        "status": "partial_composition_model",
+        "type": "dependency_transport"
+      },
+      {
+        "assumptions": "Source inspection covers CLI effects, but actual live corpus, teacher, frozen assessments, production DB/model data, downloads and lesson workflows excluded. No parser completeness, language accuracy or universal safety inferred from finite checks. Existing audit-before-guard and transitive-invalid-head caveats retained.",
+        "domain": "Small synthetic strings/XML/arrays and tempfile model roundtrip under dedicated temp root. Scoring requires representable counts, column bounds, finite alpha>0 and nonnegative switch costs for objective model; rows nonempty10 fields, heads valid for tree/CoNLL-U helpers. Raw adversarial input outside those premises is not certified.",
+        "id": "wave31-hebrew-corpus-adapters-book-code",
+        "operator": "MACULA library and Tanakh order differ, so cross-reader identity is book code plus chapter/verse, not integer ordinal. Missing/invalid coordinates map0 and unknown code39, creating noninjective fibers.",
+        "path": "model.md",
+        "section": "wave31-hebrew-corpus-adapters-book-code",
+        "status": "partial_composition_model",
+        "type": "tagged_order_transport"
+      },
+      {
+        "assumptions": "Source inspection covers CLI effects, but actual live corpus, teacher, frozen assessments, production DB/model data, downloads and lesson workflows excluded. No parser completeness, language accuracy or universal safety inferred from finite checks. Existing audit-before-guard and transitive-invalid-head caveats retained.",
+        "domain": "Small synthetic strings/XML/arrays and tempfile model roundtrip under dedicated temp root. Scoring requires representable counts, column bounds, finite alpha>0 and nonnegative switch costs for objective model; rows nonempty10 fields, heads valid for tree/CoNLL-U helpers. Raw adversarial input outside those premises is not certified.",
+        "id": "wave31-hebrew-corpus-adapters-speech-carry",
+        "operator": "Prag read_sentence(row,open,rules) produces next open; quote recognition precedes closure/carry/bare. Book boundary resets externally. Langseg has no caller relationship to this speech state.",
+        "path": "model.md",
+        "section": "wave31-hebrew-corpus-adapters-speech-carry",
+        "status": "partial_composition_model",
+        "type": "state_transition"
+      },
+      {
+        "assumptions": "Source inspection covers CLI effects, but actual live corpus, teacher, frozen assessments, production DB/model data, downloads and lesson workflows excluded. No parser completeness, language accuracy or universal safety inferred from finite checks. Existing audit-before-guard and transitive-invalid-head caveats retained.",
+        "domain": "Small synthetic strings/XML/arrays and tempfile model roundtrip under dedicated temp root. Scoring requires representable counts, column bounds, finite alpha>0 and nonnegative switch costs for objective model; rows nonempty10 fields, heads valid for tree/CoNLL-U helpers. Raw adversarial input outside those premises is not certified.",
+        "id": "wave31-hebrew-corpus-adapters-effect-boundary",
+        "operator": "Model save truncates before rows; CLI talmud writes original/English before optional map read; converter writes accumulated books/maps separately. No atomic rollback or no-read claim for audit guard. These effect traces are source-modeled, not executed.",
+        "path": "model.md",
+        "section": "wave31-hebrew-corpus-adapters-effect-boundary",
+        "status": "partial_composition_model",
+        "type": "partial_effect_trace"
+      },
+      {
+        "assumptions": "No external models, gparse annotate, real corpora, teacher, training, lesson workflows or GPU executed. Existing learn-based tests were inspected but not selected. Model::load handles synthetic in-memory TSV only. Filesystem/parser effects modeled by inspection. Source production prefixes remain byte-identical to base; added tests only.",
+        "domain": "Bounded synthetic UTF-8/CoNLL strings, manually supplied tiny model TSVs/states and parsed score comments. Valid indices; nonempty callback outputs; k>=1 for nonpunctuation; every alternative has a base. Finite gain arithmetic and u32/usize/i64 representability. Explicit panic/error witnesses explore selected invalid boundaries without production repair.",
+        "id": "wave32-hebrew-segmentation-lattice-piece-coordinate-join",
+        "operator": "text::units gives source slices; Cut advances unit counts while H inserts article and lead shifts selected vowels. CoNLL written tokens retain forms while words can include an unwritten H; comparing byte counts to Piece counts is invalid.",
+        "path": "model.md",
+        "section": "wave32-hebrew-segmentation-lattice-piece-coordinate-join",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No external models, gparse annotate, real corpora, teacher, training, lesson workflows or GPU executed. Existing learn-based tests were inspected but not selected. Model::load handles synthetic in-memory TSV only. Filesystem/parser effects modeled by inspection. Source production prefixes remain byte-identical to base; added tests only.",
+        "domain": "Bounded synthetic UTF-8/CoNLL strings, manually supplied tiny model TSVs/states and parsed score comments. Valid indices; nonempty callback outputs; k>=1 for nonpunctuation; every alternative has a base. Finite gain arithmetic and u32/usize/i64 representability. Explicit panic/error witnesses explore selected invalid boundaries without production repair.",
+        "id": "wave32-hebrew-segmentation-lattice-context-lattice-join",
+        "operator": "Lex candidate p is updated previous then next via (n+K*p)/(total+K); lattice ratios use these contextual p values, clamp at1e-12 and serialize log ratio to four decimals. Choice consumes this rounded lr, not exact original p.",
+        "path": "model.md",
+        "section": "wave32-hebrew-segmentation-lattice-context-lattice-join",
+        "status": "partial_composition_model",
+        "type": "sequential_smoothing"
+      },
+      {
+        "assumptions": "No external models, gparse annotate, real corpora, teacher, training, lesson workflows or GPU executed. Existing learn-based tests were inspected but not selected. Model::load handles synthetic in-memory TSV only. Filesystem/parser effects modeled by inspection. Source production prefixes remain byte-identical to base; added tests only.",
+        "domain": "Bounded synthetic UTF-8/CoNLL strings, manually supplied tiny model TSVs/states and parsed score comments. Valid indices; nonempty callback outputs; k>=1 for nonpunctuation; every alternative has a base. Finite gain arithmetic and u32/usize/i64 representability. Explicit panic/error witnesses explore selected invalid boundaries without production repair.",
+        "id": "wave32-hebrew-segmentation-lattice-parser-merge-join",
+        "operator": "parser_view clears UPOS and normalizes FORM; merge trusts equal sentence/word counts and copies2..7. Wrong equal-sized parser order may be accepted; failure on later sentence leaves prior updates.",
+        "path": "model.md",
+        "section": "wave32-hebrew-segmentation-lattice-parser-merge-join",
+        "status": "partial_composition_model",
+        "type": "positional_annotation_transport"
+      },
+      {
+        "assumptions": "No external models, gparse annotate, real corpora, teacher, training, lesson workflows or GPU executed. Existing learn-based tests were inspected but not selected. Model::load handles synthetic in-memory TSV only. Filesystem/parser effects modeled by inspection. Source production prefixes remain byte-identical to base; added tests only.",
+        "domain": "Bounded synthetic UTF-8/CoNLL strings, manually supplied tiny model TSVs/states and parsed score comments. Valid indices; nonempty callback outputs; k>=1 for nonpunctuation; every alternative has a base. Finite gain arithmetic and u32/usize/i64 representability. Explicit panic/error witnesses explore selected invalid boundaries without production repair.",
+        "id": "wave32-hebrew-segmentation-lattice-lattice-selection",
+        "operator": "variants changes one token at a time against base. Strict positive gain and strict incumbent comparison retain first equal winner; apply combines winners without validating joint parsed score. No global optimum follows.",
+        "path": "model.md",
+        "section": "wave32-hebrew-segmentation-lattice-lattice-selection",
+        "status": "partial_composition_model",
+        "type": "independent_choice_limit"
+      },
+      {
+        "assumptions": "No external models, gparse annotate, real corpora, teacher, training, lesson workflows or GPU executed. Existing learn-based tests were inspected but not selected. Model::load handles synthetic in-memory TSV only. Filesystem/parser effects modeled by inspection. Source production prefixes remain byte-identical to base; added tests only.",
+        "domain": "Bounded synthetic UTF-8/CoNLL strings, manually supplied tiny model TSVs/states and parsed score comments. Valid indices; nonempty callback outputs; k>=1 for nonpunctuation; every alternative has a base. Finite gain arithmetic and u32/usize/i64 representability. Explicit panic/error witnesses explore selected invalid boundaries without production repair.",
+        "id": "wave32-hebrew-segmentation-lattice-codec-effects",
+        "operator": "CoNLL write renumbers ID without remapping HEAD; TSV save omits fallback/lex/rest flags. annotate writes input before spawning and cleanup happens only on full success; main choose can emit study before choosing fails.",
+        "path": "model.md",
+        "section": "wave32-hebrew-segmentation-lattice-codec-effects",
+        "status": "partial_composition_model",
+        "type": "information_loss_and_effect_order"
+      },
+      {
+        "assumptions": "No Annotator/model loading, live corpus, teacher, GPU or complete CLI pipeline execution. Final trailing token spacing false for R2 reconstruction. Invalid arbitrary scripts/graphs are outside exact law.",
+        "domain": "Small synthetic valid rooted trees, finite frames with sentence-local valid links and bounded allocations; nonoverflowing indices/counters, stable empty override environment.",
+        "id": "wave32-roundtrip-layer-residuals-head-coordinate-transport",
+        "operator": "R3 maps zero-based realized origins to one-based parsed heads; R4 maps local frame links to global indices then kept-event coordinates and back.",
+        "path": "model.md",
+        "section": "wave32-roundtrip-layer-residuals-head-coordinate-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No Annotator/model loading, live corpus, teacher, GPU or complete CLI pipeline execution. Final trailing token spacing false for R2 reconstruction. Invalid arbitrary scripts/graphs are outside exact law.",
+        "domain": "Small synthetic valid rooted trees, finite frames with sentence-local valid links and bounded allocations; nonoverflowing indices/counters, stable empty override environment.",
+        "id": "wave32-roundtrip-layer-residuals-decoder-state",
+        "operator": "Realizer seen ids and off flags must match encode/decode passes; same output alone does not recover state.",
+        "path": "model.md",
+        "section": "wave32-roundtrip-layer-residuals-decoder-state",
+        "status": "partial_composition_model",
+        "type": "state_compatibility"
+      },
+      {
+        "assumptions": "No Annotator/model loading, live corpus, teacher, GPU or complete CLI pipeline execution. Final trailing token spacing false for R2 reconstruction. Invalid arbitrary scripts/graphs are outside exact law.",
+        "domain": "Small synthetic valid rooted trees, finite frames with sentence-local valid links and bounded allocations; nonoverflowing indices/counters, stable empty override environment.",
+        "id": "wave32-roundtrip-layer-residuals-empty-sentences",
+        "operator": "R4 empties plus XOR starts and nsents restore the original partition, while pipeline Unit changes reset groups.",
+        "path": "model.md",
+        "section": "wave32-roundtrip-layer-residuals-empty-sentences",
+        "status": "partial_composition_model",
+        "type": "partition_reconstruction"
+      },
+      {
+        "assumptions": "No Annotator/model loading, live corpus, teacher, GPU or complete CLI pipeline execution. Final trailing token spacing false for R2 reconstruction. Invalid arbitrary scripts/graphs are outside exact law.",
+        "domain": "Small synthetic valid rooted trees, finite frames with sentence-local valid links and bounded allocations; nonoverflowing indices/counters, stable empty override environment.",
+        "id": "wave32-roundtrip-layer-residuals-diagnostic-cost",
+        "operator": "Diagnostic bits and equal-set averages are not actual compressed byte lengths or semantic-quality percentages.",
+        "path": "model.md",
+        "section": "wave32-roundtrip-layer-residuals-diagnostic-cost",
+        "status": "partial_composition_model",
+        "type": "metric_boundary"
+      },
+      {
+        "assumptions": "Original production bytes preserved; six files append inline tests. No new repository Rust sources. Model declarations source-derived and finite tests falsify selected boundaries. Private-effect and annotator paths retain explicit inspection-only gaps. No percentage surrogate without useful metric; only future caps1/2/5/10%.",
+        "domain": "Finite synthetic UTF-8 strings, valid Piece references/ordered byte-boundary marks, ten-field rows with unique canonical pair keys and '_' empty convention; delimiter-free nonempty core lexicon records, valid indices, representable unsigned counters and signed offset additions, finite bit costs. CPU/offline selected exact test names only. All external models, corpus/lesson reads, persistent learning, deployed sites and full pipelines excluded.",
+        "id": "wave32-roundtrip-document-codecs-markup-coordinate-join",
+        "operator": "site_md::inline emits marks at current emitted UTF-8 byte length; vol::with_marks restores them. concat changes Text indices by block offset but does not change each block's local mark offsets. Swapping these coordinate spaces is invalid.",
+        "path": "model.md",
+        "section": "wave32-roundtrip-document-codecs-markup-coordinate-join",
+        "status": "partial_composition_model",
+        "type": "byte_coordinate_transport"
+      },
+      {
+        "assumptions": "Original production bytes preserved; six files append inline tests. No new repository Rust sources. Model declarations source-derived and finite tests falsify selected boundaries. Private-effect and annotator paths retain explicit inspection-only gaps. No percentage surrogate without useful metric; only future caps1/2/5/10%.",
+        "domain": "Finite synthetic UTF-8 strings, valid Piece references/ordered byte-boundary marks, ten-field rows with unique canonical pair keys and '_' empty convention; delimiter-free nonempty core lexicon records, valid indices, representable unsigned counters and signed offset additions, finite bit costs. CPU/offline selected exact test names only. All external models, corpus/lesson reads, persistent learning, deployed sites and full pipelines excluded.",
+        "id": "wave32-roundtrip-document-codecs-hebrew-patch-join",
+        "operator": "site_code predicts Hebrew rows using lexicon/text/verse/given then site_heb::diff/apply. apply(diff(pred,lit))=lit requires ten fields and unique normalized pair keys; duplicate FEATS and empty string versus '_' are explicit gaps, not universal exactness.",
+        "path": "model.md",
+        "section": "wave32-roundtrip-document-codecs-hebrew-patch-join",
+        "status": "partial_composition_model",
+        "type": "canonical_patch_transport"
+      },
+      {
+        "assumptions": "Original production bytes preserved; six files append inline tests. No new repository Rust sources. Model declarations source-derived and finite tests falsify selected boundaries. Private-effect and annotator paths retain explicit inspection-only gaps. No percentage surrogate without useful metric; only future caps1/2/5/10%.",
+        "domain": "Finite synthetic UTF-8 strings, valid Piece references/ordered byte-boundary marks, ten-field rows with unique canonical pair keys and '_' empty convention; delimiter-free nonempty core lexicon records, valid indices, representable unsigned counters and signed offset additions, finite bit costs. CPU/offline selected exact test names only. All external models, corpus/lesson reads, persistent learning, deployed sites and full pipelines excluded.",
+        "id": "wave32-roundtrip-document-codecs-copy-history-join",
+        "operator": "repeat trials clone Copier and accept when len>=24 and cost<=0.25 literal_bits; residual_with reconstructs same previous prose order using remember/code. Different prior prose or disabled-repeat environment changes classification and cost; all history must agree.",
+        "path": "model.md",
+        "section": "wave32-roundtrip-document-codecs-copy-history-join",
+        "status": "partial_composition_model",
+        "type": "stateful_history_alignment"
+      },
+      {
+        "assumptions": "Original production bytes preserved; six files append inline tests. No new repository Rust sources. Model declarations source-derived and finite tests falsify selected boundaries. Private-effect and annotator paths retain explicit inspection-only gaps. No percentage surrogate without useful metric; only future caps1/2/5/10%.",
+        "domain": "Finite synthetic UTF-8 strings, valid Piece references/ordered byte-boundary marks, ten-field rows with unique canonical pair keys and '_' empty convention; delimiter-free nonempty core lexicon records, valid indices, representable unsigned counters and signed offset additions, finite bit costs. CPU/offline selected exact test names only. All external models, corpus/lesson reads, persistent learning, deployed sites and full pipelines excluded.",
+        "id": "wave32-roundtrip-document-codecs-scheduler-report-join",
+        "operator": "par_each executes all indexed jobs and catches closure panics. run_blocks folds Results in input order, turns errors into one-volume red tally; row exact=exact_ok==1. Aggregation loses scheduling/error provenance and cannot reconstruct jobs from totals.",
+        "path": "model.md",
+        "section": "wave32-roundtrip-document-codecs-scheduler-report-join",
+        "status": "partial_composition_model",
+        "type": "ordered_error_projection"
+      },
+      {
+        "assumptions": "No actual annotator/gparse/model/corpus/teacher/GPU execution. Full run_volume and parser/cache paths source-reviewed only. Allocation/IO failures and hostile malformed public structs not exhaustively tested.",
+        "domain": "Small in-memory synthetic UTF-8 text, explicit spans, frames, dictionaries, finite residual cells; compare TSVs only under dedicated temp receipt root. All chosen tests read before selection.",
+        "id": "wave32-roundtrip-mixed-routing-coordinate-transport",
+        "operator": "Spans and owner overlap use bytes, sentence cuts use char_indices byte positions, diff preview counts Unicode scalars, LCS and tree Take use token indices, tree heads one-based.",
+        "path": "model.md",
+        "section": "wave32-roundtrip-mixed-routing-coordinate-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No actual annotator/gparse/model/corpus/teacher/GPU execution. Full run_volume and parser/cache paths source-reviewed only. Allocation/IO failures and hostile malformed public structs not exhaustively tested.",
+        "domain": "Small in-memory synthetic UTF-8 text, explicit spans, frames, dictionaries, finite residual cells; compare TSVs only under dedicated temp receipt root. All chosen tests read before selection.",
+        "id": "wave32-roundtrip-mixed-routing-tagged-routing",
+        "operator": "En/Heb/Text are alternatives; Text stores whole token residual. Language classifier loss and route accuracy use distinct labels.",
+        "path": "model.md",
+        "section": "wave32-roundtrip-mixed-routing-tagged-routing",
+        "status": "partial_composition_model",
+        "type": "tagged_routing"
+      },
+      {
+        "assumptions": "No actual annotator/gparse/model/corpus/teacher/GPU execution. Full run_volume and parser/cache paths source-reviewed only. Allocation/IO failures and hostile malformed public structs not exhaustively tested.",
+        "domain": "Small in-memory synthetic UTF-8 text, explicit spans, frames, dictionaries, finite residual cells; compare TSVs only under dedicated temp receipt root. All chosen tests read before selection.",
+        "id": "wave32-roundtrip-mixed-routing-metric-denominators",
+        "operator": "Report bits per sampled item differs from parsed sentence chrF and language token accuracy. Meta excluded in summary bits yet present in TSV.",
+        "path": "model.md",
+        "section": "wave32-roundtrip-mixed-routing-metric-denominators",
+        "status": "partial_composition_model",
+        "type": "metric_denominators"
+      },
+      {
+        "assumptions": "No actual annotator/gparse/model/corpus/teacher/GPU execution. Full run_volume and parser/cache paths source-reviewed only. Allocation/IO failures and hostile malformed public structs not exhaustively tested.",
+        "domain": "Small in-memory synthetic UTF-8 text, explicit spans, frames, dictionaries, finite residual cells; compare TSVs only under dedicated temp receipt root. All chosen tests read before selection.",
+        "id": "wave32-roundtrip-mixed-routing-shared-helper-joins",
+        "operator": "diff updates Diverge consumed by Tally; compare is independent file comparison with before-only set domain. No direct mixed-TSV adapter claimed.",
+        "path": "model.md",
+        "section": "wave32-roundtrip-mixed-routing-shared-helper-joins",
+        "status": "partial_composition_model",
+        "type": "shared_helper_joins"
+      },
+      {
+        "assumptions": "Real annotator/morph loading, corpus filesystem parsing, full training/evaluation and teacher paths remain unexecuted. Residual exactness is diagnostic reconstruction, not semantic understanding.",
+        "domain": "Small synthetic tokens, initialized tables, finite nonnegative weights, valid coordinates; Rule Drop acyclic; LCS <=65535 and counts/arithmetic representable.",
+        "id": "wave32-translation-meta-codecs-owner-signature",
+        "operator": "Reader owners map each meta token to optional Hebrew index; HebEncoder emits only first encounter per owner, losing later assignments.",
+        "path": "model.md",
+        "section": "wave32-translation-meta-codecs-owner-signature",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Real annotator/morph loading, corpus filesystem parsing, full training/evaluation and teacher paths remain unexecuted. Residual exactness is diagnostic reconstruction, not semantic understanding.",
+        "domain": "Small synthetic tokens, initialized tables, finite nonnegative weights, valid coordinates; Rule Drop acyclic; LCS <=65535 and counts/arithmetic representable.",
+        "id": "wave32-translation-meta-codecs-head-coordinate",
+        "operator": "MTok uses1-based heads/root0; each structural transform must renumber positions after dropping/reordering, while span retains source coordinates.",
+        "path": "model.md",
+        "section": "wave32-translation-meta-codecs-head-coordinate",
+        "status": "partial_composition_model",
+        "type": "coordinate_transport"
+      },
+      {
+        "assumptions": "Real annotator/morph loading, corpus filesystem parsing, full training/evaluation and teacher paths remain unexecuted. Residual exactness is diagnostic reconstruction, not semantic understanding.",
+        "domain": "Small synthetic tokens, initialized tables, finite nonnegative weights, valid coordinates; Rule Drop acyclic; LCS <=65535 and counts/arithmetic representable.",
+        "id": "wave32-translation-meta-codecs-logical-gate",
+        "operator": "Delta gate compares sorted logical_words of bare concept and chunk, preserving duplicates and normalizing selected numerals. Event comparison is separate: permutations preserve verb-multiset gaps, while LCS pairing (including repeated-verb ties) can change contradictions and distance.",
+        "path": "model.md",
+        "section": "wave32-translation-meta-codecs-logical-gate",
+        "status": "partial_composition_model",
+        "type": "logical_multiset_gate"
+      },
+      {
+        "assumptions": "Real annotator/morph loading, corpus filesystem parsing, full training/evaluation and teacher paths remain unexecuted. Residual exactness is diagnostic reconstruction, not semantic understanding.",
+        "domain": "Small synthetic tokens, initialized tables, finite nonnegative weights, valid coordinates; Rule Drop acyclic; LCS <=65535 and counts/arithmetic representable.",
+        "id": "wave32-translation-meta-codecs-normal-versus-residual",
+        "operator": "Hebrew measure computes ordinary text exact/chrf before diagnostic target residual reconstruction; gate_ok can hold for empty learned encoder.",
+        "path": "model.md",
+        "section": "wave32-translation-meta-codecs-normal-versus-residual",
+        "status": "partial_composition_model",
+        "type": "residual_conditioned_identity"
+      },
+      {
+        "assumptions": "Finite admitted numeric domains and valid trees; each task owns its files; no claim about empirical corpus quality, persistent learning, or full pipeline correctness.",
+        "domain": "Synthetic in-memory keys, residuals, metric records and permutations for executed evidence. Full CLI and real corpora/models/annotators/training/page/report effects are source-inspected only.",
+        "id": "wave32-translation-evaluation-pipeline-population-transport",
+        "operator": "All target VRec keys versus source-present Agg keys differ; missing whole blocks in many contribute absent/level accounting separately from cross population.",
+        "path": "model.md",
+        "section": "wave32-translation-evaluation-pipeline-population-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Finite admitted numeric domains and valid trees; each task owns its files; no claim about empirical corpus quality, persistent learning, or full pipeline correctness.",
+        "domain": "Synthetic in-memory keys, residuals, metric records and permutations for executed evidence. Full CLI and real corpora/models/annotators/training/page/report effects are source-inspected only.",
+        "id": "wave32-translation-evaluation-pipeline-cost-denominators",
+        "operator": "Pair-local1000(reader+tail)/max(target_words,1), then arithmetic mean over pairs differs from pooled numerator/denominator; class sums and page filtered sums use distinct cell universes.",
+        "path": "model.md",
+        "section": "wave32-translation-evaluation-pipeline-cost-denominators",
+        "status": "partial_composition_model",
+        "type": "metric_transport"
+      },
+      {
+        "assumptions": "Finite admitted numeric domains and valid trees; each task owns its files; no claim about empirical corpus quality, persistent learning, or full pipeline correctness.",
+        "domain": "Synthetic in-memory keys, residuals, metric records and permutations for executed evidence. Full CLI and real corpora/models/annotators/training/page/report effects are source-inspected only.",
+        "id": "wave32-translation-evaluation-pipeline-effect-order",
+        "operator": "Eval rejects train before output creation; both commands load model after output creation; report writes sequential artifacts, optional pages later. Source-derived effect order only, no rollback promise.",
+        "path": "model.md",
+        "section": "wave32-translation-evaluation-pipeline-effect-order",
+        "status": "partial_composition_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "Finite admitted numeric domains and valid trees; each task owns its files; no claim about empirical corpus quality, persistent learning, or full pipeline correctness.",
+        "domain": "Synthetic in-memory keys, residuals, metric records and permutations for executed evidence. Full CLI and real corpora/models/annotators/training/page/report effects are source-inspected only.",
+        "id": "wave32-translation-evaluation-pipeline-coordinate-join",
+        "operator": "VKey split depends on Kind; corpus joined heads add offsets preserving0; measure block sentinel contributes an additional offset. Unknown boundaries prevent unique reverse segmentation.",
+        "path": "model.md",
+        "section": "wave32-translation-evaluation-pipeline-coordinate-join",
+        "status": "partial_composition_model",
+        "type": "coordinate_transport"
+      },
+      {
+        "assumptions": "Source-derived effect relations assume stated external success and resource availability. No downloaded corpus and no real DB executable are used. Existing robots_rules is excluded because its negative hostname resolves DNS.",
+        "domain": "Bounded synthetic UTF-8 strings, small owned temporary files/archives and valid finite nonnegative delays; nonoverflowing counters and valid Done indices. Actual tests execute no network or DNS, live catalogs, model/teacher or database.",
+        "id": "wave33-math-library-ingestion-license-transport",
+        "operator": "raw CcBy4 -> cc-by-4.0 and book CcBySa -> cc-by-sa are accepted finite fetch codes; raw None -> none and book Other -> other reject. This is policy transport, not license authenticity validation.",
+        "path": "model.md",
+        "section": "wave33-math-library-ingestion-license-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Source-derived effect relations assume stated external success and resource availability. No downloaded corpus and no real DB executable are used. Existing robots_rules is excluded because its negative hostname resolves DNS.",
+        "domain": "Bounded synthetic UTF-8 strings, small owned temporary files/archives and valid finite nonnegative delays; nonoverflowing counters and valid Done indices. Actual tests execute no network or DNS, live catalogs, model/teacher or database.",
+        "id": "wave33-math-library-ingestion-token-transport",
+        "operator": "OAI textual token extraction unescapes XML then HTTP encode percent-escapes bytes. Literal token percent must be escaped again; passing already serialized query syntax as a token is not equivalent to adding query parameters.",
+        "path": "model.md",
+        "section": "wave33-math-library-ingestion-token-transport",
+        "status": "partial_composition_model",
+        "type": "query_encoding"
+      },
+      {
+        "assumptions": "Source-derived effect relations assume stated external success and resource availability. No downloaded corpus and no real DB executable are used. Existing robots_rules is excluded because its negative hostname resolves DNS.",
+        "domain": "Bounded synthetic UTF-8 strings, small owned temporary files/archives and valid finite nonnegative delays; nonoverflowing counters and valid Done indices. Actual tests execute no network or DNS, live catalogs, model/teacher or database.",
+        "id": "wave33-math-library-ingestion-checkpoint-join",
+        "operator": "OAI gzip sync precedes state append; fetch successful file rename precedes manifest rewrite; Duck execution has separate process/DB effects. Failure between stages can leave prefix artifacts, so individual success does not imply transaction.",
+        "path": "model.md",
+        "section": "wave33-math-library-ingestion-checkpoint-join",
+        "status": "partial_composition_model",
+        "type": "effect_order"
+      },
+      {
+        "assumptions": "Source-derived effect relations assume stated external success and resource availability. No downloaded corpus and no real DB executable are used. Existing robots_rules is excluded because its negative hostname resolves DNS.",
+        "domain": "Bounded synthetic UTF-8 strings, small owned temporary files/archives and valid finite nonnegative delays; nonoverflowing counters and valid Done indices. Actual tests execute no network or DNS, live catalogs, model/teacher or database.",
+        "id": "wave33-math-library-ingestion-route-partition",
+        "operator": "CLI command and arity select one of OAI/raw/books/fetch/GCS/SQL paths. Their costs and errors form a tagged union; GCS listing is not a prerequisite for raw parsing or books. Main helper checks cover partition, not route I/O.",
+        "path": "model.md",
+        "section": "wave33-math-library-ingestion-route-partition",
+        "status": "partial_composition_model",
+        "type": "tagged_composition"
+      },
+      {
+        "assumptions": "Ordinary allocation/UTF-8 resource bounds; caller serialization where required. No concurrent mutation in synthetic fixtures. Syntax is partial representation; no macro expansion or universal semantics. Lesson/teacher/build entry behavior is source-derived/compile representation.",
+        "domain": "Bounded synthetic strings/temp files, deterministic exact helper inputs and representable counts. CLI training/teacher/corpora/models excluded from execution. Legacy tier behavior source-derived only.",
+        "id": "wave33-cycle-teacher-diagnostics-artifact-order",
+        "operator": "Pipeline collect commits db before corpus append/check/enrich/train/row. A row is a terminal observation under untampered assumptions, but row absence does not imply no database effects. main model rename joins trainer availability only after subprocess success.",
+        "path": "model.md",
+        "section": "wave33-cycle-teacher-diagnostics-artifact-order",
+        "status": "partial_composition_model",
+        "type": "artifact_order"
+      },
+      {
+        "assumptions": "Ordinary allocation/UTF-8 resource bounds; caller serialization where required. No concurrent mutation in synthetic fixtures. Syntax is partial representation; no macro expansion or universal semantics. Lesson/teacher/build entry behavior is source-derived/compile representation.",
+        "domain": "Bounded synthetic strings/temp files, deterministic exact helper inputs and representable counts. CLI training/teacher/corpora/models excluded from execution. Legacy tier behavior source-derived only.",
+        "id": "wave33-cycle-teacher-diagnostics-heldout-identity",
+        "operator": "exclude returns heldout set separately from heldout∪inflight ids. feed uses union; training_file uses heldout only. Matching uses sent_id, so equal text with different ids is not excluded by this relation.",
+        "path": "model.md",
+        "section": "wave33-cycle-teacher-diagnostics-heldout-identity",
+        "status": "partial_composition_model",
+        "type": "heldout_identity"
+      },
+      {
+        "assumptions": "Ordinary allocation/UTF-8 resource bounds; caller serialization where required. No concurrent mutation in synthetic fixtures. Syntax is partial representation; no macro expansion or universal semantics. Lesson/teacher/build entry behavior is source-derived/compile representation.",
+        "domain": "Bounded synthetic strings/temp files, deterministic exact helper inputs and representable counts. CLI training/teacher/corpora/models excluded from execution. Legacy tier behavior source-derived only.",
+        "id": "wave33-cycle-teacher-diagnostics-diagnostic-boundary",
+        "operator": "Lesson smoke preparses assessment answers and learns exercises twice, bench reads frozen workload outputs, twin predicts synthetic costs. Neither reading correctness nor cost acceptance is an independent saved-state learning proof.",
+        "path": "model.md",
+        "section": "wave33-cycle-teacher-diagnostics-diagnostic-boundary",
+        "status": "partial_composition_model",
+        "type": "diagnostic_boundary"
+      },
+      {
+        "assumptions": "Ordinary allocation/UTF-8 resource bounds; caller serialization where required. No concurrent mutation in synthetic fixtures. Syntax is partial representation; no macro expansion or universal semantics. Lesson/teacher/build entry behavior is source-derived/compile representation.",
+        "domain": "Bounded synthetic strings/temp files, deterministic exact helper inputs and representable counts. CLI training/teacher/corpora/models excluded from execution. Legacy tier behavior source-derived only.",
+        "id": "wave33-cycle-teacher-diagnostics-budget-resource",
+        "operator": "Enrichment line budget caps reservations under lock and single-caller premise, not successful calls or dollars. jobs sampled RSS/time limit and legacy budget_n share allocation represent distinct resources and cannot be substituted.",
+        "path": "model.md",
+        "section": "wave33-cycle-teacher-diagnostics-budget-resource",
+        "status": "partial_composition_model",
+        "type": "budget_resource"
+      },
+      {
+        "assumptions": "Treeagree Registry::load is built-in validation, not annotation model loading. CLI effect ordering is source-derived, not a release run. Syntax is partial lexical projection, no semantic expansion. Unicode case expansion before URL offsets, malformed coordinate arrays, arbitrary cyclic input and arithmetic extremes remain gaps; neither counts nor parser agreement establishes linguistic truth.",
+        "domain": "Small synthetic plain-word UD trees, aligned witness vectors with valid heads; positive grouping chunk size; finite in-memory README/reference/index/count/render fixtures; bounded temporary parsecmp file. All arithmetic nonoverflow, allocations available; graph proposals assume acyclic conjunction paths. No real release build, corpus, parser/model loading, teacher or network.",
+        "id": "wave33-treebank-comparison-tools-edit-coordinate-transport",
+        "operator": "Rule Edit.pos and Dispute.word are one-based; Vec heads/rels index pos-1. Prompt sentence number first resolves through group-local ids before word choices. Equality of lengths alone does not establish forms/ids alignment, so these joins require positional correspondence.",
+        "path": "model.md",
+        "section": "wave33-treebank-comparison-tools-edit-coordinate-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Treeagree Registry::load is built-in validation, not annotation model loading. CLI effect ordering is source-derived, not a release run. Syntax is partial lexical projection, no semantic expansion. Unicode case expansion before URL offsets, malformed coordinate arrays, arbitrary cyclic input and arithmetic extremes remain gaps; neither counts nor parser agreement establishes linguistic truth.",
+        "domain": "Small synthetic plain-word UD trees, aligned witness vectors with valid heads; positive grouping chunk size; finite in-memory README/reference/index/count/render fixtures; bounded temporary parsecmp file. All arithmetic nonoverflow, allocations available; graph proposals assume acyclic conjunction paths. No real release build, corpus, parser/model loading, teacher or network.",
+        "id": "wave33-treebank-comparison-tools-reference-identity-join",
+        "operator": "Matcher lifts ACL id to library (Src,index); collect coalesces by that pair and favors lower How/fuzzy tuple; Card resolves same index against unchanged Matcher. Mutating/reordering indexes between collect/render invalidates identity; synthetic join holds indexes fixed.",
+        "path": "model.md",
+        "section": "wave33-treebank-comparison-tools-reference-identity-join",
+        "status": "partial_composition_model",
+        "type": "reference_identity"
+      },
+      {
+        "assumptions": "Treeagree Registry::load is built-in validation, not annotation model loading. CLI effect ordering is source-derived, not a release run. Syntax is partial lexical projection, no semantic expansion. Unicode case expansion before URL offsets, malformed coordinate arrays, arbitrary cyclic input and arithmetic extremes remain gaps; neither counts nor parser agreement establishes linguistic truth.",
+        "domain": "Small synthetic plain-word UD trees, aligned witness vectors with valid heads; positive grouping chunk size; finite in-memory README/reference/index/count/render fixtures; bounded temporary parsecmp file. All arithmetic nonoverflow, allocations available; graph proposals assume acyclic conjunction paths. No real release build, corpus, parser/model loading, teacher or network.",
+        "id": "wave33-treebank-comparison-tools-stats-render-projection",
+        "operator": "Stats gate compares only sentences/tokens/words/fused, while render prints empty too. Equality of stats therefore cannot certify empty-node displayed count. Total is componentwise sum over existing splits; absent stats splits default zero and missing total rejects.",
+        "path": "model.md",
+        "section": "wave33-treebank-comparison-tools-stats-render-projection",
+        "status": "partial_composition_model",
+        "type": "count_projection"
+      },
+      {
+        "assumptions": "Treeagree Registry::load is built-in validation, not annotation model loading. CLI effect ordering is source-derived, not a release run. Syntax is partial lexical projection, no semantic expansion. Unicode case expansion before URL offsets, malformed coordinate arrays, arbitrary cyclic input and arithmetic extremes remain gaps; neither counts nor parser agreement establishes linguistic truth.",
+        "domain": "Small synthetic plain-word UD trees, aligned witness vectors with valid heads; positive grouping chunk size; finite in-memory README/reference/index/count/render fixtures; bounded temporary parsecmp file. All arithmetic nonoverflow, allocations available; graph proposals assume acyclic conjunction paths. No real release build, corpus, parser/model loading, teacher or network.",
+        "id": "wave33-treebank-comparison-tools-reader-adapter-boundary",
+        "operator": "Treeagree requires ten columns/sequential ids and valid feature/relation parse; parsecmp accepts at least eight columns, skips ranges/empty nodes and defaults bad heads. A shared file is a safe adapter only on the intersection of these domains; a successful parsecmp read is insufficient evidence for treeagree validity.",
+        "path": "model.md",
+        "section": "wave33-treebank-comparison-tools-reader-adapter-boundary",
+        "status": "partial_composition_model",
+        "type": "adapter_domain"
+      },
+      {
+        "assumptions": "CPU only. Existing nine tests and seven new exact tests inspected. No downloads, full CLI effects, model loads, live teacher or corpus use. Original production prefixes unchanged; only inline tests. No percent approximation metric/guarantee established.",
+        "domain": "Bounded synthetic UTF-8 text, byte/char slices, passenger rows and in-memory XML/wikitext; finite positive OCR score parameters, bounded arithmetic and allocations. CLI argument/filesystem/network/model/corpus environments are modeled conditionally and not executed.",
+        "id": "wave33-text-corpus-tools-text-coordinate-transport",
+        "operator": "School verse marks are UTF-8 clean-string byte offsets; OCR edit alignments use char indices; Kaggle uses passenger u32 ids; Wiktionary streams use compressed byte offsets. An adapter must carry the coordinate tag and cannot reuse equal numeric values across spaces.",
+        "path": "model.md",
+        "section": "wave33-text-corpus-tools-text-coordinate-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "CPU only. Existing nine tests and seven new exact tests inspected. No downloads, full CLI effects, model loads, live teacher or corpus use. Original production prefixes unchanged; only inline tests. No percent approximation metric/guarantee established.",
+        "domain": "Bounded synthetic UTF-8 text, byte/char slices, passenger rows and in-memory XML/wikitext; finite positive OCR score parameters, bounded arithmetic and allocations. CLI argument/filesystem/network/model/corpus environments are modeled conditionally and not executed.",
+        "id": "wave33-text-corpus-tools-lossy-artifact-join",
+        "operator": "Potential Gutenberg text -> school book cleanup strips header/footer, first line behavior, underscores and short cut fragments; reverse is a preimage including lost text. Raw Wiktionary Page.text requires edition/title context to enter count/emit helpers and does not imply six-column idiom TSV equivalence.",
+        "path": "model.md",
+        "section": "wave33-text-corpus-tools-lossy-artifact-join",
+        "status": "partial_composition_model",
+        "type": "information_loss_projection"
+      },
+      {
+        "assumptions": "CPU only. Existing nine tests and seven new exact tests inspected. No downloads, full CLI effects, model loads, live teacher or corpus use. Original production prefixes unchanged; only inline tests. No percent approximation metric/guarantee established.",
+        "domain": "Bounded synthetic UTF-8 text, byte/char slices, passenger rows and in-memory XML/wikitext; finite positive OCR score parameters, bounded arithmetic and allocations. CLI argument/filesystem/network/model/corpus environments are modeled conditionally and not executed.",
+        "id": "wave33-text-corpus-tools-effect-prefix-order",
+        "operator": "Each effectful command admits successful prefixes before later failure: pool before verses/counts, earlier Gutenberg rows before write failure, earlier requested pages before missing/parse failure. Pure helper successes do not establish atomic publication or remote availability.",
+        "path": "model.md",
+        "section": "wave33-text-corpus-tools-effect-prefix-order",
+        "status": "partial_composition_model",
+        "type": "failure_trace_partition"
+      },
+      {
+        "assumptions": "CPU only. Existing nine tests and seven new exact tests inspected. No downloads, full CLI effects, model loads, live teacher or corpus use. Original production prefixes unchanged; only inline tests. No percent approximation metric/guarantee established.",
+        "domain": "Bounded synthetic UTF-8 text, byte/char slices, passenger rows and in-memory XML/wikitext; finite positive OCR score parameters, bounded arithmetic and allocations. CLI argument/filesystem/network/model/corpus environments are modeled conditionally and not executed.",
+        "id": "wave33-text-corpus-tools-determinism-domain",
+        "operator": "BTreeMap rule conditions and explicit lexical tie keys stabilize selected paths; En reports sort ties by key, while Ukrainian morph/emptydef equal-count rows lack tie keys. Fixed synthetic helper outcomes cannot certify those unexecuted report orders or external subprocess schedules.",
+        "path": "model.md",
+        "section": "wave33-text-corpus-tools-determinism-domain",
+        "status": "partial_composition_model",
+        "type": "ordering_constraint"
+      },
+      {
+        "assumptions": "No concurrent fixture-file mutation. Source-derived unexecuted branches remain conditional; namespace test is compile/representation evidence. Topical bib run shares canonical anthology_id admission for JSONL while retaining matched foreign entries in abstract listings. Partial syntax excludes macro expansion and semantic proof.",
+        "domain": "Bounded UTF-8/BibTeX/JSONL, safe confined fixture paths, representable arithmetic, available memory; actual-helper subprocess fixtures have tiny bounded output. No external network, corpus, model, DB, benchmark or main ablation workflow.",
+        "id": "wave33-bibliography-value-tools-manifest-transport",
+        "operator": "bib row status open/open-nc lies within OPEN; files null size -> parse_size(None); URL suffix .pdf derives id.pdf on safe canonical path. Actual-helper join fixture checks these interfaces.",
+        "path": "model.md",
+        "section": "wave33-bibliography-value-tools-manifest-transport",
+        "status": "partial_composition_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No concurrent fixture-file mutation. Source-derived unexecuted branches remain conditional; namespace test is compile/representation evidence. Topical bib run shares canonical anthology_id admission for JSONL while retaining matched foreign entries in abstract listings. Partial syntax excludes macro expansion and semantic proof.",
+        "domain": "Bounded UTF-8/BibTeX/JSONL, safe confined fixture paths, representable arithmetic, available memory; actual-helper subprocess fixtures have tiny bounded output. No external network, corpus, model, DB, benchmark or main ablation workflow.",
+        "id": "wave33-bibliography-value-tools-admission-vs-merge",
+        "operator": "merge(Value) accepts missing/nonarray files and repeated within-row URLs; load(Resource) schema/duplicate checks can reject. Therefore merge success cannot transport validity unconditionally.",
+        "path": "model.md",
+        "section": "wave33-bibliography-value-tools-admission-vs-merge",
+        "status": "partial_composition_model",
+        "type": "schema_refinement"
+      },
+      {
+        "assumptions": "No concurrent fixture-file mutation. Source-derived unexecuted branches remain conditional; namespace test is compile/representation evidence. Topical bib run shares canonical anthology_id admission for JSONL while retaining matched foreign entries in abstract listings. Partial syntax excludes macro expansion and semantic proof.",
+        "domain": "Bounded UTF-8/BibTeX/JSONL, safe confined fixture paths, representable arithmetic, available memory; actual-helper subprocess fixtures have tiny bounded output. No external network, corpus, model, DB, benchmark or main ablation workflow.",
+        "id": "wave33-bibliography-value-tools-verification-gap",
+        "operator": "plan accepts present matching-size bytes or unknown-size bytes without hashing; check adds digest/magic constraints. Same-size non-PDF may disappear from queue yet fail verify.",
+        "path": "model.md",
+        "section": "wave33-bibliography-value-tools-verification-gap",
+        "status": "partial_composition_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "No concurrent fixture-file mutation. Source-derived unexecuted branches remain conditional; namespace test is compile/representation evidence. Topical bib run shares canonical anthology_id admission for JSONL while retaining matched foreign entries in abstract listings. Partial syntax excludes macro expansion and semantic proof.",
+        "domain": "Bounded UTF-8/BibTeX/JSONL, safe confined fixture paths, representable arithmetic, available memory; actual-helper subprocess fixtures have tiny bounded output. No external network, corpus, model, DB, benchmark or main ablation workflow.",
+        "id": "wave33-bibliography-value-tools-independent-value",
+        "operator": "Value's sh/bench/report owns independent environment and subprocess traces; no caller edge to bibliography exists. Costs and evidence remain separate instead of invented cross-product proof.",
+        "path": "model.md",
+        "section": "wave33-bibliography-value-tools-independent-value",
+        "status": "partial_composition_model",
+        "type": "tagged_path"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "scoped_child_evidence"
+    }
+  },
+  "id": "inference-core",
+  "kind": "groupant_group",
+  "registry": {
+    "node": "inference-core",
+    "path": "../contracts.json"
+  },
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "annot/src/ann.rs",
+      "sha256": "459a17bfd13ed4a6ba41719dac5dd97bac86bda51ad0b1ab2e176855c57aee2b"
+    },
+    {
+      "path": "annot/src/ann.rs.groupant/checks.rs",
+      "sha256": "9cd22a2863d0e448e24362a6fc0f64ca97f499663bac1efd4a22544c5f16113a"
+    },
+    {
+      "path": "annot/src/batch.rs",
+      "sha256": "511700bb12c59c2e29062a7f47db7148109c4e33084b12c5b9aa8a1f569a7f6e"
+    },
+    {
+      "path": "annot/src/codex_batch.rs",
+      "sha256": "04e68151e8633dea254f18144889427087ab03a159b7f4092b8c857e4c60d422"
+    },
+    {
+      "path": "annot/src/hints.rs",
+      "sha256": "73236507c19a700888abf3d724d219ccdfb865af9c1d9d806ae7fb34a3da6899"
+    },
+    {
+      "path": "annot/src/llm.rs",
+      "sha256": "b00293a926fe7a446a5b79197e73e4b164cee5165f053feb5497625be80c7984"
+    },
+    {
+      "path": "annot/src/main.rs",
+      "sha256": "38431df8a1b1d72a0b0ca9606fc0478e76a5dbedbad79a779b1d19ac1013a1c7"
+    },
+    {
+      "path": "annot/src/repair.rs",
+      "sha256": "023a26ef52067d26ff51c69bab65af326ba6147945aa218f12d7eb7afe228c84"
+    },
+    {
+      "path": "annot/tests/codex_batches.rs",
+      "sha256": "243929fbe42a3afeb294c966d8674fbd4a147a11e4138c7c4f888fb7f5aaf00c"
+    },
+    {
+      "path": "annot/tests/groupant_transfers.rs",
+      "sha256": "32ff56325244f951e4b5af7466f49093ad850f7e5f297d3234c1369eb8f41089"
+    },
+    {
+      "path": "coref/src/corefud.rs",
+      "sha256": "4f7008569d0c56ee5955ddb7e05384ffcfe064846c09d728d7f77dbb32f0322f"
+    },
+    {
+      "path": "coref/src/doc.rs",
+      "sha256": "e3fa96e6122a91b90075c4d4839879349e99c1cfd5a03a99df49e236c8f3500a"
+    },
+    {
+      "path": "coref/src/eval.rs",
+      "sha256": "5682c8888142509fc2c9ea531f6eb5e003d4a80fac3c9e2db304b8e37ebb52ef"
+    },
+    {
+      "path": "coref/src/it.rs",
+      "sha256": "7eb98828a602c2ff87c48f3a356bba7b1c5883c3b7e6a84081d1ec8e03db5f62"
+    },
+    {
+      "path": "coref/src/lexicon.rs",
+      "sha256": "79adfd1260673619c2c887d71a6e532dbec4a6266873214717b519d2518c960b"
+    },
+    {
+      "path": "coref/src/lib.rs",
+      "sha256": "14c9c339d7bd5281755f0afbce6f8d9ae2716952c49953fa3fd32b8b8e33e3b3"
+    },
+    {
+      "path": "coref/src/main.rs",
+      "sha256": "e2ff8656a295c323b2a1db93a78d97508465a4a8344955d87401be1da227aeb7"
+    },
+    {
+      "path": "coref/src/mention.rs",
+      "sha256": "677dfa544ef4eb28424d2b67ceea4dd8d34af58c0dfa12eccd844500eccccd63"
+    },
+    {
+      "path": "coref/src/score.rs",
+      "sha256": "da0433c1ce72ec0e5bb3b99c522543b6f677e1cd255d2d5767a9818be200393b"
+    },
+    {
+      "path": "coref/src/sieve.rs",
+      "sha256": "65bf58746585d62a98389bf64fa27d828aedb9e9db6103d38c6b1641a37cad52"
+    },
+    {
+      "path": "coref/src/tests.rs",
+      "sha256": "41386cabb254786232e985da896b4425fd01cfaf1a8a77c3867b026bb95f022e"
+    },
+    {
+      "path": "coref/tests/groupant_transfers.rs",
+      "sha256": "3cc75d11f9c83c5fb6fe5a8f24586216cb4f7ee48c5e524a44a166100cce297f"
+    },
+    {
+      "path": "en/build.rs",
+      "sha256": "6c8ce60b686eb4ac731a465101bfc9686c3ab9fc6d17653b727491feea90eed4"
+    },
+    {
+      "path": "en/src/annotate.rs",
+      "sha256": "4a126331234c7e07afb148d028ffbe6f82a26f283c3600aaa3fd61c2378e4983"
+    },
+    {
+      "path": "en/src/conllu.rs",
+      "sha256": "0fab6c3718ad36dfdb49c751e91eaa291f5831efd71274ee0611ba79593227ca"
+    },
+    {
+      "path": "en/src/construct.rs",
+      "sha256": "1dd11904c2b1d624d1fa103df363a8a5160dabd9a1bdabc4244c0665007490e7"
+    },
+    {
+      "path": "en/src/convert.rs",
+      "sha256": "35c96fa09e1e228137708edb9a16940669e4faf5ce79f8759720f1ca25feae78"
+    },
+    {
+      "path": "en/src/convert.rs.groupant/checks.rs",
+      "sha256": "fd729d7b599b17b2ad7b054cd459865c0cd46c4a7de6e71ea9f6cbad5ee01e29"
+    },
+    {
+      "path": "en/src/ctx.rs",
+      "sha256": "cd100311e41164aaa46aab97e11eeb9db8824116b86cac8c8dfb0c99738db866"
+    },
+    {
+      "path": "en/src/ctxeval.rs",
+      "sha256": "2e98fd4b87374f490a6badcdf692b631fb87272eefde557cb992c01fa8d1e6f2"
+    },
+    {
+      "path": "en/src/derive.rs",
+      "sha256": "aae76e96e977ce5ac84565921775054438e4ec16e850c1b921b75a65fb454d87"
+    },
+    {
+      "path": "en/src/diag.rs",
+      "sha256": "34b32869e6f62b108683c7452b3826e17fecd420778524774b3ff0e80ede7e54"
+    },
+    {
+      "path": "en/src/dict.rs",
+      "sha256": "a744609e10853e94c756ee5d49b2bae022d74275970772ecf5a059982c19ad0c"
+    },
+    {
+      "path": "en/src/emode.rs",
+      "sha256": "24160c6ab62e3a72b91c13b8dc10a1dbd870e237890858aaf229692d32e70023"
+    },
+    {
+      "path": "en/src/expert.rs",
+      "sha256": "689926d4aba7abd837cd06ce824b1ed37e3003c4fa35a54f78c48539dc3954c4"
+    },
+    {
+      "path": "en/src/explain.rs",
+      "sha256": "ab866ac31b19110845322bb1d8447f8f0da1a84f016d668f08b5efc72a6322a9"
+    },
+    {
+      "path": "en/src/gram.rs",
+      "sha256": "32652c46ad141e158358b505bed103a143771a4f3aef9b045ff84795be514dc7"
+    },
+    {
+      "path": "en/src/hash.rs",
+      "sha256": "8a82b4ca25bfc75ea9bf640886a724689f63416a6fa8f42e9bf30bedbf8b3b70"
+    },
+    {
+      "path": "en/src/lexgen.rs",
+      "sha256": "8cdf42a3a08c5e62217708f2cbfe9518703fe004211471a4a8e0313831f414ec"
+    },
+    {
+      "path": "en/src/lib.rs",
+      "sha256": "06d8305d3c0a2b2b4b248694164d116e09d1547efd1227b1686c7352a119f570"
+    },
+    {
+      "path": "en/src/license.rs",
+      "sha256": "58e9af2e31af469b412dfbc6f900bd7f0dbbe853becc4f934b9ac9781aa628e1"
+    },
+    {
+      "path": "en/src/lin.rs",
+      "sha256": "ccdf9cfeac841bbc109458b20420aab3da372e86f3c25c2d4311825ef81c6b8e"
+    },
+    {
+      "path": "en/src/main.rs",
+      "sha256": "a843b9d343aa90e8c2a9d6efc1b25d4b67089a21f1012857e6cee43b13acf8fc"
+    },
+    {
+      "path": "en/src/model.rs",
+      "sha256": "023594242516cb19fd415ee95f0c0552561aa2db663c798a1bc697168f3d9ae6"
+    },
+    {
+      "path": "en/src/morph.rs",
+      "sha256": "d67a5373f61b6c86761211c9370b3919ed855d15560961d4b90c3e96e39da5e1"
+    },
+    {
+      "path": "en/src/parse.rs",
+      "sha256": "d81fdc47528917de8434c9cb0d01ae36b49e4628a8a938fb946a8bb3e4017c29"
+    },
+    {
+      "path": "en/src/ptag.rs",
+      "sha256": "e57fcd6312bb18437676eec934f80498cba29af67b298c0bd394b8b50d978ed4"
+    },
+    {
+      "path": "en/src/store.rs",
+      "sha256": "4d2334d78a3ae22bd7c9da897ba94b29024bb1690a9bb3d3ac1d7139a4446810"
+    },
+    {
+      "path": "en/src/tag.rs",
+      "sha256": "4e58a3ac65d63ae7988a7bfce3c3f78cf58fefaf1a2e7ea202554dd8e9f407b6"
+    },
+    {
+      "path": "en/src/tagrule.rs",
+      "sha256": "dd15f5cd071cacdf845e9ceb81d022584f4d6a57e0b80c370d68652e8bb04f46"
+    },
+    {
+      "path": "en/src/text.rs",
+      "sha256": "982745e7578be07699a17ba9628d5866eb92d033968154d3607e7debe0b9d83e"
+    },
+    {
+      "path": "en/src/tok.rs",
+      "sha256": "c2eb1deea8b49057093095295581bd31002205421aa8061aeef1ddca88fa1f8c"
+    },
+    {
+      "path": "en/src/ud.rs",
+      "sha256": "19a766eb839a61ba264bce906003f711c41d81cb8cbdd36544de4267831072df"
+    },
+    {
+      "path": "en/src/udreg.rs",
+      "sha256": "fd63bb8c06475d26ac86f403636dee99672c817bf96a6160bb9b3b2ad4d49dcc"
+    },
+    {
+      "path": "en/tests/groupant_wave26.rs",
+      "sha256": "5ae1c16e48817d1b23bd298a50d5232d26be893f34837571b60de190566f33a5"
+    },
+    {
+      "path": "gparse/src/data.rs",
+      "sha256": "f115aeb0613b1ac5c59ff58216cbdc2bb795bf30eb4ace96d9ac2cf0ae29a942"
+    },
+    {
+      "path": "gparse/src/eisner.rs",
+      "sha256": "10e4a00f4c14c9132ed2c6c7a83692c73fb3c4f90352b94bfdcc9b5e998c1b47"
+    },
+    {
+      "path": "gparse/src/lib.rs",
+      "sha256": "8facccb4431513212d1fcfa99cc25e478f11c3660a67992befebd0b1643c6f95"
+    },
+    {
+      "path": "gparse/src/main.rs",
+      "sha256": "e42b84f188b56efd06083ab570a50c7c152896916d0b48aa4c369a6ef831dc91"
+    },
+    {
+      "path": "gparse/src/model.rs",
+      "sha256": "a380c81aa11433fd9e4efcfaad81abfd55fe79b896d628ee1368f8de8081c941"
+    },
+    {
+      "path": "gparse/src/softmax.rs",
+      "sha256": "61d258172479e2c336a46f46435af63c49cae79446392d942b7638d55fbef143"
+    },
+    {
+      "path": "gparse/tests/empty_sentences.rs",
+      "sha256": "688b8506e066f8dec836a08a5cae71681a482f2484af543c29274b026e5bffe2"
+    },
+    {
+      "path": "gparse/tests/gelu_paths.rs",
+      "sha256": "2b94e6f07726a682cfcede671c08c659a82178cc6dc77efc91aaec238d93949e"
+    },
+    {
+      "path": "gparse/tests/gpu_gradients.rs",
+      "sha256": "72152a3e69fc7ea7ad1a63840821fba81c686400328541ce50ab9ba3f655dc73"
+    },
+    {
+      "path": "gparse/tests/inference_softmax.rs",
+      "sha256": "45f0dbb793a0b01b1aae91c5ee1d53f3dc238a78dce8138b5ad57544f5220031"
+    },
+    {
+      "path": "gparse/tests/predict_paths.rs",
+      "sha256": "c036e107ffbb5bd916ece88da30ce952938411ca0ed12bf7c0bbdd94fac84a44"
+    },
+    {
+      "path": "gparse/tests/softmax_backward.rs",
+      "sha256": "280e3f8eb33bed3dfe9b898f3e0ba60ffd5a3c4d5d1dfa47b8ce2d1997cec4e6"
+    },
+    {
+      "path": "gparse/tests/training_speed.rs",
+      "sha256": "6ee300cfcccce2095cce02974a8fc0d03a644f7da62676c2d5eedae36abe4f32"
+    },
+    {
+      "path": "latex/build.rs",
+      "sha256": "39a1feed1af329d1fb109ab5a2483512ad3e46419a0c2d0bd608921a78357808"
+    },
+    {
+      "path": "latex/src/ast.rs",
+      "sha256": "88786b90964d7ee3438883e97716def3e8076003e6739a53f1232bd9e4cf8599"
+    },
+    {
+      "path": "latex/src/corpus.rs",
+      "sha256": "ae16662c288257b4a21a231297daa510094ff9a6801f3ae5672a355463ec62dc"
+    },
+    {
+      "path": "latex/src/extract.rs",
+      "sha256": "b717bad28ee0917ed90161e6dffd3e4874869f1168eb2f7c1850c833832c13d2"
+    },
+    {
+      "path": "latex/src/gate.rs",
+      "sha256": "b82aa2f9a602c9367ef2b897c5e0ad3de1fa18cf64730ab36ce5cd99d044edb3"
+    },
+    {
+      "path": "latex/src/lex.rs",
+      "sha256": "65c9e2c47772827ade022d41d5bf4ab4f54c0d3a7b9505ec137f0df8c4c4c922"
+    },
+    {
+      "path": "latex/src/lib.rs",
+      "sha256": "edd5e24bb4706ffec37b501da5336a0fbad877c95fa3fe2b65e825a3970cf066"
+    },
+    {
+      "path": "latex/src/macros.rs",
+      "sha256": "4253c16fd5f46f05dd9e527d4b097d906594f20e8fa54caa014288da5aa48c96"
+    },
+    {
+      "path": "latex/src/main.rs",
+      "sha256": "c6e1b8a765da5f40d326f48b38dfb848de42337c586abfaadd62e06d1475891d"
+    },
+    {
+      "path": "latex/src/parse.rs",
+      "sha256": "f463a4a8e13c770287eeeb57c59e74732daac90bf64f57302870d1ea86cc5f47"
+    },
+    {
+      "path": "latex/src/print.rs",
+      "sha256": "a6cb2d3ea7b54e4ff73a7bd80b29109f46422add22741da603027e4e93fd6a95"
+    },
+    {
+      "path": "latex/src/table.rs",
+      "sha256": "37b46b94914c5c1561de4158af4f053c8eaf2b6eeb4411b55b3a3ffcf668bdc1"
+    },
+    {
+      "path": "latex/src/tomath.rs",
+      "sha256": "794488f6ec9ddcdf02f1e70e30a49bad4fbfade117ca82b25f5d82e90b3cb197"
+    },
+    {
+      "path": "latex/tests/bridge.rs",
+      "sha256": "962766193d79b93fcd9b5bebb0ac44bdff22cbb9f80797a622e39d71fbaddde7"
+    },
+    {
+      "path": "latex/tests/gate.rs",
+      "sha256": "710172ffe064b1fe0f860e92867b863919b0b6188d2b31ed326c50a6f72ebca3"
+    },
+    {
+      "path": "latex/tests/vmm_latex.rs",
+      "sha256": "62b39e9533b40131002baaebb0f4efd164ddc59838aa39a382175450e2be6a76"
+    },
+    {
+      "path": "layers/src/lib.rs",
+      "sha256": "f7a2576c1bcd7945f960c030276bf99662c34ee3858fd2116983e3e80be3afb9"
+    },
+    {
+      "path": "math/bigbench/src/main.rs",
+      "sha256": "ffb223536d6a9ed638d3f3a4905c7570d9376febb87e0ec64c6b33d5481a8b81"
+    },
+    {
+      "path": "math/build.rs",
+      "sha256": "5d33383e33141189251926b14e7ff2639e0885e02ec7ef8faca2771ff151f7e2"
+    },
+    {
+      "path": "math/src/arith.rs",
+      "sha256": "5d4c9c6eef03f4cf38d3e5d93665dab4aabb6f9a03063cb6691eff4958493437"
+    },
+    {
+      "path": "math/src/big.rs",
+      "sha256": "cdce09295f9aa48bd3288762aa47902e24ed6034d2f6b23a282168b7ff3b027e"
+    },
+    {
+      "path": "math/src/bin/mathsolve.rs",
+      "sha256": "05b820b20dcb3adfce38c86bc561077db7ad3fb752adba3cd8b41887da4f382e"
+    },
+    {
+      "path": "math/src/bin/vmmtests.rs",
+      "sha256": "957a5c7a678f235ea0b9c3d3bcbdf48aec6be7ae1dfc4ca0e7c1b88981baff5b"
+    },
+    {
+      "path": "math/src/calc.rs",
+      "sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e"
+    },
+    {
+      "path": "math/src/comb.rs",
+      "sha256": "c5937a3576697c052a6de3ce4c9763d806b35105d1ef08a90c525b7f0603055d"
+    },
+    {
+      "path": "math/src/curric.rs",
+      "sha256": "01ecd25d533bc2f38795f1014ded3ed4e8b4baa2ec88a57b34c5a31e1a6f0d6b"
+    },
+    {
+      "path": "math/src/deduct.rs",
+      "sha256": "373e1e3d5d83d964727e9a6becd5b07b78a562291ad7d69c76626ef8e1064ac8"
+    },
+    {
+      "path": "math/src/deriv.rs",
+      "sha256": "0ea96ef4d7df85aa6e234618664e368c594bef2280d7689b5a989da4d31c1f48"
+    },
+    {
+      "path": "math/src/err.rs",
+      "sha256": "7fd87462dd4ffaa71b33f948cf6387402830b5b26729dd8eee7f8f33452651f7"
+    },
+    {
+      "path": "math/src/eval.rs",
+      "sha256": "8b593135200d357abd66fe833bc6ad1577dcdcdb7f67cf94ac5bac2748a28597"
+    },
+    {
+      "path": "math/src/expr.rs",
+      "sha256": "78101164302d336acc46bd862c186cc641a65219ef0b2764148fd848f81a62cb"
+    },
+    {
+      "path": "math/src/fcheck.rs",
+      "sha256": "e16a631c5a71bb3e7ac769703c386098859bb31541bb69e8e697103ee8a32d3a"
+    },
+    {
+      "path": "math/src/lean.rs",
+      "sha256": "ab208a49bf717b021d0b55817d3968040a40bf4fe3086d4416844121521db723"
+    },
+    {
+      "path": "math/src/lex.rs",
+      "sha256": "6a1e155f726c65b8e10f15dc0aba1622c52e22800a2c4d8c75fa194de79e2171"
+    },
+    {
+      "path": "math/src/lib.rs",
+      "sha256": "e8c39418e25d103f3b328e161ceca4920014b34ba908183175b7117d9f909994"
+    },
+    {
+      "path": "math/src/linsys.rs",
+      "sha256": "dd9f5f6f6c55e4f91db8f8be82b3a0472be600f245de26372c417224d22fdc2b"
+    },
+    {
+      "path": "math/src/main.rs",
+      "sha256": "3c64c4781a16e80fbe9e753f28a4f9dd9aad95fecdd4f1d1bae0c6fd8dfcd3df"
+    },
+    {
+      "path": "math/src/memory.rs",
+      "sha256": "7460dfd37079795d3dd42b1808b36c28aa558a094f7ae7bd034669f9c80e0bd9"
+    },
+    {
+      "path": "math/src/nt.rs",
+      "sha256": "27f4bf91578ab245e6b50f5f880126990b73b93b46882c37127e241031c359fe"
+    },
+    {
+      "path": "math/src/plan.rs",
+      "sha256": "f0ee9d51c4e793cce9e3aadc19877be19e3e692f9e829861f1746a198277dff0"
+    },
+    {
+      "path": "math/src/poly.rs",
+      "sha256": "28c7c69c8282270b6ac3bde99e6947108ec5be0f908d510806c4aefdfad61fca"
+    },
+    {
+      "path": "math/src/qread.rs",
+      "sha256": "8389b8d58f68121743d6346e638601297c3725483f4b9fcd2eb8cd47ef2d028a"
+    },
+    {
+      "path": "math/src/qworld.rs",
+      "sha256": "6225ef705c842a9565a3a16bc259b261421d0c6c679a0eeada8de59613ea3887"
+    },
+    {
+      "path": "math/src/rat.rs",
+      "sha256": "b766e527432c703cf934226408ef811aa1e11ab32227e3b9485d0da61b37de18"
+    },
+    {
+      "path": "math/src/solve.rs",
+      "sha256": "e6b60f9cdd4e36eb00d0528079c7a2cfabff94a8bd4f7d3ff0d5f79a41009a9d"
+    },
+    {
+      "path": "math/src/steps.rs",
+      "sha256": "e5cb6a8faf439e291e373da48acc452c2dbe4b831e011b44230ade64f0f9a803"
+    },
+    {
+      "path": "math/src/suite.rs",
+      "sha256": "9a21b9e3ccf76069058b9adf1ffb07ca84b06f5eed69a71ce4f13d87958ad0f1"
+    },
+    {
+      "path": "math/src/understand.rs",
+      "sha256": "5b3ac990c5e46e75b303f47f96d66553ee87b78309e80c6342a97453769e895e"
+    },
+    {
+      "path": "math/src/units.rs",
+      "sha256": "91c124010d03de16a04caaf69473101bfd4af02538c7e1292e6dbac933a96d6b"
+    },
+    {
+      "path": "math/src/vmm.rs",
+      "sha256": "ccae6302f74422ec6b1686ce9f41a3eb51841bf01007b42d016982943fb48ffd"
+    },
+    {
+      "path": "math/tests/understand.rs",
+      "sha256": "488f55c7cff6abbadc3a3c93e4bc3c4977f831f79e141265b04f5c44ac2695f4"
+    },
+    {
+      "path": "math/tests/vmm_calc.rs",
+      "sha256": "39c056827032ed3dfe3981b3faeb3cb9db823642bd622a10204f171b87a716cc"
+    },
+    {
+      "path": "mlab/bench/src/main.rs",
+      "sha256": "78398060b7ccba1c8168560a12002cc55c27dc3fd11761b494bca7f2968d2819"
+    },
+    {
+      "path": "mlab/src/ast.rs",
+      "sha256": "80c1551d46e07871a8060229cd08749c17ac9e6efb01c7e0a2a9c8f7a4caf2ac"
+    },
+    {
+      "path": "mlab/src/builtins/core.rs",
+      "sha256": "8d26d9c57654af7591dfa87298cce7f55541f4d17d513f5e2ddf31f71a8caf15"
+    },
+    {
+      "path": "mlab/src/builtins/elem.rs",
+      "sha256": "09570b244d52019b5a08f99b48dd7fc01d163a267c89b0580689a53db36a0e8e"
+    },
+    {
+      "path": "mlab/src/builtins/fft.rs",
+      "sha256": "43baadabdaa0104c0cad53bd525e02c7a6bdcb77682bc2ca707df3fa1e61c790"
+    },
+    {
+      "path": "mlab/src/builtins/files.rs",
+      "sha256": "c66336a9d4bf2e948158e64f1b02e1f9b80bfc42949cb019fd11d3f70c66cfd4"
+    },
+    {
+      "path": "mlab/src/builtins/io.rs",
+      "sha256": "474fbd7e9d27e2e2333b4e7324f348d79475aef977847e353b8c363a6f9f23ed"
+    },
+    {
+      "path": "mlab/src/builtins/linalg.rs",
+      "sha256": "f3579e5bd4a5ee898096bb912061bc751a0d48e294cd3062452e5ca38546d178"
+    },
+    {
+      "path": "mlab/src/builtins/mod.rs",
+      "sha256": "5e593db042fb0f9c24284b0dfff423735d458b3b3f9a4d5fe269c2ea32af1770"
+    },
+    {
+      "path": "mlab/src/builtins/numeric.rs",
+      "sha256": "f6fa5b4a76ef32afd0991224f982804b325a757adab149969712eb344640c466"
+    },
+    {
+      "path": "mlab/src/builtins/poly.rs",
+      "sha256": "19ff6f221e4a7f3984115436092a1b36ea6a18222cbf8f76fc0b6fd53c13a287"
+    },
+    {
+      "path": "mlab/src/builtins/reduce.rs",
+      "sha256": "0f9cbbd92e1b1868cc508fb251339295057ed96751b3f3e85325c03ee563da5c"
+    },
+    {
+      "path": "mlab/src/builtins/stats.rs",
+      "sha256": "bdc3772b09d9113e108afa29e391fee97a5372caf9052bb1689996c41c94116f"
+    },
+    {
+      "path": "mlab/src/builtins/table.rs",
+      "sha256": "f1b0959092cfcdd3cbd171a48d252ce4c1e652b1e56ed030c160e7667d8cbb54"
+    },
+    {
+      "path": "mlab/src/display.rs",
+      "sha256": "7c29a46772ca4d47ff5e01fc4b3ed1bf38fab6a6b3bce0a41c99332ece8926b5"
+    },
+    {
+      "path": "mlab/src/fileio.rs",
+      "sha256": "547a25932643243689a8ee9f5b0cc0d2cc85923d37edeff35c2d7833d8f488dd"
+    },
+    {
+      "path": "mlab/src/index.rs",
+      "sha256": "dccd47c7d5a96caaf6583aa82cc003b0236ce035f4ffb3dcec85532379debba8"
+    },
+    {
+      "path": "mlab/src/interp.rs",
+      "sha256": "5c4d879d116b5fa07a27053b458c50f25736526b10e84ca189f825a3e3da1af8"
+    },
+    {
+      "path": "mlab/src/lexer.rs",
+      "sha256": "ac652c6bc998f3fe37335b5f158ff8ca8228a08318ee977f2976131468100f3d"
+    },
+    {
+      "path": "mlab/src/lib.rs",
+      "sha256": "32ec0f3c8dbdbb216496e4160a46e3c96aac0090f30b9086803408059917adf6"
+    },
+    {
+      "path": "mlab/src/main.rs",
+      "sha256": "b378db9adacc941133989b5ae41704694f01a38870bc24b36a637f251c6ea03f"
+    },
+    {
+      "path": "mlab/src/mcgate.rs",
+      "sha256": "367b5b5a047a1c38b6d47c2d19978efd2f0274468ffc4375c4c6cc08d3426bc9"
+    },
+    {
+      "path": "mlab/src/ops.rs",
+      "sha256": "d0d25c3a91fa1ef8763f81388f344f366b88b572e5b835ce6f7598bf04428ab0"
+    },
+    {
+      "path": "mlab/src/parser.rs",
+      "sha256": "264bd8e53dd7900714d501cf4d523d9f9fd70f7a948b3491cb43def7fc208583"
+    },
+    {
+      "path": "mlab/src/rng.rs",
+      "sha256": "dccb613f518f32218a910c4eca3ad31df44347dd38b90d431833558e995a2046"
+    },
+    {
+      "path": "mlab/src/suite.rs",
+      "sha256": "9f7b9b196ad8e83e9ed4dd9c544d42b0495f04ed57c268126e091b52493d1f8e"
+    },
+    {
+      "path": "mlab/src/table.rs",
+      "sha256": "7af3a65aabe33226d39f741909fd08d74c3b3e43390417c64e617a10704ac26b"
+    },
+    {
+      "path": "mlab/src/value.rs",
+      "sha256": "557205bca121d43307f9439fa899934fd773fe408c5ec3444988f9be8bbb815c"
+    },
+    {
+      "path": "mlab/src/vm.rs",
+      "sha256": "04ee871c37021946be0ea1feccd1b34fcc214765fb1cdcf78293c747320bf183"
+    },
+    {
+      "path": "mlab/tests/ext_boost.rs",
+      "sha256": "7fa4b847808f0a485411988bb342bd0b0540d350c50e6166f08224c1dbac9dfc"
+    },
+    {
+      "path": "mlab/tests/ext_nist.rs",
+      "sha256": "82ac1127de001872692aa31cc92c6bf01f367afe18cfbd08941641a96851256c"
+    },
+    {
+      "path": "mlab/tests/fs.rs",
+      "sha256": "97102d6c4f35ec52fad226eb7a21dc0f2577e63693f5981b91fff6dc7a964203"
+    },
+    {
+      "path": "mlab/tests/octave_ext.rs",
+      "sha256": "083430129fcb3a8656178a4c528228635665bacc2c3946a93327966b0947bcee"
+    },
+    {
+      "path": "mlab/tests/suite.rs",
+      "sha256": "44bf1111361f38af56288671607c9669b173753da07152c00641627e7091a3bf"
+    },
+    {
+      "path": "mlab/tests/vm.rs",
+      "sha256": "752cb721b2bda77ee9b797cde810ad959a74341f31a7e1b2c62f5ca60c773fbe"
+    },
+    {
+      "path": "mlab/tests/vmm_suites.rs",
+      "sha256": "4d19f5e104903cb517a2ecf919fb7bfefe82a7577e33b30acf962c0c35fd44ec"
+    },
+    {
+      "path": "prag/src/agree.rs",
+      "sha256": "b50e6b91851fb5a19e9d540b2668f6025524b634522a028614be6676e7b9be46"
+    },
+    {
+      "path": "prag/src/data.rs",
+      "sha256": "b3146b6af3ca37c5a64f82c60970bea0420e5f7f62cf38642c305e09b8ce4015"
+    },
+    {
+      "path": "prag/src/eval.rs",
+      "sha256": "c6a0e3ae0e424ffd6e5883502ce7e55d38d61e53b1184b6160f4236371fecd2e"
+    },
+    {
+      "path": "prag/src/fbench.rs",
+      "sha256": "ccddfbd624b5584905d4bf9f0a80eacfadbc4aeece072d68e0c216b36e7b04e3"
+    },
+    {
+      "path": "prag/src/feats.rs",
+      "sha256": "2a1a0bd6e43dd16f7284e993f30d0f4971c447c9e2080616033d19ac8693611f"
+    },
+    {
+      "path": "prag/src/frames.rs",
+      "sha256": "910a6ee1773cda288a40ba65bdd1bc5d9b00b22296a23d567bc0249b71fbd95c"
+    },
+    {
+      "path": "prag/src/frames_md.rs",
+      "sha256": "023ca98fa461e9d1545915abd8071ecb542cc61999bbf5a054b712e5edf9b5e3"
+    },
+    {
+      "path": "prag/src/infer.rs",
+      "sha256": "723690dfeebf9e8b5472d02d877ca4312dd24410441908893c32f83229e9a331"
+    },
+    {
+      "path": "prag/src/invariants.rs",
+      "sha256": "64ddcdabea1704fc3216d06f5f299ec06171dc4432b7f5c9b7d4b7c4a4fbf190"
+    },
+    {
+      "path": "prag/src/irony.rs",
+      "sha256": "2855171f6b887782c09c175e6ad59c4c3b91e8e5807b82cdf45170725a2c2eb6"
+    },
+    {
+      "path": "prag/src/lens.rs",
+      "sha256": "a84730ba30aaee9f91a8581f16544d5769a824f59b7a6ba43470d8aa6a641603"
+    },
+    {
+      "path": "prag/src/lib.rs",
+      "sha256": "01009a73cf1a1bc103374decd92328f31a226a3212d307ff9f7327bc95523d65"
+    },
+    {
+      "path": "prag/src/main.rs",
+      "sha256": "170a91fdaf37227ef14b8d620f451d9d46987dde5546136e8153e7e368794d0b"
+    },
+    {
+      "path": "prag/src/model.rs",
+      "sha256": "e18c587fd1f87b18c7e0118e0009b16fb469e26ba9cd0edf26b097226130ee25"
+    },
+    {
+      "path": "prag/src/opus.rs",
+      "sha256": "0169f72bddab55f9e493b85a86918b5f0adbcf5153c7c12725bb249f2ed5c136"
+    },
+    {
+      "path": "prag/src/roles.rs",
+      "sha256": "30e3aba0c3fba51e326a90fb8da79fa28c009d58c10742100aa462a75d41a5df"
+    },
+    {
+      "path": "prag/src/rules.rs",
+      "sha256": "ba82334c7c91aaaff7aed9651eae4b2d54b99d66c88cbe3f162fdda3407bc9f3"
+    },
+    {
+      "path": "prag/src/schema.rs",
+      "sha256": "7dade219cf710dd08df7a60853a6101058b90af22a564ac35c9b3c5d4b23eff8"
+    },
+    {
+      "path": "prag/src/silver.rs",
+      "sha256": "adf915c8d5e9059d3f58b20eca8d9b94721ee7fd9f39ac69f93775a6b5c856c9"
+    },
+    {
+      "path": "prag/src/vn.rs",
+      "sha256": "f35dceabba8b9e6e03a2e11d74967e79f4f40920cc2898b4a5d4b3812a6befa1"
+    },
+    {
+      "path": "prag/src/vnconv.rs",
+      "sha256": "b5e9e5a2a3fc9359403585f2a0b1ffacc4ecb71a563d252d1ea334a76695ae52"
+    },
+    {
+      "path": "prag/tests/groupant_wave13.rs",
+      "sha256": "9991d8a61afc40be64d7828b5411d1cc55d8d49b750db50fe55f85f2c15d51d4"
+    },
+    {
+      "path": "prag/tests/groupant_wave15.rs",
+      "sha256": "b4a5a8101f5ea6a7bc74f63a3d1e6130b4d85e91ef9c5c886a7ace090e1f387f"
+    },
+    {
+      "path": "prag/tests/groupant_wave16.rs",
+      "sha256": "e3b13f4d30c6df653b6cea0843c66ad119cb3f3de894fda7aef23b0aefc2eb4c"
+    },
+    {
+      "path": "prag/tests/groupant_wave17.rs",
+      "sha256": "6daabf7b11474b3266be105a16669f19ad9fc5a00b72853aae4e35ac8a9ef94e"
+    },
+    {
+      "path": "teacher/tests/live.rs",
+      "sha256": "4e7b2faef824448b23534bf455ab2a00bb3f6f1ee7a6870e1855bee5e7d3ccc7"
+    },
+    {
+      "path": "tools/agent-mova/src/lib.rs",
+      "sha256": "ffd0df199afcef79cebce1015c8b200ea9314a1bf85f1317c8985a61ffef9d4b"
+    },
+    {
+      "path": "tools/agent-mova/src/main.rs",
+      "sha256": "b20f9b5d8092c25e4423fadb4c30255381bf9b894594d9eeeb653ccba5f5f902"
+    },
+    {
+      "path": "tools/agent-runner/src/lib.rs",
+      "sha256": "67219e7a3b9e8d7162a7223ff04ea11bed153257380e59f0605223ed93829233"
+    },
+    {
+      "path": "tools/agent-runner/src/main.rs",
+      "sha256": "8413b14a747b38e6f0107af4c9ab8cf4d7a551624ddad0f0559a0885dee8f746"
+    },
+    {
+      "path": "tools/bench/src/main.rs",
+      "sha256": "7a5aff2d66b34bbe237903eefacc2f794692b2b28ca50dfb0595422fd443326e"
+    },
+    {
+      "path": "tools/crab/src/angel.rs",
+      "sha256": "f48966dac31b16b242ca1973eec40ed26302110264e38093fbc19fbadc32b9ac"
+    },
+    {
+      "path": "tools/crab/src/bin/crab-tmux-worker.rs",
+      "sha256": "7e1182f1c22bde45f4700a13f573c194b8623aa7de05240aaceaf19ccbb4f8b3"
+    },
+    {
+      "path": "tools/crab/src/consult_queue.rs",
+      "sha256": "053a4ca997479da5028c2f61ae7bbd79188cbf7279a9725d906b50f0fa0db6a4"
+    },
+    {
+      "path": "tools/crab/src/council.rs",
+      "sha256": "f410ea34d63bc7fded93c7894c657cb9541480d907b25fd8f8e1363eea1aec77"
+    },
+    {
+      "path": "tools/crab/src/dolphin.rs",
+      "sha256": "b6284d51f6f650a0a8338e6176a5df2b63f3eb56353f1d2bada4c337617aa361"
+    },
+    {
+      "path": "tools/crab/src/flow.rs",
+      "sha256": "e005f35f881e2beda56186c1ea839b1340f5b7173527291c49bdd9e7a96e2d2f"
+    },
+    {
+      "path": "tools/crab/src/lib.rs",
+      "sha256": "74413a252258d13588e18748a92a4a71fca9f878fc4a2c7d27346fcf6d9f939e"
+    },
+    {
+      "path": "tools/crab/src/main.rs",
+      "sha256": "1d8845b5eb4b9ccd04e9584f62a4167da875a05b8a7ccf35681b94ca1d8c1487"
+    },
+    {
+      "path": "tools/crab/src/status_observation.rs",
+      "sha256": "865ef38a625e39729f80fff33011478cce755ce4f440d3132546df1b97c95eb7"
+    },
+    {
+      "path": "tools/crab/src/store.rs",
+      "sha256": "a79f9a494efb098d4d541acc7812a26d8fe26336bcf2165583c9c4fa0ff14c14"
+    },
+    {
+      "path": "tools/crab/src/supervisor.rs",
+      "sha256": "045e0a24d0ee4eecdb86486a8f64728da2442ad62396900652e333bc3a4b1c63"
+    },
+    {
+      "path": "tools/crab/src/tmux_worker.rs",
+      "sha256": "969a3506cc2f8a9da40929edc86e15e9f473b36e39ee2421232c04baebe2fe76"
+    },
+    {
+      "path": "tools/crab/src/workers.rs",
+      "sha256": "e60ea84fba3b4f1254f2e3d1178d0c85dec5d336862f7bc0cc5490740b66a633"
+    },
+    {
+      "path": "tools/cycle/build.rs",
+      "sha256": "99e9e71ca1c1b36c622ad50abed37f5a6262989924a8f6b74b67f9964ef216af"
+    },
+    {
+      "path": "tools/cycle/src/db.rs",
+      "sha256": "46ace8ee692107b0fa7d933778036f4d884a3a081023f2c143236cdfdb0cb8c7"
+    },
+    {
+      "path": "tools/cycle/src/main.rs",
+      "sha256": "9677d345fdc68895d81ca8a04f680a91debd5f91eb765debd1509b42e1874f51"
+    },
+    {
+      "path": "tools/cycle/src/pipeline.rs",
+      "sha256": "7f2bf58dade3757acaa7ea71ee60c64c7ed4e36a88afc88cc66571c618727876"
+    },
+    {
+      "path": "tools/cycle/src/reviewed.rs",
+      "sha256": "021da8acb42f724b07246581acbcb4ad76837930cadc0ca88a70f848ab976055"
+    },
+    {
+      "path": "tools/eel/src/evidence.rs",
+      "sha256": "4de6f089e8d6c8cd3082d6ea21d5d41eda54c944778d120df9214ef89adc0261"
+    },
+    {
+      "path": "tools/eel/src/lib.rs",
+      "sha256": "39ec2429e3ee636c2fa16a45bd9d27ffae51ca446a181864fdf65500e2bb98fd"
+    },
+    {
+      "path": "tools/eel/src/trainer.rs",
+      "sha256": "cc4d7b6d4f7d17cdcf4c1f272d28d5131bfffc8ac2129c80a741338e3d10b6c7"
+    },
+    {
+      "path": "tools/enrich/examples/lesson_smoke.rs",
+      "sha256": "14a0b553a86f78d23e5e4d7883295357c4d49e58913f602131c3b852b0a08511"
+    },
+    {
+      "path": "tools/fish-batch/src/lib.rs",
+      "sha256": "f4736aaa632208b97e1bd28036cfd50b10a23043753a7c2c66a5059fd392f15d"
+    },
+    {
+      "path": "tools/fish-pages/src/lib.rs",
+      "sha256": "284d3d93e75b0b65c63e12817e90404c3f8afbebaa3f7f2e264f0929b19d2e8a"
+    },
+    {
+      "path": "tools/fish-pages/src/main.rs",
+      "sha256": "0e1e0174f6a0b784d30833d6b5696c5a48e0b87bfc51704e5c39752056bc424c"
+    },
+    {
+      "path": "tools/fish-priority/src/lib.rs",
+      "sha256": "efa4999f912d55bf751049705f661191050edfecd6f8bb708dda7e81e2e60943"
+    },
+    {
+      "path": "tools/fish-swarm/src/lib.rs",
+      "sha256": "d21c64916c360776d0caa1292f309ee01f17fb5bc001f47c2afffdbe9af97dc6"
+    },
+    {
+      "path": "tools/fish-swarm/src/main.rs",
+      "sha256": "e6f6f5fc2cdadbcb90ea175a8abd3a9e319c4bf77ba507e9ef1550f0ad3f8fe0"
+    },
+    {
+      "path": "tools/fish-terminal/src/lib.rs",
+      "sha256": "2e586c5d65bd6820ce215bfc5fb81b666c155460a9590bf77b6823284893b780"
+    },
+    {
+      "path": "tools/fish-terminal/src/main.rs",
+      "sha256": "c33bf6f44edeb6196d3e97c3d560dc85fd081a829ba001f417879d0fad98e83e"
+    },
+    {
+      "path": "tools/fish-terminal/src/terminal.rs",
+      "sha256": "d40a040a51eeb602c67b232628b22d6e36759977631eef3603e8d142c313c3bf"
+    },
+    {
+      "path": "tools/fish/src/annotation.rs",
+      "sha256": "e561bf34b97072ad66e8705c78563a954d7e32b88b1080af052f6ffa74296bde"
+    },
+    {
+      "path": "tools/fish/src/controller.rs",
+      "sha256": "bb05a792108eb48c7beaa765814d7cbcec9d8a088752682dedad69e702e26dcd"
+    },
+    {
+      "path": "tools/fish/src/execute.rs",
+      "sha256": "c3027996c4a9693c4d28dcd3d01096ccc066697a15da667c067bb22ec672c5c3"
+    },
+    {
+      "path": "tools/fish/src/lib.rs",
+      "sha256": "44e53480343063f542c705564cf9b984b3c040a220aff50cf60bc2ecab1d227f"
+    },
+    {
+      "path": "tools/fish/src/main.rs",
+      "sha256": "6ce48c12fb96a041cea09ba0c80982c250b425321ee736207db0635e7eb637d4"
+    },
+    {
+      "path": "tools/gutenberg/src/main.rs",
+      "sha256": "cc6e3c082c5ad468c3a1894250cdc0c8e5dbb97e91fd56f1db678683de8d65b2"
+    },
+    {
+      "path": "tools/hbo/src/conllu.rs",
+      "sha256": "a29f83c67bb7f75cadfda6aea9d1675b0ae1ea188862ac8c3a6453295447f4f7"
+    },
+    {
+      "path": "tools/hbo/src/lattice.rs",
+      "sha256": "eeec78ace6a0dadfcff75205bc3718b223cf89d05fc8df94ea2884272f033fbf"
+    },
+    {
+      "path": "tools/hbo/src/lib.rs",
+      "sha256": "660faca62417f9a1eb9807a014127f1b4b868caf5e3f488a8cd6a1e716572143"
+    },
+    {
+      "path": "tools/hbo/src/main.rs",
+      "sha256": "0c6745dd24d6be0c80fc44c855adc88cceb66e5faf0890747f4e93c1cf49d62a"
+    },
+    {
+      "path": "tools/hbo/src/seg.rs",
+      "sha256": "1efafc6b8585f52c95ae888311bced3f5a9519555edaf78ff0e536450221ce5d"
+    },
+    {
+      "path": "tools/hbo/src/text.rs",
+      "sha256": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7"
+    },
+    {
+      "path": "tools/jobs/src/main.rs",
+      "sha256": "ddb2e9ecf8ef78a1d13ce00030932ef2703746e56c52f29c33fc428366f20a29"
+    },
+    {
+      "path": "tools/kaggle/src/main.rs",
+      "sha256": "c6ae7a7a7d1de14c13347e0b611d2b563e935ade8e8237facab03ac8b566f727"
+    },
+    {
+      "path": "tools/langseg/src/corpus.rs",
+      "sha256": "ab5927cbc959808c4942d9bf0df5ca7fdf09556d5cc474748f46bf5a9d17af93"
+    },
+    {
+      "path": "tools/langseg/src/cues.rs",
+      "sha256": "189e1cfd017374c2fdccdf812e7640926d764625a3b795c3696fcb7fcdcfe692"
+    },
+    {
+      "path": "tools/langseg/src/lib.rs",
+      "sha256": "33431b9d2b514927e89b18661cd27b04b2b0029ea2d12b3b14fe0f0bd5c8240f"
+    },
+    {
+      "path": "tools/langseg/src/main.rs",
+      "sha256": "5208ab4aabcfb1c2bbbbfdeba0aa0ddc573eb4002896e635130f850e636bf09c"
+    },
+    {
+      "path": "tools/langseg/src/talmud.rs",
+      "sha256": "f2620e40bfcfdd3e6a608fd67027743ca31f2726a77b6a60c6b5fe226f36ad66"
+    },
+    {
+      "path": "tools/langseg/tests/gates.rs",
+      "sha256": "628b9a8245df91b2191dfb3f52db85f7b378b2e9b77bb4b2ebb71dd9dd206be3"
+    },
+    {
+      "path": "tools/macula/src/lib.rs",
+      "sha256": "ea8018f6b0ce67e3ac04f214e97f93607a087d606820b5adf89ed7ecdcd19202"
+    },
+    {
+      "path": "tools/macula/src/main.rs",
+      "sha256": "50f74dcd65d946303c336d39e507bfd19028f5ff8889a918d18ce54e47dd18d2"
+    },
+    {
+      "path": "tools/macula/src/prag.rs",
+      "sha256": "f08c04b0e5acc749ab22b1109a94c608345141e768738c862d56ba464d33942b"
+    },
+    {
+      "path": "tools/macula/src/tanakh.rs",
+      "sha256": "fc1c2896a6fcedfa57eb16ab4a690e3637e4fdde88b949c0b122df505e1fd053"
+    },
+    {
+      "path": "tools/mathlib/src/books.rs",
+      "sha256": "c45e71334ccd3618e9fad4d6117ac8048db42001ffea61d02fa6d4121d1e5060"
+    },
+    {
+      "path": "tools/mathlib/src/duck.rs",
+      "sha256": "9f7321a7f368a542a2a9cb3bd2c79adf590517f4d6a0c7b88c7adf254bac7946"
+    },
+    {
+      "path": "tools/mathlib/src/fetch.rs",
+      "sha256": "9a892fd61299338f640f9d8d08471ef7f09cac19235ad80b90d894a12489996d"
+    },
+    {
+      "path": "tools/mathlib/src/gcs.rs",
+      "sha256": "1c497d6224bcd2c1561bb1f524542f7e8d27ed6dc398b82e81a61bbd320821e8"
+    },
+    {
+      "path": "tools/mathlib/src/http.rs",
+      "sha256": "3df63f2ba1d7bcdb4f0bf02fa7c7a1f0feb5817d22f7409456945ccf6a57aa32"
+    },
+    {
+      "path": "tools/mathlib/src/main.rs",
+      "sha256": "b350b04af0e7b74d484cab2bef3f8858eb76a9cf89fea724e18e3130028d2508"
+    },
+    {
+      "path": "tools/mathlib/src/oai.rs",
+      "sha256": "a31f2f7ae8b4e679fc6c5a24e070ba078708a5336ebef35cbc1f08a10b1ea65e"
+    },
+    {
+      "path": "tools/mathlib/src/raw.rs",
+      "sha256": "7d08c4e6f06ecd7eabc2c57092405b6d010841ad384398c17f96e1438c098790"
+    },
+    {
+      "path": "tools/mathlib/src/robots.rs",
+      "sha256": "84539710d111a1045385202e26b845b3894fbd8883804cbcbdf39135d6d22897"
+    },
+    {
+      "path": "tools/ocrfix/src/main.rs",
+      "sha256": "c0912bb251c79fa61d4601c1a4d5954189ea77b73a96302504f6841b8cca3ab8"
+    },
+    {
+      "path": "tools/octopus/src/bin/crab.rs",
+      "sha256": "c8a9a2515f88d4deabc000cc8e28fd86b09a0cc279e6925a2b6a811845085d8b"
+    },
+    {
+      "path": "tools/octopus/src/commands.rs",
+      "sha256": "902eff504be6e8aedd5decb2e5d973fc163887af0fc1b9c8d6df3175b4742f15"
+    },
+    {
+      "path": "tools/octopus/src/frame.rs",
+      "sha256": "e06cae37adb6639f8c3e6868067370af7854eb50b27e939fffd13ba4fa3e9b60"
+    },
+    {
+      "path": "tools/octopus/src/lib.rs",
+      "sha256": "fc06432596ccfc7cee70f613e7fc15a99d67d1a38e78b8a350752e691dd77923"
+    },
+    {
+      "path": "tools/octopus/src/main.rs",
+      "sha256": "671c39e016ebb49c97904c0f937f0f732f01974ce786c90c4900a724fa5da16d"
+    },
+    {
+      "path": "tools/octopus/src/realize.rs",
+      "sha256": "3d33799d90c46fe33a92b8a001923b29b080b4f2a26ed0346d75d43c3fb64b26"
+    },
+    {
+      "path": "tools/octopus/src/relay.rs",
+      "sha256": "d7dcc1ff74d3dfd9d202ddc300fae8fb989c846766589103ed2f9726c2d5c352"
+    },
+    {
+      "path": "tools/octopus/src/slots.rs",
+      "sha256": "4df57688d9c311a9b2b88cd6fcbe32ada3ed0c43334b427e790698c959adb434"
+    },
+    {
+      "path": "tools/octopus/src/socket.rs",
+      "sha256": "f9d6a0cbcd0d0c4957351c5f9520b4622ea5bc19a8aac3a40f435a4f5c549a0e"
+    },
+    {
+      "path": "tools/parsecmp/src/main.rs",
+      "sha256": "8d5c1b3d4b13c46e7f0b31fad87b1197b29574d987a2ea1c89ed012961a9a9e7"
+    },
+    {
+      "path": "tools/roundtrip/src/blocks/heb.rs",
+      "sha256": "5f4eb0e21c8dfbfef387d2faa75aaa9ebfd2cf748d94cef3bbc2d526572b6d44"
+    },
+    {
+      "path": "tools/roundtrip/src/blocks/mod.rs",
+      "sha256": "81113918aaba6d470fc065e16dc9b076d79303c254971f72e6530cbbfea755f5"
+    },
+    {
+      "path": "tools/roundtrip/src/blocks/run.rs",
+      "sha256": "c0cf4e6ab9c16a7dd305a632dd49b7bcf7d53824032cf46e44cf7ebd80c7d0d4"
+    },
+    {
+      "path": "tools/roundtrip/src/blocks/site_code.rs",
+      "sha256": "8b7af5b786bf922124d3c1e99243cdd058f60ca3e1c9b828f4bb51918bc038c3"
+    },
+    {
+      "path": "tools/roundtrip/src/blocks/site_heb.rs",
+      "sha256": "5ba678eb77695e001029e2e896df29afa8a17070cc5d77562524d4c4cb84e4cd"
+    },
+    {
+      "path": "tools/roundtrip/src/blocks/site_learn.rs",
+      "sha256": "fa50120b76cfd51fb7649ebda3bd52571c516ae45aa209a3e1b81437b64573de"
+    },
+    {
+      "path": "tools/roundtrip/src/blocks/site_md.rs",
+      "sha256": "ced26c9c453717c6472e4b11b282c0490a386e7399f5b899524f72d998d12eb3"
+    },
+    {
+      "path": "tools/roundtrip/src/class.rs",
+      "sha256": "1b8466551077c2f42748e0d08084307cc8bbaff3f62fbe2597eced4b75221f36"
+    },
+    {
+      "path": "tools/roundtrip/src/compare.rs",
+      "sha256": "0e0a504b415f23e88f9dd01e8cc5a468c83c3532d5feeebb8a3ae1fb832c9701"
+    },
+    {
+      "path": "tools/roundtrip/src/diff.rs",
+      "sha256": "dc8f0bd667aee979f3e9bbd534059cda7594c560f66f10811b1e85a81ec975cb"
+    },
+    {
+      "path": "tools/roundtrip/src/frames.rs",
+      "sha256": "d9eb1c251975ecedf6f5becc0b7567e5140cdfae1acbc83a74d2fb71f95bd391"
+    },
+    {
+      "path": "tools/roundtrip/src/lib.rs",
+      "sha256": "366f25c83a674bd1917578e2c985b4c0585f02a1d3fa53e4101c7e9d0a895606"
+    },
+    {
+      "path": "tools/roundtrip/src/main.rs",
+      "sha256": "00f4bbcd3c873394f1a661e52a0dc3360dc8f4f368d9f33113d3f6c6ac2e4109"
+    },
+    {
+      "path": "tools/roundtrip/src/mixed/heb.rs",
+      "sha256": "875be40516fae16e4e0deb2f01d6dd4d908af19cb2fde1cd8e47030c184c91c0"
+    },
+    {
+      "path": "tools/roundtrip/src/mixed/link.rs",
+      "sha256": "9ec656e7db9174a65370e932dbe93940f9ecc137ed3180673d62ee671c795220"
+    },
+    {
+      "path": "tools/roundtrip/src/mixed/mod.rs",
+      "sha256": "ec7cbac5010f8e79b5609ceb6399662a15596513756ea0b8a29b6e1c183f9be8"
+    },
+    {
+      "path": "tools/roundtrip/src/mixed/report.rs",
+      "sha256": "5585a6c515e315fa31adfae1948524d9f424f896d4c51fa7af437cba698182ec"
+    },
+    {
+      "path": "tools/roundtrip/src/mixed/route.rs",
+      "sha256": "5e7d9e53093eb86dafd6a9c7b38bc1fafff1adbb7392788eb6bfd3a5689b38e0"
+    },
+    {
+      "path": "tools/roundtrip/src/mixed/sample.rs",
+      "sha256": "4fa37ab7a99fc9a76b9a3de1bd2f02769269542443dd47e067530b94c1fedb12"
+    },
+    {
+      "path": "tools/roundtrip/src/pipeline.rs",
+      "sha256": "88be3b618dd828411c1e6633432af60ba9fa905429b55cff88fbc31b5ae721da"
+    },
+    {
+      "path": "tools/roundtrip/src/report.rs",
+      "sha256": "ad92d6e8baee2f83f1fb90c2fcb7ca638e9312a525c7e3c37857525dd9584899"
+    },
+    {
+      "path": "tools/roundtrip/src/tally.rs",
+      "sha256": "c3382ca2a337994e1e1f7eef64ee405b8bcfd2d06be64e58e6b44f2df06d1d42"
+    },
+    {
+      "path": "tools/roundtrip/src/tests.rs",
+      "sha256": "7d1dbfa26a29fb87a9562f16de3dfbe0542e87b7db28ef675a358a9471f3153c"
+    },
+    {
+      "path": "tools/roundtrip/src/tree.rs",
+      "sha256": "3db953874807575403c8d2857006e1932cc72df16fa615b64c5b9e7eceae8da7"
+    },
+    {
+      "path": "tools/roundtrip/src/vol.rs",
+      "sha256": "0e6fc39eafffdb765f32f972847334f79853e300c31411225a581b181adb5165"
+    },
+    {
+      "path": "tools/roundtrip/src/world.rs",
+      "sha256": "46d4429a5127b1a462d90e5d350a0f440d440a6781edeab42a01d3bf124a3675"
+    },
+    {
+      "path": "tools/school-sents/src/main.rs",
+      "sha256": "c181de82933278ce4fe7521ccdc4603e6ea8dec527dfd53a0dd018bfe01e4117"
+    },
+    {
+      "path": "tools/seaspider/src/animal.rs",
+      "sha256": "0c9b58005f7f80b0e07b36952b00ca08015b2638806e93b97ed7f5abd2459d13"
+    },
+    {
+      "path": "tools/seaspider/src/answer.rs",
+      "sha256": "9b878397d9dcd5e1e018cb3a681145227bb9187cb5ea30f65f1ed8a8854e5f02"
+    },
+    {
+      "path": "tools/seaspider/src/config.rs",
+      "sha256": "02db34c5b767327b93d5a5b4615e81bfe7705efffff391ac545a56154b587d59"
+    },
+    {
+      "path": "tools/seaspider/src/crawl.rs",
+      "sha256": "4640b7f110e25319bf0eafc4ccad38abe2c08728945913c4bac933b6fd90bc6d"
+    },
+    {
+      "path": "tools/seaspider/src/fetch.rs",
+      "sha256": "2f2674c291f9fb452a28baab85fc447afe13246badaa165cd0c3efb148ff0e93"
+    },
+    {
+      "path": "tools/seaspider/src/lib.rs",
+      "sha256": "8c5fce607db18ab100ea96939124b3d246675327a23a483e17cdb7907d8c34d3"
+    },
+    {
+      "path": "tools/seaspider/src/links.rs",
+      "sha256": "5d4c0b8f0e4cd446c3045bb1f583f7a8b40615a491956c46e4e7aa60231e48c8"
+    },
+    {
+      "path": "tools/seaspider/src/main.rs",
+      "sha256": "b3a5d663164fb756a7486dceef7be11ab82f44396dd9a4fdd356ebef36525579"
+    },
+    {
+      "path": "tools/seaspider/src/polite.rs",
+      "sha256": "d715b5514a605260d8c74a6d6f032780481384c753b6dc0ddf298de9e3a506f2"
+    },
+    {
+      "path": "tools/seaspider/src/robots.rs",
+      "sha256": "fae83aa4e2ccf5f9c298d60bcddc77d1630a63869af681466e6ab3e23e01e81e"
+    },
+    {
+      "path": "tools/seaspider/src/singleton.rs",
+      "sha256": "feab33f1c48098a1891517520e606f337cc695d37af4b3181b331d4c2a072089"
+    },
+    {
+      "path": "tools/seaspider/src/store.rs",
+      "sha256": "b8a8bfcdd5d8d33b03cc5567a63c2cebbdf99e7a4dce4f1191aa1e09e5c2c654"
+    },
+    {
+      "path": "tools/seaspider/tests/english.rs",
+      "sha256": "1fe73f1ae78429cb97f8cc66da1c59802276d115edef9eb520aa792f8893e9db"
+    },
+    {
+      "path": "tools/seaspider/tests/http.rs",
+      "sha256": "1987ccb0f76278160601a8cae62992d12c536036e8cffa65e8a5b614d6e07af6"
+    },
+    {
+      "path": "tools/seaspider/tests/singleton.rs",
+      "sha256": "1041897885e2023f2d6085a123a326b44b90842758fb33acaedc817cf462734d"
+    },
+    {
+      "path": "tools/whale-world/src/config.rs",
+      "sha256": "c572368f8107c0cb3ed4638dcd80a23c1bb3541b8fb56a9a303de71745e8a528"
+    },
+    {
+      "path": "tools/whale-world/src/dossier.rs",
+      "sha256": "793fe1b8e7496f39dcb42a3924bf79f08b70a6e8540c27e50406049528c46179"
+    },
+    {
+      "path": "tools/whale-world/src/dossier/import.rs",
+      "sha256": "d312955098905a92f2d591d1ff034b9a0af089da847e598374fb487b56952b12"
+    },
+    {
+      "path": "tools/whale-world/src/export.rs",
+      "sha256": "ea990dabb2bcaa26dbde0c1b9d5a8560bb773a87bc9d53dce134766e6750d1e9"
+    },
+    {
+      "path": "tools/whale-world/src/export/tests.rs",
+      "sha256": "b64ff6c785adc1530f8c7e4d83204f3503e1aa73100663a612f9f42395be21dd"
+    },
+    {
+      "path": "tools/whale-world/src/lib.rs",
+      "sha256": "14dd3493ca8f34e0a483c0b8fc81e40eb7577c188f2820812e632a2400844470"
+    },
+    {
+      "path": "tools/whale-world/src/main.rs",
+      "sha256": "2316ed7117b4e5fdfe895f8c67b4b75e8788ff63ccce8ccaaecbf8550c13f4f4"
+    },
+    {
+      "path": "tools/whale-world/src/query.rs",
+      "sha256": "6a316a1fa7dbb33367b21fff1a638dda013a4613667b3f98f3be5b0791595f6b"
+    },
+    {
+      "path": "tools/whale-world/src/tests.rs",
+      "sha256": "f639030905ada5fa4b3e43707ea02ca84353129316316bc9f3310e6295814a92"
+    },
+    {
+      "path": "tools/whale-world/src/world.rs",
+      "sha256": "1a56e1510a3636eea554ca26eb94a53f6fdc4760433d69897c1808099eb7ff83"
+    },
+    {
+      "path": "tools/whale/src/agent.rs",
+      "sha256": "5021f28a278bf679cb1fb867674633f7ff192df5fd1c0eba2d48239e16b0053c"
+    },
+    {
+      "path": "tools/whale/src/animal.rs",
+      "sha256": "3354a0e4b4b18c4b06b79b9bc834eaf69e5f4e416ae17fd4a0c376596f370d3e"
+    },
+    {
+      "path": "tools/whale/src/answer.rs",
+      "sha256": "64b9b0c56b5feca5a7417790c3f3a2e9b7639bd5b876ea651083142f7001ede5"
+    },
+    {
+      "path": "tools/whale/src/claims.rs",
+      "sha256": "f194e211030d30d88995733b8003267006ba18b9d4b492961bcb70b2054d1d65"
+    },
+    {
+      "path": "tools/whale/src/contract.rs",
+      "sha256": "7bdb7e35733e05c749d05571e45f6131a43b33d68926f1fb87952768aaa20025"
+    },
+    {
+      "path": "tools/whale/src/dossier.rs",
+      "sha256": "d76208ddaa942c0908c60fb490c7d322e5f902df1a85d56f89ce3b76422e1ce9"
+    },
+    {
+      "path": "tools/whale/src/epoch.rs",
+      "sha256": "222768a7359fe9452c94ec3ec16cc38d249a571d85b1ed704a59406b270a09d1"
+    },
+    {
+      "path": "tools/whale/src/epoch/tests.rs",
+      "sha256": "f82d197a9c655f2b7c1d34879dae6dd02cba839ba6d5d6ece5a381bce7d411e1"
+    },
+    {
+      "path": "tools/whale/src/lib.rs",
+      "sha256": "59203ea7bfa857c9f4ae10e177d46e4a9a079bd0920e8f95179c7e7ae3b0fed7"
+    },
+    {
+      "path": "tools/whale/src/main.rs",
+      "sha256": "a9ae96b5c7cebd55d3b73f4ed739935c779f9b6c4284e7fa97be2ded0bcc7e90"
+    },
+    {
+      "path": "tools/whale/src/originality.rs",
+      "sha256": "f53e6f178524e56ccfc7a53ec8d4e153d0e7d7ead1b18af59b5eae0233dc22d1"
+    },
+    {
+      "path": "tools/whale/src/paper.rs",
+      "sha256": "e475675dea974e80bcd2e689f35262ddab6d5a81cc7533641c60cd7ec2a3176f"
+    },
+    {
+      "path": "tools/whale/src/pool.rs",
+      "sha256": "6b6a9e7ffe25fa06c84ee89472c91d28522fc8c0a797c03b10660c98b9e0c31e"
+    },
+    {
+      "path": "tools/whale/src/reader.rs",
+      "sha256": "03bb0b14b5035f4097936eb0129787e37b95b6573ec9b20e42d78fa66d5cb71e"
+    },
+    {
+      "path": "tools/whale/src/roles.rs",
+      "sha256": "9dd9747253699bf1e6782261f6cd54b1105852fa118ac241b1330d2b3b927ed7"
+    },
+    {
+      "path": "tools/whale/src/seaspider.rs",
+      "sha256": "8b290f91b32f41c49b4e1fb88b81aed4f1c4f768737243540967b248ad40eac1"
+    },
+    {
+      "path": "tools/whale/src/whale.rs",
+      "sha256": "e05173e0d788fe1ad2f6e1cc037e0176d771727d20f331c7fff0d31bb92d847a"
+    },
+    {
+      "path": "tools/whale/src/source.rs",
+      "sha256": "eade8e2a792458db19c1f9d4c1556969f6a8086c092f5d3420b73e32337975ea"
+    },
+    {
+      "path": "tools/whale/src/spec.rs",
+      "sha256": "7f63e4011ad00c1cc28b186dddb92a8444d1267c231b77de04e65680b724335e"
+    },
+    {
+      "path": "tools/whale/src/swarm.rs",
+      "sha256": "7e1c2207df29fba6671b23a25e9cf408f43027ab27f5f289c78b1d53f7489e4a"
+    },
+    {
+      "path": "tools/whale/src/terminal.rs",
+      "sha256": "4e3ad12df3045fa8e609c620aa8db1f5e67af5651cfcb4ce5cda657aa8ecc57a"
+    },
+    {
+      "path": "tools/whale/src/util.rs",
+      "sha256": "6be6e83b40dcd15b0f0ccb4905eadc313d3b8810d5e008a340fcbcfd7a190d56"
+    },
+    {
+      "path": "tools/whale/tests/english.rs",
+      "sha256": "63da358aa6416a67851c6bb1a0b8bf459443680ed24ef887d9d4df5a5e19b219"
+    },
+    {
+      "path": "tools/whale/tests/terminal_adapter.rs",
+      "sha256": "5219fe9600ddfd0baf56707ce2ac543830a5fca6a8181844d4ab3b487ab8f9bd"
+    },
+    {
+      "path": "tools/sources/src/bib.rs",
+      "sha256": "f69148b263980e1c77c3bdce482aa408c0a5d18bd51ac484f3b616e4b5e94912"
+    },
+    {
+      "path": "tools/sources/src/lib.rs",
+      "sha256": "80f75f0645a8019237585f6c58fcce8939b694fb6e6859d7119c938dd56808d1"
+    },
+    {
+      "path": "tools/sources/src/main.rs",
+      "sha256": "ab9078516428f79dd451d22832ba0ec8628e8ae3a11405bd961aade337da8f08"
+    },
+    {
+      "path": "tools/terminal/src/lib.rs",
+      "sha256": "59d4bd0a93672d4306a8199a07db1953a5d44cd01b21a6fd409f925477c81e85"
+    },
+    {
+      "path": "tools/terminal/src/main.rs",
+      "sha256": "f9418eb01a8db6d2233e89547e5e2e11606f323ab53bdd22dcd93e666af348ec"
+    },
+    {
+      "path": "tools/terminal/tests/live_tmux.rs",
+      "sha256": "5fc09980e1d3c5ecce7d0b4108afccf642e578dde1d15f2287428f198526e54e"
+    },
+    {
+      "path": "tools/translate/src/bible.rs",
+      "sha256": "e3abfd17d345dd4b49bdc85c6f0ef76d7e4553d89a1555756af88599c5ea1ff2"
+    },
+    {
+      "path": "tools/translate/src/blocks.rs",
+      "sha256": "64e582e8e4f6cf4827b9800c55cef9e82bd545e15db406255a7ee69511796b1d"
+    },
+    {
+      "path": "tools/translate/src/corpus.rs",
+      "sha256": "53fd344ba3bb96f84bd8b9b7d237b9cc40637dcdc49faf1b0ce0d7c98047ec3a"
+    },
+    {
+      "path": "tools/translate/src/fwt.rs",
+      "sha256": "9e51710f505e2d8f8b7670267a6b3e592e99df9db2c307ea8b45586492b4e8aa"
+    },
+    {
+      "path": "tools/translate/src/heb_enc.rs",
+      "sha256": "2f0f60f06bb0e1612c25ecd9d5ac9722be5de662669850655a75f068cbbeda50"
+    },
+    {
+      "path": "tools/translate/src/hebrew.rs",
+      "sha256": "d9774c9554b2ad1dc49751750c00beec8d65122b76247445ca1b991ebeb80f06"
+    },
+    {
+      "path": "tools/translate/src/ibm.rs",
+      "sha256": "57fbc820f996dbfae692ab8cd02adaf7f21055983a7b6674a9dea25d2d312740"
+    },
+    {
+      "path": "tools/translate/src/logic.rs",
+      "sha256": "351fcf53ede0be127b000e0ff4b953d4d6b76e5327a16ad040183437c0c77a19"
+    },
+    {
+      "path": "tools/translate/src/main.rs",
+      "sha256": "d9940f5fe1dcebf1ab586d390094028a90bc8a35bd733f4b55724483c236ecd3"
+    },
+    {
+      "path": "tools/translate/src/many.rs",
+      "sha256": "14b6295b8b94f871c0c2fbb90c92d19698cabe47b439443c393135a6d777555f"
+    },
+    {
+      "path": "tools/translate/src/measure.rs",
+      "sha256": "c34da721e6921c202314dfe546331c6d192234a2e37de17049bb09e4321dbd5d"
+    },
+    {
+      "path": "tools/translate/src/meta.rs",
+      "sha256": "706841e2ffb22744366da30f546d3db048fa8d5b80ace22ab06f8c2d18c3ac1f"
+    },
+    {
+      "path": "tools/translate/src/pages.rs",
+      "sha256": "2607ff85822e5c752ee2c9608676f792be9c23addfd6a160c569156b868c7d75"
+    },
+    {
+      "path": "tools/translate/src/profile.rs",
+      "sha256": "8ee4aaf549eecf58bc67d54725d2922bc8519c181eec147778ce7d4863767d09"
+    },
+    {
+      "path": "tools/translate/src/report.rs",
+      "sha256": "162c79de5df3e057212bb15c242635dc3c339d526f99ea88e0994a1e84a0bece"
+    },
+    {
+      "path": "tools/translate/src/rules.rs",
+      "sha256": "75efe37eaf50694d9b46bbea101e7f52b143a58b02f2aaec50a6e30b1c228345"
+    },
+    {
+      "path": "tools/translate/src/sources.rs",
+      "sha256": "af43c125e24e661c24e2bbe91b940112d68000090f189a3f3bd36b3605906363"
+    },
+    {
+      "path": "tools/translate/src/strong.rs",
+      "sha256": "c71599a55642bc5e4b6f148ca0eba6f631abb45ddce98370586c5fcbeaae1163"
+    },
+    {
+      "path": "tools/treeagree/src/dispute.rs",
+      "sha256": "1c2bb1e172fd4dfcc5ea465d577e94607347635f93f1deb0aae3e5e648a43ff2"
+    },
+    {
+      "path": "tools/treeagree/src/main.rs",
+      "sha256": "fadc15525d579f8681612a25d06356fed2156f8f7054b54e61ffc07c5a590032"
+    },
+    {
+      "path": "tools/treeagree/src/rules.rs",
+      "sha256": "1f33a4afa995261fb36eb9c29a0ab8fd1b624501e49713acaad28ece769f8120"
+    },
+    {
+      "path": "tools/treeagree/src/tree.rs",
+      "sha256": "6e034fd13c47961fb03e46caddbd17d7ec53d236af64ea9cb2a46bdc3834f8fd"
+    },
+    {
+      "path": "tools/treebanks/src/main.rs",
+      "sha256": "0fda9d1db4240db405b987ee68ee178cf738d980b00ca29853231b04f1c910cf"
+    },
+    {
+      "path": "tools/treebanks/src/readme.rs",
+      "sha256": "9e7132debe8f2da0e4f0af693dd2a216e98ff2a6500c8d9f36086a24ea78d7ba"
+    },
+    {
+      "path": "tools/treebanks/src/refs.rs",
+      "sha256": "4cba047b00b7959526e7b910669324dfd3cda9a8944c55f31ce2446125cad3b0"
+    },
+    {
+      "path": "tools/treebanks/src/release.rs",
+      "sha256": "1289179eb56289fb511ddca068d7230a21e21abd3d9e1b3e0daf5160de29fb82"
+    },
+    {
+      "path": "tools/treebanks/src/render.rs",
+      "sha256": "f22997a728bfdf644792a893f00f6c54c0c33686c672ea30fe37df269c956c10"
+    },
+    {
+      "path": "tools/twin/tests/ledger.rs",
+      "sha256": "cdc737ccddf5645b0273733f6c6b9acda530a84d544917d1ba080628a8d14ac9"
+    },
+    {
+      "path": "tools/value/src/main.rs",
+      "sha256": "bd047698b58e5910d6762b81e35cc6acbb6cc7f62c5fd6216ebb774da1a477c7"
+    },
+    {
+      "path": "tools/wikt-count/src/main.rs",
+      "sha256": "3bc0ca359e1fc99a47f77f46f997519a0959a5b970d5a7dc5937ea452ff89098"
+    },
+    {
+      "path": "tools/wikt-idioms/src/main.rs",
+      "sha256": "d6ad8c11764fbe1068df26bd6484965acb7eed4634aa8ba728b338d2771aa62c"
+    },
+    {
+      "path": "tools/wikt-page/src/main.rs",
+      "sha256": "49d0a8b4e3c68dd205f36dff233d3c1dbeb0dd40a4644f1331287a07ef6f329d"
+    },
+    {
+      "path": "vfs/examples/snapbench.rs",
+      "sha256": "df7ed460def0653789b6f33967fa58474d125c02c9fbbe9b33dd063be4132579"
+    },
+    {
+      "path": "vfs/src/error.rs",
+      "sha256": "014e34da6df423523e02b9c8f1683d6762f8c29b3f83401b321afa136d382dac"
+    },
+    {
+      "path": "vfs/src/host.rs",
+      "sha256": "d7a0bb0efff6f8f477ede3d425e9e7340f555a79891bf436985944d23b5c12fc"
+    },
+    {
+      "path": "vfs/src/journal.rs",
+      "sha256": "c6c2ac019263f12fbff99c8fdd94e12ba6b4a17fafb77a6f19e99834338daf1d"
+    },
+    {
+      "path": "vfs/src/lib.rs",
+      "sha256": "815d266a4f655f394cffdf7af67bb88468908ac9edadbffebdebe0fd419fd4ed"
+    },
+    {
+      "path": "vfs/src/mem.rs",
+      "sha256": "d97f98687ddc88ba17464b64dadc223583c39dcfa90f14bc44410cada557ca95"
+    },
+    {
+      "path": "vfs/src/path.rs",
+      "sha256": "6ccba30c719a6edef0250d92427618fc4a91ef1b4d097d65ffa3b9b70f95ba59"
+    },
+    {
+      "path": "vfs/tests/vfs.rs",
+      "sha256": "698bd9736a44e4242956651b41ab29138dd247738ff68b0009efb44cfb0aa0a2"
+    },
+    {
+      "path": "wasi-host/examples/mlab_gate.rs",
+      "sha256": "a7947069ab507ffd5ad7b71ae9146bca16e08b827af78bc5961993c788b699b8"
+    },
+    {
+      "path": "wasi-host/src/lib.rs",
+      "sha256": "91213ce9038107912c2dd707c3a6639a2d723cdfceb02981a166a6853800248e"
+    },
+    {
+      "path": "wasi-host/src/main.rs",
+      "sha256": "2200229297d1dde6d9f8477a577a7320c854d0db4fb3ea450b457a9858107122"
+    },
+    {
+      "path": "wasi-host/src/tests.rs",
+      "sha256": "74685e5440b3b7df7f40518395e62d6cd68a60e80ff71e87b772f020c80bec8d"
+    },
+    {
+      "path": "wasi-host/tests/mlab.rs",
+      "sha256": "e3b35b1a315b6d995fd3cb8e590209d9f57141b89d9def132cd733f31d8f2db8"
+    },
+    {
+      "path": "world/build.rs",
+      "sha256": "5b52e7120347c66b34755745659876052a4061779d3577338409ee0ec52449dd"
+    },
+    {
+      "path": "world/examples/retention_probe.rs",
+      "sha256": "0c83df4c221af39fa86e068aee0ca4e1688efd03062a2551195e154495732cb3"
+    },
+    {
+      "path": "world/src/absurd.rs",
+      "sha256": "c9b7b1c3951b40314b49e5b3bf00e07f023c5bb5775866ed80a09a509da108bd"
+    },
+    {
+      "path": "world/src/ans.rs",
+      "sha256": "d8d94c891e347d2b640744b20c4662dc35064368e7d4d9253c4954b4297e1e09"
+    },
+    {
+      "path": "world/src/babi.rs",
+      "sha256": "54596da093fa9515cac6d7bf5eeb9443322c98fee3dcc27c1eebae32a83e5880"
+    },
+    {
+      "path": "world/src/big.rs",
+      "sha256": "afe8d7cc25363ac760140ae959cb97a249db63c0e8f7422d02abb01ca3e9c8eb"
+    },
+    {
+      "path": "world/src/bookans.rs",
+      "sha256": "c070e111a9244f3f3066d4bf2652f207b912282b82a62c64a17363a8d4c380ab"
+    },
+    {
+      "path": "world/src/derive.rs",
+      "sha256": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842"
+    },
+    {
+      "path": "world/src/domains.rs",
+      "sha256": "5ecf532157570f301d76768ab9473a2bfe497eb054fc7a0bf676dc2a8e89767b"
+    },
+    {
+      "path": "world/src/events.rs",
+      "sha256": "3a58733b8be1a9bb005846ebe8c8447a31d8b75b90f3e4d352d9d539c3998d3a"
+    },
+    {
+      "path": "world/src/exec.rs",
+      "sha256": "180f88005a4cd3852f649059e420951c1fe9ad4a699c9d175358169f25e43b4d"
+    },
+    {
+      "path": "world/src/family.rs",
+      "sha256": "1adc6d432b9de7eab360e1f4a64a10a2c846203a07aa7e6716c087f65cf1b873"
+    },
+    {
+      "path": "world/src/frames.rs",
+      "sha256": "86c42a1bd562ae24c760a7cbfc3b9b2bab20845da9d7945f3d80f091b8ed44b0"
+    },
+    {
+      "path": "world/src/ftqa.rs",
+      "sha256": "df08ab40304e843e455d7a778207cde257e87ea224c59e922693774c359364aa"
+    },
+    {
+      "path": "world/src/ideas.rs",
+      "sha256": "03c6ae967df07dcb72e35fdc7168ce01c6a35b2c497c04dfbba3ba8766c92f7e"
+    },
+    {
+      "path": "world/src/idioms.rs",
+      "sha256": "ac32513e83eaf56b32b6bf70054ba1427e8e9dd9e5c34e0980a2454a6d2e58c4"
+    },
+    {
+      "path": "world/src/index.rs",
+      "sha256": "c182d747ecc69b9e86a34ae5a49caa3841477c53719b2b8bb77b39e0ba4120d1"
+    },
+    {
+      "path": "world/src/induce.rs",
+      "sha256": "0297cbe15b922cb5aeebd8632fbb9bcb3d0d8da3e6a6dd287b0978638c1fe2ee"
+    },
+    {
+      "path": "world/src/induce_gpu.rs",
+      "sha256": "3c014cfba45cc70d9ce4b55049e1eff3b8f127f93f95676aab0c03185b2d0a9d"
+    },
+    {
+      "path": "world/src/know.rs",
+      "sha256": "6e24c7d3793f5e08860e5549345b328dfa3916c89259520194cf95ba5166417e"
+    },
+    {
+      "path": "world/src/lang.rs",
+      "sha256": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe"
+    },
+    {
+      "path": "world/src/lib.rs",
+      "sha256": "b96c4bd988dc5a4ed0c27aea93b262750b037eb2d20f01a9f1ffdc82391e5306"
+    },
+    {
+      "path": "world/src/main.rs",
+      "sha256": "012a1d17d6b635c5cb7a7545022d6a7dc10cdc49acaa2bbc29fa4385b5c69995"
+    },
+    {
+      "path": "world/src/md.rs",
+      "sha256": "24ac2701cc2d8fb92b95913978128d9be3180e25528cc8f486be19cfab0376b4"
+    },
+    {
+      "path": "world/src/meanings.rs",
+      "sha256": "0caafb3b10779a1ed3a5ace1939686a5d6a94c66d6f0d0b3119397fddfb3184b"
+    },
+    {
+      "path": "world/src/mentions.rs",
+      "sha256": "a2a239daf36ac4f2d4ceba92ecebdbd7a519128ff01f57a0e9041eaf7c1215dd"
+    },
+    {
+      "path": "world/src/mind.rs",
+      "sha256": "d83c8c3b03e9b7c29f29db9c67dcd15b7c1c5d2a413ef6bb93958cbaf4b78936"
+    },
+    {
+      "path": "world/src/mwe.rs",
+      "sha256": "859883d4e16f6ed8cffba16cab81246f81f7c20c9fa3534190b91ea0fd21ed29"
+    },
+    {
+      "path": "world/src/narr.rs",
+      "sha256": "bb5c39260b0854bfae2cfe3f6140f8ddb65b356c3da36356c2d55b2ae4302b80"
+    },
+    {
+      "path": "world/src/nerves.rs",
+      "sha256": "57c5e6037642f6bd1ada51b3e13a378699848d3f5f9423498bf885335c49ec03"
+    },
+    {
+      "path": "world/src/numbers.rs",
+      "sha256": "41e5c848b76cd85ba99f84746d76099707d968957fb1b8774e8a35def2b23ec6"
+    },
+    {
+      "path": "world/src/opchoice.rs",
+      "sha256": "770d2eff5a128ca9eb808c6360dd33bb79ef1296f86256ff077a630eccd1862e"
+    },
+    {
+      "path": "world/src/parsecache.rs",
+      "sha256": "6545414761854d33b7b41f8a864a7f4c59eebeaee721eef68772bb4a7a652479"
+    },
+    {
+      "path": "world/src/poly.rs",
+      "sha256": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c"
+    },
+    {
+      "path": "world/src/primers.rs",
+      "sha256": "cbe95a74a9eb2777637696d161a3b2412c4305b1c5104f4037ab69d5de56a5e5"
+    },
+    {
+      "path": "world/src/qa.rs",
+      "sha256": "1ce10a355698f5cc3c37ca7f8d1dacbacf8b74264c9c7c38a563aed1e4f678a5"
+    },
+    {
+      "path": "world/src/qa3.rs",
+      "sha256": "63bb16a3727128a4763e15e7c5c009e171ad04d2ab0d7861a395425e06d1bb2c"
+    },
+    {
+      "path": "world/src/qframe.rs",
+      "sha256": "bcffcce37a9ab02dca723787937f7962f084acb7436bba4ba37bd4a98ea9db5b"
+    },
+    {
+      "path": "world/src/quant.rs",
+      "sha256": "dd5cf73c5e8092c17566b87e0f6f465c3cdec5f1d87ac5a02ddc04c092987dbd"
+    },
+    {
+      "path": "world/src/qud.rs",
+      "sha256": "68ab6b4d5bfabd85537f076f949432157e9f61d6bfbc65f94fc4d722c374b74f"
+    },
+    {
+      "path": "world/src/query.rs",
+      "sha256": "27dd12e09019d22b057ab892136aec5be542da170e529573638c631b44ddd37f"
+    },
+    {
+      "path": "world/src/read.rs",
+      "sha256": "80ef1f69d776dcb5cd03bf925cc5c01e827d7919495ccda17d785eb3de459857"
+    },
+    {
+      "path": "world/src/reader.rs",
+      "sha256": "383aeebdc514654bdeeba383bfe6b5c00d6c799ba65f06f29621da0392dfaf1b"
+    },
+    {
+      "path": "world/src/register.rs",
+      "sha256": "3e3f7b17b9e68917114b3a5b3e43df10a484fde1483b3656b6604eaa6e1f4eef"
+    },
+    {
+      "path": "world/src/report.rs",
+      "sha256": "73053fdec39edc3c16980b73db6418c477bcb60b9fa93a708aff431950e69825"
+    },
+    {
+      "path": "world/src/rerank.rs",
+      "sha256": "7734d1b33c02f022a5f4f2b420d3bece2e4456a9af4887b804c0b8b312f4908a"
+    },
+    {
+      "path": "world/src/rreport.rs",
+      "sha256": "9dd22e3b675f299416cf07f73ef4e45c30718cd6bfc662d78f73ee3ddc48837d"
+    },
+    {
+      "path": "world/src/sense.rs",
+      "sha256": "32033a19e1ffaf797f7eabb7a82bc564ddcf3146db700bbb4000ee6eec91a0a8"
+    },
+    {
+      "path": "world/src/span.rs",
+      "sha256": "4d215ccd57884f41e77168839aac2710913efc4b233aa43ebdb2de36c7fcaa2c"
+    },
+    {
+      "path": "world/src/spartqa.rs",
+      "sha256": "cea8049e1369f5948363a41d6ae85368faa3b9ede1075e0b8c79e92f79c1aa4d"
+    },
+    {
+      "path": "world/src/spartqa.rs.groupant/inference_tests.rs",
+      "sha256": "9585c4e10757c7cf36a8077c45316ecfbbd4ac5253e4c87017a1163cc65c4b93"
+    },
+    {
+      "path": "world/src/stepgame.rs",
+      "sha256": "56231f07cd9c54f128a36166199f7007415f0c52f5dbd5275dee1ee9f6d6783f"
+    },
+    {
+      "path": "world/src/store.rs",
+      "sha256": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9"
+    },
+    {
+      "path": "world/src/story.rs",
+      "sha256": "40f1d7e9b3e7f56b2d2744b64b9e13da4d56044acc74baf6e752067093092889"
+    },
+    {
+      "path": "world/src/tabular.rs",
+      "sha256": "7ce9d08ca2a14933689811ca6db904a0eee3ba364230f0b9f69d281ca93b5595"
+    },
+    {
+      "path": "world/src/talk.rs",
+      "sha256": "2b4f6e1bb33bd9def1c1c831a2325f30598a544b4e1603b02ec50242c4336115"
+    },
+    {
+      "path": "world/src/tests.rs",
+      "sha256": "955fe3b913e60c6b88fb58bda77d39a6dcd29a4b8616dee0ae454cbc01dcf1b7"
+    },
+    {
+      "path": "world/src/tests03.rs",
+      "sha256": "8b5c69135919d35976a784235ce7fa8292c031ca36a97f140b9ba3c39a667442"
+    },
+    {
+      "path": "world/src/tests3.rs",
+      "sha256": "5618bf45001152539439f6cad4e1d362a8b8d55d411bfc2e8592b46edfff3d82"
+    },
+    {
+      "path": "world/src/tree.rs",
+      "sha256": "eec384e6fd86b74fad505cf9dc579e8ce27f9f4fadab02a6ce38eb54cab6c319"
+    },
+    {
+      "path": "world/src/treeread.rs",
+      "sha256": "854e8c3e3a7e1abd56800d0003cf2e1b92cb207ce1d07aa5fef43e2d3b08fed8"
+    },
+    {
+      "path": "world/src/triggers.rs",
+      "sha256": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2"
+    },
+    {
+      "path": "world/src/types.rs",
+      "sha256": "ac2d47f390463744e9b5d2e7b0a005352b62368e4e5d68bb1348a173a5c90037"
+    },
+    {
+      "path": "world/src/values.rs",
+      "sha256": "b885d25364939e38e130ff598a24a46efd21f500ba51e27cd4465ceddb56f064"
+    },
+    {
+      "path": "world/src/vmm.rs",
+      "sha256": "15859077a1ce4104d22f48c24636a0c6767fb0374436028afd50c556b538aab1"
+    },
+    {
+      "path": "world/src/wordnet.rs",
+      "sha256": "e8dbeac7b6cb80d09870f57ce7372cef48c48b79638451f59d857b1f0e4c3597"
+    },
+    {
+      "path": "world/src/world.rs",
+      "sha256": "ce8f9760a986966e234aebdd5e4709ac82002515fcb126b2f95d1b63cbdf91c4"
+    },
+    {
+      "path": "world/src/worldbook.rs",
+      "sha256": "541583ecec59c6420532c1f3cf15934c530ff471c315cbbe9cc6ed9bc0153a5c"
+    },
+    {
+      "path": "world/tests/groupant_joins.rs",
+      "sha256": "896934e050ceebedaa2af43785ddfd0f5643c194b30e15e9e939c6a7fc3251fc"
+    },
+    {
+      "path": "world/tests/groupant_wave12.rs",
+      "sha256": "faff173d7d03f9164e057e45a3b66eec6dc089e2238bd4fcf5c9e662edd359cc"
+    },
+    {
+      "path": "world/tests/groupant_wave14.rs",
+      "sha256": "48dcfb18de805d9999e51e9a4b753d6f5d8b03dd427c31aebbe4bd128ea66d68"
+    },
+    {
+      "path": "world/tests/groupant_wave9.rs",
+      "sha256": "b82d92a98834f7c2c466a749198ba0fd0544e945733409fd17bd100e21c79ea4"
+    },
+    {
+      "path": "world/tests/parser_failures.rs",
+      "sha256": "dd2a966a535a39ee908619b995035e24f7efa8c7e10ed6b3d9e5d5384b63e2cc"
+    },
+    {
+      "path": "world/tests/school_bench.rs",
+      "sha256": "8c40dc25bc4d71e4c630411afd185667311d5cd8aa5a6e5f383546a59ce6432d"
+    },
+    {
+      "path": "yom-hadin/src/absurd.rs",
+      "sha256": "31c4c2d448f44f622e075fc1cbeb3ace70372bb1782a048942a9bee026a085c7"
+    },
+    {
+      "path": "yom-hadin/src/court.rs",
+      "sha256": "c780d974b015dcefc5018d326ca5f1e0ec47af0c8fbd23927213a8848285b099"
+    },
+    {
+      "path": "yom-hadin/src/extract.rs",
+      "sha256": "4df25340c2de0143478dac2f2b0777d937157f8f6f05706d0d84d301dbf49db2"
+    },
+    {
+      "path": "yom-hadin/src/juris.rs",
+      "sha256": "070c3346e18a26e34a47069d33438d78348dfcbe55d5464872d1df6a5119a4cc"
+    },
+    {
+      "path": "yom-hadin/src/lib.rs",
+      "sha256": "36c9035219cc3c4999ae99ac58fb4af95608e7f99b0bb5d183e25f275102f0b4"
+    },
+    {
+      "path": "yom-hadin/src/main.rs",
+      "sha256": "28e5125a8b89752d7ae43bef5e31afb5e2b166ecb2dcb42824ce3f568fdd9ecf"
+    },
+    {
+      "path": "yom-hadin/src/measure.rs",
+      "sha256": "c08d407318b3b1f8c70263d6ce08fd1325f4bbe5bb08c8bab82530a5c57511c7"
+    },
+    {
+      "path": "yom-hadin/src/report.rs",
+      "sha256": "eb60c61212e8f64ad0b3c67ed5dfbd9623e384479ec54567ed762cc8504b58ff"
+    },
+    {
+      "path": "yom-hadin/src/rule.rs",
+      "sha256": "211396ab0efca1ad45c77dc3a3752ae335570464b18814d61837deae6d102a6a"
+    },
+    {
+      "path": "yom-hadin/tests/court.rs",
+      "sha256": "2b4c2a041025b717d7518564a83ef2b98d6f3b97cf66a1298361fabc9cf5df41"
+    },
+    {
+      "path": "tools/nautilus/src/animal.rs",
+      "sha256": "381941365d51b09c305c75d7ee8c689a105c2f0db6c1b222ee6683c68de5fc64"
+    },
+    {
+      "path": "tools/nautilus/src/layer.rs",
+      "sha256": "bf97ee17f1fdb29bc56a9597eca30b3ff93fa7625ec3ced0b845ed2802e90e8a"
+    },
+    {
+      "path": "tools/nautilus/src/lib.rs",
+      "sha256": "dbb358dc8126aea0016d30aa6b4371543528e98ec73e51c3dda21063938fef96"
+    },
+    {
+      "path": "tools/nautilus/src/main.rs",
+      "sha256": "af3298b86680938eff992ae5f79dd901dfa6f6822566d4857c543ddd91914197"
+    },
+    {
+      "path": "tools/nautilus/src/sources.rs",
+      "sha256": "548c45367da72d003567196ee100d53d9c87ab7cec90fed0a03b1e0a2fe4092e"
+    },
+    {
+      "path": "tools/nautilus/src/sampling.rs",
+      "sha256": "076226fbd0695f3f551a54be21671c63a3ea17f56f620a9957de56b1612d4929"
+    },
+    {
+      "path": "tools/nautilus/src/teacher.rs",
+      "sha256": "0d2ef86232e4ddd89523e34a964b329db10f2f687513e847f3f4bba734cd3023"
+    },
+    {
+      "path": "tools/nautilus/src/work.rs",
+      "sha256": "4c3f212504530367e5c32060c4246f825cc870ca3920f705f7f7bfdf8dde9364"
+    },
+    {
+      "path": "tools/nautilus/tests/english.rs",
+      "sha256": "861076518798c98152d31c25431b406c096a02876c3c274cdb310062d4a18bd6"
+    },
+    {
+      "path": "tools/turtle/src/animal.rs",
+      "sha256": "3e393f44fd4b4490ba2b7efeafc18d2b41c1b22d0d792e576fe20d9a43eaf3e2"
+    },
+    {
+      "path": "tools/turtle/src/check.rs",
+      "sha256": "f0443872d281ff14d70206efe455b555f61b796fed12381db03a480185d035ea"
+    },
+    {
+      "path": "tools/turtle/src/fit.rs",
+      "sha256": "a32ad73edb64d7c35e9892630c38fca509310b1c57f0590f1b45e71806ed4697"
+    },
+    {
+      "path": "tools/turtle/src/lib.rs",
+      "sha256": "76b18114fdb747d6a4d41769f613a3882099f730b131224cfb45864ee6cb59f8"
+    },
+    {
+      "path": "tools/turtle/src/main.rs",
+      "sha256": "639c8a08265848b3f8685689554a6d472ff8c516c85882fa0d2246c725b6688d"
+    },
+    {
+      "path": "tools/turtle/src/make.rs",
+      "sha256": "393da448a35d463306cb29bfbd8a3619926283465df337dbaeb3cd14e965171e"
+    },
+    {
+      "path": "tools/turtle/src/work.rs",
+      "sha256": "ed718c94fcd990e46cd52b706d47c9693a9f2fc7de0d2e3e459379aa69da9163"
+    },
+    {
+      "path": "tools/turtle/tests/english.rs",
+      "sha256": "e4019b10fdc82d21e068cc2b7fbd018a949b1cc471dedf3aeb5d80ce385a0395"
+    },
+    {
+      "path": "tools/turtle/tests/gap.rs",
+      "sha256": "f0f4056642cfc5218ff07957f765139db133bd17ac9e8ca1a648d5171cc4af9b"
+    },
+    {
+      "path": "tools/whale/src/clause.rs",
+      "sha256": "3f7aa37339463d32029df7dfe7e1001b73234569dcdcf13688197f5076f17402"
+    },
+    {
+      "path": "tools/whale/src/compose.rs",
+      "sha256": "13035b3a091c7abad4866f4222370851bf1d927c7398c844fc0e1caf70258260"
+    },
+    {
+      "path": "tools/whale/src/gates.rs",
+      "sha256": "000fee6a6d8ac73a4351dfce9fe154994078cd0be90f4c23be58186ef44d3cee"
+    },
+    {
+      "path": "tools/whale/src/knowledge.rs",
+      "sha256": "8989b5643e61844c5bf79ada13afb62dc6bdbc93a2aeb5c27b7dc538af5b093d"
+    },
+    {
+      "path": "tools/whale/src/learn.rs",
+      "sha256": "ec33e53f3c9fda058ed909d4a2de4f8b7ece883a62bb0e68aaeebc8e9b9a7d29"
+    },
+    {
+      "path": "tools/whale/src/batch.rs",
+      "sha256": "9430b9b7a8376eb490ed83f420545b5385aeb108243cad7f923c70f8d9b29efa"
+    },
+    {
+      "path": "tools/whale/src/pod.rs",
+      "sha256": "1d1ff2f25ab699e007dad110aa0e9432d195c90c1d066e80df4933d582b4cf3f"
+    },
+    {
+      "path": "tools/whale/src/review.rs",
+      "sha256": "60ddebb6ab6ec19f31a8b52315c722a6f2006708af1f41afc6ecdf324482641f"
+    },
+    {
+      "path": "tools/whale/src/topic.rs",
+      "sha256": "d4d8356fbc9d33cdfb874ea45858ea392c1aabfcc7f48c35d3321254ab05729f"
+    },
+    {
+      "path": "tools/nautilus/src/improve.rs",
+      "sha256": "049c31ffe5287cf3f8057f2ee8c5b9b294af0a83805fd1935ba8f87ab70c6b13"
+    },
+    {
+      "path": "tools/nautilus/src/pool.rs",
+      "sha256": "d53dd5b5aaf5800226eeeeef8978cd132857e54d6c11fdfe62ae8b1b46cc8186"
+    },
+    {
+      "path": "tools/nautilus/src/senses.rs",
+      "sha256": "3e5600bf8eaf50a270612d10eadb41c821051136d699fa294638c6838221a066"
+    },
+    {
+      "path": "tools/nautilus/src/replay.rs",
+      "sha256": "1eeca46ad2b11373653f0214e35656d12ecb77915346adcc7e1af6933f2d9154"
+    },
+    {
+      "path": "tools/crab/src/pool.rs",
+      "sha256": "8ff0be0a7ad4cfe8b3d515dd16320e49ba2d8761b677c21b077f5f92d1ffdf1a"
+    },
+    {
+      "path": "world/src/dictstore.rs",
+      "sha256": "211c1fefa10df9fc9a807aae8782c2eccdc644560ebd4cdedef5e833c963db27"
+    },
+    {
+      "path": "tools/wikt-extract/src/wikitext.rs",
+      "sha256": "9e5cd2791b56325199a149259070de1be8f6d97565dbb33167be3c9204251cbd"
+    },
+    {
+      "path": "tools/wikt-extract/src/entry.rs",
+      "sha256": "616d06ec2999c4a18953d53c43f469615c719f0f0167b3e9be754e2ce54c693f"
+    },
+    {
+      "path": "tools/wikt-extract/src/main.rs",
+      "sha256": "ebdf56c9a01a9b36c48afdf40fa5c62a21cabc5d89fd3c12204aff57b88d34a8"
+    },
+    {
+      "path": "tools/topic-corpus/src/cite.rs",
+      "sha256": "7a001d66a64769347a2f325b6425981932bf078df833296f763970853a01a614"
+    },
+    {
+      "path": "tools/topic-corpus/src/config.rs",
+      "sha256": "b264e17a692f58a8df6d657b954e6b841e689ebaeb2f77579811fe723c59648a"
+    },
+    {
+      "path": "tools/topic-corpus/src/corpus.rs",
+      "sha256": "a20a73f6ff1cd733762c154b414b4e65edf8eb85b8f031aa98b070032c8526cb"
+    },
+    {
+      "path": "tools/topic-corpus/src/graph.rs",
+      "sha256": "ec4a7552b2e7b895f31a5a36d84a292a6036f684377abe06f4841106ea04d445"
+    },
+    {
+      "path": "tools/topic-corpus/src/hardcases.rs",
+      "sha256": "6473041bb6bb222356517071a2e04fb45f42f341eb6afb8806f2d81bae42b839"
+    },
+    {
+      "path": "tools/topic-corpus/src/lib.rs",
+      "sha256": "ed17a6516ef82ca292e15a217095c9bd05f43785eeef24eac53ada8563012708"
+    },
+    {
+      "path": "tools/topic-corpus/src/library.rs",
+      "sha256": "83f6c8107077ec358597ad2e57132ce79157f6cc04eaf96adbf17a4344c5e0e9"
+    },
+    {
+      "path": "tools/topic-corpus/src/licence.rs",
+      "sha256": "8c4d10da7f451f306361e426adb640fdcea8e725fda0c9452f0fa2374800b04a"
+    },
+    {
+      "path": "tools/topic-corpus/src/main.rs",
+      "sha256": "bd9e20a92011bdd03858ac44dd5b40066d805e4ca5b79f96781258bc61410070"
+    },
+    {
+      "path": "tools/topic-corpus/src/missing.rs",
+      "sha256": "c7dc07309d454ebe8cb9492fe30ed01cb326e6d8592d8585e1c55837ceee2260"
+    },
+    {
+      "path": "tools/topic-corpus/src/seed.rs",
+      "sha256": "6fa42bfbc4de4ce7f35fbdebcaf839e0806c12e3f6ba9452063cc083023c5a97"
+    },
+    {
+      "path": "tools/topic-corpus/src/sol.rs",
+      "sha256": "6423445e23fcc79bae1df740c5e76e66de07b005075978c0b37ec8ab30bb0ed4"
+    },
+    {
+      "path": "tools/topic-corpus/src/web.rs",
+      "sha256": "56860bbc7b636524512c9281a2827640e5b0aa185368c41412413e5c7ff74a6a"
+    },
+    {
+      "path": "tools/topic-corpus/src/world.rs",
+      "sha256": "bbced414ed6816d94dfc36c1baad92d45d14491b4625f10511e5c2eb6c1dfca6"
+    },
+    {
+      "path": "tools/hard-case-list/src/lib.rs",
+      "sha256": "85f0d046b3d7204af70885261d928ad0c65ea0bc1c571b260ea8bcf5e68f99e8"
+    },
+    {
+      "path": "tools/hard-cases/src/config.rs",
+      "sha256": "c22260b1ed3cd3ce715404e9a050df39f0d2516fbfb836d3890c400f3ebcc5ba"
+    },
+    {
+      "path": "tools/hard-cases/src/control.rs",
+      "sha256": "e14231ae3f04f82f6798a40066e0689a034308e713e5dc083fcba7791e55ebb3"
+    },
+    {
+      "path": "tools/hard-cases/src/eel.rs",
+      "sha256": "c9a5d205fb1a12ea0c51e6a2eff83d3e993088b11221ca5c7fa4be3976b77bb1"
+    },
+    {
+      "path": "tools/hard-cases/src/harvest.rs",
+      "sha256": "a30b338e2c1cde0ef34f10325c50adf581085dcb2a9c929e158939eac61b059d"
+    },
+    {
+      "path": "tools/hard-cases/src/judge.rs",
+      "sha256": "e155c052c41de3ac6dd1e9dc52f44f1b0c06796c638a34144fa0a32b50714d3e"
+    },
+    {
+      "path": "tools/hard-cases/src/lib.rs",
+      "sha256": "f1120981171397989ae8890be0a2efd4804593ced954d1e262f8f08b75bdd785"
+    },
+    {
+      "path": "tools/hard-cases/src/main.rs",
+      "sha256": "1b67242492a85eea69859f7cf11a025094689cba22210cef1396d8eca89ebdd7"
+    },
+    {
+      "path": "tools/hard-cases/src/policy.rs",
+      "sha256": "a639a59afaae56dc443d5fd7e14183ad8dd3834ef343779dd99f1368f4364b8a"
+    },
+    {
+      "path": "tools/hard-cases/src/wave.rs",
+      "sha256": "1c076ba86bc0dfc48d316cab5c4a86549ca98854a465d19293855110e1786da4"
+    },
+    {
+      "path": "tools/hard-cases/src/witness.rs",
+      "sha256": "461580a91b3b78e5b7b99efd2b47078c8e6aceb124d3e19c4f479f5ba22410aa"
+    },
+    {
+      "path": "en/src/lexext.rs",
+      "sha256": "8aec85cdb04ec447fe8d57724345d7b72ec4b234803bce86ddb74054a165b781"
+    },
+    {
+      "path": "en/src/lexgrow.rs",
+      "sha256": "0c5313e9e1ff90c6a430e6386d5f7fbc67a2770254bb94fc7b081a10eb8d7b1d"
+    }
+  ],
+  "status": "partial_source_derived"
+}

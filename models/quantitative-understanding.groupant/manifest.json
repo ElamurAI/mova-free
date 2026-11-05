@@ -1,0 +1,154 @@
+{
+  "children": [
+    "math-deduct",
+    "math-lex",
+    "math-qread",
+    "math-qworld",
+    "math-steps",
+    "math-understand",
+    "math-tests-understand"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "Dependency annotations and learned weights are not validated by helper fixtures. Public malformed structures may panic. No useful executable percent surrogate attached; future caps1/2/5/10 require metric.",
+        "domain": "Bounded synthetic valid structures and valid source indices, fixed environment; finite numeric interpretation where required. n<=64 for steps oracle and <=256 DAG pool indices. No external models, teacher, GPU, corpora, held-out or large training.",
+        "id": "behavior-complement",
+        "observation_scope": "qworld and deduct consume steps::Prob with aligned qs/descs. qworld rates change no cell immediately, but owner/thing context is updated before operation selection and can affect subsequent bare quantities. qread Set adds whereas qworld Set overwrites; qread's final event fold respects upto, while direct/relation/movement/initial-state decisions can inspect future events, so the complete function is not a prefix-state operator. steps oracle excludes repeated leaves; deduct gold can reuse a subtree but search excludes self-pairs. lex lookup requires caller normalization; understand does it. Missing-path test stops before Annotator load.",
+        "operator": "Missing-path guard excludes loader effects; qworld rates exclude cell writes; valid DAG apply excludes invalid numeric interval; unknown-token Interp rejects before frame choice. These scoped exclusions do not compose into general English correctness.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "Dependency annotations and learned weights are not validated by helper fixtures. Public malformed structures may panic. No useful executable percent surrogate attached; future caps1/2/5/10 require metric.",
+        "domain": "Bounded synthetic valid structures and valid source indices, fixed environment; finite numeric interpretation where required. n<=64 for steps oracle and <=256 DAG pool indices. No external models, teacher, GPU, corpora, held-out or large training.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "qworld and deduct consume steps::Prob with aligned qs/descs. qworld rates change no cell immediately, but owner/thing context is updated before operation selection and can affect subsequent bare quantities. qread Set adds whereas qworld Set overwrites; qread's final event fold respects upto, while direct/relation/movement/initial-state decisions can inspect future events, so the complete function is not a prefix-state operator. steps oracle excludes repeated leaves; deduct gold can reuse a subtree but search excludes self-pairs. lex lookup requires caller normalization; understand does it. Missing-path test stops before Annotator load.",
+        "operator": "Compatible source histories are constrained by quantity occurrence indices and selected frame/action semantics. Overwrites, placeholder loss, duplicate-valued matching and commutative keys make preimages set-valued; scalar output cannot reconstruct original text.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "Dependency annotations and learned weights are not validated by helper fixtures. Public malformed structures may panic. No useful executable percent surrogate attached; future caps1/2/5/10 require metric.",
+        "domain": "Bounded synthetic valid structures and valid source indices, fixed environment; finite numeric interpretation where required. n<=64 for steps oracle and <=256 DAG pool indices. No external models, teacher, GPU, corpora, held-out or large training.",
+        "id": "representation-transport",
+        "observation_scope": "qworld and deduct consume steps::Prob with aligned qs/descs. qworld rates change no cell immediately, but owner/thing context is updated before operation selection and can affect subsequent bare quantities. qread Set adds whereas qworld Set overwrites; qread's final event fold respects upto, while direct/relation/movement/initial-state decisions can inspect future events, so the complete function is not a prefix-state operator. steps oracle excludes repeated leaves; deduct gold can reuse a subtree but search excludes self-pairs. lex lookup requires caller normalization; understand does it. Missing-path test stops before Annotator load.",
+        "operator": "Exact rational cells cannot be equated with f64 search without conversion/error domain. Preserve source occurrence indices and distinct additive versus overwrite Set semantics.",
+        "path": "model.md",
+        "required": false,
+        "section": "representation-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Dependency annotations and learned weights are not validated by helper fixtures. Public malformed structures may panic. No useful executable percent surrogate attached; future caps1/2/5/10 require metric.",
+        "domain": "Bounded synthetic valid structures and valid source indices, fixed environment; finite numeric interpretation where required. n<=64 for steps oracle and <=256 DAG pool indices. No external models, teacher, GPU, corpora, held-out or large training.",
+        "id": "search-supervision",
+        "observation_scope": "qworld and deduct consume steps::Prob with aligned qs/descs. qworld rates change no cell immediately, but owner/thing context is updated before operation selection and can affect subsequent bare quantities. qread Set adds whereas qworld Set overwrites; qread's final event fold respects upto, while direct/relation/movement/initial-state decisions can inspect future events, so the complete function is not a prefix-state operator. steps oracle excludes repeated leaves; deduct gold can reuse a subtree but search excludes self-pairs. lex lookup requires caller normalization; understand does it. Missing-path test stops before Annotator load.",
+        "operator": "steps oracle forbids repeated leaves; deduct gold reuses identical nodes but self-combination search candidates absent, so syntactically accepted gold need not be reachable.",
+        "path": "model.md",
+        "required": false,
+        "section": "search-supervision",
+        "status": "partial_source_derived_model",
+        "type": "search_reachability"
+      },
+      {
+        "assumptions": "Dependency annotations and learned weights are not validated by helper fixtures. Public malformed structures may panic. No useful executable percent surrogate attached; future caps1/2/5/10 require metric.",
+        "domain": "Bounded synthetic valid structures and valid source indices, fixed environment; finite numeric interpretation where required. n<=64 for steps oracle and <=256 DAG pool indices. No external models, teacher, GPU, corpora, held-out or large training.",
+        "id": "effect-boundary",
+        "observation_scope": "qworld and deduct consume steps::Prob with aligned qs/descs. qworld rates change no cell immediately, but owner/thing context is updated before operation selection and can affect subsequent bare quantities. qread Set adds whereas qworld Set overwrites; qread's final event fold respects upto, while direct/relation/movement/initial-state decisions can inspect future events, so the complete function is not a prefix-state operator. steps oracle excludes repeated leaves; deduct gold can reuse a subtree but search excludes self-pairs. lex lookup requires caller normalization; understand does it. Missing-path test stops before Annotator load.",
+        "operator": "Only missing path metadata/tempdir effects exercised; Annotator and frozen suite remain excluded.",
+        "path": "model.md",
+        "required": false,
+        "section": "effect-boundary",
+        "status": "partial_source_derived_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "Dependency annotations and learned weights are not validated by helper fixtures. Public malformed structures may panic. No useful executable percent surrogate attached; future caps1/2/5/10 require metric.",
+        "domain": "Bounded synthetic valid structures and valid source indices, fixed environment; finite numeric interpretation where required. n<=64 for steps oracle and <=256 DAG pool indices. No external models, teacher, GPU, corpora, held-out or large training.",
+        "id": "cost-composition",
+        "observation_scope": "qworld and deduct consume steps::Prob with aligned qs/descs. qworld rates change no cell immediately, but owner/thing context is updated before operation selection and can affect subsequent bare quantities. qread Set adds whereas qworld Set overwrites; qread's final event fold respects upto, while direct/relation/movement/initial-state decisions can inspect future events, so the complete function is not a prefix-state operator. steps oracle excludes repeated leaves; deduct gold can reuse a subtree but search excludes self-pairs. lex lookup requires caller normalization; understand does it. Missing-path test stops before Annotator load.",
+        "operator": "Feature extraction, candidate clone/tree construction and exact arithmetic costs survive composition; no measured speed or global percentage bound.",
+        "path": "model.md",
+        "required": false,
+        "section": "cost-composition",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "quantitative-understanding",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "math/src/deduct.rs",
+      "sha256": "373e1e3d5d83d964727e9a6becd5b07b78a562291ad7d69c76626ef8e1064ac8"
+    },
+    {
+      "path": "math/src/lex.rs",
+      "sha256": "6a1e155f726c65b8e10f15dc0aba1622c52e22800a2c4d8c75fa194de79e2171"
+    },
+    {
+      "path": "math/src/qread.rs",
+      "sha256": "8389b8d58f68121743d6346e638601297c3725483f4b9fcd2eb8cd47ef2d028a"
+    },
+    {
+      "path": "math/src/qworld.rs",
+      "sha256": "6225ef705c842a9565a3a16bc259b261421d0c6c679a0eeada8de59613ea3887"
+    },
+    {
+      "path": "math/src/steps.rs",
+      "sha256": "e5cb6a8faf439e291e373da48acc452c2dbe4b831e011b44230ade64f0f9a803"
+    },
+    {
+      "path": "math/src/understand.rs",
+      "sha256": "5b3ac990c5e46e75b303f47f96d66553ee87b78309e80c6342a97453769e895e"
+    },
+    {
+      "path": "math/tests/understand.rs",
+      "sha256": "488f55c7cff6abbadc3a3c93e4bc3c4977f831f79e141265b04f5c44ac2695f4"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

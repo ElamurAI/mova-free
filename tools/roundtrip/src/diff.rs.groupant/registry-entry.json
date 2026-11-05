@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "diff::tests::classes_of_changes"
+  ],
+  "children": [],
+  "cost": "LCS O(nm) time and memory; six greedy passes O(nm*string comparison cost); output examples capped by tally, context construction bounded scalar90 but scans full input.",
+  "description": "Compare increments sents/tokens/chrF then exact text early-return. Otherwise form LCS with skip-original tie, adjacent aligned spacing, then greedy Order, Typography, Case, lemma Tense/Form, PronName and Lexical passes; leftovers classified missing/added.",
+  "forward": [
+    "Compare increments sents/tokens/chrF then exact text early-return. Otherwise form LCS with skip-original tie, adjacent aligned spacing, then greedy Order, Typography, Case, lemma Tense/Form, PronName and Lexical passes; leftovers classified missing/added."
+  ],
+  "id": "rt-mixed-diff",
+  "inverse": [
+    "Excluded: class counts are an invertible edit script or semantic equivalence judgment; exact text produces class divergences.",
+    "Divergence cells admit many alignments and original strings; LCS witness is deterministic but repeated forms have alternative optimal alignments."
+  ],
+  "limitations": [
+    "Finite synthetic helper evidence only; live corpora, parser/model loading, full orchestration and filesystem failure races excluded.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/roundtrip/src/diff.rs",
+  "state": "Valid token fields, lengths fit allocation and u32 LCS/counters. Exact strings can bypass inconsistent Tk fields; token coordinates are indices, cut truncates90 Unicode scalars."
+}

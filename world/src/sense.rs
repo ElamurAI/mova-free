@@ -367,3 +367,74 @@ mod tests {
         assert!(check(&t).is_empty());
     }
 }
+
+#[cfg(test)]
+mod wave8_models {
+    use super::*;
+    fn node(lemma: &str, upos: UPos, head: usize, rel: Rel) -> Node {
+        Node { form: lemma.into(), lemma: lemma.into(), upos: Some(upos), head, rel }
+    }
+    #[test]
+    fn argument_projection_table_oracle() {
+        let rels = [Rel::Nsubj, Rel::Obj, Rel::NsubjPass, Rel::OblAgent, Rel::Ccomp, Rel::Dep];
+        for passive in [false,true] { for &rel in &rels { for noun in [false,true] {
+            let t = vec![node("eat", UPos::VERB, 0, Rel::Root),
+                node("x", if noun { UPos::NOUN } else { UPos::PROPN }, 1, rel),
+                node("be", UPos::AUX, 1, if passive { Rel::AuxPass } else { Rel::Aux })];
+            let expected = match (passive,noun,rel) {
+                (false,true,Rel::Nsubj) | (true,true,Rel::OblAgent) => (Some(1),None),
+                (false,true,Rel::Obj | Rel::NsubjPass) | (true,true,Rel::Nsubj | Rel::NsubjPass) => (None,Some(1)),
+                _ => (None,None)
+            };
+            assert_eq!(arguments(&t,0), expected);
+        }}}
+    }
+    #[test]
+    fn first_argument_and_attachment_fibers() {
+        let mut t = vec![node("eat",UPos::VERB,0,Rel::Root),
+            node("mouse",UPos::NOUN,1,Rel::Nsubj), node("cheese",UPos::NOUN,1,Rel::Nsubj)];
+        assert_eq!(arguments(&t,0), (Some(1),None));
+        let mut fiber = 0;
+        for head in 0..4 { t[2].head = head;
+            assert_eq!(arguments(&t,0), (Some(1),None)); fiber += 1;
+        }
+        assert_eq!(fiber,4);
+        t[1].upos = Some(UPos::PRON); t[2].head = 1;
+        assert_eq!(arguments(&t,0), (Some(2),None));
+    }
+    #[test]
+    fn lexical_gates_and_unknown_fiber() {
+        assert!(matches!(animacy("mouse"),Anim::Animate(_)));
+        assert!(matches!(animacy("cheese"),Anim::Inanimate(_)));
+        assert_eq!(animacy("wave8unknown"),Anim::Unknown);
+        for verb in ["eat","cry","wave8unknown"] { for role in [Role::Agent,Role::Patient] {
+            assert!(violation(verb,role,"wave8unknown").is_none());
+        }}
+        assert!(violation("eat",Role::Agent,"cheese").is_some());
+        assert!(violation("eat",Role::Patient,"cheese").is_none());
+        assert!(violation("wave8unknown",Role::Agent,"cheese").is_none());
+    }
+    #[test]
+    fn role_swap_precedence_and_verb_gate() {
+        let mut t = vec![node("eat",UPos::VERB,0,Rel::Root),
+            node("cheese",UPos::NOUN,1,Rel::Nsubj), node("mouse",UPos::NOUN,1,Rel::Obj)];
+        let f = check(&t);
+        assert_eq!(f.len(),1); assert_eq!(f[0].kind,Kind::RoleSwap);
+        assert_eq!(f[0].words,vec![1,2]); assert_eq!(f[0].verb,0);
+        t[0].upos = Some(UPos::AUX); assert!(check(&t).is_empty());
+        t[0].upos = Some(UPos::VERB); t[2].lemma = "wave8unknown".into();
+        let f = check(&t); assert_eq!(f.len(),1);
+        assert_eq!(f[0].kind,Kind::ImplausibleSubject);
+    }
+    #[test]
+    fn passive_projection_preserves_semantic_roles() {
+        let active = vec![node("eat",UPos::VERB,0,Rel::Root),
+            node("cheese",UPos::NOUN,1,Rel::Nsubj),node("mouse",UPos::NOUN,1,Rel::Obj)];
+        let mut passive = active.clone();
+        passive[1].rel = Rel::OblAgent; passive[2].rel = Rel::NsubjPass;
+        passive.push(node("be",UPos::AUX,1,Rel::AuxPass));
+        let obs = |t:&[Node]|check(t).iter().map(|f|(f.kind,f.verb,f.words.clone())).collect::<Vec<_>>();
+        assert_eq!(obs(&active),obs(&passive));
+        assert_eq!(sub_obj(Rel::Ccomp),false);
+    }
+}

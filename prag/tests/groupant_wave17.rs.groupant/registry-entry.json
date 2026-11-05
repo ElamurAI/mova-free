@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "turn_rows_accounting_and_labels_keep_batch_coordinates",
+    "attempted_counts_do_not_turn_partial_labels_into_acceptance",
+    "failed_turn_stops_before_accounting_and_successful_suffix"
+  ],
+  "children": [],
+  "cost": "Event and row bytes, one JSON record append/read and ordered accepted-source mapping; no process costs measured.",
+  "description": "3 bounded native joins and 5 typed source-bound views.",
+  "forward": [
+    "Decode supplied events, project attempted-call accounting, append/read one isolated ledger, and gate independent numbered rows against the same Item batch."
+  ],
+  "id": "prag-groupant-wave17",
+  "inverse": [
+    "Universe: supplied event traces, caller metadata, isolated ledger and numbered label rows over an ordered Item batch. Exclude accounting after decode failure, exchanged source/row labels, accepted labels for missing or duplicated rows, and treating attempted sentence count as accepted labels. A valid suffix cannot recover an earlier rejected trace. No process/crash/concurrency or teacher guarantee is modeled.",
+    "Retain all traces, metadata, rows and Item lists sharing the observed reply, accounting and labels. Row k plus the same batch recovers Item k-1; ledger cardinality alone cannot recover accepted rows or text. Full, partial and duplicate answers can share usage and attempted counts. Unchanged ledger bytes admit multiple failure histories; event decoding and label parsing lose spellings and discarded events."
+  ],
+  "limitations": [
+    "Bounded native evidence and repeated partial syntax are recorded; no general proof is inferred.",
+    "Finite checks do not establish general proof or unique antecedents.",
+    "No live parser, corpus, teacher, GPU, adoption or throughput experiment."
+  ],
+  "source": "prag/tests/groupant_wave17.rs",
+  "state": "One-based row identity and source policy; attempted count differs from accepted labels; decode errors short-circuit before append."
+}

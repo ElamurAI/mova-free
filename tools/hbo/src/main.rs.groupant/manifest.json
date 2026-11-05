@@ -1,0 +1,140 @@
+{
+  "children": [
+    {
+      "id": "hbo-cli-scoring",
+      "path": "scoring.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Pure-helper domain representable usize tallies and u32 chapter ranges. CLI IO/training/corpus/annotator paths modeled statically only. Word positions are1-based, root0; malformed head parsed0. Token identity check uses piece count/forms, not written token form or sentence IDs.",
+        "evidence": "model.md#tests",
+        "id": "behavior_complement",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "flags cannot distinguish a flag-looking next token from a value; malformed chapter part does not reject. score cannot align partial pieces within a mismatched token; same sentence count alone cannot validate identities.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "subject_revision": "0c6745dd24d6be0c80fc44c855adc88cceb66e5faf0890747f4e93c1cf49d62a",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Pure-helper domain representable usize tallies and u32 chapter ranges. CLI IO/training/corpus/annotator paths modeled statically only. Word positions are1-based, root0; malformed head parsed0. Token identity check uses piece count/forms, not written token form or sentence IDs.",
+        "evidence": "model.md#tests",
+        "id": "reverse_reconstruction",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Flags map admits duplicate overwritten options and arbitrary order; Part(chapters=None) admits book-only and malformed chapter strings. Tally admits many tree pairs; equal counts/F1 are not recoverable trees or semantic equivalence.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "subject_revision": "0c6745dd24d6be0c80fc44c855adc88cceb66e5faf0890747f4e93c1cf49d62a",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Pure-helper domain representable usize tallies and u32 chapter ranges. CLI IO/training/corpus/annotator paths modeled statically only. Word positions are1-based, root0; malformed head parsed0. Token identity check uses piece count/forms, not written token form or sentence IDs.",
+        "evidence": "model.md#tests",
+        "id": "flag_pairing",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "At '--k', consume following element even '--other'; no next element yields ''. Duplicate k overwrites. Unflagged positions append plain args. learn_opts defaults parse failures and leaves unsupported options ignored.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "flag_pairing",
+        "status": "partial_source_derived_model",
+        "subject_revision": "0c6745dd24d6be0c80fc44c855adc88cceb66e5faf0890747f4e93c1cf49d62a",
+        "type": "flag_pairing"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Pure-helper domain representable usize tallies and u32 chapter ranges. CLI IO/training/corpus/annotator paths modeled statically only. Word positions are1-based, root0; malformed head parsed0. Token identity check uses piece count/forms, not written token form or sentence IDs.",
+        "evidence": "model.md#tests",
+        "id": "part_membership",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "holds(b,c) iff book matches and either no parsed range or a<=c<=z. Reversed valid interval admits no chapters; invalid bounds admit all same-book chapters. place defaults missing book/chapter to empty/0.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "part_membership",
+        "status": "partial_source_derived_model",
+        "subject_revision": "0c6745dd24d6be0c80fc44c855adc88cceb66e5faf0890747f4e93c1cf49d62a",
+        "type": "part_membership"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Pure-helper domain representable usize tallies and u32 chapter ranges. CLI IO/training/corpus/annotator paths modeled statically only. Word positions are1-based, root0; malformed head parsed0. Token identity check uses piece count/forms, not written token form or sentence IDs.",
+        "evidence": "model.md#tests",
+        "id": "alignment_head",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Only tokens with equal number of equal-unpointed word forms map predicted position to gold. UAS counts root equality or mapped predicted head=gold head; LAS adds relation equality. Token-count mismatch increments unaligned and skips all mapping.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "alignment_head",
+        "status": "partial_source_derived_model",
+        "subject_revision": "0c6745dd24d6be0c80fc44c855adc88cceb66e5faf0890747f4e93c1cf49d62a",
+        "type": "alignment_head"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Pure-helper domain representable usize tallies and u32 chapter ranges. CLI IO/training/corpus/annotator paths modeled statically only. Word positions are1-based, root0; malformed head parsed0. Token identity check uses piece count/forms, not written token form or sentence IDs.",
+        "evidence": "model.md#tests",
+        "id": "cli_effects",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "choose --study writes study before choose validation and final output; split creates output after reading/preparing all input then writes partitions sequentially; parse annotation can leave temp effects on error. These are static effect models, not executed workflows.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "cli_effects",
+        "status": "partial_source_derived_model",
+        "subject_revision": "0c6745dd24d6be0c80fc44c855adc88cceb66e5faf0890747f4e93c1cf49d62a",
+        "type": "cli_effects"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "hbo-cli",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../main.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "0c6745dd24d6be0c80fc44c855adc88cceb66e5faf0890747f4e93c1cf49d62a"
+  },
+  "status": "partial_source_bound_model"
+}

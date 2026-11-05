@@ -1,0 +1,66 @@
+{
+  "command": "cargo test -p latex --features math --test bridge",
+  "control": {
+    "compiler_exit": 0,
+    "kind": "compiled_assertion_inversion",
+    "log_prefix": "control-bridge",
+    "negative_exit": 101,
+    "restoration": "exact bytes",
+    "restored_exit": 0,
+    "shared_with_dependency": true
+  },
+  "date": "2026-10-31",
+  "expected_test_names": [
+    "latex_to_expr",
+    "unsupported_has_a_reason",
+    "relations_chain",
+    "expr_prints_as_latex",
+    "expr_roundtrip_through_latex",
+    "bridge_gate_can_be_red"
+  ],
+  "limitations": [
+    "Finite synthetic actual-code checks, not proof",
+    "Frozen DATA and sha256 subprocess unexecuted",
+    "Strict Clippy blocked by 14 pre-existing lints in unchanged library code"
+  ],
+  "receipts": [
+    {
+      "exit": 0,
+      "log": "debug-1-bridge.log",
+      "log_sha256": "ddf0333b2b870db30229d390bac1df2080fefeacd7507927a60d6c6c7f6b52d7",
+      "named_outcomes": "debug-1-bridge.names",
+      "outcomes_sha256": "014b360a0e54e7e84db281297119cdcf205eb994b20ec1b2a262c601d3b0659c",
+      "profile": "debug",
+      "repetition": 1
+    },
+    {
+      "exit": 0,
+      "log": "debug-2-bridge.log",
+      "log_sha256": "1ed1245720bbbbe61de0889f97569b1db12b5a8ce4411be1c2ceb4887ccc9c73",
+      "named_outcomes": "debug-2-bridge.names",
+      "outcomes_sha256": "014b360a0e54e7e84db281297119cdcf205eb994b20ec1b2a262c601d3b0659c",
+      "profile": "debug",
+      "repetition": 2
+    },
+    {
+      "exit": 0,
+      "log": "release-1-bridge.log",
+      "log_sha256": "15a8ced12d4da6dda23dcfc972a267baa33f8f4b46426110fa99f7541ae9f199",
+      "named_outcomes": "release-1-bridge.names",
+      "outcomes_sha256": "014b360a0e54e7e84db281297119cdcf205eb994b20ec1b2a262c601d3b0659c",
+      "profile": "release",
+      "repetition": 1
+    },
+    {
+      "exit": 0,
+      "log": "release-2-bridge.log",
+      "log_sha256": "84311ec6f6d787fae58a4493d0c821f58970779bd88923fb418d0ee30a67c500",
+      "named_outcomes": "release-2-bridge.names",
+      "outcomes_sha256": "014b360a0e54e7e84db281297119cdcf205eb994b20ec1b2a262c601d3b0659c",
+      "profile": "release",
+      "repetition": 2
+    }
+  ],
+  "source": "latex/src/tomath.rs",
+  "source_sha256": "794488f6ec9ddcdf02f1e70e30a49bad4fbfade117ca82b25f5d82e90b3cb197"
+}

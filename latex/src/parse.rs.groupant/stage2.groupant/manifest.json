@@ -1,0 +1,82 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "command_erasure",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "command_erasure",
+        "status": "partial_source_derived_model",
+        "type": "command_erasure"
+      },
+      {
+        "id": "unicode_admission",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "unicode_admission",
+        "status": "partial_source_derived_model",
+        "type": "unicode_admission"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 42330,
+      "start": 27699
+    },
+    "description": "genfrac reads left,right,thickness,style,numerator,denominator before validating delimiter forms. Zero-thickness predicate trims leading0/dots then requires remaining chars ASCII letters; matching parentheses choose binomial, otherwise Atop or frac styles. root collects to literal Cmd(of), parses marked index then body. command first expands nonraw macros, then dispatches Entry; unknown names delegate to stage1.",
+    "source_bytes_sha256": "d4cae018de8aaeb812b8977e5f3a536f378d8ea421b2dbd93e6d9006bfe14f37"
+  },
+  "id": "latex-parse-stage2",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../parse.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "f463a4a8e13c770287eeeb57c59e74732daac90bf64f57302870d1ea86cc5f47"
+  },
+  "status": "partial_source_bound_model"
+}

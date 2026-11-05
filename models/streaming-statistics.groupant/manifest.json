@@ -1,0 +1,153 @@
+{
+  "children": [
+    "algorithm-misra-gries",
+    "algorithm-misra-gries-tests",
+    "algorithm-space-saving",
+    "algorithm-space-saving-tests",
+    "algorithm-histogram-quantiles",
+    "algorithm-histogram-quantiles-tests",
+    "algorithm-streaming-moments",
+    "algorithm-streaming-moments-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Frequency error/N, quantile value/rank intervals and floating variance are different metrics. Moment arithmetic has no universal relative-error certificate. Map allocation failure lies outside the Result contract; histogram allocation is fallible.",
+        "domain": "Finite streams in the configured histogram domain, legal frequency tiers, moment count <=2^53 and representable moments; only common accepted updates in cross-component joins.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "streaming-statistics-behavior-complement",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Exclude frequency intervals omitting the exact accepted-stream count, rank/value rectangles omitting the sorted requested rank, mismatched accepted-prefix N and successful nonfinite moment output. A rejected individual update must not mutate that component; no cross-component rollback is promised.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Frequency error/N, quantile value/rank intervals and floating variance are different metrics. Moment arithmetic has no universal relative-error certificate. Map allocation failure lies outside the Result contract; histogram allocation is fallible.",
+        "domain": "Finite streams in the configured histogram domain, legal frequency tiers, moment count <=2^53 and representable moments; only common accepted updates in cross-component joins.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "streaming-statistics-reverse-reconstruction",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Compatible streams lie in the intersection of frequency intervals, histogram bucket occupancies and moment constraints with execution consistency. Permutations and unrecorded identities/within-bucket values remain ambiguous; rounded moments may distinguish some permutations.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Frequency error/N, quantile value/rank intervals and floating variance are different metrics. Moment arithmetic has no universal relative-error certificate. Map allocation failure lies outside the Result contract; histogram allocation is fallible.",
+        "domain": "Finite streams in the configured histogram domain, legal frequency tiers, moment count <=2^53 and representable moments; only common accepted updates in cross-component joins.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "streaming-statistics-shared-count",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Under legal updates for every component, MG.len=SS.len=histogram.len=moments.count=N. Rejection in one component invalidates this common-prefix premise unless caller coordinates updates.",
+        "path": "model.md",
+        "section": "shared-count",
+        "status": "partial_source_model",
+        "type": "accepted_prefix_transport"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Frequency error/N, quantile value/rank intervals and floating variance are different metrics. Moment arithmetic has no universal relative-error certificate. Map allocation failure lies outside the Result contract; histogram allocation is fallible.",
+        "domain": "Finite streams in the configured histogram domain, legal frequency tiers, moment count <=2^53 and representable moments; only common accepted updates in cross-component joins.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "streaming-statistics-conservation",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "MG counter sum+(k+1)*cancellations=N; SS estimate sum=N; histogram bucket sum=N; moments count=N. These equalities concern accepted updates and do not convert all output errors into one percentage.",
+        "path": "model.md",
+        "section": "conservation",
+        "status": "partial_source_model",
+        "type": "stream_conservation"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Frequency error/N, quantile value/rank intervals and floating variance are different metrics. Moment arithmetic has no universal relative-error certificate. Map allocation failure lies outside the Result contract; histogram allocation is fallible.",
+        "domain": "Finite streams in the configured histogram domain, legal frequency tiers, moment count <=2^53 and representable moments; only common accepted updates in cross-component joins.",
+        "evidence": "model.md#wave19-evidence; exact transitive revisions in source_bindings.",
+        "id": "streaming-statistics-summary-loss",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Frequency summaries omit most identities; histogram retains only bucket order/value intervals; moments retain low-order statistics. Equal low-order moments do not establish equal distributions or equal quantiles.",
+        "path": "model.md",
+        "section": "summary-loss",
+        "status": "partial_source_model",
+        "type": "information_loss_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "streaming-statistics",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/histogram_quantiles/mod.rs",
+      "sha256": "ab6c2ca180991fd201f61ac868b6984bfc00260fdc977061365beb10360f95d4"
+    },
+    {
+      "path": "algorithms/src/histogram_quantiles/tests.rs",
+      "sha256": "796bc6149f8fcb51d885b1c62c772152f0c9bee82f2b8c1695d347f896d6c913"
+    },
+    {
+      "path": "algorithms/src/misra_gries/mod.rs",
+      "sha256": "ec15a021514e89b99e1e888498e67ab4c8ec9d9642366b2dced2697ec543d367"
+    },
+    {
+      "path": "algorithms/src/misra_gries/tests.rs",
+      "sha256": "f4f4e97885052c65d1a05a96483c59faebd5d93eab97e6b510fb1ef7021c2d38"
+    },
+    {
+      "path": "algorithms/src/space_saving/mod.rs",
+      "sha256": "f1acc5b7bfafc39bca27359c4cfdbea5810f35943c606eee73838ddc7dacc0f9"
+    },
+    {
+      "path": "algorithms/src/space_saving/tests.rs",
+      "sha256": "c71708674a0151bb07677de0846c78c113b9cea99a7e89e2bc0349c0eb25f451"
+    },
+    {
+      "path": "algorithms/src/streaming_moments/mod.rs",
+      "sha256": "041cb5390bc2e65365bde5e4d5081eeb5c75433081560111547a4c75f6589852"
+    },
+    {
+      "path": "algorithms/src/streaming_moments/tests.rs",
+      "sha256": "d13f5e21b68dd4475f3c2373234687bc499e20b54febd514eea70d59ca44647d"
+    }
+  ],
+  "status": "partial_source_bound_group"
+}

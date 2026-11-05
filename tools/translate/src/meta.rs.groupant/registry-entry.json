@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "meta::tests::the_logic_gate_on_merges",
+    "meta::tests::lexicon_tsv_back",
+    "meta::tests::lcs_and_gaps",
+    "meta::wave32::metadata_loss_and_lcs_ties"
+  ],
+  "children": [],
+  "cost": "LCS O(nm) time/space; candidate phrase joining O(n L²) token visits plus bytes/map comparisons. Clause ancestry O(n²). Judge includes cross-cluster |A||B| pairs, repeated occurrence aggregation and up to12 sampled reader callbacks per memoized pair; no corpus speed claim.",
+  "description": "Learn candidate gap links, optionally judge residual/logic cost, union clusters and choose greatest occurrence canonical member (lexical smallest tie). read greedily chooses longest phrase, absorbs selected function/joiner spans, derives representative head and optionally coarsens. tnodes drops span; TSV saves clusters and explanations only.",
+  "forward": [
+    "Learn candidate gap links, optionally judge residual/logic cost, union clusters and choose greatest occurrence canonical member (lexical smallest tie). read greedily chooses longest phrase, absorbs selected function/joiner spans, derives representative head and optionally coarsens. tnodes drops span; TSV saves clusters and explanations only."
+  ],
+  "id": "translation-meta-meta",
+  "inverse": [
+    "Within valid counts and finite inputs, LCS cannot output unequal or nonmonotone anchor pairs; TSV cannot preserve feature switches, max_len, refusal history or unclustered mappings. Concept equality excludes no semantic contradictions by itself.",
+    "A meta token admits every surface span whose longest-match and representative-head rules yield it. tnodes preimage contains arbitrary spans. TSV reconstructs cluster rows/why under clean delimiters, with caller max_len; switches and refusal list remain free antecedent state."
+  ],
+  "limitations": [
+    "No live corpus/model/teacher/GPU execution or language accuracy claim",
+    "Partial syntax and finite tests; full effectful paths unexecuted; no percentage surrogate"
+  ],
+  "source": "tools/translate/src/meta.rs",
+  "state": "Finite token arrays; phrase lengths bounded by max_len. LCS length<=65535, products and u32/u64 counts representable; well-formed UTF-8 keys without TSV delimiters for clean serialization. Read handles out-of-range direct heads as root; arbitrary learned callbacks excluded from native execution."
+}

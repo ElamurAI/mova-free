@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Leading whitespace before %! excludes that line. Error pattern removal excludes enforcing regex expectation during this extraction.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Output block admits any discarded ordinary source text and ignored directive blocks; shared prefixes may originate from many whitespace spellings.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_invariant",
+        "path": "model.md",
+        "scope": "Produced kind distinguishes Assert/Test/Error; no implementation evaluation or external file read in helper.",
+        "section": "state_invariant",
+        "status": "partial_source_derived_model",
+        "type": "state_invariant"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Unclosed function is not appended to funcs; unsupported directives are ignored. This finite lexical transform has no Result channel.",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Input line order preserved; code is reconstructed with inserted newlines and shared variable empty initializers.",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "O(input bytes + emitted repeated shared/function prefixes), potentially amplified by block count.",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4197,
+      "start": 1577
+    },
+    "description": "Group %! lines by known directive; shared replaces initialization, completed function appends definition, assert/test/error append blocks with current prefixes. Error strips id= and angle-bracket pattern.",
+    "source_bytes_sha256": "b776e43078635a03be6c76351bfea3f988d7d70b22619ac189f25a94a6973acc"
+  },
+  "id": "mlab-tests-octave-ext-block-extraction",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../octave_ext.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "083430129fcb3a8656178a4c528228635665bacc2c3946a93327966b0947bcee"
+  },
+  "status": "partial_source_bound_model"
+}

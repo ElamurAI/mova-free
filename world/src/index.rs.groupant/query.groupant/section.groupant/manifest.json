@@ -1,0 +1,95 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Explicit gap: no syntax projection or semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "scope": "U contains (positive sent, world section map, secs,fut,bonus,insec). R follows ordered branches: empty=0, same=3, future next=2.5, adjacent=0.5, otherwise=-1.5. U minus R includes additive combinations of these mutually exclusive bonuses and next=2.5 without fut.",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "scope": "Bonus 2.5 implies nonempty secs, sec absent from secs, fut=true and some x with sec=x+1. Bonus 0.5 requires adjacency and failure of earlier branches. Preserve all sets/lists and world maps meeting these constraints.",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "fallback",
+        "path": "model.md",
+        "scope": "Positive out-of-range sent maps to sec=0, which may receive same-section bonus if q.secs includes 0. sent=0 underflows the subtraction in checked builds and is not covered by this valid-domain model.",
+        "section": "fallback",
+        "status": "partial_source_derived_model",
+        "type": "boundary_projection"
+      },
+      {
+        "id": "future-counterfactual",
+        "path": "model.md",
+        "scope": "Hold sec,secs fixed and toggle fut. Only outside-same cases with an immediately preceding queried section move from adjacency 0.5 to 2.5; score delta is 2.0. All other finite inputs preserve bonus.",
+        "section": "future-counterfactual",
+        "status": "partial_source_derived_model",
+        "type": "counterfactual_rule"
+      },
+      {
+        "id": "section-branch-fiber",
+        "path": "model.md",
+        "scope": "For positive sent let sec=text[sent-1].section if present, otherwise 0. Bonus=3 fiber is secs containing sec; bonus=2.5 fiber excludes same-section and requires fut and a preceding sec-1 member; bonus=0.5 fiber excludes both prior cases and requires adjacent membership; bonus=-1.5 excludes them all with nonempty secs; empty secs gives 0. At sec=0 no preceding section exists, so fut cannot make fallback a next-section match. Anchors are free in this projection. Preserve every compatible text map and query list, including duplicates.",
+        "section": "section-branch-fiber",
+        "status": "partial_source_derived_model",
+        "type": "ordered_partition_preimage"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "coverage_recorded"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 23120,
+      "start": 22480
+    },
+    "description": "Resolve sec from world sentence at sent-1, falling back to 0 for out-of-range positive sent; choose one section bonus by ordered conditions."
+  },
+  "id": "fact-index-section-prior",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../index.rs",
+    "sha256": "c182d747ecc69b9e86a34ae5a49caa3841477c53719b2b8bb77b39e0ba4120d1"
+  },
+  "status": "partial_source_derived_instance",
+  "subject_revision": "sha256:c182d747ecc69b9e86a34ae5a49caa3841477c53719b2b8bb77b39e0ba4120d1"
+}

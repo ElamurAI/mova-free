@@ -1,0 +1,104 @@
+{
+  "children": [
+    {
+      "id": "cycle-db-commit",
+      "path": "commit.groupant"
+    },
+    {
+      "id": "cycle-db-vote",
+      "path": "vote.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Source-bound syntax; no macro expansion, resolution or semantic proof.",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "vote_order",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "vote_order",
+        "status": "partial_source_derived_model",
+        "type": "vote_order"
+      },
+      {
+        "id": "tree_domain",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "tree_domain",
+        "status": "partial_source_derived_model",
+        "type": "tree_domain"
+      },
+      {
+        "id": "heldout_first_source",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "heldout_first_source",
+        "status": "partial_source_derived_model",
+        "type": "heldout_first_source"
+      },
+      {
+        "id": "effect_prefix",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "effect_prefix",
+        "status": "partial_source_derived_model",
+        "type": "effect_prefix"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_or_representation"
+    }
+  },
+  "id": "cycle-db",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../db.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "46ace8ee692107b0fa7d933778036f4d884a3a081023f2c143236cdfdb0cb8c7"
+  },
+  "status": "partial_source_bound_model"
+}

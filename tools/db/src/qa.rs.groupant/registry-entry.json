@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "qa::wave31::rows_anchor_and_number_domain"
+  ],
+  "children": [],
+  "cost": "O(file bytes + anchor count + state rows + staged bytes) expected work; BTreeSet wanted IDs adds O(u log u), replacement map expected O(old rows + new rows). Full row/state vectors are retained; DB execution unmeasured.",
+  "description": "Question anchors and replacement staging",
+  "forward": [
+    "read_rows validates exact eight-column header, parses para then k as i64, requires k>=1 and at least one trimmed nonempty comma anchor. load rejects duplicate doc/para/k, queries deduplicated wanted docs/sents, checks run identities, docs, per-anchor sentence cardinality/doc/para and replacement row availability. Stages qids with anchors as JSON sids, executes SQL, checks row and bidirectional replacement totals."
+  ],
+  "id": "db-src-qa",
+  "inverse": [
+    "k<=0, no nonempty anchors, foreign header or duplicate question key cannot reach successful exec. Cross-document/paragraph or ambiguous anchor cannot be silently linked. Existing replacement pointers exclude replacing that row again.",
+    "Given stored anchors [sid1,sid1,sid2], compatible TSV anchor strings differ in trimming and empty comma fields but preserve duplicate/order after filtering. Stored new/old pointer pairs constrain prior row IDs and NULL replaced_by; they do not recover question provenance or original whitespace.",
+    "Each resolved anchor must have exactly one candidate with doc=docs[doc_key] and para=Some(input para). Missing para is incompatible even with numeric zero; duplicate input anchors are accepted and repeat the same sid.",
+    "With replaces run, every question key must exist in that run and remain unreplaced. Old rows remain, new rows point backward and SQL marks old forward. Rust postcheck compares total linked/marked to requested replacement count, not each pair's identity.",
+    "Width precedes para parse, then k parse/positivity, then nonempty anchor check. Header-only succeeds in read_rows and fails in load. Tests isolate boundaries without a process transport substitute.",
+    "run=max_run+1 and qid=max_qid+1+i assume no overflow/concurrent writer. Post reconciliation occurs after commit; an error here does not imply no DB changes."
+  ],
+  "limitations": [
+    "Finite helper/fixture evidence only; no DuckDB integration or SQL semantics",
+    "Partial syntax projection; no macro expansion or full semantic proof",
+    "No executable approximate profile or speedup claim"
+  ],
+  "source": "tools/db/src/qa.rs",
+  "state": "Repeated anchors remain repeated in stored JSON; requested state-query IDs are deduplicated independently. Each replacement targets one old matching doc/para/k whose replaced_by is NULL. Source parser allows negative para, arbitrary qtype/ex_or_im and empty answer; DB CHECKs own remaining domain."
+}

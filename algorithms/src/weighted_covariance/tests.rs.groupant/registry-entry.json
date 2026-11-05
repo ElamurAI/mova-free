@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms weighted_covariance::tests",
+    "Repeated debug/release, paired syntax, compiled mutant and restored rerun"
+  ],
+  "children": [],
+  "cost": "O(d*d) push/merge/storage; getters mean/weight O(1), covariance O(d*d) allocation.",
+  "description": "Independent finite oracle and boundary tests for weighted_covariance. Production: Dimension1..64; finite |coordinates|<=1e100, weight[0,1e100]. Push validates dimension then point then weight before zero-weight no-op. Merge validates equal dimensions before empty neutrality. W=A+B, delta=meanB-meanA, mean=meanA+delta*B/W, M2=M2A+M2B+outer(delta)*A*(B/W). Population covariance M2/W; empty None.",
+  "forward": [
+    "Independent finite oracle and boundary tests for weighted_covariance. Production: Dimension1..64; finite |coordinates|<=1e100, weight[0,1e100]. Push validates dimension then point then weight before zero-weight no-op. Merge validates equal dimensions before empty neutrality. W=A+B, delta=meanB-meanA, mean=meanA+delta*B/W, M2=M2A+M2B+outer(delta)*A*(B/W). Population covariance M2/W; empty None."
+  ],
+  "id": "algorithm-weighted-covariance-tests",
+  "inverse": [
+    "All-pass observations admit implementations differing on unsampled inputs. This finite test fiber does not uniquely identify source or prove universality. Production fiber: Many weighted point multisets share W, mean, M2; permutations and splitting one observation into same-point weights preserve real moments. Original sample count and points are not reconstructible. Grouping can change floating results."
+  ],
+  "limitations": [
+    "Partial syntax not semantic proof",
+    "Finite oracle coverage not universal numerical accuracy",
+    "No certified surrogate, timing or allocator fault injection"
+  ],
+  "source": "algorithms/src/weighted_covariance/tests.rs",
+  "state": "Bounded validated numeric inputs, deterministic recurrence, explicit errors/status and standard allocation policy"
+}

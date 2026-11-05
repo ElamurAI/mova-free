@@ -1,0 +1,127 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "Decoding rejects zero counts and neighboring equal byte runs rather than silently canonicalizing malformed input. It cannot exceed max_output on success or return a partial decoded prefix.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "e4ff9e057aa445e4491ee6fce21a8168a6f7452c6b8ef86734969ff349930729",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "preimages",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "On canonical runs, encode(decode(runs))=runs; on byte strings, decode(encode(bytes))=bytes with a sufficient budget. Thus both successful maps are injective on their stated domains. Error outputs have many antecedents.",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "e4ff9e057aa445e4491ee6fce21a8168a6f7452c6b8ef86734969ff349930729",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "validation-order",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "At each run test zero count then neighboring equality then checked length addition. Check output budget only after every run validates. Consequently later malformed runs take precedence over an earlier budget excess.",
+        "path": "model.md",
+        "section": "validation-order",
+        "status": "partial_source_derived",
+        "subject_revision": "e4ff9e057aa445e4491ee6fce21a8168a6f7452c6b8ef86734969ff349930729",
+        "type": "domain_partition"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "prefix-sum",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "After r runs the accumulated length equals their sum and previous records the last byte. These observations retain many different run prefixes; total length alone cannot recover their byte order.",
+        "path": "model.md",
+        "section": "prefix-sum",
+        "status": "partial_source_derived",
+        "subject_revision": "e4ff9e057aa445e4491ee6fce21a8168a6f7452c6b8ef86734969ff349930729",
+        "type": "state_preimage"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "concatenation",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "Encoding x followed by y concatenates their run lists, merging exactly the boundary pair when both are nonempty and the final x byte equals the first y byte.",
+        "path": "model.md",
+        "section": "concatenation",
+        "status": "partial_source_derived",
+        "subject_revision": "e4ff9e057aa445e4491ee6fce21a8168a6f7452c6b8ef86734969ff349930729",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "canonical-uniqueness",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "For a fixed byte string every transition starts exactly one new run, so positive maximal run representation is unique; allowing zero or adjacent-equal runs would destroy this uniqueness.",
+        "path": "model.md",
+        "section": "canonical-uniqueness",
+        "status": "partial_source_derived",
+        "subject_revision": "e4ff9e057aa445e4491ee6fce21a8168a6f7452c6b8ef86734969ff349930729",
+        "type": "restricted_inverse"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-run-length-encoding",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "e4ff9e057aa445e4491ee6fce21a8168a6f7452c6b8ef86734969ff349930729"
+  },
+  "status": "partial_source_derived_instance"
+}

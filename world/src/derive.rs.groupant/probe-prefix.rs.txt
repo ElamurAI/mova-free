@@ -1,0 +1,11 @@
+// Minimal dependency vocabulary, not the real enum representation.
+// Only the source helpers' equality, lookup and names are exercised.
+#[derive(Clone,Copy,Debug,PartialEq,Eq)]
+enum UPos { ADP,AUX,PART,SCONJ,CCONJ,DET,PRON,NOUN,VERB,ADJ,PROPN,NUM,PUNCT,X }
+impl UPos {
+    const ALL: [Self;14] = [Self::ADP,Self::AUX,Self::PART,Self::SCONJ,Self::CCONJ,Self::DET,Self::PRON,Self::NOUN,Self::VERB,Self::ADJ,Self::PROPN,Self::NUM,Self::PUNCT,Self::X];
+    fn name(self)-> &'static str { match self { Self::ADP=>"ADP",Self::AUX=>"AUX",Self::PART=>"PART",Self::SCONJ=>"SCONJ",Self::CCONJ=>"CCONJ",Self::DET=>"DET",Self::PRON=>"PRON",Self::NOUN=>"NOUN",Self::VERB=>"VERB",Self::ADJ=>"ADJ",Self::PROPN=>"PROPN",Self::NUM=>"NUM",Self::PUNCT=>"PUNCT",Self::X=>"X" } }
+}
+#[derive(Clone,Copy,Debug,PartialEq,Eq)]
+enum Rel { Dep, Root, Case, Mark }
+impl Rel { const ALL: [Self;4] = [Self::Dep,Self::Root,Self::Case,Self::Mark]; }

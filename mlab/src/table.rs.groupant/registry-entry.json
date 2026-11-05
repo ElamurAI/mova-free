@@ -1,0 +1,30 @@
+{
+  "checks": [
+    "table::wave30::dates_keys_and_columns",
+    "Paired lexical syntax generation; bounded debug/release and compiled assertion controls in receipt"
+  ],
+  "children": [],
+  "cost": "Column copies O(nw); stable key sort O(kn log n), groups plus per-group index sort; hashing keys O(k) plus text clone length. Display materializes all cells even though >30 rows shows15. Name validation in make costs O(w²) comparisons; dedupe suffix collisions can cost O(w³) string comparisons plus text work.",
+  "description": "dates: Civil-day conversion maps Unix day0 to719529. datenum_ymd carries month and adds day offset; parse_iso validates calendar roundtrip but accepts unbounded parsed clock values. datestr rounds fractional day to seconds and carries midnight; nonfinite emits NaT.\n\ncolumns: to_column rejects complex before char-row conversion or vector-shape check. make zips names/values, then name validity, duplicate, conversion, equal height. set_var broadcasts singleton to height and retains Date kind on numeric replacement.\n\nkeys: Ascending cmp orders NaN/None last and equal to themselves. Stable sorted_rows preserves tie indices; groups sorts by keys and restores appearance within each group. row_key returns None for any missing and canonicalizes signed zero.\n\ndisplay: cells_of formats by kind; format_body selects all rows <=30, otherwise head10 tail5, widths count Unicode chars and header. Text left aligns, others right; format_str_arr traverses column-major data into row text.",
+  "forward": [
+    "dates: Civil-day conversion maps Unix day0 to719529. datenum_ymd carries month and adds day offset; parse_iso validates calendar roundtrip but accepts unbounded parsed clock values. datestr rounds fractional day to seconds and carries midnight; nonfinite emits NaT.",
+    "columns: to_column rejects complex before char-row conversion or vector-shape check. make zips names/values, then name validity, duplicate, conversion, equal height. set_var broadcasts singleton to height and retains Date kind on numeric replacement.",
+    "keys: Ascending cmp orders NaN/None last and equal to themselves. Stable sorted_rows preserves tie indices; groups sorts by keys and restores appearance within each group. row_key returns None for any missing and canonicalizes signed zero.",
+    "display: cells_of formats by kind; format_body selects all rows <=30, otherwise head10 tail5, widths count Unicode chars and header. Text left aligns, others right; format_str_arr traverses column-major data into row text."
+  ],
+  "id": "mlab-table",
+  "inverse": [
+    "dates: For datestr with a time-bearing pattern, an output admits datenum inputs rounding to the shown second, including midnight carry. iso_date first tests exact integrality: date-only output admits integral inputs only; nonintegral inputs may round to midnight but retain the datetime pattern. Valid civil roundtrip is unique only within the nonoverflow calendar domain.",
+    "columns: Table columns admit row/column vector antecedents normalized to column shape; char rows and strings can agree. Scalar broadcast erases original orientation.",
+    "keys: Sorted output admits any permutation of unequal-key source rows with corresponding index mapping; groups discard original inter-group order but retain member indices.",
+    "display: Display string admits many matrices differing beyond precision, elided middle rows or real literal <missing> text."
+  ],
+  "limitations": [
+    "Well-shaped public Table/Mat/StrArr, in-range zero-based internal indices, bounded i64 civil arithmetic. Malformed direct structs may panic.",
+    "Partial lexical AST, no macro expansion or semantic proof",
+    "No executable numerical surrogate or global error bound",
+    "External frozen dataset/effect paths unexecuted"
+  ],
+  "source": "mlab/src/table.rs",
+  "state": "Column-oriented Table names, Value columns and ColKind annotations, row indices and civil-day coordinates."
+}

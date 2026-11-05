@@ -1,0 +1,93 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "domain",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_derived"
+    },
+    "obernants": [
+      {
+        "assumptions": [
+          "Trusted cooperative filesystem, stable pinned files and conforming executor.",
+          "Finite local checks do not establish semantic correctness or hard real-time bounds."
+        ],
+        "domain": "Explicit source-bound domain in corresponding model section.",
+        "id": "behavior-complement",
+        "observation": "Pinned identities, scheduling boundaries, retained process and receipt observations.",
+        "operator": "Explicit formulas, excluded effects and nonunique compatible histories in model.md.",
+        "path": "model.md",
+        "revision": "e6f6f5fc2cdadbcb90ea175a8abd3a9e319c4bf77ba507e9ef1550f0ad3f8fe0",
+        "section": "behavior-complement",
+        "status": "source_derived_with_finite_checks",
+        "subject": "tools/fish-swarm/src/main.rs",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": [
+          "Trusted cooperative filesystem, stable pinned files and conforming executor.",
+          "Finite local checks do not establish semantic correctness or hard real-time bounds."
+        ],
+        "domain": "Explicit source-bound domain in corresponding model section.",
+        "id": "reverse-reconstruction",
+        "observation": "Pinned identities, scheduling boundaries, retained process and receipt observations.",
+        "operator": "Explicit formulas, excluded effects and nonunique compatible histories in model.md.",
+        "path": "model.md",
+        "revision": "e6f6f5fc2cdadbcb90ea175a8abd3a9e319c4bf77ba507e9ef1550f0ad3f8fe0",
+        "section": "reverse-reconstruction",
+        "status": "source_derived_with_finite_checks",
+        "subject": "tools/fish-swarm/src/main.rs",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": [
+          "Trusted cooperative filesystem, stable pinned files and conforming executor.",
+          "Finite local checks do not establish semantic correctness or hard real-time bounds."
+        ],
+        "domain": "Explicit source-bound domain in corresponding model section.",
+        "id": "heartbeat-wait",
+        "observation": "Pinned identities, scheduling boundaries, retained process and receipt observations.",
+        "operator": "Explicit formulas, excluded effects and nonunique compatible histories in model.md.",
+        "path": "model.md",
+        "revision": "e6f6f5fc2cdadbcb90ea175a8abd3a9e319c4bf77ba507e9ef1550f0ad3f8fe0",
+        "section": "heartbeat-wait",
+        "status": "source_derived_with_finite_checks",
+        "subject": "tools/fish-swarm/src/main.rs",
+        "type": "temporal_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "finite_checks"
+    }
+  },
+  "id": "fish-swarm-cli",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../main.rs",
+    "sha256": "e6f6f5fc2cdadbcb90ea175a8abd3a9e319c4bf77ba507e9ef1550f0ad3f8fe0"
+  },
+  "status": "partial_source_bound_model"
+}

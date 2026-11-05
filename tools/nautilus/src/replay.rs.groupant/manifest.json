@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "mova-nautilus-replay",
+  "status": "partial_source_bound_model",
+  "children": [],
+  "source": {
+    "path": "../replay.rs",
+    "sha256": "1eeca46ad2b11373653f0214e35656d12ecb77915346adcc7e1af6933f2d9154",
+    "raw_code_location": "outside_this_sidecar"
+  },
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Partial syntax only; no macro expansion, name resolution or semantic proof.",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward approximant",
+      "status": "partial_source_derived"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial_source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial_source_derived"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#tests",
+      "status": "finite_evidence"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "subject_revision": "1eeca46ad2b11373653f0214e35656d12ecb77915346adcc7e1af6933f2d9154"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "subject_revision": "1eeca46ad2b11373653f0214e35656d12ecb77915346adcc7e1af6933f2d9154"
+      }
+    ]
+  }
+}

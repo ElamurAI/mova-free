@@ -402,3 +402,64 @@ mod tests {
         assert_eq!(items.last().unwrap().key, "tatoeba:1");
     }
 }
+
+#[cfg(test)]
+mod wave14_models {
+    use super::*;
+    #[test]
+    fn item_legacy_codec_and_sources() {
+        let raw = r#"{"key":"x","src":"tale","doc":"d","title":"","para":1,"pos":0,"plen":1,"text":"Hi","batch":0}"#;
+        let item: Item = serde_json::from_str(raw).unwrap();
+        assert_eq!(item.ord, 0);
+        assert!(item.ctx.is_empty());
+        let encoded = serde_json::to_value(&item).unwrap();
+        assert!(encoded.get("ctx").is_none());
+        assert_eq!(encoded["ord"], 0);
+        for (src, name, license) in [(Src::Tale,"tale","gutenberg-tales"),(Src::Tatoeba,"tatoeba","tatoeba-eng-cc0"),(Src::Gum,"gum","gum")] {
+            assert_eq!(src.name(), name);
+            assert_eq!(src.license_source(), license);
+            assert_eq!(serde_json::to_value(src).unwrap(), name);
+            assert_eq!(serde_json::from_value::<Src>(serde_json::json!(name)).unwrap(), src);
+        }
+        assert!(serde_json::from_str::<Src>("\"Tale\"").is_err());
+    }
+
+    #[test]
+    fn hash_literal_and_wrapping_reference() {
+        // Independent u128 multiplication with explicit reduction modulo 2^64.
+        let mul = |a: u64, b: u64| ((a as u128 * b as u128) & ((1u128 << 64)-1)) as u64;
+        for text in ["", "a", "hello", "é", "🦑", "a\0b"] {
+            for seed in [0, 1, u64::MAX] {
+                let mut h = 14695981039346656037u64 ^ mul(seed, 11400714819323198485);
+                for b in text.as_bytes() { h = mul(h ^ u64::from(*b), 1099511628211); }
+                h = mul(h ^ (h >> 30), 13787848793156543929);
+                h = mul(h ^ (h >> 27), 10723151780598845931);
+                assert_eq!(h64(text, seed), h ^ (h >> 31));
+            }
+        }
+    }
+
+    #[test]
+    fn batches_context_and_window_boundaries() {
+        let all: Vec<_> = (0..7).map(|i| TaleSent {
+            doc: if i == 0 { "other" } else { "d" }.into(), title: "title".into(),
+            para: (i / 2) as i64, ord: i as i64 + 1, sent_id: format!("s{i}"), text: format!("t{i}")
+        }).collect();
+        let wins = vec![vec![vec![2,3]], vec![vec![4]], vec![vec![5,6]]];
+        let tat = vec![("8".into(),"A".into()),("9".into(),"B".into()),("10".into(),"C".into())];
+        let items = make_items(&all, &wins, &tat, 3, 2);
+        assert_eq!(items.iter().map(|x| x.batch).collect::<Vec<_>>(), [0,0,0,1,1,2,2,3]);
+        assert_eq!(items[0].ctx, ["t1"]);
+        assert_eq!(items[2].ctx, ["t2","t3"]);
+        assert_eq!(items[3].ctx, ["t3","t4"]);
+        assert!(items[1].ctx.is_empty() && items[4].ctx.is_empty());
+        assert_eq!((items[0].pos,items[1].pos,items[0].plen), (0,1,2));
+        assert_eq!(items[3].ord, 6);
+        assert_eq!(items[5].key, "tatoeba:8");
+        assert_eq!(items[5].src, Src::Tatoeba);
+        assert_eq!(make_items(&[], &[], &tat, 0, 0).iter().map(|x| x.batch).collect::<Vec<_>>(), [0,1,2]);
+        assert!(make_items(&[], &[], &[], 0, 0).is_empty());
+        // Whole windows take priority over the soft maximum.
+        assert_eq!(make_items(&all, &wins[..1], &[], 1, 1).len(), 2);
+    }
+}

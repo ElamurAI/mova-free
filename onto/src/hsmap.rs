@@ -1147,3 +1147,38 @@ pub fn labels(runs: &Path, out: &Path) -> Result<String> {
     let _ = writeln!(rep, "\nMismatches (examples; our concept → label):\n{misses}");
     Ok(rep)
 }
+
+#[cfg(test)]
+mod wave29_tests {
+    use super::*;
+    #[test]
+    fn threshold_preferences_and_graph_join() {
+        let k = Kb::new(crate::wave29_tests::graph());
+        let p = hs::parse(&hs::naive_toks("Crows: live"));
+        assert_eq!(ckey("010101", &p), "01/live");
+        assert_eq!(isa_verdict(&k, 1, &[1], &[0], &[0], &[]).0, IsaV::Yes);
+        assert_eq!(isa_verdict(&k, 3, &[3], &[0], &[0], &[]).0, IsaV::Part);
+        assert_eq!(isa_verdict(&k, 2, &[2], &[], &[], &[]).0, IsaV::Unknown);
+        let cs = Cands {
+            phrase: "x".into(),
+            scored: vec![(1, 1.0, "a".into()), (2, 1.0, "b".into())],
+        };
+        let pk = pick(&k.g, &cs, &[], None);
+        assert_eq!((pk.c, pk.second, pk.margin), (1, Some(2), 0.0));
+    }
+    #[test]
+    fn alignment_first_and_confirmation_last() {
+        let d = crate::wave29_tests::temp("hsmap");
+        let p = d.join("map.tsv");
+        std::fs::write(&p, "s\t7\trejected\ns\t8\taccepted\ns\t9\taccepted\n").unwrap();
+        assert_eq!(load_q(&p).get("s"), Some(&8));
+        std::fs::write(&p, "crow\t01/live\tfirst\ncrow\t01/live\tlast\n").unwrap();
+        assert_eq!(
+            load_confirm(&p)
+                .get(&("crow".into(), "01/live".into()))
+                .map(String::as_str),
+            Some("last")
+        );
+        std::fs::remove_dir_all(d).unwrap();
+    }
+}

@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p prag --lib wave16_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "G,S frames; P<=G*S eligible pairs; O(G*S*C+P log P+L log L+Q log Q) where C is role comparison/string work, L links, Q pronouns; O(P+L+Q+text) storage.",
+  "description": "Notation -> optional frames -> greedy partial injection -> ten role counts -> micro PRF. Tolerant parsing and heuristic matching precede exact counting relative to that match. Caller must already pair corresponding sentence lines.",
+  "forward": [
+    "Notation -> optional frames -> greedy partial injection -> ten role counts -> micro PRF. Tolerant parsing and heuristic matching precede exact counting relative to that match. Caller must already pair corresponding sentence lines."
+  ],
+  "id": "prag-fbench",
+  "inverse": [
+    "All frame pairs yielding the same ten triples form the score fiber. Different lemmas, topology, unscored flags and alignments can yield identical output; micro sums lose role distribution too."
+  ],
+  "limitations": [
+    "Finite supplied fixtures; no semantic proof.",
+    "Live parser, teacher, corpus and filesystem aggregation unexecuted."
+  ],
+  "source": "prag/src/fbench.rs",
+  "state": "score_line has tp<=min(sys,gold) per role for representable counts. Manually constructed Prf need not satisfy this. Invalid link targets are omitted. Negation, attrs, quoted and condition are unscored."
+}

@@ -1,0 +1,140 @@
+{
+  "children": [
+    {
+      "id": "hbo-text-tokenization",
+      "path": "tokenization.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Units partition exact original bytes; coordinates are neither Unicode scalar positions nor bytes. Point removal preserves nonpoint/nonaccent scalars before NFC. Leading marks form their own first unit. Hash overflow is explicit wrapping.",
+        "evidence": "model.md#tests",
+        "id": "behavior_complement",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "norm cannot retain selected accent/joiner characters; unpointed cannot retain selected points. tokenize cannot cut apostrophes inside a word merely because is_mark recognizes a standalone apostrophe.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Units partition exact original bytes; coordinates are neither Unicode scalar positions nor bytes. Point removal preserves nonpoint/nonaccent scalars before NFC. Leading marks form their own first unit. Hash overflow is explicit wrapping.",
+        "evidence": "model.md#tests",
+        "id": "reverse_reconstruction",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "A normalized string admits all filtered-mark insertions and canonically equivalent original strings. Token sentences additionally lose whitespace spelling; units plus original slices reconstruct exact bytes, unlike normalization.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Units partition exact original bytes; coordinates are neither Unicode scalar positions nor bytes. Point removal preserves nonpoint/nonaccent scalars before NFC. Leading marks form their own first unit. Hash overflow is explicit wrapping.",
+        "evidence": "model.md#tests",
+        "id": "unit_coordinates",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "units emits contiguous byte ranges from char_indices. Combining marks join the previous unit when one exists, and maqaf is a separate unit although tokenize keeps it on the left token.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "unit_coordinates",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7",
+        "type": "unit_coordinates"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Units partition exact original bytes; coordinates are neither Unicode scalar positions nor bytes. Point removal preserves nonpoint/nonaccent scalars before NFC. Leading marks form their own first unit. Hash overflow is explicit wrapping.",
+        "evidence": "model.md#tests",
+        "id": "thin_threshold",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "For hash-derived u in [0,1), keep point iff u>=share: share0 keeps all, share1 drops all, NaN drops all. Equal inputs/seed repeat; this is deterministic thinning, not an independent random sample.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "thin_threshold",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7",
+        "type": "thin_threshold"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Units partition exact original bytes; coordinates are neither Unicode scalar positions nor bytes. Point removal preserves nonpoint/nonaccent scalars before NFC. Leading marks form their own first unit. Hash overflow is explicit wrapping.",
+        "evidence": "model.md#tests",
+        "id": "sentence_delimiter",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Colon also closes a sentence; following standalone פ/ס attach to it. Maqaf appends left and forces token emission without ending sentence. Empty whitespace yields no sentences.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "sentence_delimiter",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7",
+        "type": "sentence_delimiter"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; scoped exclusion for complement, compatible antecedents for reconstruction; finite witnesses do not prove completeness",
+        "assumptions": "Declared valid coordinates and arithmetic domain, successful allocations; no external parser or corpus evidence",
+        "domain": "Units partition exact original bytes; coordinates are neither Unicode scalar positions nor bytes. Point removal preserves nonpoint/nonaccent scalars before NFC. Leading marks form their own first unit. Hash overflow is explicit wrapping.",
+        "evidence": "model.md#tests",
+        "id": "normalization_level",
+        "observation_scope": "One supplied-input helper call or declared finite composition; effects modeled where explicitly stated",
+        "operator": "Pointed removes accents but retains vowels/dagesh/dots; Unpointed removes both sets. Level parse admits 'none' as Unpointed, unknown labels return None; is_pointed tests raw selected points.",
+        "path": "model.md",
+        "scope": "Declared domain, exact source snapshot, finite supplied-input oracle; no universal proof",
+        "section": "normalization_level",
+        "status": "partial_source_derived_model",
+        "subject_revision": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7",
+        "type": "normalization_level"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "hbo-text",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../text.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7"
+  },
+  "status": "partial_source_bound_model"
+}

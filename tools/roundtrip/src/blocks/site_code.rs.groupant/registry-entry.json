@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "blocks::site_code::wave32::script_fibers_and_reference_precedence",
+    "blocks::site_code::tests::line_scripts_give_the_target_back",
+    "blocks::site_code::tests::a_tree_needs_known_relations_and_a_root"
+  ],
+  "children": [],
+  "cost": "script O(n*m) time and memory for line counts; apply O(n log drops+output bytes). tree_words O(n²) worst-case head walks. Table selection computes four scripts; costs used for selection differ from later copier-based actual charge. Full annotation/frames costs unmeasured.",
+  "description": "find_sentence chooses exact block then Given/Unparsed then nonempty span then literal. CoNLL-U encoder compares aligned token rows and stores fields; decoder re-annotates using same resources. tree_words validates sequential ids, known relations, heads and acyclicity. Chain holds continuation/fresh readings; table chooses minimum script_bits among reset/short alternatives with strict tie retention. script computes LCS with insertion tie. damage removes first stored item; run compares decoded pieces and clears exact_ok on first difference.",
+  "forward": [
+    "find_sentence chooses exact block then Given/Unparsed then nonempty span then literal. CoNLL-U encoder compares aligned token rows and stores fields; decoder re-annotates using same resources. tree_words validates sequential ids, known relations, heads and acyclicity. Chain holds continuation/fresh readings; table chooses minimum script_bits among reset/short alternatives with strict tie retention. script computes LCS with insertion tie. damage removes first stored item; run compares decoded pieces and clears exact_ok on first difference."
+  ],
+  "id": "roundtrip-derived-piece-codec",
+  "inverse": [
+    "Invalid ids, unknown relations, self/out-of-range heads and cycles cannot yield Some tree; multiple roots are allowed. A table tie cannot replace earlier candidate. free does not mean zero bits and permits stored comments.",
+    "With fixed canonical lines and generated Script, target is unique; target alone admits many canonical/script pairs. Row patches need canonical rows to reconstruct; exact prose reference has many origin volumes. Tally aggregate cannot reconstruct codes or discourse history."
+  ],
+  "limitations": [
+    "Partial source syntax and finite pure-code tests only; no model loading, live corpus/site/lesson workflows, full pipeline or persistent learning claim.",
+    "No executable percentage surrogate or semantic proof; explicit codec domains and resource limits apply."
+  ],
+  "source": "tools/roundtrip/src/blocks/site_code.rs",
+  "state": "Same model/lexicon/environment at encode/decode; valid references and 10-column patches; LCS dimensions/counts fit usize/u32 and memory. Tests execute pure scripts/tree validation/reference/damage, not model-backed encoder."
+}

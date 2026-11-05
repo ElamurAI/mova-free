@@ -218,3 +218,27 @@ impl Value {
         }
     }
 }
+
+#[cfg(test)]
+mod wave30 {
+    use super::*;
+    #[test]
+    fn layout() {
+        let m = Mat::complex(
+            2,
+            3,
+            vec![1., 2., 3., 4., 5., 6.],
+            vec![0., 1., 0., 2., 0., 3.],
+        );
+        let t = m.transpose();
+        assert_eq!(t.re, vec![1., 3., 5., 2., 4., 6.]);
+        assert_eq!(t.transpose().re, m.re);
+        assert_eq!(t.transpose().im, m.im);
+        assert_eq!((t.rows, t.cols), (3, 2));
+        assert!(!Mat::cscalar(2., -0.).is_complex());
+        assert!(Mat::cscalar(2., f64::NAN).is_complex());
+        let s = StrArr::row(vec![None, Some("a".into())]);
+        assert_eq!((s.rows, s.cols), (1, 2));
+        assert_eq!((StrArr::row(vec![]).rows, StrArr::col(vec![]).cols), (0, 1));
+    }
+}

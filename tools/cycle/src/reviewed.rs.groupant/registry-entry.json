@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "reviewed::tests::reviewed_selection_transaction_and_training_gates; reused prag schema closed-set tests",
+    "2026-11-05: training gates call training_file with db::Heldout (default and of_ids), same id exclusion."
+  ],
+  "children": [],
+  "cost": "O(DB bytes + selected tokens squared + selected IDs log selected IDs), full-file memory and snapshot/staging disk I/O; SHA256 inventory streams files. No measured throughput bound.",
+  "description": "Operator-authorized content-bound teaching corrections, retained full-tree/prag selection and quiescent staged snapshot promotion/rollback.",
+  "forward": [
+    "Validate exact ID pairs, source phase/text/tree/prag hashes, teaching-only origin and explicit train/dev split; preserve training_allowed=false in evidence. Snapshot all DB files, stage seven managed artifacts, journal each commit boundary, then rename files individually."
+  ],
+  "id": "cycle-reviewed",
+  "inverse": [
+    "Bad headers, hashes, text, structures, duplicate IDs and nonteaching/heldout decisions cannot reach DB data writes. A retained lock blocks normal callers after interrupted commit.",
+    "Before snapshot plus hashes reconstructs prior DB file bytes under quiescent rollback; policy alone cannot reconstruct prior history and model state. Compatible operator decisions remain many-to-one; semantic correctness is unproved."
+  ],
+  "limitations": [
+    "Synthetic process-level interruption fixture, not actual power-loss injection or storage-controller proof. No semantic accuracy or training-quality claim. No executable percentage surrogate justified for categorical acceptance/effects."
+  ],
+  "source": "tools/cycle/src/reviewed.rs",
+  "state": "Quiescent callers; operator-owned phase evidence. One batch per snapshot DB; identical repeat idempotent. No cryptographic signer, concurrent multi-file transaction or model rollback."
+}

@@ -1,0 +1,30 @@
+[package]
+name = "mova-topic-corpus"
+version = "0.1.0"
+edition = "2021"
+description = "Topic graphs and closed topic corpora for paper-describing Whales: neighbourhoods from a paper library, open-copy download requests, Mova-annotated neighbour texts and web pages, cited descriptions and draft-article claims"
+license = "LicenseRef-Elamur-Cosmic"
+
+[workspace]
+
+[lib]
+name = "topic_corpus"
+path = "src/lib.rs"
+
+[[bin]]
+name = "mova-topic-corpus"
+path = "src/main.rs"
+
+[dependencies]
+mova-whale = { path = "../whale" }
+mova-octopus = { path = "../octopus" }
+mova-seaspider = { path = "../seaspider" }
+en = { path = "../../en" }
+world = { path = "../../world" }
+mova-hard-case-list = { path = "../hard-case-list" }
+anyhow = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+libc = "0.2"
+zstd = "0.13"

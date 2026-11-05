@@ -1,0 +1,29 @@
+{
+  "checks": [
+    "knowledge::retention::tests",
+    "assessment_identity_models_scored_inputs_and_ignores_unread_metadata",
+    "Four bounded checkpoint/preimage/allocation oracles with independent rejected mutations.",
+    "oracle_resealed_rejections_partition_validation_gates",
+    "oracle_provenance_and_topology_have_distinct_trust_boundaries",
+    "oracle_restore_occurrences_and_quote_ownership_are_ordered",
+    "oracle_checkpoint_integrity_is_not_authentication_or_validation"
+  ],
+  "children": [],
+  "cost": "Load scales with graph/index size. Current retained-material lookup hashes teaching bytes per stored lesson: O(lesson_count * material_bytes). Exam inference/parsing require measurements.",
+  "description": "Retained checkpoint and material boundaries with nested envelope, source-link, kind-provenance, digest-reuse and frontier models; bounded synthetic validation evidence, no successful exam or learning-quality claim.",
+  "forward": [
+    "Training maps S,L to retained S'; repeated identical material is recognized.",
+    "Assessment identity H(course,lesson_id,tests,exams) follows the scored inputs.",
+    "Exam returns scored rows without changing the learned-state fingerprint."
+  ],
+  "id": "retained-student",
+  "inverse": [
+    "Teaching at exam, stale source versions, malformed checkpoints and unbound assessment reuse are excluded by named gates.",
+    "Changing only file/title must not alter assessment identity; changing scored questions/labels/option order/seed must change the tested identity."
+  ],
+  "limitations": [
+    "Checksums do not authenticate testimony; public mutable state can violate assumptions; successful cold exam, I/O faults and semantic knowledge quality remain untested."
+  ],
+  "source": "world/src/knowledge/retention.rs",
+  "state": "(course, teaching-version ledger, graph frames, aliases, role weights, assessment inputs)"
+}

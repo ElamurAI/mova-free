@@ -1,0 +1,10 @@
+{
+ "id":"algorithm-damerau-levenshtein","source":"algorithms/src/damerau_levenshtein/mod.rs","children":[],
+ "description":"Exact unrestricted unit-cost byte edit distance.",
+ "state":"Immutable byte input; deterministic local algorithm state or finite oracle fixtures.",
+ "cost":"O((n+2)(m+2)) time and words, bounded by MAX_CELLS=1_000_000; empty calls O(1).",
+ "forward":["Sentinel matrix H uses the last source row containing each target byte and the most recent matching target column. H[i+1,j+1] minimizes insertion, deletion, substitution and H[p,q]+(i-p-1)+1+(j-q-1). The transposition can be followed by further edits, unlike OSA. Rows and columns represent prefix distances with one sentinel offset."],
+ "inverse":["behavior_complement first and ambiguous reverse_reconstruction second; see adjacent model.md"],
+ "checks":["cargo test --offline -p mova-algorithms --lib damerau_levenshtein::tests","Compiled implementation and oracle controls; repeated source syntax"],
+ "limitations":["Finite correspondence only; allocation failures not injected; no semantic AST or universal proof."]
+}

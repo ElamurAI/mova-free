@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-binary-search-tests",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "0aad573fb1b59a7e8b9708723deb9656d9b2a5919312089a5ace05579d123a36"
+  },
+  "components": {
+    "ast": {
+      "path": "syntax.json",
+      "status": "partial",
+      "format": "rust_syntax_projection"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_reviewed"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_bounded"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "bounded_source_derived",
+        "subject_revision": "0aad573fb1b59a7e8b9708723deb9656d9b2a5919312089a5ace05579d123a36",
+        "domain": "Old exhaustive sorted ternary sequences and boundaries; new six lengths {8,31,64,127,257,1025} with 17-value runs and targets -310..380; descending Reverse values -70..70 repeated three times and targets -72..72; translations +1000 for targets -102..202.",
+        "observation_scope": "Finite complete test execution; assertions and pass/fail, excluding harness/environment failure.",
+        "operator": "Let F be the explicit finite fixture set below, O(f) the oracle expectations and U the candidate implementations paired with pass/fail observations over F. R(P,pass) iff every assertion succeeds under the fixed execution assumptions. U minus R consists of false pass observations for any mismatch and false failure observations when every assertion holds. Conditional exact harness model; panics count as failures, harness crashes/timeouts are outside this two-outcome universe.",
+        "approximation_semantics": "Conditional finite harness relation, not universal algorithm proof.",
+        "assumptions": "Fixed source, deterministic fixtures, successful allocation, lawful traits.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "failure_fibers",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "failure_fibers",
+        "status": "bounded_source_derived",
+        "subject_revision": "0aad573fb1b59a7e8b9708723deb9656d9b2a5919312089a5ace05579d123a36",
+        "domain": "Old exhaustive sorted ternary sequences and boundaries; new six lengths {8,31,64,127,257,1025} with 17-value runs and targets -310..380; descending Reverse values -70..70 repeated three times and targets -72..72; translations +1000 for targets -102..202.",
+        "observation_scope": "Finite complete test execution; assertions and pass/fail, excluding harness/environment failure.",
+        "operator": "Given a failing fixture and observed mismatch, retain all candidate implementations whose observations violate that assertion. Wrong tie policy, wrong bounds, wrong arithmetic and fixture-oracle defects may share the same failure. Passing admits every implementation agreeing on this finite F and leaves all off-fixture behavior unconstrained; no unique fault reconstruction.",
+        "approximation_semantics": "Conditional finite harness relation, not universal algorithm proof.",
+        "assumptions": "Fixed source, deterministic fixtures, successful allocation, lawful traits.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "oracle_independence",
+        "type": "oracle_correspondence",
+        "path": "model.md",
+        "section": "oracle_independence",
+        "status": "bounded_source_derived",
+        "subject_revision": "0aad573fb1b59a7e8b9708723deb9656d9b2a5919312089a5ace05579d123a36",
+        "domain": "Old exhaustive sorted ternary sequences and boundaries; new six lengths {8,31,64,127,257,1025} with 17-value runs and targets -310..380; descending Reverse values -70..70 repeated three times and targets -72..72; translations +1000 for targets -102..202.",
+        "observation_scope": "Finite complete test execution; assertions and pass/fail, excluding harness/environment failure.",
+        "operator": "Expected cut is the first linear >= position and first match is linear equality position; no interval narrowing is reused. Agreement is finite evidence, with oracle bugs still possible; the designated mutation is a falsifiable disagreement witness.",
+        "approximation_semantics": "Conditional finite harness relation, not universal algorithm proof.",
+        "assumptions": "Fixed source, deterministic fixtures, successful allocation, lawful traits.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "transformations",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "transformations",
+        "status": "bounded_source_derived",
+        "subject_revision": "0aad573fb1b59a7e8b9708723deb9656d9b2a5919312089a5ace05579d123a36",
+        "domain": "Old exhaustive sorted ternary sequences and boundaries; new six lengths {8,31,64,127,257,1025} with 17-value runs and targets -310..380; descending Reverse values -70..70 repeated three times and targets -72..72; translations +1000 for targets -102..202.",
+        "observation_scope": "Finite complete test execution; assertions and pass/fail, excluding harness/environment failure.",
+        "operator": "Reverse wrapper changes the lawful order; translation adds 1000 to both sorted values and targets and must preserve cut indices. This relation holds only within admitted domains; it does not identify a unique input from output.",
+        "approximation_semantics": "Conditional finite harness relation, not universal algorithm proof.",
+        "assumptions": "Fixed source, deterministic fixtures, successful allocation, lawful traits.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "finite_schedule",
+        "type": "resource_observation",
+        "path": "model.md",
+        "section": "finite_schedule",
+        "status": "bounded_source_derived",
+        "subject_revision": "0aad573fb1b59a7e8b9708723deb9656d9b2a5919312089a5ace05579d123a36",
+        "domain": "Old exhaustive sorted ternary sequences and boundaries; new six lengths {8,31,64,127,257,1025} with 17-value runs and targets -310..380; descending Reverse values -70..70 repeated three times and targets -72..72; translations +1000 for targets -102..202.",
+        "observation_scope": "Finite complete test execution; assertions and pass/fail, excluding harness/environment failure.",
+        "operator": "4,146 wider duplicate cut/first cases, 145 Reverse targets and 305 translation targets, in addition to preserved bounded tests. Linear expected search costs O(n) per query; all lengths and target ranges fixed. The harness fixes fixture order, seeds and assertions; wall-clock duration and allocation behavior are not deterministic outputs.",
+        "approximation_semantics": "Conditional finite harness relation, not universal algorithm proof.",
+        "assumptions": "Fixed source, deterministic fixtures, successful allocation, lawful traits.",
+        "evidence": "model.md#evidence"
+      }
+    ]
+  },
+  "children": []
+}

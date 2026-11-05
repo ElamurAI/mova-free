@@ -226,3 +226,19 @@ mod tests {
         assert_eq!(death_years(""), None);
     }
 }
+#[cfg(test)]
+mod wave33 {
+    use super::*;
+    #[test]
+    fn csv_boundaries_and_date_fibers() {
+        assert!(csv_rows("").is_empty());
+        assert_eq!(
+            csv_rows("a,\r\nb,\"c,d\""),
+            vec![vec!["a", ""], vec!["b", "c,d"]]
+        );
+        assert_eq!(csv_rows("\"unterminated"), vec![vec!["unterminated"]]);
+        assert_eq!(death_years("A, 1-1955; B, 2-1956"), Some(vec![1955, 1956]));
+        assert_eq!(death_years("A, 1-1955; B"), None);
+        assert_eq!(death_years("A, 1-0"), None);
+    }
+}

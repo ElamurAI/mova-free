@@ -136,3 +136,32 @@ pub struct Program {
     pub body: Vec<Stmt>,
     pub functions: Vec<Rc<FunctionDef>>,
 }
+
+#[cfg(test)]
+mod wave30 {
+    use super::*;
+    #[test]
+    fn representation() {
+        let e = Expr::Index(
+            Box::new(Expr::Ident("a".into())),
+            vec![Expr::End, Expr::Colon],
+        );
+        let f = Expr::AnonFn(vec!["x".into()], Rc::new(e));
+        let copy = f.clone();
+        if let (Expr::AnonFn(p, a), Expr::AnonFn(q, b)) = (&f, &copy) {
+            assert_eq!(p, q);
+            assert!(Rc::ptr_eq(a, b));
+            if let Expr::Index(_, args) = a.as_ref() {
+                assert_eq!(args.len(), 2);
+                assert!(matches!(args[0], Expr::End));
+                assert!(matches!(args[1], Expr::Colon));
+            } else {
+                panic!("index lost");
+            }
+        } else {
+            panic!("function lost");
+        }
+        assert_ne!(BinOp::Pow, BinOp::EPow);
+        assert!(Program::default().body.is_empty());
+    }
+}

@@ -1,7 +1,7 @@
 # Global-level seeds (`global/seeds`)
 
 A **seed** is a short markdown note from which a rule or a piece of knowledge grows. The seeds in this
-folder hold the **global level** of Mova's small language model (SLM): fixed, compiled knowledge that
+folder hold the **global level** of Mova's Combinatorial Small Language Model (Combinatorial SLM): fixed, compiled knowledge that
 holds in every story and every task. It includes values (moral principles), concepts and categories,
 verb classes, shortcut links between concepts ("from → to : why"), properties of relations, and
 commonsense facts. This page gives a summary of each one.
@@ -100,7 +100,7 @@ the build.
 ### slm
 `global/seeds/self/slm.md`
 
-**Gist.** This seed is the model's self-description. SLM is a small language model: small, fast and
+**Gist.** This seed describes Mova's mathematical student. SLM is a small language model: small, fast and
 CPU-only. Its modules (judge, second opinion, what-if) fire on their own. The model does not decide
 whether to call them, but it produces the result and a debug trace that shows whether a trigger was
 useful, harmful or redundant. The model is retrained, and the global level extended, from this trace and

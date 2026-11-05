@@ -1,0 +1,24 @@
+{
+  "id": "world-tree",
+  "source": "world/src/tree.rs",
+  "children": [],
+  "description": "Tree indexes preserve annotated words and expose ordered navigation; parser loading and annotation are opaque dependencies.",
+  "state": "Annotated words, cached ordered kids, external annotator Result and environment.",
+  "cost": "Index O(n); sub O(v*(1+|cut|)+v log v), O(v) output/stack and O(1) extra guard storage; no visited allocation in production.",
+  "forward": [
+    "Construct kids[j] as increasing i with head[i]=j+1 and 1<=head[i]<=n. head maps invalid heads to None; root is first head-zero. sub returns sorted reachable indices avoiding cut descendants; dominates follows at most n+1 head steps. text preserves requested repetitions; content uses six UPOS values. parse/of_forms/parse_cased normalize forms and lemmas after optional repair. cap uppercases the first Unicode scalar; name_like consults dictionary and suffix exclusions.",
+    "Subtree traversal suppresses enqueueing its start: constructor-built child lists contain each vertex at most once, so any reachable cycle contains the start. The result is sorted reachable vertices after non-start cuts, including cyclic heads."
+  ],
+  "inverse": [
+    "Behavior complement is U minus the declared deterministic relation on scoped observations.",
+    "Reverse reconstruction retains all compatible inputs; finite fibers do not uniquely recover text."
+  ],
+  "checks": [
+    "cargo test -p world --lib wave7_tree -- --test-threads=1",
+    "functional_graph_sub_matches_visited_reachability: 86078 head/root/cut cases, n=1..4, with independent visited-set oracle."
+  ],
+  "limitations": [
+    "Synthetic annotated fixtures; parser loading, dictionary semantics, repair and I/O remain external.",
+    "Partial syntax only; no general accuracy or runtime safety claim."
+  ]
+}

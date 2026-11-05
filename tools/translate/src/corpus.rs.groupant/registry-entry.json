@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "corpus::wave32::ordered_parallel_and_compaction"
+  ],
+  "children": [],
+  "cost": "Let S be sentence vectors, W total words, B cloned string bytes, and A anchor/link/role references visited. par_map uses O(n) result slots, O(max(t,1)) thread startup and the sum of callback work; mutex assignment is serialized. join_trees costs O(S+W+B), including iteration over empty sentence vectors. anchored costs O(W+B+A*(W+1)): initial word/string cloning occurs even when A=0, and guarded head walks contribute the reference-dependent term. parse_book retains frames/world per discourse; actual annotation costs are delegated and unexecuted.",
+  "description": "PVerse::space derives next-gap nonemptiness and false last bit; meta_words chooses mw iff nonempty; compact drops text/forms/gaps/tail/events/entities while retaining parsed words, mw, facts and sentence lengths. join_trees shifts nonroot heads by preceding token count. anchored applies valid anchor links/roles sequentially unless bounds/self/cycle guard rejects. parse_grouped partitions selected keys and returns indexed thread results in group order; par_map stores each f(items[i]) at index i.",
+  "forward": [
+    "PVerse::space derives next-gap nonemptiness and false last bit; meta_words chooses mw iff nonempty; compact drops text/forms/gaps/tail/events/entities while retaining parsed words, mw, facts and sentence lengths. join_trees shifts nonroot heads by preceding token count. anchored applies valid anchor links/roles sequentially unless bounds/self/cycle guard rejects. parse_grouped partitions selected keys and returns indexed thread results in group order; par_map stores each f(items[i]) at index i."
+  ],
+  "id": "translation-flow-corpus",
+  "inverse": [
+    "par_map cannot reorder successfully returned values relative to input index; no callback result is returned for empty input. compact cannot retain discarded source text. Anchored rejects self-link and proposed cycle through x on valid starting tree.",
+    "For a fixed pure, stateless deterministic callback f and output y, the input preimage is the product of f^-1(y_i); worker schedule remains ambiguous. Fn+Sync alone does not establish this premise: a shared AtomicUsize callback can return [0,1] on two identical inputs with one worker. Stateful callbacks instead require a joint relation retaining initial shared state and an admissible execution schedule. The squared-input synthetic check covers only the pure case. compact preimage fixes retained trees/facts but admits arbitrary discarded text/gaps/events. join_trees inverse needs sentence lengths, otherwise root positions do not uniquely determine segmentation."
+  ],
+  "limitations": [
+    "Source-derived effectful CLI/corpus paths only; no live model/annotator/training/filesystem/site run.",
+    "Finite synthetic helper checks and partial syntax; no universal proof or executable percent surrogate."
+  ],
+  "source": "tools/translate/src/corpus.rs",
+  "state": "Representable shifted heads, valid initial head indices for anchored walk; no overflow in atomic work indices/counters. Callback must finish without panic for returned Vec guarantee. max(threads,1) means0 still executes. Schedule-independent outputs require a pure, stateless deterministic callback or a separately established state/effect independence condition; Fn+Sync does not ensure purity. Scheduling and callback effect order are not promised."
+}

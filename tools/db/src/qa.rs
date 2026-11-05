@@ -234,3 +234,40 @@ pub fn load(duck: &Duck, file: &Path, o: &Opts) -> Result<(i64, usize)> {
     }
     Ok((run, n))
 }
+
+#[cfg(test)]
+mod wave31 {
+    use super::*;
+
+    #[test]
+    fn rows_anchor_and_number_domain() {
+        let stage = Stage::new("wave31-qa").unwrap();
+        let path = stage.path("qa.tsv");
+        let head = HEADER.join("\t");
+        std::fs::write(
+            &path,
+            format!("{head}\nd\t-2\t1\tunvalidated\tother\t s1, ,s1,s2 \tQ?\t\n"),
+        )
+        .unwrap();
+        let rows = read_rows(&path).unwrap();
+        assert_eq!(rows.len(), 1);
+        assert_eq!((rows[0].para, rows[0].k), (-2, 1));
+        assert_eq!(rows[0].anchors, ["s1", "s1", "s2"]);
+        assert_eq!(rows[0].answer, ""); // SQL CHECK, not this parser
+        for body in [
+            "d\t1\t0\tcharacter\texplicit\ts\tQ\tA",
+            "d\t1\t-1\tcharacter\texplicit\ts\tQ\tA",
+            "d\t1\t9223372036854775808\tcharacter\texplicit\ts\tQ\tA",
+            "d\t1\t1\tcharacter\texplicit\t , \tQ\tA",
+            "d\tx\t1\tcharacter\texplicit\ts\tQ\tA",
+            "d\t1",
+        ] {
+            std::fs::write(&path, format!("{head}\n{body}\n")).unwrap();
+            assert!(read_rows(&path).is_err(), "{body}");
+        }
+        std::fs::write(&path, format!("{head}\n\n")).unwrap();
+        assert!(read_rows(&path).unwrap().is_empty());
+        std::fs::write(&path, "doc\tpara\n").unwrap();
+        assert!(read_rows(&path).is_err());
+    }
+}

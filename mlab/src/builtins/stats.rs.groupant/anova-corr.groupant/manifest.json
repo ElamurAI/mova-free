@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Shared parent lexical projection; fragment byte scope above",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source byte range [29854,37102); lexical, not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source byte range [29854,37102); lexical, not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "anova_degrees",
+        "path": "model.md",
+        "scope": "Source byte range [29854,37102); lexical, not proof",
+        "section": "anova_degrees",
+        "status": "partial_source_derived_model",
+        "type": "anova_degrees"
+      },
+      {
+        "id": "correlation_shape",
+        "path": "model.md",
+        "scope": "Source byte range [29854,37102); lexical, not proof",
+        "section": "correlation_shape",
+        "status": "partial_source_derived_model",
+        "type": "correlation_shape"
+      },
+      {
+        "id": "branch_relation",
+        "path": "model.md",
+        "scope": "Source byte range [29854,37102); lexical, not proof",
+        "section": "branch_relation",
+        "status": "partial_source_derived_model",
+        "type": "branch_relation"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "Source byte range [29854,37102); lexical, not proof",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "partial_bounded_parent_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 37102,
+      "start": 29854
+    },
+    "description": "ANOVA shifts by first observation, corrected second-pass means, SSB=sum ni(mi-gm)^2, SSW=sum residual², F=(SSB/(k-1))/(SSW/(N-k)). corr uses covariance normalization then t with n-2 df.",
+    "source_bytes_sha256": "60d13a273c66a85ee67395de59838db5d87269abfd1d9053ab6da290b59643e4"
+  },
+  "id": "mlab-builtins-stats-anova-corr",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../stats.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "bdc3772b09d9113e108afa29e391fee97a5372caf9052bb1689996c41c94116f"
+  },
+  "status": "partial_source_bound_model"
+}

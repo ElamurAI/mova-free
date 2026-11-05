@@ -116,8 +116,11 @@ impl Field {
         }
     }
 
-    /// Write the class into the labels.
+    /// Write the class into the labels. Panics before mutation for an invalid class.
     pub fn set(self, l: &mut Labels, c: usize) {
+        if matches!(self, Field::Indirect | Field::Hedge) {
+            assert!(c < 2, "Boolean class outside the set 0|1");
+        }
         match self {
             Field::Form => l.form = Form::ALL[c],
             Field::Act => l.act = Act::ALL[c],
@@ -195,5 +198,118 @@ mod tests {
             f.set(&mut l, n - 1);
             assert_eq!(f.get(&l), n - 1, "{f:?}");
         }
+    }
+}
+
+#[cfg(test)]
+mod wave13_models {
+    use super::*;
+
+    const NAMES: [&[&str]; 6] = [
+        &["decl", "q", "wh", "imp", "excl", "frag", "intj", "other"],
+        &["assert", "narrate", "ask", "request", "offer", "suggest", "promise", "thank", "apologize", "greet", "agree", "disagree", "evaluate", "express", "warn", "other"],
+        &["0", "1"], &["0", "1"], &["pos", "neg", "none"], &["narrator", "character", "none"],
+    ];
+
+    #[test]
+    fn finite_class_tables_and_local_updates() {
+        for (i, f) in Field::ALL.into_iter().enumerate() {
+            assert_eq!(f.classes(), NAMES[i]);
+            assert_eq!(f.name(), ["form", "act", "indirect", "hedge", "polarity", "voice"][i]);
+            for c in 0..NAMES[i].len() {
+                let mut l = Labels::default();
+                l.means = "preserved provenance".into();
+                let before = l.clone();
+                f.set(&mut l, c);
+                for other in Field::ALL {
+                    assert_eq!(other.get(&l), if other == f { c } else { other.get(&before) });
+                }
+                assert_eq!(l.means, before.means);
+                assert_eq!(labels_tsv(&l).split('\t').nth(i), Some(NAMES[i][c]));
+            }
+        }
+    }
+
+    #[test]
+    fn invalid_class_panics_before_mutation() {
+        for (i, f) in Field::ALL.into_iter().enumerate() {
+            for c in [NAMES[i].len(), usize::MAX] {
+                let mut l = Labels::default();
+                l.indirect = true;
+                l.hedge = true;
+                let before = l.clone();
+                let rejected = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| f.set(&mut l, c)));
+                assert!(rejected.is_err(), "invalid class must reject: {f:?} {c}");
+                assert_eq!(l, before, "invalid class must not mutate");
+            }
+        }
+    }
+
+    #[test]
+    fn exhaustive_categorical_transport() {
+        let mut count = 0;
+        for a in NAMES[0] { for b in NAMES[1] { for c in NAMES[2] {
+            for d in NAMES[3] { for e in NAMES[4] { for f in NAMES[5] {
+                let cols = [*a, *b, *c, *d, *e, *f, "literal meaning"];
+                let l = parse_labels(&cols).unwrap();
+                assert_eq!(labels_tsv(&l), cols.join("\t"));
+                for (i, field) in Field::ALL.into_iter().enumerate() {
+                    assert_eq!(field.get(&l), NAMES[i].iter().position(|s| *s == cols[i]).unwrap());
+                }
+                count += 1;
+            }}}
+        }}}
+        assert_eq!(count, 4608);
+    }
+
+    #[test]
+    fn whitespace_fibers_and_transport_domain() {
+        let base = ["decl", "assert", "0", "0", "none", "none", "a  meaning"];
+        let expected = parse_labels(&base).unwrap();
+        for pad in [" ", "\r\n", "\u{2003}"] {
+            let padded: Vec<String> = base.iter().map(|s| format!("{pad}{s}{pad}")).collect();
+            assert_eq!(parse_labels(&padded.iter().map(String::as_str).collect::<Vec<_>>()).unwrap(), expected);
+        }
+        // These public values are representable but outside the lossless row domain.
+        let mut l = expected;
+        l.means = " a meaning ".into();
+        assert_ne!(parse_labels(&labels_tsv(&l).split('\t').collect::<Vec<_>>()).unwrap(), l);
+        l.means = "a\tmeaning".into();
+        assert!(parse_labels(&labels_tsv(&l).split('\t').collect::<Vec<_>>()).is_err());
+    }
+
+    #[test]
+    fn rejection_order_and_word_boundary() {
+        let valid = ["decl", "assert", "0", "0", "none", "none", "-"];
+        for mask in 1usize..128 {
+            let mut cols = valid;
+            for (i, col) in cols.iter_mut().enumerate() {
+                if mask & (1 << i) != 0 { *col = if i == 6 { "" } else { "invalid" }; }
+            }
+            let error = parse_labels(&cols).unwrap_err();
+            let first = mask.trailing_zeros() as usize;
+            assert!(error.starts_with(["form=", "act=", "indirect=", "hedge=", "polarity=", "voice=", "means is empty"][first]), "{error}");
+        }
+        for n in [0, 1, 29, 30, 31] {
+            let words = vec!["word"; n].join("\u{2003}");
+            let mut cols = valid;
+            cols[6] = &words;
+            assert_eq!(parse_labels(&cols).is_ok(), (1..=30).contains(&n));
+        }
+        for n in [0, 6, 8] { assert!(parse_labels(&vec!["-"; n]).is_err()); }
+    }
+
+    #[test]
+    fn json_and_tsv_have_distinct_closed_names() {
+        for form in Form::ALL {
+            let json = serde_json::to_string(form).unwrap();
+            assert_eq!(serde_json::from_str::<Form>(&json).unwrap(), *form);
+            assert!(serde_json::from_str::<Form>(&format!("{:?}", form.name())).is_err());
+            assert_eq!(Form::parse(form.name()), Some(*form));
+            assert_eq!(Form::parse(&format!(" {} ", form.name())), None);
+        }
+        let l = Labels::default();
+        assert_eq!(serde_json::from_str::<Labels>(&serde_json::to_string(&l).unwrap()).unwrap(), l);
+        assert_eq!(labels_tsv(&l), "decl\tassert\t0\t0\tnone\tnone\t-");
     }
 }

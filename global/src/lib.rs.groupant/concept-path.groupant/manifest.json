@@ -1,0 +1,119 @@
+{
+  "children": [
+    {
+      "id": "global-catalog-sense-selection",
+      "path": "sense-selection.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "scoped_specification"
+    },
+    "ast": {
+      "scope": "Source byte ranges only. include! OUT_DIR/global.rs and include_str! OUT_DIR/expressions.tsv are not expanded or source-bound by this sidecar.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "scoped_specification"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariants",
+      "status": "scoped_specification"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Lexical concept discovery, sense selection, measures, code parts, shortest paths and consequence chains.",
+        "evidence": "tests::newton_apple; proposed BFS reference.",
+        "id": "nonbehavior",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "For fixed concepts/links, U consists of valid lexical/path requests paired with typed results; R follows has_word, sense selection and BFS/chain rules in this range. U\\R excludes a longer-than-shortest BFS witness, a category-start consequence and a >8-link consequence. These are sound intended restrictions of the specification; actual correspondence is unproved.",
+        "path": "model.md",
+        "scope": "Lexical concept discovery, sense selection, measures, code parts, shortest paths and consequence chains.",
+        "section": "nonbehavior",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Lexical concept discovery, sense selection, measures, code parts, shortest paths and consequence chains.",
+        "evidence": "Proposed finite text/cue incidence fiber enumeration.",
+        "id": "antecedents",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "For observation (trigger indices, emitted chains), retain every text whose has_word cue incidence produces those indices and surviving starts. Normalize-equivalent texts and distinct cues can share outputs; emitted chains alone do not identify every suppressed trigger.",
+        "path": "model.md",
+        "scope": "Lexical concept discovery, sense selection, measures, code parts, shortest paths and consequence chains.",
+        "section": "antecedents",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Lexical concept discovery, sense selection, measures, code parts, shortest paths and consequence chains.",
+        "evidence": "tests::newton_apple supplies one agreeing chain; branching/cycle oracle proposed.",
+        "id": "route-versus-chain",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "BFS chooses shortest target-directed paths by first discovery; consequences chooses a first outgoing edge without a target for <=8 steps. Equality holds only under additional chain topology and horizon constraints. A branch or cycle can separate them.",
+        "path": "model.md",
+        "scope": "Lexical concept discovery, sense selection, measures, code parts, shortest paths and consequence chains.",
+        "section": "route-versus-chain",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "policy_difference"
+      },
+      {
+        "approximation_semantics": "Conditional source-derived relation; correspondence unproved; complement target U minus R; reconstruction preserves ambiguity.",
+        "assumptions": "model.md and model.md",
+        "domain": "Lexical concept discovery, sense selection, measures, code parts, shortest paths and consequence chains.",
+        "evidence": "Proposed two-node cycle and one-way two-trigger cases.",
+        "id": "suppressed-starts",
+        "observation_scope": "single call or bounded trace explicitly named in the catalog",
+        "operator": "For found noncategory set S, starts={c in S: no o in S\\{c} reaches c}. No member of a mutually reachable pair in S can start a consequence. Reachability does not preserve a representative of an SCC; predicting one is excluded by the specification.",
+        "path": "model.md",
+        "scope": "Lexical concept discovery, sense selection, measures, code parts, shortest paths and consequence chains.",
+        "section": "suppressed-starts",
+        "status": "scoped_specification",
+        "subject_revision": "global/src/lib.rs sha256:f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907",
+        "type": "behavior_complement"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "existing_test_references"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 7143,
+      "start": 1719
+    },
+    "description": "Lexical concept discovery, sense selection, measures, code parts, shortest paths and consequence chains."
+  },
+  "id": "global-catalog-concept-path",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../lib.rs",
+    "sha256": "f119bca229336e5bc2b8ae883f65f1776b8c4317de30b11f58e87b2aa19ee907"
+  },
+  "status": "partial"
+}

@@ -25,10 +25,12 @@ checksum = "683d7910e743518b0e34f1186f92494becacb047c7b6bf616c96772180fef923"
 
 [[package]]
 name = "annot"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "en",
+ "mova-algorithms",
+ "mova-teacher",
  "serde",
  "serde_json",
  "ureq",
@@ -63,14 +65,14 @@ checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
 
 [[package]]
 name = "bench"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
 ]
 
 [[package]]
 name = "bigbench"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "dashu",
  "num-bigint 0.4.8",
@@ -237,10 +239,11 @@ checksum = "a6ef517f0926dd24a1582492c791b6a4818a4d94e789a334894aa15b0d12f55c"
 
 [[package]]
 name = "coref"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "en",
+ "mova-algorithms",
 ]
 
 [[package]]
@@ -343,7 +346,13 @@ dependencies = [
 
 [[package]]
 name = "cycle"
-version = "0.4.0"
+version = "0.5.0"
+dependencies = [
+ "mova-teacher",
+ "serde",
+ "serde_json",
+ "sha2",
+]
 
 [[package]]
 name = "dashu"
@@ -438,7 +447,7 @@ dependencies = [
 
 [[package]]
 name = "db"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "en",
@@ -451,13 +460,6 @@ name = "defer"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "930c7171c8df9fb1782bdf9b918ed9ed2d33d1d22300abb754f9085bc48bf8e8"
-
-[[package]]
-name = "dict-lessons"
-version = "0.4.0"
-dependencies = [
- "serde_json",
-]
 
 [[package]]
 name = "digest"
@@ -515,9 +517,10 @@ checksum = "0e9c71c2167ca323c882b99918929403426e2373ea17242ff5653e0d5e1058be"
 
 [[package]]
 name = "en"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
+ "mova-algorithms",
  "serde",
  "serde_json",
 ]
@@ -1013,19 +1016,20 @@ checksum = "e4eba85ea1d0a966a983acd07deee566e67395d2d96b6fb39e62b5a833f1eb0b"
 
 [[package]]
 name = "global"
-version = "0.4.0"
+version = "0.5.0"
 
 [[package]]
 name = "gparse"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "candle-core",
  "candle-nn",
+ "en",
 ]
 
 [[package]]
 name = "gutenberg"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "serde_json",
@@ -1073,6 +1077,13 @@ name = "hashbrown"
 version = "0.17.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ed5909b6e89a2db4456e54cd5f673791d7eca6732202bbf2a9cc504fe2f9b84a"
+
+[[package]]
+name = "hbo"
+version = "0.5.0"
+dependencies = [
+ "unicode-normalization",
+]
 
 [[package]]
 name = "heck"
@@ -1228,7 +1239,7 @@ checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
 
 [[package]]
 name = "jobs"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
 ]
@@ -1245,14 +1256,14 @@ dependencies = [
 
 [[package]]
 name = "kaggle"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
 ]
 
 [[package]]
 name = "kg"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "bzip2",
@@ -1260,8 +1271,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "langseg"
+version = "0.5.0"
+dependencies = [
+ "quick-xml",
+ "serde_json",
+ "unicode-normalization",
+]
+
+[[package]]
 name = "latex"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "flate2",
  "math",
@@ -1269,7 +1289,7 @@ dependencies = [
 
 [[package]]
 name = "layers"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "global",
  "math",
@@ -1332,20 +1352,31 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f9f8bd3e56ce4dfc153cf470fffbfa98c7620958b312ca5c3a4b8d5181fd13c6"
 
 [[package]]
+name = "macula"
+version = "0.5.0"
+dependencies = [
+ "mova-teacher",
+ "quick-xml",
+ "serde_json",
+ "unicode-normalization",
+]
+
+[[package]]
 name = "math"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "dashu",
  "en",
  "global",
+ "mova-teacher",
  "serde",
  "serde_json",
 ]
 
 [[package]]
 name = "mathlib"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "flate2",
@@ -1417,7 +1448,7 @@ dependencies = [
 
 [[package]]
 name = "mlab"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "faer",
  "libm",
@@ -1428,10 +1459,90 @@ dependencies = [
 
 [[package]]
 name = "mlab-backend-bench"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "faer",
  "nalgebra",
+]
+
+[[package]]
+name = "mova-algorithms"
+version = "0.5.0"
+
+[[package]]
+name = "mova-approx"
+version = "0.5.0"
+dependencies = [
+ "mova-algorithms",
+]
+
+[[package]]
+name = "mova-correspondence"
+version = "0.5.0"
+dependencies = [
+ "anyhow",
+ "en",
+ "math",
+ "mova-algorithms",
+ "mova-modelcheck",
+ "serde",
+ "serde_json",
+ "sha2",
+]
+
+[[package]]
+name = "mova-enrich"
+version = "0.5.0"
+dependencies = [
+ "anyhow",
+ "mova-teacher",
+ "serde",
+ "serde_json",
+ "sha2",
+ "world",
+]
+
+[[package]]
+name = "mova-modelcheck"
+version = "0.5.0"
+dependencies = [
+ "anyhow",
+ "proc-macro2",
+ "serde",
+ "serde_json",
+ "sha2",
+ "syn 2.0.119",
+]
+
+[[package]]
+name = "mova-modules"
+version = "0.5.0"
+dependencies = [
+ "anyhow",
+ "serde",
+ "serde_json",
+ "sha1",
+ "sha2",
+]
+
+[[package]]
+name = "mova-teacher"
+version = "0.5.0"
+dependencies = [
+ "anyhow",
+ "libc",
+ "serde_json",
+]
+
+[[package]]
+name = "mova-twin"
+version = "0.5.0"
+dependencies = [
+ "anyhow",
+ "libc",
+ "serde",
+ "serde_json",
+ "sha2",
 ]
 
 [[package]]
@@ -1645,6 +1756,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "ocrfix"
+version = "0.5.0"
+dependencies = [
+ "langseg",
+ "unicode-normalization",
+]
+
+[[package]]
 name = "once_cell"
 version = "1.21.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1652,7 +1771,7 @@ checksum = "9f7c3e4beb33f85d45ae3e3a1792185706c8e16d043238c593331cc7cd313b50"
 
 [[package]]
 name = "onto"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "bzip2",
@@ -1661,6 +1780,7 @@ dependencies = [
  "itoa",
  "math",
  "memchr",
+ "mova-teacher",
  "quick-xml",
  "serde",
  "serde_json",
@@ -1670,7 +1790,7 @@ dependencies = [
 
 [[package]]
 name = "parsecmp"
-version = "0.4.0"
+version = "0.5.0"
 
 [[package]]
 name = "paste"
@@ -1722,12 +1842,13 @@ dependencies = [
 
 [[package]]
 name = "prag"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "coref",
  "en",
  "global",
+ "mova-teacher",
  "serde",
  "serde_json",
 ]
@@ -1801,10 +1922,11 @@ checksum = "1d8f70e07b9c3962945a74e59ca1c511bba65b6419468acc217c457d93f3c740"
 
 [[package]]
 name = "qagen"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "en",
+ "mova-teacher",
  "prag",
  "serde",
  "serde_json",
@@ -1829,7 +1951,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "41b1177fdf999d2321d3fb46ff47159d9c1fb9ad66a4879f8c50a0b504615e9b"
 dependencies = [
  "memchr",
- "serde",
 ]
 
 [[package]]
@@ -1977,6 +2098,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "roundtrip"
+version = "0.5.0"
+dependencies = [
+ "anyhow",
+ "en",
+ "hbo",
+ "langseg",
+ "macula",
+ "prag",
+ "unicode-normalization",
+]
+
+[[package]]
 name = "rustfft"
 version = "6.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2085,7 +2219,10 @@ dependencies = [
 
 [[package]]
 name = "school-sents"
-version = "0.4.0"
+version = "0.5.0"
+dependencies = [
+ "zstd",
+]
 
 [[package]]
 name = "seq-macro"
@@ -2203,7 +2340,7 @@ checksum = "ba467056f1b547ed52077911161fc86985becbc60e8e1857c8a144dab0def891"
 
 [[package]]
 name = "sources"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "md-5 0.11.0",
@@ -2432,6 +2569,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "translate"
+version = "0.5.0"
+dependencies = [
+ "anyhow",
+ "en",
+ "hbo",
+ "prag",
+ "roundtrip",
+ "zstd",
+]
+
+[[package]]
 name = "transpose"
 version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2443,14 +2592,14 @@ dependencies = [
 
 [[package]]
 name = "treeagree"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "en",
 ]
 
 [[package]]
 name = "treebanks"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "flate2",
@@ -2574,7 +2723,7 @@ checksum = "b6c140620e7ffbb22c2dee59cafe6084a59b5ffc27a8859a5f0d494b5d52b6be"
 
 [[package]]
 name = "value"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
 ]
@@ -2587,7 +2736,7 @@ checksum = "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
 
 [[package]]
 name = "vfs"
-version = "0.4.0"
+version = "0.5.0"
 
 [[package]]
 name = "walkdir"
@@ -2607,7 +2756,7 @@ checksum = "ccf3ec651a847eb01de73ccad15eb7d99f80485de043efb2f370cd654f4ea44b"
 
 [[package]]
 name = "wasi-host"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "mlab",
  "vfs",
@@ -2674,18 +2823,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "weather"
-version = "0.4.0"
-dependencies = [
- "anyhow",
- "en",
- "quick-xml",
- "serde",
- "serde_json",
- "ureq",
-]
-
-[[package]]
 name = "webpki-roots"
 version = "0.26.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2715,7 +2852,7 @@ dependencies = [
 
 [[package]]
 name = "wikt-count"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "memchr",
@@ -2723,15 +2860,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "wikt-extract"
+version = "0.5.0"
+dependencies = [
+ "anyhow",
+ "bzip2",
+ "quick-xml",
+ "serde",
+ "serde_json",
+ "sha2",
+]
+
+[[package]]
 name = "wikt-idioms"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
 ]
 
 [[package]]
 name = "wikt-page"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "bzip2",
@@ -2834,7 +2983,7 @@ checksum = "1ebf944e87a7c253233ad6766e082e3cd714b5d03812acc24c318f549614536e"
 
 [[package]]
 name = "world"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "candle-core",
@@ -2842,8 +2991,12 @@ dependencies = [
  "global",
  "gparse",
  "math",
+ "mova-modules",
+ "mova-teacher",
  "prag",
+ "serde",
  "serde_json",
+ "sha2",
 ]
 
 [[package]]
@@ -2907,6 +3060,16 @@ dependencies = [
  "quote",
  "syn 3.0.6",
  "synstructure 0.14.0",
+]
+
+[[package]]
+name = "yomhadin"
+version = "0.5.0"
+dependencies = [
+ "anyhow",
+ "en",
+ "prag",
+ "world",
 ]
 
 [[package]]

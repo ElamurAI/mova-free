@@ -1,0 +1,29 @@
+{
+  "checks": [
+    "tests::args_and_prestat",
+    "tests::clock_is_virtual_and_random_is_seeded",
+    "tests::escape_and_absolute_paths_are_not_capable",
+    "tests::limits_reach_the_guest_as_errno",
+    "tests::open_read_seek_write",
+    "tests::readdir_with_small_buffer_and_cookies",
+    "tests::wave31_late_faults_keep_prior_effects",
+    "tests::wave31_memory_poll_and_descriptor_boundaries",
+    "tests::wave31_tiny_engine_outcomes"
+  ],
+  "children": [],
+  "cost": "Fixed fixtures<=8192 bytes; finite Vfs tiny files, two tiny wasm bodies, no host filesystem/corpus.",
+  "description": "Nine bounded tests exercise private Ctx helpers with synthetic Vfs and byte memory; six legacy tests cover args/open/escape/readdir/time/limits, three wave31 tests add late faults, memory/poll/descriptors and tiny binary Host run. Helpers do not route every WASI linker export.",
+  "forward": [
+    "Nine bounded tests exercise private Ctx helpers with synthetic Vfs and byte memory; six legacy tests cover args/open/escape/readdir/time/limits, three wave31 tests add late faults, memory/poll/descriptors and tiny binary Host run. Helpers do not route every WASI linker export."
+  ],
+  "id": "wasi-memory-tests",
+  "inverse": [
+    "Passing assertions constrain observed fixtures only; many alternate implementations agree on these finite cases. Test names/output cannot reconstruct full state or show complete preview1 compliance."
+  ],
+  "limitations": [
+    "Partial source syntax and finite tests; no full WASI compliance or mlab suite claim",
+    "No executable percentage surrogate or whole-system proof"
+  ],
+  "source": "wasi-host/src/tests.rs",
+  "state": "Guest bytes/descriptors/Vfs/virtual clock/RNG, or scoped CLI/test state as described"
+}

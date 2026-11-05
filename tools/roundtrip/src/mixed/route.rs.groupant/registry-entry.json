@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "mixed::route::tests::pieces_cover_the_line"
+  ],
+  "children": [],
+  "cost": "Token filtering O(S*T); split O(S+gap bytes) excluding repeated concatenation allocation; join O(total text+joint bytes).",
+  "description": "route_of maps En/Translit to En, Hebrew varieties to Heb, others Text. split merges neighboring equal routes except Hebrew/Text quote boundaries, expands exterior bounds and assigns last whitespace run as joint. join defaults missing residual value to one space.",
+  "forward": [
+    "route_of maps En/Translit to En, Hebrew varieties to Heb, others Text. split merges neighboring equal routes except Hebrew/Text quote boundaries, expands exterior bounds and assigns last whitespace run as joint. join defaults missing residual value to one space."
+  ],
+  "id": "rt-mixed-route",
+  "inverse": [
+    "Excluded: valid split loses exterior punctuation; noncanonical joint is recovered from None. Empty segment list with nonempty line returns Text piece.",
+    "Texts plus exact joints reconstruct line uniquely; split route labels do not recover original language labels because many languages share route."
+  ],
+  "limitations": [
+    "Finite synthetic helper evidence only; live corpora, parser/model loading, full orchestration and filesystem failure races excluded.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/roundtrip/src/mixed/route.rs",
+  "state": "Sorted nonoverlapping UTF-8 byte intervals within line; joints length covers every text index >=1. Arbitrary invalid coordinates can panic; joint requires 1<=k<pieces.len()."
+}

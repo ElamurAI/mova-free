@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "sources::wave32::split_sample_and_course"
+  ],
+  "children": [],
+  "cost": "Splits/groups O(1). Lessons O(bytes+courses log courses+files log files) and output map inserts; treebank O(bytes+Nlog books+Nlog output); pool O(bytes+Nlog N) map construction. External reads/lesson workflows not executed.",
+  "description": "Kind selects Bible split by book, Docs split by document modulo10, TrainOnly always train. Bible discourse=(book,0), others=(group,document). Docs sampling keeps floor(document/10)%n==0; other kinds always sampled. Lessons sort courses/files and extract register-specific lines, treebank_texts associates preceding #text with encountered #sent_id, pool_texts enumerates tab-bearing lines into groups1000.",
+  "forward": [
+    "Kind selects Bible split by book, Docs split by document modulo10, TrainOnly always train. Bible discourse=(book,0), others=(group,document). Docs sampling keeps floor(document/10)%n==0; other kinds always sampled. Lessons sort courses/files and extract register-specific lines, treebank_texts associates preceding #text with encountered #sent_id, pool_texts enumerates tab-bearing lines into groups1000."
+  ],
+  "id": "translation-flow-sources",
+  "inverse": [
+    "TrainOnly cannot select held-out split and Bible cannot be excluded by sampled even n0. Docs sample0 is outside domain and can panic. Nonmatching register lines never enter output map.",
+    "A split label admits modulo residue classes; group cannot recover verse/unit coordinate. Pool output loses original ids and rejected lines. Treebank output can reflect empty text when sent_id precedes text, so it does not invert conventional CoNLL ordering generally."
+  ],
+  "limitations": [
+    "Source-derived effectful CLI/corpus paths only; no live model/annotator/training/filesystem/site run.",
+    "Finite synthetic helper checks and partial syntax; no universal proof or executable percent surrogate."
+  ],
+  "source": "tools/translate/src/sources.rs",
+  "state": "Docs sampling n>0, identifiers fit u8/u16 to avoid cast collisions; treebank per-book counts below65536. Directory/order behavior source-derived only. The English-course predicate excludes grammar-* except grammar-en*, torah-he, queue, lessons."
+}

@@ -1,0 +1,87 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "No syntax projection, macro expansion or semantic AST; byte ranges bind the reviewed snapshot only.",
+      "status": "not_materialized"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "twin-execution-behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Process execution and evidence acceptance",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "twin-execution-reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "Process execution and evidence acceptance",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "twin-execution-timeout-state",
+        "path": "model.md",
+        "required": false,
+        "scope": "Process execution and evidence acceptance",
+        "section": "timeout-state",
+        "status": "partial_source_model",
+        "type": "temporal_relation"
+      },
+      {
+        "id": "twin-execution-artifact-boundary",
+        "path": "model.md",
+        "required": false,
+        "scope": "Process execution and evidence acceptance",
+        "section": "artifact-boundary",
+        "status": "partial_source_model",
+        "type": "filesystem_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 12028,
+      "start": 8279
+    },
+    "description": "Process execution and evidence acceptance"
+  },
+  "id": "twin-execution",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../main.rs",
+    "sha256": "01f907c5df2d09277026ffba9a9e1660c1a729159986e0232cefc423aa87b1cb"
+  },
+  "status": "partial_source_bound_model"
+}

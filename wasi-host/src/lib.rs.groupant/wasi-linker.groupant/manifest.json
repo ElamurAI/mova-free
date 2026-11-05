@@ -1,0 +1,98 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Source syntax only; no macro expansion/type resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "wasi-linker",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "wasi-linker",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "memory_gate",
+        "path": "model.md",
+        "scope": "wasi-linker",
+        "section": "memory_gate",
+        "status": "partial_source_derived_model",
+        "type": "memory_gate"
+      },
+      {
+        "id": "rights_projection",
+        "path": "model.md",
+        "scope": "wasi-linker",
+        "section": "rights_projection",
+        "status": "partial_source_derived_model",
+        "type": "rights_projection"
+      },
+      {
+        "id": "renumber_alias",
+        "path": "model.md",
+        "scope": "wasi-linker",
+        "section": "renumber_alias",
+        "status": "partial_source_derived_model",
+        "type": "renumber_alias"
+      },
+      {
+        "id": "unsupported_effects",
+        "path": "model.md",
+        "scope": "wasi-linker",
+        "section": "unsupported_effects",
+        "status": "partial_source_derived_model",
+        "type": "unsupported_effects"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "compile_and_source_review"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 30226,
+      "start": 21901
+    },
+    "description": "add_wasi registers46 named functions. Wrappers require memory, increment calls then evaluate helper, return errno. proc_exit increments and traps with status without requiring memory. Socket/link/process-raise unsupported. fd rights intersect metadata; renumber clones source to existing target then clears source.",
+    "source_bytes_sha256": "ebfbaef14c59017b57ef176ff5359e79f3c065196ab3213a56944b1b194160cf"
+  },
+  "id": "wasi-linker",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../lib.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "91213ce9038107912c2dd707c3a6639a2d723cdfceb02981a166a6853800248e"
+  },
+  "status": "partial_source_bound_model"
+}

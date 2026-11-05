@@ -1,0 +1,28 @@
+{
+  "checks": [
+    "Twice debug/release; compiled production mutant and restoration",
+    "Strict all-target Clippy; twice-identical syntax"
+  ],
+  "children": [],
+  "cost": "O(V^3+E log E) time, O(V+E) memory.",
+  "description": "blossom_matching exact algorithm",
+  "forward": [
+    "Alternating BFS contracts odd cycles to their common base; augmenting paths flip matched status and increase cardinality by one."
+  ],
+  "id": "algorithm-blossom-matching",
+  "inverse": [
+    "Exclude nonsymmetric, self, nonexistent-edge or nonmaximum matchings; exclude endpoint acceptance and wrong first error.",
+    "Compatible graphs contain returned pairs and admit no larger matching; exact preimages additionally reproduce sorted BFS choices. Adding loops or duplicate edges leaves output unchanged, so graph recovery is nonunique.",
+    "Blossom lifting preserves augmenting-path existence through contracted odd alternating cycles.",
+    "Vertex relabeling preserves cardinality, but tie-selected mates need not commute.",
+    "Adding graph edges cannot decrease optimal cardinality; matching identity may change.",
+    "Loops and duplicate adjacency occurrences disappear before search, defining exact output fibers.",
+    "Public size caps precede input-order validation, then arithmetic/search. Exact cover budget exhaustion is not infeasibility; closure capacity overflow is not infeasibility. Bounded index arithmetic cannot overflow. Checked i128 arborescence arithmetic remains defensive. Allocation failure is process-level, not returned; no callbacks or external writes. Empty cases and deterministic ties follow API docs."
+  ],
+  "limitations": [
+    "Finite evidence and partial syntax only",
+    "No allocation-failure coverage or numerical surrogate"
+  ],
+  "source": "algorithms/src/blossom_matching/mod.rs",
+  "state": "Bounded undirected zero-based graph; symmetric optional mate array; loops ignored and duplicates collapsed."
+}

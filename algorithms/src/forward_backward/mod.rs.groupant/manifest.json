@@ -1,0 +1,103 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "No macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#model",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete relation in linked section; partial model and finite observations",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete relation in linked section; partial model and finite observations",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "sum_product",
+        "path": "model.md",
+        "scope": "Concrete relation in linked section; partial model and finite observations",
+        "section": "sum_product",
+        "status": "partial_source_derived_model",
+        "type": "sum_product"
+      },
+      {
+        "id": "log_stability",
+        "path": "model.md",
+        "scope": "Concrete relation in linked section; partial model and finite observations",
+        "section": "log_stability",
+        "status": "partial_source_derived_model",
+        "type": "log_stability"
+      },
+      {
+        "id": "posterior_normalization",
+        "path": "model.md",
+        "scope": "Concrete relation in linked section; partial model and finite observations",
+        "section": "posterior_normalization",
+        "status": "partial_source_derived_model",
+        "type": "posterior_normalization"
+      },
+      {
+        "id": "empty_and_resources",
+        "path": "model.md",
+        "scope": "Concrete relation in linked section; partial model and finite observations",
+        "section": "empty_and_resources",
+        "status": "partial_source_derived_model",
+        "type": "empty_and_resources"
+      },
+      {
+        "approximation_semantics": "Scoped source-derived comparison of admitted weights with a normalized ideal; no general numerical bound.",
+        "assumptions": "Fixed source, ordinary f64 operations, successful standard allocation.",
+        "domain": "One-state, one-observation HMM with unit transition/emission and finite initial p in[0,1] satisfying the computed absolute row-sum tolerance.",
+        "evidence": "Current source inspection in model.md#descriptant; existing model.md#tests evidence unchanged. No new runtime verification claimed for this specialization.",
+        "id": "admitted_weight_discrepancy",
+        "observation_scope": "One source-defined invocation or explicitly bounded trace in the linked section; source reasoning only.",
+        "operator": "Compare source output logZ=p.ln() to the ideal input-renormalized logZ=0 while both posterior rows are [1].",
+        "path": "model.md",
+        "section": "admitted_weight_discrepancy",
+        "status": "partial_source_derived_model",
+        "subject_revision": "31d1ed69daa14ee5a66547595d2883eca8f0e5e290f4712c78e5936ad8a56190",
+        "type": "normalization_tolerance_transport"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "id": "algorithm-forward-backward",
+  "kind": "groupant",
+  "registry": {
+    "node": "algorithm-forward-backward",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "31d1ed69daa14ee5a66547595d2883eca8f0e5e290f4712c78e5936ad8a56190"
+  },
+  "status": "partial_descriptive_instance"
+}

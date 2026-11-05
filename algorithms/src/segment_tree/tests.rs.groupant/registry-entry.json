@@ -1,0 +1,28 @@
+{
+  "checks": [
+    "segment_tree::tests: seven tests in debug and release, repeated outcomes",
+    "Three added source-level correspondence tests and explicit missing-premise counterexamples",
+    "Compiled production mutation rejected by a new test",
+    "Strict crate Clippy with all targets; formatting; repeated source-bound syntax"
+  ],
+  "cost": "Finite exponential enumeration in maximum length with polynomial range/update scans; maximum lengths are fixed in source. No runtime or all-input proof claim.",
+  "description": "Run deterministic finite fixtures and independently scan candidate minima; assertions pass exactly when every declared equality and negative control holds. All 1,093 ternary arrays of lengths 0..6; every point independently replaced by each value -2..2; all start/end pairs through n+1 checked against a linear scan, then restoration checked by complete state equality. Sequential updates and invalid-index atomicity also checked. Compiled mutant changing ancestor loop node > 0 to node > 1 was rejected by exhaustive_point_updates_and_ranges (exit 101), witness [0,-1], range 0..2. Deep relation epoch adds scoped decomposition, transport/state and reconstruction constraints with explicit tie premises.",
+  "forward": [
+    "Run deterministic finite fixtures and independently scan candidate minima; assertions pass exactly when every declared equality and negative control holds. All 1,093 ternary arrays of lengths 0..6; every point independently replaced by each value -2..2; all start/end pairs through n+1 checked against a linear scan, then restoration checked by complete state equality. Sequential updates and invalid-index atomicity also checked. Compiled mutant changing ancestor loop node > 0 to node > 1 was rejected by exhaustive_point_updates_and_ranges (exit 101), witness [0,-1], range 0..2."
+  ],
+  "id": "algorithm-segment-tree-tests",
+  "inverse": [
+    "In the universe of implementations and test outcomes, any passing implementation that disagrees with an asserted sampled oracle equality is excluded, assuming faithful assertions. Unsampled bugs may still pass.",
+    "A pass reconstructs the set of implementations agreeing on all sampled observations; a failure reconstructs those violating at least one assertion. Neither observation uniquely recovers implementation or universal correctness.",
+    "Passing requires the declared production observations to satisfy their decomposition, transport, reconstruction and update relations on every enumerated fixture. Premises are checked separately by explicit counterexamples. Relations may miss correlated errors, so independent scan checks remain necessary.",
+    "Observation of the non-strict order-collapse counterexample excludes extending strict order-embedding claims to merely monotone maps. Index-only observations retain ambiguous value preimages. Passing these assertions constrains the claims on these concrete inputs; it does not establish their maximal domains.",
+    "The finite test suite partitions implementations into accepted and rejected sets. The recorded compiled production mutant belongs to the rejected set at a named correspondence assertion. This is sensitivity to that defect, not completeness for all defects or a general proof of the model."
+  ],
+  "limitations": [
+    "Finite evidence is not all-input proof.",
+    "Partial syntax projection omits macro expansion and semantic resolution.",
+    "No lossy approximant profile."
+  ],
+  "source": "algorithms/src/segment_tree/tests.rs",
+  "state": "Enumeration visits every ternary code once per length. Reference scans share no tree/deque logic. Inputs are checked unchanged; tree updates are compared with copied arrays. Tests depend on standard assertions and the implementation under test."
+}

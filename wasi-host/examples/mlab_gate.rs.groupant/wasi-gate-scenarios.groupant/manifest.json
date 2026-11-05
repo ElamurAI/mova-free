@@ -1,0 +1,98 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Source syntax only; no macro expansion/type resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "wasi-gate-scenarios",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "wasi-gate-scenarios",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "fresh_vfs",
+        "path": "model.md",
+        "scope": "wasi-gate-scenarios",
+        "section": "fresh_vfs",
+        "status": "partial_source_derived_model",
+        "type": "fresh_vfs"
+      },
+      {
+        "id": "trap_text",
+        "path": "model.md",
+        "scope": "wasi-gate-scenarios",
+        "section": "trap_text",
+        "status": "partial_source_derived_model",
+        "type": "trap_text"
+      },
+      {
+        "id": "counter_relation",
+        "path": "model.md",
+        "scope": "wasi-gate-scenarios",
+        "section": "counter_relation",
+        "status": "partial_source_derived_model",
+        "type": "counter_relation"
+      },
+      {
+        "id": "timing_scope",
+        "path": "model.md",
+        "scope": "wasi-gate-scenarios",
+        "section": "timing_scope",
+        "status": "partial_source_derived_model",
+        "type": "timing_scope"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "compile_and_source_review"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 2295,
+      "start": 968
+    },
+    "description": "For each parsed scenario instantiate native Vfs and interpreter, then guest argv mlab,-e,code,--fs,real plus optional --vm; merge stderr, append trap, compare n==g, increment total/times and same or diffs.",
+    "source_bytes_sha256": "e131dd90e2af64ead3b724eb3edf6d43287bfbe19a2281ec108c00a156909d9b"
+  },
+  "id": "wasi-gate-scenarios",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../mlab_gate.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "a7947069ab507ffd5ad7b71ae9146bca16e08b827af78bc5961993c788b699b8"
+  },
+  "status": "partial_source_bound_model"
+}

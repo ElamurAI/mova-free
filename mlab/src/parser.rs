@@ -845,3 +845,36 @@ impl Parser {
         Ok(rows)
     }
 }
+
+#[cfg(test)]
+mod wave30 {
+    use super::*;
+    #[test]
+    fn precedence() {
+        let p = parse_program("2^3^2; -2^2; [1 -2]; [1 - 2]; a(end);").unwrap();
+        let expr = |k: usize| match &p.body[k].kind {
+            StmtKind::Expr { expr, .. } => expr,
+            _ => panic!("expression expected"),
+        };
+        if let Expr::Binary(BinOp::Pow, left, _) = expr(0) {
+            assert!(matches!(left.as_ref(), Expr::Binary(BinOp::Pow, _, _)));
+        } else {
+            panic!("power expected");
+        }
+        assert!(
+            matches!(expr(1), Expr::Unary(UnOp::Neg, e) if matches!(e.as_ref(), Expr::Binary(BinOp::Pow, _, _)))
+        );
+        assert!(matches!(expr(2), Expr::Matrix(r) if r[0].len() == 2));
+        assert!(matches!(expr(3), Expr::Matrix(r) if r[0].len() == 1));
+        assert!(matches!(expr(4), Expr::Index(_, a) if matches!(a[0], Expr::End)));
+        assert_eq!(p.body.len(), 5);
+        assert!(parse_program("end;").is_err());
+        assert!(
+            parse_program("if 1\nx=2;")
+                .unwrap_err()
+                .msg
+                .contains("missing")
+        );
+        assert!(parse_program("").unwrap().body.is_empty());
+    }
+}

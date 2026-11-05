@@ -1,0 +1,99 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "scope": "Shared whole-source partial projection; fragment byte_range narrows source scope. Macro expansion and semantic analysis absent.",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "scope": "Existing invariant section records local cost; no measurements implied.",
+      "section": "invariant",
+      "status": "source_derived_conditional"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_derived"
+    },
+    "obernants": [
+      {
+        "id": "retention-checkpoint-restore-behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Derived index and focus restoration",
+        "section": "behavior-complement",
+        "status": "partial_source_derived_specification",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "retention-checkpoint-restore-reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "Derived index and focus restoration",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "retention-checkpoint-restore-occurrence-order",
+        "path": "model.md",
+        "required": false,
+        "scope": "Derived index and focus restoration",
+        "section": "occurrence-order",
+        "status": "partial_source_derived_specification",
+        "type": "ordered_fold_relation"
+      },
+      {
+        "id": "retention-checkpoint-restore-quote-owner",
+        "path": "model.md",
+        "required": false,
+        "scope": "Derived index and focus restoration",
+        "section": "quote-owner",
+        "status": "partial_source_derived_specification",
+        "type": "last_writer_relation"
+      },
+      {
+        "id": "retention-checkpoint-restore-cold-state",
+        "path": "model.md",
+        "required": false,
+        "scope": "Derived index and focus restoration",
+        "section": "cold-state",
+        "status": "partial_source_derived_specification",
+        "type": "state_projection_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_existing_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 10372,
+      "start": 9087
+    },
+    "description": "Derived index and focus restoration"
+  },
+  "id": "retention-checkpoint-restore",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../retention.rs",
+    "revision": "sha256:89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34",
+    "sha256": "89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34"
+  },
+  "status": "partial_source_bound_model"
+}

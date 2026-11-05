@@ -1,0 +1,11 @@
+[package]
+name = "ocrfix"
+version.workspace = true
+edition = "2024"
+# license: Elamur Cosmic License (LICENSE.md at the repo root)
+publish = false
+description = "OCR of public-domain printed Hebrew and Aramaic (square script): drives pdftoppm and Tesseract page by page, corrects the output with a deterministic noisy channel (attested word forms and their frequencies x confusable letter pairs of the square script), and measures the character error rate against hand transcriptions."
+
+[dependencies]
+langseg = { path = "../langseg" }
+unicode-normalization = "0.1.25"

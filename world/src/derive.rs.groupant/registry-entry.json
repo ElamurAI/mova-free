@@ -1,0 +1,23 @@
+{
+  "id": "rule-derivation",
+  "source": "world/src/derive.rs",
+  "children": [],
+  "description": "Load or acquire tagged trees, induce per-class decision lists, derive heads, optionally learn ordered reattachment transformations. Store scans compose ordered selection, raw records, lexical/tag decoding, packing, unpacking, decision lists, transformation replay and reports. Full rescoring, incremental learning and easy-first derivation are alternatives whose equivalence is unverified.",
+  "state": "Tagged tree vectors, lexical/class dictionaries, rule statistics, current heads, scan state and output artifacts",
+  "forward": [
+    "Load or acquire tagged trees, induce per-class decision lists, derive heads, optionally learn ordered reattachment transformations. Store scans compose ordered selection, raw records, lexical/tag decoding, packing, unpacking, decision lists, transformation replay and reports. Full rescoring, incremental learning and easy-first derivation are alternatives whose equivalence is unverified.",
+    "Packing supplies aligned S projections to rules; scan recomputes trees from fixed lists and ordered transformations. Selection order determines the every-twentieth training sample. Shared class and finite identities constrain the interfaces; parent complement is not the union of child complements."
+  ],
+  "inverse": [
+    "U is admitted finite calls plus fixed dependency/schedule states paired with returns/effects. Candidate inner U minus R contains successful plain derivation preferring a later finite verb over an earlier one, open-class class() retaining a lexical lemma, and scan_store invoking the annotator. Class exclusion tested; root/call-graph exclusions source-inspected.",
+    "For fixed entrypoint, y admits every source tree, list, initial dependency state and schedule x satisfying R(x,y). Equal heads or scores do not uniquely determine lemmas, gold labels, candidate counts or lists. Executed class/unpack collision witnesses demonstrate bounded information loss; full derivation fibers remain prospective."
+  ],
+  "cost": "For sentence lengths n_s, class-list length L and transformations T, conservative derivation/replay bound is O(sum_s (L+T+1)*n_s^2). Fixed-target induction is O(sum_s n_s^2). Search, parser acquisition, I/O and state effects add separate costs. No performance gain claimed.",
+  "checks": [
+    "See world/src/derive.rs.groupant/model.md#tests; bounded pure source probe and structural syntax validation"
+  ],
+  "limitations": [
+    "Partial syntax only; semantic AST and full-file correspondence absent",
+    "Live parser/learner, real enum serialization, corpus scores, GPU and training state effects not executed"
+  ]
+}

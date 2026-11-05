@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "wave29_command_isolation_and_cleanup_without_spawn"
+  ],
+  "children": [],
+  "cost": "Fixed env/path construction; one directory create; recursive deletion O(temp tree size) delegated OS. Legacy subprocess/parser costs unmeasured.",
+  "description": "Scratch creates PID+nanosecond directory; Drop attempts deletion ignoring errors. world configures binary cwd, model/hot root/mode and removes state/prag flags. Legacy driver creates missing/corrupt models, runs three school commands each, demands failure/no artifacts and then show success. Added test inspects Command and sentinel cleanup without spawning.",
+  "forward": [
+    "Scratch creates PID+nanosecond directory; Drop attempts deletion ignoring errors. world configures binary cwd, model/hot root/mode and removes state/prag flags. Legacy driver creates missing/corrupt models, runs three school commands each, demands failure/no artifacts and then show success. Added test inspects Command and sentinel cleanup without spawning.",
+    "Bounded new test never launches binary; get_envs None means explicit removal, not absent key. Model remains nonexistent."
+  ],
+  "id": "world-parser-failures",
+  "inverse": [
+    "Configured child cannot retain explicit MOVA_STATE/PRAG_OFF values and uses supplied model/mode. Legacy test excludes reports/scores on bad models but is unexecuted this wave. Drop is not guaranteed to remove if OS refuses.",
+    "Configured model/mode identifies supplied args, not ambient other environment or directory history. Missing directory after Drop admits successful deletion or prior removal; not evidence of cleanup failure behavior."
+  ],
+  "limitations": [
+    "Helper-only runtime evidence, not CLI parser failure/model loading validation",
+    "No school/model/GPU; executable percent surrogate unsupported"
+  ],
+  "source": "world/tests/parser_failures.rs",
+  "state": "Scratch temp root, Command executable/cwd/env, model/report paths and excluded subprocess outputs."
+}

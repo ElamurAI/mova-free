@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "script_runs_and_transliteration",
+    "cue_features_fire_on_pointed_and_unpointed_forms",
+    "classifier_learns_and_shuffled_labels_fail",
+    "viterbi_cuts_a_planted_sentence_and_only_with_a_finite_switch",
+    "deterministic_and_model_round_trip"
+  ],
+  "children": [],
+  "cost": "Constant tiny fixture training/segmentation; roundtrip adds one write/read/delete. No performance claim.",
+  "description": "Twelve invented TMR/MISH strings train Counts, optionally swapped columns. Five tests observe script/transliteration, features, two held classifications, planted Viterbi split and temp model roundtrip.",
+  "forward": [
+    "Twelve invented TMR/MISH strings train Counts, optionally swapped columns. Five tests observe script/transliteration, features, two held classifications, planted Viterbi split and temp model roundtrip."
+  ],
+  "id": "langseg-gates",
+  "inverse": [
+    "No live corpus or teacher consulted. Passing cases cannot certify unseen text. Swapped model must disagree on both held labels.",
+    "Pass trace admits any implementation agreeing on finite observations, including unseen wrong behavior. Roundtrip tolerance admits many score arrays; labels do not identify unique model."
+  ],
+  "limitations": [
+    "Finite harness joins, no universal semantic coverage.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/langseg/tests/gates.rs",
+  "state": "Fixtures bounded in source; roundtrip owns pid directory under dedicated TMPDIR. Swapped-label/infinite-switch controls are input controls, not source mutants. Repeated equality is finite evidence."
+}

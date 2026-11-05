@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test --release -p world --lib dictstore",
+    "cargo test --release -p world --lib knowledge::retention::tests::word_meanings_are_retained_and_bound_to_the_dictionary"
+  ],
+  "cost": "B layer bytes, R rows, W words: SHA-256 and split O(B), insertion O(R log W), lookups O(log W); the built-in store is built once per process.",
+  "description": "Runtime dictionary store: hash-pinned layers with provenance, shipped versus internal-only by licence class, add-on module layers (module, version, licence, attribution) with research-only and derived-output gates, knowledge only from admitted layers, admission of reviewed proposals.",
+  "forward": [
+    "Manifest layers fold in order: state parsed (proposal refused), licence class checked (CC BY-SA internal only, never for a shipped use), built-in text or pinned file bytes loaded, rows appended per lowercase word with the layer index.",
+    "knowledge(word) keeps admitted layers, or draft/derived ones with allow_unreviewed; first_meaning reads the first knowledge entry's first sentence; admit turns a fully reviewed proposal into an admitted layer.",
+    "module: layers and MOVA_MODULES selections load through mova_modules::find and read_verified with scope module, the spec's licence matching the module's, nc-research only for internal use; derived_licence/derived_header mark share-alike or non-commercial stores and guard_derived_write refuses Git work trees and built-in file names."
+  ],
+  "id": "world-dictstore",
+  "inverse": [
+    "Behavior complement: no fetching, no layer writes except admit's exclusive new file, no sense ranking, no truth check of a licence label beyond the CC BY-SA / NC header and the module's declaration, no review authentication, no automatic module loading.",
+    "Reverse reconstruction: an entry's layer index recovers its provenance exactly; a fingerprint admits candidate manifests only by search; an admitted layer recovers the accepted words and the proposal hash, not the rejected senses."
+  ],
+  "limitations": [
+    "Partial source model; finite unit tests, no proof.",
+    "Licence labels are trusted except for the CC BY-SA header check; reviewer identity is a name."
+  ],
+  "source": "world/src/dictstore.rs",
+  "state": "Loaded layers (id, sha256, state, licence, scope, entries, knowledge, optional module source) and a BTreeMap from lowercase word to entries in layer order; read-only after load."
+}

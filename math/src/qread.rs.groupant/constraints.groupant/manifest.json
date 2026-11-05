@@ -1,0 +1,96 @@
+{
+  "children": [
+    {
+      "id": "math-qread-constraints-temporal-fold",
+      "path": "temporal-fold.groupant"
+    },
+    {
+      "id": "math-qread-constraints-single-unknown-passes",
+      "path": "single-unknown-passes.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical projection only; fragment bound by byte range; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "full_history_branching",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "full_history_branching",
+        "status": "partial_source_derived_model",
+        "type": "full_history_branching"
+      },
+      {
+        "id": "ordered_single_unknown",
+        "path": "model.md",
+        "scope": "Concrete relation within manifest byte scope; finite fixtures are not proof",
+        "section": "ordered_single_unknown",
+        "status": "partial_source_derived_model",
+        "type": "ordered_single_unknown"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "source_review_only_runtime_gap"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 64786,
+      "start": 57912
+    },
+    "description": "Event accumulation at upto sums Set/Add values and subtracts Sub values for matching events with t<=upto, excluding Is/Rel. Before that accumulation, relation/direct/movement/initial-state decisions inspect the full event list. For q=a*u+r with one remaining unknown, solve inserts u=-r/a, in encounter order over four passes.",
+    "source_bytes_sha256": "2487f50512ba5405b5c802d37839d1150d59d2da32772e614ee284ee98fee42e"
+  },
+  "id": "math-qread-constraints",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../qread.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "8389b8d58f68121743d6346e638601297c3725483f4b9fcd2eb8cd47ef2d028a"
+  },
+  "status": "partial_source_bound_model"
+}

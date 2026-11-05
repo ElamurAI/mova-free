@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "strict_tie",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "strict_tie",
+        "status": "partial_source_derived_model",
+        "type": "strict_tie"
+      },
+      {
+        "id": "nan_sort",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "nan_sort",
+        "status": "partial_source_derived_model",
+        "type": "nan_sort"
+      },
+      {
+        "id": "binary_dispatch",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "binary_dispatch",
+        "status": "partial_source_derived_model",
+        "type": "binary_dispatch"
+      },
+      {
+        "id": "complex_key",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "complex_key",
+        "status": "partial_source_derived_model",
+        "type": "complex_key"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 10628,
+      "start": 6517
+    },
+    "description": "better ignores NaN best when candidate finite and uses strict >/<. minmax reduction scans slices in order; complex keys are modulus but returned cell keeps components. sort computes stable local index permutation by real/modulus keys, with NaNs last ascending and first descending.",
+    "source_bytes_sha256": "e6521ea396c11dba5c2273250132d2dd6fb5dc0dd84de47545e0418d9a80f46f"
+  },
+  "id": "mlab-numerics-reduce-order",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../reduce.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "0f9cbbd92e1b1868cc508fb251339295057ed96751b3f3e85325c03ee563da5c"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,141 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "Bounded undirected zero-based graph; symmetric optional mate array; loops ignored and duplicates collapsed.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Exclude nonsymmetric, self, nonexistent-edge or nonmaximum matchings; exclude endpoint acceptance and wrong first error.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "d035459425d74487e1837b612a6008a9ce74cf6d56e71e7a435f52f6507b9112",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "Bounded undirected zero-based graph; symmetric optional mate array; loops ignored and duplicates collapsed.",
+        "evidence": "model.md#evidence",
+        "id": "preimages",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Compatible graphs contain returned pairs and admit no larger matching; exact preimages additionally reproduce sorted BFS choices. Adding loops or duplicate edges leaves output unchanged, so graph recovery is nonunique.",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "d035459425d74487e1837b612a6008a9ce74cf6d56e71e7a435f52f6507b9112",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "Bounded undirected zero-based graph; symmetric optional mate array; loops ignored and duplicates collapsed.",
+        "evidence": "model.md#evidence",
+        "id": "transition",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Blossom lifting preserves augmenting-path existence through contracted odd alternating cycles.",
+        "path": "model.md",
+        "section": "transition",
+        "status": "partial_source_derived",
+        "subject_revision": "d035459425d74487e1837b612a6008a9ce74cf6d56e71e7a435f52f6507b9112",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "Bounded undirected zero-based graph; symmetric optional mate array; loops ignored and duplicates collapsed.",
+        "evidence": "model.md#evidence",
+        "id": "order",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Vertex relabeling preserves cardinality, but tie-selected mates need not commute.",
+        "path": "model.md",
+        "section": "order",
+        "status": "partial_source_derived",
+        "subject_revision": "d035459425d74487e1837b612a6008a9ce74cf6d56e71e7a435f52f6507b9112",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "Bounded undirected zero-based graph; symmetric optional mate array; loops ignored and duplicates collapsed.",
+        "evidence": "model.md#evidence",
+        "id": "coordinate",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Adding graph edges cannot decrease optimal cardinality; matching identity may change.",
+        "path": "model.md",
+        "section": "coordinate",
+        "status": "partial_source_derived",
+        "subject_revision": "d035459425d74487e1837b612a6008a9ce74cf6d56e71e7a435f52f6507b9112",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "Bounded undirected zero-based graph; symmetric optional mate array; loops ignored and duplicates collapsed.",
+        "evidence": "model.md#evidence",
+        "id": "fiber",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Loops and duplicate adjacency occurrences disappear before search, defining exact output fibers.",
+        "path": "model.md",
+        "section": "fiber",
+        "status": "partial_source_derived",
+        "subject_revision": "d035459425d74487e1837b612a6008a9ce74cf6d56e71e7a435f52f6507b9112",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "Bounded undirected zero-based graph; symmetric optional mate array; loops ignored and duplicates collapsed.",
+        "evidence": "model.md#evidence",
+        "id": "errors",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Public size caps precede input-order validation, then arithmetic/search. Exact cover budget exhaustion is not infeasibility; closure capacity overflow is not infeasibility. Bounded index arithmetic cannot overflow. Checked i128 arborescence arithmetic remains defensive. Allocation failure is process-level, not returned; no callbacks or external writes. Empty cases and deterministic ties follow API docs.",
+        "path": "model.md",
+        "section": "errors",
+        "status": "partial_source_derived",
+        "subject_revision": "d035459425d74487e1837b612a6008a9ce74cf6d56e71e7a435f52f6507b9112",
+        "type": "error_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-blossom-matching",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "d035459425d74487e1837b612a6008a9ce74cf6d56e71e7a435f52f6507b9112"
+  },
+  "status": "partial_source_derived_instance"
+}

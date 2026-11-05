@@ -1,0 +1,119 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "scope": "For fixed c, U=String times (Ok Tag or Err String), R=membership and formatted rejection. U minus R forbids Ok on nonmembers and Err on members. No case-folding or arbitrary-string fallback.",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "scope": "Ok(t) recovers input t.as_str; if c is hidden, every static Closed containing that string is compatible. Tag erases origin. A list observation recovers all arrays with that space-join.",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "membership-cost",
+        "path": "model.md",
+        "scope": "For k entries membership performs at most k string equalities; duplicate entries choose the first. Failure additionally allocates an error with domain name and debug input.",
+        "section": "membership-cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_bound"
+      },
+      {
+        "id": "list-separator",
+        "path": "model.md",
+        "scope": "list preserves entry order with exactly one space separator; empty arrays yield empty text. Arbitrary entries containing spaces or empty strings make inverse ambiguous.",
+        "section": "list-separator",
+        "status": "partial_source_derived_model",
+        "type": "serialization_rule"
+      },
+      {
+        "id": "vocabulary-boundary",
+        "path": "model.md",
+        "scope": "BRANCH admits real/dream/plan/intent/lie/if/report/belief. A valid tag alone performs no canonical world transition; branch semantics and event truth are external dependencies.",
+        "section": "vocabulary-boundary",
+        "status": "partial_source_derived_model",
+        "type": "scope_boundary"
+      }
+    ],
+    "tests": {
+      "path": "../model.md#tests",
+      "status": "coverage_recorded"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 9542,
+      "start": 3650
+    },
+    "description": "closed declarations and operation implementations; gaps between selected items allowed",
+    "syntax_nodes": {
+      "node_ids": [
+        205,
+        208,
+        218,
+        233,
+        240,
+        284,
+        342,
+        378,
+        389,
+        411,
+        425,
+        433,
+        442,
+        491,
+        508,
+        518,
+        526,
+        538,
+        546,
+        554,
+        562,
+        576,
+        586,
+        598,
+        606
+      ],
+      "path": "../syntax.json"
+    }
+  },
+  "id": "world-types-closed",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../types.rs",
+    "sha256": "ac2d47f390463744e9b5d2e7b0a005352b62368e4e5d68bb1348a173a5c90037"
+  },
+  "status": "partial_source_derived_instance"
+}

@@ -1,0 +1,120 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived scoped relation with repeated named finite evidence; no general proof.",
+        "assumptions": "Matching conventions, finite arithmetic and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "model.md#evidence",
+        "id": "question-generation-composition-wave20-behavior-complement",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "Admissible repair outputs retain item and paragraph identity, valid one-based anchors, gate-approved spans or preserved implicit answers. Its complement includes dropped/misaligned items, out-of-range anchors, invalid UTF-8 slicing, callback effects before invalid-input rejection and explicit outputs failing the span relation. Synthetic checks cover only selected branches.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "subject_revision": "f50e7759c6a4e14d228678f323ac8d9449888c9241f610009231335c1063d5d4",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation with repeated named finite evidence; no general proof.",
+        "assumptions": "Matching conventions, finite arithmetic and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "model.md#evidence",
+        "id": "question-generation-composition-wave20-reverse-reconstruction",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "A repaired explicit span identifies compatible sentences/anchors but not a unique old answer; implicit output preserves the chosen old answer and anchors but loses generating prompt provenance. Lemma coverage is many-to-one in forms, order and content labels. Validation errors retain many malformed antecedents; no inverse dataset reconstruction.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "subject_revision": "f50e7759c6a4e14d228678f323ac8d9449888c9241f610009231335c1063d5d4",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation with repeated named finite evidence; no general proof.",
+        "assumptions": "Matching conventions, finite arithmetic and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "model.md#evidence",
+        "id": "question-generation-composition-wave20-implicit-repair",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "One synthetic paragraph with cat/dog sentences and item cats sleeps anchored1. Validated Fixes builds prompt Item1; implicit gate output preserves old answer and anchor. Counting lemma stub maps cats->cat, treats the as function word; try_doubt returns (1,1.0), exactly two calls (answer then anchor). No real annotator/model.",
+        "path": "model.md",
+        "section": "implicit-repair",
+        "status": "partial_source_model",
+        "subject_revision": "f50e7759c6a4e14d228678f323ac8d9449888c9241f610009231335c1063d5d4",
+        "type": "validated_prompt_repair_lemma_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation with repeated named finite evidence; no general proof.",
+        "assumptions": "Matching conventions, finite arithmetic and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "model.md#evidence",
+        "id": "question-generation-composition-wave20-explicit-anchor",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "Same paragraph, response Item1 anchor2 the dog runs becomes explicit. Numeric anchor2 maps to sent_id s2; independent span_reason accepts output. Same actual repair output fed to try_doubt returns(2,1). Word normalization may erase case/punctuation information; sentence identity is retained.",
+        "path": "model.md",
+        "section": "explicit-anchor",
+        "status": "partial_source_model",
+        "subject_revision": "f50e7759c6a4e14d228678f323ac8d9449888c9241f610009231335c1063d5d4",
+        "type": "anchor_coordinate_span_transport"
+      },
+      {
+        "approximation_semantics": "Source-derived scoped relation with repeated named finite evidence; no general proof.",
+        "assumptions": "Matching conventions, finite arithmetic and lawful leaf domains as restricted per section.",
+        "domain": "Tagged supplied inputs and lawful APIs restricted in linked section; external acquisition excluded.",
+        "evidence": "model.md#evidence",
+        "id": "question-generation-composition-wave20-invalid-preflight",
+        "observation_scope": "Named assertions and adapter outputs, not unexecuted process behavior.",
+        "operator": "Fixes rejects anchor0; try_doubt rejects [1,0] before any callback; legacy doubt with anchor2 on one sentence returns None with zero calls. Multibyte first label is classified malformed by real fix gate without panic. Errors do not authorize partial effects; no file/model/database operations.",
+        "path": "model.md",
+        "section": "invalid-preflight",
+        "status": "partial_source_model",
+        "subject_revision": "f50e7759c6a4e14d228678f323ac8d9449888c9241f610009231335c1063d5d4",
+        "type": "validation_effect_exclusion_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "question-generation-composition-wave20",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../groupant_wave20.rs",
+    "sha256": "f50e7759c6a4e14d228678f323ac8d9449888c9241f610009231335c1063d5d4"
+  },
+  "status": "partial_source_bound_model"
+}

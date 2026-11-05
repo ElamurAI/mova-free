@@ -92,3 +92,15 @@ fn vmm_negative_control_broken_sum() {
     let red = res.iter().filter(|r| !r.pass).count();
     assert!(red > KNOWN_RED.len() + 10, "broken sum gave only {red} red");
 }
+
+#[test]
+fn wave30_synthetic_hash_helper() {
+    assert_eq!(
+        sha256_hex(b"abc"),
+        "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+    );
+    assert_eq!(
+        sha256_hex(b""),
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    );
+}

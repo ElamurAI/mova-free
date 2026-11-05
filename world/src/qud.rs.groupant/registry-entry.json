@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p world --lib qud::wave8_models -- --test-threads=1",
+    "Five native tests: 46,656 six-step histories (279,936 transitions), uncertainty interaction, empty-content slot gate, four polarity preimages, ordered givenness."
+  ],
+  "cost": "For S sentences, T tokens and Q open questions, conservative O(S Q T^2 + S T log(S T)) comparisons plus string/global animacy costs; output reasons can grow with rejected candidates.",
+  "description": "Preannotated QUD stack selection and accommodation",
+  "forward": [
+    "State=(open stack,given lemmas,last subject). Prepare tokens, push questions or select latest congruent, accommodate if none, then update given/last. One Step per input. No probabilistic ranking.",
+    "Preparation feeds slot eligibility, then tracking applies completeness only after ranking. track adds external annotator/splitting. Tests use track_toks only; malformed heads remain trusted."
+  ],
+  "id": "world-qud",
+  "inverse": [
+    "Behavior complement: source-derived inner excluded transitions under stated invariant/priority constraints.",
+    "Reverse reconstruction: all compatible antecedents under fixed dependencies; projected observations are many-to-one."
+  ],
+  "limitations": [
+    "Partial source syntax, no semantic AST or complete proof.",
+    "No live parser, teacher, full mining export, GPU or throughput evidence."
+  ],
+  "source": "world/src/qud.rs",
+  "state": "Ordered supplied tokens, question stack, given lemmas, last subject, fixed animacy snapshot."
+}

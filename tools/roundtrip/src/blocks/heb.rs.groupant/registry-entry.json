@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "blocks::heb::wave32::ordered_jobs_and_panics"
+  ],
+  "children": [],
+  "cost": "For J jobs, T=max(threads,1): O(J+T) scheduler bookkeeping, O(J) result slots, T scoped threads; work sum(job_i), elapsed bounded below by max job duration, no measured speedup. run additionally retains streams/items and loads/parses external resources.",
+  "description": "lines_of follows volume Text indices, ignoring literal layout. tally_of sums child by-language tallies with volumes/exact cleared then reports one block and conjunction of child exact counts. run constructs original/shuffled streams, loads language/Hebrew/lexicon state, parses before modes; sentence mode makes one job per verse, other modes one per block. par_each atomically claims jobs, catches job panic to Err, joins and collects by index; par then collects the first ordered error.",
+  "forward": [
+    "lines_of follows volume Text indices, ignoring literal layout. tally_of sums child by-language tallies with volumes/exact cleared then reports one block and conjunction of child exact counts. run constructs original/shuffled streams, loads language/Hebrew/lexicon state, parses before modes; sentence mode makes one job per verse, other modes one per block. par_each atomically claims jobs, catches job panic to Err, joins and collects by index; par then collects the first ordered error."
+  ],
+  "id": "roundtrip-block-hebrew",
+  "inverse": [
+    "Within supplied-job execution traces, reordered result slots and lost successful jobs are excluded; caught panic does not cancel later jobs. This is a source-derived inner bound on absent behavior, not a universal no-panic claim.",
+    "Given ordered Result vector and closure, compatible antecedents are job vectors whose indexed closure calls produce those values/errors plus every scheduling interleaving consistent with unique atomic claims. Panic message loses payload type/stack. tally exact=1 permits zero child runs, so it cannot recover volume count."
+  ],
+  "limitations": [
+    "Partial source syntax and finite pure-code tests only; no model loading, live corpus/site/lesson workflows, full pipeline or persistent learning claim.",
+    "No executable percentage surrogate or semantic proof; explicit codec domains and resource limits apply."
+  ],
+  "source": "tools/roundtrip/src/blocks/heb.rs",
+  "state": "Valid Text indices; finite jobs and thread count with successful thread creation; usize/u64 counters representable. Job closure may panic but process-aborting panics, allocation or poisoned-lock failures are outside catch guarantee."
+}

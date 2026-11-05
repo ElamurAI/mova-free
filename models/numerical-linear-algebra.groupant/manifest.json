@@ -1,0 +1,163 @@
+{
+  "children": [
+    "algorithm-cholesky",
+    "algorithm-cholesky-tests",
+    "algorithm-triangular-solve",
+    "algorithm-triangular-solve-tests",
+    "algorithm-householder-qr",
+    "algorithm-householder-qr-tests",
+    "algorithm-gauss-seidel",
+    "algorithm-gauss-seidel-tests",
+    "algorithm-jacobi-iteration",
+    "algorithm-jacobi-iteration-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Positive pivots in floating arithmetic do not certify spectral conditioning. Unpivoted QR rejects exact zero encountered pivots only. Stationary convergence requires matrix properties not inferred from finite success.",
+        "domain": "Leaf-bounded finite matrices; exact symmetry and positive encountered pivots for Cholesky; triangular shape and nonzero diagonal; m>=n QR; nonzero stationary diagonals.",
+        "evidence": "model.md#wave20-evidence; exact transitive revisions in source_bindings.",
+        "id": "numerical-linear-algebra-behavior-complement",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "At the real-model level, exclude nontriangular Cholesky factors or A!=L*Lᵀ, triangular solutions with T*x!=b, and least-squares candidates with Aᵀ(A*x-b)!=0. These exact exclusions describe targets, not an exact-equality acceptance test for f64 outputs. The native relation excludes reports differing from rounded factor/solve transitions, incorrect recomputed reconstruction/primal/normal residuals, or a stationary Converged status when its computed residual exceeds tolerance. A small native residual does not exclude large coordinate error on ill-conditioned inputs; numerical rank is not certified by unpivoted QR.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Positive pivots in floating arithmetic do not certify spectral conditioning. Unpivoted QR rejects exact zero encountered pivots only. Stationary convergence requires matrix properties not inferred from finite success.",
+        "domain": "Leaf-bounded finite matrices; exact symmetry and positive encountered pivots for Cholesky; triangular shape and nonzero diagonal; m>=n QR; nonzero stationary diagonals.",
+        "evidence": "model.md#wave20-evidence; exact transitive revisions in source_bindings.",
+        "id": "numerical-linear-algebra-reverse-reconstruction",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For fixed real triangular T and observed x, compatible right sides satisfy b=T*x; allowing T to vary gives many systems with the same solution. For fixed full-column-rank A, the real QR least-squares fiber for x is b=A*x+z with Aᵀz=0, so nonzero orthogonal residuals remain compatible. A real positive-diagonal Cholesky factor uniquely determines A=L*Lᵀ, while rounded native factor/report fibers can include neighboring matrices. Stationary output plus residual/status leaves many initial vectors, budgets and systems compatible; native antecedents must reproduce the rounded execution, not merely these real identities.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Positive pivots in floating arithmetic do not certify spectral conditioning. Unpivoted QR rejects exact zero encountered pivots only. Stationary convergence requires matrix properties not inferred from finite success.",
+        "domain": "Leaf-bounded finite matrices; exact symmetry and positive encountered pivots for Cholesky; triangular shape and nonzero diagonal; m>=n QR; nonzero stationary diagonals.",
+        "evidence": "model.md#wave20-evidence; exact transitive revisions in source_bindings.",
+        "id": "numerical-linear-algebra-factor-transport",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For real SPD A=L*Lᵀ, solving Ly=b then Lᵀx=y solves Ax=b. Native fixtures test independent [1,2] coordinates, with finite factor and rounding residuals retained.",
+        "path": "model.md",
+        "section": "factor-transport",
+        "status": "partial_source_model",
+        "type": "factorization_solve_relation"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Positive pivots in floating arithmetic do not certify spectral conditioning. Unpivoted QR rejects exact zero encountered pivots only. Stationary convergence requires matrix properties not inferred from finite success.",
+        "domain": "Leaf-bounded finite matrices; exact symmetry and positive encountered pivots for Cholesky; triangular shape and nonzero diagonal; m>=n QR; nonzero stationary diagonals.",
+        "evidence": "model.md#wave20-evidence; exact transitive revisions in source_bindings.",
+        "id": "numerical-linear-algebra-normal-equations",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "Aᵀ(Ax-b)=0 characterizes real least squares; unique x additionally requires full column rank. Forming AᵀA can square condition number; the harness's fixed well-conditioned design does not certify arbitrary data.",
+        "path": "model.md",
+        "section": "normal-equations",
+        "status": "partial_source_model",
+        "type": "least_squares_stationarity_relation"
+      },
+      {
+        "approximation_semantics": "Scoped mathematical relation, distinct from floating-point implementation and finite evidence. No shared percentage metric.",
+        "assumptions": "Positive pivots in floating arithmetic do not certify spectral conditioning. Unpivoted QR rejects exact zero encountered pivots only. Stationary convergence requires matrix properties not inferred from finite success.",
+        "domain": "Leaf-bounded finite matrices; exact symmetry and positive encountered pivots for Cholesky; triangular shape and nonzero diagonal; m>=n QR; nonzero stationary diagonals.",
+        "evidence": "model.md#wave20-evidence; exact transitive revisions in source_bindings.",
+        "id": "numerical-linear-algebra-conditioning",
+        "observation_scope": "Successful and rejected API observations under linked domains; finite integration fixtures are a subset.",
+        "operator": "For nonsingular A, ||x-x*||<=||A^-1||*||Ax-b|| in real arithmetic. Without certified inverse norm and roundoff accounting, reported residuals give no universal solution-error percentage.",
+        "path": "model.md",
+        "section": "conditioning",
+        "status": "partial_source_model",
+        "type": "conditional_residual_error"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "numerical-linear-algebra",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "algorithms/src/cholesky/mod.rs",
+      "sha256": "bde0cf318a42c1bce6bdcd31da1d6fb158c1bdbf0ebae3a061dc168f2f7cd61e"
+    },
+    {
+      "path": "algorithms/src/cholesky/tests.rs",
+      "sha256": "9050e5f112a1ab55739e72e5ca21c6ca1b57fa8d8ca8000d02b6a8f6eb803df6"
+    },
+    {
+      "path": "algorithms/src/gauss_seidel/mod.rs",
+      "sha256": "a095a1599984492801f169751fd1abdc77b92cf14ff5c07b545099a693b56079"
+    },
+    {
+      "path": "algorithms/src/gauss_seidel/tests.rs",
+      "sha256": "836dbb08541b66fa9e5f46e3fedfc533099820954ac97345d98122e588c6aa8f"
+    },
+    {
+      "path": "algorithms/src/householder_qr/mod.rs",
+      "sha256": "5bf8d990184aec9a44724b70dc451b5cf803d1b32d28ef2b7e95804a1d89e55f"
+    },
+    {
+      "path": "algorithms/src/householder_qr/tests.rs",
+      "sha256": "fad750db874564021f0324ebc33c691f6fa0f9bafcca18640c6dd8ca3819d531"
+    },
+    {
+      "path": "algorithms/src/jacobi_iteration/mod.rs",
+      "sha256": "5d244b0a603d6202993d33afe109590febefb4eb8ad87789a43eafa630ab48f8"
+    },
+    {
+      "path": "algorithms/src/jacobi_iteration/tests.rs",
+      "sha256": "d1ee34dc7a7b8dea07bc13fa4bc8ffab8d60358ab8b788a3fc2bd77bd7d4c430"
+    },
+    {
+      "path": "algorithms/src/triangular_solve/mod.rs",
+      "sha256": "3b9b3bb17344b4c14f7e5395eec556bd01e40c9186a4fbb777818181a7199af6"
+    },
+    {
+      "path": "algorithms/src/triangular_solve/tests.rs",
+      "sha256": "a2a86d866ce56de34c5b7e42ee9b104d22d5fd21ecfba71cbc2ec6013b8e1545"
+    }
+  ],
+  "status": "partial_source_bound_group"
+}

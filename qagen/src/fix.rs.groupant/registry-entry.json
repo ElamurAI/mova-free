@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p qagen --lib --bins -- --skip lemma::tests::doubt_with_en_model --test-threads=1"
+  ],
+  "children": [],
+  "cost": "Selection stores rows/paragraphs/rendered strings. try_new O((P+I) log(P+I)+A) time and O(P+I) validation storage, then existing HashMap batching. Gate stores O(reply bytes) plus normalized sentence allocations; collection keeps full artifacts in memory.",
+  "description": "Read pilot rows, select span failures, group validated fix items, render teacher prompts, gate replies, and collect four replacement artifacts.",
+  "forward": [
+    "Read pilot rows, select span failures, group validated fix items, render teacher prompts, gate replies, and collect four replacement artifacts."
+  ],
+  "id": "qagen-fix",
+  "inverse": [
+    "Fixed QA determines accepted item coordinates/text but loses raw formatting, discarded replies and original inferred meaning. The same empty fixed output admits absent raw batches and fully rejected batches."
+  ],
+  "limitations": [
+    "Finite synthetic fixtures, partial syntax projection.",
+    "No numerical surrogate or live teacher/model/database/corpus tests; multi-file writes remain nontransactional."
+  ],
+  "source": "qagen/src/fix.rs",
+  "state": "Checked construction has unique paragraph and item coordinates with valid nonempty anchors; collect completes fallible preparation before writes. Accepted count never exceeds validated item count."
+}

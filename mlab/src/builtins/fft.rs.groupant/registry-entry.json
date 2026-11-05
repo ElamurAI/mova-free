@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "builtins::fft::wave30_tests::padding_inverse_and_validation: padded impulse, normalized inverse, invalid empty N and empty clone."
+  ],
+  "children": [],
+  "cost": "O(S*N log N) FFT plus planning, O(S*N+input size+planner workspace) storage; no speed measurement.",
+  "description": "transform reads matrix, optional nonempty numeric N's first real cell, dimension, then empty early return. For each selected slice it copies/truncates input to N, zero-pads remainder, calls rustfft forward/inverse and scales inverse by 1/N. Row vectors default dim2, others dim1; every admitted dimension other than1, including dim>=3, aliases dim2; output uses column-major indices.",
+  "forward": [
+    "transform reads matrix, optional nonempty numeric N's first real cell, dimension, then empty early return. For each selected slice it copies/truncates input to N, zero-pads remainder, calls rustfft forward/inverse and scales inverse by 1/N. Row vectors default dim2, others dim1; every admitted dimension other than1, including dim>=3, aliases dim2; output uses column-major indices."
+  ],
+  "id": "mlab-numerics-fft",
+  "inverse": [
+    "For fixed dimension and N, inverse DFT reconstructs padded/truncated complex slices up to rounding. If N<len, arbitrary tails share output; if N>len, compatible inputs must map to zero padded suffix after inverse. Narrowed imaginary storage loses representation identity."
+  ],
+  "limitations": [
+    "Partial source model; finite synthetic tests only",
+    "No executable surrogate, global numerical proof or resource-failure guarantee"
+  ],
+  "source": "mlab/src/builtins/fft.rs",
+  "state": "Arguments, per-call planner and complex slice buffer"
+}

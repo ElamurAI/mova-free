@@ -1,0 +1,160 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Mathematical target with bounded finite evidence, not a proof.",
+        "assumptions": "Ordinary Rust execution, sufficient allocation, byte equality.",
+        "domain": "All finite byte slices and returned usize vector observations.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One byte-sequence call.",
+        "operator": "Universe: finite byte inputs paired with arbitrary usize vectors. Excluded outputs have incorrect length, z[0] != n when n>0, a radius beyond the suffix, an unequal byte inside a claimed match, or an extendable nonmaximal radius. This mathematical exclusion relation is not replaced by negative tests.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "21e84b0b64f17cd004c9a497012244ac5b0e94ea1929cdd5f8269102acd7ffd8",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Mathematical target with bounded finite evidence, not a proof.",
+        "assumptions": "Ordinary Rust execution, sufficient allocation, byte equality.",
+        "domain": "All finite byte slices and returned usize vector observations.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_antecedents",
+        "observation_scope": "One byte-sequence call.",
+        "operator": "Given vector v, compatible antecedents are all byte strings s with length n=v.len(), 0<=v[i]<=n-i for every index i, v[0]=n when nonempty, equalities s[j]=s[i+j] for j<v[i], and inequality s[v[i]]!=s[i+v[i]] whenever i+v[i]<n. Empty vector admits only empty input. Constraints can be inconsistent; symbol names are not recoverable uniquely.",
+        "path": "model.md",
+        "section": "compatible_antecedents",
+        "status": "partial_source_derived",
+        "subject_revision": "21e84b0b64f17cd004c9a497012244ac5b0e94ea1929cdd5f8269102acd7ffd8",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Mathematical target with bounded finite evidence, not a proof.",
+        "assumptions": "Ordinary Rust execution, sufficient allocation, byte equality.",
+        "domain": "All finite byte slices and returned usize vector observations.",
+        "evidence": "model.md#evidence",
+        "id": "relabeling_boundaries",
+        "observation_scope": "One byte-sequence call.",
+        "operator": "Every injective relabeling of byte symbols preserves the prefix vector. A constant string of length n yields [n,n-1,...,1].",
+        "path": "model.md",
+        "section": "relabeling_boundaries",
+        "status": "partial_source_derived",
+        "subject_revision": "21e84b0b64f17cd004c9a497012244ac5b0e94ea1929cdd5f8269102acd7ffd8",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Exact mathematical target under assumptions; bounded executed evidence only.",
+        "assumptions": "Ordinary successful Rust execution, sufficient allocation and exact byte equality. Mathematical sums; test sums fit usize. Finite fixtures do not establish unrestricted correctness.",
+        "domain": "Candidate vectors v of length n<=256, byte witnesses.",
+        "evidence": "model.md#evidence",
+        "falsifiable_check": "equality_constraints_reconstruct_and_reject rejects [3,2,0] despite legal bounds and roundtrips five witnesses.",
+        "id": "output_feasibility",
+        "observation_scope": "Named relations and bounded source correspondence fixtures.",
+        "operator": "Require v[0]=n for n>0 and v[i]<=n-i. Quotient positions by j~i+j for j<v[i]. Add inequality edges (v[i],i+v[i]) when i+v[i]<n. Feasible iff no edge is a quotient self-loop: assign distinct bytes to classes. For n>256 general feasibility additionally requires quotient graph 256-colorability.",
+        "path": "model.md",
+        "section": "output_feasibility",
+        "status": "partial_source_derived",
+        "subject_revision": "21e84b0b64f17cd004c9a497012244ac5b0e94ea1929cdd5f8269102acd7ffd8",
+        "type": "constraint_feasibility"
+      },
+      {
+        "approximation_semantics": "Exact mathematical target under assumptions; bounded executed evidence only.",
+        "assumptions": "Ordinary successful Rust execution, sufficient allocation and exact byte equality. Mathematical sums; test sums fit usize. Finite fixtures do not establish unrestricted correctness.",
+        "domain": "Nonempty input s of length n, integers 1<=p<=n.",
+        "evidence": "model.md#evidence",
+        "falsifiable_check": "borders_periods_and_prefix_occurrences compares each p to literal slices; ababa refutes divisibility.",
+        "id": "border_period_duality",
+        "observation_scope": "Named relations and bounded source correspondence fixtures.",
+        "operator": "p is a period iff s[p..n]=s[0..n-p], iff p=n or z[p]=n-p. For p<n this is exactly a border of length n-p. Periods need not divide n; divisibility additionally characterizes whole-block repetition.",
+        "path": "model.md",
+        "section": "border_period_duality",
+        "status": "partial_source_derived",
+        "subject_revision": "21e84b0b64f17cd004c9a497012244ac5b0e94ea1929cdd5f8269102acd7ffd8",
+        "type": "structural_equivalence"
+      },
+      {
+        "approximation_semantics": "Exact mathematical target under assumptions; bounded executed evidence only.",
+        "assumptions": "Ordinary successful Rust execution, sufficient allocation and exact byte equality. Mathematical sums; test sums fit usize. Finite fixtures do not establish unrestricted correctness.",
+        "domain": "Fixed input of length n, prefix length 1<=k<=n.",
+        "evidence": "model.md#evidence",
+        "falsifiable_check": "borders_periods_and_prefix_occurrences compares threshold positions with windows(k) on five fixtures.",
+        "id": "prefix_occurrence_projection",
+        "observation_scope": "Named relations and bounded source correspondence fixtures.",
+        "operator": "Occurrence starts of s[0..k] are exactly {i:z[i]>=k}. Count=sum_i 1[z[i]>=k]. Retaining positions recovers the occurrence observation, not original symbols.",
+        "path": "model.md",
+        "section": "prefix_occurrence_projection",
+        "status": "partial_source_derived",
+        "subject_revision": "21e84b0b64f17cd004c9a497012244ac5b0e94ea1929cdd5f8269102acd7ffd8",
+        "type": "observation_projection"
+      },
+      {
+        "approximation_semantics": "Exact mathematical target under assumptions; bounded executed evidence only.",
+        "assumptions": "Ordinary successful Rust execution, sufficient allocation and exact byte equality. Mathematical sums; test sums fit usize. Finite fixtures do not establish unrestricted correctness.",
+        "domain": "Full Z observation over byte strings with latent symbol names.",
+        "evidence": "model.md#evidence",
+        "falsifiable_check": "equality_constraints_reconstruct_and_reject compares the actual outputs; relabeling alone is an incomplete inverse.",
+        "id": "equality_partition_ambiguity",
+        "observation_scope": "Named relations and bounded source correspondence fixtures.",
+        "operator": "Injective relabeling preserves z, but its fiber exceeds relabeling orbits: abb and abc both yield [3,0,0] although their equality partitions differ. Reconstruction cannot uniquely recover even the partition.",
+        "path": "model.md",
+        "section": "equality_partition_ambiguity",
+        "status": "partial_source_derived",
+        "subject_revision": "21e84b0b64f17cd004c9a497012244ac5b0e94ea1929cdd5f8269102acd7ffd8",
+        "type": "reverse_ambiguity"
+      },
+      {
+        "approximation_semantics": "Exact mathematical target under assumptions; bounded executed evidence only.",
+        "assumptions": "Ordinary successful Rust execution, sufficient allocation and exact byte equality. Mathematical sums; test sums fit usize. Finite fixtures do not establish unrestricted correctness.",
+        "domain": "Z vectors for equal-length inputs, observed through h(z)=sum_i z[i].",
+        "evidence": "model.md#evidence",
+        "falsifiable_check": "compressed_observation_and_collapsing_symbols checks sum collision and reversal/noninjective countermodels.",
+        "id": "sum_observation_loss",
+        "observation_scope": "Named relations and bounded source correspondence fixtures.",
+        "operator": "h merges full-vector fibers: abca yields [4,0,0,1] and aabc yields [4,1,0,0], both sum five. h cannot recover positions or z. Neither input reversal nor noninjective symbol maps generally preserve z.",
+        "path": "model.md",
+        "section": "sum_observation_loss",
+        "status": "partial_source_derived",
+        "subject_revision": "21e84b0b64f17cd004c9a497012244ac5b0e94ea1929cdd5f8269102acd7ffd8",
+        "type": "information_loss"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-z-algorithm",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "21e84b0b64f17cd004c9a497012244ac5b0e94ea1929cdd5f8269102acd7ffd8"
+  },
+  "status": "partial_source_derived_instance"
+}

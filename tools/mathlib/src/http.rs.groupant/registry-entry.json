@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "http::tests::encodes_and_dates",
+    "http::wave33::byte_codecs_and_civil_boundaries"
+  ],
+  "children": [],
+  "cost": "hex O(n) output 2n; encode O(n) output n..3n UTF-8 bytes; download streaming O(B) and 64 KiB buffer plus hashes. text retains full body. sleep/HTTP/filesystem/df costs external.",
+  "description": "Polite gates each GET by elapsed time, returns nested transport/status results, reads text lossily or downloads through .part with content-length/stream cap, rolling hashes, sync and rename. Helpers hex/encode/civil/free_bytes project bytes, time and df output.",
+  "forward": [
+    "Polite gates each GET by elapsed time, returns nested transport/status results, reads text lossily or downloads through .part with content-length/stream cap, rolling hashes, sync and rename. Helpers hex/encode/civil/free_bytes project bytes, time and df output."
+  ],
+  "id": "mathlib-http",
+  "inverse": [
+    "Known Content-Length>limit cannot create the .part file. Stream overflow cannot return Fetched. Non-2xx cannot be silently retried inside Polite. Network and filesystem failure paths are source-derived, not exercised.",
+    "hex has unique byte inverse on even lowercase hex strings; encode is injective on UTF-8 bytes with canonical percent escapes. Lossy UTF-8 text has many compatible raw byte antecedents; Fetched metadata cannot reconstruct response body uniquely."
+  ],
+  "limitations": [
+    "No network/DNS/download, real catalog/corpus/model/teacher or database execution. Effect paths are source-derived; finite helper tests are not universal verification. No executable percentage surrogate or speed claim; future caps require metric/domain/reference and remain 1/2/5/10%."
+  ],
+  "source": "tools/mathlib/src/http.rs",
+  "state": "Status bodies are capped at 4096 bytes; text bodies have no cap. download succeeds only after bytes<=limit, sync and rename. Error cleanup and pacing reset are branch-specific, not uniformly guaranteed."
+}

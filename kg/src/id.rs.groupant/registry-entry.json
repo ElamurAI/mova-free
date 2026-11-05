@@ -1,0 +1,34 @@
+{
+  "checks": [
+    "id::tests::id_parts",
+    "id::wave29::global_heap_exhaustion_preserves_state",
+    "id::wave29::registry_persistence_and_corruption",
+    "id::wave37::rejected_key_separators_preserve_registry_state",
+    "id::wave37::rejected_keys_precede_lazy_io_and_legacy_lookup",
+    "id::wave37::admitted_unicode_keys_reopen_with_exact_ids",
+    "id::wave37::legacy_trailing_carriage_return_remains_decode_ambiguous",
+    "id::wave38::lossy_heap_names_are_rejected_without_state_or_file_change",
+    "id::wave38::heap_name_admission_precedes_kind_conflict_and_exhaustion",
+    "id::wave38::unusual_exact_heap_names_reopen_with_stable_numbers",
+    "id::wave38::legacy_heap_files_decode_unchanged_and_ambiguous_forms_stay_rejected"
+  ],
+  "children": [],
+  "cost": "Admission O(key or heap-name bytes) before lookup or lazy load; hashing O(key bytes), expected O(1) probes. Heap O(H), load/save O(bytes), loaded caches retained. No performance claim.",
+  "description": "Heap/local u64 IDs and append-oriented lazy registry with checked heap exhaustion and framing-safe key and heap-name admission.",
+  "forward": [
+    "Id(h,l)=(u64(h)<<32)|l. open creates keys/ and reads heap triples. heap rejects names containing LF or ending in CR, then resolves existing name/kind or checked(max same-kind+1), checking range before push. id rejects tab/LF/CR before lazy I/O, lookup or mutation; admitted keys reuse or append exact bytes. keys_of loads consecutive indices1..; save appends unsaved suffixes. find/key and open retain legacy decoding."
+  ],
+  "id": "kg-id",
+  "inverse": [
+    "Id uniquely splits to(heap,local); key reconstruction needs registry. key missing/out-of-range/zero returns empty string ambiguously. Saved table admits different caches/saved counters, not full state reconstruction.",
+    "Legacy trailing-CR decode can merge original key histories; this admission fix does not reconstruct or migrate historical keys. find/key retain prior decode behavior.",
+    "Legacy CRLF heap rows decode to the CR-free name and LF-split rows fail open or add triples; heap admission prevents new cases but does not repair or reinterpret old files."
+  ],
+  "limitations": [
+    "No concurrent/crash/flush-fault/huge key-count tests. Old release wrapping is source-derived; old debug witness retained.",
+    "Partial lexical AST; no semantic proof or useful executable percentage surrogate.",
+    "Invalid-key errors precede lazy I/O and legacy cached lookup; invalid heap-name errors precede kind conflict and exhaustion. Old ambiguous CR keys and heap rows, duplicate imported heap names or numbers, failed buffered flushes and crash/concurrent recovery remain outside the roundtrip claims."
+  ],
+  "source": "kg/src/id.rs",
+  "state": "Rejected keys preserve cache/maps/names/counters/heaps; rejected heap names preserve heaps and saved_heaps with no I/O. Stable admitted-key IDs require consecutive unique keys, well-formed unique heap metadata with admitted names, one writer, representable indices and successful actual I/O. local0 stays reserved; checked heap exhaustion preserves heap state."
+}

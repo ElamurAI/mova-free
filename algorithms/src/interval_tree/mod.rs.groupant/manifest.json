@@ -1,0 +1,126 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "For valid closed intervals and query, any candidate result containing a non-overlap or missing an overlap is excluded; indexes must be unique and ascending. Touching endpoints are not excluded: closed intervals intersect there. Invalid/reversed query paired with Ok is excluded.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "5e70fe6d2bec67a9635fb9365755eb098208cbc605b19d3aa7041ba2f6cc2595",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "A result index set S admits every interval sequence whose members overlap iff their index lies in S. Intersection positions, interval widths and exact endpoints are generally unrecoverable. Empty result admits both empty input and arbitrary disjoint intervals; no unique inverse.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "5e70fe6d2bec67a9635fb9365755eb098208cbc605b19d3aa7041ba2f6cc2595",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "closed_boundary",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "Overlap is !(end<query.start || query.end<start). Zero-width intervals and endpoint-touching pairs match. Changing < pruning or <= membership to strict variants loses valid outputs.",
+        "path": "model.md",
+        "section": "closed_boundary",
+        "status": "partial_relational_specification",
+        "subject_revision": "5e70fe6d2bec67a9635fb9365755eb098208cbc605b19d3aa7041ba2f6cc2595",
+        "type": "closed_boundary"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "augmentation",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "max_end is max(own end,left max,right max); i64::MIN is a safe absent-child identity. No addition/subtraction means full-width endpoints cannot overflow.",
+        "path": "model.md",
+        "section": "augmentation",
+        "status": "partial_relational_specification",
+        "subject_revision": "5e70fe6d2bec67a9635fb9365755eb098208cbc605b19d3aa7041ba2f6cc2595",
+        "type": "augmentation"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "stable_identity",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "Sorted build triples include index for duplicates; duplicate intervals appear separately in answers. Query results sort by original index independently of internal median traversal order.",
+        "path": "model.md",
+        "section": "stable_identity",
+        "status": "partial_relational_specification",
+        "subject_revision": "5e70fe6d2bec67a9635fb9365755eb098208cbc605b19d3aa7041ba2f6cc2595",
+        "type": "stable_identity"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "validation_order",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "Reject length>4096 before reversed endpoint check. Otherwise all starts<=ends are admitted, including full i64 width and empty sequence. A reversed query errors even on an empty index; allocations use standard failure behavior.",
+        "path": "model.md",
+        "section": "validation_order",
+        "status": "partial_relational_specification",
+        "subject_revision": "5e70fe6d2bec67a9635fb9365755eb098208cbc605b19d3aa7041ba2f6cc2595",
+        "type": "validation_order"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-interval-tree",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "5e70fe6d2bec67a9635fb9365755eb098208cbc605b19d3aa7041ba2f6cc2595"
+  },
+  "status": "partial_source_derived_instance"
+}

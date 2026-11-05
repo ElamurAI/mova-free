@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms forward_backward::tests",
+    "Repeated debug/release, paired syntax, compiled mutant and restored rerun"
+  ],
+  "children": [],
+  "cost": "O((T+1)*n*n) total work including validation. For T>0, O(T*n+n) auxiliary space; log-sum-exp allocates a temporary bounded n-vector per recurrence. For T=0, validation still scans the transition matrix in O(n*n) time, then returns with O(1) auxiliary space.",
+  "description": "n1..64,T0..4096; finite initial, transition and time-major emission entries in[0,1]. Validate shape, then values, then each computed initial/transition row sum s with abs(s-1)<=1e-10. This checks the input weights without renormalizing them; accepted weights need not be exactly stochastic. Alpha log-sum-exp over incoming paths and beta log-sum-exp over outgoing paths use those original weights. Only posterior rows exp(alpha+beta-logZ) are normalized by their computed sum. Empty returns logZ0/no rows after validation; zero evidence returns None.",
+  "forward": [
+    "n1..64,T0..4096; finite initial, transition and time-major emission entries in[0,1]. Validate shape, then values, then each computed initial/transition row sum s with abs(s-1)<=1e-10. This checks the input weights without renormalizing them; accepted weights need not be exactly stochastic. Alpha log-sum-exp over incoming paths and beta log-sum-exp over outgoing paths use those original weights. Only posterior rows exp(alpha+beta-logZ) are normalized by their computed sum. Empty returns logZ0/no rows after validation; zero evidence returns None."
+  ],
+  "id": "algorithm-forward-backward",
+  "inverse": [
+    "Posterior and likelihood admit many hidden models, e.g. a one-state model with different emission factorizations sharing the same product. Observed marginals do not recover joint state paths or transitions uniquely."
+  ],
+  "limitations": [
+    "Partial syntax not semantic proof",
+    "Finite oracle coverage not universal numerical accuracy",
+    "No certified surrogate, timing or allocator fault injection"
+  ],
+  "source": "algorithms/src/forward_backward/mod.rs",
+  "state": "Bounded validated numeric inputs, deterministic recurrence, explicit errors/status and standard allocation policy"
+}

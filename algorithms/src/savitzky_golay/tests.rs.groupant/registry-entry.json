@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "polynomial_reproduction checks degrees0..6 including boundary windows; published_quadratic_weights independently checks [-3,12,17,12,-3]/35; shifted_means_and_identity tests explicit means, singleton windows and limits; rejected_domains checks empty/parity/degree/caps/nonfinite.",
+    "Halving fitted coefficient compiles and fails polynomial_reproduction."
+  ],
+  "children": [],
+  "cost": "O(n*w*(d+1)²) work and O(n+w*(d+1)) live storage. Standard allocations plus QR fallible allocations; QR errors propagate.",
+  "description": "Finite fixture-to-assertion transition. polynomial_reproduction checks degrees0..6 including boundary windows; published_quadratic_weights independently checks [-3,12,17,12,-3]/35; shifted_means_and_identity tests explicit means, singleton windows and limits; rejected_domains checks empty/parity/degree/caps/nonfinite.",
+  "forward": [
+    "Finite fixture-to-assertion transition. polynomial_reproduction checks degrees0..6 including boundary windows; published_quadratic_weights independently checks [-3,12,17,12,-3]/35; shifted_means_and_identity tests explicit means, singleton windows and limits; rejected_domains checks empty/parity/degree/caps/nonfinite."
+  ],
+  "id": "algorithm-savitzky-golay-tests",
+  "inverse": [
+    "Pass has all implementations agreeing on checked fixture observations as preimages; behavior outside fixtures can differ. A local prediction is noninjective: degree-zero fitting sees only local mean, so zero-sum changes within a window leave its prediction unchanged. With w=n and d=0 all outputs repeat global mean; [1,-1,0] and [0,0,0] are indistinguishable for w=3. w=1,d=0 is real identity. Global smoothing is not universally invertible."
+  ],
+  "limitations": [
+    "Partial syntax without semantic proof",
+    "Finite numerical tests do not guarantee accuracy",
+    "No executable approximation profile or timing claim",
+    "Standard allocation exhaustion may abort; no callback effects"
+  ],
+  "source": "algorithms/src/savitzky_golay/tests.rs",
+  "state": "Bounded finite sample vectors, transform/QR scratch, tagged errors; test state comprises finite observations"
+}

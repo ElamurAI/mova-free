@@ -1,0 +1,183 @@
+{
+  "children": [
+    {
+      "id": "annot-codex-batch-validation",
+      "path": "validation.groupant"
+    },
+    {
+      "id": "annot-codex-batch-ownership",
+      "path": "ownership.groupant"
+    },
+    {
+      "id": "annot-codex-batch-resume",
+      "path": "resume.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Lexical projection only; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence is not a semantic proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence is not a semantic proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence is not a semantic proof",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "resume_relation",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence is not a semantic proof",
+        "section": "resume_relation",
+        "status": "partial_source_derived_model",
+        "type": "resume_relation"
+      },
+      {
+        "id": "publication_boundary",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence is not a semantic proof",
+        "section": "publication_boundary",
+        "status": "partial_source_derived_model",
+        "type": "publication_boundary"
+      },
+      {
+        "id": "worker_ownership",
+        "path": "model.md",
+        "scope": "Source-bound relation; finite evidence is not a semantic proof",
+        "section": "worker_ownership",
+        "status": "partial_source_derived_model",
+        "type": "worker_ownership"
+      },
+      {
+        "approximation_semantics": "Exact parsed-row ordering relation under stated success premises; reverse history remains nonunique and effects/authenticity remain outside scope.",
+        "assumptions": "Stable directory and requests, valid partial envelopes, successful remaining asks and file operations; record separation at the append boundary is now ensured by the source (one LF appended after validation when the last byte is not LF).",
+        "domain": "Immutable unique-id requests; any accepted ordered partial subset, with or without a final LF; no final shortcut; one successful worker completion.",
+        "evidence": "Executed 2026-10-31 wave38: partial_without_final_lf_keeps_record_separation_on_resume realizes Q=[a,b,c], P=[b] with and without LF, final order [b,a,c].",
+        "id": "ordered_subset_preimage",
+        "observation_scope": "Parsed result-row ordering and compatible prior partial histories under the stated successful effects.",
+        "operator": "For final order S retain every accepted P satisfying S=P concatenated with requests whose ids are outside ids(P).",
+        "path": "model.md",
+        "section": "ordered_subset_preimage",
+        "status": "partial_source_derived_model",
+        "subject_revision": "67e8ff51c6fa7dcf31089eb8d9b6db64e76c4af8d40093af9b602edc86b7df20",
+        "type": "ordered_resume_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact byte-level separator state before the first append; validation of every row precedes the single normalizing byte.",
+        "assumptions": "Partial file readable as UTF-8; rows validated by the existing envelope checks; append and sync_data succeed.",
+        "domain": "Supplied or worker-written codex-results.partial.jsonl bytes B: absent, empty, whitespace-only (space/tab/CR), rows with/without a final LF, rows followed by a whitespace tail or a bare CR.",
+        "evidence": "Baseline red on 02f3d093 (merged line, trailing characters at column 265); the first predicate (last byte != LF) created a blank physical line for whitespace tails, red for a strict no-trim reader on 46e3ee9 (EOF while parsing a value); green after the tail predicate in debug and release.",
+        "id": "separator_state",
+        "observation_scope": "Whether B ends with LF, and the exact bytes written before any ask.",
+        "operator": "Let tail(B) be the segment after the last LF (all of B if none). sep(B) = tail(B).trim() is nonempty, i.e. a real record lacks its terminator. The worker writes exactly one LF iff sep(B), after all rows validate and before any ask; a whitespace-only tail is left in place and the next row is appended after it; an invalid row stops before that byte.",
+        "path": "model.md",
+        "section": "separator_state",
+        "status": "partial_source_derived_model_executed_witnesses",
+        "subject_revision": "67e8ff51c6fa7dcf31089eb8d9b6db64e76c4af8d40093af9b602edc86b7df20",
+        "type": "separator_state"
+      },
+      {
+        "approximation_semantics": "Byte-level composition of the published file as concatenation of retained prior bytes, optional LF and new rows.",
+        "assumptions": "Single worker, successful asks and writes, rename succeeds; no hostile concurrent writer.",
+        "domain": "Accepted partial bytes B and the remaining request sequence R in request order.",
+        "evidence": "Tests assert starts_with(prior bytes), final LF, parsable rows and id order on five shapes; failed-next-request leaves B ++ LF exactly.",
+        "id": "append_composition",
+        "observation_scope": "Exact final bytes and parsed row sequence.",
+        "operator": "final = B ++ (LF if sep(B)) ++ concat(row(r) ++ LF for r in R); rows(.) is the nonblank trim-filtered parsed-row projection used by the worker and annot parse_results, not a physical line count; rows(final) = rows(B) ++ R; the original bytes are a prefix of the final file; a whitespace-only tail of B becomes leading whitespace of the first new row, so no blank physical line is introduced.",
+        "path": "model.md",
+        "section": "append_composition",
+        "status": "partial_source_derived_model_executed_witnesses",
+        "subject_revision": "67e8ff51c6fa7dcf31089eb8d9b6db64e76c4af8d40093af9b602edc86b7df20",
+        "type": "append_composition"
+      },
+      {
+        "approximation_semantics": "Fibers of the failure boundary at the partial file: which inputs stop before any byte is written and which leave a separated file.",
+        "assumptions": "Existing envelope checks and sticky-error recording unchanged.",
+        "domain": "Partial files with a truncated or invalid last row, unknown id, wrong model, duplicate id; and a failing next request after a repaired boundary.",
+        "evidence": "Truncated last row: error contains incomplete, zero asks, bytes unchanged. FAIL after prior [a] without LF: one ask, partial equals prior ++ LF, sticky error, clean resume with three rows.",
+        "id": "boundary_failure_fibers",
+        "observation_scope": "Partial-file bytes, source-level ask count (fake-process calls) and error sentinel after a failing run; other directory files are outside this fiber.",
+        "operator": "Scoped to the partial file: invalid row -> no write to it, no ask, error (batch-id.txt, requests snapshot, lock/pid and codex-error.txt may still be written by run/execute/finish); valid rows and failing ask k -> partial bytes B ++ (LF if sep(B)) ++ rows of successes before k, sticky error; resume never repeats rows(B), rows(.) being the nonblank parsed-row projection, not physical lines. A bare CR after a complete last row is trailing JSON whitespace: the row is accepted and sep is true, so CR files are not rejected.",
+        "path": "model.md",
+        "section": "boundary_failure_fibers",
+        "status": "partial_source_derived_model_executed_witnesses",
+        "subject_revision": "67e8ff51c6fa7dcf31089eb8d9b6db64e76c4af8d40093af9b602edc86b7df20",
+        "type": "failure_boundary"
+      },
+      {
+        "id": "atomic_pid_visibility",
+        "path": "model.md",
+        "scope": "Fresh known-child startup; existing-lock compatibility limits remain distinct.",
+        "section": "atomic_pid_visibility",
+        "status": "source_derived_bounded_checked",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "known_child_readiness",
+        "path": "model.md",
+        "scope": "Fresh known-child startup; existing-lock compatibility limits remain distinct.",
+        "section": "known_child_readiness",
+        "status": "source_derived_bounded_checked",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "startup_failure_partition",
+        "path": "model.md",
+        "scope": "Fresh known-child startup; existing-lock compatibility limits remain distinct.",
+        "section": "startup_failure_partition",
+        "status": "source_derived_bounded_checked",
+        "type": "error_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "annot-codex-batch",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../codex_batch.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "04e68151e8633dea254f18144889427087ab03a159b7f4092b8c857e4c60d422"
+  },
+  "status": "partial_source_bound_model"
+}

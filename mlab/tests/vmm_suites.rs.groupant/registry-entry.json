@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "wave30_synthetic_hash_helper"
+  ],
+  "children": [],
+  "cost": "Synthetic helper O(input bytes + subprocess startup); unexecuted load O(total frozen bytes) and scenario interpretation. Temporary file effects only for abc and empty inputs.",
+  "description": "Frozen VMM400 integrity/baseline harness and SHA helper; this epoch runs synthetic SHA inputs only.",
+  "forward": [
+    "sha256_hex writes PID/atomic-sequence temporary bytes, invokes sha256sum, removes file, returns first stdout token. load would verify ten frozen files, check would run400 and compare exact sorted known-red IDs, VM gate compares captured output."
+  ],
+  "id": "mlab-tests-vmm-suites",
+  "inverse": [
+    "Synthetic SHA helper execution excludes reading frozen scenario files because load/check are not called. The baseline check would exclude either newly red or newly green IDs; no such claim is established by this epoch.",
+    "SHA output admits all byte preimages under digest relation; mathematical collision possibility prevents unique reconstruction. Equal red sets admit many changed individual outputs and do not alone prove byte identity."
+  ],
+  "limitations": [
+    "Partial source-bound model, not semantic proof",
+    "No executable percentage surrogate",
+    "Finite synthetic fixtures only; frozen suites/external measurement unexecuted"
+  ],
+  "source": "mlab/tests/vmm_suites.rs",
+  "state": "Digest is first whitespace-separated lossy-UTF8 stdout token, not structurally validated. Red IDs sorted before equality; independent gate has same=400 assertion."
+}

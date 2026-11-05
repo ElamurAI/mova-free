@@ -1,0 +1,127 @@
+{
+  "children": [
+    {
+      "id": "corpus-events-extraction",
+      "path": "extraction.groupant"
+    },
+    {
+      "id": "corpus-events-publication",
+      "path": "publication.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "body-window",
+        "path": "model.md",
+        "section": "body-window",
+        "status": "partial_source_derived_model",
+        "type": "slice_relation"
+      },
+      {
+        "id": "sentence-index",
+        "path": "model.md",
+        "section": "sentence-index",
+        "status": "partial_source_derived_model",
+        "type": "index_relation"
+      },
+      {
+        "id": "count-fiber",
+        "path": "model.md",
+        "section": "count-fiber",
+        "status": "partial_source_derived_model",
+        "type": "multiset_reconstruction"
+      },
+      {
+        "id": "actor-incidence",
+        "path": "model.md",
+        "section": "actor-incidence",
+        "status": "partial_source_derived_model",
+        "type": "weighted_projection"
+      },
+      {
+        "id": "interaction-incidence",
+        "path": "model.md",
+        "section": "interaction-incidence",
+        "status": "partial_source_derived_model",
+        "type": "symmetric_projection"
+      },
+      {
+        "id": "corpus-support",
+        "path": "model.md",
+        "section": "corpus-support",
+        "status": "partial_source_derived_model",
+        "type": "support_count"
+      },
+      {
+        "id": "publication-failure",
+        "path": "model.md",
+        "section": "publication-failure",
+        "status": "partial_source_derived_model",
+        "type": "failure_partition"
+      },
+      {
+        "id": "ranking-and-show",
+        "path": "model.md",
+        "section": "ranking-and-show",
+        "status": "partial_source_derived_model",
+        "type": "order_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_native_checks"
+    }
+  },
+  "id": "corpus-events",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../events.rs",
+    "sha256": "3a58733b8be1a9bb005846ebe8c8447a31d8b75b90f3e4d352d9d539c3998d3a"
+  },
+  "status": "partial_source_derived_instance"
+}

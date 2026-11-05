@@ -1,0 +1,272 @@
+{
+  "children": [
+    "corpus-events",
+    "corpus-register",
+    "world-poly",
+    "world-bookans",
+    "world-idioms",
+    "world-read",
+    "world-primers"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_inspected"
+    },
+    "ast": {
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived interaction relation; complement is a conditional inner description and reconstruction retains ambiguity, not an executed inverse",
+        "assumptions": "Successful allocation, no integer overflow, actual f64 semantics, stable supplied dependency state; per-view restrictions in model.md",
+        "domain": "Operation-tagged corpus/register/poly inputs and observations; model.md Domain and view-specific restrictions",
+        "evidence": "model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "The named branch projection or explicitly conditional effect trace; no inferred three-branch runtime",
+        "operator": "In the universe of branch-tagged input/result/effect observations, the source-derived exclusion relation includes a register histogram increment caused solely by an unreadable input; acceptance of a NaN register z by `z >= zmin`; event extraction being implicitly substituted for alphabetic register counting; and poly acquiring the parser or writing its destination after its own marker-order validation has already failed. These are conditional inner descriptions of excluded behavior. They do not exclude untested filesystem failures or declare all three branches semantically equivalent. Evidence: inspected caller order, native register filtering and poly early-error sentinel fixture.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "Final source_bindings in this manifest; this view retains its original event/register/poly scope.",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived interaction relation; complement is a conditional inner description and reconstruction retains ambiguity, not an executed inverse",
+        "assumptions": "Successful allocation, no integer overflow, actual f64 semantics, stable supplied dependency state; per-view restrictions in model.md",
+        "domain": "Operation-tagged corpus/register/poly inputs and observations; model.md Domain and view-specific restrictions",
+        "evidence": "model.md#tests",
+        "id": "compatible-sources",
+        "observation_scope": "The named branch projection or explicitly conditional effect trace; no inferred three-branch runtime",
+        "operator": "For register output retain every pair of ordered readable/failed input-instance lists whose actual body projections and lowercase histograms, f64 scores, thresholds and formatting produce that output. Word order, rejected characters, failed paths and excluded text are generally unrecoverable; arbitrary prefix edits are allowed only when they do not change the first-marker selection. For event summaries additionally retain annotation/repair outcomes and omitted postings/tails; for poly retain heading selections and whitespace-compatible selected lines. These are constraint-defined preimages, not an implemented inverse enumerator. If outputs from multiple calls are asserted to share one raw snapshot, intersect their preimages on that same text and dependency state. Dropping the operation tag gives the union of branch-compatible explanations, not unique provenance.",
+        "path": "model.md",
+        "section": "compatible-sources",
+        "status": "partial_source_derived",
+        "subject_revision": "Final source_bindings in this manifest; this view retains its original event/register/poly scope.",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived interaction relation; complement is a conditional inner description and reconstruction retains ambiguity, not an executed inverse",
+        "assumptions": "Successful allocation, no integer overflow, actual f64 semantics, stable supplied dependency state; per-view restrictions in model.md",
+        "domain": "Operation-tagged corpus/register/poly inputs and observations; model.md Domain and view-specific restrictions",
+        "evidence": "model.md#tests",
+        "id": "marker-policy-separation",
+        "observation_scope": "The named branch projection or explicitly conditional effect trace; no inferred three-branch runtime",
+        "operator": "The shared events/register body helper searches marker substrings anywhere: start is after the first following newline or defaults to zero; end is the first END occurrence or text length; a reversed end yields an empty body via max(start,end). Poly instead selects lines beginning with START/END, requires both, rejects reversed order before slicing, and selects an exact heading plus an optional later exact end heading. A reversed-marker input can therefore give an empty register contribution while poly returns Err. Prefix/heading/line-boundary edits are not generally invariant across these policies. Evidence: native event body slices and poly malformed/repeated-heading fixtures; a simultaneous file-reading comparison of both public APIs is unexecuted.",
+        "path": "model.md",
+        "section": "marker-policy-separation",
+        "status": "partial_source_derived",
+        "subject_revision": "Final source_bindings in this manifest; this view retains its original event/register/poly scope.",
+        "type": "policy_difference_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived interaction relation; complement is a conditional inner description and reconstruction retains ambiguity, not an executed inverse",
+        "assumptions": "Successful allocation, no integer overflow, actual f64 semantics, stable supplied dependency state; per-view restrictions in model.md",
+        "domain": "Operation-tagged corpus/register/poly inputs and observations; model.md Domain and view-specific restrictions",
+        "evidence": "model.md#tests",
+        "id": "token-identity-boundary",
+        "observation_scope": "The named branch projection or explicitly conditional effect trace; no inferred three-branch runtime",
+        "operator": "Register splits the selected body at every nonalphabetic scalar, admits original runs of UTF-8 byte length greater than one, then lowercases. Thus ASCII A is discarded, single-scalar é survives, İ expands to i plus combining dot, and co-op becomes two runs. Events instead uses its sentence filter and annotator tokens, then selected noun/verb lemmas and roles. Poly records detokenized sentence text and counts tokens containing any alphanumeric character. Neither equality of printed text nor equality of a word spelling identifies equal token units across these branches. Evidence: the register Unicode histogram and child token/event fixtures; general tokenizer/lemma correspondence remains open.",
+        "path": "model.md",
+        "section": "token-identity-boundary",
+        "status": "partial_source_derived",
+        "subject_revision": "Final source_bindings in this manifest; this view retains its original event/register/poly scope.",
+        "type": "representation_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived interaction relation; complement is a conditional inner description and reconstruction retains ambiguity, not an executed inverse",
+        "assumptions": "Successful allocation, no integer overflow, actual f64 semantics, stable supplied dependency state; per-view restrictions in model.md",
+        "domain": "Operation-tagged corpus/register/poly inputs and observations; model.md Domain and view-specific restrictions",
+        "evidence": "model.md#tests",
+        "id": "occurrence-versus-semantics",
+        "observation_scope": "The named branch projection or explicitly conditional effect trace; no inferred three-branch runtime",
+        "operator": "Register H measures admitted surface-run multiplicity and ignores sentence order and dependency roles. Event C measures accepted predicate/role tuples; actor weight sums role occurrences, so one noun used as patient and recipient contributes twice, and a first rejected role match can mask a later admissible noun. Consequently equal H does not imply equal C, equal C does not recover H, and neither score/count measures semantic completeness or truth. Reconstruction must retain the relevant ordering and parser state when event output is observed. Evidence: native role-masking and repeated-role aggregation fixtures; no new corpus-level equivalence experiment.",
+        "path": "model.md",
+        "section": "occurrence-versus-semantics",
+        "status": "partial_source_derived",
+        "subject_revision": "Final source_bindings in this manifest; this view retains its original event/register/poly scope.",
+        "type": "observation_projection"
+      },
+      {
+        "approximation_semantics": "Source-derived interaction relation; complement is a conditional inner description and reconstruction retains ambiguity, not an executed inverse",
+        "assumptions": "Successful allocation, no integer overflow, actual f64 semantics, stable supplied dependency state; per-view restrictions in model.md",
+        "domain": "Operation-tagged corpus/register/poly inputs and observations; model.md Domain and view-specific restrictions",
+        "evidence": "model.md#tests",
+        "id": "floating-count-boundary",
+        "observation_scope": "The named branch projection or explicitly conditional effect trace; no inferred three-branch runtime",
+        "operator": "Exact u64 histogram counts are converted individually to f64, while na+nb is added in u64 before conversion. Rounded counts are cast back for row counts/min filtering. These paths can diverge above 2^53. The inherited targeted witness uses singleton counts na=2^53+1 and nb=2^53+2: alpha=999.9999999999998, both computed complementary denominators=2.2737367544323206e-13 and z=0.0. A singleton therefore need not be excluded as inf-inf NaN; the familiar small singleton result requires its actual computed zero denominators. The witness constrains this case only, not every large count. No numeric policy is changed; integer overflow remains excluded.",
+        "path": "model.md",
+        "section": "floating-count-boundary",
+        "status": "partial_source_derived",
+        "subject_revision": "Final source_bindings in this manifest; this view retains its original event/register/poly scope.",
+        "type": "numeric_representation_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived interaction relation; complement is a conditional inner description and reconstruction retains ambiguity, not an executed inverse",
+        "assumptions": "Successful allocation, no integer overflow, actual f64 semantics, stable supplied dependency state; per-view restrictions in model.md",
+        "domain": "Operation-tagged corpus/register/poly inputs and observations; model.md Domain and view-specific restrictions",
+        "evidence": "model.md#tests",
+        "id": "selection-and-display",
+        "observation_scope": "The named branch projection or explicitly conditional effect trace; no inferred three-branch runtime",
+        "operator": "Selection precedes formatting: source f64 z must compare >=zmin and the cast-back register count must meet min. Rows order by descending total_cmp(z), then lexical word, not by count ties. TSV rounds z to two decimal places and rates to one, so different selected score values can print alike and displayed equality with a threshold cannot reconstruct the original comparison. With a nonempty multi-key register and an empty reference, admitted finite scores can coexist with a reference rate 0/0; finite z does not guarantee finite formatted rates. Child threshold/tie fixtures are finite evidence; full TSV rendering and large-count formatting are source-inspected only.",
+        "path": "model.md",
+        "section": "selection-and-display",
+        "status": "partial_source_derived",
+        "subject_revision": "Final source_bindings in this manifest; this view retains its original event/register/poly scope.",
+        "type": "lossy_encoding_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived interaction relation; complement is a conditional inner description and reconstruction retains ambiguity, not an executed inverse",
+        "assumptions": "Successful allocation, no integer overflow, actual f64 semantics, stable supplied dependency state; per-view restrictions in model.md",
+        "domain": "Operation-tagged corpus/register/poly inputs and observations; model.md Domain and view-specific restrictions",
+        "evidence": "model.md#tests",
+        "id": "publication-gap",
+        "observation_scope": "The named branch projection or explicitly conditional effect trace; no inferred three-branch runtime",
+        "operator": "Register skips unreadable/non-UTF-8 inputs, but its header reports attempted path counts; final create/write/flush errors propagate. Events skips failed book reads and can discard per-book publication errors while successful-instance totals advance; later final-output errors can follow earlier successful files. Poly rejects extraction errors before destination writes, but its later write is not atomic. Thus an Ok result is not a common certificate that all inputs were consumed, all outputs exist, or an all-or-nothing transaction occurred. Evidence: source-inspected I/O control flow and the bounded poly sentinel fixture only. Successful public file pipelines, injected late failures and concurrent writes are unexecuted here.",
+        "path": "model.md",
+        "section": "publication-gap",
+        "status": "partial_source_derived",
+        "subject_revision": "Final source_bindings in this manifest; this view retains its original event/register/poly scope.",
+        "type": "effect_trace_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived interaction relation; complement is a conditional inner description and reconstruction retains ambiguity, not an executed inverse",
+        "assumptions": "Successful allocation, no integer overflow, actual f64 semantics, stable supplied dependency state; per-view restrictions in model.md",
+        "domain": "Operation-tagged corpus/register/poly inputs and observations; model.md Domain and view-specific restrictions",
+        "evidence": "model.md#tests",
+        "id": "input-instance-identity",
+        "observation_scope": "The named branch projection or explicitly conditional effect trace; no inferred three-branch runtime",
+        "operator": "Duplicate readable register path instances contribute repeatedly to the histogram; event corpus document support likewise counts successful input instances, not unique filesystem identities. Equal event filename stems can collide on disk while still contributing separately to pooled counts. Poly headers carry the named raw path and selections but no content digest. Therefore equal labels, paths or event counts do not establish that two branches used the same bytes or that outputs form one synchronized corpus snapshot. Preserving shared-snapshot identity requires external provenance absent from these APIs. Evidence: source-inspected folds/publication naming; duplicate-path and collision I/O experiments remain unexecuted.",
+        "path": "model.md",
+        "section": "input-instance-identity",
+        "status": "partial_source_derived",
+        "subject_revision": "Final source_bindings in this manifest; this view retains its original event/register/poly scope.",
+        "type": "provenance_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived interaction relation; complement is a conditional inner description and reconstruction retains ambiguity, not an executed inverse",
+        "assumptions": "Successful allocation, no integer overflow, actual f64 semantics, stable supplied dependency state; per-view restrictions in model.md",
+        "domain": "Operation-tagged corpus/register/poly inputs and observations; model.md Domain and view-specific restrictions",
+        "evidence": "model.md#tests",
+        "id": "branch-cost-composition",
+        "observation_scope": "The named branch projection or explicitly conditional effect trace; no inferred three-branch runtime",
+        "operator": "Each selected branch charges its own whole-input bytes and dependency work, as defined in model.md. The direct register-to-body call is one helper invocation inside counting, not an extra complete event pass. Conversely a separate poly preparation incurs another complete raw read and scan, even if its selected story is tiny. No fictitious sequential poly->events->register pipeline, shared tokenization cache or cancellation of repeated reads is inferred. Serial peak and concurrent sum-space accounting require the actual invocation schedule; none is implemented by this grouping. Evidence: source-level loops and data retention; timing, allocation peaks and throughput remain unmeasured.",
+        "path": "model.md",
+        "section": "branch-cost-composition",
+        "status": "partial_source_derived",
+        "subject_revision": "Final source_bindings in this manifest; this view retains its original event/register/poly scope.",
+        "type": "resource_composition"
+      },
+      {
+        "id": "selected-body-gate",
+        "path": "model.md",
+        "scope": "The gate receives the exact selected book body; wrapper text exclusion is part of the observed native join.",
+        "section": "selected-body-gate",
+        "status": "partial_source_correspondence",
+        "type": "selected_snapshot_gate_join"
+      },
+      {
+        "id": "lexical-mining-feedback",
+        "path": "model.md",
+        "scope": "Idiom extraction uses a current matrix and existing idiom suppression; scores are not independent raw literal evidence.",
+        "section": "lexical-mining-feedback",
+        "status": "partial_source_correspondence",
+        "type": "seed_feedback_boundary"
+      },
+      {
+        "id": "additional-branch-preimages",
+        "path": "model.md",
+        "scope": "Book gate and idiom outputs require branch-specific antecedents and dependency snapshots; they do not recover a unique book or corpus.",
+        "section": "additional-branch-preimages",
+        "status": "partial_source_correspondence",
+        "type": "tagged_branch_reconstruction"
+      },
+      {
+        "id": "book-segmentation-policy",
+        "path": "model.md",
+        "scope": "read::split_book has its own heading, whitespace and service-paragraph policy; it is not identical to events::book_body or poly.",
+        "section": "book-segmentation-policy",
+        "status": "partial_source_correspondence",
+        "type": "extraction_policy_relation"
+      },
+      {
+        "id": "supplied-tree-summary",
+        "path": "model.md",
+        "scope": "A supplied-tree summary retains selected dependency roles but loses original syntax and does not prove annotation quality.",
+        "section": "supplied-tree-summary",
+        "status": "partial_source_correspondence",
+        "type": "lossy_syntax_projection"
+      },
+      {
+        "id": "primer-answer-reconstruction",
+        "path": "model.md",
+        "scope": "OCR chunks select the rightmost answer marker and consume a dotted first answer before recognizing the next item label. Story/question/answer segmentation then feeds number normalization and checked integer reachability. Invalid or overflowing arithmetic branches are omitted. Ambiguous absent page answers, permissive numeric grammar and multiple arithmetic preimages remain; finite fixtures do not establish general OCR accuracy.",
+        "section": "primer-answer-reconstruction",
+        "status": "partial_source_correspondence",
+        "type": "ocr_marker_and_numeric_fiber"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "child_finite_evidence_and_source_inspection"
+    }
+  },
+  "id": "corpus-statistics",
+  "kind": "groupant_group",
+  "registry": {
+    "node": "corpus-statistics",
+    "path": "../contracts.json"
+  },
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "world/src/bookans.rs",
+      "sha256": "c070e111a9244f3f3066d4bf2652f207b912282b82a62c64a17363a8d4c380ab"
+    },
+    {
+      "path": "world/src/events.rs",
+      "sha256": "3a58733b8be1a9bb005846ebe8c8447a31d8b75b90f3e4d352d9d539c3998d3a"
+    },
+    {
+      "path": "world/src/idioms.rs",
+      "sha256": "ac32513e83eaf56b32b6bf70054ba1427e8e9dd9e5c34e0980a2454a6d2e58c4"
+    },
+    {
+      "path": "world/src/poly.rs",
+      "sha256": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c"
+    },
+    {
+      "path": "world/src/primers.rs",
+      "sha256": "cbe95a74a9eb2777637696d161a3b2412c4305b1c5104f4037ab69d5de56a5e5"
+    },
+    {
+      "path": "world/src/read.rs",
+      "sha256": "80ef1f69d776dcb5cd03bf925cc5c01e827d7919495ccda17d785eb3de459857"
+    },
+    {
+      "path": "world/src/register.rs",
+      "sha256": "3e3f7b17b9e68917114b3a5b3e43df10a484fde1483b3656b6604eaa6e1f4eef"
+    }
+  ],
+  "status": "partial"
+}

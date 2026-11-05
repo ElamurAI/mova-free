@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "journal::wave31::capped_trace_and_projection",
+    "journal_records_ops_errors_and_denials"
+  ],
+  "children": [],
+  "cost": "O(path bytes) per retained record amortized, O(1) dropped record; memory O(sum retained path bytes+min(events,2cap)); TSV/summary output proportional to retained serialization.",
+  "description": "Bounded trace retention and counters.",
+  "forward": [
+    "record first increments seq and classified error counters; room=cap for success or saturating_mul(cap,2) for error. If len>=room drop++, else append Entry(seq,time,op,path,bytes,errno). clear resets counters while retaining cap."
+  ],
+  "id": "vfs-journal",
+  "inverse": [
+    "Retained entries plus counters admit many dropped op/path/time traces. TSV replaces tab/newline with spaces, so original path has ambiguous fibers. clear erases all histories."
+  ],
+  "limitations": [
+    "Finite checks only; partial source syntax, no expanded semantic AST.",
+    "No numerical surrogate: categorical/effect semantics lack useful metric; future caps 1/2/5/10 require domain and reference."
+  ],
+  "source": "vfs/src/journal.rs",
+  "state": "Before u64 overflow, total=retained+dropped; errors/denied/limited count dropped events too. Retained seq increases but may have gaps. cap0 drops even errors."
+}

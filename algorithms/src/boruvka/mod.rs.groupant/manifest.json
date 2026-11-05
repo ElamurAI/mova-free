@@ -1,0 +1,112 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-boruvka-behavior_complement",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "U is all (n,ordered signed edges,candidate Result) triples. On valid graphs, outputs containing loops, cycles, a nonspanning partition, wrong total, or greater-than-minimum weight are excluded; alternative equal-weight forests are also excluded if their index list differs from deterministic rounds. On invalid inputs, Ok is excluded; the first typed validation error is fixed.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "c5e34a8ec951c0ba82069a8375ac9594cb235870127c14cf20d00b40b8f1009f",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-boruvka-reverse_reconstruction",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "Fix observed F. The fiber includes every ordered multigraph whose deterministic rounds select those indices, whose selected weights sum to F.total_weight, and whose connectivity gives F.components. Unselected heavier edges, loops, and redistributed selected weights may be invisible. Even fixing n and selected indices does not reconstruct edge endpoints or all weights.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "c5e34a8ec951c0ba82069a8375ac9594cb235870127c14cf20d00b40b8f1009f",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-boruvka-cut_tie_order",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "Holding endpoints and weights fixed, reindexing equal-weight edges may change the chosen index forest. In a two-vertex parallel pair with equal weights the first input edge wins; endpoint direction is immaterial. Ordering is an API contract, not uniqueness of the unconstrained minimum forest.",
+        "path": "model.md",
+        "section": "cut_tie_order",
+        "status": "partial_relational_specification",
+        "subject_revision": "c5e34a8ec951c0ba82069a8375ac9594cb235870127c14cf20d00b40b8f1009f",
+        "type": "cut_tie_order"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-boruvka-validation_precedence",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "Fix an ordered edge list and n. If n>1000000, TooManyVertices wins even if edge count or labels are invalid. Otherwise E>4000000 gives TooManyEdges before inspecting endpoints. Otherwise the first invalid endpoint in edge-index order, u before v, determines InvalidEndpoint; a self-loop outside 0..n is rejected rather than silently ignored. Errors therefore identify a prefix boundary and do not reconstruct later edges. Witnesses boundary_and_validation cover caps and invalid endpoints; simultaneous-invalid precedence is source-derived, not separately exhaustively tested.",
+        "path": "model.md",
+        "section": "validation_precedence",
+        "status": "partial_relational_specification",
+        "subject_revision": "c5e34a8ec951c0ba82069a8375ac9594cb235870127c14cf20d00b40b8f1009f",
+        "type": "validation_precedence"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-boruvka-forest_observation_loss",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "Fix n and the full returned (sorted edge_indices,total_weight,components). The selected indices identify original input occurrences, not normalized endpoint pairs; reversing endpoints leaves their identity intact. Projecting further to only (total_weight,components) loses both selected indices and tree shape. For n=3 the unit-weight paths [(0,1),(1,2)] and [(0,2),(1,2)] both yield weight 2 and one component despite different trees. signed_wide_total_and_ties separately constrains index identity [0,1], count 2 and signed sum, so matching only scalar cost is insufficient.",
+        "path": "model.md",
+        "section": "forest_observation_loss",
+        "status": "partial_relational_specification",
+        "subject_revision": "c5e34a8ec951c0ba82069a8375ac9594cb235870127c14cf20d00b40b8f1009f",
+        "type": "forest_observation_loss"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-boruvka",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "c5e34a8ec951c0ba82069a8375ac9594cb235870127c14cf20d00b40b8f1009f"
+  },
+  "status": "partial_source_derived_instance"
+}

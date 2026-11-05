@@ -16,7 +16,7 @@ use crate::tok::{self, Tok};
 use crate::ud::{Ud, View, kids_of};
 
 /// An annotated word of full UD.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct Word {
     pub form: String,
     pub lemma: String,
@@ -103,21 +103,55 @@ impl Annotator {
     }
 }
 
-/// Full UD on fixed tokens: tagger → parser → UPOS (from the node's children) → FEATS per sentence → lemmas.
-pub fn annotate<S: AsRef<str>>(model: &Model, ud: &Ud, forms: &[S]) -> Vec<Word> {
+/// The tagger's tags, with the words the EModE table knows (`crate::emode::force`) and the Modern English context
+/// rules (`crate::tagrule::force`) fixed before it tags.
+pub fn tags<S: AsRef<str>>(model: &Model, forms: &[S]) -> Vec<Tag> {
     let words: Vec<&str> = forms.iter().map(AsRef::as_ref).collect();
-    let tags = model.tagger.tag(&words);
-    let tree = model.parser.parse(&words, &tags);
-    let heads: Vec<usize> = tree.iter().map(|x| x.0).collect();
-    let rels: Vec<Rel> = tree.iter().map(|x| x.1).collect();
-    let kids = kids_of(&heads, &rels);
-    let upos: Vec<UPos> = (0..words.len()).map(|i| ud.upos(&View { form: words[i], tag: tags[i], rel: rels[i], kids: kids[i], agr: 0 })).collect();
-    let feats = ud.feats_sentence(&words, &tags, &upos, &heads, &rels);
+    let rules = crate::tagrule::force(&words);
+    let forced: Vec<Option<Tag>> = crate::emode::force(&words).into_iter().zip(rules).map(|(a, b)| a.or(b)).collect();
+    if forced.iter().any(Option::is_some) { model.tagger.tag_forced(&words, &forced) } else { model.tagger.tag(&words) }
+}
+
+/// Words from the layers: lemma from morphology; for the words of the EModE table, lemma, UPOS and FEATS from it
+/// (and `aux` for a copula that is not *be*).
+fn words_of(model: &Model, words: &[&str], tags: &[Tag], upos: &[UPos], feats: &[Feats], heads: &[usize], rels: &[Rel], lemmas: Option<&[String]>) -> Vec<Word> {
     words
         .iter()
         .enumerate()
-        .map(|(i, w)| Word { form: w.to_string(), lemma: model.morph.lemmatize(w, tags[i]), upos: upos[i], tag: tags[i], feats: feats[i], head: heads[i], rel: rels[i] })
+        .map(|(i, w)| {
+            let lemma = lemmas.map_or_else(|| model.morph.lemmatize(w, tags[i]), |l| l[i].clone());
+            let mut x = Word { form: w.to_string(), lemma, upos: upos[i], tag: tags[i], feats: feats[i], head: heads[i], rel: rels[i] };
+            if let Some((l, u, f, r)) = crate::emode::fix(words, i, tags[i], upos[i], rels[i], feats[i]) {
+                (x.lemma, x.upos, x.feats, x.rel) = (l, u, f, r);
+            }
+            x
+        })
         .collect()
+}
+
+/// Tree repairs after the parse (S1 of the EModE manual: a postverbal «not» on its verb); UPOS for the rule comes from
+/// the same tables, before the repair.
+fn repair(ud: &Ud, words: &[&str], tags: &[Tag], heads: &mut [usize], rels: &mut [Rel]) {
+    if !words.iter().any(|w| w.eq_ignore_ascii_case("not")) {
+        return;
+    }
+    let kids = kids_of(heads, rels);
+    let upos: Vec<UPos> = (0..words.len()).map(|i| ud.upos(&View { form: words[i], tag: tags[i], rel: rels[i], kids: kids[i], agr: 0 })).collect();
+    crate::emode::postverbal_not(words, &upos, tags, heads, rels);
+}
+
+/// Full UD on fixed tokens: tagger → parser → UPOS (from the node's children) → FEATS per sentence → lemmas.
+pub fn annotate<S: AsRef<str>>(model: &Model, ud: &Ud, forms: &[S]) -> Vec<Word> {
+    let words: Vec<&str> = forms.iter().map(AsRef::as_ref).collect();
+    let tags = tags(model, &words);
+    let tree = model.parser.parse(&words, &tags);
+    let mut heads: Vec<usize> = tree.iter().map(|x| x.0).collect();
+    let mut rels: Vec<Rel> = tree.iter().map(|x| x.1).collect();
+    repair(ud, &words, &tags, &mut heads, &mut rels);
+    let kids = kids_of(&heads, &rels);
+    let upos: Vec<UPos> = (0..words.len()).map(|i| ud.upos(&View { form: words[i], tag: tags[i], rel: rels[i], kids: kids[i], agr: 0 })).collect();
+    let feats = ud.feats_sentence(&words, &tags, &upos, &heads, &rels);
+    words_of(model, &words, &tags, &upos, &feats, &heads, &rels, None)
 }
 
 /// Full UD on fixed tokens with given tags and tree: UPOS (from the node's children) → FEATS → lemmas.
@@ -126,18 +160,14 @@ pub fn complete<S: AsRef<str>>(model: &Model, ud: &Ud, forms: &[S], tags: &[Tag]
     let kids = kids_of(heads, rels);
     let upos: Vec<UPos> = (0..words.len()).map(|i| ud.upos(&View { form: words[i], tag: tags[i], rel: rels[i], kids: kids[i], agr: 0 })).collect();
     let feats = ud.feats_sentence(&words, tags, &upos, heads, rels);
-    words
-        .iter()
-        .enumerate()
-        .map(|(i, w)| Word { form: w.to_string(), lemma: model.morph.lemmatize(w, tags[i]), upos: upos[i], tag: tags[i], feats: feats[i], head: heads[i], rel: rels[i] })
-        .collect()
+    words_of(model, &words, tags, &upos, &feats, heads, rels, None)
 }
 
 /// Full UD for each of the `k` best trees (best first) with the parser's path score: the same pipeline as
 /// `annotate`, UPOS and FEATS recomputed per tree.
 pub fn annotate_kbest<S: AsRef<str>>(model: &Model, ud: &Ud, forms: &[S], k: usize) -> Vec<(f32, Vec<Word>)> {
     let words: Vec<&str> = forms.iter().map(AsRef::as_ref).collect();
-    let tags = model.tagger.tag(&words);
+    let tags = tags(model, &words);
     let lemmas: Vec<String> = words.iter().enumerate().map(|(i, w)| model.morph.lemmatize(w, tags[i])).collect();
     model
         .parser
@@ -149,12 +179,7 @@ pub fn annotate_kbest<S: AsRef<str>>(model: &Model, ud: &Ud, forms: &[S], k: usi
             let kids = kids_of(&heads, &rels);
             let upos: Vec<UPos> = (0..words.len()).map(|i| ud.upos(&View { form: words[i], tag: tags[i], rel: rels[i], kids: kids[i], agr: 0 })).collect();
             let feats = ud.feats_sentence(&words, &tags, &upos, &heads, &rels);
-            let ws = words
-                .iter()
-                .enumerate()
-                .map(|(i, w)| Word { form: w.to_string(), lemma: lemmas[i].clone(), upos: upos[i], tag: tags[i], feats: feats[i], head: heads[i], rel: rels[i] })
-                .collect();
-            (score, ws)
+            (score, words_of(model, &words, &tags, &upos, &feats, &heads, &rels, Some(&lemmas)))
         })
         .collect()
 }
@@ -257,5 +282,22 @@ mod tests {
         bad[mid] ^= 1;
         assert!(Annotator::from_bytes(&bad).is_err());
         assert!(Annotator::from_bytes(&bytes[..bytes.len() - 1]).is_err());
+    }
+}
+
+#[cfg(test)]
+mod wave27 {
+    use super::*;
+    #[test]
+    fn bounded_contract() {
+        let m = Model::train_with(vec![], 1);
+        let u = Ud::default();
+        let forms = ["cat"];
+        let w = complete(&m, &u, &forms, &[Tag::NN], &[0], &[Rel::Root]);
+        assert_eq!(w.len(), 1);
+        assert_eq!(w[0].form, "cat");
+        assert_eq!(w[0].upos, UPos::X);
+        assert_eq!(rows(&w, &[])[0][9], "_");
+        assert!(complete::<&str>(&m, &u, &[], &[], &[], &[]).is_empty());
     }
 }

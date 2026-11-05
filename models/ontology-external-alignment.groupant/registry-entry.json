@@ -1,0 +1,38 @@
+{
+  "checks": [
+    "21 native selected tests twice debug and twice release, equal sorted outcomes",
+    "10 compiled source mutants fail assertions exit101, exact restoration and positive reruns",
+    "10 parent ASTs twice byte-identical,10 scoped fragments share parent AST",
+    "Schema source/SQL columns compared without database execution"
+  ],
+  "children": [
+    "onto-eval",
+    "onto-wdalign",
+    "onto-wdgraph",
+    "onto-wdlex",
+    "onto-wdvmm",
+    "onto-wdwalk",
+    "onto-wdx",
+    "onto-wikidata",
+    "onto-wsd",
+    "onto-zip"
+  ],
+  "cost": "Add actual JSON/TSV scanning/compression, sorting E log E, SCC V+E, repeated closure up to V(V+E), folk vector scans potentially quadratic, per-synset support and WSD signature work. Whole graph/candidate/corpus paths unbounded by tiny fixtures; external IO/teacher excluded from measurements.",
+  "description": "wdx/wdlex JSON→rank-bearing TSV; wdgraph sorted triples→CSR→SCC edge removal; wdwalk folk(P171 rank stops,P279 free)→candidate confidence a*r*.85^d; wdalign support A and nsrc>=min_src→lexicographic winner. wdvmm parse maps answer IDs but confirmation external. wsd total=Lesk/10+1.5prior+.5core+domain and epsilon1e-9 choice; eval maps Answer/gold to statuses and zip-prefix totals. Zip supports Builder's archive entry reads.",
+  "forward": [
+    "wdx/wdlex JSON→rank-bearing TSV; wdgraph sorted triples→CSR→SCC edge removal; wdwalk folk(P171 rank stops,P279 free)→candidate confidence a*r*.85^d; wdalign support A and nsrc>=min_src→lexicographic winner. wdvmm parse maps answer IDs but confirmation external. wsd total=Lesk/10+1.5prior+.5core+domain and epsilon1e-9 choice; eval maps Answer/gold to statuses and zip-prefix totals. Zip supports Builder's archive entry reads.",
+    "wdx::Tsv→wdgraph::for_each_row/read_isa_edges and wdlex rows; IsaGraph rebuild→rank_kinds/folk_ancestors; wdalign::src_names→wdwalk::n_sources_str; wdwalk::read_core→bridge::map_class or explicit model membership, candidates→coresel confirmation; wdvmm::ask→corevmm/judge live-only; wsd→query/kb/core; eval→query::Answer; build::Builder→Zip. P31 adapter differs between alignment and walker, and CRC/bounds remain ZIP gaps."
+  ],
+  "id": "ontology-external-alignment",
+  "inverse": [
+    "Exclude promotion of candidates to truth by parsing, reuse of pre-break CSR indices after removal, counting ILI+WN twice, and unknown units entering numeric candidate stream. Raw rank0 export is allowed even though hierarchy excludes it. No all-or-nothing artifact guarantee.",
+    "Composite fiber includes raw JSON variants with same lossy TSV, duplicate triples, removed cycles, discarded folk bypass paths, losing alignment candidates and overwritten answer lines. Observed accepted mapping constrains support and lexicographic order but does not recover unique raw evidence or proof."
+  ],
+  "limitations": [
+    "Full alignment decision and multi-file live orchestration not executed",
+    "Malformed ZIP offsets can panic; no CRC validation",
+    "No live teacher, dump, corpus, DB, network or GPU execution",
+    "No approximation metric/error certificate, semantic AST or universal proof"
+  ],
+  "state": "Q identities transport through nodes[idx], never reused compact indices after SCC removal. rank0 remains raw provenance but graph scans drop0. ILI/WN constitute one source. Numeric mean/sd exclude bounds; candidates are not confirmed truth."
+}

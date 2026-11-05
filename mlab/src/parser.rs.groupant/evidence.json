@@ -1,0 +1,31 @@
+{
+  "assertion_control": {
+    "changed_assertion": "assert_eq!(p.body.len(), 6);",
+    "compile_success": true,
+    "exact_restoration": true,
+    "exit": 101,
+    "original_assertion": "assert_eq!(p.body.len(), 5);",
+    "restored_exit": 0,
+    "source": "mlab/src/parser.rs",
+    "test": "parser::wave30::precedence"
+  },
+  "covered": "left power association, unary precedence, matrix whitespace, End context, missing block terminator, empty program",
+  "kind": "actual_code_semantics",
+  "positive_executions": 4,
+  "production_control": {
+    "compile_exit": 0,
+    "mutant_exit": 101,
+    "new": "let e = self.power()?;\n            base = Expr::Binary",
+    "old": "let e = self.power_operand()?;\n            base = Expr::Binary",
+    "restored_exit": 0,
+    "restored_sha256": "264bd8e53dd7900714d501cf4d523d9f9fd70f7a948b3491cb43def7fc208583",
+    "source": "mlab/src/parser.rs",
+    "test": "parser::wave30::precedence"
+  },
+  "source": "mlab/src/parser.rs",
+  "source_sha256": "264bd8e53dd7900714d501cf4d523d9f9fd70f7a948b3491cb43def7fc208583",
+  "tests": [
+    "parser::wave30::precedence"
+  ],
+  "unexecuted": "No exhaustive statement/function/control grammar"
+}

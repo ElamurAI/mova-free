@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Shared parent lexical projection; fragment byte scope above",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source byte range [325,4747); lexical, not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source byte range [325,4747); lexical, not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "calendar_transport",
+        "path": "model.md",
+        "scope": "Source byte range [325,4747); lexical, not proof",
+        "section": "calendar_transport",
+        "status": "partial_source_derived_model",
+        "type": "calendar_transport"
+      },
+      {
+        "id": "clock_boundary",
+        "path": "model.md",
+        "scope": "Source byte range [325,4747); lexical, not proof",
+        "section": "clock_boundary",
+        "status": "partial_source_derived_model",
+        "type": "clock_boundary"
+      },
+      {
+        "id": "branch_relation",
+        "path": "model.md",
+        "scope": "Source byte range [325,4747); lexical, not proof",
+        "section": "branch_relation",
+        "status": "partial_source_derived_model",
+        "type": "branch_relation"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "Source byte range [325,4747); lexical, not proof",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "partial_bounded_parent_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4747,
+      "start": 325
+    },
+    "description": "Civil-day conversion maps Unix day0 to719529. datenum_ymd carries month and adds day offset; parse_iso validates calendar roundtrip but accepts unbounded parsed clock values. datestr rounds fractional day to seconds and carries midnight; nonfinite emits NaT.",
+    "source_bytes_sha256": "2d1a18cb819bea52cd1019cbba4cbcc202c4d9790c962ad046f96ae292e6c4b4"
+  },
+  "id": "mlab-table-dates",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../table.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "7af3a65aabe33226d39f741909fd08d74c3b3e43390417c64e617a10704ac26b"
+  },
+  "status": "partial_source_bound_model"
+}

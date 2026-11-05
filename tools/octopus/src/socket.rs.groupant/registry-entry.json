@@ -1,0 +1,26 @@
+{
+  "id": "octopus-deputy-socket",
+  "source": "tools/octopus/src/socket.rs",
+  "children": [],
+  "description": "Private owner-only Unix socket for the native Octopus deputy: arbitrary text prompts, bounded NDJSON, urgent-first queue without preemption.",
+  "state": "Owned 0700 directory, 0600 socket, waiting-request queue; handler is Deputy::run.",
+  "forward": [
+    "Admit owner uid and bounded envelope; order waiting requests urgent-first then arrival; answer one at a time; STOP ends after the current answer.",
+    "angel: lease; build handler and serve; on load error, serve error or panic record status and retry with 1-60 s doubling backoff; STOP ends.",
+    "Request: admit owner uid; parse envelope incl. optional from (caller_name); handler gets Request{id, execute, prompt, urgent, from, peer_pid}."
+  ],
+  "inverse": [
+    "Refused inputs never reach the handler; prompts are recoverable only via the deputy ledger by id.",
+    "A declared caller is a same-owner declaration, not authentication; an invalid from is refused before the handler."
+  ],
+  "cost": "Bounded read/write per request plus handler cost; 100 ms idle poll.",
+  "checks": [
+    "2026-11-03: 3 socket tests (permissions, refusals, urgent-without-preemption) with red negative controls; 8 crate tests twice; native suite with model; live daemon answered two arbitrary prompts.",
+    "2026-11-03 angel: restart after load failures, per-request panic isolation, lease refusal, STOP; red without catch_unwind; deployed live.",
+    "cargo test --manifest-path tools/octopus/Cargo.toml --offline --locked with MOVA_OCTOPUS_TEST_MODEL (16 tests including the unchanged native controls; two identical runs on 2026-11-04)",
+    "cargo test --manifest-path tools/octopus/Cargo.toml --offline with MOVA_OCTOPUS_TEST_MODEL (22 unit tests incl. 4 socket, 2 relay; 2026-11-04)"
+  ],
+  "limitations": [
+    "Trusted local filesystem; SO_PEERCRED identity only; no hostile-peer or DoS proof; priority is ordering, not preemption."
+  ]
+}

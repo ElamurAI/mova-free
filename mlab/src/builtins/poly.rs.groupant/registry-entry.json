@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "builtins::poly::wave30_tests::horner_and_division_contract: descending Horner at0/2, quotient/remainder, zero divisor. Companion eigen and fit paths remain source-modeled."
+  ],
+  "children": [],
+  "cost": "Horner O(P*X), conv O(PQ), long division O((Y-D+1)*D); roots O(degree³) eigen plus O(P²) repeated leading removals worst case; fit builds O(Mdegree) and dense SVD. No allocation caps.",
+  "description": "Descending-power coefficients feed real/complex Horner; polyfit builds real Vandermonde and solves via linalg::lstsq_svd. roots strips leading zero coefficients and trailing root zeros then eig of companion matrix. conv accumulates complex products; deconv performs real leading-term division and full-length remainder when dividend length>=divisor; a shorter dividend returns a cloned remainder preserving im. poly builds monic product over roots, derivative/integral use real coefficients.",
+  "forward": [
+    "Descending-power coefficients feed real/complex Horner; polyfit builds real Vandermonde and solves via linalg::lstsq_svd. roots strips leading zero coefficients and trailing root zeros then eig of companion matrix. conv accumulates complex products; deconv performs real leading-term division and full-length remainder when dividend length>=divisor; a shorter dividend returns a cloned remainder preserving im. poly builds monic product over roots, derivative/integral use real coefficients."
+  ],
+  "id": "mlab-numerics-poly",
+  "inverse": [
+    "Horner at finite samples admits coefficient nullspace; full coefficient vector and fixed x determine values, not inverse uniquely. deconv quotient and remainder plus divisor reconstruct original real coefficients by padded convolution. poly roots are order-invariant mathematically and leading scaling is lost by roots."
+  ],
+  "limitations": [
+    "Partial source model; finite synthetic tests only",
+    "No executable surrogate, global numerical proof or resource-failure guarantee"
+  ],
+  "source": "mlab/src/builtins/poly.rs",
+  "state": "Coefficient and sample Mats, requested output count, eig interpreter call"
+}

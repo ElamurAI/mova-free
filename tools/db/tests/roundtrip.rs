@@ -115,3 +115,17 @@ fn lossless_round_trip_and_negative_controls() {
     assert!(q.contains("Test doc|fiction|1||ok"), "{q}");
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+#[test]
+fn wave31_fixture_representation_without_database() {
+    let doc = en::conllu::Doc::parse(GOLD).unwrap();
+    assert_eq!(doc.sents.len(), 2);
+    assert_eq!(doc.blank_before, 2);
+    assert!(!doc.final_newline);
+    assert_eq!(doc.sents[0].rows.len(), 8);
+    assert_eq!(doc.text(), GOLD);
+    let overlay = en::conllu::Doc::parse(OVERLAY).unwrap();
+    assert_eq!(overlay.sents[0].sent.id, doc.sents[1].sent.id);
+    assert_eq!(overlay.sents[0].sent.text, doc.sents[1].sent.text);
+    assert_ne!(overlay.sents[0].rows, doc.sents[1].rows);
+}

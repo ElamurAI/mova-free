@@ -1,0 +1,112 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-boruvka-tests-behavior_complement",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "Universe U is candidate implementations x named outcomes. A wrong implementation violating a sampled assertion cannot yield all-pass. The compiled production mutant targeting signed_wide_total_and_ties is a witnessed exclusion. Unsampled defects can still pass; finite coverage is explicit.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "5ac7106f145ac6842707107643dc335ac2860f03e5298fa6f2a2a90319fafdd1",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-boruvka-tests-reverse_reconstruction",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "The all-pass observation admits every implementation agreeing on sampled assertions, including ones wrong elsewhere. A failing assertion constrains the mismatching observation but need not uniquely identify a defect. Named identities preserve more information than only a count.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "5ac7106f145ac6842707107643dc335ac2860f03e5298fa6f2a2a90319fafdd1",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-boruvka-tests-oracle_independence",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "Independent witness: 4096 signed/absent graphs on four vertices compare independent subset enumeration and transitive closure, plus exact signed extremes, parallel ties, loops, isolates, invalid endpoints and both caps. The oracle uses a distinct representation or exhaustive candidate enumeration; self-roundtrip alone is insufficient.",
+        "path": "model.md",
+        "section": "oracle_independence",
+        "status": "partial_relational_specification",
+        "subject_revision": "5ac7106f145ac6842707107643dc335ac2860f03e5298fa6f2a2a90319fafdd1",
+        "type": "oracle_independence"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-boruvka-tests-subset_oracle_rank",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "In exhaustive_small_signed_forests the oracle fixes target transitive closure and considers subsets with exactly n-components edges. Equality of closure plus this edge count forces an acyclic spanning forest; deleting the rank condition would admit extra negative edges on cycles and solve a different optimization. Each of six potential edges is independently absent or weighted -1,0,1, giving 4096 assignments. A triangle of three -1 edges distinguishes unconstrained connected-subgraph weight -3 from forest optimum -2.",
+        "path": "model.md",
+        "section": "subset_oracle_rank",
+        "status": "partial_relational_specification",
+        "subject_revision": "5ac7106f145ac6842707107643dc335ac2860f03e5298fa6f2a2a90319fafdd1",
+        "type": "subset_oracle_rank"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-boruvka-tests-signed_sum_discrimination",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "signed_wide_total_and_ties fixes two selected i64::MIN edges and asserts total=2*i128::from(i64::MIN), outside i64 range, plus exact selected indices and isolates. The compiled production subtraction mutant returns the opposite signed sum and fails this named assertion after successful compilation. The positive i64::MAX path also requires a sum above i64::MAX. These witnesses reject sign reversal and narrow accumulation but do not prove every arithmetic implementation correct.",
+        "path": "model.md",
+        "section": "signed_sum_discrimination",
+        "status": "partial_relational_specification",
+        "subject_revision": "5ac7106f145ac6842707107643dc335ac2860f03e5298fa6f2a2a90319fafdd1",
+        "type": "signed_sum_discrimination"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-boruvka-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "5ac7106f145ac6842707107643dc335ac2860f03e5298fa6f2a2a90319fafdd1"
+  },
+  "status": "partial_source_derived_instance"
+}

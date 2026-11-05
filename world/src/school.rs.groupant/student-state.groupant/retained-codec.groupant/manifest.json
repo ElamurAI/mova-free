@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-school-student-state-retained-codec-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-school-student-state-retained-codec-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-school-student-state-retained-codec-accumulator_activation",
+        "path": "model.md",
+        "section": "accumulator_activation",
+        "status": "partial_source_model",
+        "type": "state_transition"
+      },
+      {
+        "id": "world-school-student-state-retained-codec-duplicate_width",
+        "path": "model.md",
+        "section": "duplicate_width",
+        "status": "partial_source_model",
+        "type": "order_relation"
+      },
+      {
+        "id": "world-school-student-state-retained-codec-canonical_projection",
+        "path": "model.md",
+        "section": "canonical_projection",
+        "status": "partial_source_model",
+        "type": "identity_relation"
+      },
+      {
+        "id": "world-school-student-state-retained-codec-row_order",
+        "path": "model.md",
+        "section": "row_order",
+        "status": "partial_source_model",
+        "type": "observation_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 19673,
+      "start": 17898
+    },
+    "description": "Decode lines in order: ignore # and widths below five; parse four current columns with invalid numbers mapped to zero; widths >=9 also replace accumulator columns. A later five-column duplicate replaces w but leaves an earlier acc row. Encode sorted union keys; emit nonzero w or any explicit acc, and only emit accumulator columns when present."
+  },
+  "id": "world-school-student-state-retained-codec",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../school.rs",
+    "sha256": "3b29edc9021b45510e68eb1e49ac894f6ab55b2b859694302db2076cc6db451d"
+  },
+  "status": "partial_source_bound_model"
+}

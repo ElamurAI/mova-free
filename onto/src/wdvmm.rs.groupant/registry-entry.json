@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "wdvmm::t::parse_answer",
+    "wdvmm::wave29_ontowiki::parse_overwrite_and_budget_refusal"
+  ],
+  "children": [],
+  "cost": "spent O(B) full log each ask; pick O(R log P+nP) plus clones; parse O(bytes+n). Teacher latency/cost unknown, reserve not actual bound.",
+  "description": "spent sums numeric cost_usd from valid JSONL, unreadable/invalid=0. ask refuses spent+reserve>cap before mkdir/teacher, otherwise shared teacher then append log then is_error. pick_disputed requires13 fields, empty mean, lo<=confidence<hi; sorted-property round robin. parse in-range1-based yes/no/refine, last valid duplicate wins.",
+  "forward": [
+    "spent sums numeric cost_usd from valid JSONL, unreadable/invalid=0. ask refuses spent+reserve>cap before mkdir/teacher, otherwise shared teacher then append log then is_error. pick_disputed requires13 fields, empty mean, lo<=confidence<hi; sorted-property round robin. parse in-range1-based yes/no/refine, last valid duplicate wins.",
+    "v=vec(None,n). For each trimmed-tab row with>=2 fields, i=parse(strip_all_leading#(f0)); if1<=i<=n and lowercase(f1)∈{yes,no,refine}, v[i-1]=(verdict,f2_or_empty)."
+  ],
+  "id": "onto-wdvmm",
+  "inverse": [
+    "Strict over-cap excludes mkdir/teacher/log write. Invalid parse rows excluded but repeated valid overwrite allowed. Written log does not imply success; NaN guard not budget assurance.",
+    "Parsed Some(no,b) requires last accepted occurrence normalize to no,b; arbitrary ignored/overwritten lines compatible. Spent total admits many cost sequences/corrupt records; no unique call history."
+  ],
+  "limitations": [
+    "Parser overwrite, malformed spent records and early over-cap before cwd creation plus parse_answer executed. No teacher/model/environment-success/log effect run.",
+    "Executable approximant gap: no useful percentage metric established for these categorical/effectful observations. No surrogate or production substitution. Future caps 1/2/5/10% require a metric/domain and evidence; no numerical error bound follows here.",
+    "Partial lexical AST, no macro expansion/semantic proof; no live teacher/dump/corpus/database execution"
+  ],
+  "source": "onto/src/wdvmm.rs",
+  "state": "Budget equality passes; NaN unvalidated. parse len=n, invalid ID/verdict never overwrites; missing why empty. prompt assumes>=6 columns. Teacher effect may precede log failure."
+}

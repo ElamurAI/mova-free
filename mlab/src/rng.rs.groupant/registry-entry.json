@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "rng::wave30::stream_and_spare",
+    "Paired lexical syntax generation; bounded debug/release and compiled assertion controls in receipt"
+  ],
+  "children": [],
+  "cost": "Seeding/uniform O(1) time and memory. Normal consumes a cached sample in O(1); rejection loop has no deterministic bound, expected constant under uniform draws.",
+  "description": "stream: Seed expansion applies four wrapping splitmix rounds; next_u64 returns rotl(s1*5,7)*9 then XOR/shift/rotl45 transition. Uniform=(result>>11)/2^53.\n\npolar: Normal takes spare first; otherwise samples u,v in [-1,1), rejects s<=0 or s>=1, emits u*sqrt(-2ln(s)/s), caches v times same scale.",
+  "forward": [
+    "stream: Seed expansion applies four wrapping splitmix rounds; next_u64 returns rotl(s1*5,7)*9 then XOR/shift/rotl45 transition. Uniform=(result>>11)/2^53.",
+    "polar: Normal takes spare first; otherwise samples u,v in [-1,1), rejects s<=0 or s>=1, emits u*sqrt(-2ln(s)/s), caches v times same scale."
+  ],
+  "id": "mlab-rng",
+  "inverse": [
+    "stream: A uniform value admits all low11-bit result antecedents plus compatible state words. Output alone does not recover the seed.",
+    "polar: Observed cached z admits any unchanged four-word state paired with spare=Some(z); fresh z admits many accepted (u,v) and prior rejection histories."
+  ],
+  "limitations": [
+    "All u64 seeds; IEEE f64 libm operations. Cross-platform transcendental bit identity is not proved.",
+    "Partial lexical AST, no macro expansion or semantic proof",
+    "No executable numerical surrogate or global error bound",
+    "External frozen dataset/effect paths unexecuted"
+  ],
+  "source": "mlab/src/rng.rs",
+  "state": "Four u64 state words and optional f64 polar spare."
+}

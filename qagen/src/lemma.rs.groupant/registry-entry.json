@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p qagen --lib --bins -- --skip lemma::tests::doubt_with_en_model --test-threads=1"
+  ],
+  "children": [],
+  "cost": "cover expected O(A+S) time and O(S) pool references, removing O(content) temporary Vec. try_doubt costs answer callback plus each anchor callback/cover; duplicate anchors retain repeated callbacks.",
+  "description": "Annotate forms/lemmas, classify content words, compute per-anchor content coverage and select first maximum meeting DOUBT=0.8.",
+  "forward": [
+    "Annotate forms/lemmas, classify content words, compute per-anchor content coverage and select first maximum meeting DOUBT=0.8."
+  ],
+  "id": "qagen-lemma",
+  "inverse": [
+    "Ratio 1 admits any covered answer with arbitrarily repeated content tokens; ratio 0 admits disjoint pools. Winner index/ratio cannot reconstruct annotation or losing anchors."
+  ],
+  "limitations": [
+    "Finite synthetic fixtures, partial syntax projection.",
+    "No numerical surrogate or live teacher/model/database/corpus tests; multi-file writes remain nontransactional."
+  ],
+  "source": "qagen/src/lemma.rs",
+  "state": "cover None iff no answer content words, otherwise ratio in [0,1]. try_doubt validates all anchor bounds before callbacks; valid ties preserve first anchor."
+}

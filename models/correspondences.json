@@ -1,0 +1,2722 @@
+{
+  "formulas": [
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed observations only; unlisted inputs unsupported.",
+          "u64 inputs embed losslessly into arbitrary integers; gcd(0,0)=0.",
+          "No control-flow, allocation or certificate equivalence.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "gcd_u64_projection.outputs",
+          "values": [
+            "0",
+            "1",
+            "2"
+          ]
+        },
+        "domain": {
+          "name": "gcd_u64_projection.inputs",
+          "values": [
+            "(0,0)",
+            "(0,1)",
+            "(0,2)",
+            "(1,0)",
+            "(1,1)",
+            "(1,2)",
+            "(2,0)",
+            "(2,1)",
+            "(2,2)"
+          ]
+        },
+        "effects": [],
+        "observation": "Unsigned gcd embedded into exact nonnegative integers."
+      },
+      "expr": {
+        "codomain": {
+          "name": "gcd_u64_projection.outputs",
+          "values": [
+            "0",
+            "1",
+            "2"
+          ]
+        },
+        "domain": {
+          "name": "gcd_u64_projection.inputs",
+          "values": [
+            "(0,0)",
+            "(0,1)",
+            "(0,2)",
+            "(1,0)",
+            "(1,1)",
+            "(1,2)",
+            "(2,0)",
+            "(2,1)",
+            "(2,2)"
+          ]
+        },
+        "name": "gcd.algorithm.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            4,
+            1
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            6,
+            2
+          ],
+          [
+            7,
+            1
+          ],
+          [
+            8,
+            2
+          ]
+        ]
+      },
+      "groupant_id": "algorithm-gcd",
+      "id": "gcd.algorithm",
+      "model": {
+        "path": "algorithms/src/gcd/mod.rs.groupant/model.md#Forward",
+        "section": "Forward",
+        "sha256": "edbd5e3da9a63adc0c70f12b1be035022005d1700e17f9ef9d2ae09c1c89e2d4"
+      },
+      "role": "forward",
+      "source": {
+        "path": "algorithms/src/gcd/mod.rs",
+        "sha256": "abce5c9a9f0a2de26a6dbe392180e6a1c20eea179623fd5ede84434679b0d0e3",
+        "symbol": "gcd"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed observations only; unlisted inputs unsupported.",
+          "u64 inputs embed losslessly into arbitrary integers; gcd(0,0)=0.",
+          "No control-flow, allocation or certificate equivalence.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "gcd_u64_projection.inputs",
+          "values": [
+            "(0,0)",
+            "(0,1)",
+            "(0,2)",
+            "(1,0)",
+            "(1,1)",
+            "(1,2)",
+            "(2,0)",
+            "(2,1)",
+            "(2,2)"
+          ]
+        },
+        "domain": {
+          "name": "gcd_u64_projection.outputs",
+          "values": [
+            "0",
+            "1",
+            "2"
+          ]
+        },
+        "effects": [],
+        "observation": "Unsigned gcd embedded into exact nonnegative integers."
+      },
+      "expr": {
+        "arg": {
+          "codomain": {
+            "name": "gcd_u64_projection.outputs",
+            "values": [
+              "0",
+              "1",
+              "2"
+            ]
+          },
+          "domain": {
+            "name": "gcd_u64_projection.inputs",
+            "values": [
+              "(0,0)",
+              "(0,1)",
+              "(0,2)",
+              "(1,0)",
+              "(1,1)",
+              "(1,2)",
+              "(2,0)",
+              "(2,1)",
+              "(2,2)"
+            ]
+          },
+          "name": "gcd.algorithm.source_projection",
+          "op": "atom",
+          "pairs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              1
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              8,
+              2
+            ]
+          ]
+        },
+        "op": "converse"
+      },
+      "groupant_id": "algorithm-gcd",
+      "id": "gcd.algorithm.reverse",
+      "model": {
+        "path": "algorithms/src/gcd/mod.rs.groupant/model.md#Forward",
+        "section": "Forward",
+        "sha256": "edbd5e3da9a63adc0c70f12b1be035022005d1700e17f9ef9d2ae09c1c89e2d4"
+      },
+      "role": "reverse_reconstruction",
+      "source": {
+        "path": "algorithms/src/gcd/mod.rs",
+        "sha256": "abce5c9a9f0a2de26a6dbe392180e6a1c20eea179623fd5ede84434679b0d0e3",
+        "symbol": "gcd"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed observations only; unlisted inputs unsupported.",
+          "u64 inputs embed losslessly into arbitrary integers; gcd(0,0)=0.",
+          "No control-flow, allocation or certificate equivalence.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "gcd_u64_projection.outputs",
+          "values": [
+            "0",
+            "1",
+            "2"
+          ]
+        },
+        "domain": {
+          "name": "gcd_u64_projection.inputs",
+          "values": [
+            "(0,0)",
+            "(0,1)",
+            "(0,2)",
+            "(1,0)",
+            "(1,1)",
+            "(1,2)",
+            "(2,0)",
+            "(2,1)",
+            "(2,2)"
+          ]
+        },
+        "effects": [],
+        "observation": "Unsigned gcd embedded into exact nonnegative integers."
+      },
+      "expr": {
+        "arg": {
+          "codomain": {
+            "name": "gcd_u64_projection.outputs",
+            "values": [
+              "0",
+              "1",
+              "2"
+            ]
+          },
+          "domain": {
+            "name": "gcd_u64_projection.inputs",
+            "values": [
+              "(0,0)",
+              "(0,1)",
+              "(0,2)",
+              "(1,0)",
+              "(1,1)",
+              "(1,2)",
+              "(2,0)",
+              "(2,1)",
+              "(2,2)"
+            ]
+          },
+          "name": "gcd.algorithm.source_projection",
+          "op": "atom",
+          "pairs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              1
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              8,
+              2
+            ]
+          ]
+        },
+        "op": "complement"
+      },
+      "groupant_id": "algorithm-gcd",
+      "id": "gcd.algorithm.complement",
+      "model": {
+        "path": "algorithms/src/gcd/mod.rs.groupant/model.md#Forward",
+        "section": "Forward",
+        "sha256": "edbd5e3da9a63adc0c70f12b1be035022005d1700e17f9ef9d2ae09c1c89e2d4"
+      },
+      "role": "behavior_complement",
+      "source": {
+        "path": "algorithms/src/gcd/mod.rs",
+        "sha256": "abce5c9a9f0a2de26a6dbe392180e6a1c20eea179623fd5ede84434679b0d0e3",
+        "symbol": "gcd"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed observations only; unlisted inputs unsupported.",
+          "u64 inputs embed losslessly into arbitrary integers; gcd(0,0)=0.",
+          "No control-flow, allocation or certificate equivalence.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "gcd_u64_projection.outputs",
+          "values": [
+            "0",
+            "1",
+            "2"
+          ]
+        },
+        "domain": {
+          "name": "gcd_u64_projection.inputs",
+          "values": [
+            "(0,0)",
+            "(0,1)",
+            "(0,2)",
+            "(1,0)",
+            "(1,1)",
+            "(1,2)",
+            "(2,0)",
+            "(2,1)",
+            "(2,2)"
+          ]
+        },
+        "effects": [],
+        "observation": "Unsigned gcd embedded into exact nonnegative integers."
+      },
+      "expr": {
+        "codomain": {
+          "name": "gcd_u64_projection.outputs",
+          "values": [
+            "0",
+            "1",
+            "2"
+          ]
+        },
+        "domain": {
+          "name": "gcd_u64_projection.inputs",
+          "values": [
+            "(0,0)",
+            "(0,1)",
+            "(0,2)",
+            "(1,0)",
+            "(1,1)",
+            "(1,2)",
+            "(2,0)",
+            "(2,1)",
+            "(2,2)"
+          ]
+        },
+        "name": "gcd.ordinary.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            4,
+            1
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            6,
+            2
+          ],
+          [
+            7,
+            1
+          ],
+          [
+            8,
+            2
+          ]
+        ]
+      },
+      "groupant_id": "math-nt",
+      "id": "gcd.ordinary",
+      "model": {
+        "path": "math/src/nt.rs.groupant/model.md#approximant",
+        "section": "Forward and cost",
+        "sha256": "02f1379d09ca8ad046d4a62f800814a4c3d533fc35bd7226caadff714f4758af"
+      },
+      "role": "forward",
+      "source": {
+        "path": "math/src/nt.rs",
+        "sha256": "27f4bf91578ab245e6b50f5f880126990b73b93b46882c37127e241031c359fe",
+        "symbol": "gcd"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed observations only; unlisted inputs unsupported.",
+          "u64 inputs embed losslessly into arbitrary integers; gcd(0,0)=0.",
+          "No control-flow, allocation or certificate equivalence.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "gcd_u64_projection.inputs",
+          "values": [
+            "(0,0)",
+            "(0,1)",
+            "(0,2)",
+            "(1,0)",
+            "(1,1)",
+            "(1,2)",
+            "(2,0)",
+            "(2,1)",
+            "(2,2)"
+          ]
+        },
+        "domain": {
+          "name": "gcd_u64_projection.outputs",
+          "values": [
+            "0",
+            "1",
+            "2"
+          ]
+        },
+        "effects": [],
+        "observation": "Unsigned gcd embedded into exact nonnegative integers."
+      },
+      "expr": {
+        "arg": {
+          "codomain": {
+            "name": "gcd_u64_projection.outputs",
+            "values": [
+              "0",
+              "1",
+              "2"
+            ]
+          },
+          "domain": {
+            "name": "gcd_u64_projection.inputs",
+            "values": [
+              "(0,0)",
+              "(0,1)",
+              "(0,2)",
+              "(1,0)",
+              "(1,1)",
+              "(1,2)",
+              "(2,0)",
+              "(2,1)",
+              "(2,2)"
+            ]
+          },
+          "name": "gcd.ordinary.source_projection",
+          "op": "atom",
+          "pairs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              1
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              8,
+              2
+            ]
+          ]
+        },
+        "op": "converse"
+      },
+      "groupant_id": "math-nt",
+      "id": "gcd.ordinary.reverse",
+      "model": {
+        "path": "math/src/nt.rs.groupant/model.md#approximant",
+        "section": "Forward and cost",
+        "sha256": "02f1379d09ca8ad046d4a62f800814a4c3d533fc35bd7226caadff714f4758af"
+      },
+      "role": "reverse_reconstruction",
+      "source": {
+        "path": "math/src/nt.rs",
+        "sha256": "27f4bf91578ab245e6b50f5f880126990b73b93b46882c37127e241031c359fe",
+        "symbol": "gcd"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed observations only; unlisted inputs unsupported.",
+          "u64 inputs embed losslessly into arbitrary integers; gcd(0,0)=0.",
+          "No control-flow, allocation or certificate equivalence.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "gcd_u64_projection.outputs",
+          "values": [
+            "0",
+            "1",
+            "2"
+          ]
+        },
+        "domain": {
+          "name": "gcd_u64_projection.inputs",
+          "values": [
+            "(0,0)",
+            "(0,1)",
+            "(0,2)",
+            "(1,0)",
+            "(1,1)",
+            "(1,2)",
+            "(2,0)",
+            "(2,1)",
+            "(2,2)"
+          ]
+        },
+        "effects": [],
+        "observation": "Unsigned gcd embedded into exact nonnegative integers."
+      },
+      "expr": {
+        "arg": {
+          "codomain": {
+            "name": "gcd_u64_projection.outputs",
+            "values": [
+              "0",
+              "1",
+              "2"
+            ]
+          },
+          "domain": {
+            "name": "gcd_u64_projection.inputs",
+            "values": [
+              "(0,0)",
+              "(0,1)",
+              "(0,2)",
+              "(1,0)",
+              "(1,1)",
+              "(1,2)",
+              "(2,0)",
+              "(2,1)",
+              "(2,2)"
+            ]
+          },
+          "name": "gcd.ordinary.source_projection",
+          "op": "atom",
+          "pairs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              1
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              8,
+              2
+            ]
+          ]
+        },
+        "op": "complement"
+      },
+      "groupant_id": "math-nt",
+      "id": "gcd.ordinary.complement",
+      "model": {
+        "path": "math/src/nt.rs.groupant/model.md#approximant",
+        "section": "Forward and cost",
+        "sha256": "02f1379d09ca8ad046d4a62f800814a4c3d533fc35bd7226caadff714f4758af"
+      },
+      "role": "behavior_complement",
+      "source": {
+        "path": "math/src/nt.rs",
+        "sha256": "27f4bf91578ab245e6b50f5f880126990b73b93b46882c37127e241031c359fe",
+        "symbol": "gcd"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed observations only; unlisted inputs unsupported.",
+          "Ascending small rational coefficients converted exactly to f64.",
+          "Value and derivative finite; project successful Result to first component.",
+          "Same ordered multiply/add; no real-number accuracy or full Result equivalence.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "horner_success_f64.outputs",
+          "values": [
+            "0",
+            "7"
+          ]
+        },
+        "domain": {
+          "name": "horner_success_f64.inputs",
+          "values": [
+            "[];x=2",
+            "[1,2];x=3",
+            "[1,0,-1];x=1"
+          ]
+        },
+        "effects": [],
+        "observation": "Successful polynomial value only."
+      },
+      "expr": {
+        "codomain": {
+          "name": "horner_success_f64.outputs",
+          "values": [
+            "0",
+            "7"
+          ]
+        },
+        "domain": {
+          "name": "horner_success_f64.inputs",
+          "values": [
+            "[];x=2",
+            "[1,2];x=3",
+            "[1,0,-1];x=1"
+          ]
+        },
+        "name": "horner.algorithm.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            0
+          ]
+        ]
+      },
+      "groupant_id": "algorithm-horner",
+      "id": "horner.algorithm",
+      "model": {
+        "path": "algorithms/src/horner/mod.rs.groupant/model.md#approximant",
+        "section": "Forward model and invariant",
+        "sha256": "de06a31a7dd03f9c37cafd6da9597f8fc9adcbb3836db9e58727c81bcd856b0b"
+      },
+      "role": "forward",
+      "source": {
+        "path": "algorithms/src/horner/mod.rs",
+        "sha256": "591283fb09317b37ebe6aadf1d0e6704737909a9aa91fda410abaa827cfd4de3",
+        "symbol": "evaluate"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed observations only; unlisted inputs unsupported.",
+          "Ascending small rational coefficients converted exactly to f64.",
+          "Value and derivative finite; project successful Result to first component.",
+          "Same ordered multiply/add; no real-number accuracy or full Result equivalence.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "horner_success_f64.outputs",
+          "values": [
+            "0",
+            "7"
+          ]
+        },
+        "domain": {
+          "name": "horner_success_f64.inputs",
+          "values": [
+            "[];x=2",
+            "[1,2];x=3",
+            "[1,0,-1];x=1"
+          ]
+        },
+        "effects": [],
+        "observation": "Successful polynomial value only."
+      },
+      "expr": {
+        "codomain": {
+          "name": "horner_success_f64.outputs",
+          "values": [
+            "0",
+            "7"
+          ]
+        },
+        "domain": {
+          "name": "horner_success_f64.inputs",
+          "values": [
+            "[];x=2",
+            "[1,2];x=3",
+            "[1,0,-1];x=1"
+          ]
+        },
+        "name": "horner.ordinary.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            0
+          ]
+        ]
+      },
+      "groupant_id": "math-poly",
+      "id": "horner.ordinary",
+      "model": {
+        "path": "math/src/poly.rs.groupant/model.md#approximant",
+        "section": "Forward and cost",
+        "sha256": "498fea24842188a8da61e1aeffe3b9c7bf225d554066842569b0e283c881e6e7"
+      },
+      "role": "forward",
+      "source": {
+        "path": "math/src/poly.rs",
+        "sha256": "28c7c69c8282270b6ac3bde99e6947108ec5be0f908d510806c4aefdfad61fca",
+        "symbol": "Poly::eval_f64"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed observations only; unlisted inputs unsupported.",
+          "Integer heads in range; exactly one root and matching root labels.",
+          "successor[0]=0; successor[i]=head[i]; compare cycle IDs to cycle_id[0].",
+          "Parsing/preflight errors, resource costs and cycle-list identity excluded.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "validated_head_map.outputs",
+          "values": [
+            "accepted",
+            "first_failed_start=1"
+          ]
+        },
+        "domain": {
+          "name": "validated_head_map.inputs",
+          "values": [
+            "[0,1]",
+            "[3,0,4,3]",
+            "[2,0]"
+          ]
+        },
+        "effects": [],
+        "observation": "First head-chain start outside root basin, or accepted."
+      },
+      "expr": {
+        "codomain": {
+          "name": "validated_head_map.outputs",
+          "values": [
+            "accepted",
+            "first_failed_start=1"
+          ]
+        },
+        "domain": {
+          "name": "validated_head_map.inputs",
+          "values": [
+            "[0,1]",
+            "[3,0,4,3]",
+            "[2,0]"
+          ]
+        },
+        "name": "root_basin.algorithm.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            0
+          ]
+        ]
+      },
+      "groupant_id": "algorithm-functional-graph-decomposition",
+      "id": "root_basin.algorithm",
+      "model": {
+        "path": "algorithms/src/functional_graph_decomposition/mod.rs.groupant/model.md#Forward",
+        "section": "Forward",
+        "sha256": "4155467354d84b35c188c2c148ea829dfda16ddecacf42234eade069389bb9d0"
+      },
+      "role": "forward",
+      "source": {
+        "path": "algorithms/src/functional_graph_decomposition/mod.rs",
+        "sha256": "ff41869319484740e0e56fe4a7bdb790d43834f5d6f5cf87f99eb28d7eef4aa9",
+        "symbol": "decompose"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed observations only; unlisted inputs unsupported.",
+          "Integer heads in range; exactly one root and matching root labels.",
+          "successor[0]=0; successor[i]=head[i]; compare cycle IDs to cycle_id[0].",
+          "Parsing/preflight errors, resource costs and cycle-list identity excluded.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "validated_head_map.outputs",
+          "values": [
+            "accepted",
+            "first_failed_start=1"
+          ]
+        },
+        "domain": {
+          "name": "validated_head_map.inputs",
+          "values": [
+            "[0,1]",
+            "[3,0,4,3]",
+            "[2,0]"
+          ]
+        },
+        "effects": [],
+        "observation": "First head-chain start outside root basin, or accepted."
+      },
+      "expr": {
+        "codomain": {
+          "name": "validated_head_map.outputs",
+          "values": [
+            "accepted",
+            "first_failed_start=1"
+          ]
+        },
+        "domain": {
+          "name": "validated_head_map.inputs",
+          "values": [
+            "[0,1]",
+            "[3,0,4,3]",
+            "[2,0]"
+          ]
+        },
+        "name": "root_basin.ordinary.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            0
+          ]
+        ]
+      },
+      "groupant_id": "en-convert",
+      "id": "root_basin.ordinary",
+      "model": {
+        "path": "en/src/convert.rs.groupant/model.md#approximant",
+        "section": "Current wave25 model",
+        "sha256": "f0a8643a9711cbce753052602abed1c4f5fe654b3912e02565013999cce26fc2"
+      },
+      "role": "forward",
+      "source": {
+        "path": "en/src/convert.rs",
+        "sha256": "35c96fa09e1e228137708edb9a16940669e4faf5ce79f8759720f1ca25feae78",
+        "symbol": "tree_gate"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed observations only; unlisted inputs unsupported.",
+          "Exact Q coefficient 10^308 converts to f64; algorithm uses same conversion.",
+          "Algorithm rejects derivative overflow; ordinary returns value directly.",
+          "Broader domain intentionally refutes unrestricted projection equivalence.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "horner_overflow_f64.outputs",
+          "values": [
+            "finite_value",
+            "arithmetic_rejection"
+          ]
+        },
+        "domain": {
+          "name": "horner_overflow_f64.inputs",
+          "values": [
+            "[0,0,10^308];x=1"
+          ]
+        },
+        "effects": [],
+        "observation": "Availability of a finite polynomial value after normal return."
+      },
+      "expr": {
+        "codomain": {
+          "name": "horner_overflow_f64.outputs",
+          "values": [
+            "finite_value",
+            "arithmetic_rejection"
+          ]
+        },
+        "domain": {
+          "name": "horner_overflow_f64.inputs",
+          "values": [
+            "[0,0,10^308];x=1"
+          ]
+        },
+        "name": "horner_overflow.algorithm.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      "groupant_id": "algorithm-horner",
+      "id": "horner_overflow.algorithm",
+      "model": {
+        "path": "algorithms/src/horner/mod.rs.groupant/model.md#approximant",
+        "section": "Forward model and invariant",
+        "sha256": "de06a31a7dd03f9c37cafd6da9597f8fc9adcbb3836db9e58727c81bcd856b0b"
+      },
+      "role": "forward",
+      "source": {
+        "path": "algorithms/src/horner/mod.rs",
+        "sha256": "591283fb09317b37ebe6aadf1d0e6704737909a9aa91fda410abaa827cfd4de3",
+        "symbol": "evaluate"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed observations only; unlisted inputs unsupported.",
+          "Exact Q coefficient 10^308 converts to f64; algorithm uses same conversion.",
+          "Algorithm rejects derivative overflow; ordinary returns value directly.",
+          "Broader domain intentionally refutes unrestricted projection equivalence.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "horner_overflow_f64.outputs",
+          "values": [
+            "finite_value",
+            "arithmetic_rejection"
+          ]
+        },
+        "domain": {
+          "name": "horner_overflow_f64.inputs",
+          "values": [
+            "[0,0,10^308];x=1"
+          ]
+        },
+        "effects": [],
+        "observation": "Availability of a finite polynomial value after normal return."
+      },
+      "expr": {
+        "codomain": {
+          "name": "horner_overflow_f64.outputs",
+          "values": [
+            "finite_value",
+            "arithmetic_rejection"
+          ]
+        },
+        "domain": {
+          "name": "horner_overflow_f64.inputs",
+          "values": [
+            "[0,0,10^308];x=1"
+          ]
+        },
+        "name": "horner_overflow.ordinary.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "groupant_id": "math-poly",
+      "id": "horner_overflow.ordinary",
+      "model": {
+        "path": "math/src/poly.rs.groupant/model.md#approximant",
+        "section": "Forward and cost",
+        "sha256": "498fea24842188a8da61e1aeffe3b9c7bf225d554066842569b0e283c881e6e7"
+      },
+      "role": "forward",
+      "source": {
+        "path": "math/src/poly.rs",
+        "sha256": "28c7c69c8282270b6ac3bde99e6947108ec5be0f908d510806c4aefdfad61fca",
+        "symbol": "Poly::eval_f64"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed observations only; unlisted inputs unsupported.",
+          "One rectangular well-shaped equation; consistency only.",
+          "Coefficients reduced modulo 998244353.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "single_linear_equation.outputs",
+          "values": [
+            "consistent",
+            "inconsistent"
+          ]
+        },
+        "domain": {
+          "name": "F_998244353_equation",
+          "values": [
+            "A=[[998244353]];b=[1]"
+          ]
+        },
+        "effects": [],
+        "observation": "Existence of a solution in stated scalar field."
+      },
+      "expr": {
+        "codomain": {
+          "name": "single_linear_equation.outputs",
+          "values": [
+            "consistent",
+            "inconsistent"
+          ]
+        },
+        "domain": {
+          "name": "F_998244353_equation",
+          "values": [
+            "A=[[998244353]];b=[1]"
+          ]
+        },
+        "name": "field_boundary.algorithm.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      "groupant_id": "algorithm-gaussian-elimination-modular",
+      "id": "field_boundary.algorithm",
+      "model": {
+        "path": "algorithms/src/gaussian_elimination_modular/mod.rs.groupant/model.md#Forward",
+        "section": "Forward",
+        "sha256": "3ca4e86b3c08d9946e6b08714960924b0896f694df2b695f162f047b494e33b7"
+      },
+      "role": "forward",
+      "source": {
+        "path": "algorithms/src/gaussian_elimination_modular/mod.rs",
+        "sha256": "df058a4564d5545f898c6040ae8789063deb63e601e4dbf89c7fd676e27a6b08",
+        "symbol": "solve"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed observations only; unlisted inputs unsupported.",
+          "One rectangular well-shaped equation; consistency only.",
+          "Coefficients interpreted as exact rationals.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "single_linear_equation.outputs",
+          "values": [
+            "consistent",
+            "inconsistent"
+          ]
+        },
+        "domain": {
+          "name": "Q_equation",
+          "values": [
+            "A=[[998244353]];b=[1]"
+          ]
+        },
+        "effects": [],
+        "observation": "Existence of a solution in stated scalar field."
+      },
+      "expr": {
+        "codomain": {
+          "name": "single_linear_equation.outputs",
+          "values": [
+            "consistent",
+            "inconsistent"
+          ]
+        },
+        "domain": {
+          "name": "Q_equation",
+          "values": [
+            "A=[[998244353]];b=[1]"
+          ]
+        },
+        "name": "field_boundary.ordinary.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "groupant_id": "math-linsys",
+      "id": "field_boundary.ordinary",
+      "model": {
+        "path": "math/src/linsys.rs.groupant/model.md#approximant",
+        "section": "Forward and cost",
+        "sha256": "78ae5f977f2ce779f9faca8355af7bc47ce588d8960a4c532dd27e5101cc2e6f"
+      },
+      "role": "forward",
+      "source": {
+        "path": "math/src/linsys.rs",
+        "sha256": "dd9f5f6f6c55e4f91db8f8be82b3a0472be600f245de26372c417224d22fdc2b",
+        "symbol": "gauss"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Only (0,0); both current implementations explicitly return zero.",
+          "Historical baseline ordinary wrapper panic was repaired; this relation describes current source."
+        ],
+        "codomain": {
+          "name": "gcd_zero_outcomes",
+          "values": [
+            "returned_zero"
+          ]
+        },
+        "domain": {
+          "name": "gcd_zero_inputs",
+          "values": [
+            "(0,0)"
+          ]
+        },
+        "effects": [],
+        "observation": "Returned zero at gcd zero boundary."
+      },
+      "expr": {
+        "codomain": {
+          "name": "gcd_zero_outcomes",
+          "values": [
+            "returned_zero"
+          ]
+        },
+        "domain": {
+          "name": "gcd_zero_inputs",
+          "values": [
+            "(0,0)"
+          ]
+        },
+        "name": "gcd_zero.algorithm.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "groupant_id": "algorithm-gcd",
+      "id": "gcd_zero.algorithm",
+      "model": {
+        "path": "algorithms/src/gcd/mod.rs.groupant/model.md#Forward",
+        "section": "Forward",
+        "sha256": "edbd5e3da9a63adc0c70f12b1be035022005d1700e17f9ef9d2ae09c1c89e2d4"
+      },
+      "role": "forward",
+      "source": {
+        "path": "algorithms/src/gcd/mod.rs",
+        "sha256": "abce5c9a9f0a2de26a6dbe392180e6a1c20eea179623fd5ede84434679b0d0e3",
+        "symbol": "gcd"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Only (0,0); both current implementations explicitly return zero.",
+          "Historical baseline ordinary wrapper panic was repaired; this relation describes current source."
+        ],
+        "codomain": {
+          "name": "gcd_zero_outcomes",
+          "values": [
+            "returned_zero"
+          ]
+        },
+        "domain": {
+          "name": "gcd_zero_inputs",
+          "values": [
+            "(0,0)"
+          ]
+        },
+        "effects": [],
+        "observation": "Returned zero at gcd zero boundary."
+      },
+      "expr": {
+        "codomain": {
+          "name": "gcd_zero_outcomes",
+          "values": [
+            "returned_zero"
+          ]
+        },
+        "domain": {
+          "name": "gcd_zero_inputs",
+          "values": [
+            "(0,0)"
+          ]
+        },
+        "name": "gcd_zero.ordinary.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "groupant_id": "math-nt",
+      "id": "gcd_zero.ordinary",
+      "model": {
+        "path": "math/src/nt.rs.groupant/model.md#approximant",
+        "section": "Forward and cost",
+        "sha256": "02f1379d09ca8ad046d4a62f800814a4c3d533fc35bd7226caadff714f4758af"
+      },
+      "role": "forward",
+      "source": {
+        "path": "math/src/nt.rs",
+        "sha256": "27f4bf91578ab245e6b50f5f880126990b73b93b46882c37127e241031c359fe",
+        "symbol": "gcd"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed byte fixtures only; unlisted inputs unsupported.",
+          "Symmetric byte equality; bytes stand for tokens, never for raw UTF-8 of characters.",
+          "Length-only observation; comparison schedule, row layout and witnesses are outside this projection.",
+          "Shorter side at most 64 bytes; a successful return is projected to its length.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "lcs_small_bytes.outputs",
+          "values": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ]
+        },
+        "domain": {
+          "name": "lcs_small_bytes.inputs",
+          "values": [
+            "[]/[]",
+            "[]/[1]",
+            "[1]/[1]",
+            "[1,2]/[2,1]",
+            "[1,2,3]/[2,1,3]",
+            "[0,1,0,1]/[1,0,1,0]",
+            "[1,1,2]/[1,2,2]"
+          ]
+        },
+        "effects": [],
+        "observation": "Longest common subsequence length of two listed short byte sequences."
+      },
+      "expr": {
+        "codomain": {
+          "name": "lcs_small_bytes.outputs",
+          "values": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ]
+        },
+        "domain": {
+          "name": "lcs_small_bytes.inputs",
+          "values": [
+            "[]/[]",
+            "[]/[1]",
+            "[1]/[1]",
+            "[1,2]/[2,1]",
+            "[1,2,3]/[2,1,3]",
+            "[0,1,0,1]/[1,0,1,0]",
+            "[1,1,2]/[1,2,2]"
+          ]
+        },
+        "name": "lcs.ordinary.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            4,
+            2
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            6,
+            2
+          ]
+        ]
+      },
+      "groupant_id": "en-text",
+      "id": "lcs.ordinary",
+      "model": {
+        "path": "en/src/text.rs.groupant/model.md#approximant",
+        "section": "Forward relation",
+        "sha256": "453b6f34aa9fe4811894a75e791caf8e6e2633a365d54aaccce50f04e3f47121"
+      },
+      "role": "forward",
+      "source": {
+        "path": "en/src/text.rs",
+        "sha256": "982745e7578be07699a17ba9628d5866eb92d033968154d3607e7debe0b9d83e",
+        "symbol": "lcs"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed byte fixtures only; unlisted inputs unsupported.",
+          "Symmetric byte equality; bytes stand for tokens, never for raw UTF-8 of characters.",
+          "Length-only observation; comparison schedule, row layout and witnesses are outside this projection.",
+          "Shorter side at most 64 bytes; a successful return is projected to its length.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "lcs_small_bytes.outputs",
+          "values": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ]
+        },
+        "domain": {
+          "name": "lcs_small_bytes.inputs",
+          "values": [
+            "[]/[]",
+            "[]/[1]",
+            "[1]/[1]",
+            "[1,2]/[2,1]",
+            "[1,2,3]/[2,1,3]",
+            "[0,1,0,1]/[1,0,1,0]",
+            "[1,1,2]/[1,2,2]"
+          ]
+        },
+        "effects": [],
+        "observation": "Longest common subsequence length of two listed short byte sequences."
+      },
+      "expr": {
+        "codomain": {
+          "name": "lcs_small_bytes.outputs",
+          "values": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ]
+        },
+        "domain": {
+          "name": "lcs_small_bytes.inputs",
+          "values": [
+            "[]/[]",
+            "[]/[1]",
+            "[1]/[1]",
+            "[1,2]/[2,1]",
+            "[1,2,3]/[2,1,3]",
+            "[0,1,0,1]/[1,0,1,0]",
+            "[1,1,2]/[1,2,2]"
+          ]
+        },
+        "name": "lcs.algorithm.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            4,
+            2
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            6,
+            2
+          ]
+        ]
+      },
+      "groupant_id": "algorithm-longest-common-subsequence",
+      "id": "lcs.algorithm",
+      "model": {
+        "path": "algorithms/src/longest_common_subsequence/mod.rs.groupant/model.md#Forward",
+        "section": "Forward",
+        "sha256": "9c602dc84a63695c4d873751c977a42650e1ebc8b7c1711d32d80d1b71812f6a"
+      },
+      "role": "forward",
+      "source": {
+        "path": "algorithms/src/longest_common_subsequence/mod.rs",
+        "sha256": "fec6e6aeea147e5954f49bcc927484c2ba68465f1495a01ad1bbb507e5f72f51",
+        "symbol": "length"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Finite listed byte fixtures only; unlisted inputs unsupported.",
+          "Symmetric byte equality; bytes stand for tokens, never for raw UTF-8 of characters.",
+          "Length-only observation; comparison schedule, row layout and witnesses are outside this projection.",
+          "Shorter side at most 64 bytes; a successful return is projected to its length.",
+          "Normal return only; allocation failure excluded; no external writes."
+        ],
+        "codomain": {
+          "name": "lcs_small_bytes.outputs",
+          "values": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ]
+        },
+        "domain": {
+          "name": "lcs_small_bytes.inputs",
+          "values": [
+            "[]/[]",
+            "[]/[1]",
+            "[1]/[1]",
+            "[1,2]/[2,1]",
+            "[1,2,3]/[2,1,3]",
+            "[0,1,0,1]/[1,0,1,0]",
+            "[1,1,2]/[1,2,2]"
+          ]
+        },
+        "effects": [],
+        "observation": "Longest common subsequence length of two listed short byte sequences."
+      },
+      "expr": {
+        "codomain": {
+          "name": "lcs_small_bytes.outputs",
+          "values": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ]
+        },
+        "domain": {
+          "name": "lcs_small_bytes.inputs",
+          "values": [
+            "[]/[]",
+            "[]/[1]",
+            "[1]/[1]",
+            "[1,2]/[2,1]",
+            "[1,2,3]/[2,1,3]",
+            "[0,1,0,1]/[1,0,1,0]",
+            "[1,1,2]/[1,2,2]"
+          ]
+        },
+        "name": "lcs.bitparallel.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            4,
+            2
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            6,
+            2
+          ]
+        ]
+      },
+      "groupant_id": "algorithm-bit-parallel-lcs",
+      "id": "lcs.bitparallel",
+      "model": {
+        "path": "algorithms/src/bit_parallel_lcs/mod.rs.groupant/model.md#approximant",
+        "section": "Forward",
+        "sha256": "a52b8f36661d1ab8ee4a0f691241553b24dec4f374a6243fce45372f06cae95a"
+      },
+      "role": "forward",
+      "source": {
+        "path": "algorithms/src/bit_parallel_lcs/mod.rs",
+        "sha256": "7cace61982a54fac084c8306581c460a10945a7b2f10f8d43e7478babb1365fc",
+        "symbol": "length"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Only twelve listed integer inputs; unlisted inputs unsupported.",
+          "Integer base and coefficients, every value and derivative operation fit exact finite f64 on these fixtures.",
+          "Algorithm input reverses the MSB-first integer coefficient list; compare value only after Ok.",
+          "Normal return; no allocation failure or external writes."
+        ],
+        "codomain": {
+          "name": "digit_horner_msb.values",
+          "values": [
+            "-8",
+            "0",
+            "2",
+            "3",
+            "8",
+            "12",
+            "21"
+          ]
+        },
+        "domain": {
+          "name": "digit_horner_msb.inputs",
+          "values": [
+            "ds=[];b=10",
+            "ds=[0];b=10",
+            "ds=[1, 2];b=10",
+            "ds=[0, 1, 2];b=10",
+            "ds=[-1, 2];b=10",
+            "ds=[1, -2];b=10",
+            "ds=[1, 2];b=1",
+            "ds=[1, 2];b=0",
+            "ds=[1, 2];b=-2",
+            "ds=[1, 2, 3];b=-2",
+            "ds=[2, 1, 0];b=3",
+            "ds=[2, -1, 2];b=2"
+          ]
+        },
+        "effects": [],
+        "observation": "Exact integer value after explicit MSB-to-ascending coefficient transport; paired derivative and errors are not equated."
+      },
+      "expr": {
+        "codomain": {
+          "name": "digit_horner_msb.values",
+          "values": [
+            "-8",
+            "0",
+            "2",
+            "3",
+            "8",
+            "12",
+            "21"
+          ]
+        },
+        "domain": {
+          "name": "digit_horner_msb.inputs",
+          "values": [
+            "ds=[];b=10",
+            "ds=[0];b=10",
+            "ds=[1, 2];b=10",
+            "ds=[0, 1, 2];b=10",
+            "ds=[-1, 2];b=10",
+            "ds=[1, -2];b=10",
+            "ds=[1, 2];b=1",
+            "ds=[1, 2];b=0",
+            "ds=[1, 2];b=-2",
+            "ds=[1, 2, 3];b=-2",
+            "ds=[2, 1, 0];b=3",
+            "ds=[2, -1, 2];b=2"
+          ]
+        },
+        "name": "digit_horner.algorithm.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            6,
+            3
+          ],
+          [
+            7,
+            2
+          ],
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            3
+          ],
+          [
+            10,
+            6
+          ],
+          [
+            11,
+            4
+          ]
+        ]
+      },
+      "groupant_id": "algorithm-horner",
+      "id": "digit_horner.algorithm",
+      "model": {
+        "path": "algorithms/src/horner/mod.rs.groupant/model.md#finite_catalogue",
+        "section": "finite_catalogue",
+        "sha256": "a951fc7f2e30a2c15bf7a11b8dadb49843bc5d70f6edcc85d2736a21cf7077df"
+      },
+      "role": "forward",
+      "source": {
+        "path": "algorithms/src/horner/mod.rs",
+        "sha256": "591283fb09317b37ebe6aadf1d0e6704737909a9aa91fda410abaa827cfd4de3",
+        "symbol": "evaluate"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Only twelve listed integer inputs; unlisted inputs unsupported.",
+          "Integer base and coefficients, every value and derivative operation fit exact finite f64 on these fixtures.",
+          "Algorithm input reverses the MSB-first integer coefficient list; compare value only after Ok.",
+          "Normal return; no allocation failure or external writes."
+        ],
+        "codomain": {
+          "name": "digit_horner_msb.inputs",
+          "values": [
+            "ds=[];b=10",
+            "ds=[0];b=10",
+            "ds=[1, 2];b=10",
+            "ds=[0, 1, 2];b=10",
+            "ds=[-1, 2];b=10",
+            "ds=[1, -2];b=10",
+            "ds=[1, 2];b=1",
+            "ds=[1, 2];b=0",
+            "ds=[1, 2];b=-2",
+            "ds=[1, 2, 3];b=-2",
+            "ds=[2, 1, 0];b=3",
+            "ds=[2, -1, 2];b=2"
+          ]
+        },
+        "domain": {
+          "name": "digit_horner_msb.values",
+          "values": [
+            "-8",
+            "0",
+            "2",
+            "3",
+            "8",
+            "12",
+            "21"
+          ]
+        },
+        "effects": [],
+        "observation": "Exact integer value after explicit MSB-to-ascending coefficient transport; paired derivative and errors are not equated."
+      },
+      "expr": {
+        "arg": {
+          "codomain": {
+            "name": "digit_horner_msb.values",
+            "values": [
+              "-8",
+              "0",
+              "2",
+              "3",
+              "8",
+              "12",
+              "21"
+            ]
+          },
+          "domain": {
+            "name": "digit_horner_msb.inputs",
+            "values": [
+              "ds=[];b=10",
+              "ds=[0];b=10",
+              "ds=[1, 2];b=10",
+              "ds=[0, 1, 2];b=10",
+              "ds=[-1, 2];b=10",
+              "ds=[1, -2];b=10",
+              "ds=[1, 2];b=1",
+              "ds=[1, 2];b=0",
+              "ds=[1, 2];b=-2",
+              "ds=[1, 2, 3];b=-2",
+              "ds=[2, 1, 0];b=3",
+              "ds=[2, -1, 2];b=2"
+            ]
+          },
+          "name": "digit_horner.algorithm.source_projection",
+          "op": "atom",
+          "pairs": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              3,
+              5
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              3
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              8,
+              1
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              10,
+              6
+            ],
+            [
+              11,
+              4
+            ]
+          ]
+        },
+        "op": "converse"
+      },
+      "groupant_id": "algorithm-horner",
+      "id": "digit_horner.algorithm.reverse",
+      "model": {
+        "path": "algorithms/src/horner/mod.rs.groupant/model.md#finite_catalogue",
+        "section": "finite_catalogue",
+        "sha256": "a951fc7f2e30a2c15bf7a11b8dadb49843bc5d70f6edcc85d2736a21cf7077df"
+      },
+      "role": "reverse_reconstruction",
+      "source": {
+        "path": "algorithms/src/horner/mod.rs",
+        "sha256": "591283fb09317b37ebe6aadf1d0e6704737909a9aa91fda410abaa827cfd4de3",
+        "symbol": "evaluate"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Only twelve listed integer inputs; unlisted inputs unsupported.",
+          "Integer base and coefficients, every value and derivative operation fit exact finite f64 on these fixtures.",
+          "Algorithm input reverses the MSB-first integer coefficient list; compare value only after Ok.",
+          "Normal return; no allocation failure or external writes."
+        ],
+        "codomain": {
+          "name": "digit_horner_msb.values",
+          "values": [
+            "-8",
+            "0",
+            "2",
+            "3",
+            "8",
+            "12",
+            "21"
+          ]
+        },
+        "domain": {
+          "name": "digit_horner_msb.inputs",
+          "values": [
+            "ds=[];b=10",
+            "ds=[0];b=10",
+            "ds=[1, 2];b=10",
+            "ds=[0, 1, 2];b=10",
+            "ds=[-1, 2];b=10",
+            "ds=[1, -2];b=10",
+            "ds=[1, 2];b=1",
+            "ds=[1, 2];b=0",
+            "ds=[1, 2];b=-2",
+            "ds=[1, 2, 3];b=-2",
+            "ds=[2, 1, 0];b=3",
+            "ds=[2, -1, 2];b=2"
+          ]
+        },
+        "effects": [],
+        "observation": "Exact integer value after explicit MSB-to-ascending coefficient transport; paired derivative and errors are not equated."
+      },
+      "expr": {
+        "arg": {
+          "codomain": {
+            "name": "digit_horner_msb.values",
+            "values": [
+              "-8",
+              "0",
+              "2",
+              "3",
+              "8",
+              "12",
+              "21"
+            ]
+          },
+          "domain": {
+            "name": "digit_horner_msb.inputs",
+            "values": [
+              "ds=[];b=10",
+              "ds=[0];b=10",
+              "ds=[1, 2];b=10",
+              "ds=[0, 1, 2];b=10",
+              "ds=[-1, 2];b=10",
+              "ds=[1, -2];b=10",
+              "ds=[1, 2];b=1",
+              "ds=[1, 2];b=0",
+              "ds=[1, 2];b=-2",
+              "ds=[1, 2, 3];b=-2",
+              "ds=[2, 1, 0];b=3",
+              "ds=[2, -1, 2];b=2"
+            ]
+          },
+          "name": "digit_horner.algorithm.source_projection",
+          "op": "atom",
+          "pairs": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              3,
+              5
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              3
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              8,
+              1
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              10,
+              6
+            ],
+            [
+              11,
+              4
+            ]
+          ]
+        },
+        "op": "complement"
+      },
+      "groupant_id": "algorithm-horner",
+      "id": "digit_horner.algorithm.complement",
+      "model": {
+        "path": "algorithms/src/horner/mod.rs.groupant/model.md#finite_catalogue",
+        "section": "finite_catalogue",
+        "sha256": "a951fc7f2e30a2c15bf7a11b8dadb49843bc5d70f6edcc85d2736a21cf7077df"
+      },
+      "role": "behavior_complement",
+      "source": {
+        "path": "algorithms/src/horner/mod.rs",
+        "sha256": "591283fb09317b37ebe6aadf1d0e6704737909a9aa91fda410abaa827cfd4de3",
+        "symbol": "evaluate"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Only twelve listed integer inputs; unlisted inputs unsupported.",
+          "Integer base and coefficients, every value and derivative operation fit exact finite f64 on these fixtures.",
+          "Algorithm input reverses the MSB-first integer coefficient list; compare value only after Ok.",
+          "Normal return; no allocation failure or external writes."
+        ],
+        "codomain": {
+          "name": "digit_horner_msb.values",
+          "values": [
+            "-8",
+            "0",
+            "2",
+            "3",
+            "8",
+            "12",
+            "21"
+          ]
+        },
+        "domain": {
+          "name": "digit_horner_msb.inputs",
+          "values": [
+            "ds=[];b=10",
+            "ds=[0];b=10",
+            "ds=[1, 2];b=10",
+            "ds=[0, 1, 2];b=10",
+            "ds=[-1, 2];b=10",
+            "ds=[1, -2];b=10",
+            "ds=[1, 2];b=1",
+            "ds=[1, 2];b=0",
+            "ds=[1, 2];b=-2",
+            "ds=[1, 2, 3];b=-2",
+            "ds=[2, 1, 0];b=3",
+            "ds=[2, -1, 2];b=2"
+          ]
+        },
+        "effects": [],
+        "observation": "Exact integer value after explicit MSB-to-ascending coefficient transport; paired derivative and errors are not equated."
+      },
+      "expr": {
+        "codomain": {
+          "name": "digit_horner_msb.values",
+          "values": [
+            "-8",
+            "0",
+            "2",
+            "3",
+            "8",
+            "12",
+            "21"
+          ]
+        },
+        "domain": {
+          "name": "digit_horner_msb.inputs",
+          "values": [
+            "ds=[];b=10",
+            "ds=[0];b=10",
+            "ds=[1, 2];b=10",
+            "ds=[0, 1, 2];b=10",
+            "ds=[-1, 2];b=10",
+            "ds=[1, -2];b=10",
+            "ds=[1, 2];b=1",
+            "ds=[1, 2];b=0",
+            "ds=[1, 2];b=-2",
+            "ds=[1, 2, 3];b=-2",
+            "ds=[2, 1, 0];b=3",
+            "ds=[2, -1, 2];b=2"
+          ]
+        },
+        "name": "digit_horner.ordinary.source_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            6,
+            3
+          ],
+          [
+            7,
+            2
+          ],
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            3
+          ],
+          [
+            10,
+            6
+          ],
+          [
+            11,
+            4
+          ]
+        ]
+      },
+      "groupant_id": "math-nt",
+      "id": "digit_horner.ordinary",
+      "model": {
+        "path": "math/src/nt.rs.groupant/model.md#finite_catalogue",
+        "section": "finite_catalogue",
+        "sha256": "35c07d0ab561ee4756197c29edd09ad1a31f488e5dd7b1e51693766bfc60dc0e"
+      },
+      "role": "forward",
+      "source": {
+        "path": "math/src/nt.rs",
+        "sha256": "27f4bf91578ab245e6b50f5f880126990b73b93b46882c37127e241031c359fe",
+        "symbol": "from_digits"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Only twelve listed integer inputs; unlisted inputs unsupported.",
+          "Integer base and coefficients, every value and derivative operation fit exact finite f64 on these fixtures.",
+          "Algorithm input reverses the MSB-first integer coefficient list; compare value only after Ok.",
+          "Normal return; no allocation failure or external writes."
+        ],
+        "codomain": {
+          "name": "digit_horner_msb.inputs",
+          "values": [
+            "ds=[];b=10",
+            "ds=[0];b=10",
+            "ds=[1, 2];b=10",
+            "ds=[0, 1, 2];b=10",
+            "ds=[-1, 2];b=10",
+            "ds=[1, -2];b=10",
+            "ds=[1, 2];b=1",
+            "ds=[1, 2];b=0",
+            "ds=[1, 2];b=-2",
+            "ds=[1, 2, 3];b=-2",
+            "ds=[2, 1, 0];b=3",
+            "ds=[2, -1, 2];b=2"
+          ]
+        },
+        "domain": {
+          "name": "digit_horner_msb.values",
+          "values": [
+            "-8",
+            "0",
+            "2",
+            "3",
+            "8",
+            "12",
+            "21"
+          ]
+        },
+        "effects": [],
+        "observation": "Exact integer value after explicit MSB-to-ascending coefficient transport; paired derivative and errors are not equated."
+      },
+      "expr": {
+        "arg": {
+          "codomain": {
+            "name": "digit_horner_msb.values",
+            "values": [
+              "-8",
+              "0",
+              "2",
+              "3",
+              "8",
+              "12",
+              "21"
+            ]
+          },
+          "domain": {
+            "name": "digit_horner_msb.inputs",
+            "values": [
+              "ds=[];b=10",
+              "ds=[0];b=10",
+              "ds=[1, 2];b=10",
+              "ds=[0, 1, 2];b=10",
+              "ds=[-1, 2];b=10",
+              "ds=[1, -2];b=10",
+              "ds=[1, 2];b=1",
+              "ds=[1, 2];b=0",
+              "ds=[1, 2];b=-2",
+              "ds=[1, 2, 3];b=-2",
+              "ds=[2, 1, 0];b=3",
+              "ds=[2, -1, 2];b=2"
+            ]
+          },
+          "name": "digit_horner.ordinary.source_projection",
+          "op": "atom",
+          "pairs": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              3,
+              5
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              3
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              8,
+              1
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              10,
+              6
+            ],
+            [
+              11,
+              4
+            ]
+          ]
+        },
+        "op": "converse"
+      },
+      "groupant_id": "math-nt",
+      "id": "digit_horner.ordinary.reverse",
+      "model": {
+        "path": "math/src/nt.rs.groupant/model.md#finite_catalogue",
+        "section": "finite_catalogue",
+        "sha256": "35c07d0ab561ee4756197c29edd09ad1a31f488e5dd7b1e51693766bfc60dc0e"
+      },
+      "role": "reverse_reconstruction",
+      "source": {
+        "path": "math/src/nt.rs",
+        "sha256": "27f4bf91578ab245e6b50f5f880126990b73b93b46882c37127e241031c359fe",
+        "symbol": "from_digits"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Only twelve listed integer inputs; unlisted inputs unsupported.",
+          "Integer base and coefficients, every value and derivative operation fit exact finite f64 on these fixtures.",
+          "Algorithm input reverses the MSB-first integer coefficient list; compare value only after Ok.",
+          "Normal return; no allocation failure or external writes."
+        ],
+        "codomain": {
+          "name": "digit_horner_msb.values",
+          "values": [
+            "-8",
+            "0",
+            "2",
+            "3",
+            "8",
+            "12",
+            "21"
+          ]
+        },
+        "domain": {
+          "name": "digit_horner_msb.inputs",
+          "values": [
+            "ds=[];b=10",
+            "ds=[0];b=10",
+            "ds=[1, 2];b=10",
+            "ds=[0, 1, 2];b=10",
+            "ds=[-1, 2];b=10",
+            "ds=[1, -2];b=10",
+            "ds=[1, 2];b=1",
+            "ds=[1, 2];b=0",
+            "ds=[1, 2];b=-2",
+            "ds=[1, 2, 3];b=-2",
+            "ds=[2, 1, 0];b=3",
+            "ds=[2, -1, 2];b=2"
+          ]
+        },
+        "effects": [],
+        "observation": "Exact integer value after explicit MSB-to-ascending coefficient transport; paired derivative and errors are not equated."
+      },
+      "expr": {
+        "arg": {
+          "codomain": {
+            "name": "digit_horner_msb.values",
+            "values": [
+              "-8",
+              "0",
+              "2",
+              "3",
+              "8",
+              "12",
+              "21"
+            ]
+          },
+          "domain": {
+            "name": "digit_horner_msb.inputs",
+            "values": [
+              "ds=[];b=10",
+              "ds=[0];b=10",
+              "ds=[1, 2];b=10",
+              "ds=[0, 1, 2];b=10",
+              "ds=[-1, 2];b=10",
+              "ds=[1, -2];b=10",
+              "ds=[1, 2];b=1",
+              "ds=[1, 2];b=0",
+              "ds=[1, 2];b=-2",
+              "ds=[1, 2, 3];b=-2",
+              "ds=[2, 1, 0];b=3",
+              "ds=[2, -1, 2];b=2"
+            ]
+          },
+          "name": "digit_horner.ordinary.source_projection",
+          "op": "atom",
+          "pairs": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              3,
+              5
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              3
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              8,
+              1
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              10,
+              6
+            ],
+            [
+              11,
+              4
+            ]
+          ]
+        },
+        "op": "complement"
+      },
+      "groupant_id": "math-nt",
+      "id": "digit_horner.ordinary.complement",
+      "model": {
+        "path": "math/src/nt.rs.groupant/model.md#finite_catalogue",
+        "section": "finite_catalogue",
+        "sha256": "35c07d0ab561ee4756197c29edd09ad1a31f488e5dd7b1e51693766bfc60dc0e"
+      },
+      "role": "behavior_complement",
+      "source": {
+        "path": "math/src/nt.rs",
+        "sha256": "27f4bf91578ab245e6b50f5f880126990b73b93b46882c37127e241031c359fe",
+        "symbol": "from_digits"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Only the four listed equality-flag observations; all other native fields and valid report bytes/digest are fixed.",
+          "Fresh writable output and stable cooperative inputs; unrelated parse, budget and I/O failures excluded.",
+          "Pure admission projection only; source reads/publication, timing, truth and authorship are not represented.",
+          "External review evidence is a different declared format. Converse/complement derive from the same finite forward evidence."
+        ],
+        "codomain": {
+          "name": "agent.native_identity_projection.outputs",
+          "values": [
+            "refused",
+            "admitted"
+          ]
+        },
+        "domain": {
+          "name": "agent.native_identity_projection.inputs",
+          "values": [
+            "id_diff,outcome_diff",
+            "id_diff,outcome_same",
+            "id_same,outcome_diff",
+            "id_same,outcome_same"
+          ]
+        },
+        "effects": [],
+        "observation": "Conditioned native report validation admission, not semantic approval."
+      },
+      "expr": {
+        "codomain": {
+          "name": "agent.native_identity_projection.outputs",
+          "values": [
+            "refused",
+            "admitted"
+          ]
+        },
+        "domain": {
+          "name": "agent.native_identity_projection.inputs",
+          "values": [
+            "id_diff,outcome_diff",
+            "id_diff,outcome_same",
+            "id_same,outcome_diff",
+            "id_same,outcome_same"
+          ]
+        },
+        "name": "native_identity_admission_conditioned_projection",
+        "op": "atom",
+        "pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            1
+          ]
+        ]
+      },
+      "groupant_id": "agent-mova-library",
+      "id": "native.identity_projection.forward",
+      "model": {
+        "path": "tools/agent-mova/src/lib.rs.groupant/model.md#Two-flag admission projection",
+        "section": "Two-flag admission projection",
+        "sha256": "a2fd0af744245cb2da96efd0c8a6d477e98fa582933f99cf72a3fa51aac16078"
+      },
+      "role": "forward",
+      "source": {
+        "path": "tools/agent-mova/src/lib.rs",
+        "sha256": "ffd0df199afcef79cebce1015c8b200ea9314a1bf85f1317c8985a61ffef9d4b",
+        "symbol": "collect"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Only the four listed equality-flag observations; all other native fields and valid report bytes/digest are fixed.",
+          "Fresh writable output and stable cooperative inputs; unrelated parse, budget and I/O failures excluded.",
+          "Pure admission projection only; source reads/publication, timing, truth and authorship are not represented.",
+          "External review evidence is a different declared format. Converse/complement derive from the same finite forward evidence."
+        ],
+        "codomain": {
+          "name": "agent.native_identity_projection.inputs",
+          "values": [
+            "id_diff,outcome_diff",
+            "id_diff,outcome_same",
+            "id_same,outcome_diff",
+            "id_same,outcome_same"
+          ]
+        },
+        "domain": {
+          "name": "agent.native_identity_projection.outputs",
+          "values": [
+            "refused",
+            "admitted"
+          ]
+        },
+        "effects": [],
+        "observation": "Conditioned native report validation admission, not semantic approval."
+      },
+      "expr": {
+        "arg": {
+          "codomain": {
+            "name": "agent.native_identity_projection.outputs",
+            "values": [
+              "refused",
+              "admitted"
+            ]
+          },
+          "domain": {
+            "name": "agent.native_identity_projection.inputs",
+            "values": [
+              "id_diff,outcome_diff",
+              "id_diff,outcome_same",
+              "id_same,outcome_diff",
+              "id_same,outcome_same"
+            ]
+          },
+          "name": "native_identity_admission_conditioned_projection",
+          "op": "atom",
+          "pairs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              3,
+              1
+            ]
+          ]
+        },
+        "op": "converse"
+      },
+      "groupant_id": "agent-mova-library",
+      "id": "native.identity_projection.reverse",
+      "model": {
+        "path": "tools/agent-mova/src/lib.rs.groupant/model.md#Two-flag admission projection",
+        "section": "Two-flag admission projection",
+        "sha256": "a2fd0af744245cb2da96efd0c8a6d477e98fa582933f99cf72a3fa51aac16078"
+      },
+      "role": "reverse_reconstruction",
+      "source": {
+        "path": "tools/agent-mova/src/lib.rs",
+        "sha256": "ffd0df199afcef79cebce1015c8b200ea9314a1bf85f1317c8985a61ffef9d4b",
+        "symbol": "collect"
+      }
+    },
+    {
+      "contract": {
+        "assumptions": [
+          "Only the four listed equality-flag observations; all other native fields and valid report bytes/digest are fixed.",
+          "Fresh writable output and stable cooperative inputs; unrelated parse, budget and I/O failures excluded.",
+          "Pure admission projection only; source reads/publication, timing, truth and authorship are not represented.",
+          "External review evidence is a different declared format. Converse/complement derive from the same finite forward evidence."
+        ],
+        "codomain": {
+          "name": "agent.native_identity_projection.outputs",
+          "values": [
+            "refused",
+            "admitted"
+          ]
+        },
+        "domain": {
+          "name": "agent.native_identity_projection.inputs",
+          "values": [
+            "id_diff,outcome_diff",
+            "id_diff,outcome_same",
+            "id_same,outcome_diff",
+            "id_same,outcome_same"
+          ]
+        },
+        "effects": [],
+        "observation": "Conditioned native report validation admission, not semantic approval."
+      },
+      "expr": {
+        "arg": {
+          "codomain": {
+            "name": "agent.native_identity_projection.outputs",
+            "values": [
+              "refused",
+              "admitted"
+            ]
+          },
+          "domain": {
+            "name": "agent.native_identity_projection.inputs",
+            "values": [
+              "id_diff,outcome_diff",
+              "id_diff,outcome_same",
+              "id_same,outcome_diff",
+              "id_same,outcome_same"
+            ]
+          },
+          "name": "native_identity_admission_conditioned_projection",
+          "op": "atom",
+          "pairs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              3,
+              1
+            ]
+          ]
+        },
+        "op": "complement"
+      },
+      "groupant_id": "agent-mova-library",
+      "id": "native.identity_projection.complement",
+      "model": {
+        "path": "tools/agent-mova/src/lib.rs.groupant/model.md#Two-flag admission projection",
+        "section": "Two-flag admission projection",
+        "sha256": "a2fd0af744245cb2da96efd0c8a6d477e98fa582933f99cf72a3fa51aac16078"
+      },
+      "role": "behavior_complement",
+      "source": {
+        "path": "tools/agent-mova/src/lib.rs",
+        "sha256": "ffd0df199afcef79cebce1015c8b200ea9314a1bf85f1317c8985a61ffef9d4b",
+        "symbol": "collect"
+      }
+    }
+  ],
+  "schema_version": 1
+}

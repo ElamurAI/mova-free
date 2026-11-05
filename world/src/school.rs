@@ -49,12 +49,13 @@ impl Op {
             Op::Div => "÷",
         }
     }
-    fn apply(self, a: i64, b: i64) -> Option<i64> {
+    /// Exact school arithmetic; reject overflow, negative subtraction and inexact division.
+    pub fn apply(self, a: i64, b: i64) -> Option<i64> {
         match self {
-            Op::Add => Some(a + b),
-            Op::Sub => (a >= b).then_some(a - b),
-            Op::Mul => Some(a * b),
-            Op::Div => (b != 0 && a % b == 0).then(|| a / b),
+            Op::Add => a.checked_add(b),
+            Op::Sub => if a >= b { a.checked_sub(b) } else { None },
+            Op::Mul => a.checked_mul(b),
+            Op::Div => (a.checked_rem(b) == Some(0)).then(|| a.checked_div(b)).flatten(),
         }
     }
 }
@@ -330,8 +331,13 @@ impl Student {
     }
 
     pub fn load() -> Student {
+        Self::from_tsv(&std::fs::read_to_string(Student::path()).unwrap_or_default())
+    }
+
+    /// Decode supplied retained weights without reading or activating global state.
+    pub fn from_tsv(text: &str) -> Student {
         let mut s = Student::default();
-        for l in std::fs::read_to_string(Student::path()).unwrap_or_default().lines().filter(|l| !l.starts_with('#')) {
+        for l in text.lines().filter(|l| !l.starts_with('#')) {
             let c: Vec<&str> = l.split('\t').collect();
             let n = |i: usize| c.get(i).and_then(|x| x.parse().ok()).unwrap_or(0);
             if c.len() >= 5 {
@@ -344,16 +350,31 @@ impl Student {
         s
     }
 
-    pub fn save(&self) -> Result<()> {
+    /// Encode retained current and accumulated weights in stable key order.
+    /// Missing accumulators stay absent; explicit accumulators, including zero
+    /// rows, stay present because their presence selects the averaged table.
+    pub fn to_tsv(&self) -> String {
         let mut t = String::from("# the student's weights: word, add, subtract, multiply, divide, then the summed weights (the same four)\n");
-        for (k, v) in &self.w {
+        let keys: BTreeSet<_> = self.w.keys().chain(self.acc.keys()).collect();
+        for k in keys {
+            let v = self.w.get(k).copied().unwrap_or_default();
             let a = self.acc.get(k).copied().unwrap_or_default();
-            if v.iter().chain(a.iter()).any(|&x| x != 0) {
-                writeln!(t, "{k}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}", v[0], v[1], v[2], v[3], a[0], a[1], a[2], a[3])?;
+            if v.iter().any(|&x| x != 0) || self.acc.contains_key(k) {
+                write!(t, "{k}\t{}\t{}\t{}\t{}", v[0], v[1], v[2], v[3]).expect("writing to String");
+                // Preserve absence of averaged weights in legacy/current-only rows:
+                // a synthesized zero accumulator would switch the answer table.
+                if self.acc.contains_key(k) {
+                    write!(t, "\t{}\t{}\t{}\t{}", a[0], a[1], a[2], a[3]).expect("writing to String");
+                }
+                t.push('\n');
             }
         }
+        t
+    }
+
+    pub fn save(&self) -> Result<()> {
         std::fs::create_dir_all(Student::path().parent().unwrap())?;
-        crate::store::write_atomic(&Student::path(), t.as_bytes())
+        crate::store::write_atomic(&Student::path(), self.to_tsv().as_bytes())
     }
 
     /// The operation chosen for a problem and why (the words that weighed most), among the operations allowed.
@@ -361,8 +382,8 @@ impl Student {
         let ws = words(&p.text);
         // the averaged weights once there are any, else the current ones
         let table = if self.acc.is_empty() { &self.w } else { &self.acc };
-        let score = |o: Op| ws.iter().map(|w| table.get(w).map(|v| v[o as usize]).unwrap_or(0)).sum::<i64>();
-        // a tie (or nothing known) goes to the first allowed operation: a beginner adds
+        let score = |o: Op| ws.iter().map(|w| table.get(w).map(|v| i128::from(v[o as usize])).unwrap_or(0)).sum::<i128>();
+        // A tie goes to the lowest operation discriminant, independent of allowed order.
         let best = allowed.iter().copied().max_by(|a, b| score(*a).cmp(&score(*b)).then((*b as u8).cmp(&(*a as u8)))).unwrap_or(Op::Add);
         let mut why: Vec<(i64, String)> = ws.iter().filter_map(|w| table.get(w).map(|v| (v[best as usize], w.clone()))).filter(|x| x.0 > 0).collect();
         why.sort_by(|a, b| b.0.cmp(&a.0).then(a.1.cmp(&b.1)));
@@ -773,35 +794,52 @@ impl Actors {
         crate::state::root().join("school").join("actors.tsv")
     }
     pub fn load() -> Actors {
-        let mut a = Actors::default();
-        for l in std::fs::read_to_string(Actors::path()).unwrap_or_default().lines().filter(|l| !l.starts_with('#')) {
+        Self::from_tsv(&std::fs::read_to_string(Actors::path()).unwrap_or_default())
+    }
+
+    /// Decode supplied verb votes. Duplicate rows sum exactly in i128, then
+    /// clamp once to i64; row order cannot change a representable total.
+    pub fn from_tsv(text: &str) -> Actors {
+        let mut votes: BTreeMap<String, BTreeMap<Effect, i128>> = BTreeMap::new();
+        for l in text.lines().filter(|l| !l.starts_with('#')) {
             let c: Vec<&str> = l.split('\t').collect();
             if c.len() == 4 {
-                *a.votes.entry(c[0].to_string()).or_default().entry((c[1].parse().unwrap_or(0), c[2].parse().unwrap_or(0))).or_default() += c[3].parse::<i64>().unwrap_or(0);
+                *votes.entry(c[0].to_string()).or_default().entry((c[1].parse().unwrap_or(0), c[2].parse().unwrap_or(0))).or_default() += i128::from(c[3].parse::<i64>().unwrap_or(0));
             }
         }
-        a
+        Actors {
+            votes: votes.into_iter().map(|(verb, effects)| {
+                (verb, effects.into_iter().map(|(effect, n)| {
+                    (effect, n.clamp(i64::MIN as i128, i64::MAX as i128) as i64)
+                }).collect())
+            }).collect(),
+        }
     }
-    pub fn save(&self) -> Result<()> {
+    /// Encode verb votes in stable verb/effect order without filesystem I/O.
+    pub fn to_tsv(&self) -> String {
         let mut t = String::from("# what a verb does: verb, to the subject, to the receiver, votes\n");
         for (v, m) in &self.votes {
             for ((a, b), n) in m {
-                writeln!(t, "{v}\t{a}\t{b}\t{n}")?;
+                writeln!(t, "{v}\t{a}\t{b}\t{n}").expect("writing to String");
             }
         }
+        t
+    }
+
+    pub fn save(&self) -> Result<()> {
         std::fs::create_dir_all(Actors::path().parent().unwrap())?;
-        crate::store::write_atomic(&Actors::path(), t.as_bytes())
+        crate::store::write_atomic(&Actors::path(), self.to_tsv().as_bytes())
     }
     /// The effect on the subject and on the receiver, each by its own votes: a vote (a, b) counts for both sides;
     /// a vote (a, NONE) only for the subject, (NONE, b) only for the receiver (what an answer showed of one side).
     fn effect(&self, verb: &str) -> Option<Effect> {
         let m = self.votes.get(verb)?;
         let side = |pick: &dyn Fn(&Effect) -> i64| -> Option<i64> {
-            let mut t: BTreeMap<i64, i64> = BTreeMap::new();
+            let mut t: BTreeMap<i64, i128> = BTreeMap::new();
             for (e, n) in m {
                 let x = pick(e);
                 if x != NONE {
-                    *t.entry(x).or_default() += n;
+                    *t.entry(x).or_default() += i128::from(*n);
                 }
             }
             t.into_iter().max_by(|a, b| a.1.cmp(&b.1).then(b.0.cmp(&a.0))).map(|x| x.0)
@@ -1150,7 +1188,7 @@ fn from_dictionary(actors: &Actors, v: &str) -> Option<Effect> {
     }
     static M: std::sync::OnceLock<BTreeMap<String, [String; 6]>> = std::sync::OnceLock::new();
     // the first sentence of the first sense only: a rich entry's other senses and examples name other verbs by the way
-    let meaning = M.get_or_init(crate::dictionary::improved).get(v)?[2].to_lowercase().split(" 2) ").next().unwrap_or("").split(['.', ';', ':']).next().unwrap_or("").to_string();
+    let meaning = M.get_or_init(crate::meanings::improved).get(v)?[2].to_lowercase().split(" 2) ").next().unwrap_or("").split(['.', ';', ':']).next().unwrap_or("").to_string();
     // a verb's own meaning («to buy is to get …»); a noun's description names verbs only by the way
     let Some(body) = meaning.split_once(" is to ").map(|x| x.1) else {
         return (meaning.contains("no longer") || meaning.contains(" gone")).then_some((-1, 0));
@@ -2230,7 +2268,7 @@ fn say_reading(r: &Reading) -> String {
     format!("I read: {}", v.join("; "))
 }
 
-/// The lessons written as data (`world/data/school/lessons`): for each, its explanation, 120 exercises with the
+/// The lessons written as data (`courses/lessons` of the school data): for each, its explanation, 120 exercises with the
 /// teacher's answers (the student learns from every one), and 60 test problems told only in the test's phrasings.
 pub fn data_course(ns: &[usize]) -> Result<String> {
     let mut actors = Actors::load();
@@ -2657,6 +2695,21 @@ pub fn world_diag(examples: &str) -> Result<String> {
     Ok(out)
 }
 
+/// The fold of a supplied item or group hash; no corpus is read here.
+/// A zero fold count has no partition. The ungrouped affine map need not be
+/// a permutation when its multiplier and the fold count share a factor.
+pub fn assessment_fold(index: usize, group: Option<u64>, repeat: usize, folds: usize) -> Option<usize> {
+    if folds == 0 {
+        return None;
+    }
+    let primes = [1usize, 7, 13, 31, 101];
+    Some(if let Some(hash) = group {
+        ((hash ^ ((repeat as u64).wrapping_mul(0x9e3779b97f4a7c15))) % folds as u64) as usize
+    } else {
+        ((index as u128 * primes[repeat % primes.len()] as u128 + repeat as u128) % folds as u128) as usize
+    })
+}
+
 pub fn cross_check() -> Result<String> {
     cross_check_k(std::env::var("MOVA_FOLDS").ok().and_then(|x| x.parse().ok()).unwrap_or(5))
 }
@@ -2673,7 +2726,6 @@ pub fn cross_check_k(k: usize) -> Result<String> {
     // the folds repeated with other splits (MOVA_REPEATS, 3 by default): a problem's fold is (i × a prime + r) mod k,
     // so the measure does not hang on one order of learning
     let repeats: usize = std::env::var("MOVA_REPEATS").ok().and_then(|x| x.parse().ok()).unwrap_or(3);
-    let primes = [1usize, 7, 13, 31, 101];
     // grouped (MOVA_GROUPED=1): the variants of one problem — the same first six words with the numbers taken out —
     // stay in one part, so the check measures what carries over to problems not seen in any form
     let grouped = std::env::var("MOVA_GROUPED").is_ok();
@@ -2682,7 +2734,7 @@ pub fn cross_check_k(k: usize) -> Result<String> {
         key.bytes().fold(1469598103934665603u64, |h, b| (h ^ b as u64).wrapping_mul(1099511628211))
     };
     for (rep, fold) in (0..repeats).flat_map(|r| (0..k).map(move |f| (r, f))) {
-        let part = |i: usize| if grouped { ((group_of(&train[i].0) ^ (rep as u64 * 0x9e3779b97f4a7c15)) % k as u64) as usize } else { (i * primes[rep % primes.len()] + rep) % k };
+        let part = |i: usize| assessment_fold(i, grouped.then(|| group_of(&train[i].0)), rep, k).expect("nonzero folds in loop");
         let learn: Vec<(String, i64)> = train.iter().enumerate().filter(|(i, _)| part(*i) != fold).map(|x| x.1.clone()).chain(extra.iter().cloned()).collect();
         let check: Vec<&(String, i64)> = train.iter().enumerate().filter(|(i, _)| part(*i) == fold).map(|x| x.1).collect();
         let w = crate::opchoice::train(&learn, std::env::var("MOVA_EPOCHS").ok().and_then(|x| x.parse().ok()).unwrap_or(10));
@@ -3216,5 +3268,398 @@ mod tests {
         assert!(r1 > r0 + n / 2, "before {r0}, after {r1} of {n}");
         // the same test twice gives the same answers
         assert_eq!(test(&s, l, 7, 40).0, r1);
+    }
+}
+
+
+#[cfg(test)]
+mod wave12_models {
+    use super::*;
+
+    #[test]
+    fn arithmetic_extremes_reject_unrepresentable_answers() {
+        for (op, a, b) in [
+            (Op::Add, i64::MAX, 1),
+            (Op::Sub, i64::MAX, -1),
+            (Op::Sub, i64::MIN, 1),
+            (Op::Mul, i64::MAX, 2),
+            (Op::Div, i64::MIN, -1),
+        ] {
+            assert_eq!(op.apply(a, b), None, "{op:?} {a} {b}");
+        }
+    }
+
+    #[test]
+    fn selection_preserves_wide_score_order() {
+        let mut s = Student::default();
+        s.w.insert("gain".into(), [i64::MAX, i64::MAX - 1, 0, 0]);
+        s.w.insert("extra".into(), [i64::MAX, 0, 0, 0]);
+        let p = Problem {
+            text: "gain extra".into(),
+            a: 8,
+            b: 2,
+            op: Op::Add,
+        };
+        assert_eq!(s.choose(&p, &OPS).0, Op::Add);
+    }
+
+    #[test]
+    fn actor_votes_preserve_wide_marginal_order() {
+        let mut a = Actors::default();
+        a.votes.insert(
+            "gift".into(),
+            BTreeMap::from([
+                ((-1, 0), i64::MAX),
+                ((-1, 1), i64::MAX),
+                ((1, 0), i64::MAX - 1),
+            ]),
+        );
+        assert_eq!(a.effect("gift"), Some((-1, 0)));
+    }
+
+    #[test]
+    fn grouped_assessment_repeats_are_wrapping_and_disjoint() {
+        for repeat in 0..9 {
+            for hash in [0, 1, u64::MAX, 123456789] {
+                let mixed = ((repeat as u128 * 0x9e3779b97f4a7c15u128) & u64::MAX as u128) as u64;
+                let expected = ((hash ^ mixed) % 5) as usize;
+                assert_eq!(assessment_fold(3, Some(hash), repeat, 5), Some(expected));
+            }
+        }
+    }
+
+    #[test]
+    fn arithmetic_matches_widened_integer_oracle() {
+        for a in -12i64..=12 {
+            for b in -12i64..=12 {
+                let x = i128::from(a);
+                let y = i128::from(b);
+                let expected = [
+                    Some(x + y),
+                    if x >= y { Some(x - y) } else { None },
+                    Some(x * y),
+                    if y != 0 && x % y == 0 {
+                        Some(x / y)
+                    } else {
+                        None
+                    },
+                ];
+                for (op, want) in OPS.into_iter().zip(expected) {
+                    assert_eq!(op.apply(a, b), want.map(|v| v as i64), "{op:?} {a} {b}");
+                }
+            }
+        }
+        assert_eq!(
+            Problem {
+                text: String::new(),
+                a: i64::MAX,
+                b: 1,
+                op: Op::Add
+            }
+            .answer(),
+            0
+        );
+    }
+
+    #[test]
+    fn selection_ties_accumulator_precedence_and_explanations() {
+        let mut s = Student::default();
+        let p = Problem {
+            text: "gain extra spare bonus".into(),
+            a: 8,
+            b: 2,
+            op: Op::Sub,
+        };
+        assert_eq!(s.choose(&p, &[Op::Div, Op::Sub, Op::Mul]).0, Op::Sub);
+        assert_eq!(s.choose(&p, &[]).0, Op::Add);
+        s.w.insert("gain".into(), [99, 0, 0, 0]);
+        for key in ["spare", "gain", "extra", "bonus"] {
+            s.acc.insert(key.into(), [0, 7, 0, 0]);
+        }
+        let (op, why) = s.choose(&p, &OPS);
+        assert_eq!(op, Op::Sub);
+        assert_eq!(why, ["bonus", "extra", "gain"]);
+        // Even an unrelated accumulator row activates the averaged table globally.
+        s.acc.clear();
+        s.acc.insert("unrelated".into(), [1, 0, 0, 0]);
+        assert_eq!(s.choose(&p, &[Op::Div, Op::Sub]).0, Op::Sub);
+    }
+
+    #[test]
+    fn hinted_updates_and_ticks_preserve_actual_retained_state() {
+        let p = Problem {
+            text: "give more".into(),
+            a: 5,
+            b: 2,
+            op: Op::Add,
+        };
+        let mut s = Student::default();
+        s.learn(&p, Op::Sub, Some("give+more"));
+        assert_eq!(s.w, BTreeMap::from([("give+more".into(), [4, -1, 0, 0])]));
+        assert_eq!(s.acc, s.w);
+        s.learn(&p, Op::Add, Some("ignored"));
+        assert_eq!(s.w["give+more"], [4, -1, 0, 0]);
+        assert_eq!(s.acc["give+more"], [8, -2, 0, 0]);
+        let encoded = s.to_tsv();
+        let loaded = Student::from_tsv(&encoded);
+        assert!(loaded == s);
+        assert_eq!(loaded.answer(&p, &OPS), s.answer(&p, &OPS));
+        assert_eq!(loaded.to_tsv(), encoded);
+    }
+
+    #[test]
+    fn retained_student_format_is_ordered_and_legacy_tolerant() {
+        let input = "# header\nzeta\t1\t2\t3\t4\nbroken\nalpha\tbad\t-2\t3\t4\t5\t6\t7\t8\nzeta\t9\t0\t0\t0\n";
+        let s = Student::from_tsv(input);
+        assert_eq!(s.w["alpha"], [0, -2, 3, 4]);
+        assert_eq!(s.w["zeta"], [9, 0, 0, 0]);
+        assert_eq!(s.acc["alpha"], [5, 6, 7, 8]);
+        assert!(!s.acc.contains_key("zeta"));
+        let encoded = s.to_tsv();
+        assert_eq!(
+            encoded.lines().skip(1).collect::<Vec<_>>(),
+            ["alpha\t0\t-2\t3\t4\t5\t6\t7\t8", "zeta\t9\t0\t0\t0",]
+        );
+        // Missing accumulators stay absent across encoding.
+        let canonical = Student::from_tsv(&encoded);
+        assert!(canonical == s);
+        assert_eq!(canonical.to_tsv(), encoded);
+        let mut projected = Student::default();
+        projected.w.insert("zero".into(), [0; 4]);
+        projected.acc.insert("orphan".into(), [1; 4]);
+        assert_eq!(projected.to_tsv().lines().count(), 2);
+        let canonical = Student::from_tsv(&projected.to_tsv());
+        assert_eq!(canonical.acc, projected.acc);
+        assert_eq!(canonical.w["orphan"], [0; 4]);
+        assert!(!canonical.w.contains_key("zero"));
+    }
+
+    #[test]
+    fn actor_retention_and_partial_vote_projection() {
+        let a = Actors::from_tsv(
+            "# header\ngift\t-1\t9\t2\ngift\t-1\t9\t3\ngift\t9\t1\t4\nreceiver\t9\t1\t2\n",
+        );
+        assert_eq!(a.votes["gift"][&(-1, NONE)], 5);
+        assert_eq!(a.effect("gift"), Some((-1, 1)));
+        assert_eq!(a.effect("receiver"), None);
+        assert_eq!(a.effect("missing"), None);
+        let encoded = a.to_tsv();
+        let loaded = Actors::from_tsv(&encoded);
+        assert_eq!(loaded.votes, a.votes);
+        assert_eq!(loaded.effect("gift"), a.effect("gift"));
+        assert_eq!(loaded.to_tsv(), encoded);
+        let tie = Actors::from_tsv("v\t1\t1\t2\nv\t-1\t-1\t2\n");
+        assert_eq!(tie.effect("v"), Some((-1, -1)));
+    }
+
+    #[test]
+    fn supplied_reading_transfer_and_fraction_use_prior_state() {
+        let r = Reading {
+            holds: vec![
+                ("Tom".into(), "apple".into(), 10),
+                ("Anna".into(), "apple".into(), 2),
+            ],
+            events: vec![
+                Ev {
+                    verb: "give".into(),
+                    subj: "Tom".into(),
+                    to: "Anna".into(),
+                    n: 3,
+                    thing: "apple".into(),
+                    ..Ev::default()
+                },
+                Ev {
+                    verb: "give".into(),
+                    subj: "Tom".into(),
+                    to: "Anna".into(),
+                    frac: Some((1, 1)),
+                    keep: 2,
+                    thing: "apple".into(),
+                    ..Ev::default()
+                },
+            ],
+            ask_whose: Some("Anna".into()),
+            ..Reading::default()
+        };
+        let before = r.holds.clone();
+        let w = play(&r, &|v| (v == "give").then_some((-1, 1))).unwrap();
+        assert_eq!(w, BTreeMap::from([("Anna".into(), 10), ("Tom".into(), 2)]));
+        assert_eq!(w.values().sum::<i64>(), 12);
+        assert_eq!(answer_of(&r, &w), Some(10));
+        assert_eq!(r.holds, before);
+        assert!(play(&r, &|_| None).is_none());
+        let focused = focus(&r, "pear", false);
+        assert!(focused.holds.is_empty() && focused.events.is_empty());
+        assert_eq!(focused.ask_whose, r.ask_whose);
+    }
+
+    #[test]
+    fn table_replay_clamps_only_after_complete_journal() {
+        let journal = [
+            Event {
+                verb: "take".into(),
+                n: 4,
+                thing: "apple".into(),
+            },
+            Event {
+                verb: "put".into(),
+                n: 3,
+                thing: "apple".into(),
+            },
+        ];
+        let effects = BTreeMap::from([("put".into(), 7), ("take".into(), -2)]);
+        assert!(replay(&journal, &effects).is_empty());
+        assert_eq!(truth(&journal), replay(&journal, &effects));
+        assert_eq!(
+            describe(&BTreeMap::from([("pear".into(), 2), ("apple".into(), 1)])),
+            "one apple and two pears"
+        );
+    }
+
+    #[test]
+    fn assessment_partition_has_exactly_one_check_fold() {
+        let primes = [1u128, 7, 13, 31, 101];
+        for folds in [1usize, 2, 5, 7] {
+            for repeat in 0..9 {
+                for index in [0usize, 1, 40, usize::MAX] {
+                    let want = ((index as u128 * primes[repeat % 5] + repeat as u128)
+                        % folds as u128) as usize;
+                    let part = assessment_fold(index, None, repeat, folds).unwrap();
+                    assert_eq!(part, want);
+                    assert_eq!((0..folds).filter(|&f| f == part).count(), 1);
+                    assert_eq!((0..folds).filter(|&f| f != part).count(), folds - 1);
+                    // Identical group hashes remain together regardless of row index.
+                    assert_eq!(
+                        assessment_fold(index, Some(47), repeat, folds),
+                        assessment_fold(0, Some(47), repeat, folds)
+                    );
+                }
+            }
+        }
+        assert_eq!(assessment_fold(0, None, 0, 0), None);
+    }
+
+    #[test]
+    fn elementary_assessment_templates_are_separate_and_revision_is_last() {
+        let train: BTreeSet<_> = PRACTICE.iter().map(|t| t.1).collect();
+        assert!(TEST.iter().all(|t| !train.contains(t.1)));
+        let all = lessons();
+        assert_eq!(
+            all.iter().map(|l| l.n).collect::<Vec<_>>(),
+            [1, 2, 3, 4, 5, 7, 8, 6]
+        );
+        for lesson in &all {
+            assert!(PRACTICE.iter().any(|t| fits(t, lesson)));
+            assert!(TEST.iter().any(|t| fits(t, lesson)));
+        }
+        assert_eq!(book_lesson_of("Some apples are left", "Addition"), Some(40));
+        assert_eq!(book_lesson_of("Anything", "primer two"), Some(48));
+        // The scenario paraphrase pools do overlap: this test deliberately makes
+        // no blanket train/test vocabulary-separation claim for scenario lessons.
+        assert_eq!(GIVE_SAY[..2][1], GIVE_SAY[1..3][0]);
+    }
+
+    #[test]
+    fn legacy_retention_does_not_change_answer_table() {
+        let s = Student::from_tsv("gain\t0\t5\t0\t0\n");
+        let p = Problem {
+            text: "gain".into(),
+            a: 8,
+            b: 2,
+            op: Op::Sub,
+        };
+        assert_eq!(s.answer(&p, &OPS).0, Some(6));
+        let loaded = Student::from_tsv(&s.to_tsv());
+        assert_eq!(loaded.answer(&p, &OPS), s.answer(&p, &OPS));
+        assert!(loaded == s);
+    }
+    #[test]
+    fn zero_accumulator_activation_survives_retention() {
+        let s = Student::from_tsv("zero\t0\t0\t0\t0\t0\t0\t0\t0\ngain\t0\t9\t0\t0\n");
+        let p = Problem {
+            text: "gain".into(),
+            a: 8,
+            b: 2,
+            op: Op::Sub,
+        };
+        assert_eq!(s.answer(&p, &OPS).0, Some(10));
+        let loaded = Student::from_tsv(&s.to_tsv());
+        assert_eq!(loaded.answer(&p, &OPS), s.answer(&p, &OPS));
+        assert!(loaded == s);
+    }
+
+    #[test]
+    fn duplicate_actor_votes_clamp_after_exact_summation() {
+        let a = Actors::from_tsv(&format!(
+            "v\t-1\t1\t{}\nv\t-1\t1\t1\nv\t-1\t1\t-1\n",
+            i64::MAX
+        ));
+        assert_eq!(a.votes["v"][&(-1, 1)], i64::MAX);
+        let overflow = Actors::from_tsv(&format!("v\t-1\t1\t{}\nv\t-1\t1\t1\n", i64::MAX));
+        assert_eq!(overflow.votes["v"][&(-1, 1)], i64::MAX);
+        let underflow = Actors::from_tsv(&format!("v\t1\t0\t{}\nv\t1\t0\t-1\n", i64::MIN));
+        assert_eq!(underflow.votes["v"][&(1, 0)], i64::MIN);
+        let reversed = Actors::from_tsv(&format!(
+            "v\t-1\t1\t-1\nv\t-1\t1\t1\nv\t-1\t1\t{}\n",
+            i64::MAX
+        ));
+        assert_eq!(reversed.votes, a.votes);
+    }
+}
+#[cfg(test)]
+mod wave34_models {
+    use super::*;
+
+    #[test]
+    fn answer_priority_preserves_shadowed_absence() {
+        let w = BTreeMap::from([("A".to_string(), 12), ("B".to_string(), 5)]);
+        let mut r = Reading {
+            front: Some(3),
+            back: Some(4),
+            line: Some(20),
+            ask_front: true,
+            ask_behind: true,
+            span: Some((2, 8)),
+            clock: Some((11, 3)),
+            ask_minutes: Some(2),
+            pack: Some((17, 4)),
+            ask_full: true,
+            ask_over: true,
+            ask_whose: Some("A".into()),
+            ask_all: true,
+            ..Reading::default()
+        };
+        assert_eq!(answer_of(&r, &w), Some(6));
+        r.back = None;
+        assert_eq!(answer_of(&r, &w), Some(2));
+        r.ask_front = false;
+        assert_eq!(answer_of(&r, &w), Some(17));
+        r.line = None;
+        assert_eq!(
+            answer_of(&r, &w),
+            None,
+            "selected missing line shadows span"
+        );
+        r.front = None;
+        assert_eq!(answer_of(&r, &w), Some(7));
+        r.span = None;
+        assert_eq!(answer_of(&r, &w), Some(2));
+        r.clock = None;
+        assert_eq!(answer_of(&r, &w), Some(120));
+        r.ask_minutes = None;
+        assert_eq!(answer_of(&r, &w), Some(4));
+        r.ask_full = false;
+        assert_eq!(answer_of(&r, &w), Some(1));
+        r.pack = None;
+        r.ask_some = vec!["missing".into()];
+        assert_eq!(
+            answer_of(&r, &w),
+            None,
+            "missing selected holder shadows total"
+        );
+        r.ask_some.clear();
+        assert_eq!(answer_of(&r, &w), Some(12));
+        r.ask_whose = None;
+        assert_eq!(answer_of(&r, &w), Some(17));
     }
 }

@@ -1,0 +1,31 @@
+{
+  "checks": [
+    "segment_tree::tests: seven tests in debug and release, repeated outcomes",
+    "Three added source-level correspondence tests and explicit missing-premise counterexamples",
+    "Compiled production mutation rejected by a new test",
+    "Strict crate Clippy with all targets; formatting; repeated source-bound syntax"
+  ],
+  "cost": "Construction O(n) comparisons and storage, n lawful clones. Query/update O(log(n+1)) comparisons, O(1) workspace. Invalid queries/updates O(1). Comparisons and clones have user-defined cost. Capacity checked before doubling; allocation/capacity panic outside result model.",
+  "description": "For lawful ordered values A, query_index(s,e) returns the smallest i in [s,e) attaining its minimum if 0<=s<e<=n, otherwise None. query returns its value reference. update(i,x) replaces only A[i] if i<n; otherwise returns InvalidIndex and preserves the complete state. Deep relation epoch adds scoped decomposition, transport/state and reconstruction constraints with explicit tie premises.",
+  "forward": [
+    "For lawful ordered values A, query_index(s,e) returns the smallest i in [s,e) attaining its minimum if 0<=s<e<=n, otherwise None. query returns its value reference. update(i,x) replaces only A[i] if i<n; otherwise returns InvalidIndex and preserves the complete state."
+  ],
+  "id": "algorithm-segment-tree",
+  "inverse": [
+    "In the universe of arrays, operations, outputs and successor states, exclude any minimum outside the requested range, nonminimum or nonleftmost ties, Some for invalid/empty ranges, changed state on invalid update, and changes to other points after valid update.",
+    "A returned index j admits arrays with s<=j<e, A[j]<=A[k] for all k in the range, and A[j]<A[k] for k<j. None admits exactly invalid or empty ranges. A post-update array admits all antecedents agreeing outside i; the overwritten value is unconstrained. Invalid update admits only an identical prior state.",
+    "For fixed A define i meet j = argmin of (A[i],i),(A[j],j), with None as identity. The operation is associative, commutative and idempotent. Q(s,e)=Q(s,m) meet Q(m,e) for 0<=s<=m<=e<=n. Empty pieces are None. This explains why compact tree layout and reduction traversal cannot change tie choices.",
+    "For valid i and range R excluding i, Q(update(A,i,x),R)=Q(A,R), including returned values. At the internal-state level only A[i] and ancestors of leaf n+i may change; unchanged ancestors are allowed. Invalid indices preserve every field. This is not an exception-safety promise for a panicking comparison.",
+    "For distinct valid i,j and fixed replacement values x,y, U(j,y)(U(i,x)(S))=U(i,x)(U(j,y)(S)) as complete deterministic tree states. When i=j equality requires x=y; otherwise the last write wins, so dropping distinctness is false.",
+    "For a fixed length n, observe query(i,i+1) values for every i. The compatible value vector is uniquely A[i]=observed[i]. Rebuilding from A reconstructs the canonical tree, not arbitrary corrupted private state or update history. Observing only singleton indices always yields i and cannot recover values.",
+    "For an order embedding f on the observed value set, Q_f(A)(s,e)=Q_A(s,e): strict comparisons and equalities are preserved. Strictly increasing integer affine maps require no overflow. Merely nondecreasing f is insufficient: [1,0] maps to [0,0], changing index 1 to 0.",
+    "For lawful independent value clones, let C=clone(S). Updates on C leave every query and complete state of S unchanged. Equality after restoring a point uses deterministic canonical construction. Clones with shared interior mutable order state violate the premise and are outside this relation."
+  ],
+  "limitations": [
+    "Finite evidence is not all-input proof.",
+    "Partial syntax projection omits macro expansion and semantic resolution.",
+    "No lossy approximant profile."
+  ],
+  "source": "algorithms/src/segment_tree/mod.rs",
+  "state": "Leaves n+i contain i; every internal node stores argmin (A[i],i) over its descendant leaves. Non-power-of-two layout need not preserve leaf traversal order: explicit index tie selection makes the commutative minimum reduction sound. Query maintains a disjoint cover of consumed and pending leaves; update recomputes exactly the leaf's ancestors."
+}

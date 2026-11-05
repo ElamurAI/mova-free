@@ -1,0 +1,112 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-bron-kerbosch-tests-behavior_complement",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "Universe U is candidate implementations x named outcomes. A wrong implementation violating a sampled assertion cannot yield all-pass. The compiled production mutant targeting lexicographic_maximum_and_bit_63 is a witnessed exclusion. Unsampled defects can still pass; finite coverage is explicit.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "c0c8a21c107e57584b60dea36da83e81b1e4d9f9a37ffd4e4953205f802dd2db",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-bron-kerbosch-tests-reverse_reconstruction",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "The all-pass observation admits every implementation agreeing on sampled assertions, including ones wrong elsewhere. A failing assertion constrains the mismatching observation but need not uniquely identify a defect. Named identities preserve more information than only a count.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "c0c8a21c107e57584b60dea36da83e81b1e4d9f9a37ffd4e4953205f802dd2db",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-bron-kerbosch-tests-oracle_independence",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "Independent witness: Every simple graph through five vertices compares independent subset clique enumeration, plus lexicographic ties, vertex 63, empty and complete 64-vertex graphs and typed validation boundaries. The oracle uses a distinct representation or exhaustive candidate enumeration; self-roundtrip alone is insufficient.",
+        "path": "model.md",
+        "section": "oracle_independence",
+        "status": "partial_relational_specification",
+        "subject_revision": "c0c8a21c107e57584b60dea36da83e81b1e4d9f9a37ffd4e4953205f802dd2db",
+        "type": "oracle_independence"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-bron-kerbosch-tests-subset_objective_discrimination",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "brute enumerates all vertex subsets and tests every unordered pair against the supplied edge list; it does not use production neighbors, pivot selection, maximal-clique traversal or pruning. It ranks feasible subsets by cardinality then vector lexicographic order. All 1100 simple graphs through n=5 include a triangle with an isolated vertex, distinguishing maximal from maximum, and graphs with tied largest cliques, distinguishing size-only selection from the specified canonical set.",
+        "path": "model.md",
+        "section": "subset_objective_discrimination",
+        "status": "partial_relational_specification",
+        "subject_revision": "c0c8a21c107e57584b60dea36da83e81b1e4d9f9a37ffd4e4953205f802dd2db",
+        "type": "subset_objective_discrimination"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-bron-kerbosch-tests-tie_and_complement_witness",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "lexicographic_maximum_and_bit_63 asserts [0,2] for edges [(0,2),(1,2),(1,3)], so a later tied clique [1,2] or [1,3] is rejected; the compiled candidate>best mutant fails this named test. On the same fixed universe, complementing edges turns those size-two cliques into independent sets without changing lexicographic ranking. This specialization constrains the clique/independent-set identity mathematically; the owned tests execute clique enumeration, while the complement join belongs to the integration harness. No independent-set native coverage is inferred here.",
+        "path": "model.md",
+        "section": "tie_and_complement_witness",
+        "status": "partial_relational_specification",
+        "subject_revision": "c0c8a21c107e57584b60dea36da83e81b1e4d9f9a37ffd4e4953205f802dd2db",
+        "type": "tie_and_complement_witness"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-bron-kerbosch-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "c0c8a21c107e57584b60dea36da83e81b1e4d9f9a37ffd4e4953205f802dd2db"
+  },
+  "status": "partial_source_derived_instance"
+}

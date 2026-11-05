@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-suffix_automaton",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "967ddd105db7f1451e69b808bb7d3748447306297e6b8a2cccd3a079a723270c"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "path": "syntax.json",
+      "format": "rust_syntax_projection",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "domain": "Finite byte strings s and query q; count observation is u128; allocations must succeed.",
+        "operator": "Universe is (s,q,b,count). Exclude b disagreeing with interval occurrence (empty occurs), and counts unequal to the cardinality of nonempty interval values. State numbering and occurrence multiplicities are not observable.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "967ddd105db7f1451e69b808bb7d3748447306297e6b8a2cccd3a079a723270c",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "compatible_antecedents",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "compatible_antecedents",
+        "domain": "Finite byte strings s and query q; count observation is u128; allocations must succeed.",
+        "operator": "For a complete membership language L, compatible texts are exactly s with substring-set including empty equal to L. A realizable finite L has a unique longest word s, recovering the text. Count alone admits all texts with that count: ab and ba both give 3; a count does not recover symbols.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "967ddd105db7f1451e69b808bb7d3748447306297e6b8a2cccd3a079a723270c",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "link_partition",
+        "type": "structural_invariant",
+        "path": "model.md",
+        "section": "link_partition",
+        "domain": "Finite byte strings s and query q; count observation is u128; allocations must succeed.",
+        "operator": "Each nonroot state contributes longest(v)-longest(link(v)) distinct strings; contributions partition all nonempty substrings by end-position equivalence.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "967ddd105db7f1451e69b808bb7d3748447306297e6b8a2cccd3a079a723270c",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "empty_boundary",
+        "type": "boundary_exclusion",
+        "path": "model.md",
+        "section": "empty_boundary",
+        "domain": "Finite byte strings s and query q; count observation is u128; allocations must succeed.",
+        "operator": "Empty input accepts only the empty query and has count zero. Nonempty input has positive count; a query longer than the text cannot occur.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "967ddd105db7f1451e69b808bb7d3748447306297e6b8a2cccd3a079a723270c",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "reversal",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "reversal",
+        "domain": "Finite byte strings s and query q; count observation is u128; allocations must succeed.",
+        "operator": "Reversal bijects nonempty substring values, preserving count; membership of q in s equals membership of reversed q in reversed s.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "967ddd105db7f1451e69b808bb7d3748447306297e6b8a2cccd3a079a723270c",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "injective_symbols",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "injective_symbols",
+        "domain": "Finite byte strings s and query q; count observation is u128; allocations must succeed.",
+        "operator": "Any injective byte relabeling preserves count and corresponding membership. Noninjective relabeling may collapse distinct words and reduce count.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "967ddd105db7f1451e69b808bb7d3748447306297e6b8a2cccd3a079a723270c",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "count_bounds",
+        "type": "output_constraint",
+        "path": "model.md",
+        "section": "count_bounds",
+        "domain": "Finite byte strings s and query q; count observation is u128; allocations must succeed.",
+        "operator": "For length n, n <= count <= n(n+1)/2 when n>0; constant words attain n. Arithmetic for bound and observation is mathematical or u128.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "967ddd105db7f1451e69b808bb7d3748447306297e6b8a2cccd3a079a723270c",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "projection_loss",
+        "type": "information_loss",
+        "path": "model.md",
+        "section": "projection_loss",
+        "domain": "Finite byte strings s and query q; count observation is u128; allocations must succeed.",
+        "operator": "Count equality is weaker than language equality: ab and ba have count 3 but differ on membership of ab. Full language includes the original text and is injective, unlike count.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "967ddd105db7f1451e69b808bb7d3748447306297e6b8a2cccd3a079a723270c",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      }
+    ]
+  }
+}

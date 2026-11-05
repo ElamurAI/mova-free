@@ -8,7 +8,7 @@ deterministic Rust rule or a small linear model whose weights you can inspect:
 - `world read`: splits a Project Gutenberg book into stories and paragraphs, then writes a skeleton summary
   of each paragraph from the UD parse (actor, action, object, recipient, place, negation; for speech, only
   "X says").
-- `world read-qa`, `read-graph`, `read-events`, `read-feel`: answer FairytaleQA questions from the raw story
+- `world read-qa`, `read-graph`, `read-events`, `read-feel`: answer FairytaleQA questions (Xu et al., ACL 2022, `2022.acl-long.34`; [card](https://research.elamur.ai/free/en/papers/xu-2022-fantastic-questions-where-find-them/)) from the raw story
   text, then score them with ROUGE-L against a "whole retrieved sentence" baseline.
 - `world read-qgen` → `read-short` → `read-train`: an LLM writes many short-answer questions per paragraph,
   once. Scoring them, and training the sentence **retriever** and answer **extractor**, needs no LLM after that.

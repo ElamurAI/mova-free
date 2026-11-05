@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p en --lib annotate::wave27::bounded_contract",
+    "Paired partial syntax; debug/release repeated outcomes; see receipt"
+  ],
+  "children": [],
+  "cost": "For n words, add tagging/parsing costs to O(n^2) child scans and bounded agreement walks; kbest repeats annotation for each retained tree. Save/load cost serialized byte size plus allocation/I/O. No length or allocation cap.",
+  "description": "annotate = tags -> parser.parse -> repair -> kids_of -> upos -> feats_sentence -> words_of. EModE forced tags precede parsing; EModE word fixes follow morphology. complete uses supplied tags/tree without repair. annotate_kbest caches lemmas and recomputes UPOS/FEATS per tree, also without repair. train filters tagged sentences before Ud and Model training.",
+  "forward": [
+    "annotate = tags -> parser.parse -> repair -> kids_of -> upos -> feats_sentence -> words_of. EModE forced tags precede parsing; EModE word fixes follow morphology. complete uses supplied tags/tree without repair. annotate_kbest caches lemmas and recomputes UPOS/FEATS per tree, also without repair. train filters tagged sentences before Ud and Model training.",
+    "tags() forces emode::force, else tagrule::force (2026-11-04)."
+  ],
+  "id": "en-annotate",
+  "inverse": [
+    "Given output Word sequence y and fixed model/ud, compatible antecedents include exactly form sequences equal to y.form plus tag/head/relation arrays whose completion yields y. Morphology/EModE/table backoff are many-to-one; outputs cannot recover training sentences. Successfully loaded bytes identify compatible serialized model states, not a unique byte encoding because map order may differ.",
+    "For aligned valid inputs, completion cannot change token forms or token count. It cannot guarantee repair equivalence with annotate: complete and kbest omit repair. A failed pack prevents save from creating directories; a failed rename may leave a .part file."
+  ],
+  "limitations": [
+    "Partial source-bound model, not full proof. No useful executable percentage surrogate established for these categorical decisions/effects; budgets1/2/5/10% require a future observation metric. No corpus/API/GPU/teacher, allocation fault injection, adversarial size exhaustion or broad accuracy claim."
+  ],
+  "source": "en/src/annotate.rs",
+  "state": "Annotator holds Model and Ud; Word holds form, lemma, UPOS, tag, FEATS, head and relation."
+}

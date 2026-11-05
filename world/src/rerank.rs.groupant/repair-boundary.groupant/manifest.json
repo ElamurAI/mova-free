@@ -1,0 +1,85 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-rerank-repair-boundary-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-rerank-repair-boundary-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-rerank-repair-boundary-coupling",
+        "path": "model.md",
+        "section": "coupling",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      },
+      {
+        "id": "world-rerank-repair-boundary-observation-fiber",
+        "path": "model.md",
+        "section": "observation-fiber",
+        "status": "partial_source_model",
+        "type": "information_loss"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 21247,
+      "start": 6373
+    },
+    "description": "repairs proposes lexical changes first, otherwise matrix/category/tag-conditioned role changes. hand_pass_without applies at most two passes, changes relation and lexical UPOS/tag, and accumulates applications. repair_words_with joins this with shipped induced rules depending on mode/domain."
+  },
+  "id": "world-rerank-repair-boundary",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../rerank.rs",
+    "sha256": "7734d1b33c02f022a5f4f2b420d3bece2e4456a9af4887b804c0b8b312f4908a"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -448,3 +448,22 @@ pub fn lex(src: &str) -> Result<Vec<Token>, ParseError> {
     out.push(Token { tok: Tok::Eof, line, col, space_before: space });
     Ok(out)
 }
+
+#[cfg(test)]
+mod wave30 {
+    use super::*;
+    #[test]
+    fn context() {
+        let t = lex("[a 'x']; a'; 2j ... ignored\n + 1").unwrap();
+        assert!(matches!(&t[2].tok, Tok::Str(s, false) if s == "x"));
+        assert!(matches!(t[6].tok, Tok::Quote));
+        assert!(matches!(&t[8].tok, Tok::Imag(v,s) if *v == 2.0 && s == "2i"));
+        assert!(!t.iter().any(|t| t.tok == Tok::Newline));
+        let plus = t.iter().find(|t| t.tok == Tok::Plus).unwrap();
+        assert_eq!((plus.line, plus.col), (2, 2));
+        assert!(lex("(1\n2)").unwrap().iter().any(|t| t.tok == Tok::Newline));
+        let e = lex("\n 'abc").unwrap_err();
+        assert_eq!((e.line, e.col), (2, 2));
+        assert_eq!(lex("").unwrap().len(), 1);
+    }
+}

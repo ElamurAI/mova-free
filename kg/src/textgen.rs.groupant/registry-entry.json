@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "textgen::tests::subject_verb_object",
+    "textgen::wave29::variant_priority_and_head_bounds"
+  ],
+  "children": [],
+  "cost": "n<=12: DP O(n^2*2^n)/O(n*2^n); member scanning and variant search, recursion depth<=4. u32 frequency overflow debug panics/release wraps; f64 counters/log have finite precision.",
+  "description": "Morphological realization, recursive attribute chunks and subset-DP ordering of Fact heads.",
+  "forward": [
+    "Observe explicit nonmodifier heads sorted by(word,class), accumulate transition/from counts. generate rejects0/>12 heads; form chooses lexicographic conditional/global counts with dictionary-first ties, restricts post-prep third-person pronouns to available н forms. Build chunks, maximize smoothed start/transitions/end log score, insert nominal dash, uppercase first char, end ! for imperative else period. For head classes c_i: D[{i},i]=logp(<s>,c_i); D[S∪{j},j]=max_{i∈S}(D[S,i]+logp(c_i,c_j)); select last maximizing D[All,i]+logp(c_i,</s>) then follow backpointers."
+  ],
+  "id": "kg-textgen",
+  "inverse": [
+    "Output sentence admits many Fact/Morph/Freq/OrderModel tuples; count histories sharing rankings collapse, observe retains only bigrams. Case/punctuation projection loses distinctions."
+  ],
+  "limitations": [
+    "No exhaustive DP optimum oracle, deep recursive chunk or counter-overflow fixture; no measured approximate ordering surrogate.",
+    "Partial lexical AST; no semantic proof or useful executable percentage surrogate."
+  ],
+  "source": "kg/src/textgen.rs",
+  "state": "Finite unoverflowed counts and fixed dictionary/member order produce deterministic text. DP is a head permutation; attributes used once but orphans not globally rejected. No original-text recovery guarantee."
+}

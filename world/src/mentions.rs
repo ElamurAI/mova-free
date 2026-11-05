@@ -482,3 +482,86 @@ pub fn main_args(args: &[String]) -> anyhow::Result<()> {
     println!("{:?}", more_than(&text, question));
     Ok(())
 }
+
+#[cfg(test)]
+mod wave8_models {
+    use super::*;
+    fn fixture() -> Mention {
+        Mention { value: 7, thing: "apple".into(), adj: ["red".into()].into(),
+            verb: "eat".into(), ctx: ["garden".into()].into(), sentence: 0, in_q: false,
+            per: None, verb_word: "ate".into(), thing_word: "apples".into(),
+            holder_asked: None, tree: vec![] }
+    }
+    fn set(mask: usize) -> BTreeSet<String> {
+        ["apple", "red", "eat", "garden"].iter().enumerate()
+            .filter(|(i, _)| mask & (1 << i) != 0).map(|(_, w)| w.to_string()).collect()
+    }
+    #[test]
+    fn weighted_score_oracle_and_fibers() {
+        let m = fixture();
+        let mut fibers = std::collections::BTreeMap::<i64, Vec<(usize, usize)>>::new();
+        for own in 0..16 { for shared in 0..16 {
+            let union = own | shared;
+            let expected = if union & 1 != 0 { 4 } else { 0 }
+                + if union & 2 != 0 { 3 } else { -1 }
+                + if union & 4 != 0 { 2 } else { 0 }
+                + if own & 8 != 0 { 2 } else { 0 };
+            let actual = fit(&m, &set(own), &set(shared));
+            assert_eq!(actual, expected, "own={own} shared={shared}");
+            fibers.entry(actual).or_default().push((own, shared));
+        }}
+        assert_eq!(fibers.values().map(Vec::len).sum::<usize>(), 256);
+        assert!(fibers.values().any(|v| v.len() > 1));
+        assert_eq!(fit(&m, &set(0), &set(8)), -1);
+    }
+    #[test]
+    fn best_matches_unique_positive_maximum() {
+        for a in 0..4 { for b in 0..4 { for c in 0..4 {
+            let levels = [a,b,c];
+            let ms: Vec<_> = levels.iter().enumerate().map(|(i, &level)| {
+                let mut m = fixture(); m.value = i as i64;
+                m.thing = if level & 1 != 0 { "apple" } else { "pear" }.into();
+                m.adj.clear(); m.ctx.clear();
+                m.verb = if level & 2 != 0 { "eat" } else { "" }.into(); m
+            }).collect();
+            let scores: Vec<_> = levels.iter().map(|x| (x & 1)*4 + ((x >> 1)&1)*2).collect();
+            let max = *scores.iter().max().unwrap();
+            let winners: Vec<_> = scores.iter().enumerate().filter(|(_, s)| **s == max).map(|(i,_)|i).collect();
+            let expected = if max > 0 && winners.len() == 1 { Some(winners[0] as i64) } else { None };
+            assert_eq!(best(&ms, &set(5), &set(0), None).map(|m|m.value), expected);
+        }}}
+    }
+    #[test]
+    fn equality_exclusion_and_identity_projection() {
+        let m = fixture();
+        let duplicate = m.clone();
+        let mut different = m.clone(); different.sentence = 1;
+        let ms = vec![m.clone(), duplicate, different.clone()];
+        assert_eq!(best(&ms, &set(1), &set(0), Some(&m)), Some(&different));
+        assert!(best(&ms[..2], &set(1), &set(0), Some(&m)).is_none());
+        assert_eq!(fit(&m, &set(1), &set(0)), fit(&different, &set(1), &set(0)));
+    }
+    #[test]
+    fn told_question_rate_and_context_boundaries() {
+        let text = "Each box has 3 red apples. Ada has 5 pears. How many apples in 2 boxes?";
+        let all = read_mentions_told(text, true);
+        let story = read_mentions_told(text, false);
+        assert_eq!(all.iter().map(|m|m.value).collect::<Vec<_>>(), vec![3,5,2]);
+        assert_eq!(story, all.iter().filter(|m|!m.in_q).cloned().collect::<Vec<_>>());
+        assert_eq!(all[0].per.as_deref(), Some("box"));
+        assert_eq!(all[0].thing, "appl");
+        assert!(all[0].adj.contains("red"));
+        assert_eq!(all[2].sentence, 2);
+        assert!(all.iter().all(|m|m.tree.is_empty()));
+    }
+    #[test]
+    fn lexical_loss_and_holder_dependency() {
+        assert_eq!(words("T-shirt $12"), vec!["t", "shirt", "$", "12"]);
+        assert_eq!(stem("ATE"), stem("eat"));
+        assert_eq!(stem("apples"), stem("apple"));
+        let ms = read_mentions_told("Ada has 3 apples. Ben has 4 pears. How many apples does Ada have?", true);
+        assert_eq!(ms[0].holder_asked, Some(true));
+        // Ben appears only initially, so this heuristic never learns his name.
+        assert_eq!(ms[1].holder_asked, None);
+    }
+}

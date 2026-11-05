@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p en --lib selected fixtures: library compile/name visibility only"
+  ],
+  "children": [],
+  "cost": "Declaration scan O(source bytes); compilation/linking cost delegated to Rust and modules, no independent runtime cost asserted.",
+  "description": "English library compilation surface: public module declarations only; no standalone execution or reexport transformation.",
+  "forward": [
+    "Rust resolves the 26 declared public module names to their source modules at compile time. Consumers en::ctx, en::ctxeval, en::diag, en::emode and en::license share these exact definitions. Runtime semantics reside in modules, not this declaration file.",
+    "Declares derive and tagrule (2026-11-04)."
+  ],
+  "id": "en-lib",
+  "inverse": [
+    "Given an exported module-name set, compatible source declarations include arbitrary comments/order and equivalent visibility declarations. The compiled API set does not recover module implementation text."
+  ],
+  "limitations": [
+    "No independent runtime tests/control for a pure module-declaration file",
+    "Semantic behavior delegated to module groupants",
+    "No meaningful percentage surrogate"
+  ],
+  "source": "en/src/lib.rs",
+  "state": "Rust module namespace and compiled dependent modules."
+}

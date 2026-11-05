@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p world --lib idioms::wave8_models -- --test-threads=1",
+    "Five native tests: 64 rank triples, eight phrase/POS contexts plus header, 80 MWE flag/type/title combinations, reversed order, four pair-key preimages. Full run/exports not executed."
+  ],
+  "cost": "B input bytes, U unique pairs, E event rows, R retained rows: O(B+(U+E)log(U+E)+R log R) excluding string lengths/global lookup; memory O(B+U+E+R). No measured speed claim.",
+  "description": "Offline dictionary projections and corpus idiom mining",
+  "forward": [
+    "Parse dictionary/MWE maps, merge by source priority, aggregate corpus counts, gate and classify, separately aggregate particles, sort detailed rows and emit final BTreeMap. Domain excludes count overflow and conditions on successful I/O and fixed global snapshot.",
+    "Matrix::global().score uses EXISTING global idioms to suppress OBJ oddness; classification is not pure in supplied TSVs. Event export can overwrite OBJ pair; failures leave partial files. Runtime contextual matching is elsewhere."
+  ],
+  "id": "world-idioms",
+  "inverse": [
+    "Behavior complement: source-derived inner excluded transitions under stated invariant/priority constraints.",
+    "Reverse reconstruction: all compatible antecedents under fixed dependencies; projected observations are many-to-one."
+  ],
+  "limitations": [
+    "Partial source syntax, no semantic AST or complete proof.",
+    "No live parser, teacher, full mining export, GPU or throughput evidence."
+  ],
+  "source": "world/src/idioms.rs",
+  "state": "Input TSVs, thresholds, fixed global lexicon/matrix, filesystem output state."
+}

@@ -1,0 +1,97 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Source-bound syntax; no macro expansion, resolution or semantic proof.",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "line_accounting",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "line_accounting",
+        "status": "partial_source_derived_model",
+        "type": "line_accounting"
+      },
+      {
+        "id": "missing_read",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "missing_read",
+        "status": "partial_source_derived_model",
+        "type": "missing_read"
+      },
+      {
+        "id": "write_sync_prefix",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "write_sync_prefix",
+        "status": "partial_source_derived_model",
+        "type": "write_sync_prefix"
+      },
+      {
+        "id": "concurrent_boundary",
+        "path": "model.md",
+        "scope": "Declared relation and observation domain",
+        "section": "concurrent_boundary",
+        "status": "partial_source_derived_model",
+        "type": "concurrent_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_or_representation"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "start": 34385,
+      "end": 35069
+    },
+    "description": "Read attempt ledger; missing means used=0, other read error returns. If used≥budget reject. Open append/create, write round/job line then sync_all."
+  },
+  "id": "cycle-pipeline-reservation",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../pipeline.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "7f2bf58dade3757acaa7ea71ee60c64c7ed4e36a88afc88cc66571c618727876"
+  },
+  "status": "partial_source_bound_model"
+}

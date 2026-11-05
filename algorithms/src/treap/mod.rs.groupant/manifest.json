@@ -1,0 +1,126 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "A state/output transition is excluded when its key set differs from set insertion/removal semantics, a duplicate changes its stored priority, an absent removal changes shape, or BST/heap/parent invariants fail. Returning Ok(true) for existing keys or accepting a new key at4096 live keys is excluded. This constrains state, not only a returned boolean.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "4311480f9c23dd2b75fc07137e9db0e127683f1a83cf6886fc8a7589d299db3e",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "Observed keys admit many insertion/removal histories and explicit priority assignments; the full live (key,priority) map determines a unique Cartesian tree under total rank order but not free-slot indexes or history. Ok(false) insertion reconstructs prior presence, not the previous priority. A removed key's priority cannot be recovered from its success boolean.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "4311480f9c23dd2b75fc07137e9db0e127683f1a83cf6886fc8a7589d299db3e",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "priority_ties",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "Heap rank is total lexicographic (u64 priority,i64 key); equal priorities order by key. Duplicate insertion does not replace priority. Determinism needs no RNG and supplies no probabilistic balancing guarantee.",
+        "path": "model.md",
+        "section": "priority_ties",
+        "status": "partial_relational_specification",
+        "subject_revision": "4311480f9c23dd2b75fc07137e9db0e127683f1a83cf6886fc8a7589d299db3e",
+        "type": "priority_ties"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "rotation_conservation",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "A rotation moves middle subtree under former parent, updates middle parent, grandparent edge and root as needed. Inorder keys and external subtrees are conserved; heap violations are resolved during insertion/deletion.",
+        "path": "model.md",
+        "section": "rotation_conservation",
+        "status": "partial_relational_specification",
+        "subject_revision": "4311480f9c23dd2b75fc07137e9db0e127683f1a83cf6886fc8a7589d299db3e",
+        "type": "rotation_conservation"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "arena_reclamation",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "Deletion first removes all live links to target before adding its slot to free. A subsequent insertion overwrites the slot completely. live_count=nodes.len-free.len; resident arena never exceeds4096 slots despite repeated churn.",
+        "path": "model.md",
+        "section": "arena_reclamation",
+        "status": "partial_relational_specification",
+        "subject_revision": "4311480f9c23dd2b75fc07137e9db0e127683f1a83cf6886fc8a7589d299db3e",
+        "type": "arena_reclamation"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "failure_precedence",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "Search for duplicates precedes cap check, so a duplicate at capacity returns Ok(false). A new key at capacity returns Err with state unchanged. Full i64 keys/u64 priorities use comparison only; standard allocation failures are not caught.",
+        "path": "model.md",
+        "section": "failure_precedence",
+        "status": "partial_relational_specification",
+        "subject_revision": "4311480f9c23dd2b75fc07137e9db0e127683f1a83cf6886fc8a7589d299db3e",
+        "type": "failure_precedence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-treap",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "4311480f9c23dd2b75fc07137e9db0e127683f1a83cf6886fc8a7589d299db3e"
+  },
+  "status": "partial_source_derived_instance"
+}

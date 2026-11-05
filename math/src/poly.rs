@@ -791,3 +791,24 @@ mod tests {
         assert_eq!(s, "(-∞, -2] ∪ [2, +∞)");
     }
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn division_and_canceled_hole() {
+        let p = Poly(vec![q(-1), q(0), q(1)]);
+        let d = Poly(vec![q(-1), q(1)]);
+        let (quotient, remainder) = p.divrem(&d);
+        assert_eq!(quotient, Poly(vec![q(1), q(1)]));
+        assert!(remainder.is_zero());
+        assert_eq!(quotient.mul(&d).add(&remainder), p);
+        let mut env = Env::new(nt::Limits::default());
+        let rf = ratfunc(&crate::calc::parse("(x^2-1)/(x-1)").unwrap(), "x", &mut env).unwrap();
+        assert_eq!(rf.num, quotient);
+        assert_eq!(rf.den, Poly::one());
+        assert!(rf.dens.iter().any(|p| p.eval(&q(1)).is_zero()));
+        assert!(solve_poly(&Poly::zero()).is_err());
+        assert!(solve_poly(&Poly::one()).unwrap().roots.is_empty());
+    }
+}

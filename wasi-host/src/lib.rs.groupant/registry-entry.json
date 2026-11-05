@@ -1,0 +1,29 @@
+{
+  "checks": [
+    "tests::args_and_prestat",
+    "tests::clock_is_virtual_and_random_is_seeded",
+    "tests::escape_and_absolute_paths_are_not_capable",
+    "tests::limits_reach_the_guest_as_errno",
+    "tests::open_read_seek_write",
+    "tests::readdir_with_small_buffer_and_cookies",
+    "tests::wave31_late_faults_keep_prior_effects",
+    "tests::wave31_memory_poll_and_descriptor_boundaries",
+    "tests::wave31_tiny_engine_outcomes"
+  ],
+  "children": [],
+  "cost": "Validation O(module bytes) plus engine-specific validation; run interpreter work up to optional fuel, with separate host work and allocations. fd allocation O(slots); iov O(n+bytes)+Vfs; random O(len); poll O(subscriptions); readdir O(entries+names).",
+  "description": "Host validates a wasm module, registers preview1 functions, then creates a fresh Store per run. Ctx transports guest byte coordinates through descriptor/path checks to Vfs; captures streams, virtual time, seeded randomness and call counts. Macro wrappers require exported memory before counting. proc_exit is separate and preserves its code; other traps return134. Name-only missing_imports is weaker than successful linking.",
+  "forward": [
+    "Host validates a wasm module, registers preview1 functions, then creates a fresh Store per run. Ctx transports guest byte coordinates through descriptor/path checks to Vfs; captures streams, virtual time, seeded randomness and call counts. Macro wrappers require exported memory before counting. proc_exit is separate and preserves its code; other traps return134. Name-only missing_imports is weaker than successful linking."
+  ],
+  "id": "wasi-runtime",
+  "inverse": [
+    "An Outcome admits every module/context pair producing its code, trap, buffers and final Vfs. Output capture loses discarded stderr/echo failures and prior descriptor offsets; exit0 alone neither identifies a module nor implies filesystem equivalence."
+  ],
+  "limitations": [
+    "Partial source syntax and finite tests; no full WASI compliance or mlab suite claim",
+    "No executable percentage surrogate or whole-system proof"
+  ],
+  "source": "wasi-host/src/lib.rs",
+  "state": "Guest bytes/descriptors/Vfs/virtual clock/RNG, or scoped CLI/test state as described"
+}

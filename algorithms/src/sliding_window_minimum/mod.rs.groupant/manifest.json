@@ -1,0 +1,155 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Proposed inner bound of absent behavior under the stated premises; source-derived and checked on finite fixtures, not proved for all Rust executions.",
+        "assumptions": "Lawful ordering/cloning where required, standard Rust and successful allocation.",
+        "domain": "Finite lawful Ord arrays, usize widths and index-vector observations, excluding allocation failure and panicking comparisons.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One operation and its state/output.",
+        "operator": "In the universe of (A,w,index vector), exclude nonempty outputs for zero/oversized widths, wrong output lengths for valid widths, out-of-window indices, nonminimal values and rightward tie choices. Input mutation is excluded.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "b47de6b09f42ba6d6a4a36156568c030eb2452205d06eb2ffc1f437175f8d829",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived relation; bounded executable evidence only, no unrestricted proof.",
+        "assumptions": "Lawful ordering/cloning where required, standard Rust and successful allocation.",
+        "domain": "Finite lawful Ord arrays, usize widths and index-vector observations, excluding allocation failure and panicking comparisons.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_antecedents",
+        "observation_scope": "One operation and its state/output.",
+        "operator": "An output vector J admits widths and arrays satisfying n=|J|+w-1 and, for each s, s<=J[s]<s+w, A[J[s]]<=A[k] throughout that window and strict inequality for k<J[s]. Empty output admits w=0 or w>n. Many arrays satisfy these constraints; unique reconstruction is not claimed.",
+        "path": "model.md",
+        "section": "compatible_antecedents",
+        "status": "partial_source_derived",
+        "subject_revision": "b47de6b09f42ba6d6a4a36156568c030eb2452205d06eb2ffc1f437175f8d829",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with finite executed checks; no unrestricted semantic proof.",
+        "assumptions": "Lawful total ordering; value-preserving independent clones where required; source-bound tests; no panics, overflow or allocation failure.",
+        "domain": "Finite lawful ordered value arrays, successful allocation, nonpanicking operations; fixed lengths, ranges and transformations as stated.",
+        "evidence": "model.md#evidence",
+        "id": "window_decomposition",
+        "observation_scope": "Operation observations or finite traces explicitly specified by the relation.",
+        "operator": "For any valid window R partitioned into adjacent subranges, its witness is the lexicographic minimum (A[i],i) of the subrange witnesses. None is the identity for an empty subrange. Equal values require minimum source index, not arbitrary deque insertion position.",
+        "path": "model.md",
+        "section": "window_decomposition",
+        "status": "bounded_checked",
+        "subject_revision": "b47de6b09f42ba6d6a4a36156568c030eb2452205d06eb2ffc1f437175f8d829",
+        "type": "decomposition_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with finite executed checks; no unrestricted semantic proof.",
+        "assumptions": "Lawful total ordering; value-preserving independent clones where required; source-bound tests; no panics, overflow or allocation failure.",
+        "domain": "Finite lawful ordered value arrays, successful allocation, nonpanicking operations; fixed lengths, ranges and transformations as stated.",
+        "evidence": "model.md#evidence",
+        "id": "slice_witness_shift",
+        "observation_scope": "Operation observations or finite traces explicitly specified by the relation.",
+        "operator": "For fixed positive w and 0<=k<=n-w, let J=minimum_indices(A,w), L=minimum_indices(A[k..],w). For every local start s, L[s]+k=J[s+k]. Local indices must be shifted before comparison; raw equality is not a correct sliced-window contract.",
+        "path": "model.md",
+        "section": "slice_witness_shift",
+        "status": "bounded_checked",
+        "subject_revision": "b47de6b09f42ba6d6a4a36156568c030eb2452205d06eb2ffc1f437175f8d829",
+        "type": "index_transport_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with finite executed checks; no unrestricted semantic proof.",
+        "assumptions": "Lawful total ordering; value-preserving independent clones where required; source-bound tests; no panics, overflow or allocation failure.",
+        "domain": "Finite lawful ordered value arrays, successful allocation, nonpanicking operations; fixed lengths, ranges and transformations as stated.",
+        "evidence": "model.md#evidence",
+        "id": "contained_witness",
+        "observation_scope": "Operation observations or finite traces explicitly specified by the relation.",
+        "operator": "If j is the leftmost argmin of R and j belongs to nonempty subwindow S contained in R, j is also the leftmost argmin of S. Containment alone is insufficient when S drops j: [0,2,1] has global witness 0, while suffix [2,1] has local witness 1.",
+        "path": "model.md",
+        "section": "contained_witness",
+        "status": "bounded_checked",
+        "subject_revision": "b47de6b09f42ba6d6a4a36156568c030eb2452205d06eb2ffc1f437175f8d829",
+        "type": "containment_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with finite executed checks; no unrestricted semantic proof.",
+        "assumptions": "Lawful total ordering; value-preserving independent clones where required; source-bound tests; no panics, overflow or allocation failure.",
+        "domain": "Finite lawful ordered value arrays, successful allocation, nonpanicking operations; fixed lengths, ranges and transformations as stated.",
+        "evidence": "model.md#evidence",
+        "id": "order_embedding",
+        "observation_scope": "Operation observations or finite traces explicitly specified by the relation.",
+        "operator": "An order embedding f preserves the entire output vector for every width, including invalid widths. Equalities and strict order on observed values must survive. A nondecreasing collapse of [1,0] to [0,0] changes the leftmost witness, disproving the weaker premise.",
+        "path": "model.md",
+        "section": "order_embedding",
+        "status": "bounded_checked",
+        "subject_revision": "b47de6b09f42ba6d6a4a36156568c030eb2452205d06eb2ffc1f437175f8d829",
+        "type": "order_embedding_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with finite executed checks; no unrestricted semantic proof.",
+        "assumptions": "Lawful total ordering; value-preserving independent clones where required; source-bound tests; no panics, overflow or allocation failure.",
+        "domain": "Finite lawful ordered value arrays, successful allocation, nonpanicking operations; fixed lengths, ranges and transformations as stated.",
+        "evidence": "model.md#evidence",
+        "id": "simultaneous_fiber",
+        "observation_scope": "Operation observations or finite traces explicitly specified by the relation.",
+        "operator": "Fix n,w with 1<=w<=n and candidate J of length n-w+1. Its preimage is the intersection over starts s of constraints s<=J[s]<s+w, A[J[s]]<=A[k] throughout the window and strict inequality for k<J[s]. All constraints concern one shared A; independent per-window witnesses cannot be pasted without consistency. This relation retains every compatible A and does not reconstruct unique magnitudes.",
+        "path": "model.md",
+        "section": "simultaneous_fiber",
+        "status": "bounded_checked",
+        "subject_revision": "b47de6b09f42ba6d6a4a36156568c030eb2452205d06eb2ffc1f437175f8d829",
+        "type": "reverse_constraint_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with finite executed checks; no unrestricted semantic proof.",
+        "assumptions": "Lawful total ordering; value-preserving independent clones where required; source-bound tests; no panics, overflow or allocation failure.",
+        "domain": "Finite lawful ordered value arrays, successful allocation, nonpanicking operations; fixed lengths, ranges and transformations as stated.",
+        "evidence": "model.md#evidence",
+        "id": "singleton_information_loss",
+        "observation_scope": "Operation observations or finite traces explicitly specified by the relation.",
+        "operator": "For w=1 and fixed n, J=[0,...,n-1] for every value vector. Thus the index observation has the entire lawful value-vector domain as preimage; no value recovery is possible. For n=0 width one is invalid and the output is empty. Minimum values supplied separately would permit reconstruction.",
+        "path": "model.md",
+        "section": "singleton_information_loss",
+        "status": "bounded_checked",
+        "subject_revision": "b47de6b09f42ba6d6a4a36156568c030eb2452205d06eb2ffc1f437175f8d829",
+        "type": "information_loss_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-sliding-window-minimum",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "b47de6b09f42ba6d6a4a36156568c030eb2452205d06eb2ffc1f437175f8d829"
+  },
+  "status": "partial_source_derived_instance"
+}

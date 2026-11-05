@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "prag-model-knn-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "prag-model-knn-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "prag-model-knn-specialization",
+        "path": "model.md",
+        "section": "specialization",
+        "status": "partial_source_model",
+        "type": "observation_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 15932,
+      "start": 12797
+    },
+    "description": "Distance is sum of slot weight for unequal values OR either equal UNSEEN pair; known equal pairs contribute zero. Sort by distance then memory index. Vote uses every row in the first k distinct distance values, choosing (vote count,training prior,-class). Training selects k from [1,3,5,7,11] by leave-one-out hit count, first candidate on ties. Prediction confidence is winning votes/max(1,selected rows); explanation takes the nearest three winning-class memories from the entire sorted memory, not necessarily only voters."
+  },
+  "id": "prag-model-knn",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../model.rs",
+    "sha256": "e18c587fd1f87b18c7e0118e0009b16fb469e26ba9cd0edf26b097226130ee25"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -33,10 +33,10 @@ Three things to know before running anything beyond `calc` and `controls`.
 
 ### Gist
 All arithmetic is exact:
-- **v1** (`math/src/rat.rs`, i128) for units and temperatures. An overflow is an explicit `Overflow` error, never a silent f64.
-- **v2** (`math/src/big.rs`) for word problems: arbitrary-size integers and rationals via `dashu` (`Q = RBig`, always reduced).
+- **`math/src/rat.rs`** (i128, used by `math eval`) for units and temperatures. An overflow is an explicit `Overflow` error, never a silent f64.
+- **`math/src/big.rs`** (used by `mathsolve`) for word problems: arbitrary-size integers and rationals via `dashu` (`Q = RBig`, always reduced).
 
-`calc.rs` evaluates expressions on v2. Every result gets an **independent check**: the same expression computed with different arithmetic (f64, or a fingerprint modulo 2^61−1 for huge integers). A failed check blocks the answer.
+`calc.rs` evaluates expressions on `big.rs`. Every result gets an **independent check**: the same expression computed with different arithmetic (f64, or a fingerprint modulo 2^61−1 for huge integers). A failed check blocks the answer.
 
 ### When to use
 - Checking a number or formula.
@@ -144,7 +144,7 @@ What the output reports (in order):
    - trigger counts, e.g. `v2: answered — correct / wrong` and `world: …` (world agreement).
 
 ### Pitfalls
-- **Determinism first.** Run the same command twice and diff the `MATH_DUMP` files before claiming a gain. An unordered map once produced a "gain" that turned out to be run-to-run noise.
+- **Determinism first.** Run the same command twice and diff the `MATH_DUMP` files before claiming a gain. An unordered map can produce a "gain" that is only run-to-run noise.
 - Report the exclusion counts from line 1 together with accuracy.
 - For a small SVAMP gain, compare per-item dumps (e.g. a McNemar test on the items that changed), not just percentages.
 - Without `--exact`, `--world`, `--princ` and `--qread` silently have no training items to attach to.
@@ -236,12 +236,12 @@ Labels come from verified world scripts (section 3). Without trained models, a r
 You have verified scripts (shipped in `corpus/math-scripts/` or generated yourself) and want the world as a third opinion or as a judge feature.
 
 ### Steps
-1. Optional: generate more scripts with an LLM. `quant-vmm` sends batches to an LLM through a CLI (`claude -p`), checks each script, retries red ones once with the error list (the gold answer is never shown), and appends to `<dir>/scripts.jsonl`. LLM costs are logged in `<dir>/calls.jsonl`. It resumes by skipping ids already present. This step is paid and optional:
+1. Optional: generate more scripts with an LLM. `quant-vmm` sends batches to an LLM through a CLI, checks each script, retries red ones once with the error list (the gold answer is never shown), and appends to `<dir>/scripts.jsonl`. LLM calls are logged in `<dir>/calls.jsonl`. It resumes by skipping ids already present. This step is paid and optional:
    ```sh
    MOVA_SUBSCRIPTION=1 cargo run --release --manifest-path world/Cargo.toml -- \
      quant-vmm svamp-train runs/quant --limit 20 --batch 10 --par 2 --cap 2
    ```
-   `MOVA_SUBSCRIPTION=1` makes the CLI use its own login instead of looking for a locally stored API key. `--cap` is the spend ceiling in USD [10]. The model and effort come from `PRAG_MODEL` / `PRAG_EFFORT` [medium].
+   `MOVA_SUBSCRIPTION=1` makes the CLI use its own login instead of looking for a locally stored API key. `--cap` is the ceiling on the spend of the run [10]. The model and effort come from `PRAG_MODEL` / `PRAG_EFFORT` [medium].
 2. Train and use the writer inside `steps` (it is not saved; it is retrained on every run):
    ```sh
    cargo run --release --manifest-path math/Cargo.toml --bin mathsolve -- \
@@ -258,7 +258,7 @@ You have verified scripts (shipped in `corpus/math-scripts/` or generated yourse
 
 ---
 
-## 5. World reader: `qread` (world v2 for numbers)
+## 5. World reader: `qread` (the world of numbers)
 
 ### Gist
 `math/src/qread.rs` reads a problem as **events in time**:
@@ -329,10 +329,10 @@ The datasets are not in the repo. Download them (both MIT) and convert them to t
    - compare per item against the baseline.
 
 ### Example
-At the time of writing, the project notes report the following on SVAMP test (300 problems) with the benchmark configuration plus `--qread`:
+SVAMP test (300 problems) with the benchmark configuration plus `--qread`:
 - 179/300 (59.7%) correct;
 - against a baseline with the same lexicon: 19 items gained, 6 lost (McNemar p = 0.015);
-- against an older, stronger baseline the gain was **not yet significant** (p = 0.27).
+- against a stronger baseline the gain is **not significant** (p = 0.27).
 
 GSM8K test (1319) was around 10–11% with the same solver. Treat these figures as a snapshot, not a guarantee.
 

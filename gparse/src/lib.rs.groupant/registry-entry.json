@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "synthetic_cpu_prediction_preserves_slots_and_fallback (actual predict and predict_scored); load/load_vars remain source-modeled, no model-file runtime claim"
+  ],
+  "children": [],
+  "cost": "Model loading O(bytes+parameters). Encoder O(B*T*d+L*(B*T*d²+B*T²*d+B*T*d*f)), arc O(B*T*d*a+B*T*a²+B*T²*a), relation O(N*d*r+N*r²*K+N*r*K), tags O(N*d*(X+U)), plus sum n³ decoding. Attention storage B*H*T²; arc host transfer BT²; threads capped min(available,16). Scored adds reductions/copies; parameter/device allocation and no timing claim.",
+  "description": "load reads cfg/vocabs, chooses CPU if GP_CPU exists otherwise cuda_if_available, creates Net then applies available safetensors; missing tensors keep initialization. predict_impl selects length<max_len; long sentences preserve original tuples with score zero. predict_fitting keeps empty slots, validates GP_FUSED_SOFTMAX, plans only nonempty, forwards network and transposes [k,d,h] log scores to Eisner sc[h][d], flattens decoded heads, obtains tags/relations, rewrites root labels and scatters original sentence order.",
+  "forward": [
+    "load reads cfg/vocabs, chooses CPU if GP_CPU exists otherwise cuda_if_available, creates Net then applies available safetensors; missing tensors keep initialization. predict_impl selects length<max_len; long sentences preserve original tuples with score zero. predict_fitting keeps empty slots, validates GP_FUSED_SOFTMAX, plans only nonempty, forwards network and transposes [k,d,h] log scores to Eisner sc[h][d], flattens decoded heads, obtains tags/relations, rewrites root labels and scatters original sentence order."
+  ],
+  "id": "gparse-library",
+  "inverse": [
+    "Overlength words cannot acquire new tuples through predict; empty sentences never enter tag reduction. Invalid fused-softmax string returns error even when no nonempty batches. Missing tensor is not an error and load_vars does not promise transaction rollback.",
+    "Predicted categorical tuples admit all weights/logits with same argmax/Eisner outcome and input features in the same vocabulary/hash classes. A fallback tuple is compatible with any sentence length>=max_len carrying that tuple; scores zero alone do not identify empty versus fallback."
+  ],
+  "limitations": [
+    "Partial lexical syntax; no semantic proof",
+    "Finite synthetic checks only; external corpus/model experiments excluded",
+    "No executable Rust percent surrogate or throughput claim",
+    "Fault injection and exhaustive nonfinite/dimension cases absent"
+  ],
+  "source": "gparse/src/lib.rs",
+  "state": "Output outer/inner lengths equal input on successful valid models; empty and overlength scores zero. Scored/unscored share decoding. Score sums arc+raw relation log probability+0.5*(xpos+upos), before root/dep label rewriting. Device/backend failures return String except panics from poisoned/invalid index/thread conditions. Net cfg.max_len>0 is required for overlength logging subtraction; invalid zero configurations are outside the admitted domain."
+}

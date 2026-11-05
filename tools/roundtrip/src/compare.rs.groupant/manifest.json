@@ -1,0 +1,115 @@
+{
+  "children": [
+    {
+      "id": "rt-mixed-compare-numeric",
+      "path": "numeric.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Source-bound selected Rust syntax; macro expansion and semantic extraction absent",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Exact source/range snapshot; declared domain and finite oracle in companion documents",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Exact source/range snapshot; declared domain and finite oracle in companion documents",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Exact source/range snapshot; declared domain and finite oracle in companion documents",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "lossy_numbers",
+        "path": "model.md",
+        "scope": "Exact source/range snapshot; declared domain and finite oracle in companion documents",
+        "section": "lossy_numbers",
+        "status": "partial_source_derived_model",
+        "type": "lossy_numbers"
+      },
+      {
+        "id": "before_domain",
+        "path": "model.md",
+        "scope": "Exact source/range snapshot; declared domain and finite oracle in companion documents",
+        "section": "before_domain",
+        "status": "partial_source_derived_model",
+        "type": "before_domain"
+      },
+      {
+        "id": "threshold_render",
+        "path": "model.md",
+        "scope": "Exact source/range snapshot; declared domain and finite oracle in companion documents",
+        "section": "threshold_render",
+        "status": "partial_source_derived_model",
+        "type": "threshold_render"
+      },
+      {
+        "id": "residual_key_order",
+        "path": "model.md",
+        "scope": "One admitted set, fixed effective residual maps; processed full-key sequence and old-comparator collision witness",
+        "section": "residual_key_order",
+        "status": "partial_source_derived_model",
+        "type": "residual_key_order"
+      },
+      {
+        "id": "residual_row_multiplicity",
+        "path": "model.md",
+        "scope": "Changed residual class rows for one admitted set, excluding totals and normal rows; filtered-union cardinality",
+        "section": "residual_row_multiplicity",
+        "status": "partial_source_derived_model",
+        "type": "residual_row_multiplicity"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "rt-mixed-compare",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../compare.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "0e0a504b415f23e88f9dd01e8cc5a468c83c3532d5feeebb8a3ae1fb832c9701"
+  },
+  "status": "partial_source_bound_model"
+}

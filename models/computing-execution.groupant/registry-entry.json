@@ -1,0 +1,40 @@
+{
+  "checks": [
+    "native-commands.json: 12 exact named tests twice debug and twice release; sorted outcomes equal",
+    "negative-controls.json: five compiled assertion mutants, exit101, exact restoration and positive rerun",
+    "Seven lexical source projections generated twice identically; source/fragment hashes bound in manifests",
+    "source-test-map.json separates lib.rs compile/type evidence from actual interpreter, VM, suite, SHA and routing execution"
+  ],
+  "children": [
+    "layers-lib",
+    "mlab-interp",
+    "mlab-lib",
+    "mlab-suite",
+    "mlab-vm",
+    "mlab-tests-suite",
+    "mlab-tests-vm",
+    "virtual-filesystem-state",
+    "wasi-guest-runtime"
+  ],
+  "cost": "mlab costs parse+compile+executed instructions plus delegated matrix/builtin operations, register/frame synchronization and COW copies; loops lack fuel limits, function depth is256. Suite parse/check linear in text/expectation/output; gate twice execution per visited scenario. layers adds global calc under five-second Limits, all D coverage callbacks, O(D log D) stable sorting, attempted solvers and logs. Public callbacks, allocation and wide integer casts preclude a general resource guarantee.",
+  "description": "For mlab, parse(text)=Err implies no statement/function-registration effects; otherwise Interp registers functions and dispatches tree or VM. VM compile produces prototypes, imports workspace, executes native instructions with tree fallback/dynamic synchronization, then exports workspace even on returned runtime error. suite.parse produces Scenario(code,expect); run_fs executes each in a new interpreter/FS then check(expect,captured_output). vm_gate compares fresh tree/VM outputs, stops first differing scenario. Independent tagged relation layers.route(q,C): normalize explanation phrases for exact global math; otherwise stable finite-score descending domain attempts at score>=threshold under a finite threshold; otherwise Escalate value.",
+  "forward": [
+    "For mlab, parse(text)=Err implies no statement/function-registration effects; otherwise Interp registers functions and dispatches tree or VM. VM compile produces prototypes, imports workspace, executes native instructions with tree fallback/dynamic synchronization, then exports workspace even on returned runtime error. suite.parse produces Scenario(code,expect); run_fs executes each in a new interpreter/FS then check(expect,captured_output). vm_gate compares fresh tree/VM outputs, stops first differing scenario. Independent tagged relation layers.route(q,C): normalize explanation phrases for exact global math; otherwise stable finite-score descending domain attempts at score>=threshold under a finite threshold; otherwise Escalate value.",
+    "Interp::run calls vm::run_program only after registration; VM Fallback invokes Interp::exec and DynEval invokes eval_multi through sync_out/sync_in. lib.rs exposes item identities consumed by tests. suite::run_fs consumes parser scenarios and feeds captured output to check; vm_gate compares engines independently of expected answers, so shared broken builtins can pass equivalence. layers/lib.rs is a separate tagged routing relation to math/global and Domain callbacks, with no mlab caller/callee edge; grouping does not imply runtime transport.",
+    "Wave31 child virtual-filesystem-state: Actual callers: mlab/src/interp.rs owns Box<dyn vfs::FileSystem>, mlab/src/builtins/files.rs and table.rs call it; open selects backend. Memory path->error->journal joins tested. wasi-host is sibling consumer of Vfs/Errno projections, not owned here. snapbench and test fixtures are independent observation paths, not production callers.",
+    "Wave31 child wasi-guest-runtime: Real join: Ctx::path_open resolves through Vfs, allocates descriptor; fd_write/read use canonical stored path and Vfs::write_at/read_at, with Vfs errno and journal propagation. Tests observe holes/append/read-only/limits/escape effects. main constructs Ctx from imported Vfs, Host::run returns same context for gated exports. Tagged independent paths: example mlab_gate and tests/mlab compare external mlab::Interp to Host, neither is called by main. Memory-unit tests bypass add_wasi ABI wrappers; tiny guests have no imports, so complete linker wiring is not claimed."
+  ],
+  "id": "computing-execution",
+  "inverse": [
+    "Parse failure excludes prefix effects; short-circuit false&&/true|| excludes RHS calls; invalid fast indices exclude direct writes; mismatch excludes remaining gate scenarios. Global math success excludes domain callbacks; finite below-threshold score excludes solve. Equivalent engine output does not exclude shared bugs.",
+    "Preimage of (captured bytes,final workspace) contains all source/initial-state/fault triples yielding those observations; suppressed writes and overwritten locals make it many-to-one. Scenario parsing drops ignored text and trailing blank code, so inverse is set-valued. A route value admits many queries and declining-domain histories; Domain may supply arbitrary Answer.by."
+  ],
+  "limitations": [
+    "Finite synthetic evidence does not prove arbitrary tree/VM equivalence or absolute correctness.",
+    "Frozen suites and recursion-heavy EDGE are compiled but not executed; library reexports have no standalone runtime control.",
+    "Control mutants change assertions, not production algorithms; no claim of complete mutation coverage.",
+    "No supported executable percentage surrogate for categorical execution/effect relations; no speed or approximation-error claim.",
+    "Nonfinite domain scores, raw bytecode, allocation failures and unbounded loops remain explicit gaps."
+  ],
+  "state": "The admitted synthetic programs preserve tree/VM expected output, prefix state on runtime error, no prefix state on parse error, matrix alias independence and short-circuit effects. Fresh suite scenarios do not share default workspace/FS. Gate line offsets are1-based and totals count visited prefix. Finite equal routing scores preserve registration order, global math precedes scoring. These are source-derived and finitely checked relations, not universal proofs."
+}

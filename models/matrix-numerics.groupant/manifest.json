@@ -1,0 +1,154 @@
+{
+  "children": [
+    "mlab-numerics-bench",
+    "mlab-numerics-elem",
+    "mlab-numerics-fft",
+    "mlab-numerics-linalg",
+    "mlab-numerics-numeric",
+    "mlab-numerics-poly",
+    "mlab-numerics-reduce"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "Backend faer/rustfft semantics are dependencies; lexical projections do not resolve macros/types. Public malformed Mat storage, huge dimensions, allocation failure, nonfinite convergence, callback side effects and arbitrary complex support are not certified. Native benchmark helper selection uses cargo --bin because this package has no library target.",
+        "domain": "Bounded synthetic CPU matrices and functions, valid storage, finite small arithmetic where required; no network, corpus, teacher, GPU, benchmark main or held-out suites. Models describe broader source branches with explicitly partial execution.",
+        "id": "behavior-complement",
+        "observation_scope": "polyfit→lstsq_svd joins real column-major Vandermonde with real y; roots/poly→Interp::call_function(eig) joins registry to linalg checks. ops routes matrix division to mldivide. elem cmap and FFT Mat::complex narrow zero im while explicit complex retains storage. FFT dim>=2 uses row slices, whereas reduce dims>2 use singleton slices. Local sort indices differ from global find indices. eval_nodes repeats callbacks after unsuitable vector attempt. Bench same column-major buffers feed both backends; main unexecuted.",
+        "operator": "Wrong shape/order adapters are incompatible with bounded transport fixtures. FFT inverse without1/N violates impulse reconstruction. Long deconv division and executed diff/trapz arithmetic do not preserve imaginary parts, but cloned passthrough branches do. Callback retry excludes exactly-once effects. Warning gates and fzero success flag1 do not exclude nonzero residual results.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "Backend faer/rustfft semantics are dependencies; lexical projections do not resolve macros/types. Public malformed Mat storage, huge dimensions, allocation failure, nonfinite convergence, callback side effects and arbitrary complex support are not certified. Native benchmark helper selection uses cargo --bin because this package has no library target.",
+        "domain": "Bounded synthetic CPU matrices and functions, valid storage, finite small arithmetic where required; no network, corpus, teacher, GPU, benchmark main or held-out suites. Models describe broader source branches with explicitly partial execution.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "polyfit→lstsq_svd joins real column-major Vandermonde with real y; roots/poly→Interp::call_function(eig) joins registry to linalg checks. ops routes matrix division to mldivide. elem cmap and FFT Mat::complex narrow zero im while explicit complex retains storage. FFT dim>=2 uses row slices, whereas reduce dims>2 use singleton slices. Local sort indices differ from global find indices. eval_nodes repeats callbacks after unsuitable vector attempt. Bench same column-major buffers feed both backends; main unexecuted.",
+        "operator": "Fixed-N Fourier outputs identify padded/truncated slices up to rounding, leaving arbitrary truncated tails. Poly quotient/remainder plus real divisor reconstructs dividend via padded convolution; short dividends clone remainder. Least-squares B lies in AX plus residual orthogonal to retained columns. Sort values plus permutation recover slices; sums have zero-sum fibers. fzero output is compatible with bracket-width stopping or1000-iteration exhaustion and nonzero residual, even discontinuous functions without a root; only sampled fb==0 establishes an observed zero.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "Backend faer/rustfft semantics are dependencies; lexical projections do not resolve macros/types. Public malformed Mat storage, huge dimensions, allocation failure, nonfinite convergence, callback side effects and arbitrary complex support are not certified. Native benchmark helper selection uses cargo --bin because this package has no library target.",
+        "domain": "Bounded synthetic CPU matrices and functions, valid storage, finite small arithmetic where required; no network, corpus, teacher, GPU, benchmark main or held-out suites. Models describe broader source branches with explicitly partial execution.",
+        "id": "column-major-transport",
+        "observation_scope": "polyfit→lstsq_svd joins real column-major Vandermonde with real y; roots/poly→Interp::call_function(eig) joins registry to linalg checks. ops routes matrix division to mldivide. elem cmap and FFT Mat::complex narrow zero im while explicit complex retains storage. FFT dim>=2 uses row slices, whereas reduce dims>2 use singleton slices. Local sort indices differ from global find indices. eval_nodes repeats callbacks after unsuitable vector attempt. Bench same column-major buffers feed both backends; main unexecuted.",
+        "operator": "Mat k=j*r+i, faer view and Vandermonde columns share layout. FFT dim1 gathers s*r+t; all admitted dim>=2 gather t*r+s and change cols toN. reduce::slices dims>2 instead emits singleton slices. Layout adapters must preserve these distinct rules.",
+        "path": "model.md",
+        "required": false,
+        "section": "column-major-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Backend faer/rustfft semantics are dependencies; lexical projections do not resolve macros/types. Public malformed Mat storage, huge dimensions, allocation failure, nonfinite convergence, callback side effects and arbitrary complex support are not certified. Native benchmark helper selection uses cargo --bin because this package has no library target.",
+        "domain": "Bounded synthetic CPU matrices and functions, valid storage, finite small arithmetic where required; no network, corpus, teacher, GPU, benchmark main or held-out suites. Models describe broader source branches with explicitly partial execution.",
+        "id": "rank-and-coefficients",
+        "observation_scope": "polyfit→lstsq_svd joins real column-major Vandermonde with real y; roots/poly→Interp::call_function(eig) joins registry to linalg checks. ops routes matrix division to mldivide. elem cmap and FFT Mat::complex narrow zero im while explicit complex retains storage. FFT dim>=2 uses row slices, whereas reduce dims>2 use singleton slices. Local sort indices differ from global find indices. eval_nodes repeats callbacks after unsuitable vector attempt. Bench same column-major buffers feed both backends; main unexecuted.",
+        "operator": "polyfit uses lstsq_svd threshold max(m,n)*smax*eps; rank builtin uses spacing-based tolerance and therefore is not a certified identical rank selector. roots scaling to monic companion discards nonzero leading coefficient scale.",
+        "path": "model.md",
+        "required": false,
+        "section": "rank-and-coefficients",
+        "status": "partial_source_derived_model",
+        "type": "threshold_transport"
+      },
+      {
+        "assumptions": "Backend faer/rustfft semantics are dependencies; lexical projections do not resolve macros/types. Public malformed Mat storage, huge dimensions, allocation failure, nonfinite convergence, callback side effects and arbitrary complex support are not certified. Native benchmark helper selection uses cargo --bin because this package has no library target.",
+        "domain": "Bounded synthetic CPU matrices and functions, valid storage, finite small arithmetic where required; no network, corpus, teacher, GPU, benchmark main or held-out suites. Models describe broader source branches with explicitly partial execution.",
+        "id": "callback-effects",
+        "observation_scope": "polyfit→lstsq_svd joins real column-major Vandermonde with real y; roots/poly→Interp::call_function(eig) joins registry to linalg checks. ops routes matrix division to mldivide. elem cmap and FFT Mat::complex narrow zero im while explicit complex retains storage. FFT dim>=2 uses row slices, whereas reduce dims>2 use singleton slices. Local sort indices differ from global find indices. eval_nodes repeats callbacks after unsuitable vector attempt. Bench same column-major buffers feed both backends; main unexecuted.",
+        "operator": "eval_nodes vector attempt can mutate Interp before fallback; subsequent scalar calls add effects. Model callback count separately from mathematical integrand evaluation. Bench helper best similarly calls exactly3 times, returns last value and independent minimum time.",
+        "path": "model.md",
+        "required": false,
+        "section": "callback-effects",
+        "status": "partial_source_derived_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "Backend faer/rustfft semantics are dependencies; lexical projections do not resolve macros/types. Public malformed Mat storage, huge dimensions, allocation failure, nonfinite convergence, callback side effects and arbitrary complex support are not certified. Native benchmark helper selection uses cargo --bin because this package has no library target.",
+        "domain": "Bounded synthetic CPU matrices and functions, valid storage, finite small arithmetic where required; no network, corpus, teacher, GPU, benchmark main or held-out suites. Models describe broader source branches with explicitly partial execution.",
+        "id": "error-observations",
+        "observation_scope": "polyfit→lstsq_svd joins real column-major Vandermonde with real y; roots/poly→Interp::call_function(eig) joins registry to linalg checks. ops routes matrix division to mldivide. elem cmap and FFT Mat::complex narrow zero im while explicit complex retains storage. FFT dim>=2 uses row slices, whereas reduce dims>2 use singleton slices. Local sort indices differ from global find indices. eval_nodes repeats callbacks after unsuitable vector attempt. Bench same column-major buffers feed both backends; main unexecuted.",
+        "operator": "linalg gate tolerance1000*n*eps concerns selected residuals, not component relative error. GK embedded K-G is estimated error and its650-interval exit warns. These do not compose into a percent bound for roots/fit/numeric callbacks.",
+        "path": "model.md",
+        "required": false,
+        "section": "error-observations",
+        "status": "partial_source_derived_model",
+        "type": "residual_observation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "matrix-numerics",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "mlab/bench/src/main.rs",
+      "sha256": "78398060b7ccba1c8168560a12002cc55c27dc3fd11761b494bca7f2968d2819"
+    },
+    {
+      "path": "mlab/src/builtins/elem.rs",
+      "sha256": "09570b244d52019b5a08f99b48dd7fc01d163a267c89b0580689a53db36a0e8e"
+    },
+    {
+      "path": "mlab/src/builtins/fft.rs",
+      "sha256": "43baadabdaa0104c0cad53bd525e02c7a6bdcb77682bc2ca707df3fa1e61c790"
+    },
+    {
+      "path": "mlab/src/builtins/linalg.rs",
+      "sha256": "f3579e5bd4a5ee898096bb912061bc751a0d48e294cd3062452e5ca38546d178"
+    },
+    {
+      "path": "mlab/src/builtins/numeric.rs",
+      "sha256": "f6fa5b4a76ef32afd0991224f982804b325a757adab149969712eb344640c466"
+    },
+    {
+      "path": "mlab/src/builtins/poly.rs",
+      "sha256": "19ff6f221e4a7f3984115436092a1b36ea6a18222cbf8f76fc0b6fd53c13a287"
+    },
+    {
+      "path": "mlab/src/builtins/reduce.rs",
+      "sha256": "0f9cbbd92e1b1868cc508fb251339295057ed96751b3f3e85325c03ee563da5c"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

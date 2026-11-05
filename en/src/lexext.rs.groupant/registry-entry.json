@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "lexext::tests::grown_words",
+    "lexext::tests::acronyms"
+  ],
+  "children": [],
+  "cost": "One open-addressing probe per lookup, O(1) expected at load factor <= 1/2, plus O(k) records; the acronym plural adds one probe. Blob compiled in (~20 MB); EN_LEXEXT read once.",
+  "description": "The lexicon extension at run time: a second compiled blob of forms (tag, sources, lemma), lemma paradigms and acronym expansions, answering only for what the in-code dictionary lacks; the dictionary fingerprint and every trained model are untouched; EN_LEXEXT=0 turns it off.",
+  "forward": [
+    "analyses(lower) = the form's records, or a synthetic NNPS for an -s plural of an acronym in capitals; known, tags, lemma(form, tag), form(lemma, tag), expansions(acronym, case-sensitive). hint(word, inside_cap) keeps acronym and two-capital records only for a word with two capitals, name-list-only and <= 3-letter proper records only for a capitalised word, and for a capitalised word inside a sentence only when a proper-noun record is left."
+  ],
+  "id": "en-lexext",
+  "inverse": [
+    "form(lemma, tag) recovers one form of the cell (several may share it); the written case is not recoverable from hint's tags.",
+    "Nothing is returned for: forms absent from the files (except acronym plurals), lower-case acronym keys, any lookup when EN_LEXEXT=0; hint is empty under the case gate."
+  ],
+  "limitations": [
+    "Keys are lower case; case decisions live only in hint",
+    "No frequencies: records of one form are unordered",
+    "Acronyms read as NNP where EWT often writes NN with a lower-case lemma (ADHD, RFP)"
+  ],
+  "source": "en/src/lexext.rs",
+  "state": "Compiled lexext.bin and its layout constants; EN_LEXEXT OnceLock."
+}

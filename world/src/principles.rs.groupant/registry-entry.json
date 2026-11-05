@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p world --lib principles::wave12_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "F supplied facts and D checked keys require O(F log(D+1)) membership comparisons and O(F log(F+1)) sorting comparisons, including allocated-key/string work. Cloning/storage is O(total candidate bytes). Statement is linear in rendered bytes. Step calculation is constant-time; index observation costs O(min(L,n)). Knowledge/cache/teacher cost remains opaque; no measured speed claim.",
+  "description": "Fact template rendering, supplied checked-key exclusion and stable unique-prefix selection, and bounded index sampling.",
+  "forward": [
+    "S(F) prefixes `a {subj} ` and applies link/polarity templates: IsA -> `is a`/`is not a`; Has -> `has`/`does not have`; Can -> `can`/`cannot`; Does -> `does this:`/`does not do this:`. Other links use optional `not ` followed by know::link_name(link). Append space+obj, uppercase the body's first character, and append '.'.\n\nkey(F)=subj+'|'+Debug(link)+'|'+obj+'|'+negation. E(K,C) retains encounter-order Facts whose source starts `derived from` and whose key is absent from C. Q(K,C,n)=take_n(first-per-key(stable-sort-by-key(E))). Equal keys retain the first encounter's full Fact. The cache wrapper obtains C from checked(), an unexecuted filesystem boundary.\n\nFor list count L and request n, stride=max(1,floor(L/n)) when n>0, otherwise 1. I(L,n) takes the first n multiples of stride below L; I(L,0)=[]. round/write_world consume selected batches and cached verdicts; teacher T is a judgment, not a truth predicate."
+  ],
+  "id": "world-principles",
+  "inverse": [
+    "behavior_complement: U is the disjoint union of tagged statement, supplied-selection and index-list input/output candidates; R comprises S,Q,I. U minus R excludes wrong statement template/polarity, subject/object bytes or punctuation; Q outputs containing ineligible/checked Facts, duplicate or descending keys, more than n entries, the wrong sorted truncated prefix or a later duplicate's full Fact instead of the first; and nonempty I for n=0, zero stride or incorrect sampled indices.\n\nEight statement rows, 40 subset/limit cases and 400 stride cases support selected source-derived exclusions. This relation does not establish truth of derived-prefix Facts or teacher T. Conditional teacher-retention formatting/selection is inspected only; atomic publication, correct external verdicts, concurrency-safe budgets and failure recovery are not asserted.",
+    "reverse_reconstruction: For statement y retain all F with S(F)=y, including arbitrary frequency/count/provenance and compatible subject/object/link template decompositions. For selected full-Fact vector V retain all K,C,n with Q(K,C,n)=V: V's eligible keys are unique/ascending, its full Facts are the first encounters, and additional eligible keys obey the exact truncation boundary. Checked/nonderived records, duplicate alternatives and tail candidates remain ambiguous; neither K,C nor n is uniquely recoverable.\n\nFor index J retain all (L,n) with I(L,n)=J; empty J admits n=0 or L=0. Source-inspected retained teacher rows admit all compatible final numbered verdict parses and publication histories; a T label cannot recover true-world facts or complete antecedent knowledge. Tags are model observations; text alone retains the union of compatible tagged fibers."
+  ],
+  "limitations": [
+    "Finite native supplied-input checks; no parser, teacher, socket or persistence execution.",
+    "Partial syntax with opaque macros; truth and durable consistency are not established."
+  ],
+  "source": "world/src/principles.rs",
+  "state": "Q preserves full chosen Facts, excludes checked/nonprefix candidates, orders keys ascending, emits each key at most once and returns at most n. Sorting is not confidence ranking; source prefixes do not enforce lesson/exam separation. statement/key omit frequency/count/provenance, and pipe-key collisions remain possible. Stride is nonzero; zero requests select nothing but still load CLI knowledge."
+}

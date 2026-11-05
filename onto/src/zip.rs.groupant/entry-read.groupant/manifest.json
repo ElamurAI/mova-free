@@ -1,0 +1,97 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical projection only; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "lookup_priority",
+        "path": "model.md",
+        "section": "lookup_priority",
+        "status": "partial_source_derived_model",
+        "type": "lookup_priority"
+      },
+      {
+        "id": "byte_offsets",
+        "path": "model.md",
+        "section": "byte_offsets",
+        "status": "partial_source_derived_model",
+        "type": "byte_offsets"
+      },
+      {
+        "id": "decode_order",
+        "path": "model.md",
+        "section": "decode_order",
+        "status": "partial_source_derived_model",
+        "type": "decode_order"
+      },
+      {
+        "id": "allocation",
+        "path": "model.md",
+        "section": "allocation",
+        "status": "partial_source_derived_model",
+        "type": "allocation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 3551,
+      "start": 2524
+    },
+    "description": "e=first entry name; start=e.off+30+local_namelen+local_extralen; raw=data[start..start+csize]. Require local magic; method0 copy or8 inflate else error; require |out|=size.",
+    "source_bytes_sha256": "e051a3c9e640baf39de495ea90e673587ea4f828b9dee30fd9501cfc595905cd"
+  },
+  "id": "onto-zip-entry-read",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../zip.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "f1ecc64bbcb7da2c5ff9c870f84bc3dcb5554acd605cb571e911093b22c1bb27"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,182 @@
+{
+ "_comment": "Standard Dolphin pod for Crab: merge workers, dolphins and consult_triggers into a Crab configuration. Paths are placeholders; a deployment supplies its own.",
+ "workers": [
+  {
+   "name": "dolphin-opus",
+   "argv": [
+    "/opt/mova/bin/crab-tmux-worker",
+    "--lock",
+    "/var/lib/mova/dolphins/dolphin-opus.lock",
+    "--owner-marker",
+    "mova-dolphin-opus",
+    "--prompt-file",
+    "/opt/mova/src/tools/crab/dolphins/consultant.md",
+    "--prompt-flag",
+    "--append-system-prompt",
+    "--var",
+    "name=the Opus Dolphin",
+    "--var",
+    "idle_marker=DOLPHIN READY",
+    "dolphin-opus",
+    "/opt/mova/src",
+    "--",
+    "/usr/local/bin/claude",
+    "--model",
+    "opus",
+    "--effort",
+    "medium"
+   ],
+   "cwd": "/opt/mova/src",
+   "log": "/var/lib/mova/dolphins/dolphin-opus.log",
+   "autostart": true,
+   "restart": false
+  },
+  {
+   "name": "dolphin-copilot",
+   "argv": [
+    "/opt/mova/bin/crab-tmux-worker",
+    "--lock",
+    "/var/lib/mova/dolphins/dolphin-copilot.lock",
+    "--owner-marker",
+    "mova-dolphin-copilot",
+    "--pin-file",
+    "/usr/local/lib/node_modules/@github/copilot/npm-loader.js",
+    "--pin-sha256",
+    "0000000000000000000000000000000000000000000000000000000000000000",
+    "--version-cmd",
+    "/usr/local/bin/node",
+    "--version-cmd",
+    "/usr/local/lib/node_modules/@github/copilot/npm-loader.js",
+    "--version-cmd",
+    "--version",
+    "--pin-version",
+    "GitHub Copilot CLI 0.0.0.",
+    "--auth-file",
+    "/home/USER/.copilot/config.json",
+    "--auth-key",
+    "lastLoggedInUser",
+    "--auth-key",
+    "authTokens",
+    "--prompt-file",
+    "/opt/mova/src/tools/crab/dolphins/consultant.md",
+    "--prompt-flag",
+    "-i",
+    "--var",
+    "name=the Copilot Dolphin",
+    "--var",
+    "idle_marker=DOLPHIN READY",
+    "dolphin-copilot",
+    "/var/lib/mova/dolphins/copilot-scratch",
+    "--",
+    "/usr/local/bin/node",
+    "/usr/local/lib/node_modules/@github/copilot/npm-loader.js",
+    "--deny-tool",
+    "shell",
+    "--add-dir",
+    "/var/lib/mova/crab/reports",
+    "--disable-builtin-mcps",
+    "--screen-reader"
+   ],
+   "cwd": "/var/lib/mova/dolphins/copilot-scratch",
+   "log": "/var/lib/mova/dolphins/dolphin-copilot.log",
+   "autostart": false,
+   "restart": false
+  },
+  {
+   "name": "dolphin-docs",
+   "argv": [
+    "/opt/mova/bin/crab-tmux-worker",
+    "--lock",
+    "/var/lib/mova/dolphins/dolphin-docs.lock",
+    "--owner-marker",
+    "mova-dolphin-docs",
+    "--prompt-file",
+    "/opt/mova/src/tools/crab/dolphins/documenter.md",
+    "--var",
+    "name=the Documenter Dolphin",
+    "--var",
+    "idle_marker=DOLPHIN READY",
+    "--var",
+    "repo=/opt/mova/src",
+    "--var",
+    "worktree_root=/var/lib/mova/docs-worktrees",
+    "--var",
+    "branch_prefix=docs-",
+    "--var",
+    "report_dir=/var/lib/mova/dolphins/docs-reports",
+    "dolphin-docs",
+    "/opt/mova/src",
+    "--",
+    "/usr/local/bin/claude",
+    "--model",
+    "opus",
+    "--effort",
+    "medium"
+   ],
+   "cwd": "/opt/mova/src",
+   "log": "/var/lib/mova/dolphins/dolphin-docs.log",
+   "autostart": false,
+   "restart": false
+  }
+ ],
+ "dolphins": [
+  {
+   "name": "opus",
+   "session": "dolphin-opus",
+   "worker": "dolphin-opus",
+   "terminal": {
+    "provider": "claude-cli",
+    "model": "opus",
+    "pane_command": "claude",
+    "idle_marker": "DOLPHIN READY",
+    "owner_marker": "mova-dolphin-opus"
+   }
+  },
+  {
+   "name": "copilot",
+   "session": "dolphin-copilot",
+   "worker": "dolphin-copilot",
+   "terminal": {
+    "provider": "copilot-cli",
+    "model": "default",
+    "pane_command": "node",
+    "idle_marker": "DOLPHIN READY",
+    "owner_marker": "mova-dolphin-copilot"
+   },
+   "pin": {
+    "file": "/usr/local/lib/node_modules/@github/copilot/npm-loader.js",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "version_cmd": [
+     "/usr/local/bin/node",
+     "/usr/local/lib/node_modules/@github/copilot/npm-loader.js",
+     "--version"
+    ],
+    "version": "GitHub Copilot CLI 0.0.0.",
+    "auth_file": "/home/USER/.copilot/config.json",
+    "auth_keys": [
+     "lastLoggedInUser",
+     "authTokens"
+    ]
+   }
+  },
+  {
+   "name": "documenter",
+   "session": "dolphin-docs",
+   "worker": "dolphin-docs",
+   "terminal": {
+    "provider": "claude-cli",
+    "model": "opus",
+    "pane_command": "claude",
+    "idle_marker": "DOLPHIN READY",
+    "owner_marker": "mova-dolphin-docs"
+   }
+  }
+ ],
+ "consult_triggers": {
+  "refusals": false,
+  "worker_failures": false,
+  "dolphin": "opus",
+  "max_per_hour": 2,
+  "max_task_bytes": 4000
+ }
+}

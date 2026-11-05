@@ -1,0 +1,21 @@
+{
+  "id": "algorithm-karatsuba-polynomial",
+  "source": "algorithms/src/karatsuba_polynomial/mod.rs",
+  "children": [],
+  "description": "Original bounded algebra algorithm with independent finite checks",
+  "state": "Deterministic values and explicit validation",
+  "cost": "Ascending coefficient polynomials over prime998244353. P=low*low + x^m((low+high)*(low+high)-low*low-high*high)+x^(2m)high*high. Pad power2 and trim to a.len+b.len-1; empty gives empty; lengths<=4096. O(n^log2(3)) time O(n) live memory. Karatsuba and Ofman, Multiplication of many-digital numbers by automatic computers (1962).",
+  "forward": [
+    "Ascending coefficient polynomials over prime998244353. P=low*low + x^m((low+high)*(low+high)-low*low-high*high)+x^(2m)high*high. Pad power2 and trim to a.len+b.len-1; empty gives empty; lengths<=4096. O(n^log2(3)) time O(n) live memory. Karatsuba and Ofman, Multiplication of many-digital numbers by automatic computers (1962)."
+  ],
+  "inverse": [
+    "Accepted nonempty pair excludes outputs with length other than len(a)+len(b)-1 or coefficient not congruent to sum a[i]b[k-i]. Zero trailing coefficients must remain. Over-cap lengths exclude Ok even with empty partner.",
+    "Observed product admits all factor pairs over the fixed field matching coefficient length. Scaling a by nonzero c and b by c^-1 preserves product; zero products and empty outputs are particularly nonunique. Inputs are also ambiguous modulo p."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms karatsuba_polynomial::tests"
+  ],
+  "limitations": [
+    "Partial syntax; finite tests do not prove universal correctness; no allocator failure injection; no executable surrogate"
+  ]
+}

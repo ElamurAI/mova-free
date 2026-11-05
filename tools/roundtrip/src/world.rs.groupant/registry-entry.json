@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Exact named tests in native-commands.json; paired source syntax"
+  ],
+  "children": [],
+  "cost": "Let F frames, E entities, Q quote links, B cloned payload bytes, S=nsents and Z=r.empties.len(). Ordered maps add logarithmic lookups; starts can scan O(F^2*(Qmax+1)); decode_in position searches can be quadratic. decode_exact additionally scans the linear empties vector for each requested sentence: O(S*Z+S) time and O(S) output vector storage, independent of F. For S all-empty sentences, F=E=Q=0 and Z=S, yet contains performs S(S+1)/2 equality checks and emits S empty vectors. Deep frame/entity clones add B and recursion cost; no fixed capacity or allocation guarantee.",
+  "description": "encode_by globalizes sentence-local links, records empties, deduplicates Fact key strings, registers role entities and remaps links through kept indices. Pronoun class uses count then earliest occurrence. decode emits one frame/event with attributes on first mention and optional refer; residual patches/inserts/XOR starts reconstruct sentence-local frames.",
+  "forward": [
+    "encode_by globalizes sentence-local links, records empties, deduplicates Fact key strings, registers role entities and remaps links through kept indices. Pronoun class uses count then earliest occurrence. decode emits one frame/event with attributes on first mention and optional refer; residual patches/inserts/XOR starts reconstruct sentence-local frames."
+  ],
+  "id": "roundtrip-world",
+  "inverse": [
+    "For encoder-produced residual and matching decoder flags, decode_exact(w,r,nsents) witnesses original sentences. World alone identifies many histories differing in repetition, mention pronouns, attributes, sentence boundaries and next links; no unique original or persistent knowledge state follows.",
+    "Repeated Fact keys cannot create extra world events; Event repetitions remain separate. decode_plain never restores next/quoted by itself. Dedup key is a formatted subset, not injective full-frame identity or logical equivalence."
+  ],
+  "limitations": [
+    "No annotator/model loading, live corpus, full suite, teacher, GPU or persistent-learning evidence. No executable percentage surrogate: categorical codecs/effects need a useful metric before future caps 1/2/5/10%."
+  ],
+  "source": "tools/roundtrip/src/world.rs",
+  "state": "Layer representations, diagnostic residuals and fixed environment state; see scoped catalog."
+}

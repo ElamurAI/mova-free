@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "independent_dft compares both directions to separate trigonometric sum for all n=1..35; roundtrip covers primes/nonpowers and powers; impulse_boundary exercises n=16384; rejected_domains checks caps and real/imaginary nonfinite values.",
+    "Swapping the forward/inverse chirp sign compiles and fails independent_dft."
+  ],
+  "children": [],
+  "cost": "O(m log m) work/O(m) space, m<=32768. Three FFT calls; standard allocation behavior; kernel errors propagated.",
+  "description": "For sign s=-1 forward/+1 inverse, a[j]=x[j] exp(s*i*pi*j²/n), b[+/-j]=exp(-s*i*pi*j²/n). Convolve at m=next_power_of_two(2n-1) using existing radix-two FFT, multiply kth result by chirp; inverse divides n. n in 1..16384, finite components <=1e50.",
+  "forward": [
+    "For sign s=-1 forward/+1 inverse, a[j]=x[j] exp(s*i*pi*j²/n), b[+/-j]=exp(-s*i*pi*j²/n). Convolve at m=next_power_of_two(2n-1) using existing radix-two FFT, multiply kth result by chirp; inverse divides n. n in 1..16384, finite components <=1e50."
+  ],
+  "id": "algorithm-bluestein-fft",
+  "inverse": [
+    "Fixed n full real-complex DFT is invertible using conjugate sign and 1/n; rounded arithmetic loses exact injectivity. Spectrum magnitude alone would have phase/shift ambiguity but API preserves complex spectrum. InvalidInput conflates empty, oversized and invalid-value preimages."
+  ],
+  "limitations": [
+    "Partial syntax without semantic proof",
+    "Finite numerical tests do not guarantee accuracy",
+    "No executable approximation profile or timing claim",
+    "Standard allocation exhaustion may abort; no callback effects"
+  ],
+  "source": "algorithms/src/bluestein_fft/mod.rs",
+  "state": "Bounded finite sample vectors, transform/QR scratch, tagged errors; test state comprises finite observations"
+}

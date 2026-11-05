@@ -1,0 +1,26 @@
+[package]
+name = "mova-turtle"
+version = "0.1.0"
+edition = "2024"
+description = "Sea Turtle: Mova's school maker; checks courses, makes native questions and draft lessons, teacher terminals only behind the operator's word"
+license = "LicenseRef-Elamur-Cosmic"
+
+[workspace]
+
+[lib]
+name = "turtle"
+path = "src/lib.rs"
+
+[[bin]]
+name = "turtle"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+world = { path = "../../world" }
+en = { path = "../../en" }
+mova-octopus = { path = "../octopus" }
+mova-nautilus = { path = "../nautilus" }
+mova-terminal = { path = "../terminal" }

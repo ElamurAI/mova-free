@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-qa-report-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-qa-report-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-qa-report-projection-boundary",
+        "path": "model.md",
+        "section": "projection-boundary",
+        "status": "partial_source_model",
+        "type": "observation_constraint"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 23601,
+      "start": 21202
+    },
+    "description": "answers_md evaluates rows in supplied order. CONTROL rows add ctrl and ctrl_ok from abstention only, bypassing verdict and ordinary totals. Other rows increment exactly one of hit/miss/none. TSV document IDs are retained but answers_md relies on caller filtering."
+  },
+  "id": "world-qa-report",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../qa.rs",
+    "sha256": "1ce10a355698f5cc3c37ca7f8d1dacbacf8b74264c9c7c38a563aed1e4f678a5"
+  },
+  "status": "partial_source_bound_model"
+}

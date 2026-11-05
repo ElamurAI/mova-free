@@ -1,0 +1,25 @@
+{
+  "id": "algorithm-weighted-interval-scheduling-tests",
+  "source": "algorithms/src/weighted_interval_scheduling/tests.rs",
+  "children": [],
+  "description": "weighted_interval_scheduling independent oracle and relational checks",
+  "state": "Finite inputs and ordinary execution including documented failure branches.",
+  "cost": "Bounded exponential test oracle; suitable only for small fixtures. Production cost is modeled separately.",
+  "forward": [
+    "Execute deterministic finite fixtures with independent exponential oracle and production-linked relational assertions. Passing supports only the observed domain."
+  ],
+  "inverse": [
+    "A passing outcome excludes observed disagreements on enumerated fixtures and oracle comparisons; untested behaviors remain admitted. This relation describes exclusions within the finite observation universe.",
+    "A passing report admits all implementations agreeing on these fixtures, including incorrect ones elsewhere. A failed assertion constrains a mismatch at its fixture, not unique source reconstruction.",
+    "Enumerate all subsets, reject pairwise overlaps and maximize explicit sums; compare all ordered arrays through length six from four choices. Oracle does not share sort, predecessor search or recurrence.",
+    "Tests observe exact endpoint translation, positive weight scaling, permutation score invariance, original-index reconstruction, first invalid index, extremes, adjacency and zero-weight ties.",
+    "Changing compatible end<=start to end<start is a compiled production fault that adjacency/oracle checks must reject. Other faults remain unproven."
+  ],
+  "checks": [
+    "cargo test -p mova-algorithms --offline",
+    "Repeated debug/release outcomes; strict Clippy; compiled production mutant; syntax twice"
+  ],
+  "limitations": [
+    "Partial syntax does not expand macros or resolve semantic types. Finite evidence is not proof; allocator exhaustion untested. Exact implementation has no executable approximate profile; no substitution or numerical error budget claimed."
+  ]
+}

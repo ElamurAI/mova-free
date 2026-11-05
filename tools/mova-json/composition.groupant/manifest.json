@@ -1,0 +1,98 @@
+{
+  "children": [
+    "mova-json-library",
+    "mova-json-merge",
+    "mova-json-cli",
+    "mova-json-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "status": "not_materialized"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "assumptions": [
+          "Trusted local files without concurrent writers; git available."
+        ],
+        "domain": "CLI/library/merge/test joins described in model.md.",
+        "id": "mova-json-tool-behavior-complement",
+        "observation": "Written file bytes, stdout reports and exit status.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": [
+          "Trusted local files without concurrent writers; git available."
+        ],
+        "domain": "CLI/library/merge/test joins described in model.md.",
+        "id": "mova-json-tool-reverse-reconstruction",
+        "observation": "Written file bytes, stdout reports and exit status.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": [
+          "The scratch helpers' semantics as read on 2026-11-05."
+        ],
+        "domain": "Routine JSON edits, merges and rebinds formerly done by Python helpers.",
+        "id": "mova-json-tool-replaces-python-helpers",
+        "observation": "Command coverage and semantic differences listed in model.md.",
+        "path": "model.md",
+        "section": "replaces-python-helpers",
+        "status": "partial_source_model",
+        "type": "independent_evidence_join"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_native_evidence"
+    }
+  },
+  "id": "mova-json-tool",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "tools/mova-json/src/lib.rs",
+      "sha256": "6edf7ddc1f6dbd3c24961af24256e11f948bb7b0319862d5407ca728e73726de"
+    },
+    {
+      "path": "tools/mova-json/src/main.rs",
+      "sha256": "a695655b9cf317aacc9bc086b75fdaad382da91966196492dcaf7a7bdb2dbc8e"
+    },
+    {
+      "path": "tools/mova-json/src/merge.rs",
+      "sha256": "0bd653d5275707abd50195b798e00c5699f58ff2fcdb14a0fe8c49ed7d124f14"
+    },
+    {
+      "path": "tools/mova-json/src/tests.rs",
+      "sha256": "bbd3faa412c6a4d0753a430c5ee681bd8c291dabf3ed7b6001460f5561c428c5"
+    }
+  ],
+  "status": "partial_source_bound_model"
+}

@@ -1,9 +1,11 @@
 # One workspace for every crate: `cargo build --release` at the root
-# builds everything into target/release/. `tera/`, where present, is internal tooling outside the workspace.
+# builds everything into target/release/. `peta/`, where present, is internal tooling outside the workspace.
 [workspace]
 resolver = "2"
 members = [
+    "algorithms",
     "annot",
+    "teacher",
     "coref",
     "en",
     "global",
@@ -18,15 +20,26 @@ members = [
     "onto",
     "prag",
     "qagen",
+    "tools/approx",
     "tools/bench",
+    "tools/twin",
+    "tools/enrich",
+    "tools/modelcheck",
+    "tools/correspondence",
     "tools/cycle",
     "tools/db",
-    "tools/dict-lessons",
     "tools/gutenberg",
+    "tools/hbo",
     "tools/jobs",
+    "tools/langseg",
     "tools/kaggle",
+    "tools/macula",
+    "tools/modules",
     "tools/mathlib",
+    "tools/ocrfix",
     "tools/parsecmp",
+    "tools/roundtrip",
+    "tools/translate",
     "tools/school-sents",
     "tools/sources",
     "tools/treeagree",
@@ -35,15 +48,18 @@ members = [
     "tools/wikt-count",
     "tools/wikt-idioms",
     "tools/wikt-page",
+    "tools/wikt-extract",
     "vfs",
     "wasi-host",
-    "weather",
+    "yom-hadin",
     "world",
 ]
 # `cargo build` without -p builds these: everything but the CUDA-only GPU parser, so the CPU-only build needs no CUDA.
 # gparse builds with `-p gparse` or through `-p world --features gpu`.
 default-members = [
+    "algorithms",
     "annot",
+    "teacher",
     "coref",
     "en",
     "global",
@@ -57,15 +73,26 @@ default-members = [
     "onto",
     "prag",
     "qagen",
+    "tools/approx",
     "tools/bench",
+    "tools/twin",
+    "tools/enrich",
+    "tools/modelcheck",
+    "tools/correspondence",
     "tools/cycle",
     "tools/db",
-    "tools/dict-lessons",
     "tools/gutenberg",
+    "tools/hbo",
     "tools/jobs",
+    "tools/langseg",
     "tools/kaggle",
+    "tools/macula",
+    "tools/modules",
     "tools/mathlib",
+    "tools/ocrfix",
     "tools/parsecmp",
+    "tools/roundtrip",
+    "tools/translate",
     "tools/school-sents",
     "tools/sources",
     "tools/treeagree",
@@ -74,15 +101,16 @@ default-members = [
     "tools/wikt-count",
     "tools/wikt-idioms",
     "tools/wikt-page",
+    "tools/wikt-extract",
     "vfs",
     "wasi-host",
-    "weather",
+    "yom-hadin",
     "world",
 ]
-exclude = ["tera"]
+exclude = ["peta"]
 
 [workspace.package]
-version = "0.4.0"
+version = "0.5.0"
 
 [profile.release]
 opt-level = 3

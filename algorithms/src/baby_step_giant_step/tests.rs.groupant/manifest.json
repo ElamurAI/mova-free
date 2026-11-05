@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "id": "algorithm-baby-step-giant-step-tests",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "1bbb9f2c8d5396b48070e9bc3b64a4e943d66ae755bfd4eecef012e9de3e81b7"
+  },
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "1bbb9f2c8d5396b48070e9bc3b64a4e943d66ae755bfd4eecef012e9de3e81b7",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "A passing run excludes mismatched Result values on the exercised calls; it does not exclude defects elsewhere or establish allocator behavior.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "1bbb9f2c8d5396b48070e9bc3b64a4e943d66ae755bfd4eecef012e9de3e81b7",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "An observed passing transcript admits all production programs agreeing on exercised observations, including programs wrong on unseen inputs. The original and any implementation with identical fixture outputs are indistinguishable by this harness.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "oracle_independence",
+        "type": "oracle_independence",
+        "path": "model.md",
+        "section": "oracle_independence",
+        "status": "partial_relational_specification",
+        "subject_revision": "1bbb9f2c8d5396b48070e9bc3b64a4e943d66ae755bfd4eecef012e9de3e81b7",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Enumerate first20 powers of five bases and retain first occurrence; compare returned minimum. Large exponent p-2 and no-solution subgroup targets separately exercise giant scanning.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "boundary_partition",
+        "type": "boundary_partition",
+        "path": "model.md",
+        "section": "boundary_partition",
+        "status": "partial_relational_specification",
+        "subject_revision": "1bbb9f2c8d5396b48070e9bc3b64a4e943d66ae755bfd4eecef012e9de3e81b7",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Eight named calls cover degenerate bases, absence, normalization and a large exponent; all assert Ok and none asserts a resource or validation error.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "mutation_observation",
+        "type": "mutation_observation",
+        "path": "model.md",
+        "section": "mutation_observation",
+        "status": "partial_relational_specification",
+        "subject_revision": "1bbb9f2c8d5396b48070e9bc3b64a4e943d66ae755bfd4eecef012e9de3e81b7",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "One compiled production mutant must fail direct_oracle; exact source bytes restored before positive rerun. This only proves sensitivity to that chosen changed behavior, not mutation completeness.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  }
+}

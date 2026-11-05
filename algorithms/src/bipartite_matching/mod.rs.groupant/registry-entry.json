@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline bipartite_matching::tests::",
+    "Compiled external mutant rejected by exact named test.",
+    "Debug and release focused runs twice; strict all-target Clippy; isolated compiled mutation; source syntax twice."
+  ],
+  "children": [],
+  "cost": "Validation O(L+E); mate initialization O(L+R). Each of L searches initializes L+R slots and visits at most L left vertices, R right vertices and E edges; flipping uses O(L+R). Total O((L+1)(L+R+E)) time and O(L+R) auxiliary space, including the L=0,R>0 allocation. No timing claim.",
+  "description": "bipartite_matching exact implementation",
+  "forward": [
+    "Validate every right endpoint in left/adjacency order; return the first InvalidEdge. Otherwise return one Option<usize> per left vertex, describing an injective edge subset of maximum cardinality. Process roots by increasing left index, FIFO discovery and adjacency order. Duplicate edges and empty/unequal partitions are valid. The selected optimum is deterministic for identical input but not promised lexicographically least or invariant under edge reordering.",
+    "2026-10-30 deep graph epoch: see specialized relations in adjacent model.md and six deterministic source tests."
+  ],
+  "id": "algorithm-bipartite-matching",
+  "inverse": [
+    "Let X be allocated finite ordered adjacency vectors and usize right-partition sizes, and Y the typed Result<Vec<Option<usize>>,BipartiteMatchingError> observation space, excluding allocation failure and nontermination. Define R subset X times Y by first-invalid-edge validation followed by the exact ordered FIFO augmenting traversal in Forward, not by arbitrary maximum matching. Set U=X times Y and behavior_complement=U minus R. It includes every valid maximum differing from that deterministic selected vector, as well as invalid, infeasible and submaximum observations. Finite negative fixtures check selected memberships only.",
+    "For output mate vector m, compatible inputs have L=len(m), R greater than every present mate, contain every selected edge and have matching number equal to count(Some). Exact compatibility additionally requires the stated FIFO/adjacency traversal to select m. Different edge sets and duplicate multiplicities can fit one result; unique graph recovery is not claimed. InvalidEdge restricts inputs to the reported first invalid endpoint and all earlier endpoints valid."
+  ],
+  "limitations": [
+    "Partial syntax has no macro expansion or type resolution. Bounded evidence is not proof. Allocation failures are outside the Result contract. No approximate executable profiles."
+  ],
+  "source": "algorithms/src/bipartite_matching/mod.rs",
+  "state": "Finite allocated adjacency vectors and typed result observations, ordinary terminating Rust execution."
+}

@@ -1,0 +1,25 @@
+{
+  "id": "fresh-process-retention-probe",
+  "source": "world/tests/groupant_retention.rs",
+  "description": "Synthetic checkpoint restore in distinct child processes; no training or answer quality claim.",
+  "state": "Wire envelope, fresh child process, canonical payload, logical receipt and filesystem effects.",
+  "forward": [
+    "Public load/query/save preserves canonical checkpoint observations across fresh processes.",
+    "Independent teaching digest matches lesson 7; next number is 8; repeated output is exclusive."
+  ],
+  "inverse": [
+    "Behavior complement excludes accepted stale checksums, replaced outputs and changed sources.",
+    "Reverse reconstruction retains compatible text-vector orders and unobserved presentation metadata."
+  ],
+  "cost": "O(payload bytes + text count log text count + ledger count times teaching bytes), plus process startup and sync.",
+  "checks": [
+    "cargo test --offline -p world --test groupant_retention in debug and release",
+    "Two parent tests; ignored explicit child helper; independent hashes and byte frames.",
+    "Source-bound partial syntax generated twice."
+  ],
+  "limitations": [
+    "Synthetic state construction, not training or evaluation.",
+    "No parser, teacher, exam, answer quality, nonempty-frame or cross-model claim.",
+    "Finite process/IO checks; no crash durability or concurrent writer proof."
+  ]
+}

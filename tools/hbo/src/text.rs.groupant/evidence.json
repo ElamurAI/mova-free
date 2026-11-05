@@ -1,0 +1,51 @@
+{
+  "logs": [
+    {
+      "exit": 0,
+      "receipt": "debug-1-01.log",
+      "sha256": "fbd2c579aba04865a644c6f5278d24c9e44b0fcd7fef01b0ac19414f07daf2db"
+    },
+    {
+      "exit": 0,
+      "receipt": "debug-2-01.log",
+      "sha256": "fbd2c579aba04865a644c6f5278d24c9e44b0fcd7fef01b0ac19414f07daf2db"
+    },
+    {
+      "exit": 0,
+      "receipt": "release-1-01.log",
+      "sha256": "259e472fb9ed09daf65c3eecb730ad2e742d65b0e5eb0b66b7862bd59a9666c8"
+    },
+    {
+      "exit": 0,
+      "receipt": "release-2-01.log",
+      "sha256": "259e472fb9ed09daf65c3eecb730ad2e742d65b0e5eb0b66b7862bd59a9666c8"
+    },
+    {
+      "exit": 101,
+      "receipt": "mutant-text.log",
+      "sha256": "6d25fd9c8881e914664edcb37e82066733131a23b7a83bc61d07b89b95f609ab"
+    },
+    {
+      "exit": 0,
+      "receipt": "restored-text.log",
+      "sha256": "5d7730099cac64f93273bcde7fd62e92faf726b1a44409f1db21e350cd4b8a3c"
+    }
+  ],
+  "mutation": {
+    "kind": "compiled_source_behavior",
+    "new": "level == Level::Pointed && point(c)",
+    "old": "level == Level::Unpointed && point(c)",
+    "original_sha256": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7",
+    "restoration_exact": true,
+    "restored_sha256": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7",
+    "source": "tools/hbo/src/text.rs",
+    "status": 101
+  },
+  "primary_test": "text::wave32::coordinates_thinning_and_sentence_edges",
+  "production_prefix_preserved": true,
+  "schema": 1,
+  "scope": "Finite synthetic actual-code observations, no semantic correctness proof or percent surrogate",
+  "source": "tools/hbo/src/text.rs",
+  "source_sha256": "a123d548879eaa2575f9ca17c5836bab9068a0615ce5dd11f996afaa579e44b7",
+  "syntax_sha256": "0370211af982d52eb25592e73e9cf610f5683a336b4fce7c5ad5976ccf6249d0"
+}

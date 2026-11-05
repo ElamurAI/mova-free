@@ -1,0 +1,88 @@
+{
+  "children": [
+    {
+      "id": "prag-irony-situations",
+      "path": "situations.groupant"
+    },
+    {
+      "id": "prag-irony-scoring",
+      "path": "scoring.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "domain": "Tagged finite API inputs and matching output schema in model.md forward; exact source revision and fixed dependency premises.",
+        "id": "prag-irony-behavior-complement",
+        "operator": "C_inner={(x,y): not J(x,y)} over declared domain; concrete forward/invariant exclusions",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "domain": "Tagged finite API inputs and matching output schema in model.md forward; exact source revision and fixed dependency premises.",
+        "id": "prag-irony-reverse-reconstruction",
+        "operator": "Converse/preimage relation retaining all compatible tagged inputs, states and intermediates",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "domain": "Tagged finite API inputs and matching output schema in model.md forward; exact source revision and fixed dependency premises.",
+        "id": "prag-irony-coupling",
+        "operator": "Scoped intervention/coupling relation in referenced section",
+        "path": "model.md",
+        "section": "coupling",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "domain": "Domain X is finite supplied (Word sequence W, raw cue text T) under fixed lexicons. Situation selection yields disjoint negative spans; polar sequence P follows token order, skipping ADP/SCONJ lexical sentiment and span interiors, flipping recognized lexical polarity under negation except cannot-wait. Let I and E be existence flags for the first implicit and explicit eligible pairs, C the distinct cue-kind list, and s=3I+2E+|C|. Return None iff neither pair exists or s<THRESHOLD; otherwise return s, features [implicit if I,explicit if E] followed by C, implicit pair if I else explicit pair, counts of P signs, adjacent sign flips, maximum sign-run length and positive-minus-negative. Invalid parent links supply no ancestry or ended-parent evidence; linear explicit precedence remains usable.",
+  "id": "prag-irony",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../irony.rs",
+    "sha256": "2855171f6b887782c09c175e6ad59c4c3b91e8e5807b82cdf45170725a2c2eb6"
+  },
+  "state": "Candidate implies I or E, score=3I+2E+cue-kind count and score>=2. Positive+negative=|P|, polarity=positive-negative, flips count adjacent sign changes, longest_run is zero for empty P. Cue kinds occur once in fixed order. No candidate from cues alone. No out-of-range dependency parent is indexed by ancestry/situation checks; a cycle terminates at the bounded walk limit. Pair choice and feature flags must agree.",
+  "status": "partial_source_bound_model"
+}

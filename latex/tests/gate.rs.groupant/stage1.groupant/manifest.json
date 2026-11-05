@@ -1,0 +1,82 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "fault_quantifier",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "fault_quantifier",
+        "status": "partial_source_derived_model",
+        "type": "fault_quantifier"
+      },
+      {
+        "id": "coordinate_oracle",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "coordinate_oracle",
+        "status": "partial_source_derived_model",
+        "type": "coordinate_oracle"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 10189,
+      "start": 5303
+    },
+    "description": "Golden cases compare exact LaTeX or text. Unknown test checks ordered names and source slices for two command spans, then roundtrip and canonical output. Malformed cases compare expected ErrorKind/position plus Unicode column/context. Fault test requires some of SwapFrac/DropSup/DropLast to turn each affected fixture red, then verifies an unaffected swap stays green.",
+    "source_bytes_sha256": "2c519f8b30d0bc77264556e137168d52b8dbf36c21f384603e0c4b9a074e57f1"
+  },
+  "id": "latex-test-gate-stage1",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../gate.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "710172ffe064b1fe0f860e92867b863919b0b6188d2b31ed326c50a6f72ebca3"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p math --lib vmm::wave28",
+    "two identical syntax projections"
+  ],
+  "children": [],
+  "cost": "Init O(log+calls) memory; append one serialization; external latency/output delegated. Floating sums order-sensitive, mutex poison panics.",
+  "description": "new sums prior call costs, missing log empty. ask locks for spent+reserve>cap then releases; mkdir→teacher→usage defaults0→spent increment→append→is_error rejection. Result nonstring becomes empty. append does not create parent; read skips blanks, malformed JSON errors.",
+  "forward": [
+    "new sums prior call costs, missing log empty. ask locks for spent+reserve>cap then releases; mkdir→teacher→usage defaults0→spent increment→append→is_error rejection. Result nonstring becomes empty. append does not create parent; read skips blanks, malformed JSON errors."
+  ],
+  "id": "math-teacher-accounting",
+  "inverse": [
+    "Spent admits all call lists with same sum; missing usage and zero collapse. Cap rejection admits prestate/reserve exceeding cap with no teacher effect."
+  ],
+  "limitations": [
+    "Teacher success/error transport unexecuted; no concurrency cap guarantee.",
+    "Partial lexical AST; no semantic proof or executable percentage surrogate"
+  ],
+  "source": "math/src/vmm.rs",
+  "state": "Model/effort/cwd/log/cap; mutex spent; Call usage"
+}

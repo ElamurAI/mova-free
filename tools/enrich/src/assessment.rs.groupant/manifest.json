@@ -1,0 +1,231 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "assessment-contract",
+  "source": {
+    "path": "../assessment.rs",
+    "sha256": "c111b671217c6d3679428fe96e22e220acd88ec8f2d9922ec07fdfa7f727c1d0",
+    "raw_code_location": "outside_this_sidecar"
+  },
+  "status": "partial_descriptive_instance",
+  "components": {
+    "ast": {
+      "status": "partial",
+      "format": "rust_syntax_projection",
+      "path": "syntax.json"
+    },
+    "approximant": {
+      "status": "partial",
+      "path": "model.md#approximant"
+    },
+    "complementer": {
+      "status": "partial_relational_specification",
+      "path": "model.md#complementer",
+      "description": "model.md#descriptant",
+      "type": "reverse_reconstruction",
+      "role": "legacy_pointer"
+    },
+    "invariant": {
+      "status": "partial",
+      "description": "model.md#approximant"
+    },
+    "descriptant": {
+      "status": "present",
+      "path": "model.md#descriptant"
+    },
+    "tests": {
+      "status": "existing_checks_referenced",
+      "path": "model.md#tests"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "required": true,
+        "status": "partial_projection_specification",
+        "path": "model.md#nonbehavior",
+        "scope": "score-policy graph in an explicit bounded transition universe"
+      },
+      {
+        "id": "antecedents",
+        "type": "reverse_reconstruction",
+        "required": true,
+        "status": "partial_relational_specification",
+        "path": "model.md#complementer",
+        "scope": "score histories compatible with recommendation"
+      },
+      {
+        "id": "promotion-thresholds",
+        "type": "threshold_repair",
+        "required": false,
+        "status": "partial_projection_specification",
+        "path": "model.md#threshold-repair",
+        "scope": "fixed-assessment integer score feasibility"
+      },
+      {
+        "id": "row-count",
+        "type": "cardinality_preimage",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "row-count",
+        "scope": "Successful binding requires reported array length L=total T=expected N and 0<=right<=N. Every successful tuple violating that conjunction is excluded."
+      },
+      {
+        "id": "score-fiber",
+        "type": "score_partition",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "score-fiber",
+        "scope": "For Boolean correctness vectors, B(r)={c | sum(c)=r}, with binomial(N,r) members before option constraints."
+      },
+      {
+        "id": "choice-fiber",
+        "type": "choice_preimage",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "choice-fiber",
+        "scope": "For gold g and option strings O, B(correct=true)={g}; B(false)=set(O) minus {g}. Duplicated strings collapse under this observation."
+      },
+      {
+        "id": "flag-complement",
+        "type": "flag_consistency_complement",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "flag-complement",
+        "scope": "A successful tuple with correct!=(choice==gold) belongs to the absent-behavior model, including incompatible JSON value types."
+      },
+      {
+        "id": "aggregate-complement",
+        "type": "aggregate_consistency_complement",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "aggregate-complement",
+        "scope": "Successful binding excludes right != sum_i[choice_i=gold_i]. The constraint concerns row consistency, not answer semantics."
+      },
+      {
+        "id": "hash-fiber",
+        "type": "identity_equivalence",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "hash-fiber",
+        "scope": "Equal scored lesson projections imply equal assessment hashes; the same hash does not uniquely identify the full lesson because other fields are omitted."
+      },
+      {
+        "id": "learner-pair",
+        "type": "learner_pair_constraint",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "learner-pair",
+        "scope": "For four grade IDs ordered new_before,new_after,old_before,old_after, comparison requires id0=id2 and id1=id3."
+      },
+      {
+        "id": "assessment-pair",
+        "type": "assessment_pair_constraint",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "assessment-pair",
+        "scope": "Comparison requires assessment ID and total equal within each before/after pair. The new and old assessments may differ from each other."
+      },
+      {
+        "id": "integer-edge",
+        "type": "numeric_boundary_preimage",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "integer-edge",
+        "scope": "A successful signed new-score difference requires both new scores<=i64::MAX; their difference is within [-i64::MAX,i64::MAX]."
+      },
+      {
+        "id": "first-error",
+        "type": "first_failure_partition",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "first-error",
+        "scope": "For ordered guards g1..gk and first observable failure j, compatible antecedents satisfy all earlier guards and not gj; later guards are unconstrained."
+      },
+      {
+        "id": "extra-fields",
+        "type": "extension_invariance",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "extra-fields",
+        "scope": "Reports differing only in unconsulted keys have equal projection to fields read by bind, hence equal binding behavior."
+      },
+      {
+        "id": "row-order",
+        "type": "row_permutation_counterfactual",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "row-order",
+        "scope": "A fixed contract excludes successful permutations that mismatch kind/index/question/gold at any position, even with unchanged aggregate."
+      },
+      {
+        "id": "option-labels",
+        "type": "label_ambiguity",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "option-labels",
+        "scope": "The preimage of a chosen label includes all option positions with that string. String-only reports cannot recover an option index."
+      },
+      {
+        "id": "empty-input",
+        "type": "empty_input_complement",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "empty-input",
+        "scope": "When both tests and exams are empty, all Ok constructor outcomes are absent."
+      },
+      {
+        "id": "teaching-input",
+        "type": "training_input_complement",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "teaching-input",
+        "scope": "A nonempty explanation, facts or exercises excludes a successful contract constructor, even when questions exist."
+      },
+      {
+        "id": "decision-edge",
+        "type": "decision_boundary",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "decision-edge",
+        "scope": "With v>=u fixed, recommendation changes at a=b+1; with a>b fixed, it changes at v=u."
+      },
+      {
+        "id": "header-rows",
+        "type": "header_row_coupling",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "header-rows",
+        "scope": "Changing a report hash header to another contract permits success only if all scored row metadata also matches; header equality is insufficient."
+      }
+    ]
+  },
+  "registry": {
+    "path": "../../../../models/contracts.json",
+    "node": "assessment-contract"
+  },
+  "extensions": {
+    "epoch_memory": "model.md#descriptant",
+    "four_corner_refinement": "model.md#four-corner",
+    "notes": "Open container: additional files, fields and artifact types are permitted.",
+    "mathematical_specification": "../../../../formal/StudyComparison.lean",
+    "complementer_laws": "../../../../formal/Complementer.lean"
+  }
+}

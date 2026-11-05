@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "db::tests::drafts_add_only_new_sentences; db::tests::replace_and_append; db::wave33_tests::voting_boundaries_and_snapshot_drafts. Small synthetic temp DB. Full agree aggregation and injected I/O failures remain source-derived.",
+    "2026-11-01: cycle debug/release synthetic reviewed selection transaction, old-vote negative control, malformed/phase/hash/header rejection, split/heldout exclusion, idempotency and interrupted rollback.",
+    "2026-11-04: db::vote_tests::vote_shares_go_to_misc; db::vote_tests::agree_writes_the_margin_and_is_stable (CYCLE_VOTE_MISC off leaves current.conllu as before).",
+    "2026-11-05: db::heldout_tests::dev_sentences_never_reach_the_training_export (negative control: dev id and dev text under another id dropped; empty Heldout lets both through; missing required source fails); normalized_text_ignores_case_spacing_and_punctuation; wikipedia_corpus_contributes_every_split. Mutation hits=ids-only fails both export tests. Staged DB export measured twice, byte-identical.",
+    "2026-11-05 (retrain-clean): filtered copies keep their file names (<i>/<name>); dev_sentences_never_reach_the_training_export asserts it."
+  ],
+  "children": [],
+  "cost": "B bytes,S sentences,V versions,W words: O(B+S log S) merge, O(V W log V+W²) vote/tree check, output/history I/O. same_text O(B+S log S). train_dbs path dedup O(D²).",
+  "description": "Normalize sentence-ID boundaries; guard policy-selected full trees and pragmatic rows; apply reviewed full-tree overlay after source-weight voting. With policy, training intersects explicit train partition; every training export drops development/held-out sentences by id and normalized text (Heldout), counting the drop, and rejects an unreviewed secondary DB under a strict primary. Legacy updates remain nontransactional outside reviewed promotion.",
+  "forward": [
+    "Normalize sentence-ID boundaries; guard policy-selected full trees and pragmatic rows; apply reviewed full-tree overlay after source-weight voting. With policy, training intersects explicit train partition; every training export drops development/held-out sentences by id and normalized text (Heldout), counting the drop, and rejects an unreviewed secondary DB under a strict primary. Legacy updates remain nontransactional outside reviewed promotion."
+  ],
+  "id": "cycle-db",
+  "inverse": [
+    "Current trees admit arbitrarily many replaced histories. Added/replaced counts constrain event multiplicity, not bodies. Voted tree admits many weighted multisets and invalid-vote fallback antecedents.",
+    "Successful unique-id update preserves existing positions, appends new ids once. with_drafts excludes replacement of known DB ids but permits repeated new draft ids. No rollback guarantee."
+  ],
+  "limitations": [
+    "Partial syntax, bounded synthetic helper coverage; no live teacher, corpus, model, lesson or benchmark CLI. No numerical approximation budget claimed."
+  ],
+  "source": "tools/cycle/src/db.rs",
+  "state": "Content-bound reviewed policy is a prerequisite for reviewed DB writes/training. Full-tree overlay wins after ordinary source-weight votes; no artificial model weight. No cross-file atomicity claim."
+}

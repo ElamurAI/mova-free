@@ -1,0 +1,141 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=64 columns, <=4096 rows of distinct valid coordinates; finite u64 node budget; Option row-index witness or ResourceExhausted.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Exclude overlapping/incomplete witnesses, invalid row acceptance, None from interrupted search, or zero-budget success.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "2ed84e7cb4f59ea4b546180af639b2563627d9f4ea83698903c88d66394e2051",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=64 columns, <=4096 rows of distinct valid coordinates; finite u64 node budget; Option row-index witness or ResourceExhausted.",
+        "evidence": "model.md#evidence",
+        "id": "preimages",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "For Some(indices), row families must partition all columns at those indices and deterministic branch order must select them within budget. Unselected rows and additional sufficient budget are generally unrecoverable. None requires exhausted complete search, not exhausted budget.",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "2ed84e7cb4f59ea4b546180af639b2563627d9f4ea83698903c88d66394e2051",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=64 columns, <=4096 rows of distinct valid coordinates; finite u64 node budget; Option row-index witness or ResourceExhausted.",
+        "evidence": "model.md#evidence",
+        "id": "transition",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Budget extension preserves successful witness or completed infeasibility, but exhausted runs may resolve either way.",
+        "path": "model.md",
+        "section": "transition",
+        "status": "partial_source_derived",
+        "subject_revision": "2ed84e7cb4f59ea4b546180af639b2563627d9f4ea83698903c88d66394e2051",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=64 columns, <=4096 rows of distinct valid coordinates; finite u64 node budget; Option row-index witness or ResourceExhausted.",
+        "evidence": "model.md#evidence",
+        "id": "order",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Empty rows never participate; adding empty rows changes later original indices but not feasibility.",
+        "path": "model.md",
+        "section": "order",
+        "status": "partial_source_derived",
+        "subject_revision": "2ed84e7cb4f59ea4b546180af639b2563627d9f4ea83698903c88d66394e2051",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=64 columns, <=4096 rows of distinct valid coordinates; finite u64 node budget; Option row-index witness or ResourceExhausted.",
+        "evidence": "model.md#evidence",
+        "id": "coordinate",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Permuting columns preserves feasibility, but minimum-column tie decisions can change witness order.",
+        "path": "model.md",
+        "section": "coordinate",
+        "status": "partial_source_derived",
+        "subject_revision": "2ed84e7cb4f59ea4b546180af639b2563627d9f4ea83698903c88d66394e2051",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=64 columns, <=4096 rows of distinct valid coordinates; finite u64 node budget; Option row-index witness or ResourceExhausted.",
+        "evidence": "model.md#evidence",
+        "id": "fiber",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Every recursive branch removes at least one bit, bounding recursion depth by 64 independent of row count.",
+        "path": "model.md",
+        "section": "fiber",
+        "status": "partial_source_derived",
+        "subject_revision": "2ed84e7cb4f59ea4b546180af639b2563627d9f4ea83698903c88d66394e2051",
+        "type": "specialized_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "<=64 columns, <=4096 rows of distinct valid coordinates; finite u64 node budget; Option row-index witness or ResourceExhausted.",
+        "evidence": "model.md#evidence",
+        "id": "errors",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Public size caps precede input-order validation, then arithmetic/search. Exact cover budget exhaustion is not infeasibility; closure capacity overflow is not infeasibility. Bounded index arithmetic cannot overflow. Checked i128 arborescence arithmetic remains defensive. Allocation failure is process-level, not returned; no callbacks or external writes. Empty cases and deterministic ties follow API docs.",
+        "path": "model.md",
+        "section": "errors",
+        "status": "partial_source_derived",
+        "subject_revision": "2ed84e7cb4f59ea4b546180af639b2563627d9f4ea83698903c88d66394e2051",
+        "type": "error_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-exact-cover",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "2ed84e7cb4f59ea4b546180af639b2563627d9f4ea83698903c88d66394e2051"
+  },
+  "status": "partial_source_derived_instance"
+}

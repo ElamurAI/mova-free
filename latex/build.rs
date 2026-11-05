@@ -365,3 +365,33 @@ fn main() {
     let dir = std::env::var("OUT_DIR").unwrap();
     std::fs::write(format!("{dir}/table.rs"), out).unwrap();
 }
+
+#[cfg(test)]
+mod wave28_tests {
+    use super::*;
+
+    #[test]
+    fn canonical_first_form_and_variant_order() {
+        let mut e = En::default();
+        e.canon("Beta", "\\beta");
+        e.canon("Alpha", "\\alpha");
+        e.canon("Beta", "\\other");
+        e.alt("Beta", "\\infix");
+        e.alt("Beta", "\\second");
+        assert_eq!(e.variants, vec!["Beta", "Alpha"]);
+        assert_eq!(e.canon["Beta"], "\\beta");
+        assert_eq!(e.alt["Beta"], "\\infix");
+    }
+
+    #[test]
+    fn variant_identifier_boundary() {
+        for s in ["A", "A0", "Alpha"] {
+            assert!(is_ident(s));
+        }
+        for s in ["", "alpha", "0A", "A_", "Α"] {
+            assert!(!is_ident(s));
+        }
+        assert_eq!(CLASSES.len(), 12);
+        assert!(CLASSES.iter().any(|(k, v)| *k == "fnl" && *v == "FnLim"));
+    }
+}

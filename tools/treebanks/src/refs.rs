@@ -171,7 +171,6 @@ fn surname_words(s: &str) -> Vec<String> {
 pub struct Paper {
     pub title: String,
     pub year: u32,
-    pub authors: Vec<String>,
     pub surnames: Vec<Vec<String>>,
     pub anthology: String,
     pub doi: String,
@@ -238,12 +237,10 @@ impl Index {
             .filter(|e| !e.anthology_id().is_empty())
             .map(|e| {
                 let raw: Vec<&str> = e.get("author").split(" and ").map(str::trim).filter(|a| !a.is_empty()).collect();
-                let authors = raw.iter().map(|a| a.split_once(", ").map_or(a.to_string(), |(l, f)| format!("{f} {l}"))).collect();
                 let surnames = raw.iter().map(|a| surname_words(a.split_once(',').map_or_else(|| a.rsplit(' ').next().unwrap_or(a), |(l, _)| l))).collect();
                 Paper {
                     title: detex(e.get("title")),
                     year: e.get("year").parse().unwrap_or(0),
-                    authors,
                     surnames,
                     anthology: e.anthology_id().to_string(),
                     doi: e.get("doi").to_lowercase(),
@@ -298,7 +295,6 @@ impl Index {
                 words: words(&m.title),
                 title: m.title,
                 year: m.year,
-                authors: m.authors,
                 surnames,
                 anthology: m.ids.anthology.unwrap_or_default(),
                 doi: m.ids.doi.unwrap_or_default().to_lowercase(),
@@ -658,7 +654,6 @@ mod tests {
         Paper {
             title: title.into(),
             year,
-            authors: authors.iter().map(|a| a.to_string()).collect(),
             surnames: authors.iter().map(|a| surname_words(a.rsplit(' ').next().unwrap())).collect(),
             anthology: id.into(),
             doi: String::new(),

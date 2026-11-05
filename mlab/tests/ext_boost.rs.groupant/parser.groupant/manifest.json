@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Shared parent lexical projection; fragment byte scope above",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source byte range [571,2204); lexical, not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source byte range [571,2204); lexical, not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "effect_boundary",
+        "path": "model.md",
+        "scope": "Source byte range [571,2204); lexical, not proof",
+        "section": "effect_boundary",
+        "status": "partial_source_derived_model",
+        "type": "effect_boundary"
+      },
+      {
+        "id": "numeric_transport",
+        "path": "model.md",
+        "scope": "Source byte range [571,2204); lexical, not proof",
+        "section": "numeric_transport",
+        "status": "partial_source_derived_model",
+        "type": "numeric_transport"
+      },
+      {
+        "id": "branch_relation",
+        "path": "model.md",
+        "scope": "Source byte range [571,2204); lexical, not proof",
+        "section": "branch_relation",
+        "status": "partial_source_derived_model",
+        "type": "branch_relation"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "Source byte range [571,2204); lexical, not proof",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "partial_bounded_parent_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 2204,
+      "start": 571
+    },
+    "description": "table searches exact array header and end delimiter, parses SC_ tokens; mlab_eval builds numeric vector, calls Interp::capture/run, parses Inf/-Inf/NaN and enforces output count.",
+    "source_bytes_sha256": "3f491fcf3cb484125b933934b20adf332797d169c797f3f2f8e04254779b3771"
+  },
+  "id": "mlab-ext-boost-parser",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../ext_boost.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "7fa4b847808f0a485411988bb342bd0b0540d350c50e6166f08224c1dbac9dfc"
+  },
+  "status": "partial_source_bound_model"
+}

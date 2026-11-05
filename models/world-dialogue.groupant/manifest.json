@@ -1,0 +1,154 @@
+{
+  "children": [
+    "world-build",
+    "world-ideas",
+    "world-lib",
+    "world-main",
+    "world-nerves",
+    "world-talk",
+    "world-vmm"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "No live API/teacher, DB, corpus, model mutation, GPU or full-school run; lib visibility compile only, main startup excluded.",
+        "domain": "Bounded UTF-8 synthetic inputs and fresh temporary files; finite representable integer intermediates, positive max for nonempty VMM parts and sentence counts within u16 for intended ranges.",
+        "id": "behavior-complement",
+        "observation_scope": "ideas->nerves::norm, ideas->talk::now, talk->babi::split_sentences, main->vmm->lang/world. Act cue normalization and concept normalization are not equivalent adapters.",
+        "operator": "Exclude live teacher or state mutation from pure classification; exclude counting duplicate query words twice in diffusion/rarity; done-file errors cannot call teacher. No guarantee that repaired lines pass execution gates.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "No live API/teacher, DB, corpus, model mutation, GPU or full-school run; lib visibility compile only, main startup excluded.",
+        "domain": "Bounded UTF-8 synthetic inputs and fresh temporary files; finite representable integer intermediates, positive max for nonempty VMM parts and sentence counts within u16 for intended ranges.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "ideas->nerves::norm, ideas->talk::now, talk->babi::split_sentences, main->vmm->lang/world. Act cue normalization and concept normalization are not equivalent adapters.",
+        "operator": "Joint observations admit all texts with same normalized concept sets and act priority, files sharing retained ranked rows, and cached histories yielding same command bytes. These fibers are set-valued and do not recover overwritten memories or raw repair history.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "No live API/teacher, DB, corpus, model mutation, GPU or full-school run; lib visibility compile only, main startup excluded.",
+        "domain": "Bounded UTF-8 synthetic inputs and fresh temporary files; finite representable integer intermediates, positive max for nonempty VMM parts and sentence counts within u16 for intended ranges.",
+        "id": "normalization-join",
+        "observation_scope": "ideas->nerves::norm, ideas->talk::now, talk->babi::split_sentences, main->vmm->lang/world. Act cue normalization and concept normalization are not equivalent adapters.",
+        "operator": "ideas words = set(filter_map(nerves::norm, alphanumeric tokens)); talk cue matching has different boundaries and cannot substitute for nerves normalization.",
+        "path": "model.md",
+        "required": false,
+        "section": "normalization-join",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No live API/teacher, DB, corpus, model mutation, GPU or full-school run; lib visibility compile only, main startup excluded.",
+        "domain": "Bounded UTF-8 synthetic inputs and fresh temporary files; finite representable integer intermediates, positive max for nonempty VMM parts and sentence counts within u16 for intended ranges.",
+        "id": "coordinate-join",
+        "observation_scope": "ideas->nerves::norm, ideas->talk::now, talk->babi::split_sentences, main->vmm->lang/world. Act cue normalization and concept normalization are not equivalent adapters.",
+        "operator": "VMM splice uses 1-based physical lines while prompt partitions use 1-based inclusive sentence anchors; changing line N does not imply changing sentence N.",
+        "path": "model.md",
+        "required": false,
+        "section": "coordinate-join",
+        "status": "partial_source_derived_model",
+        "type": "coordinate_transport"
+      },
+      {
+        "assumptions": "No live API/teacher, DB, corpus, model mutation, GPU or full-school run; lib visibility compile only, main startup excluded.",
+        "domain": "Bounded UTF-8 synthetic inputs and fresh temporary files; finite representable integer intermediates, positive max for nonempty VMM parts and sentence counts within u16 for intended ranges.",
+        "id": "effect-order",
+        "observation_scope": "ideas->nerves::norm, ideas->talk::now, talk->babi::split_sentences, main->vmm->lang/world. Act cue normalization and concept normalization are not equivalent adapters.",
+        "operator": "Main activates state before dispatch; VMM done refusal precedes partition and teacher; ideas atomic write failure is swallowed, unlike VMM file errors.",
+        "path": "model.md",
+        "required": false,
+        "section": "effect-order",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "No live API/teacher, DB, corpus, model mutation, GPU or full-school run; lib visibility compile only, main startup excluded.",
+        "domain": "Bounded UTF-8 synthetic inputs and fresh temporary files; finite representable integer intermediates, positive max for nonempty VMM parts and sentence counts within u16 for intended ranges.",
+        "id": "resource-join",
+        "observation_scope": "ideas->nerves::norm, ideas->talk::now, talk->babi::split_sentences, main->vmm->lang/world. Act cue normalization and concept normalization are not equivalent adapters.",
+        "operator": "Three diffusion frontiers bounded at 4000 coexist with unbounded total activation and whole-file ideas/memory loading; teacher cost has no measured time bound.",
+        "path": "model.md",
+        "required": false,
+        "section": "resource-join",
+        "status": "partial_source_derived_model",
+        "type": "cost_composition"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "world-dialogue",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "world/build.rs",
+      "sha256": "5b52e7120347c66b34755745659876052a4061779d3577338409ee0ec52449dd"
+    },
+    {
+      "path": "world/src/ideas.rs",
+      "sha256": "03c6ae967df07dcb72e35fdc7168ce01c6a35b2c497c04dfbba3ba8766c92f7e"
+    },
+    {
+      "path": "world/src/lib.rs",
+      "sha256": "b96c4bd988dc5a4ed0c27aea93b262750b037eb2d20f01a9f1ffdc82391e5306"
+    },
+    {
+      "path": "world/src/main.rs",
+      "sha256": "012a1d17d6b635c5cb7a7545022d6a7dc10cdc49acaa2bbc29fa4385b5c69995"
+    },
+    {
+      "path": "world/src/nerves.rs",
+      "sha256": "57c5e6037642f6bd1ada51b3e13a378699848d3f5f9423498bf885335c49ec03"
+    },
+    {
+      "path": "world/src/talk.rs",
+      "sha256": "2b4f6e1bb33bd9def1c1c831a2325f30598a544b4e1603b02ec50242c4336115"
+    },
+    {
+      "path": "world/src/vmm.rs",
+      "sha256": "15859077a1ce4104d22f48c24636a0c6767fb0374436028afd50c556b538aab1"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

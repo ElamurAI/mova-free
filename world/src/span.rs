@@ -182,7 +182,7 @@ fn mark_of(t: &Tree, i: usize) -> String {
     ms.join(" ")
 }
 
-/// Children of the predicate and children of its xcomp/conj verbs with the same subject (one «action»).
+/// Direct children, followed by children of direct xcomp nodes; no subject check or conj expansion.
 fn verb_kids(t: &Tree, p: usize) -> Vec<usize> {
     let mut out: Vec<usize> = t.kids(p).to_vec();
     for k in t.kids(p) {
@@ -600,4 +600,140 @@ pub fn minus_question(t: &Tree, qlem: &HashSet<String>) -> Option<String> {
         return None;
     }
     clean(t, (best.0..best.1).collect(), qlem).map(|ix| t.text(&ix))
+}
+
+#[cfg(test)]
+mod span_models {
+    use super::*;
+    use en::annotate::Word;
+    use crate::qframe::{Clause, Focus, Wh};
+    use std::collections::BTreeMap;
+
+    fn word(s: &str, upos: UPos, head: usize, rel: Rel) -> Word {
+        Word { form: s.into(), lemma: s.into(), upos, tag: PTag::NN,
+            feats: Default::default(), head, rel }
+    }
+
+    fn frame() -> QFrame {
+        QFrame { q: String::new(), wh: Wh::What, kind: QKind::Generic,
+            focus: Focus::Subj, main: Clause::default(), mark: None, sub: None,
+            fut: false, passive: false, prep: None, about: vec![], target: vec![], whnp: vec![] }
+    }
+
+    #[test]
+    fn cleanup_complete_bounded_fibers() {
+        // All 341 lists of length <= 4 over four indices, for all four echo masks.
+        // The oracle uses a set projection and a literal truth table, not clean's loops.
+        let t = Tree::of_words(vec![
+            word("and", UPos::CCONJ, 2, Rel::Cc),
+            word("ruby", UPos::NOUN, 0, Rel::Root),
+            word("jade", UPos::NOUN, 2, Rel::Obj),
+            word(".", UPos::PUNCT, 2, Rel::Punct),
+        ]);
+        for mask in 0..4 {
+            let q: HashSet<String> = ["ruby", "jade"].into_iter().enumerate()
+                .filter(|(i, _)| mask & (1 << i) != 0).map(|(_, s)| s.into()).collect();
+            let mut expected = BTreeMap::<Option<Vec<usize>>, Vec<Vec<usize>>>::new();
+            let mut actual = BTreeMap::<Option<Vec<usize>>, Vec<Vec<usize>>>::new();
+            for len in 0..=4 {
+                for code in 0..4usize.pow(len) {
+                    let mut n = code;
+                    let list: Vec<usize> = (0..len).map(|_| { let i = n % 4; n /= 4; i }).collect();
+                    let kept: Vec<usize> = [1, 2].into_iter().filter(|i| list.contains(i)).collect();
+                    let accepted = match kept.as_slice() {
+                        [1] => mask & 1 == 0,
+                        [2] => mask & 2 == 0,
+                        [1, 2] => mask != 3,
+                        _ => false,
+                    };
+                    let out = accepted.then_some(kept);
+                    expected.entry(out.clone()).or_default().push(list.clone());
+                    let got = clean(&t, list.clone(), &q);
+                    assert_eq!(got, out, "mask={mask}, list={list:?}");
+                    actual.entry(got).or_default().push(list);
+                }
+            }
+            assert_eq!(actual, expected, "complete fibers for mask={mask}");
+            assert_eq!(actual.values().map(Vec::len).sum::<usize>(), 341);
+        }
+    }
+
+    #[test]
+    fn cleanup_marker_asymmetry_and_internal_edges() {
+        let t = Tree::of_words(vec![
+            word("to", UPos::PART, 2, Rel::Mark),
+            word("ruby", UPos::NOUN, 0, Rel::Root),
+            word("and", UPos::CCONJ, 2, Rel::Cc),
+            word("jade", UPos::NOUN, 2, Rel::Obj),
+            word("to", UPos::PART, 2, Rel::Mark),
+        ]);
+        assert_eq!(clean(&t, vec![4, 3, 2, 1, 0, 1], &HashSet::new()), Some(vec![1, 2, 3, 4]));
+        assert_eq!(clean(&t, vec![0, 1], &HashSet::new()), Some(vec![1]));
+        assert_eq!(clean(&t, vec![1, 4], &HashSet::new()), Some(vec![1, 4]));
+    }
+
+    #[test]
+    fn predicate_rank_complete_fibers_and_caller_order() {
+        let tags = [UPos::VERB, UPos::ADJ, UPos::NOUN, UPos::PROPN];
+        let mut expected = BTreeMap::<Option<usize>, Vec<usize>>::new();
+        let mut actual = BTreeMap::<Option<usize>, Vec<usize>>::new();
+        for code in 0..64 {
+            let ranks = [code % 4, code / 4 % 4, code / 16];
+            let t = Tree::of_words(ranks.iter().map(|r| word("ruby", tags[*r], 0, Rel::Root)).collect());
+            let winner = (0..3).filter(|i| ranks[*i] < 3).min_by_key(|i| (ranks[*i], *i));
+            let got = find_pred(&t, &["ruby".into()]);
+            assert_eq!(got, winner, "ranks={ranks:?}");
+            expected.entry(winner).or_default().push(code);
+            actual.entry(got).or_default().push(code);
+        }
+        assert_eq!(actual, expected);
+        let t = Tree::of_words(vec![word("ruby", UPos::NOUN, 0, Rel::Root), word("jade", UPos::VERB, 0, Rel::Root)]);
+        assert_eq!(find_pred(&t, &["ruby".into(), "jade".into()]), Some(0));
+        assert_eq!(find_pred(&t, &["jade".into(), "ruby".into()]), Some(1));
+    }
+
+    #[test]
+    fn fallback_content_objective_and_earliest_tie() {
+        let t = Tree::of_words(vec![
+            word("ruby", UPos::NOUN, 0, Rel::Root), word("jade", UPos::NOUN, 1, Rel::Obj),
+            word("anchor", UPos::NOUN, 1, Rel::Obj), word("the", UPos::DET, 5, Rel::Det),
+            word("opal", UPos::NOUN, 1, Rel::Obj), word("and", UPos::CCONJ, 7, Rel::Cc),
+            word("pearl", UPos::NOUN, 1, Rel::Obj),
+        ]);
+        let q = HashSet::from(["anchor".into()]);
+        assert_eq!(minus_question(&t, &q), Some("ruby jade".into()));
+        let mut extended = t.w.clone();
+        extended.push(word("amber", UPos::NOUN, 1, Rel::Obj));
+        assert_eq!(minus_question(&Tree::of_words(extended), &q), Some("the opal and pearl amber".into()));
+        assert_eq!(minus_question(&t, &HashSet::from(["ruby".into(), "anchor".into(), "opal".into()])), None);
+    }
+
+    #[test]
+    fn object_shadowing_and_oblique_retry_are_distinct() {
+        let pred = ["take".into()];
+        let q = HashSet::from(["ruby".into()]);
+        let direct = Tree::of_words(vec![word("take", UPos::VERB, 0, Rel::Root),
+            word("ruby", UPos::NOUN, 1, Rel::Obj), word("jade", UPos::NOUN, 1, Rel::Iobj)]);
+        assert_eq!(extract(&direct, Want::Obj, &pred, &[], &frame(), &q), None);
+        let oblique = Tree::of_words(vec![word("take", UPos::VERB, 0, Rel::Root),
+            word("ruby", UPos::NOUN, 1, Rel::Obl), word("jade", UPos::NOUN, 1, Rel::Obl)]);
+        assert_eq!(extract(&oblique, Want::Obj, &pred, &[], &frame(), &q), Some(("jade".into(), "obl".into())));
+    }
+
+    #[test]
+    fn verb_children_expand_one_xcomp_level_only() {
+        let t = Tree::of_words(vec![
+            word("try", UPos::VERB, 0, Rel::Root),
+            word("take", UPos::VERB, 1, Rel::Xcomp),
+            word("ruby", UPos::NOUN, 2, Rel::Obj),
+            word("give", UPos::VERB, 1, Rel::Conj),
+            word("jade", UPos::NOUN, 4, Rel::Obj),
+            word("seek", UPos::VERB, 2, Rel::Xcomp),
+            word("pearl", UPos::NOUN, 6, Rel::Obj),
+            word("they", UPos::PRON, 2, Rel::Nsubj),
+        ]);
+        assert_eq!(verb_kids(&t, 0), vec![1, 3, 2, 5, 7]);
+        assert_eq!(extract(&t, Want::Obj, &["try".into()], &[], &frame(), &HashSet::new()),
+            Some(("ruby".into(), "obj".into())));
+    }
 }

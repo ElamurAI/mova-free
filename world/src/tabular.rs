@@ -421,3 +421,88 @@ pub fn learn_rare(data: &[(BTreeMap<String, String>, bool)], min: usize, k: usiz
     }
     List { rules, default: false }
 }
+
+#[cfg(test)]
+mod wave8_models {
+    use super::*;
+
+    #[test]
+    fn csv_encoded_records_roundtrip_and_permissive_fibers() {
+        let fields = ["", "a", "a,b", "a\"b", "é", " a ", "\\"];
+        let encode = |s: &str| format!("\"{}\"", s.replace('"', "\"\""));
+        for a in fields { for b in fields { for c in fields {
+            let line = [a,b,c].map(encode).join(",");
+            assert_eq!(split_csv(&line), vec![a,b,c]);
+        }}}
+        for line in ["a", "\"a\"", "\"a", "a\""] {
+            assert_eq!(split_csv(line), vec!["a"]);
+        }
+        assert_eq!(split_csv(",,"), vec!["", "", ""]);
+        assert_eq!(split_csv("\"a\nb\""), vec!["a\nb"]); // read_csv splits lines first
+    }
+
+    #[test]
+    fn categorical_projection_and_age_override() {
+        let head = vec!["Age".into(), "Flag".into(), "skip".into()];
+        let rows = [vec!["12".into(), "".into(), "x".into()], vec!["13".into(), "unknown".into()]];
+        let w = read_world(&head, &rows.iter().collect::<Vec<_>>(), &["skip"]);
+        assert_eq!(w.wc, vec![true, false]);
+        assert_eq!(w.attrs[0]["Flag"], w.attrs[1]["Flag"]);
+        assert_eq!(w.attrs[0]["Flag"], "unknown");
+        assert!(w.attrs.iter().all(|a| !a.contains_key("skip")));
+        assert!(w.links.iter().all(Vec::is_empty));
+    }
+
+    #[test]
+    fn numeric_quartiles_and_category_threshold() {
+        for n in [12, 13, 20] {
+            let head = vec!["Value".into()];
+            let rows: Vec<Vec<String>> = (0..n).map(|i| vec![i.to_string()]).collect();
+            let w = read_world(&head, &rows.iter().collect::<Vec<_>>(), &[]);
+            for i in 0..n {
+                let expected = if n <= 12 { i.to_string() } else {
+                    let rank = [1,2,3].iter().filter(|&&p| i > (n-1)*p/4).count()+1;
+                    format!("q{rank}")
+                };
+                assert_eq!(w.attrs[i]["Value"], expected);
+            }
+        }
+    }
+
+    #[test]
+    fn family_links_and_group_known_outcome_partition() {
+        let head = vec!["Name".into(), "Fare".into()];
+        let rows = [vec!["Smith, Mrs. A".into(), "7".into()], vec!["Smith, Mr. B".into(), "7".into()], vec!["Smith, Master. C".into(), "7".into()]];
+        let w = read_world(&head, &rows.iter().collect::<Vec<_>>(), &[]);
+        assert_eq!(w.wc, vec![true, false, true]);
+        assert_eq!(w.links, vec![vec![1,2], vec![0,2], vec![0,1]]);
+        for mask in 0..9 {
+            let mut known = BTreeMap::new();
+            for (j,digit) in [(0, mask%3), (2, mask/3)] {
+                if digit != 0 { known.insert(j, digit == 2); }
+            }
+            let yes = known.values().filter(|v| **v).count();
+            let no = known.len()-yes;
+            let expected = match (yes,no) { (0,0) => "none known", (_,0) => "all had it", (0,_) => "none had it", _ => "mixed" };
+            assert_eq!(group_attr(&w,1,&known), expected);
+            known.insert(1,true);
+            assert_eq!(group_attr(&w,1,&known), expected);
+        }
+    }
+
+    #[test]
+    fn decision_list_precedence_default_and_learned_witness() {
+        let f = |v: &str| BTreeMap::from([("x".into(),v.into())]);
+        let data: Vec<_> = (0..20).map(|i| (f(if i<10 {"a"} else {"b"}),i<10)).collect();
+        let l = learn_kc(&data, 2, 1, 1);
+        assert_eq!(l.rules.len(), 1);
+        assert_eq!(l.rules[0].0, vec![("x".into(),"a".into())]);
+        assert_eq!((l.rules[0].1,l.rules[0].2,l.rules[0].3), (true,10,0));
+        for (attrs,y) in &data { assert_eq!(predict(&l,attrs).0,*y); }
+        assert!(!learn_kc(&data,2,1,0).default);
+        assert!(learn_rare(&data,2,1,0.9).rules.iter().all(|r| r.1));
+        let manual = List { rules: vec![(vec![],true,2,0),(vec![],false,0,2)], default:false };
+        assert!(predict(&manual,&BTreeMap::new()).0);
+        assert_eq!(predict(&List {rules:vec![],default:false},&f("a")).1,"the default");
+    }
+}

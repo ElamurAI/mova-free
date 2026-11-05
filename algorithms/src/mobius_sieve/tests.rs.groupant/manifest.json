@@ -1,0 +1,126 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "Universe is fixture executions and assertion outcomes. A passing actual/expected mismatch is excluded; failure cannot count as success. This finite complement does not cover all API calls.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "0c965bf9dfb4a78ec5f337a1af8f056de039aa80a2641b8575f0aaad74d1ec2a",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "Passing summary retains every implementation agreeing on exercised fixtures, including implementations wrong elsewhere. Failure locates an observed disagreement but cannot alone distinguish oracle and implementation defects.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "0c965bf9dfb4a78ec5f337a1af8f056de039aa80a2641b8575f0aaad74d1ec2a",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "factor_oracle",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "Trial division and repeated-factor detection independently compare every n=0..10000, without sieve prime discovery.",
+        "path": "model.md",
+        "section": "factor_oracle",
+        "status": "partial_relational_specification",
+        "subject_revision": "0c965bf9dfb4a78ec5f337a1af8f056de039aa80a2641b8575f0aaad74d1ec2a",
+        "type": "factor_oracle"
+      },
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "divisor_identity",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "sum_{d|n} mu(d)=1 for n=1 and0 for n>1. Tests check n<=512; no n=0 extension.",
+        "path": "model.md",
+        "section": "divisor_identity",
+        "status": "partial_relational_specification",
+        "subject_revision": "0c965bf9dfb4a78ec5f337a1af8f056de039aa80a2641b8575f0aaad74d1ec2a",
+        "type": "divisor_identity"
+      },
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "resource_partition",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "Zero and one are valid; MAX_N accepted with mu(MAX_N)=0; MAX_N+1 and usize::MAX rejected before allocation.",
+        "path": "model.md",
+        "section": "resource_partition",
+        "status": "partial_relational_specification",
+        "subject_revision": "0c965bf9dfb4a78ec5f337a1af8f056de039aa80a2641b8575f0aaad74d1ec2a",
+        "type": "resource_partition"
+      },
+      {
+        "approximation_semantics": "Source-derived target; finite correspondence is not proof",
+        "assumptions": "Exact integers and stated identities",
+        "domain": "Stated sieve/modular API or finite test domain",
+        "evidence": "model.md#evidence",
+        "id": "least_prime",
+        "observation_scope": "Return values, validation, named assertions",
+        "operator": "The first prime dividing i stops generation. Changing the other branch sign compiles and fails exhaustive_factor_oracle.",
+        "path": "model.md",
+        "section": "least_prime",
+        "status": "partial_relational_specification",
+        "subject_revision": "0c965bf9dfb4a78ec5f337a1af8f056de039aa80a2641b8575f0aaad74d1ec2a",
+        "type": "least_prime"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-mobius-sieve-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "0c965bf9dfb4a78ec5f337a1af8f056de039aa80a2641b8575f0aaad74d1ec2a"
+  },
+  "status": "partial_source_derived_instance"
+}

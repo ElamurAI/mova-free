@@ -1,0 +1,242 @@
+{
+  "children": [
+    "qagen-schema",
+    "qagen-prompt",
+    "qagen-gate",
+    "qagen-select",
+    "qagen-groupant-wave17",
+    "qagen-run",
+    "qagen-report",
+    "qagen-groupant-wave18",
+    "qagen-fix",
+    "qagen-lemma",
+    "qagen-lib",
+    "qagen-main",
+    "question-generation-composition-wave20"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax only; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Prospective source-derived relation; no general proof or error budget.",
+        "assumptions": "Same ordered batch and schema/rule version; no acquisition or live teacher.",
+        "domain": "Supplied synthetic Para/Sent/Pick, explicit skips, versioned prompts and independent TSV, scoped by the linked relation.",
+        "evidence": "Bounded evidence in model.md#wave17-evidence; transitive source revisions in source_bindings.",
+        "id": "question-generation-behavior-complement",
+        "observation_scope": "Selection identities, rendered local numbers, accepted/rejected spans and source provenance.",
+        "operator": "Universe: supplied Para/Sent/Pick/skip, versioned schema/prompt and independent TSV observations. Exclude skipped/ineligible selections, source-coordinate substitution for local p/anchors, invented labels, V2 explicit nonanchor/context spans and punctuation-changing spans. Prompt semantic constraints not enforced by the gate remain outside this complement; no acquisition/teacher behavior is inferred.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Prospective source-derived relation; no general proof or error budget.",
+        "assumptions": "Same ordered batch and schema/rule version; no acquisition or live teacher.",
+        "domain": "Supplied synthetic Para/Sent/Pick, explicit skips, versioned prompts and independent TSV, scoped by the linked relation.",
+        "evidence": "Bounded evidence in model.md#wave17-evidence; transitive source revisions in source_bindings.",
+        "id": "question-generation-reverse-reconstruction",
+        "observation_scope": "Selection identities, rendered local numbers, accepted/rejected spans and source provenance.",
+        "operator": "Retain every input vector, metadata, raw sentence text, Pick/skip and response sharing selected identities, prompt/gate observations and quotas. The same retained batch plus p/anchor recovers source doc/para/sent_id; gate output alone cannot. Case/quote/whitespace normalization has many raw preimages, selection loses rejected content and quotas lose weight/cap details.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Prospective source-derived relation; no general proof or error budget.",
+        "assumptions": "Same ordered batch and schema/rule version; no acquisition or live teacher.",
+        "domain": "Supplied synthetic Para/Sent/Pick, explicit skips, versioned prompts and independent TSV, scoped by the linked relation.",
+        "evidence": "Bounded evidence in model.md#wave17-evidence; transitive source revisions in source_bindings.",
+        "id": "question-generation-selected-prompt-gate-coordinates",
+        "observation_scope": "Selection identities, rendered local numbers, accepted/rejected spans and source provenance.",
+        "operator": "Input positions [1,3] yield source paragraphs17/19, prompt P1/P2 and [1]/[2], accepted (p,k,anchors)=(1,1,[2]),(2,1,[1]), recovering source702/901 in the same ordered batch. Exclusions never enter the prompt; source paragraph numbers and sentence IDs are not local coordinates. Costs include selection, rendering, gate and O(1) source indexing per anchor.",
+        "path": "model.md",
+        "section": "selected-prompt-gate-coordinates",
+        "status": "partial_source_model",
+        "type": "paragraph_sentence_coordinate_transport"
+      },
+      {
+        "approximation_semantics": "Prospective source-derived relation; no general proof or error budget.",
+        "assumptions": "Same ordered batch and schema/rule version; no acquisition or live teacher.",
+        "domain": "Supplied synthetic Para/Sent/Pick, explicit skips, versioned prompts and independent TSV, scoped by the linked relation.",
+        "evidence": "Bounded evidence in model.md#wave17-evidence; transitive source revisions in source_bindings.",
+        "id": "question-generation-rule-schema-span-constraint",
+        "observation_scope": "Selection identities, rendered local numbers, accepted/rejected spans and source provenance.",
+        "operator": "Seven literal schema labels agree with prompt type instructions. Pick rule1/2 selects the corresponding prompt constraint and gate; exact Red, blue flowers passes both, punctuation-changed red blue flowers passes V1 and fails V2. Invented causal/inferred labels fail. Literal response supplied independently; no language-model obedience claim.",
+        "path": "model.md",
+        "section": "rule-schema-span-constraint",
+        "status": "partial_source_model",
+        "type": "versioned_span_constraint_transport"
+      },
+      {
+        "approximation_semantics": "Prospective source-derived relation; no general proof or error budget.",
+        "assumptions": "Same ordered batch and schema/rule version; no acquisition or live teacher.",
+        "domain": "Supplied synthetic Para/Sent/Pick, explicit skips, versioned prompts and independent TSV, scoped by the linked relation.",
+        "evidence": "Bounded evidence in model.md#wave17-evidence; transitive source revisions in source_bindings.",
+        "id": "question-generation-normalization-source-ambiguity",
+        "observation_scope": "Selection identities, rendered local numbers, accepted/rejected spans and source provenance.",
+        "operator": "Distinct quoted/cased/spaced raw sentences normalize to king's bell rang.; accepted local anchors preserve identical answer text but recover distinct source IDs through their own batch positions. Wrong-anchor and context-only explicit spans fail. The raw sentence fibers are nonunique; context is visible in prompt but unavailable as an answer anchor.",
+        "path": "model.md",
+        "section": "normalization-source-ambiguity",
+        "status": "partial_source_model",
+        "type": "normalized_span_provenance_relation"
+      },
+      {
+        "approximation_semantics": "Prospective source-derived relation; no general proof or error budget.",
+        "assumptions": "Same ordered batch and schema/rule version; no acquisition or live teacher.",
+        "domain": "Supplied synthetic Para/Sent/Pick, explicit skips, versioned prompts and independent TSV, scoped by the linked relation.",
+        "evidence": "Bounded evidence in model.md#wave17-evidence; transitive source revisions in source_bindings.",
+        "id": "question-generation-quota-selection-cardinality",
+        "observation_scope": "Selection identities, rendered local numbers, accepted/rejected spans and source provenance.",
+        "operator": "Literal total sentence weights(10,6), eligible nonskipped caps(1,2), request4 yield quotas(1,2), indices[0,5,6], book counts(1,2) and exactly three prompt paragraphs. Ineligible/skipped paragraphs affect weights but add no capacity. Positive weights and tiny fixtures exclude overflow/zero-weight generalizations; no performance gain is measured.",
+        "path": "model.md",
+        "section": "quota-selection-cardinality",
+        "status": "partial_source_model",
+        "type": "capacity_selection_transport"
+      },
+      {
+        "id": "question-generation-wave18-retry-gather-ledger",
+        "path": "model.md",
+        "scope": "Domain is one supplied paragraph, batch 1 and sentence s1, one-row primary and retry files with distinct answers, Rule V1, and two call records for the same batch. try_final_raw must select retry_path, gather must accept exactly its retry answer, and collect must preserve that answer with the s1 coordinate in qa.tsv while omitting the primary answer. params must report one pair, two calls, one retry, 18 input tokens, 2.5 seconds and 0.25 estimated cost; on-disk params.json must equal the returned JSON. All row positions and batch/source coordinates are shared, and ledger values are exact supplied finite values. Cost is linear in these raw/ledger/output bytes plus bounded Rule V1 parsing and report aggregation. This invokes supplied-input public APIs, without a teacher or model.",
+        "section": "question-generation-wave18-retry-gather-ledger",
+        "status": "partial_source_model",
+        "type": "retry_selection_report_accounting_relation"
+      },
+      {
+        "id": "question-generation-wave18-report-preflight-preservation",
+        "path": "model.md",
+        "scope": "Domain is one valid primary raw row and preexisting qa.tsv, rejects.tsv and params.json sentinel bytes. In separate fixtures use malformed JSONL or two otherwise valid calls whose input token totals u64::MAX+1 overflow. collect must return an error and all three old artifacts must remain byte-for-byte identical. The first fixture checks parse failure; the second checks checked aggregation overflow. This relation requires accounting validation to precede report writes; it does not claim atomic multi-file replacement after output writing begins, filesystem race safety, or semantic QA quality. Work is bounded by reading/validating the supplied ledger and any preflight stages reached before failure; memory and output observations are limited to these fixture bytes.",
+        "section": "question-generation-wave18-report-preflight-preservation",
+        "status": "partial_source_model",
+        "type": "accounting_preflight_artifact_preservation"
+      },
+      {
+        "id": "question-generation-wave18-metadata-error-through-gather",
+        "path": "model.md",
+        "scope": "Unix-only domain is a valid primary raw row and a retry symlink referring to its own filename, causing ELOOP on metadata resolution. Both try_final_raw and report::gather must return errors. A retry metadata error must not be treated as absence, and the valid primary must not silently become fallback. Cost is bounded path/metadata attempts and the stages reached before this error; behavior on non-Unix platforms is outside this cfg-gated test. The fixture validates a particular error propagation path, not every permission error, symlink topology or concurrent filesystem state.",
+        "section": "question-generation-wave18-metadata-error-through-gather",
+        "status": "partial_source_model",
+        "type": "retry_metadata_error_propagation"
+      },
+      {
+        "id": "question-generation-wave20-implicit-repair",
+        "path": "model.md",
+        "scope": "One synthetic paragraph with cat/dog sentences and item cats sleeps anchored1. Validated Fixes builds prompt Item1; implicit gate output preserves old answer and anchor. Counting lemma stub maps cats->cat, treats the as function word; try_doubt returns (1,1.0), exactly two calls (answer then anchor). No real annotator/model.",
+        "section": "question-generation-wave20-implicit-repair",
+        "status": "partial_source_model",
+        "type": "validated_prompt_repair_lemma_relation"
+      },
+      {
+        "id": "question-generation-wave20-explicit-anchor",
+        "path": "model.md",
+        "scope": "Same paragraph, response Item1 anchor2 the dog runs becomes explicit. Numeric anchor2 maps to sent_id s2; independent span_reason accepts output. Same actual repair output fed to try_doubt returns(2,1). Word normalization may erase case/punctuation information; sentence identity is retained.",
+        "section": "question-generation-wave20-explicit-anchor",
+        "status": "partial_source_model",
+        "type": "anchor_coordinate_span_transport"
+      },
+      {
+        "id": "question-generation-wave20-invalid-preflight",
+        "path": "model.md",
+        "scope": "Fixes rejects anchor0; try_doubt rejects [1,0] before any callback; legacy doubt with anchor2 on one sentence returns None with zero calls. Multibyte first label is classified malformed by real fix gate without panic. Errors do not authorize partial effects; no file/model/database operations.",
+        "section": "question-generation-wave20-invalid-preflight",
+        "status": "partial_source_model",
+        "type": "validation_effect_exclusion_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#wave17-evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "question-generation",
+  "kind": "groupant_group",
+  "registry": {
+    "node": "question-generation",
+    "path": "../contracts.json"
+  },
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "qagen/src/fix.rs",
+      "sha256": "f491a1f6223c6912def81ac3b1fb330fe08196538e1a4d7484cde914246c035f"
+    },
+    {
+      "path": "qagen/src/gate.rs",
+      "sha256": "09328f711abf4b6453f95bed3d873deb205c8801d939841974416fe74e3e5806"
+    },
+    {
+      "path": "qagen/src/lemma.rs",
+      "sha256": "cac952de748d1b854a5dfe04e0635e18816e7970625c5266152a35d0c0d761c8"
+    },
+    {
+      "path": "qagen/src/lib.rs",
+      "sha256": "5d0d4a49f95ddc5c03042d446c6ab9abade72589139085222239646fb3fc6c6e"
+    },
+    {
+      "path": "qagen/src/main.rs",
+      "sha256": "7d4410bf5d85e04c46475fe0fef9e8e5a24b44fc37973f8420b950517ef05222"
+    },
+    {
+      "path": "qagen/src/prompt.rs",
+      "sha256": "2e30ac525e2bf8cf8432298ff35eaf2ec08933c17aff60e480017a2b7cca89f6"
+    },
+    {
+      "path": "qagen/src/report.rs",
+      "sha256": "4abf85ffbd32f22802a89ef625780b288d92e92616c247a4d591e37fe10977c2"
+    },
+    {
+      "path": "qagen/src/run.rs",
+      "sha256": "a34e297bdb69e178791983d8b9f6b35b1df34f223f15f1f13bc65d29153f2abd"
+    },
+    {
+      "path": "qagen/src/schema.rs",
+      "sha256": "03e113198711324f029d8e9e4d9fc899416e3144ea856240b9d962775c78c2fe"
+    },
+    {
+      "path": "qagen/src/select.rs",
+      "sha256": "0c35caf4eda91c0a5d36bce728f3846b360b483a66fa4ca3c884964839cd2554"
+    },
+    {
+      "path": "qagen/tests/groupant_wave17.rs",
+      "sha256": "7f9447e887eae69a2a95f443555140cc8dbfa95d83a29b8062383fca5f9d38a4"
+    },
+    {
+      "path": "qagen/tests/groupant_wave18.rs",
+      "sha256": "3ab5bd3bab4823dbf89e78ab1811e2286565e1899947ba24b247e3e8c0149813"
+    },
+    {
+      "path": "qagen/tests/groupant_wave20.rs",
+      "sha256": "f50e7759c6a4e14d228678f323ac8d9449888c9241f610009231335c1063d5d4"
+    }
+  ],
+  "status": "partial_source_bound_instance"
+}

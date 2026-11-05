@@ -1,0 +1,75 @@
+use mova_teacher::{decode_events as d, validate_model};
+use serde_json::Value;
+use std::{collections::BTreeSet, path::Path};
+
+fn validate_catalog(m: &Value, catalog: &str) -> Result<(), String> {
+    let entries = m["components"]["obernants"].as_array().ok_or("entries")?;
+    if entries.len() != 20 { return Err("count".into()); }
+    if entries[0]["type"] != "behavior_complement" ||
+       entries[1]["type"] != "reverse_reconstruction" { return Err("order".into()); }
+    let mut ids = BTreeSet::new();
+    for e in entries {
+        let id = e["id"].as_str().ok_or("id")?;
+        if !ids.insert(id) || e["section"] != id { return Err("identity".into()); }
+        let heading = format!("## {id}");
+        if catalog.lines().filter(|l| *l == heading).count() != 1 {
+            return Err(format!("section {id}"));
+        }
+    }
+    if catalog.lines().filter(|l| l.starts_with("## ")).count() != 20 {
+        return Err("extra sections".into());
+    }
+    Ok(())
+}
+
+fn main() {
+    let root_arg = std::env::args().nth(1).expect("repository root");
+    let root = Path::new(&root_arg).canonicalize().unwrap();
+    let dir = root.join("teacher/src/lib.rs.groupant");
+    let m: Value = serde_json::from_str(&std::fs::read_to_string(dir.join("manifest.json")).unwrap()).unwrap();
+    let catalog = std::fs::read_to_string(dir.join("catalog.md")).unwrap();
+    validate_catalog(&m, &catalog).unwrap();
+    let mut bad = m.clone();
+    bad["components"]["obernants"][0]["section"] = "missing".into();
+    assert!(validate_catalog(&bad, &catalog).is_err());
+    assert_eq!(m["registry"]["node"], "teacher-transport");
+    assert_eq!(m["components"]["ast"]["status"], "partial");
+    let source = dir.join(m["source"]["path"].as_str().unwrap()).canonicalize().unwrap();
+    assert_eq!(source, root.join("teacher/src/lib.rs"));
+    let hash = std::process::Command::new("sha256sum").arg(&source).output().unwrap();
+    assert!(hash.status.success());
+    let hash = String::from_utf8(hash.stdout).unwrap();
+    assert_eq!(hash.split_whitespace().next().unwrap(), m["source"]["sha256"].as_str().unwrap());
+    for component in m["components"].as_object().unwrap().values() {
+        let records: Vec<&Value> = match component.as_array() {
+            Some(a) => a.iter().collect(), None => vec![component]
+        };
+        for record in records {
+            for field in ["path", "description"] {
+                if let Some(p) = record[field].as_str() {
+                    let p = dir.join(p).canonicalize().unwrap();
+                    assert!(p.is_file() && p.starts_with(&root));
+                }
+            }
+        }
+    }
+    assert!(dir.join(m["registry"]["path"].as_str().unwrap()).is_file());
+    let a = r#"{"type":"item.completed","item":{"type":"agent_message","text":"answer"}}"#;
+    let u = r#"{"type":"turn.completed","usage":{"input_tokens":10,"output_tokens":2}}"#;
+    let good = format!("{a}\n{u}");
+    let expected = d(&good).unwrap();
+    assert!(d(&format!("{u}\n{a}")).is_err());
+    assert_eq!(d(&format!("null\n{{}}\n\n{good}")).unwrap(), expected);
+    assert!(d(&format!("{good}\nnot-json")).is_err());
+    assert!(d(&format!("{good}\n{{\"type\":\"turn.failed\"}}")).is_err());
+    assert!(d(&format!("{good}\n{{\"type\":\"item.completed\",\"item\":{{\"type\":\"agent_message\",\"text\":4}}}}")).is_err());
+    assert!(d(&format!("{good}\n{{\"type\":\"turn.completed\"}}")).is_err());
+    assert!(d(&format!("{good}\n{{\"type\":\"item.started\",\"item\":{{\"type\":\"command_execution\"}}}}")).is_err());
+    assert!(d(&good.replace("answer", " ")).is_err());
+    assert_eq!(d(&good.replace("answer", " padded ")).unwrap()["result"], " padded ");
+    assert_eq!(d(&good.replace("\"output_tokens\":2", "\"output_tokens\":2,\"cached_input_tokens\":\"bad\"")).unwrap()["usage"]["cache_read_input_tokens"], 0);
+    assert_eq!(d(&good.replace("\"output_tokens\":2", "\"output_tokens\":2,\"cached_input_tokens\":99")).unwrap()["usage"]["cache_read_input_tokens"], 99);
+    assert!(validate_model("gpt-").is_ok());
+    assert!(validate_model("gpt-x\u{a0}").is_err());
+    println!("20 catalog records, source/hash/references, section negative control, 13 decoder/model assertions passed");
+}

@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "prag-vn-index-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "prag-vn-index-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "prag-vn-index-specialization",
+        "path": "model.md",
+        "section": "specialization",
+        "status": "partial_source_model",
+        "type": "row_order_intervention"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 9264,
+      "start": 6273
+    },
+    "description": "index: from_tsv scans rows. Each class row appends class index i, resolves parent only among earlier IDs, appends i to each member list, and replaces ID lookup on duplicate IDs. Frame rows attach to the current ID lookup; orphan/short rows are ignored. classes_of is exact string lookup."
+  },
+  "id": "prag-vn-index",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../vn.rs",
+    "sha256": "f35dceabba8b9e6e03a2e11d74967e79f4f40920cc2898b4a5d4b3812a6befa1"
+  },
+  "status": "partial_source_bound_model"
+}

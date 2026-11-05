@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "wave33_tests::public_bib_namespace_compiles_and_projects"
+  ],
+  "children": [],
+  "cost": "No per-call namespace runtime work; compilation cost unspecified.",
+  "description": "pub mod bib exposes the same Entry/parse/row implementation without wrapper or conversion.",
+  "forward": [
+    "pub mod bib exposes the same Entry/parse/row implementation without wrapper or conversion."
+  ],
+  "id": "sources-library",
+  "inverse": [
+    "Module declaration introduces no filesystem/network operation or field conversion.",
+    "Calls through sources::bib admit every consumer using that namespace; caller/history cannot be recovered."
+  ],
+  "limitations": [
+    "Partial syntax and finite fixtures, not universal semantic proof.",
+    "Value full workflow, arbitrary manifests and external IO failures are not exercised."
+  ],
+  "source": "tools/sources/src/lib.rs",
+  "state": "Compile/representation domain with dependencies available. Runtime behavior belongs to bib; namespace fixture is not independent proof."
+}

@@ -1,0 +1,157 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional mathematical relation with finite checks; no universal proof.",
+        "assumptions": "Standard Rust execution, sufficient allocation, independently checked oracle within stated bounds.",
+        "domain": "Finite allocated adjacency vectors and typed result observations, ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One algorithm call.",
+        "operator": "Let X be allocated finite adjacency vectors with i64 weights and usize sources, and Y the typed Result<Vec<Option<i128>>,BellmanFordError> observation space, excluding allocation failure and nontermination. Let R subset X times Y be the graph of the Forward relation including source-before-edge validation and first checked-overflow precedence. Define U=X times Y and behavior_complement=U minus R. Thus every input has its unique permitted observation in R; all other typed observations are in the complement. The shortest-walk characterization assumes representable synchronous sums (guaranteed on current <=64-bit usize targets). Finite negative fixtures check selected memberships, not this whole universe.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "5a4f12d9d4be30194a32ba3e4cd86ed40180674c0555d63cea3b643b0cfe4dc6",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical relation with finite checks; no universal proof.",
+        "assumptions": "Standard Rust execution, sufficient allocation, independently checked oracle within stated bounds.",
+        "domain": "Finite allocated adjacency vectors and typed result observations, ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_inputs",
+        "observation_scope": "One algorithm call.",
+        "operator": "Given successful vector d, compatible antecedents are all validated graphs and valid sources whose reachable minimum walk weights equal d and have no reachable negative cycle. Many graphs fit the same d: unused edges may change while preserving minima. InvalidSource recovers source>=V; InvalidEdge recovers a valid source and first offending edge; ReachableNegativeCycle recovers existence and source reachability, not its unique vertices. DistanceOverflow describes first failed checked sum.",
+        "path": "model.md",
+        "section": "compatible_inputs",
+        "status": "partial_source_derived",
+        "subject_revision": "5a4f12d9d4be30194a32ba3e4cd86ed40180674c0555d63cea3b643b0cfe4dc6",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical relation with finite checks; no universal proof.",
+        "assumptions": "Standard Rust execution, sufficient allocation, independently checked oracle within stated bounds.",
+        "domain": "Finite allocated adjacency vectors and typed result observations, ordinary terminating Rust execution.",
+        "evidence": "model.md#evidence",
+        "id": "graph_laws",
+        "observation_scope": "One algorithm call.",
+        "operator": "Adding duplicate identical edges or permuting adjacency leaves successful distances and reachable-cycle status unchanged; invalid-edge precedence may change under permutation. Zero-weight cycles remain valid. Unreachable negative cycles cannot affect the source result.",
+        "path": "model.md",
+        "section": "graph_laws",
+        "status": "partial_source_derived",
+        "subject_revision": "5a4f12d9d4be30194a32ba3e4cd86ed40180674c0555d63cea3b643b0cfe4dc6",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation with bounded Rust correspondence; no universal verification.",
+        "assumptions": "Original deterministic Rust; graph endpoint validation; sufficient allocation. Specialized domains are stated in each relation.",
+        "domain": "Validated finite adjacency vectors; exact representable arithmetic; sufficient allocation.",
+        "evidence": "model.md#evidence",
+        "id": "potential_transport",
+        "observation_scope": "Successful outputs and declared transformed inputs; errors only where explicitly stated.",
+        "operator": "For validated G, valid source s and integer potential h, define w_h(u,v)=w(u,v)+h(u)-h(v). Require every transformed edge to fit i64 and all evaluated sums to fit i128. Then reachability is unchanged and every walk telescopes, so successful d_h(v)=d(v)+h(s)-h(v), with None preserved; reachable negative-cycle status is invariant because cycle potential sums vanish. This is an exact conditional relation, not arbitrary floating-point reweighting. The 64-topology, three-potential, three-source test gives 576 successful paired observations plus a negative-cycle pair.",
+        "path": "model.md",
+        "section": "potential_transport",
+        "status": "conditional_relation_bounded_checked",
+        "subject_revision": "5a4f12d9d4be30194a32ba3e4cd86ed40180674c0555d63cea3b643b0cfe4dc6",
+        "type": "potential_reweighting"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation with bounded Rust correspondence; no universal verification.",
+        "assumptions": "Original deterministic Rust; graph endpoint validation; sufficient allocation. Specialized domains are stated in each relation.",
+        "domain": "Validated finite adjacency vectors; exact representable arithmetic; sufficient allocation.",
+        "evidence": "model.md#evidence",
+        "id": "tight_distance_certificate",
+        "observation_scope": "Successful outputs and declared transformed inputs; errors only where explicitly stated.",
+        "operator": "Fix a valid graph, source s and candidate d of length V with d[s]=0. Let F={v:d[v] is Some}. Require no edge from F to its complement, all finite-edge inequalities d[v]<=d[u]+w(u,v), and source reachability of every v in F using tight edges d[v]=d[u]+w(u,v). These conditions are equivalent to successful shortest distances on the no-overflow domain: inequalities give a lower bound on all walks and tight paths attain it. None vertices cannot be reached. Tight cycles have zero weight. Inequalities alone are insufficient. The certificate fixture enumerates 84 candidates and accepts exactly one.",
+        "path": "model.md",
+        "section": "tight_distance_certificate",
+        "status": "conditional_relation_bounded_checked",
+        "subject_revision": "5a4f12d9d4be30194a32ba3e4cd86ed40180674c0555d63cea3b643b0cfe4dc6",
+        "type": "attainment_certificate"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation with bounded Rust correspondence; no universal verification.",
+        "assumptions": "Original deterministic Rust; graph endpoint validation; sufficient allocation. Specialized domains are stated in each relation.",
+        "domain": "Validated finite adjacency vectors; exact representable arithmetic; sufficient allocation.",
+        "evidence": "model.md#evidence",
+        "id": "distance_graph_fiber",
+        "observation_scope": "Successful outputs and declared transformed inputs; errors only where explicitly stated.",
+        "operator": "Fix d=[0,a,b,None], source 0 and i64 a,b with representable b-a+t. Start with edges 0->1 weight a and 0->2 weight b; add 1->2 weight b-a+t for t>=0 and any subgraph on unreachable vertex 3 without edges from reachable vertices into it. All these different graphs reproduce d; t<0 leaves this fiber. This is a sound constructive subset of the full preimage, not unique recovery or a complete graph enumerator. Tests cover 25 target vectors, 75 compatible graphs and 25 excluded graphs.",
+        "path": "model.md",
+        "section": "distance_graph_fiber",
+        "status": "conditional_relation_bounded_checked",
+        "subject_revision": "5a4f12d9d4be30194a32ba3e4cd86ed40180674c0555d63cea3b643b0cfe4dc6",
+        "type": "constructive_preimage"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation with bounded Rust correspondence; no universal verification.",
+        "assumptions": "Original deterministic Rust; graph endpoint validation; sufficient allocation. Specialized domains are stated in each relation.",
+        "domain": "Validated finite adjacency vectors; exact representable arithmetic; sufficient allocation.",
+        "evidence": "model.md#evidence",
+        "id": "reachable_cycle_obstruction",
+        "observation_scope": "Successful outputs and declared transformed inputs; errors only where explicitly stated.",
+        "operator": "For valid endpoints and arithmetic, reachable negative cycles are exactly the obstruction to a finite shortest-walk vector. A cycle disconnected from s cannot obstruct it. Under potential transport each cycle weight and its source reachability are unchanged. A negative self-loop at an unreachable vertex can coexist with a valid distance certificate; a reachable negative cycle cannot satisfy its summed inequalities. Evidence includes the negative-cycle transport pair and 75 disconnected-loop constructions.",
+        "path": "model.md",
+        "section": "reachable_cycle_obstruction",
+        "status": "conditional_relation_bounded_checked",
+        "subject_revision": "5a4f12d9d4be30194a32ba3e4cd86ed40180674c0555d63cea3b643b0cfe4dc6",
+        "type": "cycle_obstruction"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation with bounded Rust correspondence; no universal verification.",
+        "assumptions": "Original deterministic Rust; graph endpoint validation; sufficient allocation. Specialized domains are stated in each relation.",
+        "domain": "Validated finite adjacency vectors; exact representable arithmetic; sufficient allocation.",
+        "evidence": "model.md#evidence",
+        "id": "slack_edge_extension",
+        "observation_scope": "Successful outputs and declared transformed inputs; errors only where explicitly stated.",
+        "operator": "Hold successful d and source fixed. An additional edge u->v preserves d if u is unreachable, or both endpoints are reachable and w>=d[v]-d[u], provided w fits i64. Existing tight witnesses survive and no shorter path is introduced. Adding an edge from a reachable u to unreachable v changes reachability; a negative slack edge between reachable vertices changes d or creates a reachable negative cycle. The constructive-fiber test checks slack 0,1,2 and excludes -1; it does not cover all valid i128 distances.",
+        "path": "model.md",
+        "section": "slack_edge_extension",
+        "status": "conditional_relation_bounded_checked",
+        "subject_revision": "5a4f12d9d4be30194a32ba3e4cd86ed40180674c0555d63cea3b643b0cfe4dc6",
+        "type": "monotone_extension"
+      }
+    ],
+    "tests": {
+      "epoch": "2026-10-30 deep graph correspondence",
+      "path": "model.md#evidence",
+      "sha256": "2285de1583ca0b1c82d2e59ddf62d0b80f340e7d048595c9ec03844d79129c3f",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-bellman-ford",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "5a4f12d9d4be30194a32ba3e4cd86ed40180674c0555d63cea3b643b0cfe4dc6"
+  },
+  "status": "partial_source_derived_instance"
+}

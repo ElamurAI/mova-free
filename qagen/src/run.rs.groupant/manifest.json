@@ -1,0 +1,116 @@
+{
+  "children": [
+    {
+      "id": "qagen-run-batching",
+      "path": "batching.groupant"
+    },
+    {
+      "id": "qagen-run-lookup",
+      "path": "lookup.groupant"
+    },
+    {
+      "id": "qagen-run-scheduler",
+      "path": "scheduler.groupant"
+    },
+    {
+      "id": "qagen-run-tests",
+      "path": "tests.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "qagen-run-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "qagen-run-reverse",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "qagen-run-ordering",
+        "path": "model.md",
+        "section": "ordering",
+        "status": "partial_source_model",
+        "type": "ordering"
+      },
+      {
+        "id": "qagen-run-resume",
+        "path": "model.md",
+        "section": "resume",
+        "status": "partial_source_model",
+        "type": "resume"
+      },
+      {
+        "id": "qagen-run-cap-boundary",
+        "path": "model.md",
+        "section": "cap-boundary",
+        "status": "partial_source_model",
+        "type": "cap_boundary"
+      },
+      {
+        "id": "qagen-run-persistence",
+        "path": "model.md",
+        "section": "persistence",
+        "status": "partial_source_model",
+        "type": "persistence"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 12294,
+      "start": 0
+    },
+    "description": "Group paragraphs, render/check a Job, inspect resume state, then schedule capped Codex calls. try_final_raw exposes retry-first lookup errors; final_raw retains lossy Option behavior."
+  },
+  "id": "qagen-run",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../run.rs",
+    "sha256": "a34e297bdb69e178791983d8b9f6b35b1df34f223f15f1f13bc65d29153f2abd"
+  },
+  "status": "partial_source_bound_model"
+}

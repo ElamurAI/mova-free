@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Nonfinite elements alone exclude making all_int false; integer values with more than 15 decimal digits exclude integer format.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Same RealFmt admits many value collections with equal threshold category and width; extrema and order generally unrecoverable.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_invariant",
+        "path": "model.md",
+        "scope": "Nonfinite strings require width at least four in integer/fixed branches; exponent width expands for large exponents.",
+        "section": "state_invariant",
+        "status": "partial_source_derived_model",
+        "type": "state_invariant"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "No Result errors; exact zero excluded from minabs update, which can remain infinity.",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Exponent threshold uses dmax>=prec or dmin<=-2, after round_sig; common decimal precision is max endpoint requirements.",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "O(number of real values) scans and bounded float formatting per extrema.",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 3694,
+      "start": 2170
+    },
+    "description": "Accumulate finite maxabs/minabs and all_int; all-int branch chooses integer unless digits>15, otherwise fixed versus exponent depends on rounded digit extrema.",
+    "source_bytes_sha256": "0abad0a592a3673a67eeeb22e2d73b0c3ef88be40a0e6a74187f7c6a4cd35d02"
+  },
+  "id": "mlab-display-format-choice",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../display.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "7c29a46772ca4d47ff5e01fc4b3ed1bf38fab6a6b3bce0a41c99332ece8926b5"
+  },
+  "status": "partial_source_bound_model"
+}

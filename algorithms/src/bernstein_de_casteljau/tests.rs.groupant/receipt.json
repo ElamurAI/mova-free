@@ -1,0 +1,32 @@
+{
+  "clippy": "strict all targets passed",
+  "clippy_log_sha256": "e48fdcbc229e1b97d87c9359a9b2eba2660460760256fd3ad0c3bb9f87875bb2",
+  "date": "2026-10-30",
+  "evidence": "$MOVA_DATA/runs/octopus-wave20-interpolation-2026-10-30/",
+  "limitations": [
+    "Finite absolute-tolerance observations, no general machine error guarantee",
+    "No certified executable surrogate",
+    "No timing benchmark or throughput claim"
+  ],
+  "mutant": {
+    "change": "subtract right weighted control",
+    "compiled": true,
+    "failed_assertion": "bernstein_de_casteljau::tests::bernstein_oracle",
+    "log_sha256": "cead61edeb1c02e442275b5e26d4a7cad0cc1e5da57344271def5eab3b230b8a",
+    "restored_positive_sha256": "18a676c839b8d8d100af2e642373d5b45abcc9ceaa072954aef41a138ae2cf33",
+    "source_bytes_restored": true
+  },
+  "native_module_tests": 3,
+  "normalized_outcomes_sha256": "7310f78ab4c8a4183faaa86b4a8df0da4e70df5c509183a01f8fce0ac5258202",
+  "paired_syntax_sha256": "b383711a5026d8b777f22be9511021cb594e23c2d26b7c6cfcbdafed4087e146",
+  "profiles": [
+    "debug1",
+    "debug2",
+    "release1",
+    "release2"
+  ],
+  "source": "algorithms/src/bernstein_de_casteljau/tests.rs",
+  "source_sha256": "6615d4ebb9b7a856aae6db3a0f8e925f0fbf2dcf2fbf9978c80714d0e4450e17",
+  "syntax_scope": "partial lexical Rust projection, no macro expansion or semantic proof",
+  "whole_library_tests": 560
+}

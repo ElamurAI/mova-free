@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p world --lib wave14_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "Per generation neighbors O(sum list lengths+D*K+bytes); history sorting O(D log D * J) journal scans, external score/bootstrap costs, result sort O(D log D), selection O(D). No speed claim; requested threads are uncapped.",
+  "description": "Neighbor proposals and adoption with explicit effect boundary",
+  "forward": [
+    "Build defaults into base, score base dev/validation, enumerate neighbors, order by positive journal history then delta label, reuse or score each result, sort by dev gain/index, and optionally adopt a positive-dev/nonnegative-validation/p<0.05 result for at most gens iterations. Nonadopt stops after first generation. run(domains) may persist hot config.",
+    "run loads files and builds Component; tune joins neighboring_configs with history sorting before assigning indices, then selected index back to deltas. Only pure seams execute in tests. Journal/scoring/IO orchestration remains source-inspected."
+  ],
+  "id": "world-tune",
+  "inverse": [
+    "Universe: successful finite orchestration traces under callback, IO and arithmetic premises. Exclude more than gens adoptions, adopting dev<=0/validation<0/p>=0.05 or NaN, changing two map keys per proposal, and adoption with adopt=false. Do not exclude journal writes without adoption or side-effectful callbacks.",
+    "Final base cannot identify trial count, journal hits, callbacks, initial state or rejected alternatives. Zero generations/nonadoption returns defaults for many traces. Chosen tuple cannot recover scores, bootstrap samples or configuration without deltas."
+  ],
+  "limitations": [
+    "Finite supplied inputs; no live parser, teacher, corpus, journal-backed tune or GPU.",
+    "Partial syntax; macros opaque and semantic AST absent.",
+    "Unvalidated numeric/resource domains and effect boundaries remain explicit in scoped models."
+  ],
+  "source": "world/src/tune.rs",
+  "state": "Original public signatures remain; pure seams do not mutate inputs. Selection equivalence assumes unique candidate indices, true in production. Score-vector alignment, i64 representability, callback safety and IO success are unvalidated premises."
+}

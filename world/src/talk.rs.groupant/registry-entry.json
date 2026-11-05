@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "Selected wave28_dialogue inline tests; lib compile only",
+    "Paired source syntax generation"
+  ],
+  "children": [],
+  "cost": "Cue scans O(B*C), sentence splitting O(B), memory load O(M bytes); recall O(M log M+M*Q*B), reflection O(M). Time arithmetic assumed representable; no universal overflow proof.",
+  "description": "act_of assigns trimmed text, affection and polarity with negative precedence; act priority greet/SOM, thank, apology, terminal ?, affection, self-correction, evaluation, request, assertion. indirect_request strips a modal prefix, normalizes action wrappers/roll back, then capability prefix and blocked moving-action checks. Memory records JSONL; recall score=importance/10+0.995^(age_seconds/3600)+substring overlap fraction.",
+  "forward": [
+    "act_of assigns trimmed text, affection and polarity with negative precedence; act priority greet/SOM, thank, apology, terminal ?, affection, self-correction, evaluation, request, assertion. indirect_request strips a modal prefix, normalizes action wrappers/roll back, then capability prefix and blocked moving-action checks. Memory records JSONL; recall score=importance/10+0.995^(age_seconds/3600)+substring overlap fraction."
+  ],
+  "id": "world-talk",
+  "inverse": [
+    "Act/polarity admits all strings matching the same first successful cue branch; it cannot recover original utterance. Recall output admits unseen lower-ranked records and alternative timestamps with same formatted age; stored memories do not imply successful fsync."
+  ],
+  "limitations": [
+    "Pure act/capability/calendar/politeness/cue tests; memory/clock-dependent effects and social writes unexecuted.",
+    "No executable surrogate, semantic proof, live teacher, corpus, GPU or held-out execution"
+  ],
+  "source": "world/src/talk.rs",
+  "state": "Empty act is Assert. Greeting beats ?. Zero importance is retained and upper-clamped to 10; write failures are ignored. Recall deduplicates only adjacent formatted equal strings. Civil time uses Euclidean day/remainder and Monday weekday zero."
+}

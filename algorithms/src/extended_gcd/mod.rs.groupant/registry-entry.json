@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline --lib extended_gcd::tests:: (debug and release, twice each, six tests)",
+    "Compiled production mutation rejected by a new relation test; strict all-target Clippy passes; partial syntax regenerated twice."
+  ],
+  "children": [],
+  "cost": "O(1+log(max(a,b)+1)) word divisions, O(1) storage. Symbolic cost; no timing claim.",
+  "description": "extended_gcd exact std-only implementation",
+  "forward": [
+    "Define E(a,b) by the Euclidean recurrence with initial remainder rows (a,1,0),(b,0,1), updating (r,s,t),(r1,s1,t1) to (r1,s1,t1),(r%r1,s-q*s1,t-q*t1), q=floor(r/r1). Return the first row when r1=0; explicitly E(0,0)=(0,0,0). This fixes deterministic coefficients, rather than admitting every Bezout solution."
+  ],
+  "id": "algorithm-extended-gcd",
+  "inverse": [
+    "In U of input pairs and candidate triples, U minus graph(E) contains wrong gcds, violated integer Bezout identities and coefficient triples unequal to the deterministic Euclidean result even if their identity holds. This exact recurrence target has finite correspondence evidence, not a formal Rust proof.",
+    "Given (g,x,y), reconstruct all u64 pairs (a,b) satisfying E(a,b)=(g,x,y). Necessarily ax+by=g and gcd(a,b)=g, but those conditions alone do not enforce the coefficient policy. For g=0 only (0,0) with x=y=0 qualifies; (g,1,0) for g>0 can admit several b. Preserve the recurrence constraint and ambiguity.",
+    "For (a,b)!=(0,0), let E(a,b)=(g,x0,y0). All integer solutions to ax+by=g are exactly x=x0+k*(b/g), y=y0-k*(a/g), k in Z. This describes certificate solutions, not the graph of the deterministic coefficient policy: only k=0 is returned. For (0,0), every integer coefficient pair solves the equation but only (0,0) is returned. Arbitrary k and products require mathematical integers or checked arithmetic; i128 is not a universal family domain.",
+    "For g>0, positive d divides both a and b iff d divides g. Thus g is the greatest common divisor in the divisibility order and ax+by=c has an integer solution iff g divides c. Sufficiency scales the returned certificate by c/g; necessity follows by divisibility of every linear combination. At (0,0), only c=0 is solvable, and every positive d divides both inputs; no finite positive maximum exists.",
+    "For modulus m>=2 and a:u64, gcd(a,m)=1 iff a has an inverse modulo m. The unique representative r in [0,m) is E(a,m).x rem_euclid m. Other Bezout solutions project to the same r. No inverse is inferred when gcd>1; modulus zero is undefined and modulus one is excluded. For verification convert a,r,m to u128: a*r fits u128 for u64 operands; the same product may overflow i128 even though the signed coefficient identity is safe."
+  ],
+  "limitations": [
+    "Partial syntax omits macro expansion and semantics; bounded tests are not a proof.",
+    "No executable approximate profile attached; this algorithm is exact."
+  ],
+  "source": "algorithms/src/extended_gcd/mod.rs",
+  "state": "All u64 input pairs and Bezout observations."
+}

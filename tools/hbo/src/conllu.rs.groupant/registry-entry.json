@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "conllu::wave32::lossy_rows_ids_and_empty_tokens"
+  ],
+  "children": [],
+  "cost": "B input/output bytes, W words: O(B+W) copying and ten columns per word, O(B+W) stored text; read_files holds all decoded sentences and stops first read error.",
+  "description": "Read scans lines with owed MWT count; ten-column nondecimal rows create words, range rows open tokens, blank/EOF flush tokenful sentences. Write emits comments and MWT only for >1 words then renumbers word IDs from1, leaving HEAD unchanged.",
+  "forward": [
+    "Read scans lines with owed MWT count; ten-column nondecimal rows create words, range rows open tokens, blank/EOF flush tokenful sentences. Write emits comments and MWT only for >1 words then renumbers word IDs from1, leaving HEAD unchanged."
+  ],
+  "id": "hbo-conllu",
+  "inverse": [
+    "Within the stated domain, decimal-ID and wrong-column rows cannot create words; write cannot repair HEAD to match changed IDs or preserve empty-token rows. Filesystem reads cannot commit a partial returned vector after Err.",
+    "A decoded sentence admits any source differing only by skipped malformed/decimal rows or discarded comment-only sentences. A written result admits prior word IDs independently of preserved HEAD; unique original text recovery is impossible."
+  ],
+  "limitations": [
+    "Finite supplied-input checks only; no corpus, training, external annotator, GPU, throughput or semantic-understanding claim. Allocation exhaustion and malformed arbitrary model arithmetic are not exhaustively exercised. No useful numerical surrogate is implemented; future caps may only be 1/2/5/10% with a declared metric."
+  ],
+  "source": "tools/hbo/src/conllu.rs",
+  "state": "UTF-8 strings; representable b+1 and ID/count sums. Rows may carry arbitrary IDs/HEAD; this codec does not validate trees. Empty MWT tokens survive read but emit no row. Comment-only sentences disappear."
+}

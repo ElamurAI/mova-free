@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "id": "algorithm-baby-step-giant-step",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "ed4933fb3791fa033116abe149886ee75b2b666403654ccaf11eaca0e3efbff5"
+  },
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "ed4933fb3791fa033116abe149886ee75b2b666403654ccaf11eaca0e3efbff5",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Some(x) with g^x!=target or with a smaller valid exponent is excluded. None is excluded when any exponent0..p-2 solves for nonzero g. Zero base explicitly adds exponent1 for target0.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "ed4933fb3791fa033116abe149886ee75b2b666403654ccaf11eaca0e3efbff5",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "For output Some(0), every base paired with target1 is compatible. For x>0 retain pairs (g,g^x) whose multiplicative order exceeds x, plus (0,0) at x1. None admits nonmembers of generated subgroups, including (1,2).",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "least_block",
+        "type": "least_block",
+        "path": "model.md",
+        "section": "least_block",
+        "status": "partial_relational_specification",
+        "subject_revision": "ed4933fb3791fa033116abe149886ee75b2b666403654ccaf11eaca0e3efbff5",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Store first baby exponent for each residue. Scan giant i ascending; i*n+j ranges disjoint increasing blocks, hence first match with least j is globally least.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "field_inverse",
+        "type": "field_inverse",
+        "path": "model.md",
+        "section": "field_inverse",
+        "status": "partial_relational_specification",
+        "subject_revision": "ed4933fb3791fa033116abe149886ee75b2b666403654ccaf11eaca0e3efbff5",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "p998244353 is a fixed known prime. Nonzero g inverse is g^(p-2); no caller modulus or primality test. For g0 branch before inversion.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "resource_partition",
+        "type": "resource_partition",
+        "path": "model.md",
+        "section": "resource_partition",
+        "status": "partial_relational_specification",
+        "subject_revision": "ed4933fb3791fa033116abe149886ee75b2b666403654ccaf11eaca0e3efbff5",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "n=ceil sqrt(p-1)=31596; fixed cap40000 is unreachable on current prime but explicit ResourceLimit differs from None. Table allocation uses standard policy; not an allocation-error channel.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "finite_arithmetic",
+        "type": "finite_arithmetic",
+        "path": "model.md",
+        "section": "finite_arithmetic",
+        "status": "partial_relational_specification",
+        "subject_revision": "ed4933fb3791fa033116abe149886ee75b2b666403654ccaf11eaca0e3efbff5",
+        "domain": "Declared bounded public API and finite fixtures",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "All residues<p; products below2^60 and exponents<=n²+n fit u64. Congruent u64 inputs yield identical results; finite small exponent oracles are not proof of all discrete logs.",
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "evidence": "model.md#evidence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  }
+}

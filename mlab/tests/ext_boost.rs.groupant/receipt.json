@@ -1,0 +1,58 @@
+{
+  "compiled_negative_control": {
+    "compiled": true,
+    "exact_restore": true,
+    "exit": 101,
+    "mutant": {
+      "from": "r[col].is_normal()",
+      "to": "r[col].is_finite()"
+    },
+    "restored_exit": 0,
+    "source": "mlab/tests/ext_boost.rs",
+    "test": "wave30_synthetic_measure"
+  },
+  "epoch": "2026-10-31",
+  "limitations": [
+    "Selected synthetic helper checks only; no external dataset suite or Monte Carlo calibration",
+    "An earlier RNG output-multiplier mutant survived same-stream tests; preserved in survived-rng-output.log. The final uniform-grid mutant fails. Stream golden vectors remain untested.",
+    "No broad Clippy cleanliness or executable-surrogate claim"
+  ],
+  "logs": [
+    {
+      "exit": 0,
+      "log": "debug-1-5.log",
+      "sha256": "5d0a13d127ae17ac4e5ccfd438e198a107182afc89ecfb5942ec5aee91cb8d1c"
+    },
+    {
+      "exit": 0,
+      "log": "debug-2-5.log",
+      "sha256": "1a998c12af2f0667dd6e3830329d1c85cce42e3b583bc74bce6fd1f21a92fe8f"
+    },
+    {
+      "exit": 0,
+      "log": "release-1-5.log",
+      "sha256": "5c33eca1f8a05aedd907986683183e3cd91a74dde4e8722882e9446a75c7e6b1"
+    },
+    {
+      "exit": 0,
+      "log": "release-2-5.log",
+      "sha256": "6624b68f19344f7bcdbd866ce15b8922dbec198b54374e08a083cf26625d0f09"
+    },
+    {
+      "exit": 101,
+      "log": "control-5.log",
+      "sha256": "2dae702080c298b99e679300a4d9bc369688ccbc1271d6cf0141491f35442019"
+    },
+    {
+      "exit": 0,
+      "log": "restored-5.log",
+      "sha256": "478a0138b4875e56100a75c5b53ae31137f0e54cba686cc9ab7b022af803d7ec"
+    }
+  ],
+  "named_outcomes_equal": true,
+  "positive_debug_runs": 2,
+  "positive_release_runs": 2,
+  "selected_test": "wave30_synthetic_measure",
+  "source": "mlab/tests/ext_boost.rs",
+  "source_sha256": "7fa4b847808f0a485411988bb342bd0b0540d350c50e6166f08224c1dbac9dfc"
+}

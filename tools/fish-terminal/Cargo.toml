@@ -1,0 +1,13 @@
+[package]
+# The `peta-fish` prefix is a fixed protocol identifier (sessions, report directory, tmux option); it names no private
+# tree or actor (README.md).
+name = "peta-fish-terminal"
+version = "0.1.0"
+edition = "2024"
+[dependencies]
+anyhow = "1.0.104"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+sha2 = "0.10"
+libc = "0.2"
+[workspace]

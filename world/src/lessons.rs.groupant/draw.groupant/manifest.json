@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "world-lessons-draw-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "world-lessons-draw-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-lessons-draw-coupling",
+        "path": "model.md",
+        "section": "coupling",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 14733,
+      "start": 11522
+    },
+    "description": "At most 2000 attempts: bind variables in order, derive lets in order, require all needs nonzero, evaluate nonnegative answer, fill selected template k modulo template count. Empty templates fail before RNG mutation. Exhausted unique names and invalid/reversed ranges fail. Inclusive numeric sampling uses i128 width and u128 residue, including full i64 domain. Wrapping seed addition defines large lesson numbers."
+  },
+  "id": "world-lessons-draw",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../lessons.rs",
+    "sha256": "d9ea9d5543986a9421c508fd90a1f1f7aa9f143ab5392c80d7c300b34a946264"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,90 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Finite fixtures in this test module, a trusted Rust compiler and standard library, and successful allocation; oracle recursion is restricted to four-vertex DAGs.",
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "Finite fixtures in this test module, a trusted Rust compiler and standard library, and successful allocation; oracle recursion is restricted to four-vertex DAGs.",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "oracle",
+        "path": "model.md",
+        "required": false,
+        "scope": "Finite fixtures in this test module, a trusted Rust compiler and standard library, and successful allocation; oracle recursion is restricted to four-vertex DAGs.",
+        "section": "oracle",
+        "status": "partial_source_derived_model",
+        "type": "independent_path_enumeration"
+      },
+      {
+        "id": "boundary",
+        "path": "model.md",
+        "required": false,
+        "scope": "Finite fixtures in this test module, a trusted Rust compiler and standard library, and successful allocation; oracle recursion is restricted to four-vertex DAGs.",
+        "section": "boundary",
+        "status": "partial_source_derived_model",
+        "type": "integer_boundary_witness"
+      },
+      {
+        "id": "global",
+        "path": "model.md",
+        "required": false,
+        "scope": "Finite fixtures in this test module, a trusted Rust compiler and standard library, and successful allocation; oracle recursion is restricted to four-vertex DAGs.",
+        "section": "global",
+        "status": "partial_source_derived_model",
+        "type": "validation_scope_witness"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "algorithm-dag-path-count-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "d32093e393ceb0c04668678f34b09e4866755d1fb473979ad315abd558a3a615"
+  },
+  "status": "partial_source_bound_model"
+}

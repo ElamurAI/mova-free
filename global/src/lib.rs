@@ -1,6 +1,8 @@
-//! Global level of the SLM (small language model) — compiled static links (`docs/design-three-levels.md`): values,
+//! Global level of the SLM (small language model) — compiled static links (`docs/architecture.md#three-levels-of-logic`): values,
 //! concepts, shortcuts between them, verb classes. Source: the seeds `seeds/**/*.md`; `build.rs` stitches them
 //! into tables, so nothing is read from disk at runtime. Every conclusion says which link and file it came from.
+
+pub mod placement;
 
 pub struct PrincipleDef {
     pub id: &'static str,
@@ -410,7 +412,7 @@ fn hot() -> &'static Hot {
     })
 }
 
-/// Absurdity matrix (real-world scale, `data/absurdity-roles.tsv`, `docs/absurdity.md`): `[SUBJ, OBJ]` scores 0–4
+/// Absurdity matrix (real-world scale, `data/absurdity-roles.tsv`, `docs/knowledge.md#the-absurdity-matrix`): `[SUBJ, OBJ]` scores 0–4
 /// of `noun` as the doer / the direct object of `verb`; `None` if the cell is unknown. The hot layer comes first.
 pub fn absurdity(verb: &str, noun: &str) -> Option<[u8; 2]> {
     if let Some(v) = hot().real.get(&(verb.to_string(), noun.to_string())) {

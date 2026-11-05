@@ -1,0 +1,34 @@
+{
+  "checks": [
+    "12 selected library wave28 tests plus1 exact missing-path integration test, twice debug and release",
+    "Seven compiled assertion controls with exact byte restoration and focused positive reruns",
+    "Seven syntax projections generated twice byte-identically"
+  ],
+  "children": [
+    "math-deduct",
+    "math-lex",
+    "math-qread",
+    "math-qworld",
+    "math-steps",
+    "math-understand",
+    "math-tests-understand"
+  ],
+  "cost": "Composition sums annotation, chunk/frame scanning, exact arithmetic, affine map/event scans, O(N*beam*20) stack expansions and O(steps*beam*(N+steps)^2) DAG candidates with feature/cloning/sorting overhead. Dense deduct training arrays2^22 entries each; no benchmark.",
+  "description": "lex -> number/unit chunks -> placeholder owner projection -> ordered Interp frames/Pratt -> Expr -> evaluator. Independently steps produces aligned Prob quantities/descriptions; qworld folds exact rational cells and queries them; deduct converts reused quantity DAGs. qread uses separate f64 affine events with leaf provenance, constraint substitution, query and explicit abstain.",
+  "forward": [
+    "lex -> number/unit chunks -> placeholder owner projection -> ordered Interp frames/Pratt -> Expr -> evaluator. Independently steps produces aligned Prob quantities/descriptions; qworld folds exact rational cells and queries them; deduct converts reused quantity DAGs. qread uses separate f64 affine events with leaf provenance, constraint substitution, query and explicit abstain.",
+    "qworld and deduct consume steps::Prob with aligned qs/descs. qworld rates change no cell immediately, but owner/thing context is updated before operation selection and can affect subsequent bare quantities. qread Set adds whereas qworld Set overwrites; qread's final event fold respects upto, while direct/relation/movement/initial-state decisions can inspect future events, so the complete function is not a prefix-state operator. steps oracle excludes repeated leaves; deduct gold can reuse a subtree but search excludes self-pairs. lex lookup requires caller normalization; understand does it. Missing-path test stops before Annotator load."
+  ],
+  "id": "quantitative-understanding",
+  "inverse": [
+    "Missing-path guard excludes loader effects; qworld rates exclude cell writes; valid DAG apply excludes invalid numeric interval; unknown-token Interp rejects before frame choice. These scoped exclusions do not compose into general English correctness.",
+    "Compatible source histories are constrained by quantity occurrence indices and selected frame/action semantics. Overwrites, placeholder loss, duplicate-valued matching and commutative keys make preimages set-valued; scalar output cannot reconstruct original text."
+  ],
+  "limitations": [
+    "No English end-to-end/model/corpus/frozen suite execution",
+    "Finite tests and partial lexical AST, not semantic proofs",
+    "DAG gold/search self-pair mismatch retained; qread finite arithmetic not universally guarded",
+    "No timing, GPU or task-accuracy claim"
+  ],
+  "state": "Source indices bind original quantity occurrences; arithmetic representations are distinct: exact Q cells, fixed Rat Expr and f64 candidate/affine computations. Query acceptance never establishes correctness of annotation. Model/teacher/corpus effects excluded from tests."
+}

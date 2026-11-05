@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p en --lib expert::wave27::bounded_contract",
+    "Paired partial syntax; debug/release repeated outcomes; see receipt"
+  ],
+  "children": [],
+  "cost": "For n tokens and m match nodes, worst enumeration n!/(n-m)! times predicate checks; existential requirements scan n unbound candidates. Recursive depth m; output can be combinatorial. Filesystem loading traverses directories and sorts rules by id; errors are not globally sorted.",
+  "description": "parse_file collects closed rule-prefix fences; parse_rule checks missing id, first field error, match, require, unless, then references. bindings recursively enumerates distinct word indices, filters local conditions early and resolves forward references only after full binding. check increments fired for every matching binding and emits 1-based indices iff not(all require clauses) and not(any unless clause).",
+  "forward": [
+    "parse_file collects closed rule-prefix fences; parse_rule checks missing id, first field error, match, require, unless, then references. bindings recursively enumerates distinct word indices, filters local conditions early and resolves forward references only after full binding. check increments fired for every matching binding and emits 1-based indices iff not(all require clauses) and not(any unless clause)."
+  ],
+  "id": "en-expert",
+  "inverse": [
+    "For a fixed rule and result (fired,violations), preimage consists of all sentences whose matching injective assignments and require/unless truth values produce that result. Token spellings outside tested predicates, unused features and unattached nodes can vary; check output does not uniquely reconstruct a sentence or rule.",
+    "No successful validated rule refers to unknown match names. One sentence word cannot bind two match variables. unless suppresses violations but never decrements fired. Unclosed fences do not create rules. Unknown feature presence maps to zero whereas feature equality-to-node rejects unknown keys."
+  ],
+  "limitations": [
+    "Partial source-bound model, not full proof. No useful executable percentage surrogate established for these categorical decisions/effects; budgets1/2/5/10% require a future observation metric. No corpus/API/GPU/teacher, allocation fault injection, adversarial size exhaustion or broad accuracy claim."
+  ],
+  "source": "en/src/expert.rs",
+  "state": "Rule stores ordered match nodes, require clauses (AND of OR), unless clauses (OR), source metadata. Bindings map distinct words to match names."
+}

@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p math --lib err::",
+    "paired syntax and compiled controls; external receipts"
+  ],
+  "children": [],
+  "cost": "code O(1), Display O(payload+dimension name length); owned allocation occurs at caller construction. No external effects beyond formatter sink.",
+  "description": "Error categories, retained payloads and diagnostic formatting",
+  "forward": [
+    "Error stores operation, dimensions, thermal misuse or diagnostic text. code maps7 variants to category strings; Display includes payloads and dimension names. R<T> is Result<T,Error>; no numeric computation here."
+  ],
+  "id": "math-err",
+  "inverse": [
+    "ERR:temp preimage contains7 TempMisuse variants; ERR:domain contains every static Domain payload. Codes recover category only, not operation/dimensions/text. Display is not a parsing or serialization contract."
+  ],
+  "limitations": [
+    "Partial lexical projection; no semantic proof",
+    "No useful executable percentage surrogate",
+    "Bounded synthetic fixtures; resource/malformed-state gaps in models"
+  ],
+  "source": "math/src/err.rs",
+  "state": "Error stores operation, dimensions, thermal misuse or diagnostic text. code maps7 variants to category strings; Display includes payloads and dimension names. R<T> is Result<T,Error>; no numeric computation here."
+}

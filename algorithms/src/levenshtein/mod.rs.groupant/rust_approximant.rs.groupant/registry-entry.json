@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "Four embedded tests: 16129 exhaustive binary pairs at all caps, independent matrix oracle, trimming, symmetry, integer extremes and nonexact dispatch.",
+    "Compiled always-accept mutant rejected; debug and optimized tests pass."
+  ],
+  "cost": "O(n+m+256) time, O(256) stack space accepted; fallback adds O(n'*m'+1) time and O(min(n',m')+1) space.",
+  "description": "Certified byte Levenshtein scalar upper estimate with common-affix trimming and exact fallback.",
+  "forward": [
+    "Return D<=distance<=(1+p/100)D with exact zero; enclose D in the returned interval.",
+    "Compute trimmed histogram and aligned-edit bounds, certify using safe integer arithmetic or call production exact distance."
+  ],
+  "id": "algorithm-levenshtein-rust-approximant",
+  "inverse": [
+    "Ordered behavior_complement and reverse_reconstruction relations in adjacent model.md preserve ambiguous byte-pair preimages."
+  ],
+  "limitations": [
+    "Byte semantics only; no edit script or grapheme metric.",
+    "No universal speedup, formal proof or resource-failure equivalence."
+  ],
+  "source": "algorithms/src/levenshtein/mod.rs.groupant/rust_approximant.rs",
+  "state": "Finite byte slices; four ErrorBudget caps; successful completion; Estimate bounds and fallback flag."
+}

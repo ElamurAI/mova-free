@@ -1,0 +1,155 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Proposed inner bound of absent behavior under the stated premises; source-derived and checked on finite fixtures, not proved for all Rust executions.",
+        "assumptions": "Lawful ordering/cloning where required, standard Rust and successful allocation.",
+        "domain": "Finite lawful Ord + Clone arrays and query/update observations, excluding resource failure and panicking user code.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One operation and its state/output.",
+        "operator": "In the universe of arrays, operations, outputs and successor states, exclude any minimum outside the requested range, nonminimum or nonleftmost ties, Some for invalid/empty ranges, changed state on invalid update, and changes to other points after valid update.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "7017145934520b83a8792e0885238cc7ee6a5f63c013f5f34717d87363f63ac1",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived relation; bounded executable evidence only, no unrestricted proof.",
+        "assumptions": "Lawful ordering/cloning where required, standard Rust and successful allocation.",
+        "domain": "Finite lawful Ord + Clone arrays and query/update observations, excluding resource failure and panicking user code.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_antecedents",
+        "observation_scope": "One operation and its state/output.",
+        "operator": "A returned index j admits arrays with s<=j<e, A[j]<=A[k] for all k in the range, and A[j]<A[k] for k<j. None admits exactly invalid or empty ranges. A post-update array admits all antecedents agreeing outside i; the overwritten value is unconstrained. Invalid update admits only an identical prior state.",
+        "path": "model.md",
+        "section": "compatible_antecedents",
+        "status": "partial_source_derived",
+        "subject_revision": "7017145934520b83a8792e0885238cc7ee6a5f63c013f5f34717d87363f63ac1",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with finite executed checks; no unrestricted semantic proof.",
+        "assumptions": "Lawful total ordering; value-preserving independent clones where required; source-bound tests; no panics, overflow or allocation failure.",
+        "domain": "Finite lawful ordered value arrays, successful allocation, nonpanicking operations; fixed lengths, ranges and transformations as stated.",
+        "evidence": "model.md#evidence",
+        "id": "argmin_semilattice",
+        "observation_scope": "Operation observations or finite traces explicitly specified by the relation.",
+        "operator": "For fixed A define i meet j = argmin of (A[i],i),(A[j],j), with None as identity. The operation is associative, commutative and idempotent. Q(s,e)=Q(s,m) meet Q(m,e) for 0<=s<=m<=e<=n. Empty pieces are None. This explains why compact tree layout and reduction traversal cannot change tie choices.",
+        "path": "model.md",
+        "section": "argmin_semilattice",
+        "status": "bounded_checked",
+        "subject_revision": "7017145934520b83a8792e0885238cc7ee6a5f63c013f5f34717d87363f63ac1",
+        "type": "decomposition_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with finite executed checks; no unrestricted semantic proof.",
+        "assumptions": "Lawful total ordering; value-preserving independent clones where required; source-bound tests; no panics, overflow or allocation failure.",
+        "domain": "Finite lawful ordered value arrays, successful allocation, nonpanicking operations; fixed lengths, ranges and transformations as stated.",
+        "evidence": "model.md#evidence",
+        "id": "update_locality",
+        "observation_scope": "Operation observations or finite traces explicitly specified by the relation.",
+        "operator": "For valid i and range R excluding i, Q(update(A,i,x),R)=Q(A,R), including returned values. At the internal-state level only A[i] and ancestors of leaf n+i may change; unchanged ancestors are allowed. Invalid indices preserve every field. This is not an exception-safety promise for a panicking comparison.",
+        "path": "model.md",
+        "section": "update_locality",
+        "status": "bounded_checked",
+        "subject_revision": "7017145934520b83a8792e0885238cc7ee6a5f63c013f5f34717d87363f63ac1",
+        "type": "frame_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with finite executed checks; no unrestricted semantic proof.",
+        "assumptions": "Lawful total ordering; value-preserving independent clones where required; source-bound tests; no panics, overflow or allocation failure.",
+        "domain": "Finite lawful ordered value arrays, successful allocation, nonpanicking operations; fixed lengths, ranges and transformations as stated.",
+        "evidence": "model.md#evidence",
+        "id": "update_commutation",
+        "observation_scope": "Operation observations or finite traces explicitly specified by the relation.",
+        "operator": "For distinct valid i,j and fixed replacement values x,y, U(j,y)(U(i,x)(S))=U(i,x)(U(j,y)(S)) as complete deterministic tree states. When i=j equality requires x=y; otherwise the last write wins, so dropping distinctness is false.",
+        "path": "model.md",
+        "section": "update_commutation",
+        "status": "bounded_checked",
+        "subject_revision": "7017145934520b83a8792e0885238cc7ee6a5f63c013f5f34717d87363f63ac1",
+        "type": "commutation_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with finite executed checks; no unrestricted semantic proof.",
+        "assumptions": "Lawful total ordering; value-preserving independent clones where required; source-bound tests; no panics, overflow or allocation failure.",
+        "domain": "Finite lawful ordered value arrays, successful allocation, nonpanicking operations; fixed lengths, ranges and transformations as stated.",
+        "evidence": "model.md#evidence",
+        "id": "singleton_reconstruction",
+        "observation_scope": "Operation observations or finite traces explicitly specified by the relation.",
+        "operator": "For a fixed length n, observe query(i,i+1) values for every i. The compatible value vector is uniquely A[i]=observed[i]. Rebuilding from A reconstructs the canonical tree, not arbitrary corrupted private state or update history. Observing only singleton indices always yields i and cannot recover values.",
+        "path": "model.md",
+        "section": "singleton_reconstruction",
+        "status": "bounded_checked",
+        "subject_revision": "7017145934520b83a8792e0885238cc7ee6a5f63c013f5f34717d87363f63ac1",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with finite executed checks; no unrestricted semantic proof.",
+        "assumptions": "Lawful total ordering; value-preserving independent clones where required; source-bound tests; no panics, overflow or allocation failure.",
+        "domain": "Finite lawful ordered value arrays, successful allocation, nonpanicking operations; fixed lengths, ranges and transformations as stated.",
+        "evidence": "model.md#evidence",
+        "id": "order_embedding",
+        "observation_scope": "Operation observations or finite traces explicitly specified by the relation.",
+        "operator": "For an order embedding f on the observed value set, Q_f(A)(s,e)=Q_A(s,e): strict comparisons and equalities are preserved. Strictly increasing integer affine maps require no overflow. Merely nondecreasing f is insufficient: [1,0] maps to [0,0], changing index 1 to 0.",
+        "path": "model.md",
+        "section": "order_embedding",
+        "status": "bounded_checked",
+        "subject_revision": "7017145934520b83a8792e0885238cc7ee6a5f63c013f5f34717d87363f63ac1",
+        "type": "order_embedding_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with finite executed checks; no unrestricted semantic proof.",
+        "assumptions": "Lawful total ordering; value-preserving independent clones where required; source-bound tests; no panics, overflow or allocation failure.",
+        "domain": "Finite lawful ordered value arrays, successful allocation, nonpanicking operations; fixed lengths, ranges and transformations as stated.",
+        "evidence": "model.md#evidence",
+        "id": "snapshot_isolation",
+        "observation_scope": "Operation observations or finite traces explicitly specified by the relation.",
+        "operator": "For lawful independent value clones, let C=clone(S). Updates on C leave every query and complete state of S unchanged. Equality after restoring a point uses deterministic canonical construction. Clones with shared interior mutable order state violate the premise and are outside this relation.",
+        "path": "model.md",
+        "section": "snapshot_isolation",
+        "status": "bounded_checked",
+        "subject_revision": "7017145934520b83a8792e0885238cc7ee6a5f63c013f5f34717d87363f63ac1",
+        "type": "snapshot_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-segment-tree",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "7017145934520b83a8792e0885238cc7ee6a5f63c013f5f34717d87363f63ac1"
+  },
+  "status": "partial_source_derived_instance"
+}

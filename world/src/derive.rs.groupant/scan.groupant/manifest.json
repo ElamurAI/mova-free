@@ -1,0 +1,133 @@
+{
+  "schema": 1,
+  "kind": "groupant_fragment",
+  "id": "rule-derivation-scan",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../../derive.rs",
+    "sha256": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842"
+  },
+  "components": {
+    "ast": {
+      "path": "../syntax.json",
+      "status": "partial",
+      "format": "rust_syntax_projection"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "tests": {
+      "path": "../model.md#tests",
+      "status": "bounded_evidence"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule state; specialization in operator",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "For fixed dependency states and terminating scan traces, candidate inner absent behaviors include accepting f=100,b=0, taking more than per_round rules in a round, and running rounds+1 reports without early stop but claiming only rounds reports: loop is inclusive 0..=rounds. Source-inspected only; memory stop-gain and prior decision letter alter stopping/round count.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous preimage, or specialized conditional source relation",
+        "assumptions": "Candidates have a first class atom and target within nearest three matching POS words. scan admission requires f/(f+b)>=0.8 and f>b+100. Pre-application counts and the heuristic noninterference predicate do not prove realized joint gain. Malformed trees/overflow excluded.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "antecedents",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule state; specialization in operator",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "Observed report and ordered transformation strings admit all Packed corpora/dictionaries and initial memory states producing those aggregates and strings. Saved bytes omit per-word heads, rejected candidates, decision lists and store query/version. Scan transformations.tsv omits fix/break counts. Thus output is not a unique training checkpoint; retain lexical collisions and latent state. Proposed equal-aggregate corpus oracle unexecuted.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous preimage, or specialized conditional source relation",
+        "assumptions": "Candidates have a first class atom and target within nearest three matching POS words. scan admission requires f/(f+b)>=0.8 and f>b+100. Pre-application counts and the heuristic noninterference predicate do not prove realized joint gain. Malformed trees/overflow excluded.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "candidate-search",
+        "type": "bounded_search",
+        "path": "model.md",
+        "section": "candidate-search",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule state; specialization in operator",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "Fixes arise at wrong non-root heads with k<=3 gold targets and no candidate cycle. Breaks count correct non-root heads with a different candidate target without the same cycle check. Top 2000 by fixes precede break scoring. Exact-real eligibility is f>=4*b and f>b+100, but Rust uses f64. Sort net gain, condition-count, Tr order, then greedily reject same first atom OR same(head,dir). This does not establish global best or realized gain. Proposed shortlist/tie fixtures unexecuted.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous preimage, or specialized conditional source relation",
+        "assumptions": "Candidates have a first class atom and target within nearest three matching POS words. scan admission requires f/(f+b)>=0.8 and f>b+100. Pre-application counts and the heuristic noninterference predicate do not prove realized joint gain. Malformed trees/overflow excluded.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "persistence",
+        "type": "failure_boundary",
+        "path": "model.md",
+        "section": "persistence",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule state; specialization in operator",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "save writes report.txt then transformations.tsv using ordinary fs::write. Second-write error can leave a new report with stale/partial transformations. Saves follow agreement, early-stop text, learned rules and final exit. Success yields final strings; no atomic pair, fsync durability, replay loader or complete checkpoint follows. stage.note/decide also affect external state. Proposed injected second-write error not executed.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous preimage, or specialized conditional source relation",
+        "assumptions": "Candidates have a first class atom and target within nearest three matching POS words. scan admission requires f/(f+b)>=0.8 and f>b+100. Pre-application counts and the heuristic noninterference predicate do not prove realized joint gain. Malformed trees/overflow excluded.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "schedule-cost",
+        "type": "schedule_dependence",
+        "path": "model.md",
+        "section": "schedule-cost",
+        "status": "partial_source_derived_model",
+        "subject_revision": "2726211da9538f3f5c225292219dfda4d4fd6f15d6b68deaaaf53c834ba60842",
+        "domain": "Finite admitted inputs and fixed dependency/schedule state; specialization in operator",
+        "observation_scope": "One helper transition or explicitly finite scan trace",
+        "operator": "scan checks count>=limit once per acquired book, then adds the whole local batch; limits may overshoot. Completion order controls data append and first-encounter class IDs under mutexes, altering data[::20]. Determinism is conditional on fixed ordering/dependencies. Resource preimages retain W,N,T,F,C,threads and I/O rather than inferring corpus size from wall time. Current bounds uncalibrated; no runtime benchmark.",
+        "approximation_semantics": "Candidate inner behavior-complement bound, ambiguous preimage, or specialized conditional source relation",
+        "assumptions": "Candidates have a first class atom and target within nearest three matching POS words. scan admission requires f/(f+b)>=0.8 and f>b+100. Pre-application counts and the heuristic noninterference predicate do not prove realized joint gain. Malformed trees/overflow excluded.",
+        "evidence": "../model.md#tests"
+      }
+    ]
+  },
+  "coverage": {
+    "description": "rule-derivation-scan",
+    "byte_range": {
+      "start": 31545,
+      "end": 51789
+    },
+    "syntax_nodes": {
+      "path": "../syntax.json",
+      "node_ids": [
+        4005,
+        4373,
+        5774,
+        5907
+      ]
+    }
+  }
+}

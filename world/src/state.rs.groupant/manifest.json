@@ -1,0 +1,144 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "hot-state",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../state.rs",
+    "sha256": "135a1beeb0da2a0d86fdde81a66c9ffbffa3f6783abee5fa666e0e3dfd5a778e"
+  },
+  "components": {
+    "ast": {
+      "path": "syntax.json",
+      "status": "partial",
+      "format": "rust_syntax_projection"
+    },
+    "approximant": {
+      "path": "model.md#model",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md#model",
+      "status": "finite_checked"
+    },
+    "cost": {
+      "path": "model.md#model",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#model",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "Partial delta/ancestry reconstruction; remainder of state.rs and filesystem transactions unmodeled. Finite line sequences and fixed finite tree maps; successful allocation; encoder LCS counts fit u32.",
+        "observation_scope": "Pure line and ancestry transitions; materialise composition source-derived only.",
+        "operator": "Within the declared transition universe U, U minus R excludes outputs differing from the deterministic decoder/ancestry/fold relation. This is an exact mathematical target with only finite Rust correspondence; unknown I/O behavior remains outside U.",
+        "approximation_semantics": "Conditional mathematical target; finite observations do not establish universal correspondence.",
+        "assumptions": "Fixed map and filesystem snapshot for composition; no allocation/resource failure.",
+        "evidence": "model.md#tests"
+      },
+      {
+        "id": "antecedents",
+        "type": "reverse_reconstruction",
+        "path": "model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "Partial delta/ancestry reconstruction; remainder of state.rs and filesystem transactions unmodeled. Finite line sequences and fixed finite tree maps; successful allocation; encoder LCS counts fit u32.",
+        "observation_scope": "Pure line and ancestry transitions; materialise composition source-derived only.",
+        "operator": "For fixed output y retain all inputs x with R(x,y). Deleted source lines and unused metadata are unconstrained; empty output has many antecedents. Fixed source and encoded delta reconstruct target uniquely, not source uniquely.",
+        "approximation_semantics": "Conditional mathematical target; finite observations do not establish universal correspondence.",
+        "assumptions": "Fixed map and filesystem snapshot for composition; no allocation/resource failure.",
+        "evidence": "model.md#tests"
+      },
+      {
+        "id": "resource",
+        "type": "resource_preimage",
+        "path": "model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "Partial delta/ancestry reconstruction; remainder of state.rs and filesystem transactions unmodeled. Finite line sequences and fixed finite tree maps; successful allocation; encoder LCS counts fit u32.",
+        "observation_scope": "Pure line and ancestry transitions; materialise composition source-derived only.",
+        "operator": "For cell budget B, admissible diff dimensions satisfy (n+1)(m+1)<=B, before allocator/string overhead. No measured latency bound.",
+        "approximation_semantics": "Conditional mathematical target; finite observations do not establish universal correspondence.",
+        "assumptions": "Fixed map and filesystem snapshot for composition; no allocation/resource failure.",
+        "evidence": "model.md#tests"
+      },
+      {
+        "id": "loss",
+        "type": "information_loss",
+        "path": "model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "Partial delta/ancestry reconstruction; remainder of state.rs and filesystem transactions unmodeled. Finite line sequences and fixed finite tree maps; successful allocation; encoder LCS counts fit u32.",
+        "observation_scope": "Pure line and ancestry transitions; materialise composition source-derived only.",
+        "operator": "Drop operations and omitted tails erase line values; invalid prefixes and counts map many distinct scripts to the same result. Thus a unique inverse is impossible on unrestricted inputs.",
+        "approximation_semantics": "Conditional mathematical target; finite observations do not establish universal correspondence.",
+        "assumptions": "Fixed map and filesystem snapshot for composition; no allocation/resource failure.",
+        "evidence": "model.md#tests"
+      },
+      {
+        "id": "failure",
+        "type": "failure_partition",
+        "path": "model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "Partial delta/ancestry reconstruction; remainder of state.rs and filesystem transactions unmodeled. Finite line sequences and fixed finite tree maps; successful allocation; encoder LCS counts fit u32.",
+        "observation_scope": "Pure line and ancestry transitions; materialise composition source-derived only.",
+        "operator": "Strict ancestry: first repeated ID gives cycle error, first missing ID gives missing error, origin succeeds. Permissive mode turns missing into a successful terminal ID while cycles remain errors.",
+        "approximation_semantics": "Conditional mathematical target; finite observations do not establish universal correspondence.",
+        "assumptions": "Fixed map and filesystem snapshot for composition; no allocation/resource failure.",
+        "evidence": "model.md#tests"
+      },
+      {
+        "id": "cursor_and_path",
+        "type": "invariant_projection",
+        "path": "model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "Partial delta/ancestry reconstruction; remainder of state.rs and filesystem transactions unmodeled. Finite line sequences and fixed finite tree maps; successful allocation; encoder LCS counts fit u32.",
+        "observation_scope": "Pure line and ancestry transitions; materialise composition source-derived only.",
+        "operator": "Decoder cursor stays within source length; returned strict paths have distinct existing IDs, permissive paths add at most one missing terminal ID. These constraints are independent of metadata.",
+        "approximation_semantics": "Conditional mathematical target; finite observations do not establish universal correspondence.",
+        "assumptions": "Fixed map and filesystem snapshot for composition; no allocation/resource failure.",
+        "evidence": "model.md#tests"
+      },
+      {
+        "id": "cost",
+        "type": "cost_composition",
+        "path": "model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "Partial delta/ancestry reconstruction; remainder of state.rs and filesystem transactions unmodeled. Finite line sequences and fixed finite tree maps; successful allocation; encoder LCS counts fit u32.",
+        "observation_scope": "Pure line and ancestry transitions; materialise composition source-derived only.",
+        "operator": "Ancestry set/map work plus ordered per-section decoding and I/O compose additively for the fixed sequential trace; diff table is O(n*m), not part of materialise itself.",
+        "approximation_semantics": "Conditional mathematical target; finite observations do not establish universal correspondence.",
+        "assumptions": "Fixed map and filesystem snapshot for composition; no allocation/resource failure.",
+        "evidence": "model.md#tests"
+      }
+    ],
+    "composition": {
+      "path": "model.md#model",
+      "status": "partial_source_derived"
+    }
+  },
+  "children": [
+    {
+      "id": "hot-state-delta",
+      "path": "delta.groupant"
+    },
+    {
+      "id": "hot-state-ancestry",
+      "path": "ancestry.groupant"
+    }
+  ]
+}

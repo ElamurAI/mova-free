@@ -1,0 +1,257 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "source syntax only; no expansion or semantic resolution",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "description": "model.md#approximant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "single-call absent outcomes in explicit universe",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "compatible inputs preserving ambiguity",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "symmetry_fiber",
+        "path": "model.md",
+        "scope": "specialization domain defined in linked section",
+        "section": "symmetry_fiber",
+        "status": "partial_source_derived_model",
+        "type": "symmetry_fiber"
+      },
+      {
+        "id": "zero_fiber",
+        "path": "model.md",
+        "scope": "specialization domain defined in linked section",
+        "section": "zero_fiber",
+        "status": "partial_source_derived_model",
+        "type": "zero_fiber"
+      },
+      {
+        "id": "unit_projection",
+        "path": "model.md",
+        "scope": "specialization domain defined in linked section",
+        "section": "unit_projection",
+        "status": "partial_source_derived_model",
+        "type": "unit_projection"
+      },
+      {
+        "id": "score_length_kernel_obstruction",
+        "path": "model.md",
+        "scope": "Explicit domain, observation, assumptions, formula, counterexample and finite evidence in named section",
+        "section": "score_length_kernel_obstruction",
+        "status": "partial_source_derived_model",
+        "type": "score_length_kernel_obstruction"
+      },
+      {
+        "id": "append_distance_residual",
+        "path": "model.md",
+        "scope": "Explicit domain, observation, assumptions, formula, counterexample and finite evidence in named section",
+        "section": "append_distance_residual",
+        "status": "partial_source_derived_model",
+        "type": "append_distance_residual"
+      }
+    ],
+    "rust_approximants": [
+      {
+        "assumptions": [
+          "Common-prefix/suffix cancellation preserves edit distance.",
+          "Symmetric histogram excess lower-bounds D; aligned substitutions plus length gap upper-bounds D.",
+          "Integer certificate enforces (U-L)/L<=p/100 for L>0; zero requires U=0; rejected certificates use exact production fallback.",
+          "Allocation failure has no numerical guarantee."
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 1,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "interval_certificate",
+          "metric_kind": "scalar_relative"
+        },
+        "domain": "Finite byte slices; successful completion.",
+        "error_percent": 1,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md#tests",
+            "sha256": "48ffc08ef75e1238c545cb25b12daeb72e28d1bfaad15b88a8709e9dc667a5c7"
+          },
+          {
+            "path": "rust_approximant.rs.groupant/model.md",
+            "sha256": "5039792398bd763bd6c1682f462e2f47bf28d4ef4627f6022f40b206e5c4dead"
+          }
+        ],
+        "id": "levenshtein-1pct",
+        "metric": "Relative scalar error (estimate-D)/D for exact unit-cost byte edit distance D; D=0 requires exact zero.",
+        "path": "rust_approximant.rs",
+        "sha256": "b8839fded6e08c8b2d8f557bba6f1350cf7ea6b550fc6c3d3bed656f3a5416b0",
+        "source": {
+          "path": "../mod.rs",
+          "raw_code_location": "outside_this_sidecar",
+          "sha256": "f762f7d12b5ee35141cf679db6723099c10e39b7a009c08e6b0337b743ccb724"
+        },
+        "status": "analytical_certificate_with_finite_differential_checks"
+      },
+      {
+        "assumptions": [
+          "Common-prefix/suffix cancellation preserves edit distance.",
+          "Symmetric histogram excess lower-bounds D; aligned substitutions plus length gap upper-bounds D.",
+          "Integer certificate enforces (U-L)/L<=p/100 for L>0; zero requires U=0; rejected certificates use exact production fallback.",
+          "Allocation failure has no numerical guarantee."
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 2,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "interval_certificate",
+          "metric_kind": "scalar_relative"
+        },
+        "domain": "Finite byte slices; successful completion.",
+        "error_percent": 2,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md#tests",
+            "sha256": "48ffc08ef75e1238c545cb25b12daeb72e28d1bfaad15b88a8709e9dc667a5c7"
+          },
+          {
+            "path": "rust_approximant.rs.groupant/model.md",
+            "sha256": "5039792398bd763bd6c1682f462e2f47bf28d4ef4627f6022f40b206e5c4dead"
+          }
+        ],
+        "id": "levenshtein-2pct",
+        "metric": "Relative scalar error (estimate-D)/D for exact unit-cost byte edit distance D; D=0 requires exact zero.",
+        "path": "rust_approximant.rs",
+        "sha256": "b8839fded6e08c8b2d8f557bba6f1350cf7ea6b550fc6c3d3bed656f3a5416b0",
+        "source": {
+          "path": "../mod.rs",
+          "raw_code_location": "outside_this_sidecar",
+          "sha256": "f762f7d12b5ee35141cf679db6723099c10e39b7a009c08e6b0337b743ccb724"
+        },
+        "status": "analytical_certificate_with_finite_differential_checks"
+      },
+      {
+        "assumptions": [
+          "Common-prefix/suffix cancellation preserves edit distance.",
+          "Symmetric histogram excess lower-bounds D; aligned substitutions plus length gap upper-bounds D.",
+          "Integer certificate enforces (U-L)/L<=p/100 for L>0; zero requires U=0; rejected certificates use exact production fallback.",
+          "Allocation failure has no numerical guarantee."
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 5,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "interval_certificate",
+          "metric_kind": "scalar_relative"
+        },
+        "domain": "Finite byte slices; successful completion.",
+        "error_percent": 5,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md#tests",
+            "sha256": "48ffc08ef75e1238c545cb25b12daeb72e28d1bfaad15b88a8709e9dc667a5c7"
+          },
+          {
+            "path": "rust_approximant.rs.groupant/model.md",
+            "sha256": "5039792398bd763bd6c1682f462e2f47bf28d4ef4627f6022f40b206e5c4dead"
+          }
+        ],
+        "id": "levenshtein-5pct",
+        "metric": "Relative scalar error (estimate-D)/D for exact unit-cost byte edit distance D; D=0 requires exact zero.",
+        "path": "rust_approximant.rs",
+        "sha256": "b8839fded6e08c8b2d8f557bba6f1350cf7ea6b550fc6c3d3bed656f3a5416b0",
+        "source": {
+          "path": "../mod.rs",
+          "raw_code_location": "outside_this_sidecar",
+          "sha256": "f762f7d12b5ee35141cf679db6723099c10e39b7a009c08e6b0337b743ccb724"
+        },
+        "status": "analytical_certificate_with_finite_differential_checks"
+      },
+      {
+        "assumptions": [
+          "Common-prefix/suffix cancellation preserves edit distance.",
+          "Symmetric histogram excess lower-bounds D; aligned substitutions plus length gap upper-bounds D.",
+          "Integer certificate enforces (U-L)/L<=p/100 for L>0; zero requires U=0; rejected certificates use exact production fallback.",
+          "Allocation failure has no numerical guarantee."
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 10,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "interval_certificate",
+          "metric_kind": "scalar_relative"
+        },
+        "domain": "Finite byte slices; successful completion.",
+        "error_percent": 10,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md#tests",
+            "sha256": "48ffc08ef75e1238c545cb25b12daeb72e28d1bfaad15b88a8709e9dc667a5c7"
+          },
+          {
+            "path": "rust_approximant.rs.groupant/model.md",
+            "sha256": "5039792398bd763bd6c1682f462e2f47bf28d4ef4627f6022f40b206e5c4dead"
+          }
+        ],
+        "id": "levenshtein-10pct",
+        "metric": "Relative scalar error (estimate-D)/D for exact unit-cost byte edit distance D; D=0 requires exact zero.",
+        "path": "rust_approximant.rs",
+        "sha256": "b8839fded6e08c8b2d8f557bba6f1350cf7ea6b550fc6c3d3bed656f3a5416b0",
+        "source": {
+          "path": "../mod.rs",
+          "raw_code_location": "outside_this_sidecar",
+          "sha256": "f762f7d12b5ee35141cf679db6723099c10e39b7a009c08e6b0337b743ccb724"
+        },
+        "status": "analytical_certificate_with_finite_differential_checks"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "extensions": {
+    "continuation_evidence": {
+      "path": "../../myers_bitvector/mod.rs.groupant/continuation-evidence.json",
+      "status": "bounded_actual_source_checks_not_proof"
+    },
+    "epoch_memory": "model.md#descriptant",
+    "limits": "bounded semantic evidence; source syntax is partial"
+  },
+  "id": "algorithm-levenshtein",
+  "kind": "groupant",
+  "registry": {
+    "node": "algorithm-levenshtein",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "f762f7d12b5ee35141cf679db6723099c10e39b7a009c08e6b0337b743ccb724"
+  },
+  "status": "partial_descriptive_instance"
+}

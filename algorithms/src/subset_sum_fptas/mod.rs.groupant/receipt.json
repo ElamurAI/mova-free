@@ -1,0 +1,80 @@
+{
+  "compiled_mutant": "Force returned sum to zero; lower trim representative assertion fails.",
+  "date": "2026-10-30",
+  "evidence": [
+    {
+      "name": "debug1.log",
+      "sha256": "aecd91847bc3985ad3bb0c7cebfdaa47017c720964b1ddf4b5d2100132756afb"
+    },
+    {
+      "name": "debug2.log",
+      "sha256": "4bc170304b26db026e4375dc5ee6faca3540f1c2366a35f5fda927fbd3765a43"
+    },
+    {
+      "name": "release1.log",
+      "sha256": "bcb085385d894775dd9be7eade4ef639dcdf8a8c0afffe2f7a7e0f94fb8e094d"
+    },
+    {
+      "name": "release2.log",
+      "sha256": "f9378cdfa7fcb95bf8ead9d9ec905ea6994ab45872330cae84ce464d929d2d0c"
+    },
+    {
+      "name": "debug1.log.normalized",
+      "sha256": "37a4bdc6750280f56dcf1c96fe8d41ba806fc75e57da018e7081fd69bcdefe71"
+    },
+    {
+      "name": "debug2.log.normalized",
+      "sha256": "37a4bdc6750280f56dcf1c96fe8d41ba806fc75e57da018e7081fd69bcdefe71"
+    },
+    {
+      "name": "release1.log.normalized",
+      "sha256": "37a4bdc6750280f56dcf1c96fe8d41ba806fc75e57da018e7081fd69bcdefe71"
+    },
+    {
+      "name": "release2.log.normalized",
+      "sha256": "37a4bdc6750280f56dcf1c96fe8d41ba806fc75e57da018e7081fd69bcdefe71"
+    },
+    {
+      "name": "clippy.log",
+      "sha256": "f1cd85b55d97a65b95a4656bfc90e41dd8897f8b063d2af8d013851a3788f7e9"
+    },
+    {
+      "name": "mutations.log",
+      "sha256": "3e5d388a92c7573d0c40b270d6dcac60e10f18a601f0eba296936c5919784a81"
+    },
+    {
+      "name": "mutant-subset_sum_fptas.log",
+      "sha256": "9afcc6ac56c0145df885f4f75a36e8c6ab560a75cf59b9fd8caef643334c5ec4"
+    },
+    {
+      "name": "restored-subset_sum_fptas.log",
+      "sha256": "ba759c6f55952df98b3ab4de425492cbdec938ea6d372de5eb1137c57239ad4c"
+    },
+    {
+      "name": "subset_sum_fptas-mod.rs-syntax1.json",
+      "sha256": "7a1668fa8e3ad0de33bd431c6f39b9df8ee4005b5dd8f31edf49b167211e8eba"
+    },
+    {
+      "name": "subset_sum_fptas-mod.rs-syntax2.json",
+      "sha256": "7a1668fa8e3ad0de33bd431c6f39b9df8ee4005b5dd8f31edf49b167211e8eba"
+    },
+    {
+      "name": "isolated-check1.json",
+      "sha256": "3079cdac6c3235036ca79774cffb8d12665aab4244952546f13f2d4d36215e34"
+    },
+    {
+      "name": "isolated-check2.json",
+      "sha256": "3079cdac6c3235036ca79774cffb8d12665aab4244952546f13f2d4d36215e34"
+    }
+  ],
+  "external_run": "$MOVA_DATA/runs/octopus-wave19-approx-2026-10-30",
+  "limitations": [
+    "Finite evidence not semantic proof",
+    "No measured speedup"
+  ],
+  "native_tests_per_module": 3,
+  "repetitions": "twice debug and twice release; equal normalized502test outcomes",
+  "source": "algorithms/src/subset_sum_fptas/mod.rs",
+  "source_sha256": "2fd464a483122ac2c9550a54e3ab525b9186c577279fecea977afba3ffec742f",
+  "structure": "Eight copied source leaves under temporary validation root checked twice. Paired partial syntax and leaf structural reports identical. Parent wiring and its missing temporary group model remain explicit integration work."
+}

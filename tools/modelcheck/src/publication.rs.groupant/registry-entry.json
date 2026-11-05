@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "18 publication tests and all 26 binary tests in debug/release, offline locked with two jobs",
+    "Caller pin, altered policy/entry/inventory, artifact-disjoint evidence and narrative-role/raw-source digest negative controls"
+  ],
+  "children": [],
+  "cost": "Sorted bounded inventory, JSON decoding, exact path checks and hashing; directory allocation and filesystem races remain explicit.",
+  "description": "Caller-pinned versioned publication policy, artifact-disjoint review evidence and narrative-only global admission with independent reader integrity.",
+  "forward": [
+    "Default canonical Mova snapshots to implementation and other material to unreviewed.",
+    "Admit reviewed global paper-survey editions only with exact version, rights, evidence, artifact allowlist and actual reader integrity.",
+    "Positive checking recomposes the current bounded inventory from caller-pinned reviews and requires normalized entry equality; no-policy calls are negative-only."
+  ],
+  "id": "modelcheck-publication",
+  "inverse": [
+    "Missing, stale, restricted, unknown, incomplete and implementation editions cannot become globally eligible.",
+    "Admission does not reconstruct reviewers or establish scientific truth or authorship."
+  ],
+  "limitations": [
+    "Trusted editorial assertions are not authenticated review or mathematical proof.",
+    "Existing generated paper-survey schema only; unknown future exposition kinds stay excluded.",
+    "No implicit whole-directory export or live store/site changes.",
+    "Caller-pinned editorial decisions are trusted assertions; immutable generated/unverified mathematical status and fixed local-filesystem assumptions remain separate."
+  ],
+  "source": "tools/modelcheck/src/publication.rs",
+  "state": "(bounded immutable external store, manifest edition, trusted editorial policy/catalog, explicit artifact allowlist)"
+}

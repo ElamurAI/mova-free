@@ -1,4 +1,4 @@
-//! English tokenizer — a table-driven finite automaton (after a table-driven html_parser.c):
+//! English tokenizer — a table-driven finite automaton:
 //! byte/char → class, (state × class) → (command, new state). One lookup per char.
 //! On top of the automaton — two passes with dictionaries learned from UD: abbreviations with a period ("Mr.",
 //! "U.S.") and hyphenated compounds that UD keeps as one token ("e-mail"); clitics
@@ -95,19 +95,42 @@ pub struct Tok {
 
 /// Dictionaries learned from UD train: abbreviations with a period, hyphenated words (whole or split),
 /// words starting with an apostrophe ("'s", "'em", "'90s"), suffixes that stick to numbers ("1990s", "2nd").
+/// The hash sets are written sorted, so the same training files give the same model bytes (retrain-clean, 2026-11-05:
+/// the process-random order of `HashSet` made two identical trainings differ in 21 122 bytes); reading is unchanged.
 #[derive(Default, serde::Serialize, serde::Deserialize)]
 pub struct Lexicon {
+    #[serde(serialize_with = "sorted_set")]
     pub abbrev: HashSet<String>,
+    #[serde(serialize_with = "sorted_set")]
     pub hyphen_words: HashSet<String>,
+    #[serde(serialize_with = "sorted_set")]
     pub hyphen_split: HashSet<String>,
     /// Majority in train: hyphenated words are more often whole.
     pub hyphen_keep_default: bool,
+    #[serde(serialize_with = "sorted_set")]
     pub apos_initial: HashSet<String>,
+    #[serde(serialize_with = "sorted_set")]
     pub num_suffix: HashSet<String>,
     /// Multi-char non-alphabetic tokens from train ("...", "!!!", ":)", ":D", "--").
+    #[serde(serialize_with = "sorted_set")]
     pub multi_punct: HashSet<String>,
     /// Prefix of a hyphenated word → (whole, split) counts in train: "anti-", "non-", "e-" are mostly whole.
+    #[serde(serialize_with = "sorted_map")]
     pub hyphen_prefix: std::collections::HashMap<String, (u32, u32)>,
+}
+
+/// A set written as a sorted sequence (the same encoding as the set itself).
+fn sorted_set<S: serde::Serializer>(set: &HashSet<String>, s: S) -> Result<S::Ok, S::Error> {
+    let mut v: Vec<&String> = set.iter().collect();
+    v.sort();
+    s.collect_seq(v)
+}
+
+/// A map written in key order (the same encoding as the map itself).
+fn sorted_map<S: serde::Serializer>(map: &std::collections::HashMap<String, (u32, u32)>, s: S) -> Result<S::Ok, S::Error> {
+    let mut v: Vec<(&String, &(u32, u32))> = map.iter().collect();
+    v.sort();
+    s.collect_map(v)
 }
 
 impl Lexicon {
@@ -406,6 +429,31 @@ mod tests {
         tokenize(text, lx).into_iter().map(|t| t.form).collect()
     }
 
+    /// The same lexicon gives the same bytes whatever the sets' (process-random) iteration order, and reads back
+    /// equal; control: the plain `HashSet` encoding of two differently seeded sets differs.
+    #[test]
+    fn lexicon_bytes_do_not_depend_on_hash_order() {
+        let words: Vec<String> = (0..200).map(|i| format!("w{i}.")).collect();
+        let make = |rev: bool| {
+            let mut lx = Lexicon::default();
+            let it: Vec<&String> = if rev { words.iter().rev().collect() } else { words.iter().collect() };
+            for w in it {
+                lx.abbrev.insert(w.clone());
+                lx.hyphen_prefix.insert(w.clone(), (1, 2));
+            }
+            lx
+        };
+        let (a, b) = (make(false), make(true));
+        let (ba, bb) = (crate::store::to_bytes(&a).unwrap(), crate::store::to_bytes(&b).unwrap());
+        assert_eq!(ba, bb);
+        let back: Lexicon = crate::store::from_bytes(&ba).unwrap();
+        assert_eq!(back.abbrev, a.abbrev);
+        assert_eq!(back.hyphen_prefix, a.hyphen_prefix);
+        // control: two sets with their own random seeds iterate in different orders (else the test proves nothing)
+        let (sa, sb): (HashSet<String>, HashSet<String>) = (words.iter().cloned().collect(), words.iter().cloned().collect());
+        assert_ne!(crate::store::to_bytes(&sa).unwrap(), crate::store::to_bytes(&sb).unwrap());
+    }
+
     #[test]
     fn basics() {
         let mut lx = Lexicon::default();
@@ -425,5 +473,24 @@ mod tests {
         // stress mark U+0301 and other combining marks are part of the word (the GPT-2 regex breaks abugidas and stress marks)
         let lx = Lexicon::default();
         assert_eq!(forms("Mama\u{301} kno\u{301}ws café\u{301}.", &lx), ["Mama\u{301}", "kno\u{301}ws", "café\u{301}", "."]);
+    }
+}
+
+#[cfg(test)]
+mod wave27_tests {
+    use super::*;
+    #[test]
+    fn spaces_hyphen_precedence_and_nul() {
+        let mut lx = Lexicon::default();
+        lx.hyphen_words.insert("a-b".into());
+        lx.hyphen_split.insert("a-b".into());
+        assert_eq!(tokenize("a-b", &lx)[0].form, "a-b");
+        assert_eq!(detokenize(&tokenize("  A\t\tB \n", &lx)), "A B");
+        assert_eq!(detokenize(&tokenize("a\0b", &lx)), "ab");
+        assert!(tokenize("", &lx).is_empty());
+        assert!(Lexicon::learn(&[]).hyphen_keep_default);
+        assert!(!Lexicon::default().hyphen_keep_default);
+        assert_eq!(fsa_table().len(), 8);
+        assert_eq!(trace("a,").len(), 2);
     }
 }

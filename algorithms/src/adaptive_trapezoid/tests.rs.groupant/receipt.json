@@ -1,0 +1,46 @@
+{
+  "compiled_mutant": "Change retained coarse contribution from 0.5 to 0.25; analytic_oracle assertion fails.",
+  "date": "2026-10-30",
+  "evidence": [
+    {
+      "name": "debug1.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "debug2.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "release1.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "release2.log",
+      "sha256": "88d513e41f6ed20db1f9b6ee45d4e012eaba0fe2744e95124c3034c542ca656a"
+    },
+    {
+      "name": "clippy.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "mutant-adaptive_trapezoid.log",
+      "sha256": "f595ba150b3e87e469129eb229b068c016181bd3c19ea098f255e8d14ccda603"
+    },
+    {
+      "name": "adaptive_trapezoid-tests.rs-syntax1.json",
+      "sha256": "8126426f9201c8cc47933a0c988e75f888a0f98d5627dcd359eb66eaefd7f4f8"
+    },
+    {
+      "name": "adaptive_trapezoid-tests.rs-syntax2.json",
+      "sha256": "8126426f9201c8cc47933a0c988e75f888a0f98d5627dcd359eb66eaefd7f4f8"
+    }
+  ],
+  "external_run": "$MOVA_DATA/runs/octopus-wave25-numerical-2026-10-30",
+  "limitations": [
+    "No timing or universal numerical accuracy claim"
+  ],
+  "repetitions": "15 focused tests twice debug and twice optimized release; normalized output identical; positive reruns after exact mutant restoration",
+  "source": "algorithms/src/adaptive_trapezoid/tests.rs",
+  "source_sha256": "32a03cfd87d6aaecea4d3767441e20d0c397ce41bcad6491ed0d056c7fc5788e",
+  "syntax": "Two fresh projections byte-identical"
+}

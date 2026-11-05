@@ -12,8 +12,8 @@
 //!   world store set save <dir> <name> "<query>" | set load <dir> <name> | set list <dir>
 //!
 //! Sets: sentence sets (metadata `book=N`, `sample=K/SEED`) are stable and kept; sets defined by tree features keep
-//! their query and the model hash — on a descendant model only the sentences whose trees changed are checked again
-//! ("Alice acts" carries over between runs); on an unrelated model the ids are recomputed from the query.
+//! their query and the model hash. Pointwise queries on a descendant retain membership outside the changed trees;
+//! sampled queries reselect all candidates because membership is coupled. Unrelated models also reselect.
 //!
 //! Shuffled blocks: every book is cut into blocks of ~400 sentences at paragraph ends (chapters, tens of pages); the
 //! blocks of all books are shuffled with a key of the corpus and the day (`order.tsv`, `order.bin`) — a new order
@@ -542,13 +542,18 @@ fn tree_dependent(q: &str) -> bool {
 /// "stable" for sets of sentences that do not depend on the parse), and the ids. A tree-dependent set computed on
 /// another model is invalid: its ids are recomputed from the query on load.
 pub fn set_save(dir: &Path, name: &str, q: &str, hash: &str) -> Result<usize> {
+    Ok(set_recompute(dir, name, q, hash)?.len())
+}
+
+/// Select once, then persist exactly the returned vector.
+fn set_recompute(dir: &Path, name: &str, q: &str, hash: &str) -> Result<Vec<u32>> {
     let ids = select(dir, q, hash)?;
     std::fs::create_dir_all(dir.join("sets"))?;
     let base = if tree_dependent(q) { hash.to_string() } else { "stable".to_string() };
     let stamp = if q.contains("prefix=") { format!("order:{}|{base}", order(dir, 400)?.0) } else { base };
     let body = ids.iter().map(|i| i.to_string()).collect::<Vec<_>>().join("\n");
     std::fs::write(dir.join("sets").join(format!("{name}.tsv")), format!("# query\t{q}\n# model\t{stamp}\n{body}\n"))?;
-    Ok(ids.len())
+    Ok(ids)
 }
 
 pub fn set_load(dir: &Path, name: &str, hash: &str) -> Result<Vec<u32>> {
@@ -559,16 +564,21 @@ pub fn set_load(dir: &Path, name: &str, hash: &str) -> Result<Vec<u32>> {
         let (k, base) = rest.split_once('|').unwrap_or((rest, "stable"));
         if k != order(dir, 400)?.0 || (base != "stable" && base != hash) {
             eprintln!("set {name}: the shuffled order or the model changed — recomputed from «{q}»");
-            set_save(dir, name, &q, hash)?;
-            return select(dir, &q, hash);
+            return set_recompute(dir, name, &q, hash);
         }
         return Ok(t.lines().filter(|l| !l.starts_with('#')).filter_map(|l| l.parse().ok()).collect());
     }
     if stamp == "stable" || stamp == hash {
         return Ok(t.lines().filter(|l| !l.starts_with('#')).filter_map(|l| l.parse().ok()).collect());
     }
-    // carry the set over: if the old model is an ancestor of the new one, only sentences whose trees changed on the
-    // way are checked again; the rest keep their membership
+    // Sampling couples candidates: changing one eligible sentence can change unchanged IDs' keys and rank.
+    // Legacy prefix sets without an order stamp also need reselection to preserve the query's output order.
+    if q.split_whitespace().any(|t| t.starts_with("sample=") || t.starts_with("prefix=")) {
+        eprintln!("set {name}: coupled query on a changed model — recomputed from «{q}»");
+        return set_recompute(dir, name, &q, hash);
+    }
+    // Pointwise queries can retain membership outside the changed-ID union, provided those deltas cover
+    // all feature changes. Selection still evaluates the full query; only the membership merge is restricted.
     let st = Store::open(dir)?;
     let mut chain = Vec::new();
     let mut h = hash.to_string();
@@ -578,8 +588,7 @@ pub fn set_load(dir: &Path, name: &str, hash: &str) -> Result<Vec<u32>> {
             Some(p) if p != "-" => h = p,
             _ => {
                 eprintln!("set {name}: computed on model {stamp}, not an ancestor of {hash} — recomputed from its query «{q}»");
-                set_save(dir, name, &q, hash)?;
-                return select(dir, &q, hash);
+                return set_recompute(dir, name, &q, hash);
             }
         }
     }
@@ -632,6 +641,20 @@ pub fn words(st: &Store, lemmas: &[String], hash: &str, i: usize) -> Result<Vec<
     }).collect())
 }
 
+/// Equality of the stored annotation, including lexical identity and XPOS. Forms and feats are not stored.
+/// Resolve IDs against the immutable parent table: candidate insertion order must not affect this decision.
+/// The writer lowercases new lemmas; valid parent tables already contain that canonical spelling.
+/// Missing IDs force a delta. This assumes valid enum bytes, u16 heads and u24 IDs, as does the store format;
+/// it does not repair malformed tables or the writer's existing overflow behavior.
+fn same_stored_tree(old: &[[u8; 8]], words: &[en::annotate::Word], parent_lemmas: &[String]) -> bool {
+    old.len() == words.len() && old.iter().zip(words).all(|(record, word)| {
+        let (upos, rel, head, lid) = decode(record);
+        upos == word.upos && rel == word.rel && head == word.head
+            && decode_tag(record) == word.tag
+            && parent_lemmas.get(lid as usize).is_some_and(|lemma| *lemma == word.lemma.to_lowercase())
+    })
+}
+
 /// `world store update <dir>`: after the code changed, parse every sentence again and add a version that stores
 /// only the trees that differ from the latest version (version = hash + changes from its parent); the feature index
 /// of the new version covers all sentences.
@@ -645,7 +668,8 @@ pub fn update(dir: &Path, threads: usize, branch: &str) -> Result<()> {
         return Ok(());
     }
     let a = crate::tree::annotator()?;
-    let mut lex: BTreeMap<String, u32> = lemma_table_for(dir, &parent).into_iter().enumerate().map(|(i, l)| (l, i as u32)).collect();
+    let parent_lemmas = lemma_table_for(dir, &parent);
+    let mut lex: BTreeMap<String, u32> = parent_lemmas.iter().cloned().enumerate().map(|(i, l)| (l, i as u32)).collect();
     let lex_m = Mutex::new(&mut lex);
     let n = st.len();
     let changed: Mutex<BTreeMap<u32, Vec<u8>>> = Mutex::new(BTreeMap::new());
@@ -662,8 +686,8 @@ pub fn update(dir: &Path, threads: usize, branch: &str) -> Result<()> {
                     let forms: Vec<String> = a.tokenize(&text).into_iter().map(|t| t.form).collect();
                     let mut ws = a.annotate(&forms);
                     crate::rerank::repair_words(&mut ws);
-                    let Ok(old) = st.tree(&parent, i) else { continue };
-                    let same = old.len() == ws.len() && old.iter().zip(&ws).all(|(o, w)| o.0 == w.upos && o.1 == w.rel && o.2 == w.head);
+                    let Ok(old) = st.records(&parent, i) else { continue };
+                    let same = same_stored_tree(&old, &ws, &parent_lemmas);
                     if same {
                         continue;
                     }
@@ -808,4 +832,237 @@ pub fn prefix(dir: &Path, pct: f64) -> Result<Vec<u32>> {
         out.extend(s..s + l);
     }
     Ok(out)
+}
+
+#[cfg(test)]
+mod set_carry_tests {
+    use super::*;
+    struct Fixture(PathBuf);
+    impl Fixture {
+        fn new() -> Result<Self> {
+            static NEXT: AtomicUsize = AtomicUsize::new(0);
+            let dir = std::env::temp_dir().join(format!("mova-set-carry-{}-{}", std::process::id(), NEXT.fetch_add(1, Ordering::Relaxed)));
+            std::fs::create_dir(&dir)?;
+            let f = Self(dir);
+            std::fs::write(f.0.join("meta.bin"), [0u8; 72])?;
+            std::fs::write(f.0.join("books.tsv"), b"id\tpath\n")?;
+            std::fs::write(f.0.join("versions.tsv"), b"a\t-\nb\ta\nc\tb\nu\t-\n")?;
+            f.index("a", &[1, 1, 1])?;
+            for h in ["b", "c", "u"] { f.index(h, &[1, 0, 1])?; }
+            let mut delta = [0u8; 16];
+            delta[..4].copy_from_slice(&1u32.to_le_bytes());
+            std::fs::write(f.0.join("dict-b.bin"), delta)?;
+            std::fs::write(f.0.join("dict-c.bin"), [])?;
+            Ok(f)
+        }
+        fn index(&self, hash: &str, counts: &[u8; 3]) -> Result<()> {
+            let mut bin = Vec::new();
+            for (i, count) in counts.iter().enumerate().filter(|(_, c)| **c > 0) {
+                bin.extend((i as u32).to_le_bytes()); bin.push(*count);
+            }
+            std::fs::write(self.0.join(format!("features-{hash}.tsv")), format!("pred\t0\t{}\n", bin.len() / 5))?;
+            std::fs::write(self.0.join(format!("index-{hash}.bin")), bin)?;
+            Ok(())
+        }
+        fn agrees(&self, q: &str, target: &str) -> Result<()> {
+            set_save(&self.0, "case", q, "a")?;
+            let expected = select(&self.0, q, target)?;
+            assert_eq!(set_load(&self.0, "case", target)?, expected, "{q} -> {target}");
+            assert_eq!(set_load(&self.0, "case", target)?, expected, "persisted {q}");
+            Ok(())
+        }
+    }
+    impl Drop for Fixture {
+        fn drop(&mut self) { let _ = std::fs::remove_dir_all(&self.0); }
+    }
+    #[test]
+    fn sampled_carry_reselects_unchanged_candidates() -> Result<()> {
+        let f = Fixture::new()?;
+        let q = "pred>=1 sample=1/2";
+        assert_eq!(select(&f.0, q, "a")?, vec![1]);
+        assert_eq!(select(&f.0, q, "b")?, vec![2]);
+        for target in ["b", "c", "u"] { f.agrees(q, target)?; }
+        Ok(())
+    }
+    #[test]
+    fn sampled_carry_bounded_queries_match_full_selection() -> Result<()> {
+        let f = Fixture::new()?;
+        for pred in ["pred>=1", "pred<=0", "pred>0", "pred=0"] {
+            for k in [0, 1, 2, 4] {
+                for seed in [0, 1, 2, 7] {
+                    for q in [
+                        format!("{pred} sample={k}/{seed}"),
+                        format!("sample={k}/{seed} {pred}"),
+                        format!("{pred} sample={k}/{seed} pred<=1 sample=1/3"),
+                        format!("book=0 {pred} sample={k}/{seed} prefix=100%"),
+                    ] { f.agrees(&q, "c")?; }
+                }
+            }
+        }
+        for q in ["pred>=1", "pred<=0", "pred>0", "pred=0", "missing=0"] { f.agrees(q, "c")?; }
+        Ok(())
+    }
+    #[test]
+    fn sampled_carry_refreshes_legacy_prefix_order() -> Result<()> {
+        let f = Fixture::new()?;
+        let key = order_key(&f.0, &Store::open(&f.0)?);
+        // A valid cached permutation with small blocks makes output order observable.
+        let mut bin = Vec::new();
+        for id in [2u32, 1, 0] {
+            bin.extend(id.to_le_bytes());
+            bin.extend(1u32.to_le_bytes());
+        }
+        std::fs::write(f.0.join("order.bin"), bin)?;
+        std::fs::write(f.0.join("order.tsv"), format!("key\t{key}\n"))?;
+        std::fs::create_dir_all(f.0.join("sets"))?;
+        std::fs::write(f.0.join("sets/case.tsv"), b"# query\tpred>=1 prefix=100%\n# model\ta\n2\n1\n0\n")?;
+        let expected = select(&f.0, "pred>=1 prefix=100%", "c")?;
+        let actual = set_load(&f.0, "case", "c")?;
+        // A UTC-day rollover legitimately refreshes the handcrafted order between these calls.
+        // Compare vectors only while that cache key remains current; always check stamp migration.
+        if order_key(&f.0, &Store::open(&f.0)?) == key {
+            assert_eq!(actual, expected);
+        }
+        assert!(std::fs::read_to_string(f.0.join("sets/case.tsv"))?.contains("# model\torder:"));
+        Ok(())
+    }
+
+    #[test]
+    fn sampled_carry_preserves_stable_and_current_snapshots() -> Result<()> {
+        let f = Fixture::new()?;
+        for q in ["sample=1/2", "book=0 sample=1/2", "pred>=1 sample=1/2"] {
+            set_save(&f.0, "case", q, "a")?;
+            let path = f.0.join("sets/case.tsv");
+            let before = std::fs::read(&path)?;
+            let target = if tree_dependent(q) { "a" } else { "c" };
+            assert_eq!(set_load(&f.0, "case", target)?, select(&f.0, q, "a")?);
+            assert_eq!(std::fs::read(path)?, before);
+        }
+        Ok(())
+    }
+}
+
+#[cfg(test)]
+mod delta_identity_tests {
+    use super::*;
+    use en::annotate::Word;
+    use en::gram::Tag;
+    fn word(lemma: &str) -> Word {
+        Word { form: "Alice".into(), lemma: lemma.into(), upos: UPos::PROPN,
+            tag: Tag::NNP, feats: Default::default(), head: 2, rel: Rel::Nsubj }
+    }
+    // Independent fixture packing with explicit on-disk widths.
+    fn record(w: &Word, lid: u32) -> [u8; 8] {
+        assert!(w.head <= u16::MAX as usize && lid < 1 << 24);
+        let h = (w.head as u16).to_le_bytes();
+        let l = lid.to_le_bytes();
+        [UPos::ALL.iter().position(|u| u == &w.upos).unwrap() as u8,
+         Rel::ALL.iter().position(|r| r == &w.rel).unwrap() as u8,
+         h[0], h[1], Tag::ALL.iter().position(|t| t == &w.tag).unwrap() as u8,
+         l[0], l[1], l[2]]
+    }
+    #[test]
+    fn delta_identity_lemma_changes() {
+        let old = record(&word("alice"), 0);
+        for lemma in ["bob", "carol"] {
+            assert!(!same_stored_tree(&[old], &[word(lemma)], &["alice".into(), "bob".into()]));
+        }
+    }
+    #[test]
+    fn delta_identity_tag_changes() {
+        let mut w = word("run");
+        w.upos = UPos::VERB;
+        w.tag = Tag::VBD;
+        let old = record(&w, 0);
+        w.tag = Tag::VBG;
+        assert!(!same_stored_tree(&[old], &[w], &["run".into()]));
+    }
+    #[test]
+    fn delta_identity_normalization_ids_and_dimensions() {
+        let w = word("alice");
+        let old = record(&w, 1);
+        let lemmas = vec!["bob".into(), "alice".into()];
+        assert!(same_stored_tree(&[old], &[w.clone()], &lemmas));
+        assert!(same_stored_tree(&[old], &[word("ALICE")], &lemmas));
+        assert!(same_stored_tree(&[record(&w, 0)], &[word("ÉCOLE")], &["école".into()]));
+        assert!(!same_stored_tree(&[old], &[w.clone()], &["alice".into()]));
+        assert!(!same_stored_tree(&[record(&w, 0x00ff_ffff)], &[w.clone()], &lemmas));
+        assert!(!same_stored_tree(&[old], &[word("")], &[]));
+        assert!(same_stored_tree(&[], &[], &[]));
+        assert!(!same_stored_tree(&[old], &[], &lemmas));
+        assert!(!same_stored_tree(&[], &[w.clone()], &lemmas));
+        for dimension in 0..3 {
+            let mut changed = w.clone();
+            match dimension { 0 => changed.upos = UPos::NOUN, 1 => changed.rel = Rel::Obj, _ => changed.head = 1 }
+            assert!(!same_stored_tree(&[old], &[changed], &lemmas));
+        }
+        let mut unstored = w.clone();
+        unstored.form = "different surface".into();
+        assert!(same_stored_tree(&[old], &[unstored], &lemmas));
+        let mut boundary = w;
+        boundary.head = u16::MAX as usize;
+        assert!(same_stored_tree(&[record(&boundary, 1)], &[boundary.clone()], &lemmas));
+        boundary.head += 1;
+        assert!(!same_stored_tree(&[old], &[boundary], &lemmas));
+    }
+    struct Fixture(PathBuf);
+    impl Drop for Fixture {
+        fn drop(&mut self) { let _ = std::fs::remove_dir_all(&self.0); }
+    }
+    fn write_records(dir: &Path, hash: &str, rows: &[(u32, [u8; 8])]) -> Result<()> {
+        let mut dict = Vec::new();
+        let mut trees = Vec::new();
+        for (id, row) in rows {
+            dict.extend(id.to_le_bytes());
+            dict.extend((trees.len() as u64).to_le_bytes());
+            dict.extend(8u32.to_le_bytes());
+            trees.extend(row);
+        }
+        std::fs::write(dir.join(format!("dict-{hash}.bin")), dict)?;
+        std::fs::write(dir.join(format!("trees-{hash}.bin")), trees)?;
+        Ok(())
+    }
+    #[test]
+    fn delta_identity_drives_inherited_records_index_and_carry() -> Result<()> {
+        static NEXT: AtomicUsize = AtomicUsize::new(0);
+        let dir = std::env::temp_dir().join(format!("mova-delta-identity-{}-{}", std::process::id(), NEXT.fetch_add(1, Ordering::Relaxed)));
+        std::fs::create_dir(&dir)?;
+        let f = Fixture(dir);
+        std::fs::write(f.0.join("meta.bin"), [0u8; 72])?;
+        std::fs::write(f.0.join("versions.tsv"), "a\t-\nb\ta\nc\tb\n")?;
+        std::fs::write(f.0.join("lemmas.tsv"), "0\talice\n1\tbob\n")?;
+        let old = record(&word("alice"), 0);
+        write_records(&f.0, "a", &[(0, old), (1, old), (2, old)])?;
+        write_records(&f.0, "b", &[])?;
+        let st = Store::open(&f.0)?;
+        let lemmas = lemma_table_for(&f.0, "b");
+        let mut tag_change = word("alice");
+        tag_change.tag = Tag::NN;
+        let proposed = [(word("bob"), 1), (word("carol"), 2), (tag_change, 0)];
+        let mut deltas = Vec::new();
+        for (i, (w, lid)) in proposed.iter().enumerate() {
+            let inherited = raw_tree(&st, "b", i)?;
+            assert_eq!(inherited, vec![old]);
+            // The actual update decision seam; fixture encoding is independent of the writer.
+            if !same_stored_tree(&inherited, std::slice::from_ref(w), &lemmas) {
+                deltas.push((i as u32, record(w, *lid)));
+            }
+        }
+        assert_eq!(deltas.len(), 3);
+        write_records(&f.0, "c", &deltas)?;
+        std::fs::write(f.0.join("lemmas-c.tsv"), "0\talice\n1\tbob\n2\tcarol\n")?;
+        let fresh = Store::open(&f.0)?;
+        assert_eq!(decode_tag(&raw_tree(&fresh, "c", 2)?[0]), Tag::NN);
+        assert_eq!(raw_tree(&fresh, "c", 0)?, vec![record(&word("bob"), 1)]);
+        index_full(&f.0, "b")?;
+        index_full(&f.0, "c")?;
+        for (q, before, after) in [("subj:alice>=1", vec![0, 1, 2], vec![2]),
+            ("subj:bob>=1", vec![], vec![0]), ("subj:carol>=1", vec![], vec![1])] {
+            assert_eq!(select(&f.0, q, "b")?, before);
+            assert_eq!(select(&f.0, q, "c")?, after);
+            set_save(&f.0, "identity", q, "b")?;
+            assert_eq!(set_load(&f.0, "identity", "c")?, after);
+        }
+        Ok(())
+    }
 }

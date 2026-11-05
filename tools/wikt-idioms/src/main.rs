@@ -242,3 +242,39 @@ fn main() -> anyhow::Result<()> {
     out.flush()?;
     Ok(())
 }
+#[cfg(test)]
+mod wave33 {
+    use super::*;
+    #[test]
+    fn gloss_labels_and_emit_precedence() {
+        assert_eq!(plain("[[café|été]] {{l|en|word}} {{drop|x}}"), "été word");
+        assert_eq!(unescape("&amp;lt;"), "&lt;");
+        assert_eq!(labels("# {{lb|en|SLANG|slang}} x"), vec!["slang"]);
+        assert_eq!(regions("# {{lb|en|British|UK}} x"), vec!["UK"]);
+        let mut out = Vec::new();
+        emit(
+            &mut out,
+            "go away",
+            "==English==\n===Verb===\n# {{lb|en|idiomatic}} Leave.\nphrasal verb",
+        )
+        .unwrap();
+        assert_eq!(
+            String::from_utf8(out).unwrap(),
+            "go away\tphrasal-verb\tVerb\tLeave.\tidiomatic: Leave.\t\n"
+        );
+        let mut out = Vec::new();
+        emit(&mut out, "word", "==English==\n===Noun===\n# Thing.").unwrap();
+        assert!(out.is_empty());
+        emit(
+            &mut out,
+            "word",
+            "==English==\n===Noun===\n# {{lb|en|UK}} Thing.",
+        )
+        .unwrap();
+        assert!(
+            String::from_utf8(out)
+                .unwrap()
+                .contains("\tword\tNoun\tThing.\t\tUK: Thing.")
+        );
+    }
+}

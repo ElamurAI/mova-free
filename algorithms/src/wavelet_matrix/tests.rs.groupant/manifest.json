@@ -1,0 +1,124 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "No macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "descriptant",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional inner bound of U minus R",
+        "assumptions": "Trusted Rust semantics; successful allocation; declared integer domain",
+        "domain": "See model.md domain and the specialized section",
+        "evidence": "model.md#evidence, repeated debug/release logs and named compiled mutation controls",
+        "id": "algorithm-wavelet-matrix-tests-behavior-complement",
+        "observation_scope": "Finite test observations and verdicts",
+        "operator": "Relation in model.md behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/wavelet_matrix/tests.rs sha256:9711b619c5149f73a82d5ea6d622721ebb38e90c36775c19e7dc0d4a1055f23a",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Set-valued preimage; nonunique except stated singleton reconstruction",
+        "assumptions": "Trusted Rust semantics; successful allocation; declared integer domain",
+        "domain": "See model.md domain and the specialized section",
+        "evidence": "model.md#evidence, repeated debug/release logs and named compiled mutation controls",
+        "id": "algorithm-wavelet-matrix-tests-reverse-reconstruction",
+        "observation_scope": "Finite test observations and verdicts",
+        "operator": "Relation in model.md reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/wavelet_matrix/tests.rs sha256:9711b619c5149f73a82d5ea6d622721ebb38e90c36775c19e7dc0d4a1055f23a",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Scoped source relation with bounded executable correspondence",
+        "assumptions": "Trusted Rust semantics; successful allocation; declared integer domain",
+        "domain": "See model.md domain and the specialized section",
+        "evidence": "model.md#evidence, repeated debug/release logs and named compiled mutation controls",
+        "id": "algorithm-wavelet-matrix-tests-independent-oracle",
+        "observation_scope": "Finite test observations and verdicts",
+        "operator": "Relation in model.md independent-oracle",
+        "path": "model.md",
+        "required": false,
+        "section": "independent-oracle",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/wavelet_matrix/tests.rs sha256:9711b619c5149f73a82d5ea6d622721ebb38e90c36775c19e7dc0d4a1055f23a",
+        "type": "direct_reference_relation"
+      },
+      {
+        "approximation_semantics": "Scoped source relation with bounded executable correspondence",
+        "assumptions": "Trusted Rust semantics; successful allocation; declared integer domain",
+        "domain": "See model.md domain and the specialized section",
+        "evidence": "model.md#evidence, repeated debug/release logs and named compiled mutation controls",
+        "id": "algorithm-wavelet-matrix-tests-boundaries",
+        "observation_scope": "Finite test observations and verdicts",
+        "operator": "Relation in model.md boundaries",
+        "path": "model.md",
+        "required": false,
+        "section": "boundaries",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/wavelet_matrix/tests.rs sha256:9711b619c5149f73a82d5ea6d622721ebb38e90c36775c19e7dc0d4a1055f23a",
+        "type": "interval_boundary_coverage"
+      },
+      {
+        "approximation_semantics": "Scoped source relation with bounded executable correspondence",
+        "assumptions": "Trusted Rust semantics; successful allocation; declared integer domain",
+        "domain": "See model.md domain and the specialized section",
+        "evidence": "model.md#evidence, repeated debug/release logs and named compiled mutation controls",
+        "id": "algorithm-wavelet-matrix-tests-discrimination",
+        "observation_scope": "Finite test observations and verdicts",
+        "operator": "Relation in model.md discrimination",
+        "path": "model.md",
+        "required": false,
+        "section": "discrimination",
+        "status": "partial_source_model",
+        "subject_revision": "algorithms/src/wavelet_matrix/tests.rs sha256:9711b619c5149f73a82d5ea6d622721ebb38e90c36775c19e7dc0d4a1055f23a",
+        "type": "mutation_sensitivity"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "tests",
+      "status": "partial"
+    }
+  },
+  "id": "algorithm-wavelet-matrix-tests",
+  "kind": "groupant",
+  "registry": {
+    "node": "algorithm-wavelet-matrix-tests",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "9711b619c5149f73a82d5ea6d622721ebb38e90c36775c19e7dc0d4a1055f23a"
+  },
+  "status": "partial"
+}

@@ -1,0 +1,13 @@
+[package]
+name = "macula"
+version.workspace = true
+edition = "2024"
+# license: Elamur Cosmic License (LICENSE.md at the repo root); the data it reads, MACULA Hebrew, is CC BY 4.0
+publish = false
+description = "MACULA Hebrew (CC BY 4.0) lowfat syntax trees of the Hebrew Bible into dependency trees (CoNLL-U, hbo), one sentence per MACULA sentence, verse addresses kept so translations line up; the semantic-domain fields (SDBH) are left out."
+
+[dependencies]
+mova-teacher = { path = "../../teacher" }
+quick-xml = "0.42.0"
+serde_json = "1.0.151"
+unicode-normalization = "0.1.25"

@@ -408,3 +408,73 @@ pub fn run_lean(r: &Run, ts: &[crate::lean::Theorem], dir: &Path, tag: &str) -> 
     }
     all
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    fn problem() -> Problem {
+        Problem {
+            id: "p".into(),
+            level: 0,
+            source: "synthetic".into(),
+            license: String::new(),
+            split: "dev".into(),
+            question: "3 plus 4".into(),
+            options: vec![],
+            gold: "7".into(),
+            gold_kind: "int".into(),
+            topic: String::new(),
+        }
+    }
+    #[test]
+    fn parsers_accounting_and_fallback() {
+        let m = parse_answers(
+            r#"noise {"id":"p","answer":1} {"id":"p","answer":"2"} {"id":"z","answer":null}"#,
+        );
+        assert_eq!(m["p"], "2");
+        assert!(!m.contains_key("z"));
+        let c = Call {
+            input_tokens: 5,
+            cache_read_tokens: 2,
+            output_tokens: 7,
+            cost_usd: 2.0,
+            ..Default::default()
+        };
+        assert_eq!(share(&c, 2), (1.0, 3, 3, 0.0));
+        let p = problem();
+        let b = Record {
+            id: p.id.clone(),
+            config: "B".into(),
+            verified: true,
+            correct: false,
+            answer: Some("8".into()),
+            ..Default::default()
+        };
+        assert_eq!(memos_from(&[p.clone()], &[b.clone()]).len(), 1);
+        let map = HashMap::from([(p.id.clone(), b)]);
+        let rs = run_c(&[p], &[], &map, 0.5, 0.9, 1.0);
+        assert!(!rs[0].by_slm);
+        assert!(rs[0].verified);
+        assert!(!rs[0].correct);
+        assert_eq!(rs[0].answer.as_deref(), Some("8"));
+        assert_eq!(summarize(&[&rs[0]]).verified_correct, 0);
+    }
+    #[test]
+    fn batching_normalizes_zero_and_sorts() {
+        let mut a = problem();
+        a.id = "z".into();
+        let b = problem();
+        let rs = batched(&[a, b], 0, 2, &|_, ps| {
+            ps.iter()
+                .map(|p| Record {
+                    id: p.id.clone(),
+                    ..Default::default()
+                })
+                .collect()
+        });
+        assert_eq!(
+            rs.iter().map(|r| r.id.as_str()).collect::<Vec<_>>(),
+            vec!["p", "z"]
+        );
+    }
+}

@@ -1,0 +1,113 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: tests.md distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "../model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "U is safe-path single-writer calls x returns/file bytes. For source relation R, U minus R contains successful ref_set with final bytes unequal to hash plus newline and ref_get Some(empty). Inner bound under successful normal filesystem operations. Probe checks newline and empty suppression.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: tests.md distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "../model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "The fiber of ref_get Some(h) contains every readable UTF-8 byte string whose trim is h, h nonempty; None merges read errors, invalid UTF-8 and whitespace-only content. A successful write does not reconstruct overwritten bytes. Probe distinguishes whitespace, missing and invalid UTF-8.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: tests.md distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "../model.md#tests",
+        "id": "rename-failure",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "If temporary write succeeds and rename fails, Result is Err, temporary bytes may remain, and target remains whatever the OS left; no cleanup/rollback is implemented. Probe uses a target directory and checks the temp file remains.",
+        "path": "model.md",
+        "section": "rename-failure",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "failure_partition"
+      },
+      {
+        "approximation_semantics": "Conditional source relation; candidate inner complement bound or ambiguous converse",
+        "assumptions": "Domain: finite valid byte files, bounded IDs and successful allocation; an operation's arguments plus its initial filesystem and scheduler state are inputs. Observations include returns/errors and written bytes. No simultaneous writer, path traversal, malformed offsets or crash is assumed unless explicitly modeled. Source-derived conditional relation, not a proof of all Rust executions. Evidence: tests.md distinguishes executed probes from proposed oracles.",
+        "domain": "Finite admitted calls and filesystem states; exact specialization in catalog",
+        "evidence": "../model.md#tests",
+        "id": "aliasing",
+        "observation_scope": "One call or finite publication trace",
+        "operator": "For fixed PID, with_extension maps a.bin and a.tsv to the same a.tmp-PID. Thus two distinct destination names may share staging storage. Model excludes concurrent writers; path equality oracle checks this collision without racing.",
+        "path": "model.md",
+        "section": "aliasing",
+        "status": "partial_source_derived_model",
+        "subject_revision": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9",
+        "type": "path_equivalence"
+      }
+    ],
+    "tests": {
+      "path": "../model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 5074,
+      "start": 4302
+    },
+    "description": "References and single-file replacement",
+    "syntax_nodes": {
+      "node_ids": [
+        138,
+        173,
+        204
+      ],
+      "path": "../syntax.json"
+    }
+  },
+  "id": "world-store-publication",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../store.rs",
+    "sha256": "6801677c4f17273e615090a790f2e4018387ca5d006aab899bafda09f01b24d9"
+  },
+  "status": "partial_source_derived_instance"
+}

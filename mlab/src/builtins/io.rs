@@ -487,3 +487,28 @@ mod tests {
         assert_eq!(c_g(0.5, 15, false, false), "0.5");
     }
 }
+
+#[cfg(test)]
+mod wave30_tests {
+    use super::*;
+    #[test]
+    fn cycling_unicode_and_empty() {
+        let mut it = Interp::capture();
+        assert_eq!(
+            sprintf_impl(&mut it, "%d,", &[Value::Mat(Mat::col(vec![1.0, 2.0]))]).unwrap(),
+            "1,2,"
+        );
+        assert_eq!(sprintf_impl(&mut it, "x%3d!", &[]).unwrap(), "x   !");
+        assert_eq!(
+            sprintf_impl(&mut it, "%.1s", &[Value::str("éx")]).unwrap(),
+            "é"
+        );
+        assert_eq!(
+            sprintf_impl(&mut it, "%g", &[Value::num(-0.0)]).unwrap(),
+            "-0"
+        );
+        let out = fprintf(&mut it, &[Value::str("é")], 1).unwrap();
+        assert_eq!(scalar_arg(&out, 0, "probe").unwrap(), 2.0);
+        assert_eq!(it.take_output(), "é");
+    }
+}

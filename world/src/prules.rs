@@ -233,15 +233,33 @@ pub struct Opts {
 
 /// One-sided sign test: P(at least `k` of `n` by a fair coin).
 fn sign_p(k: usize, n: usize) -> f64 {
-    let mut p = 0.0;
-    for i in k..=n {
-        let mut c = 1.0f64;
-        for j in 0..i {
-            c = c * (n - j) as f64 / (j + 1) as f64;
-        }
-        p += c * 0.5f64.powi(n as i32);
+    if k == 0 { return 1.0; }
+    if k > n { return 0.0; }
+    // Complementing every coin outcome pairs the two sides of an odd center.
+    if n % 2 == 1 && k == n / 2 + 1 { return 0.5; }
+    // Relative binomial masses about a mode stay <= 1. Their common scale
+    // cancels, avoiding overflowing coefficients times an underflowing 2^-n.
+    let mode = n / 2;
+    let mut total = 1.0;
+    let mut tail = if mode >= k { 1.0 } else { 0.0 };
+    let mut mass = 1.0;
+    for i in (1..=mode).rev() {
+        mass *= i as f64 / (n - i + 1) as f64;
+        total += mass;
+        if i - 1 >= k { tail += mass; }
     }
-    p
+    mass = 1.0;
+    for i in mode..n {
+        mass *= (n - i) as f64 / (i + 1) as f64;
+        total += mass;
+        if i + 1 >= k { tail += mass; }
+    }
+    tail / total
+}
+
+/// Final whole-line gate, distinct from first-order site candidate ranking.
+fn accepts(gain: i64, fixed: usize, broken: usize, min: u32, prec: f64, sig: f64) -> bool {
+    gain > 0 && fixed >= min as usize && fixed as f64 / (fixed + broken) as f64 >= prec && sign_p(fixed, fixed + broken) <= sig
 }
 
 /// Learn rules on `lines` (their gold as given). Deterministic.
@@ -342,7 +360,7 @@ pub fn learn(lines: &[TLine], o: &Opts) -> Vec<Learned> {
                 }
                 next.push(r);
             }
-            if gain > 0 && fixed >= min_lines as usize && fixed as f64 / (fixed + broken) as f64 >= prec && sign_p(fixed, fixed + broken) <= o.sig {
+            if accepts(gain, fixed, broken, min_lines, prec, o.sig) {
                 eprintln!("iter {it}: {} {} — +{gain}, lines fixed {fixed} broken {broken}", rule.action.code(), rule.atoms_code());
                 cur = next;
                 out.push(Learned { rule, fixed, broken, gain, good, bad });
@@ -516,4 +534,110 @@ fn load_dev_real(lines: &[TLine], control: bool) -> Result<Vec<TLine>> {
         return Ok(lines.iter().filter(|l| l.split == "dev").cloned().collect());
     }
     Ok(load()?.into_iter().filter(|l| l.split == "dev").collect())
+}
+
+#[cfg(test)]
+mod wave9_models {
+    use super::*;
+
+    fn tail_words(k: usize, n: usize) -> f64 {
+        (0usize..1 << n).filter(|x| x.count_ones() as usize >= k).count() as f64 / (1usize << n) as f64
+    }
+
+    #[test]
+    fn sign_tail_exhaustive_words() {
+        for n in 0..=12 {
+            for k in 0..=n + 1 {
+                assert!((sign_p(k, n) - tail_words(k, n)).abs() < 1e-12, "n={n} k={k}");
+            }
+        }
+        assert_eq!(sign_p(0, 0), 1.0);
+        assert_eq!(sign_p(1, 0), 0.0);
+    }
+
+    #[test]
+    fn final_gate_finite_oracle_and_refusals() {
+        for fixed in 0..=6 {
+            for broken in 0..=6 {
+                for min in [0, 3, 6] {
+                    for gain in [-1, 0, 1] {
+                        for (num, den) in [(0, 1), (1, 2), (1, 1)] {
+                            for sig in [0.0, 0.25, 1.0] {
+                                let expected = gain > 0 && fixed >= min as usize && fixed + broken > 0
+                                    && fixed * den >= (fixed + broken) * num
+                                    && tail_words(fixed, fixed + broken) <= sig;
+                                assert_eq!(accepts(gain, fixed, broken, min, num as f64 / den as f64, sig), expected);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        assert!(!accepts(1, 2, 0, 0, f64::NAN, 1.0));
+        assert!(!accepts(1, 2, 0, 0, 0.0, f64::NAN));
+    }
+
+    #[test]
+    fn sign_tail_large_symmetry_and_acceptance() {
+        assert_eq!(sign_p(10, 19), 0.5);
+        assert!(accepts(1, 10, 9, 1, 0.5, 0.5));
+        let p = sign_p(550, 1100);
+        assert!(p.is_finite() && p > 0.5 && p < 0.53, "central tail: {p}");
+        assert!(accepts(1, 550, 550, 1, 0.5, 1.0));
+        for n in [1099, 1100, 4096] {
+            for k in [1, n / 2, n / 2 + 1, n] {
+                let p = sign_p(k, n);
+                assert!(p.is_finite() && (0.0..=1.0).contains(&p));
+                assert!((p + sign_p(n - k + 1, n) - 1.0).abs() < 1e-12);
+            }
+        }
+        assert!((sign_p(550, 1099) - 0.5).abs() < 1e-12);
+    }
+
+    #[test]
+    fn utility_complete_small_fibers() {
+        let mut fibers: BTreeMap<i64, Vec<(usize, usize, usize)>> = BTreeMap::new();
+        for made in 0..=4 {
+            for right in 0..=made {
+                for gold in right..=4 {
+                    let mut c = [Prf::default(); 10];
+                    c[0] = Prf { tp: right, sys: made, gold };
+                    let u = util(&c, 500);
+                    assert_eq!(u, 500 * (2 * right as i64 - made as i64));
+                    fibers.entry(u).or_default().push((right, made, gold));
+                    c[9] = c[0];
+                    assert_eq!(util(&c, 500), 2 * u);
+                }
+            }
+        }
+        let zero = &fibers[&0];
+        assert!(zero.contains(&(0, 0, 0)) && zero.contains(&(1, 2, 4)) && zero.contains(&(2, 4, 2)));
+        assert_eq!(zero.len(), 12);
+        assert!(!fibers.contains_key(&250));
+    }
+
+    #[test]
+    fn shuffle_split_identity_and_reconstruction() {
+        for n in 0..=16 {
+            let mut lines = Vec::new();
+            for i in 0..n {
+                for split in ["dev", "teacher", "other"] {
+                    lines.push(TLine { key: format!("{split}:{i}"), split: split.into(), text: i.to_string(), base: Read::default(), gold: vec![GFrame { verb: i.to_string(), ..Default::default() }], judged_only: split == "teacher" });
+                }
+            }
+            let out = shuffled(&lines);
+            for (i, row) in out.iter().enumerate() {
+                let k = i / 3;
+                let expected = if row.split == "other" { k } else { (k + n / 2 + 7) % n };
+                assert_eq!(row.gold[0].verb, expected.to_string());
+                assert_eq!(row.key, lines[i].key);
+                assert_eq!(row.text, lines[i].text);
+                assert_eq!(row.judged_only, lines[i].judged_only);
+                if row.split != "other" {
+                    let reverse = (k + n - (n / 2 + 7) % n) % n;
+                    assert_eq!(out[3 * reverse + i % 3].gold, lines[i].gold);
+                }
+            }
+        }
+    }
 }

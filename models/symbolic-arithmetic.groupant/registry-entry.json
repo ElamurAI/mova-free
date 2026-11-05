@@ -1,0 +1,52 @@
+{
+  "checks": [
+    "Seven module prefix filters, paired debug/release runs",
+    "Compiled source mutation controls, exact restoration and positive reruns",
+    "Paired source-bound syntax projections",
+    "Wave28 external actual-source join probe: five named tests twice debug/release, workspace-pinned registry versions; finite adapter/domain observations."
+  ],
+  "children": [
+    "math-arith",
+    "math-big",
+    "math-err",
+    "math-eval",
+    "math-expr",
+    "math-rat",
+    "math-units",
+    "symbolic-computation",
+    "math-orchestration",
+    "formula-bridge",
+    "matrix-expression",
+    "computing-execution",
+    "matrix-numerics",
+    "statistical-computing",
+    "computing-io"
+  ],
+  "cost": "Evaluation recursive plus aggregate O(k log k) and O(T*2^T) bounded outcome enumeration; subset search exponential in quantity count and quadratic in beam; big arithmetic depends on bit length.",
+  "description": "Rat reduces n/d and checks intermediate arithmetic; big Q extends magnitude. Mono SI factor is product of atom factors^exponent; point K=(x+offset)*factor. answer(e)=gate(e,eval(e,fresh_ctx)). arith text->features->subset beam->tree exact replay is a separate big-rational branch.",
+  "forward": [
+    "Rat reduces n/d and checks intermediate arithmetic; big Q extends magnitude. Mono SI factor is product of atom factors^exponent; point K=(x+offset)*factor. answer(e)=gate(e,eval(e,fresh_ctx)). arith text->features->subset beam->tree exact replay is a separate big-rational branch.",
+    "expr supplies trees; eval joins rat and units with err taxonomy, then external fcheck SI comparison. arith uses big plus external memory NUM_WORDS. understand constructs Expr; solve consumes big helpers. Rat and big are not interchangeable representations: units remain checked i128.",
+    "Wave28 child symbolic-computation: calc->comb/nt coerces Q to Z/u64 and appends certificates; poly/linsys->calc may mutate Env for constants; deriv->calc::approx inherits unsupported/numerical domains. comb->nt::sieve supports Legendre, poly->nt::factor/divisors supports candidates/surds. fcheck->expr/units is legacy SI path, not an adapter for dimensionless calc E. math/src/plan.rs is an existing downstream caller; ownership remains with this source list.",
+    "Wave28 child math-orchestration: Problem kind/source→Expect integer/options→gate; plan/curriculum normalizers and tolerances differ. Template substitution lossy then gate rechecks. CLI held policy outside run_c. Vmm cap precheck not reservation. Build output enters lex module; suite uses separate small-unit engine.",
+    "Wave28 child formula-bridge: extract bodies exclude delimiters, start in bytes. corpus tex scans macros per file versus CLI tex all files before formulas. Canonical gate reparses without original macros. Corpus falls back to to_relation only on to_expr relation category. Reexports add no adapter. Empty Add/Mul output empty Node but inverse/roundtrip reject.",
+    "Wave30 child matrix-expression: lexer space_before distinguishes [1 -2] from [1 - 2]; Caret and DotCaret are both left-folded by the parser, retaining distinct Pow and EPow tags. Interp resolves End to dimensions and dispatches index/ops/core. value column-major layout must survive index gather and core reshape; transpose permutes it. ops short-circuit logic belongs to interp/vm; core callbacks, files, RNG and timer effects cross group and remain unexecuted here.",
+    "Wave30 child computing-execution: Interp::run calls vm::run_program only after registration; VM Fallback invokes Interp::exec and DynEval invokes eval_multi through sync_out/sync_in. lib.rs exposes item identities consumed by tests. suite::run_fs consumes parser scenarios and feeds captured output to check; vm_gate compares engines independently of expected answers, so shared broken builtins can pass equivalence. layers/lib.rs is a separate tagged routing relation to math/global and Domain callbacks, with no mlab caller/callee edge; grouping does not imply runtime transport.",
+    "Wave30 child matrix-numerics: polyfit→lstsq_svd joins real column-major Vandermonde with real y; roots/poly→Interp::call_function(eig) joins registry to linalg checks. ops routes matrix division to mldivide. elem cmap and FFT Mat::complex narrow zero im while explicit complex retains storage. FFT dim>=2 uses row slices, whereas reduce dims>2 use singleton slices. Local sort indices differ from global find indices. eval_nodes repeats callbacks after unsuitable vector attempt. Bench same column-major buffers feed both backends; main unexecuted.",
+    "Wave30 child statistical-computing: Actual joins: stats imports builtins::table::{opts,opt}, table::groups, value::Table; mcgate imports stats and Rng; ext_boost/ext_nist import Interp whose registry resolves the same builtins. Invalid adapter example: group equality on NaN does not imply matching hash keys. Another: row-key signed zero canonicalization must agree with numerical sorting equality. Benchmark/calibration or full external dataset results are not inferred from helper tests. Paired ttest length compatibility precedes option parsing; only the minimum cleaned-sample-count check follows options. agg count and numel both count original values, so NaN insertion changes both. iso_date selects date-only formatting only for exactly integral inputs; rounded nonintegral midnight keeps a time-bearing pattern.",
+    "Wave30 child computing-io: builtins/mod registers files/io; io calls display::format_disp and exp_str; fileio uses table inference/date/name adapters and column-major Mat; main creates Interp with selected fs and selected tests/fs CLI helper observes exit/stdout/stderr/journal/files. sprintf column-major traversal and display row layout are different adapters; JSON orientation/nonfinite loss prevents identity roundtrip. Octave calls lexical filter is not parser validation, and VMM digest helper evidence is not scenario correctness."
+  ],
+  "id": "symbolic-arithmetic",
+  "inverse": [
+    "On supported states zero division, dimension mismatch and point scaling exclude successful outputs; gate excludes false checks/SI mismatch. Float beam pruning can exclude mathematically valid alternatives.",
+    "Outputs admit sets of trees, texts and unit representations; fixed exact affine conversion is invertible subject to representability; category codes cannot recover diagnostics.",
+    "For Expr, let R(e)=to_expr(parse(to_latex(from_expr(e)))). The successful R fiber contains unevaluable expressions: Div(1,0) roundtrips but answer rejects DivZero. Empty Add emits an empty Node yet has no successful inverse. Replacing numerical acceptance with structural roundtrip is excluded. Four bounded closed formulas preserve their independently stated exact values through both adapters; a foreign value is rejected by eval::gate.",
+    "For the distinct calc::E representation, simplify(0/x)=0 broadens the evaluation domain to include x=0. The eight-point derivative checker can accept the derivative because its sampled antecedents avoid that hole. A passing sampled check admits functions/domains differing elsewhere; it does not reconstruct or preserve the original domain. No automatic adapter between Expr and calc::E is implied."
+  ],
+  "limitations": [
+    "No supported percentage surrogate",
+    "Unchecked empty variadics, exponent/count arithmetic and nonfinite paths remain documented",
+    "Finite tests and lexical AST are partial evidence"
+  ],
+  "state": "Within safe finite domains, checked arithmetic preserves exact value, unit dimensions and point/delta distinction. A successful eval still requires independent gate acceptance; exact tree replay does not certify language interpretation."
+}

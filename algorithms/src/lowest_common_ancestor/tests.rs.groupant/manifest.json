@@ -1,0 +1,114 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite named test fixtures and terminating candidate implementations.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "Bounded suite assertion outcomes.",
+        "operator": "For fixed finite fixtures, U consists of candidate terminating implementations paired with claimed pass/fail outcomes. R pairs each with conjunction of actual assertions. U minus R contains false pass and false failure claims. Unexercised inputs are unconstrained; a passing suite is not universal correctness.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "450882d73105cedb22cbe6f837b61facf2164fb48c6c0c33d993a75bdb859c0e",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite named test fixtures and terminating candidate implementations.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_implementations",
+        "observation_scope": "Bounded suite assertion outcomes.",
+        "operator": "A passing transcript admits every implementation satisfying the finite assertions, including implementations wrong outside the observed domain. A failing assertion restricts antecedents to implementations violating that exact predicate, without uniquely locating the defect.",
+        "path": "model.md",
+        "section": "compatible_implementations",
+        "status": "partial_source_derived",
+        "subject_revision": "450882d73105cedb22cbe6f837b61facf2164fb48c6c0c33d993a75bdb859c0e",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite named test fixtures and terminating candidate implementations.",
+        "evidence": "model.md#evidence",
+        "id": "oracle_independence",
+        "observation_scope": "Bounded suite assertion outcomes.",
+        "operator": "The oracle follows parent chains and detects repeats with linear membership, then intersects ancestor vectors. It does not use depths, binary lifting or production state flags. All (n+1)^n parent functions for n=1..5 are inspected.",
+        "path": "model.md",
+        "section": "oracle_independence",
+        "status": "partial_source_derived",
+        "subject_revision": "450882d73105cedb22cbe6f837b61facf2164fb48c6c0c33d993a75bdb859c0e",
+        "type": "oracle_independence"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite named test fixtures and terminating candidate implementations.",
+        "evidence": "model.md#evidence",
+        "id": "finite_domain",
+        "observation_scope": "Bounded suite assertion outcomes.",
+        "operator": "All 8476 parent functions across sizes one through five, every query pair in valid forests, chains at binary boundaries through 100000 vertices, relabeling and leaf extension constrain production outputs. The finite evidence does not establish universal cycle rejection or lifting correctness.",
+        "path": "model.md",
+        "section": "finite_domain",
+        "status": "partial_source_derived",
+        "subject_revision": "450882d73105cedb22cbe6f837b61facf2164fb48c6c0c33d993a75bdb859c0e",
+        "type": "bounded_correspondence"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with bounded correspondence only; no universal formal proof.",
+        "assumptions": "Sufficient allocation, standard Rust semantics, stated valid endpoint and arithmetic domains.",
+        "domain": "Finite named test fixtures and terminating candidate implementations.",
+        "evidence": "model.md#evidence",
+        "id": "fault_sensitivity",
+        "observation_scope": "Bounded suite assertion outcomes.",
+        "operator": "Compile an isolated production mutation that returns None instead of Some(a) for equalized endpoints. The exact long_chain_and_power_boundaries test must fail at an ancestor assertion; this is one fault observation, not complete defect detection.",
+        "path": "model.md",
+        "section": "fault_sensitivity",
+        "status": "partial_source_derived",
+        "subject_revision": "450882d73105cedb22cbe6f837b61facf2164fb48c6c0c33d993a75bdb859c0e",
+        "type": "compiled_fault_observation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "sha256": "908e8d8a5e468e2f318511b73633092b7e01a13fdb66479c6aca66301413a572",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-lowest-common-ancestor-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "450882d73105cedb22cbe6f837b61facf2164fb48c6c0c33d993a75bdb859c0e"
+  },
+  "status": "partial_source_derived_instance"
+}

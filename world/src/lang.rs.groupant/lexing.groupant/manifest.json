@@ -1,0 +1,125 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "Source bytes [11633,16968): lexing; the operation-specific contracts below define observation projections.",
+        "operator": "Unclosed quote state cannot produce tokens; Args rejects non-lowercase key bytes, a duplicate exact key, a positional token after keys or a bare quoted text positional argument.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "Source bytes [11633,16968): lexing; the operation-specific contracts below define observation projections.",
+        "operator": "Given Args.pos and ordered (key,value,quoted) triples, retain all whitespace-separated token strings with the same quote grouping. Prefix/suffix whitespace is unobserved by tokens; literal internal whitespace inside quoted values is preserved until a later text consumer trims it.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "quotes_keys",
+        "observation_scope": "Source bytes [11633,16968): lexing; the operation-specific contracts below define observation projections.",
+        "operator": "tokens groups characters between literal double quotes and splits Unicode whitespace outside; there is no escape syntax. Args requires lowercase ASCII key names, splits the first '=', rejects repeated spellings and positions after any key, and validates complete outer quote pairs. text trims value edges; quote flags are enforced by ID/word consumers but intentionally ignored by some numeric/tag/text consumers.",
+        "path": "model.md",
+        "section": "quotes_keys",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "lexical_projection"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "duplicate_order",
+        "observation_scope": "Source bytes [11633,16968): lexing; the operation-specific contracts below define observation projections.",
+        "operator": "Args scans token order. Invalid key syntax precedes duplicate detection for that token; duplicate detection precedes quote validation. A malformed later command cannot override an earlier duplicate or positional-after-key error. Oracle checks unknown command plus duplicate keys.",
+        "path": "model.md",
+        "section": "duplicate_order",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "failure_precedence"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "consumption",
+        "observation_scope": "Source bytes [11633,16968): lexing; the operation-specific contracts below define observation projections.",
+        "operator": "take removes the first matching key preserving order of remaining triples. Typed consumers propagate a first error; attrs consumes all remaining keys in order. done rejects first remaining position before first remaining key. Quote handling differs by consumer; there is no universal quoted-value ban.",
+        "path": "model.md",
+        "section": "consumption",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "state_transition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 16968,
+      "start": 11633
+    },
+    "description": "Source bytes [11633,16968): lexing; the operation-specific contracts below define observation projections."
+  },
+  "id": "world-lang-lexing",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../lang.rs",
+    "sha256": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe"
+  },
+  "status": "partial_source_derived_instance"
+}

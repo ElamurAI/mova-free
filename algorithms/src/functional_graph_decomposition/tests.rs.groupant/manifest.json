@@ -1,0 +1,113 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "Finite fixture/assertion observations; trusted compiler and test runner; passing is not unrestricted equivalence.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Accepted fixture/output pairs exclude mismatched oracle objectives, invalid witnesses and wrong tested errors. Outside-fixture behavior remains unconstrained.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "0552bf2b6e7827752aa2e48c4a36d135d3b0a43b40745f46385857aed996b1a2",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "Finite fixture/assertion observations; trusted compiler and test runner; passing is not unrestricted equivalence.",
+        "evidence": "model.md#evidence",
+        "id": "preimages",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "A pass reconstructs all implementations agreeing on the finite observations, including faulty unseen extensions. A failed assertion reconstructs unequal compared values at that fixture; it does not uniquely identify a source bug.",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "0552bf2b6e7827752aa2e48c4a36d135d3b0a43b40745f46385857aed996b1a2",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "Finite fixture/assertion observations; trusted compiler and test runner; passing is not unrestricted equivalence.",
+        "evidence": "model.md#evidence",
+        "id": "oracle",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "All successor functions up to six vertices (50070 cases including empty); independent per-start walk until repetition validates entry, distance and cycle edges.",
+        "path": "model.md",
+        "section": "oracle",
+        "status": "partial_source_derived",
+        "subject_revision": "0552bf2b6e7827752aa2e48c4a36d135d3b0a43b40745f46385857aed996b1a2",
+        "type": "oracle_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "Finite fixture/assertion observations; trusted compiler and test runner; passing is not unrestricted equivalence.",
+        "evidence": "model.md#evidence",
+        "id": "mutant",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Compiled production mutant must fail the named coordinates_and_errors assertion; exact restoration followed by positive rerun.",
+        "path": "model.md",
+        "section": "mutant",
+        "status": "partial_source_derived",
+        "subject_revision": "0552bf2b6e7827752aa2e48c4a36d135d3b0a43b40745f46385857aed996b1a2",
+        "type": "counterfactual_relation"
+      },
+      {
+        "approximation_semantics": "Partial source-derived relation; finite evidence is not a proof.",
+        "assumptions": "Successful allocation, trusted Rust standard library and compiler.",
+        "domain": "Finite fixture/assertion observations; trusted compiler and test runner; passing is not unrestricted equivalence.",
+        "evidence": "model.md#evidence",
+        "id": "coverage",
+        "observation_scope": "One terminating call or the named finite test suite.",
+        "operator": "Adding fixtures intersects the passing implementation set; profile repeats constrain profile-dependent bugs without proving universal correctness.",
+        "path": "model.md",
+        "section": "coverage",
+        "status": "partial_source_derived",
+        "subject_revision": "0552bf2b6e7827752aa2e48c4a36d135d3b0a43b40745f46385857aed996b1a2",
+        "type": "coverage_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-functional-graph-decomposition-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "0552bf2b6e7827752aa2e48c4a36d135d3b0a43b40745f46385857aed996b1a2"
+  },
+  "status": "partial_source_derived_instance"
+}

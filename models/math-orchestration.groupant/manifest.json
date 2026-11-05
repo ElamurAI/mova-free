@@ -1,0 +1,189 @@
+{
+  "children": [
+    "math-bigbench-main",
+    "math-lexicon-build",
+    "math-solver-cli",
+    "math-vmmtests-cli",
+    "math-curriculum",
+    "math-lean-boundary",
+    "math-library-surface",
+    "math-classic-cli",
+    "math-solution-memory",
+    "math-plan-gate",
+    "math-solver-orchestration",
+    "math-suite-verdicts",
+    "math-teacher-accounting",
+    "math-frozen-calc-harness"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "Finite test floats, local compiler/filesystem; delegated arithmetic retains own limits. Lexical AST lacks semantic resolution/macros. No-panic perceptron comparisons require comparable non-NaN accumulated scores and weights; finite weights alone do not prevent score overflow/NaN.",
+        "domain": "Bounded synthetic helpers/plans/records. Public module compile-only, classic CLI usage-only. Live teacher/Lean/models/corpora/held/DB/GPU and large benchmark excluded.",
+        "id": "behavior-complement",
+        "observation_scope": "Problem kind/source→Expect integer/options→gate; plan/curriculum normalizers and tolerances differ. Template substitution lossy then gate rechecks. CLI held policy outside run_c. Vmm cap precheck not reservation. Build output enters lex module; suite uses separate small-unit engine.",
+        "operator": "Verified B excludes failures/missing answer but not wrong NL model. Over-cap/Lean-ban preflights exclude only guarded effects.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "Finite test floats, local compiler/filesystem; delegated arithmetic retains own limits. Lexical AST lacks semantic resolution/macros. No-panic perceptron comparisons require comparable non-NaN accumulated scores and weights; finite weights alone do not prevent score overflow/NaN.",
+        "domain": "Bounded synthetic helpers/plans/records. Public module compile-only, classic CLI usage-only. Live teacher/Lean/models/corpora/held/DB/GPU and large benchmark excluded.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Problem kind/source→Expect integer/options→gate; plan/curriculum normalizers and tolerances differ. Template substitution lossy then gate rechecks. CLI held policy outside run_c. Vmm cap precheck not reservation. Build output enters lex module; suite uses separate small-unit engine.",
+        "operator": "Records admit all antecedent plans/prompts producing those observations; template and summaries lose values/order/metadata so inverse is many-valued.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "Finite test floats, local compiler/filesystem; delegated arithmetic retains own limits. Lexical AST lacks semantic resolution/macros. No-panic perceptron comparisons require comparable non-NaN accumulated scores and weights; finite weights alone do not prevent score overflow/NaN.",
+        "domain": "Bounded synthetic helpers/plans/records. Public module compile-only, classic CLI usage-only. Live teacher/Lean/models/corpora/held/DB/GPU and large benchmark excluded.",
+        "id": "expectation-join",
+        "observation_scope": "Problem kind/source→Expect integer/options→gate; plan/curriculum normalizers and tolerances differ. Template substitution lossy then gate rechecks. CLI held policy outside run_c. Vmm cap precheck not reservation. Build output enters lex module; suite uses separate small-unit engine.",
+        "operator": "Expect integer for int or number from TheoremQA, options verbatim. Numeric gate and grading differ in tolerance/normalization.",
+        "path": "model.md",
+        "required": false,
+        "section": "expectation-join",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Finite test floats, local compiler/filesystem; delegated arithmetic retains own limits. Lexical AST lacks semantic resolution/macros. No-panic perceptron comparisons require comparable non-NaN accumulated scores and weights; finite weights alone do not prevent score overflow/NaN.",
+        "domain": "Bounded synthetic helpers/plans/records. Public module compile-only, classic CLI usage-only. Live teacher/Lean/models/corpora/held/DB/GPU and large benchmark excluded.",
+        "id": "fallback-state",
+        "observation_scope": "Problem kind/source→Expect integer/options→gate; plan/curriculum normalizers and tolerances differ. Template substitution lossy then gate rechecks. CLI held policy outside run_c. Vmm cap precheck not reservation. Build output enters lex module; suite uses separate small-unit engine.",
+        "operator": "Fallback copies answer/option/verified/correct/cost/tokens/secs/method, not B trace/history; keeps C config and by_slm=false.",
+        "path": "model.md",
+        "required": false,
+        "section": "fallback-state",
+        "status": "partial_source_derived_model",
+        "type": "state_transition"
+      },
+      {
+        "assumptions": "Finite test floats, local compiler/filesystem; delegated arithmetic retains own limits. Lexical AST lacks semantic resolution/macros. No-panic perceptron comparisons require comparable non-NaN accumulated scores and weights; finite weights alone do not prevent score overflow/NaN.",
+        "domain": "Bounded synthetic helpers/plans/records. Public module compile-only, classic CLI usage-only. Live teacher/Lean/models/corpora/held/DB/GPU and large benchmark excluded.",
+        "id": "effect-order",
+        "observation_scope": "Problem kind/source→Expect integer/options→gate; plan/curriculum normalizers and tolerances differ. Template substitution lossy then gate rechecks. CLI held policy outside run_c. Vmm cap precheck not reservation. Build output enters lex module; suite uses separate small-unit engine.",
+        "operator": "Vmm cap→mkdir→teacher→spent→append→is_error; Lean bans→write→process→diagnostics. Failed append not rollback.",
+        "path": "model.md",
+        "required": false,
+        "section": "effect-order",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "Finite test floats, local compiler/filesystem; delegated arithmetic retains own limits. Lexical AST lacks semantic resolution/macros. No-panic perceptron comparisons require comparable non-NaN accumulated scores and weights; finite weights alone do not prevent score overflow/NaN.",
+        "domain": "Bounded synthetic helpers/plans/records. Public module compile-only, classic CLI usage-only. Live teacher/Lean/models/corpora/held/DB/GPU and large benchmark excluded.",
+        "id": "budget-composition",
+        "observation_scope": "Problem kind/source→Expect integer/options→gate; plan/curriculum normalizers and tolerances differ. Template substitution lossy then gate rechecks. CLI held policy outside run_c. Vmm cap precheck not reservation. Build output enters lex module; suite uses separate small-unit engine.",
+        "operator": "Per-plan limits/reserve estimates do not bound parallel composition; concurrent prechecks can overspend.",
+        "path": "model.md",
+        "required": false,
+        "section": "budget-composition",
+        "status": "partial_source_derived_model",
+        "type": "resource_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "math-orchestration",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "math/bigbench/src/main.rs",
+      "sha256": "ffb223536d6a9ed638d3f3a4905c7570d9376febb87e0ec64c6b33d5481a8b81"
+    },
+    {
+      "path": "math/build.rs",
+      "sha256": "5d33383e33141189251926b14e7ff2639e0885e02ec7ef8faca2771ff151f7e2"
+    },
+    {
+      "path": "math/src/bin/mathsolve.rs",
+      "sha256": "05b820b20dcb3adfce38c86bc561077db7ad3fb752adba3cd8b41887da4f382e"
+    },
+    {
+      "path": "math/src/bin/vmmtests.rs",
+      "sha256": "957a5c7a678f235ea0b9c3d3bcbdf48aec6be7ae1dfc4ca0e7c1b88981baff5b"
+    },
+    {
+      "path": "math/src/curric.rs",
+      "sha256": "01ecd25d533bc2f38795f1014ded3ed4e8b4baa2ec88a57b34c5a31e1a6f0d6b"
+    },
+    {
+      "path": "math/src/lean.rs",
+      "sha256": "ab208a49bf717b021d0b55817d3968040a40bf4fe3086d4416844121521db723"
+    },
+    {
+      "path": "math/src/lib.rs",
+      "sha256": "e8c39418e25d103f3b328e161ceca4920014b34ba908183175b7117d9f909994"
+    },
+    {
+      "path": "math/src/main.rs",
+      "sha256": "3c64c4781a16e80fbe9e753f28a4f9dd9aad95fecdd4f1d1bae0c6fd8dfcd3df"
+    },
+    {
+      "path": "math/src/memory.rs",
+      "sha256": "7460dfd37079795d3dd42b1808b36c28aa558a094f7ae7bd034669f9c80e0bd9"
+    },
+    {
+      "path": "math/src/plan.rs",
+      "sha256": "f0ee9d51c4e793cce9e3aadc19877be19e3e692f9e829861f1746a198277dff0"
+    },
+    {
+      "path": "math/src/solve.rs",
+      "sha256": "e6b60f9cdd4e36eb00d0528079c7a2cfabff94a8bd4f7d3ff0d5f79a41009a9d"
+    },
+    {
+      "path": "math/src/suite.rs",
+      "sha256": "9a21b9e3ccf76069058b9adf1ffb07ca84b06f5eed69a71ce4f13d87958ad0f1"
+    },
+    {
+      "path": "math/src/vmm.rs",
+      "sha256": "ccae6302f74422ec6b1686ce9f41a3eb51841bf01007b42d016982943fb48ffd"
+    },
+    {
+      "path": "math/tests/vmm_calc.rs",
+      "sha256": "39c056827032ed3dfe3981b3faeb3cb9db823642bd622a10204f171b87a716cc"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

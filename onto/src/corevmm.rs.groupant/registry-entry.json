@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test --offline --locked -p onto --bin onto -- --exact --test-threads=1 corevmm::wave29::candidate_threshold_order_and_dedup corevmm::wave29::risk_slot_is_distinct_from_valid_risk corevmm::t::parse_risk_answer",
+    "Paired source syntax; repeated bounded debug/release tests; mapped compiled controls"
+  ],
+  "children": [],
+  "cost": "O(B+N log N) candidate selection; O(B+n+risks) response parsing. Live latency/cost external and unmeasured. Memory retains rows and prompts.",
+  "description": "Candidates require >=13 columns; sorted wd-confirm files last matching five-string key wins. pick accepts allowed properties, unseen keys, confidence>=0.45, dedups first key, sorts contested<0.8 first then lemma/property. Risk parser initializes valid-ID slot before act/harm/p validation. Live wrappers call teacher and append workers.",
+  "forward": [
+    "Candidates require >=13 columns; sorted wd-confirm files last matching five-string key wins. pick accepts allowed properties, unseen keys, confidence>=0.45, dedups first key, sorts contested<0.8 first then lemma/property. Risk parser initializes valid-ID slot before act/harm/p validation. Live wrappers call teacher and append workers."
+  ],
+  "id": "onto-corevmm",
+  "inverse": [
+    "Same parsed risks admit invalid ignored rows and case/whitespace variants. Some(empty) cannot reconstruct none versus malformed; dropped duplicate candidate keys unrecoverable."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no semantic proof",
+    "Categorical/structural/effect semantics lack executable percent surrogate",
+    "Only selected synthetic branches tested; external effects unexecuted"
+  ],
+  "source": "onto/src/corevmm.rs",
+  "state": "Accepted risk p in[0,1], enums valid; NaN rejected. Some(empty) also means malformed valid-ID answer. Threads clamped1..2; append lock does not ensure deterministic completion order; write errors discarded."
+}

@@ -9,6 +9,6 @@
 4. **Cross-parsing.** A model trained on EWT is tested on GUM and vice versa. Growth of LAS across versions shows alignment: GUM → EWT from 81.78 to 84.27 (v2.6 → v2.11). The confusion matrix shows exactly what diverges.
 5. **Robustness to small changes.** Replace the year in a sentence with another; the Stanza parser changes its parse in 44 % of variant batches on average. Unstable places are error candidates.
 
-**For the engine.** A rule that fires often on the gold is either wrong or catches errors in the gold (the principle of `docs/expert.md`). Among the violations of this section's rules on EWT 2.18 there are errors in the gold itself: Case=Nom on *it* under a preposition, det on *soldiers* in *an old soldiers' home*, Number=Plur on *species*.
+**For the engine.** A rule that fires often on the gold is either wrong or catches errors in the gold (the principle of `docs/english.md`). Among the violations of this section's rules on EWT 2.18 there are errors in the gold itself: Case=Nom on *it* under a preposition, det on *soldiers* in *an old soldiers' home*, Number=Plur on *species*.
 
 **Sources.** `W17-6514` (de Marneffe et al. 2017); `dickinson-2009-correcting-dependency-annotation-errors`; `2020.udw-1.8` (Dönicke et al.: MBD); `2020.tlt-1.9` (Aggarwal, Zeman: θpos); `2023.udw-1.7` (Zeldes, Schneider: tables 1–2); `2021.udw-1.8` (Kalpakchi, Boye).

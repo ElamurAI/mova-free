@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Negative dimensions exclude negative output sizes. More than two nonunit trailing dimensions exclude successful 2D shape.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "(2,2) admits scalar 2.9, vector [2,2], two scalar args 2 and 2 plus skipped class strings; shape does not identify original arity.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_invariant",
+        "path": "model.md",
+        "scope": "The helper returns a pair only and does not allocate the requested matrix.",
+        "section": "state_invariant",
+        "status": "partial_source_derived_model",
+        "type": "state_invariant"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Nonscalar multiargument input is Invalid call; one vector with >2 elements rejects any raw trailing value not exactly 1.",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "representation_transport",
+        "path": "model.md",
+        "scope": "Empty numeric vector maps 0x0 whereas absent numeric arguments maps 1x1.",
+        "section": "representation_transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "O(number of supplied values and inspected dimensions); input Mat invariants assumed.",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 5008,
+      "start": 3299
+    },
+    "description": "Filter char values, dispatch by numeric argument count, map dimensions with NaN rejection then clamp/floor/saturating cast; constrain higher dimensions to one.",
+    "source_bytes_sha256": "55a2421caf1bea82914306fd2224d0c955ef68eccb3d852b66ae9eb2bb2f9a61"
+  },
+  "id": "mlab-builtins-mod-dimensions",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../mod.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "5e593db042fb0f9c24284b0dfff423735d458b3b3f9a4d5fe269c2ea32af1770"
+  },
+  "status": "partial_source_bound_model"
+}

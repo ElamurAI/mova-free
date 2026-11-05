@@ -98,7 +98,8 @@ fn entropy(counts: &[u32]) -> f64 {
 
 /// Gain ratio of a slot: (H(Y) − Σ p(v) H(Y|v)) / SplitInfo (Quinlan 1993; TiMBL weights).
 pub fn gain_ratio(x: &[Vec<u32>], y: &[usize], nclass: usize, s: usize) -> f64 {
-    let mut by: std::collections::HashMap<u32, Vec<u32>> = std::collections::HashMap::new();
+    // Floating entropy sums must visit categories in a stable order.
+    let mut by: std::collections::BTreeMap<u32, Vec<u32>> = std::collections::BTreeMap::new();
     let mut all = vec![0u32; nclass];
     for (r, &c) in x.iter().zip(y) {
         by.entry(r[s]).or_insert_with(|| vec![0; nclass])[c] += 1;
@@ -469,6 +470,131 @@ mod tests {
             // on the true labels, a model trained on shuffled ones is no better than the majority class (2/3), with margin
             let acc = x.iter().zip(&y).filter(|(r, c)| m.predict(r).class == **c).count() as f64 / y.len() as f64;
             assert!(acc < 0.8, "{k:?} {acc}");
+        }
+    }
+}
+
+#[cfg(test)]
+mod wave13_models {
+    use super::*;
+    use crate::feats::Row;
+
+    #[test]
+    fn gain_ratio_canonical_histogram_oracle() {
+        let mut x = Vec::new();
+        let mut y = Vec::new();
+        let mut hist = Vec::new();
+        for v in 0..17u32 {
+            let cs = [1 + v % 5, 1 + (v * 3) % 7];
+            hist.push(cs);
+            for (c, &n) in cs.iter().enumerate() {
+                for _ in 0..n { x.push(vec![v]); y.push(c); }
+            }
+        }
+        let h = |a: u32, b: u32| {
+            let total = (a + b) as f64;
+            [a, b].iter().filter(|&&n| n != 0)
+                .map(|&n| { let p = n as f64 / total; -p * p.log2() }).sum::<f64>()
+        };
+        let total = y.len() as f64;
+        let mut conditional = 0.0;
+        let mut split = 0.0;
+        for [a, b] in &hist {
+            let p = (a + b) as f64 / total;
+            conditional += p * h(*a, *b);
+            split -= p * p.log2();
+        }
+        let expected = (h(hist.iter().map(|r|r[0]).sum(), hist.iter().map(|r|r[1]).sum()) - conditional) / split;
+        let observed: std::collections::BTreeSet<_> =
+            (0..64).map(|_| gain_ratio(&x, &y, 2, 0).to_bits()).collect();
+        assert_eq!(observed.len(), 1, "identical histograms produced distinct bits: {observed:?}");
+        assert_eq!(*observed.first().unwrap(), expected.to_bits(),
+            "gain-ratio must use canonical category order");
+        assert_eq!(gain_ratio(&[vec![0], vec![1]], &[0, 1], 2, 0), 1.0);
+        assert_eq!(gain_ratio(&[vec![0], vec![0]], &[0, 1], 2, 0), 0.0);
+        assert_eq!(gain_ratio(&[], &[], 2, 0), 0.0);
+    }
+
+    fn fixture() -> (Dict, Vec<Vec<u32>>, Vec<String>) {
+        let rows: Vec<Row> = ["a", "a", "b"].iter().map(|v| {
+            let mut row = vec!["-".to_owned(); SLOTS.len()];
+            row[0] = (*v).to_owned(); row
+        }).collect();
+        let dict = Dict::build(&rows);
+        let x = rows.iter().map(|r| dict.encode(r)).collect();
+        (dict, x, vec!["first".into(), "second".into(), "third".into()])
+    }
+
+    #[test]
+    fn perceptron_one_update_and_unknown_projection() {
+        let (dict, x, keys) = fixture();
+        let t = Train { x: &x[..1], y: &[1], names: &["zero", "one"], keys: &keys[..1], dict: &dict, seed: 7 };
+        let m = Perceptron::train(&t, 1);
+        let p = m.predict(&x[0]);
+        assert_eq!(p.class, 1);
+        assert_eq!(p.conf, (SLOTS.len() + 1) as f32);
+        let unknown = vec![UNSEEN; SLOTS.len()];
+        let q = m.predict(&unknown);
+        assert_eq!(q.class, 1);
+        assert_eq!(q.conf, 1.0, "only averaged bias survives unknown projection");
+        assert_eq!(q.why, vec![("bias".into(), 1.0)]);
+        let zero = Perceptron::train(&t, 0).predict(&unknown);
+        assert_eq!((zero.class, zero.conf), (0, 0.0));
+        assert!(zero.why.is_empty());
+    }
+
+    #[test]
+    fn tree_pruning_and_missing_edge_oracle() {
+        let (dict, x, keys) = fixture();
+        let t = Train { x: &x, y: &[0, 0, 1], names: &["zero", "one"], keys: &keys, dict: &dict, seed: 7 };
+        let m = IgTree::train(&t);
+        assert_eq!(m.order[0], 0);
+        assert_eq!(m.nodes.len(), 2, "same-default leaf is pruned");
+        for (row, class, conf, steps) in [(&x[0], 0, 2.0/3.0, 1), (&x[2], 1, 1.0, 2)] {
+            let p = m.predict(row);
+            assert_eq!((p.class, p.conf, p.why.len()), (class, conf, steps));
+        }
+        let p = m.predict(&vec![UNSEEN; SLOTS.len()]);
+        assert_eq!((p.class, p.conf, p.why.len()), (0, 2.0/3.0, 1));
+    }
+
+    #[test]
+    fn knn_distance_shells_and_frequency_ties() {
+        for mask in 0..16usize {
+            let labels: Vec<u16> = (0..4).map(|i| ((mask >> i) & 1) as u16).collect();
+            let m = Knn { names: vec!["zero".into(), "one".into()], w: vec![1.0, 2.0],
+                x: vec![vec![0,0], vec![0,0], vec![1,0], vec![0,1]],
+                prior: vec![2,2], y: labels.clone(), keys: vec!["a".into(),"b".into(),"c".into(),"d".into()], k: 1 };
+            let d = m.dists(&[0,0], None);
+            assert_eq!(d, vec![(0.0,0),(0.0,1),(1.0,2),(2.0,3)]);
+            for (k, count) in [(0,0), (1,2), (2,3), (3,4), (9,4)] {
+                let ones = labels[..count].iter().filter(|&&v| v == 1).count();
+                let zeros = count - ones;
+                let class = usize::from(ones > zeros);
+                assert_eq!(m.vote(&d,k), (class, ones.max(zeros), count), "mask={mask}, k={k}");
+            }
+            assert_eq!(m.dist(&[UNSEEN,0], &[UNSEEN,0]), 1.0);
+            assert_eq!(m.dists(&[0,0], Some(0)).len(), 3);
+        }
+        assert_eq!(argmax_tie(&[1,1], &[2,3]), 1);
+        assert_eq!(argmax_tie(&[1,1], &[3,3]), 0);
+    }
+
+    #[test]
+    fn public_fit_tiny_dictionary_join_is_repeatable() {
+        let (dict, x, keys) = fixture();
+        let t = Train { x: &x, y: &[0,0,1], names: &["zero","one"], keys: &keys, dict: &dict, seed: 7 };
+        for kind in Kind::ALL {
+            let a = fit(kind, &t);
+            let b = fit(kind, &t);
+            assert_eq!(a.kind(), kind);
+            assert_eq!(a.bytes(), b.bytes());
+            assert!(a.bytes() > 0);
+            for row in &x {
+                let pa = a.predict(row); let pb = b.predict(row);
+                assert_eq!((pa.class,pa.conf,pa.why), (pb.class,pb.conf,pb.why));
+            }
+            assert_eq!(a.predict(&x[2]).class, 1);
         }
     }
 }

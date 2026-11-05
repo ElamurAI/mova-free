@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "variant_transport",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "variant_transport",
+        "status": "partial_source_derived_model",
+        "type": "variant_transport"
+      },
+      {
+        "id": "rotation_domain",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "rotation_domain",
+        "status": "partial_source_derived_model",
+        "type": "rotation_domain"
+      },
+      {
+        "id": "record_tail",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "record_tail",
+        "status": "partial_source_derived_model",
+        "type": "record_tail"
+      },
+      {
+        "id": "execution_gap",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "execution_gap",
+        "status": "partial_source_derived_model",
+        "type": "execution_gap"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_helpers_only"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 9541,
+      "start": 5244
+    },
+    "description": "Filter eval keys by only and target presence; derive with_src subset; map all selected targets through source variants; store records for all keys and aggregate only original-source-present keys."
+  },
+  "id": "translation-flow-main-system_population",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../main.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "d9940f5fe1dcebf1ab586d390094028a90bc8a35bd733f4b55724483c236ecd3"
+  },
+  "status": "partial_source_bound_model"
+}

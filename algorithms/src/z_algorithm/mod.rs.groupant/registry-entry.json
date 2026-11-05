@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline z_algorithm::tests::",
+    "Compiled source mutant rejected by exact boundary test",
+    "Current typed relations and corresponding focused Rust tests are listed in adjacent model.md and model.md#evidence."
+  ],
+  "children": [],
+  "cost": "O(n) byte comparisons and O(n) output words, O(1) auxiliary words. Successful uncached comparisons advance the nondecreasing right boundary; each center contributes at most one unsuccessful comparison. No throughput measurement.",
+  "description": "z_algorithm exact byte implementation",
+  "forward": [
+    "For a byte sequence s of length n, return n lengths. z[0]=n when n>0; for i>0 z[i]=max{k<=n-i: s[0..k]=s[i..i+k]}. Empty input returns []."
+  ],
+  "id": "algorithm-z-algorithm",
+  "inverse": [
+    "Universe: finite byte inputs paired with arbitrary usize vectors. Excluded outputs have incorrect length, z[0] != n when n>0, a radius beyond the suffix, an unequal byte inside a claimed match, or an extendable nonmaximal radius. This mathematical exclusion relation is not replaced by negative tests.",
+    "Given vector v, compatible antecedents are all byte strings s with length n=v.len(), 0<=v[i]<=n-i for every index i, v[0]=n when nonempty, equalities s[j]=s[i+j] for j<v[i], and inequality s[v[i]]!=s[i+v[i]] whenever i+v[i]<n. Empty vector admits only empty input. Constraints can be inconsistent; symbol names are not recoverable uniquely."
+  ],
+  "limitations": [
+    "Partial syntax; finite tests do not prove all inputs; byte rather than Unicode character semantics."
+  ],
+  "source": "algorithms/src/z_algorithm/mod.rs",
+  "state": "All finite byte slices and returned usize vector observations."
+}

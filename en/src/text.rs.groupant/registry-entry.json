@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p en --lib text::wave27_tests",
+    "Repeated debug/release named outcomes and paired partial syntax"
+  ],
+  "children": [],
+  "cost": "Detok O(output bytes); chrF expected O(6(H+R)) with i32 counts; LCS O(A*B) comparisons in row-major order, exactly two B+1-word rows for nonempty inputs (zero allocations when a side is empty); previously A fresh rows.",
+  "description": "Ordered detokenizer, chrF, LCS, adjacency count and Unicode title",
+  "forward": [
+    "One-based detok original adjacency uses space_after before punctuation heuristics. chrF strips Unicode whitespace, averages common available orders1..6, returns 5pr/(4p+r), zero with no orders. LCS two-row recurrence: cur[0]=0, cur[j+1] from prev[j], prev[j+1], cur[j]; rows swap after each left item; either side empty returns 0 before allocation."
+  ],
+  "id": "en-text",
+  "inverse": [
+    "Metrics have many antecedent sequences; chrF ignores whitespace and LCS discards witnesses; title may expand first character."
+  ],
+  "limitations": [
+    "Empty/empty chrF zero; invalid detok indices panic; adjacency usize::MAX+1 may overflow; no permutation validation.",
+    "No executable percent surrogate: no demonstrated useful metric preserving categorical/effect semantics; permitted future caps 1/2/5/10%, no production substitution.",
+    "Partial source-bound modeling, no corpus/API/GPU, allocation faults or exhaustive numerical checks."
+  ],
+  "source": "en/src/text.rs",
+  "state": "Ordered detokenizer, chrF, LCS, adjacency count and Unicode title"
+}

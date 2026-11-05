@@ -196,7 +196,7 @@ pub fn confirm(g: &Graph, seeds: &Path, runs: &Path, batch: usize, cap: f64, lim
     let idx = synset_index(g);
     let out = seeds.join("wd-confirm-v3.tsv");
     if !out.exists() {
-        std::fs::write(&out, "# onto v3: candidates from wd-candidates.tsv without an LLM verdict (contested < 0.8 first, then confident) — LLM second opinion (claude-opus-5-5, effort high, onto core-vmm confirm). Not the truth.\n# concept\tsynset\tprop\tvalue\tsource\tconfidence\tvmm\twhy\n")?;
+        std::fs::write(&out, "# onto v3: candidates from wd-candidates.tsv without an LLM verdict (contested < 0.8 first, then confident) — LLM second opinion (Codex CLI; see codex-calls.jsonl for model and effort, onto core-vmm confirm). Not the truth.\n# concept\tsynset\tprop\tvalue\tsource\tconfidence\tvmm\twhy\n")?;
     }
     let log = runs.join("vmm-calls.jsonl");
     let batches: Vec<&[Vec<String>]> = rows.chunks(batch.max(1)).collect();
@@ -216,7 +216,7 @@ pub fn confirm(g: &Graph, seeds: &Path, runs: &Path, batch: usize, cap: f64, lim
 pub fn risks(g: &Graph, core: &[(String, String, String)], seeds: &Path, runs: &Path, batch: usize, cap: f64) -> Result<String> {
     let idx = synset_index(g);
     let out = seeds.join("core-risks.tsv");
-    std::fs::write(&out, "# onto v3: risks of core concepts — order-of-magnitude estimate from the LLM (claude-opus-5-5, effort high, onto core-vmm risks), not measured statistics.\n# p — probability of harm per one such contact for an ordinary adult; none — the LLM sees no notable risk.\n# concept\tdomain\tsynset\tact\tharm\tp\twhy\n")?;
+    std::fs::write(&out, "# onto v3: risks of core concepts — order-of-magnitude estimate from the LLM (Codex CLI; see codex-calls.jsonl for model and effort, onto core-vmm risks), not measured statistics.\n# p — probability of harm per one such contact for an ordinary adult; none — the LLM sees no notable risk.\n# concept\tdomain\tsynset\tact\tharm\tp\twhy\n")?;
     let log = runs.join("vmm-calls.jsonl");
     let batches: Vec<&[(String, String, String)]> = core.chunks(batch.max(1)).collect();
     let cost = run_batches(&batches, &out, &|i, ch| {
@@ -247,5 +247,47 @@ mod t {
         assert!(v[1].as_ref().unwrap().is_empty());
         assert!(v[2].as_ref().unwrap().is_empty(), "act outside the list is rejected");
         assert!(v[3].as_ref().unwrap().is_empty(), "p outside [0, 1] is rejected");
+    }
+}
+
+#[cfg(test)]
+mod wave29 {
+    use super::*;
+    fn row(name: &str, conf: &str) -> Vec<String> {
+        let mut f = vec![String::new(); 13];
+        f[0] = name.into();
+        f[2] = "oewn-1-n".into();
+        f[3] = "mass".into();
+        f[4] = "1".into();
+        f[6] = conf.into();
+        f
+    }
+    #[test]
+    fn candidate_threshold_order_and_dedup() {
+        let a = row("a", "0.8");
+        let b = row("b", "0.45");
+        let c = row("c", "0.449");
+        let n = row("n", "NaN");
+        let got = pick_unverified(&[a.clone(), b.clone(), b.clone(), c, n], &HashMap::new());
+        assert_eq!(
+            got.iter().map(|x| x[0].as_str()).collect::<Vec<_>>(),
+            ["b", "a"]
+        );
+        let mut seen = HashMap::new();
+        seen.insert(key_of(&b), ("no answer".into(), "".into(), "".into()));
+        assert_eq!(pick_unverified(&[a, b], &seen).len(), 1);
+    }
+    #[test]
+    fn risk_slot_is_distinct_from_valid_risk() {
+        let v = parse_risks(
+            "1\ttouch\tbite\t1\nok\n2\ttouch\tbite\tNaN\n3\tbad\tbite\t0.5\n4\tnone",
+            5,
+        );
+        assert_eq!(v[0].as_ref().unwrap()[0].2, 1.0);
+        assert!(v[1].as_ref().unwrap().is_empty());
+        assert!(v[2].as_ref().unwrap().is_empty());
+        assert!(v[3].as_ref().unwrap().is_empty());
+        assert!(v[4].is_none());
+        assert!(parse_risks("1\tnone", 0).is_empty());
     }
 }

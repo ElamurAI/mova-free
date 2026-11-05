@@ -119,15 +119,18 @@ fn effect(verb: &str) -> char {
 /// Read a problem: its told numbers and its question.
 pub fn read(text: &str) -> (Vec<Q>, Ask) {
     let text = crate::numbers::normalize(text).0;
+    read_sentences(text.split_inclusive(['.', '!', '?']).map(|s| (parse_words(s.trim()), s.trim_end().ends_with('?'))))
+}
+
+/// Deterministic reading boundary; sentence order and valid one-based heads are supplied.
+fn read_sentences(sentences: impl IntoIterator<Item = (Vec<Word>, bool)>) -> (Vec<Q>, Ask) {
     let mut qs = Vec::new();
     let mut ask = Ask::default();
     let mut last = String::new();
-    for (si, s) in text.split_inclusive(['.', '!', '?']).enumerate() {
-        let w = parse_words(s.trim());
+    for (si, (w, question)) in sentences.into_iter().enumerate() {
         if w.is_empty() {
             continue;
         }
-        let question = s.trim_end().ends_with('?');
         if question {
             let root = w.iter().position(|x| x.head == 0).unwrap_or(0);
             let low: Vec<String> = w.iter().map(lemma).collect();
@@ -219,6 +222,11 @@ fn same_thing(a: &str, b: &str) -> bool {
 /// The answer and its reason, or None when no schema has all its pieces.
 pub fn answer(text: &str) -> Option<(i64, String)> {
     let (qs, a) = read(text);
+    answer_reading(text, &qs, &a)
+}
+
+/// Ordered schemas on a supplied reading; text supplies the whole/part cue.
+fn answer_reading(text: &str, qs: &[Q], a: &Ask) -> Option<(i64, String)> {
     let of_thing: Vec<&Q> = qs.iter().filter(|q| a.thing.is_empty() || same_thing(&q.thing, &a.thing) || q.thing.is_empty()).collect();
     // 1. comparison: «how many more A than B» — the quantity that fits A's words best against the one that fits B's
     if a.more && !a.right_tags.is_empty() {
@@ -320,5 +328,63 @@ mod tests {
         assert_eq!(answer("Tom has 5 apples. He buys 3 more apples. How many apples does Tom have now?").map(|x| x.0), Some(8));
         // negative control: a problem with no schema's pieces gets no answer
         assert_eq!(answer("The sky is blue. Why?"), None);
+    }
+}
+
+#[cfg(test)]
+mod wave8_models {
+    use super::*;
+    fn word(form: &str, lemma: &str, upos: UPos, head: usize, rel: Rel) -> Word {
+        Word {form: form.into(),lemma: lemma.into(),upos,head,rel,tag: en::gram::Tag::NN,feats:Default::default()}
+    }
+    fn quantity(v:i64, effect:char) -> Q { Q {v,thing:"apple".into(),holder:"tom".into(),effect,..Default::default()} }
+    #[test]
+    fn integral_number_surface_fibers() {
+        for (form,expected) in [("1,200",Some(1200)),("$1200",Some(1200)),("12e2",Some(1200)),("1200.0",Some(1200)),("-3",Some(-3)),("3.5",None),("NaN",None),("inf",None),("word",None)] {
+            assert_eq!(num(&word(form,form,UPos::NUM,0,Rel::Root)),expected);
+        }
+    }
+    #[test]
+    fn supplied_trees_preserve_holder_and_question_boundary() {
+        let sentence=vec![word("Tom","tom",UPos::PROPN,2,Rel::Nsubj),word("has","have",UPos::VERB,0,Rel::Root),word("5","5",UPos::NUM,4,Rel::Nummod),word("apples","apple",UPos::NOUN,2,Rel::Obj)];
+        let second=vec![word("He","he",UPos::PRON,2,Rel::Nsubj),word("has","have",UPos::VERB,0,Rel::Root),word("3","3",UPos::NUM,4,Rel::Nummod),word("apples","apple",UPos::NOUN,2,Rel::Obj)];
+        let (qs,a)=read_sentences(vec![(sentence,false),(vec![],false),(second,true)]);
+        assert_eq!(qs.len(),2);assert_eq!(qs[0].thing,"apple");assert_eq!(qs[1].holder,"tom");
+        assert_eq!(qs[1].sent,2);assert!(qs[1].in_q);assert_eq!(a.holder,"tom");assert_eq!(a.verb,"have");
+        assert_eq!(qs[0].effect,'=');assert!(qs[0].tags.contains(&"apple".into()));
+    }
+    #[test]
+    fn total_oracle_and_sum_fibers() {
+        let a=Ask {total:true,thing:"apple".into(),..Default::default()};let mut fiber=vec![];
+        for x in 0..=8 {for y in 0..=8 {
+            let out=answer_reading("",&[quantity(x,'='),quantity(y,'+')],&a).unwrap();
+            // Independent cardinality oracle: union of disjoint unit sets.
+            assert_eq!(out.0,(vec![();x as usize].into_iter().chain(vec![();y as usize]).count()) as i64);
+            assert!(out.1.starts_with("total:"));if out.0==8 {fiber.push((x,y));}
+        }}assert_eq!(fiber.len(),9);
+    }
+    #[test]
+    fn each_domain_and_rate_priority() {
+        let a=Ask{each:true,..Default::default()};
+        for x in 0..=12 {for y in 0..=12 {
+            let got=answer_reading("",&[quantity(x,'?'),quantity(y,'?')],&a).map(|v|v.0);
+            let small=x.min(y);let big=x.max(y);
+            let expected=(1..=12).find(|k|small>0 && k*small==big);
+            assert_eq!(got,expected);
+        }}
+        let mut rate=quantity(3,'?');rate.rate=true;
+        assert_eq!(answer_reading("",&[rate,quantity(12,'?')],&a).unwrap().0,36);
+    }
+    #[test]
+    fn left_ledger_and_schema_refusal() {
+        let a=Ask{left:true,holder:"tom".into(),thing:"apple".into(),..Default::default()};
+        for start in 0..=6 {for gain in 0..=6 {for loss in 0..=6 {
+            let qs=[quantity(start,'='),quantity(gain,'+'),quantity(loss,'-')];
+            let expected=if start+gain>=loss {Some(start+gain-loss)}else{None};
+            assert_eq!(answer_reading("",&qs,&a).map(|x|x.0),expected);
+        }}}
+        assert!(answer_reading("",&[],&a).is_none());
+        assert!(answer_reading("",&[quantity(3,'=')],&a).is_none());
+        assert!(!same_thing("","apple")); assert!(same_thing("pineapple","apple"));
     }
 }

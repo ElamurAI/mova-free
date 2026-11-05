@@ -193,3 +193,21 @@ mod tests {
         assert!(!check_derivative(&f, &wrong, "x", &HashMap::new()).ok);
     }
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn unsupported_constants_and_domain_erasure() {
+        let unknown = E::Call("unknown".into(), vec![E::Var("y".into())]);
+        assert_eq!(derive(&unknown, "x", &mut Vec::new()).unwrap(), E::num(0));
+        assert!(derive(&unknown, "y", &mut Vec::new()).is_err());
+        let singular = E::bin(Op::Div, E::num(0), E::num(0));
+        assert_eq!(simplify(singular), E::num(0));
+        let f = crate::calc::parse("x*x").unwrap();
+        let df = derive(&f, "x", &mut Vec::new()).unwrap();
+        assert!(check_derivative(&f, &df, "x", &HashMap::new()).ok);
+        assert!(!check_derivative(&f, &E::num(0), "x", &HashMap::new()).ok);
+        assert!(!check_derivative(&unknown, &E::num(0), "x", &HashMap::new()).ok);
+    }
+}

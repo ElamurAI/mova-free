@@ -1,0 +1,21 @@
+{
+  "id": "algorithm-optimal-string-alignment",
+  "source": "algorithms/src/optimal_string_alignment/mod.rs",
+  "description": "Restricted unit-cost adjacent-transposition edit distance over Eq slices.",
+  "state": "Immutable finite slices; local rows or hash/shift state; returned witness, distance or offsets.",
+  "cost": "O(n*m) equality/arithmetic operations; three rows of O(min(n,m)) words.",
+  "forward": [
+    "D(i,j)=min(D(i-1,j)+1,D(i,j-1)+1,D(i-1,j-1)+[a[i-1]!=b[j-1]],D(i-2,j-2)+1 when crossed adjacent elements agree); boundaries D(i,0)=i,D(0,j)=j."
+  ],
+  "inverse": [
+    "behavior_complement and reverse_reconstruction are distinct first two typed models; see model.md."
+  ],
+  "checks": [
+    "cargo test --offline -p mova-algorithms optimal_string_alignment::tests",
+    "Compiled mutation must fail an assertion; see model.md#tests."
+  ],
+  "limitations": [
+    "Finite native evidence is not universal verification.",
+    "Syntax projection excludes expansion and semantic resolution."
+  ]
+}

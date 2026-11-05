@@ -136,3 +136,27 @@ fn main() {
     println!("max|AV−VD| nonsym.: faer {res_eig_f:.2e}");
     println!("max|AV−VD| sym.: faer {res_seig_f:.2e} nalgebra {res_seig_n:.2e}");
 }
+
+#[cfg(test)]
+mod wave30_tests {
+    use super::*;
+    #[test]
+    fn bounded_generator_and_three_calls() {
+        assert!(data(0, 7).is_empty());
+        let d = data(2, 7);
+        assert_eq!(d, data(2, 7));
+        assert_eq!(d.len(), 4);
+        assert!(d.iter().all(|x| *x >= -0.5 && *x < 0.5));
+        let mut g = Lcg(0);
+        let expected = ((1442695040888963407u64 >> 11) as f64) / ((1u64 << 53) as f64) - 0.5;
+        assert_eq!(g.next(), expected);
+        let mut calls = 0;
+        let (t, last) = best(|| {
+            calls += 1;
+            calls as f64
+        });
+        assert_eq!(calls, 3);
+        assert_eq!(last, 3.0);
+        assert!(t >= 0.0 && t.is_finite());
+    }
+}

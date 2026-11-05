@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "wdlex::t::ids",
+    "wdlex::t::lexeme_rows"
+  ],
+  "children": [],
+  "cost": "Linear JSON/output plus compression, eight writer buffers. senses_en retains selected maps O(R), sorts O(S log S). Partial output/child process failure separate; counters must fit.",
+  "description": "AnyClaims retains item IDs, lexeme sense IDs and only P8814 strings with rank. lex_line trims CR/comma/space/LF, ignores non-object/non-lexeme, counts bad JSON/lid, emits eight zstd tables. Enclosing lid overrides subid prefix. extract lbzip2 refuses >100 bad or nonzero exit. senses_en joins Q1860, prioritized en/en-gb/en-us lemma, P5137/P8814 and English gloss into sorted sense keys.",
+  "forward": [
+    "AnyClaims retains item IDs, lexeme sense IDs and only P8814 strings with rank. lex_line trims CR/comma/space/LF, ignores non-object/non-lexeme, counts bad JSON/lid, emits eight zstd tables. Enclosing lid overrides subid prefix. extract lbzip2 refuses >100 bad or nonzero exit. senses_en joins Q1860, prioritized en/en-gb/en-us lemma, P5137/P8814 and English gloss into sorted sense keys.",
+    "Trim trailing CR/comma/space/LF; if first!={ return unchanged. Deserialize→bad++ on error; typ gate; L-id gate. Emit header then lemmas/items/forms/senses. valid F/S subids emit using enclosing lid; header counts raw arrays, counters count accepted paths."
+  ],
+  "id": "onto-wdlex",
+  "inverse": [
+    "Exclude non-P8814 strings and non-English lexemes in senses_en. Do not exclude deprecated P8814 or parent/subid prefix mismatch; no gates for these.",
+    "Rows admit unknown claims/metadata and control-character variants. Parent lid+form number cannot recover subid prefix. English output loses other languages/lemma variants/duplicates."
+  ],
+  "limitations": [
+    "lexeme_rows actual parser/emitter tiny zstd and ids executed; subprocess/dump extract and senses_en unexecuted.",
+    "Executable approximant gap: no useful percentage metric established for these categorical/effectful observations. No surrogate or production substitution. Future caps 1/2/5/10% require a metric/domain and evidence; no numerical error bound follows here.",
+    "Partial lexical AST, no macro expansion/semantic proof; no live teacher/dump/corpus/database execution"
+  ],
+  "source": "onto/src/wdlex.rs",
+  "state": "Header n_forms/n_senses raw array lengths differ from valid-ID counters. Deprecated extraction rank0 retained; senses_en filters rank0 P5137 but not P8814. Equal priority lemma first wins, duplicate gloss last. Missing language/category becomes0."
+}

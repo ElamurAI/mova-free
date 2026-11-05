@@ -1,0 +1,62 @@
+{
+  "command": "cargo test -p latex --features math --bin latex wave28",
+  "control": {
+    "compiler_exit": 0,
+    "kind": "compiled_assertion_inversion",
+    "log_prefix": "effect",
+    "negative_exit": 101,
+    "restoration": "exact bytes",
+    "restored_exit": 0,
+    "shared_with_dependency": false
+  },
+  "date": "2026-10-31",
+  "expected_test_names": [
+    "corpus::wave28_tests::counters_limit_and_ranking",
+    "corpus::wave28_tests::synthetic_xml_outputs_and_read_errors"
+  ],
+  "limitations": [
+    "Finite synthetic actual-code checks, not proof",
+    "Frozen DATA and sha256 subprocess unexecuted",
+    "Strict Clippy blocked by 14 pre-existing lints in unchanged library code"
+  ],
+  "receipts": [
+    {
+      "exit": 0,
+      "log": "debug-1-binary.log",
+      "log_sha256": "3a34f6d470275b41b3b3dc1923e0f67fc655d0add8b168dac9dfb87996cf2aab",
+      "named_outcomes": "debug-1-binary.names",
+      "outcomes_sha256": "94a482e233c324e5f7d925e745f696567e4740912e8f3046af0b8cbdf89ca02b",
+      "profile": "debug",
+      "repetition": 1
+    },
+    {
+      "exit": 0,
+      "log": "debug-2-binary.log",
+      "log_sha256": "67ebd8c292c904cc2caa9c16f405ac56a38c50958c2506d731e0ea316045c471",
+      "named_outcomes": "debug-2-binary.names",
+      "outcomes_sha256": "94a482e233c324e5f7d925e745f696567e4740912e8f3046af0b8cbdf89ca02b",
+      "profile": "debug",
+      "repetition": 2
+    },
+    {
+      "exit": 0,
+      "log": "release-1-binary.log",
+      "log_sha256": "22180ec8cd6baed4af3bd44cdfb81f40474518e34db53ceddbfc87aadd15c9d9",
+      "named_outcomes": "release-1-binary.names",
+      "outcomes_sha256": "94a482e233c324e5f7d925e745f696567e4740912e8f3046af0b8cbdf89ca02b",
+      "profile": "release",
+      "repetition": 1
+    },
+    {
+      "exit": 0,
+      "log": "release-2-binary.log",
+      "log_sha256": "51a6c3608403c5b1114f42d4499233c01ac02fb65ad1b1b6fc422e8bb44c0978",
+      "named_outcomes": "release-2-binary.names",
+      "outcomes_sha256": "94a482e233c324e5f7d925e745f696567e4740912e8f3046af0b8cbdf89ca02b",
+      "profile": "release",
+      "repetition": 2
+    }
+  ],
+  "source": "latex/src/corpus.rs",
+  "source_sha256": "ae16662c288257b4a21a231297daa510094ff9a6801f3ae5672a355463ec62dc"
+}

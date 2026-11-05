@@ -146,8 +146,13 @@ fn syntax(s: &str) -> Vec<El> {
 
 impl Lex {
     fn load() -> Lex {
+        Self::from_tsv(VERBNET, NOMINALS, VNFREQ)
+    }
+
+    /// Load supplied TSV tables in file order, without global state.
+    pub fn from_tsv(verbnet: &str, nominals: &str, frequencies: &str) -> Lex {
         let mut x = Lex::default();
-        for l in VERBNET.lines().filter(|l| !l.starts_with('#')) {
+        for l in verbnet.lines().filter(|l| !l.starts_with('#')) {
             let c: Vec<&str> = l.split('\t').collect();
             match c[0] {
                 "class" if c.len() >= 5 => {
@@ -172,14 +177,14 @@ impl Lex {
                 _ => {}
             }
         }
-        for l in NOMINALS.lines().filter(|l| !l.starts_with('#')) {
+        for l in nominals.lines().filter(|l| !l.starts_with('#')) {
             let c: Vec<&str> = l.split('\t').collect();
             if c.len() < 4 {
                 continue;
             }
             x.noms.entry(c[0].to_string()).or_insert(Nom { noun: c[0].into(), verb: c[1].into(), file: c[2].into(), transitive: c[3] == "t" });
         }
-        for l in VNFREQ.lines().filter(|l| !l.starts_with('#')) {
+        for l in frequencies.lines().filter(|l| !l.starts_with('#')) {
             let c: Vec<&str> = l.split('\t').collect();
             let (Some(v), Some(&k), Some(n)) = (c.first(), c.get(1).and_then(|id| x.by_id.get(*id)), c.get(2).and_then(|n| n.parse::<usize>().ok())) else { continue };
             x.freq.entry(v.to_string()).or_default().push((k, n));
@@ -188,6 +193,12 @@ impl Lex {
             v.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(&b.0)));
         }
         x
+    }
+
+    /// Match supplied clauses; result coordinates refer to this lexicon.
+    /// Stable selection chooses a class with unknown animacy first.
+    pub fn best(&self, cl: &Clause, stable: bool) -> Option<Match> {
+        best_in(self, cl, false, stable, &mut |_, _| {})
     }
 
     /// The classes a verb belongs to (its own members; «put down» before «put»).
@@ -207,12 +218,16 @@ impl Lex {
     }
 
     /// The class and its ancestors (a subclass inherits its parent's frames and roles).
+    /// Stop before invalid or repeated indices in externally modified classes.
     pub fn chain(&self, c: usize) -> Vec<usize> {
-        let mut v = vec![c];
-        let mut x = self.classes[c].parent;
-        while let Some(p) = x {
-            v.push(p);
-            x = self.classes[p].parent;
+        let mut v = Vec::new();
+        let mut seen = std::collections::BTreeSet::new();
+        let mut next = Some(c);
+        while let Some(k) = next {
+            let Some(class) = self.classes.get(k) else { break };
+            if !seen.insert(k) { break; }
+            v.push(k);
+            next = class.parent;
         }
         v
     }
@@ -279,6 +294,26 @@ pub struct Clause {
     pub comp: Option<Comp>,
     /// an adjective complement («get tiny»)
     pub adj: bool,
+}
+
+impl Clause {
+    /// The clause's syntactic frame without its fillers: `NP V NP PP.into To` (`_` no subject, `V.pass` the passive
+    /// with `by:agent` its doer, the complement by its kind, `ADJ`). One verb in one such frame should get one class.
+    pub fn sig(&self) -> String {
+        let mut v: Vec<String> = vec![if self.subj.is_some() { "NP" } else { "_" }.into(), if self.passive { "V.pass" } else { "V" }.into()];
+        if self.by.is_some() {
+            v.push("by:agent".into());
+        }
+        v.extend(self.objs.iter().map(|_| "NP".to_string()));
+        v.extend(self.pps.iter().map(|(p, _)| format!("PP.{p}")));
+        if let Some(c) = self.comp {
+            v.push(format!("{c:?}"));
+        }
+        if self.adj {
+            v.push("ADJ".into());
+        }
+        v.join(" ")
+    }
 }
 
 /// The best frame for a clause and the role it gives each argument.
@@ -474,6 +509,13 @@ fn score(lx: &Lex, c: usize, f: &VFrame, cl: &Clause) -> Option<(i32, Match)> {
 pub fn best(cl: &Clause) -> Option<Match> {
     let lx = lex();
     let rec = RECORD.load(Ordering::Relaxed);
+    best_in(lx, cl, rec, !crate::frames::off("vn-stable"), &mut |v, c| {
+        let mut counts = COUNTS.lock().unwrap_or_else(|e| e.into_inner());
+        *counts.entry((v.to_string(), lx.classes[c].id.clone())).or_default() += 1;
+    })
+}
+
+fn best_in(lx: &Lex, cl: &Clause, rec: bool, stable: bool, record: &mut impl FnMut(&str, usize)) -> Option<Match> {
     for v in &cl.verbs {
         let cs = lx.classes_of(v);
         if cs.is_empty() {
@@ -482,7 +524,14 @@ pub fn best(cl: &Clause) -> Option<Match> {
         let mut best: Option<(i32, Match)> = None;
         // each class's best frame without the lessons' preference (what `world frames vnfreq` counts)
         let mut per_class: Vec<(usize, i32)> = Vec::new();
-        for &c in cs {
+        // (vn-stable) the class is chosen on the clause's syntactic frame alone, the fillers' animacy unknown, so that
+        // one verb in one frame gets one class wherever it stands (ties to the lessons' preference, then the first
+        // class in file order); the animacy then chooses the frame within that class
+        let cs: Vec<usize> = match stable_class(lx, v, cs, cl).filter(|_| !rec && stable) {
+            Some(c) => vec![c],
+            None => cs.to_vec(),
+        };
+        for &c in &cs {
             let mut cb: Option<i32> = None;
             for k in lx.chain(c) {
                 for (fi, f) in lx.classes[k].frames.iter().enumerate() {
@@ -510,13 +559,28 @@ pub fn best(cl: &Clause) -> Option<Match> {
             let top = per_class.iter().map(|x| x.1).max();
             let winners: Vec<usize> = per_class.iter().filter(|x| Some(x.1) == top).map(|x| x.0).collect();
             if winners.len() == 1 {
-                let mut m = COUNTS.lock().unwrap_or_else(|e| e.into_inner());
-                *m.entry((v.clone(), lx.classes[winners[0]].id.clone())).or_default() += 1;
+                record(v, winners[0]);
             }
         }
         return best;
     }
     None
+}
+
+/// The class a clause's syntactic frame matches best (`Clause::sig`: every filler's animacy unknown), with the lessons'
+/// preference; ties to the first class.
+fn stable_class(lx: &Lex, v: &str, cs: &[usize], cl: &Clause) -> Option<usize> {
+    let bare = Clause { subj: cl.subj.map(|_| Filler::default()), by: cl.by.map(|_| Filler::default()), objs: vec![Filler::default(); cl.objs.len()], pps: cl.pps.iter().map(|(p, _)| (p.clone(), Filler::default())).collect(), ..cl.clone() };
+    let mut top: Option<(i32, usize)> = None;
+    for &c in cs {
+        let s = lx.chain(c).iter().flat_map(|&k| lx.classes[k].frames.iter()).filter_map(|f| score(lx, c, f, &bare).map(|x| x.0)).max();
+        if let Some(s) = s.map(|s| s + lx.lesson_pref(v, c)) {
+            if top.is_none_or(|(b, _)| s > b) {
+                top = Some((s, c));
+            }
+        }
+    }
+    top.map(|x| x.1)
 }
 
 static RECORD: AtomicBool = AtomicBool::new(false);
@@ -548,7 +612,144 @@ pub fn speech_verb(verb: &str) -> bool {
     !cs.is_empty() && cs.iter().all(|&c| lx.communication(c))
 }
 
+/// A verb that takes a clause by VerbNet: its class (the one its lesson clauses match best most often, `vnfreq.tsv`;
+/// without one, every class it has) has, with its parents, a frame with a that-, whether- or to-infinitive clause, a
+/// bare clause or a quote («show that», «decide whether», «want to»), not only a gerund or a wh-clause («reject what S»
+/// is listed for a verb of refusal). Its object is a content, not a participant of an event. One class of several is
+/// not enough: «found» is also «base X on Y whether S».
+pub fn clausal(verb: &str) -> bool {
+    let lx = lex();
+    let clause = |f: &VFrame| {
+        let t: Vec<&str> = f.primary.split_whitespace().collect();
+        t.iter().enumerate().any(|(i, x)| matches!(*x, "S_INF" | "that" | "whether" | "whether/if" | "S-Quote") || *x == "S" && !(i > 0 && matches!(t[i - 1], "how" | "what" | "when" | "where" | "why" | "who")))
+    };
+    let of_class = |c: usize| lx.chain(c).iter().any(|&k| lx.classes[k].frames.iter().any(clause));
+    match lx.freq.get(verb).and_then(|v| v.first()) {
+        Some(&(c, _)) if c < lx.classes.len() => of_class(c),
+        _ => {
+            let cs = lx.classes_of(verb);
+            !cs.is_empty() && cs.iter().all(|&c| of_class(c))
+        }
+    }
+}
+
 /// All verbs `speech_verb` holds (for showing).
 pub fn speech_verbs() -> Vec<&'static str> {
     lex().by_member.keys().filter(|v| speech_verb(v)).map(String::as_str).collect()
+}
+
+#[cfg(test)]
+mod wave15_models {
+    use super::*;
+    const TABLE: &str = "class\tbase-1\t\tmove\tAgent[+animate] Theme[+concrete]\nframe\tbase-1\ttransitive\tAgent V Theme {to} Goal\t\texample\nclass\tchild-1\tbase-1\tmove\tAgent[+organization]\nclass\ttalk-37.1\t\tsay\tAgent\nframe\ttalk-37.1\tspeech\tAgent V Topic[+that_comp]\t\t\n";
+    fn lx() -> Lex {
+        Lex::from_tsv(
+            TABLE,
+            "arrival\tarrive\tevent\ti\narrival\tcome\tevent\tt\nbad",
+            "move\tchild-1\t9\nmove\tbase-1\t3\nmove\tbogus\t99\nmove\tbase-1\tbad",
+        )
+    }
+    fn cl() -> Clause {
+        Clause {
+            verbs: vec!["move".into()],
+            subj: Some(Filler::default()),
+            objs: vec![Filler::default()],
+            pps: vec![("to".into(), Filler::default())],
+            ..Default::default()
+        }
+    }
+    #[test]
+    fn codec_indexes_nominals_and_frequency() {
+        let x = lx();
+        assert_eq!(x.classes_of("move"), &[0, 1]);
+        assert_eq!(x.chain(1), vec![1, 0]);
+        assert_eq!(x.restr(1, "Agent"), "+organization");
+        assert_eq!(x.restr(1, "Theme"), "+concrete");
+        assert_eq!(x.noms["arrival"].verb, "arrive");
+        assert!(!x.noms["arrival"].transitive);
+        assert_eq!((x.lesson_pref("move", 0), x.lesson_pref("move", 1)), (1, 2));
+        assert!(x.communication(2));
+        assert!(x.classes_of("missing").is_empty());
+    }
+    #[test]
+    fn syntax_expansion_and_shape() {
+        assert_eq!(
+            element("{+src}"),
+            El::Prep(vec!["from".into(), "of".into(), "off".into(), "out".into()])
+        );
+        assert_eq!(element("{to}[+dest]"), El::Prep(vec!["to".into()]));
+        let f = VFrame {
+            primary: String::new(),
+            syntax: syntax("Agent V Topic[+that_comp] 'to' Recipient ADJ"),
+            sem: String::new(),
+            example: String::new(),
+        };
+        let s = shape(&f);
+        assert_eq!(s.comps, vec![("Topic".into(), "+that_comp".into())]);
+        assert_eq!(s.pps, vec![(vec!["to".into()], "Recipient".into())]);
+        assert!(s.adj);
+    }
+    #[test]
+    fn matching_exact_coordinates_and_scores() {
+        let x = lx();
+        let m = x.best(&cl(), true).unwrap();
+        assert_eq!((m.class, m.fclass, m.frame, m.score), (1, 0, 0, 10));
+        assert_eq!(m.subj.as_deref(), Some("Agent"));
+        assert_eq!(m.objs, vec![Some("Theme".into())]);
+        assert_eq!(m.pps, vec![Some("Goal".into())]);
+        let mut p = cl();
+        p.passive = true;
+        p.by = Some(Filler::default());
+        p.objs.clear();
+        let m = x.best(&p, false).unwrap();
+        assert_eq!(m.subj.as_deref(), Some("Theme"));
+        assert_eq!(m.by.as_deref(), Some("Agent"));
+        assert_eq!(m.score, 14);
+    }
+    #[test]
+    fn ties_and_stable_animacy() {
+        let x = Lex::from_tsv(
+            "class\ta\t\tv\tAgent[+animate]\nframe\ta\tf\tAgent V\t\t\nclass\tb\t\tv\tAgent[+concrete]\nframe\tb\tf\tAgent V\t\t",
+            "",
+            "v\ta\t4\nv\tb\t4",
+        );
+        let c = Clause {
+            verbs: vec!["v".into()],
+            subj: Some(Filler {
+                animate: Some(false),
+            }),
+            ..Default::default()
+        };
+        assert_eq!(x.lesson_pref("v", 0), 1);
+        assert_eq!(x.lesson_pref("v", 1), 1);
+        assert_eq!(x.best(&c, true).unwrap().class, 0);
+        assert_eq!(x.best(&c, false).unwrap().class, 1);
+    }
+    #[test]
+    fn core_filter_complements_and_signature() {
+        let x = lx();
+        let mut c = Clause {
+            verbs: vec!["say".into()],
+            subj: Some(Filler::default()),
+            comp: Some(Comp::That),
+            ..Default::default()
+        };
+        let m = x.best(&c, true).unwrap();
+        assert_eq!(m.comp.as_deref(), Some("Topic"));
+        assert_eq!(m.score, 4);
+        assert_eq!(c.sig(), "NP V That");
+        c.objs.push(Filler::default());
+        assert!(x.best(&c, true).is_none());
+    }
+    #[test]
+    fn malformed_parent_stops_at_valid_prefix() {
+        let mut x = lx();
+        x.classes[1].parent = Some(999);
+        assert_eq!(x.chain(1), vec![1]);
+        assert!(x.chain(999).is_empty());
+        x.classes[1].parent = Some(0);
+        x.classes[0].parent = Some(1);
+        assert_eq!(x.chain(1), vec![1, 0]);
+        assert_eq!(x.restr(1, "absent"), "");
+    }
 }

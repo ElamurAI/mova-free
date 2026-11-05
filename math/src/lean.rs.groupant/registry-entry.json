@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p math --lib lean::",
+    "two identical syntax projections"
+  ],
+  "children": [],
+  "cost": "O(proof bytes*bans+output bytes)+external Lean time; timeout depends on tool. Captured output uncapped, stored diagnostic blocks700chars.",
+  "description": "assemble trims trailing := and indents proof lines. check scans case-sensitive banned substrings before filesystem, then writes sanitized-id/tag source and runs timeout lake env lean. Timeout124 and path-prefixed error/sorry blocks reject. parse_proofs emits completed ===id/end blocks; a new id discards unfinished prior block.",
+  "forward": [
+    "assemble trims trailing := and indents proof lines. check scans case-sensitive banned substrings before filesystem, then writes sanitized-id/tag source and runs timeout lake env lean. Timeout124 and path-prefixed error/sorry blocks reject. parse_proofs emits completed ===id/end blocks; a new id discards unfinished prior block."
+  ],
+  "id": "math-lean-boundary",
+  "inverse": [
+    "Parsed bodies admit discarded preamble/fences/incomplete blocks. Assembly loses whitespace. Ban rejection admits every body containing banned substring; absence does not establish proof validity."
+  ],
+  "limitations": [
+    "No Lean/teacher process; substring gate not complete semantic/security validation.",
+    "Partial lexical AST; no semantic proof or executable percentage surrogate"
+  ],
+  "source": "math/src/lean.rs",
+  "state": "Fixed theorem, proof body, errors/file/duration"
+}

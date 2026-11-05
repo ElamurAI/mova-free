@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "duck::wave31::quote_and_stage_boundary"
+  ],
+  "children": [],
+  "cost": "O(sql bytes + stdout bytes + stderr bytes) Rust transport memory/time plus unbounded external database work and process startup; stage cleanup proportional to contained filesystem entries. quote and substitution allocate linear output.",
+  "description": "DuckDB process and stage transport",
+  "forward": [
+    "open binds executable from DUCKDB or home/bin/duckdb without spawning. run constructs -bail,-batch, optional -readonly and mode, then db; writes SQL stdin before waiting. Success requires exit success and no literal Error: in stderr. Stage directories are pid/tag/atomic-counter named, existing collision removed; drop removes unless DB_KEEP is present."
+  ],
+  "id": "db-src-duck",
+  "inverse": [
+    "Within successful process traces, nonzero exit or stderr containing Error: cannot produce Ok. Stage substitution cannot return a quoted directory. This excludes outputs, not database rollback: a failing process may already have written.",
+    "Given returned stdout y, compatible executions include all successful child runs whose stdout lossily decodes to y and whose stderr lacks Error:. SQL, DB state, raw invalid UTF-8 and harmless stderr remain ambiguous; quote is uniquely invertible only on strings produced by quote.",
+    "Readonly adds exactly one flag before mode and db; exec and read erase stdout and differ only in readonly. Oracle: direct argument inspection is source-derived, not executed SQL.",
+    "The literal Error: test is case-sensitive and independent of exit status. Exit success with warnings without that substring is admitted. OS spawn/write/wait failures precede returned stdout.",
+    "Directory uniqueness depends on process ID, tag and nonwrapped atomic counter. Existing collisions are recursively removed; DB_KEEP existence, including empty value, suppresses deletion. Fixtures use an isolated TMPDIR.",
+    "For input containing a apostrophes and b bytes, quote output length is b+a+2; doubling preserves backslashes literally. Finite oracle covers empty and two apostrophes."
+  ],
+  "limitations": [
+    "Finite helper/fixture evidence only; no DuckDB integration or SQL semantics",
+    "Partial syntax projection; no macro expansion or full semantic proof",
+    "No executable approximate profile or speedup claim"
+  ],
+  "source": "tools/db/src/duck.rs",
+  "state": "SQL bytes are passed unchanged to stdin; returned text is lossy UTF-8 stdout, not a relational result guarantee. Stage substitution rejects apostrophes before replacing all instances of the selected brace key. quote doubles each apostrophe inside surrounding single quotes."
+}

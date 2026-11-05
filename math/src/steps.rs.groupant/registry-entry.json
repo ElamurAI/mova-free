@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "cargo test -p math --lib wave28 -- --test-threads=1",
+    "cargo test -p math --test understand wave28_missing_path_skips_before_model_load -- --exact --test-threads=1",
+    "Same selected scope twice debug/release; seven compiled assertion controls and byte restoration"
+  ],
+  "children": [],
+  "cost": "For B beam,N numbers,F features,C clone size: O(N*(B*F+20B*C+20B log(20B))) plus feature generation. Gold parsing O(tokens*N + exact rational work); no benchmark.",
+  "description": "Text-order transition search, gold adapters and question binding.",
+  "forward": [
+    "prepare truncates aligned quantities/descriptions. SHIFT/SKIP consume input, Reduce/Far combine top with distance1..3 after legal guards. Beam tries20 action forms for <=3N+2 rounds, final filter finite nonnegative near-integer. Oracle uses disjoint 64-bit leaf masks."
+  ],
+  "id": "math-steps",
+  "inverse": [
+    "One tree can have multiple valid reduction schedules/unused skipped inputs. Scalar answers and index-erasing shape are many-to-one. Greedy duplicate-valued leaf matching cannot recover original occurrence uniquely."
+  ],
+  "limitations": [
+    "Partial source-derived model and lexical AST only",
+    "No model loading, annotated English, corpus/frozen suite, teacher, GPU or large training",
+    "No executable percent surrogate or universal accuracy guarantee",
+    "Only bounded helper branches executed; malformed structures and resource failures untested"
+  ],
+  "source": "math/src/steps.rs",
+  "state": "Valid replay actions, aligned arrays and n<=64 are required. Each Shift/Skip advances next; reduction lowers stack length. ACTIONS increments; environment knobs affect features/search. Exact tree evaluation differs from f64 search."
+}

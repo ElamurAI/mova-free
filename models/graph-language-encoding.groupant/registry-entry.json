@@ -1,0 +1,39 @@
+{
+  "checks": [
+    "15 kg named outcomes twice debug/twice release, normalized outcomes equal; 3 standalone global build outcomes twice debug/twice optimized (2 substantive plus child driver).",
+    "Eight compiled mutations, compile exit0/test exit101; byte-exact restoration and complete positive rerun.",
+    "Old-code max-global-heap synthetic witness panicked overflow; corrected test passes debug/release and checks no state mutation.",
+    "Eight parent source syntax projections generated twice byte-identically;12 scoped child ranges hash-bound to parent source.",
+    "Exact native command specs and per-source mappings retained as native-commands.json/source-test-map.json."
+  ],
+  "children": [
+    "global-build",
+    "kg-cols",
+    "kg-gram",
+    "kg-id",
+    "kg-main",
+    "kg-morph",
+    "kg-textgen",
+    "kg-uk"
+  ],
+  "cost": "KG costs compose two dictionary decompressions plus per-text parsing with n<=8 but unbounded analyses, registry scans/hash lookups, E log E edge sorting and compression; optional generation O(h^2*2^h),1<=h<=12. Ingestion retains corpus/Facts/edges. GlobalBuild cost O(B+C log C+LC+R log R) plus duplicate scans and generated text; effect/resource costs are separate, not benchmarked.",
+  "description": "Tagged disjoint relation G = KG ⊎ GlobalBuild. KG: dictionary/vocabulary --Morph::load(Gram projection)--> analysis/synth maps; text+names --uk::parse--> Fact or Reject; Fact+Morph --render_check--> multiset-completeness result; Fact+Morph+Freq+OrderModel --generate--> optional sentence. In main ingestion each accepted Fact encodes one provenance and one edge/member through Registry IDs and Edges, sorted by(src,rel,dst). GlobalBuild separately maps fenced seed/optional TSV inputs to lexical concept-indexed Rust tables and expressions output. No adapter from GlobalBuild indices to kg Registry IDs, or persisted Edges back to Fact, is implemented in these sources.",
+  "forward": [
+    "Tagged disjoint relation G = KG ⊎ GlobalBuild. KG: dictionary/vocabulary --Morph::load(Gram projection)--> analysis/synth maps; text+names --uk::parse--> Fact or Reject; Fact+Morph --render_check--> multiset-completeness result; Fact+Morph+Freq+OrderModel --generate--> optional sentence. In main ingestion each accepted Fact encodes one provenance and one edge/member through Registry IDs and Edges, sorted by(src,rel,dst). GlobalBuild separately maps fenced seed/optional TSV inputs to lexical concept-indexed Rust tables and expressions output. No adapter from GlobalBuild indices to kg Registry IDs, or persisted Edges back to Fact, is implemented in these sources.",
+    "Actual module declarations in kg/src/main.rs connect cols/gram/id/morph/uk/textgen; Morph and uk share Gram; textgen consumes uk::Fact and Morph synthesis; main writes Registry IDs and Edges using relation.local and full vertex Id. Registry keys are append IDs, not lexical concept indexes. global/Cargo.toml has no runtime dependencies and kg/Cargo.toml has no global dependency. Compile seed path is a separate tagged branch, not a claimed graph pipeline. Tests exercise actual Morph→parse→TSV and Fact→generate joins on invented inputs."
+  ],
+  "id": "graph-language-encoding",
+  "inverse": [
+    "KG rejected parser gates emit no Fact; successful render excludes mismatched normalized multiset only. Mask filtering excludes any missing-bit row; codecs exclude value loss on encoder-domain streams. Checked registry exhaustion excludes ID wrap/heap insertion. GlobalBuild success excludes duplicate canonical concept/link codes but does not exclude ignored blocks or partial write effects on failure. These exclusions are tag-specific and cannot transfer to absent KG↔GlobalBuild adapter.",
+    "KG output edges+Registry admit antecedent Facts with same member lemma/relation/gram but different lost word coordinates/order; filters admit arbitrary rejected rows; sorted graphs admit input permutations. Realization sentence admits multiple Fact/dictionary/count antecedents. GlobalBuild table preimage admits whitespace/comments/ignored or excluded input and absent/unreadable optional files. No unique source-text or registry reconstruction from lexical global index is implied."
+  ],
+  "limitations": [
+    "No whole subsystem proof, linguistic accuracy, live graph or corpus benchmark.",
+    "global/build.rs is separate tagged compiler path; no invented cross-path translation.",
+    "Encoded graph lacks word coordinates and explicit decode-to-Fact adapter.",
+    "Nontransactional writes/ignored buffered-drop errors and malformed public representations remain partial.",
+    "Clippy strict gate reports existing source lints; no broad refactor.",
+    "No executable approximant metric or percentage guarantee established."
+  ],
+  "state": "For valid aligned columns n<2^32 and single-writer valid registry state, per-member lemma/relation/grammar/flags survive encoding and codec roundtrip, with stable prior IDs after save/reopen. Word coordinates and member order are not persisted. Registry checked exhaustion returns error before mutation. render_check success constrains normalized word multiset only; not semantic roles or correct inference. All claims scoped to admitted representations and finite synthetic witnesses."
+}

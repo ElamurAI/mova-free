@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p world --lib rreport::wave10_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "N rows, G groups, V verdicts, total emitted bytes L: aggregation O(N log G + L), sampling O(N log N) with repeated hash-string work and seven attribute scans; manual O(N log V), formatting O(L). Answering and ROUGE dependency costs are separate. No measured speed claim.",
+  "description": "Question/answer alignment, metric aggregation, presentation, deterministic sampling and manual identity joins. Pure supplied rows are tested; nonempty answer generation is outside the executed slice.",
+  "forward": [
+    "Question/answer alignment, metric aggregation, presentation, deterministic sampling and manual identity joins. Pure supplied rows are tested; nonempty answer generation is outside the executed slice.",
+    "main.rs reader evaluation calls reader::read_all on qs, then rows(own,&qs,ans), report/tsv and optional sample/manual. read_all maps qs in unchanged order. Native sample->read_verdicts->manual/report joins preserve (story,n) but bypass read_all and nonempty rows scoring. Ordered positional answer identity is a caller obligation."
+  ],
+  "id": "world-rreport",
+  "inverse": [
+    "Universe: bounded supplied candidate or Row inputs and one terminating call. Exclude observations forbidden by the scoped child invariants, conditional on each child's explicit premises. This is an inner absent-behavior model, not the complement of all Rust traces.",
+    "Keep every compatible scoped input and intermediate observation satisfying forward constraints. Aggregate scores, selected candidates and sampled records discard information; no unique inverse or causal explanation follows."
+  ],
+  "limitations": [
+    "Finite synthetic evidence, partial syntax and source-inspected callers only.",
+    "No live parser, gold/heldout, teacher, GPU or full-course runs; no speedup or error-budget claim.",
+    "See fragment models for unsupported malformed state, overflow, positional identity and metadata boundaries."
+  ],
+  "source": "world/src/rreport.rs",
+  "state": "Only declared bounded valid domains have modeled invariants. Successful allocations and stable dependency snapshots are assumed; arbitrary public states and external effects are not certified."
+}

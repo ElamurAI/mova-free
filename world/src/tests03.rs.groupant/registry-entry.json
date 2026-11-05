@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "tests03::stepgame_lexical_reader_reads_new_phrasings",
+    "tests03::stepgame_phrasing_and_corrected_format",
+    "tests03::narrower_variants_and_scoped_changes"
+  ],
+  "children": [],
+  "cost": "Finite literal feature/condition scans and string allocations; broader rule/grammar work delegated.",
+  "description": "Selected tests invoke actual lexical/phrasing/load_txt and Rule/Change methods on literals: ground reversal, intensifier, clock/conflict abstention, renaming normalization, story reset, narrower coverage and Add/Remove/Replace. Remaining grammar/social/distress/calendar assertions are statically described but not selected.",
+  "forward": [
+    "Selected tests invoke actual lexical/phrasing/load_txt and Rule/Change methods on literals: ground reversal, intensifier, clock/conflict abstention, renaming normalization, story reset, narrower coverage and Add/Remove/Replace. Remaining grammar/social/distress/calendar assertions are statically described but not selected.",
+    "Word helper uses supplied one-based head/UPos/Rel but fixed Tag::NN/default Feats and lowercase lemma. Coordinates are first-agent-relative-second."
+  ],
+  "id": "world-tests03",
+  "inverse": [
+    "Exclude definite lexical vector for clock/conflict, covering wider/different-label rule, and retaining old story after '1'. No teacher/model call in selected checks.",
+    "Equal phrasing admits arbitrary agent-letter renamings; covered narrower rule admits same-label condition supersets. Change outputs do not reconstruct unique modification histories. Passing literals constrain finite cases only."
+  ],
+  "limitations": [
+    "Only three selected tests; no remaining grammar/social/calendar runtime coverage",
+    "Executable percent approximant unsupported for exact assertions"
+  ],
+  "source": "world/src/tests03.rs",
+  "state": "Synthetic UD Word helper, StepGame strings/items, induction rules/Changes, dialogue and calendar literals."
+}

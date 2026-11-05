@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline counting_sort::tests::",
+    "Strict Clippy; debug/release; compiled negative control",
+    "2026-10-30: three new production-linked relation tests, explicit false-relation countermodels, separate compiled mutants, debug/release twice and strict Clippy."
+  ],
+  "children": [],
+  "cost": "Bounded enumeration sum_{k=0}^7 4^k = 21,845 cases plus fixed fixtures and 8,192-element oracle. Oracle cost O(n log n); test resource counts are finite, not throughput evidence.",
+  "description": "counting_sort independent oracle tests",
+  "forward": [
+    "Finite deterministic tests compare the associated exact implementation with standard comparison sorting and explicit boundary fixtures. Three tests pass in debug and release. All 21,845 arrays of lengths 0..7 over four values match std slice sorting. An 8,192-value fixed-seed array also matches. Boundary tests cover empty/zero budget, high minimum, range overflow, budget rejection and deterministic Vec capacity overflow; every error preserves input. A compiled mutant that fills each bucket with minimum rather than minimum+offset is rejected by boundaries_and_errors_are_atomic."
+  ],
+  "id": "algorithm-counting-sort-tests",
+  "inverse": [
+    "In the universe of implementation behaviors and test outcomes, a passing outcome excludes disagreements observed by the enumerated fixtures and their independent oracle. Untested behaviors remain compatible; passing does not exclude every incorrect implementation.",
+    "A passing test outcome admits all implementations agreeing on the finite observed fixtures, including implementations differing elsewhere. A failed assertion constrains a compatible mismatch to its reported fixture. The test outcome cannot reconstruct unique implementation code.",
+    "For successful sorting S, S(S(x))=S(x). Translation by a constant preserving usize bounds preserves order and span. Tests check idempotence and the narrow span at usize::MAX.",
+    "Passing relation tests admits implementations agreeing on the enumerated histogram or digit-subsequence fibers, mapped fixtures and resource or pass-order observations. It excludes only detected mismatches; whole-code equivalence and untested allocator outcomes remain unknown.",
+    "The tests deliberately reject support-only inverse fibers and transformations with dropped domain premises. Compiled production mutants are tested separately against the new relation assertions. Their rejection establishes sensitivity to those faults, not completeness against all incorrect implementations."
+  ],
+  "limitations": [
+    "Partial syntax has opaque macros and no semantic type resolution. Finite evidence is not proof. Exact algorithms have no approximate execution profiles; supported approximant caps remain 1%, 2%, 5%, 10%."
+  ],
+  "source": "algorithms/src/counting_sort/tests.rs",
+  "state": "Finite deterministic test fixtures and implementation observations."
+}

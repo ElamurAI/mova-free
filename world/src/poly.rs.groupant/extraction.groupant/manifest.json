@@ -1,0 +1,125 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Exclude successful selection without START/END or matching heading, end-before-start marker slicing, and empty paragraph results. On these errors no parser/output effects occur.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "P maps back to all books with first matching markers/headings selecting lines whose whitespace projection equals P; retain arbitrary text outside the selected interval. The relation is many-to-one.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "heading_selection",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Select first exact heading after first START and first exact end after that heading; end before the selected start is not a candidate. Repeated headings may cut at the second occurrence. A selected heading is removed; nested headings are ordinary paragraph strings. Oracle: repeated and whitespace-sensitive headings.",
+        "path": "model.md",
+        "section": "heading_selection",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "selection_preimage"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "whitespace_loss",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Paragraph projection splits on blank lines and joins all split_whitespace words with one space. Preimage permits arbitrary runs of blank lines and intra-paragraph whitespace; it does not recover line boundaries. Whitespace-only selection is an error.",
+        "path": "model.md",
+        "section": "whitespace_loss",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "information_loss"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "failure_order",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Order is read UTF-8, remove leading BOMs, locate START, locate END, check ordering, select heading/end, reject empty paragraphs, acquire annotator, encode/write. Earlier errors exclude later effects. Output write is not atomic; no rollback claim after acquisition. Oracle: sentinel unchanged on reversed markers.",
+        "path": "model.md",
+        "section": "failure_order",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "failure_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4878,
+      "start": 3257
+    },
+    "description": "Logical source region \"/// Pure extraction\" through before \"#[cfg(test)]\". Select first exact heading after first START and first exact end after that heading; end before the selected start is not a candidate. Repeated headings may cut at the second occurrence. A selected heading is removed; nested headings are ordinary paragraph strings. Oracle: repeated and whitespace-sensitive headings. Paragraph projection splits on blank lines and joins all split_whitespace words with one space. Preimage permits arbitrary runs of blank lines and intra-paragraph whitespace; it does not recover line boundaries. Whitespace-only selection is an error. Order is read UTF-8, remove leading BOMs, locate START, locate END, check ordering, select heading/end, reject empty paragraphs, acquire annotator, encode/write. Earlier errors exclude later effects. Output write is not atomic; no rollback claim after acquisition. Oracle: sentinel unchanged on reversed markers. Parent composition retains shared text/clock/intermediate values. Full-file wrapper and test gaps remain in the root."
+  },
+  "id": "world-poly-extraction",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../poly.rs",
+    "sha256": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c"
+  },
+  "status": "partial_source_derived_instance"
+}

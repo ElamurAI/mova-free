@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "ibm::tests::learns_a_toy_dictionary",
+    "ibm::wave32::zero_prior_and_normalization"
+  ],
+  "children": [],
+  "cost": "Initial storage Q=sum (|f|+1)|e|+prior entries before dedup; sort each column. Iterations O(I*(sum |e|(|f|+1) log Rmax+R+P log Rmax)) time and O(Q+R+nf) memory; align O(|e||f|log Rmax).",
+  "description": "Vocab assigns sorted unique IDs1.., missing0. train_prior builds sorted cooccurrence/prior rows, initializes uniform, repeats fractional counts against NULL then adds prior pseudocounts and normalizes positive rows. align maximizes t*exp(-2*relative-distance) over NULL*.3.",
+  "forward": [
+    "Vocab assigns sorted unique IDs1.., missing0. train_prior builds sorted cooccurrence/prior rows, initializes uniform, repeats fractional counts against NULL then adds prior pseudocounts and normalizes positive rows. align maximizes t*exp(-2*relative-distance) over NULL*.3."
+  ],
+  "id": "translation-meta-ibm",
+  "inverse": [
+    "Unlisted row/column lookup returns0; zero score cannot beat NULL tie. Training does not load a linguistic model or corpus itself.",
+    "Rows admit many repeated/reordered training pairs and priors yielding same normalized counts. Alignment output identifies inequality cells in row probabilities, not unique lexical meaning."
+  ],
+  "limitations": [
+    "No live corpus/model/teacher/GPU execution or language accuracy claim",
+    "Partial syntax and finite tests; full effectful paths unexecuted; no percentage surrogate"
+  ],
+  "source": "tools/translate/src/ibm.rs",
+  "state": "Source IDs<=nf, nf+1 and vocab ids representable; alpha finite nonnegative, sums finite; no claim for NaN/negative priors. Prior duplicates intentionally counted."
+}

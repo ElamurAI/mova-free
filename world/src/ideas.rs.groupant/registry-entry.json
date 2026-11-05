@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "Selected wave28_dialogue inline tests; lib compile only",
+    "Paired source syntax generation"
+  ],
+  "children": [],
+  "cost": "read/write O(B); record O(B+N). related builds df O(W log V), scores intersections and sorts O(N log N), retains entire file. No locking, write contention/durability guarantee or overflow certificate for u64 score sums.",
+  "description": "read ignores comments and rows with fewer than six tab fields; invalid time becomes zero. record updates first equal kind/clean(text), evidence/context/time and preserves source, else appends; atomic rewrite errors discarded. related scores sum 1e6/df for normalized shared words, sorts score descending, held/principle/derived/other, newest, text. carried_over keeps held nonempty differing contexts.",
+  "forward": [
+    "read ignores comments and rows with fewer than six tab fields; invalid time becomes zero. record updates first equal kind/clean(text), evidence/context/time and preserves source, else appends; atomic rewrite errors discarded. related scores sum 1e6/df for normalized shared words, sorts score descending, held/principle/derived/other, newest, text. carried_over keeps held nonempty differing contexts."
+  ],
+  "id": "world-ideas",
+  "inverse": [
+    "TSV records admit cleaned raw strings differing in tabs/newlines; overwritten evidence/time are unrecoverable, and source stays first. Ranking admits unrelated idea insertions and query normalization collisions; total ranking is not invertible."
+  ],
+  "limitations": [
+    "Isolated tempfile read/update/ranking and carried-over tests; no world seeding or production idea store access.",
+    "No executable surrogate, semantic proof, live teacher, corpus, GPU or held-out execution"
+  ],
+  "source": "world/src/ideas.rs",
+  "state": "Missing/unreadable file becomes empty. Zero overlap drops an idea; k=0 returns none. Text/evidence/source tab/newline cleaning is asymmetric: kind/context remain raw and can break TSV. seed_principles uses snapshot membership so return count need not equal new unique records."
+}

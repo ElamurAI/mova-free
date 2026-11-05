@@ -1,0 +1,134 @@
+{
+  "schema": 1,
+  "kind": "groupant_fragment",
+  "id": "hot-state-delta",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../../state.rs",
+    "sha256": "135a1beeb0da2a0d86fdde81a66c9ffbffa3f6783abee5fa666e0e3dfd5a778e"
+  },
+  "coverage": {
+    "description": "diff and apply only"
+  },
+  "components": {
+    "ast": {
+      "path": "../syntax.json",
+      "status": "partial",
+      "format": "rust_syntax_projection"
+    },
+    "approximant": {
+      "path": "../model.md#model",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "../model.md#model",
+      "status": "finite_checked"
+    },
+    "cost": {
+      "path": "../model.md#model",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "../model.md#model",
+      "status": "present"
+    },
+    "tests": {
+      "path": "../model.md#tests",
+      "status": "bounded_evidence"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "../model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "diff/apply on finite sequences with successful allocations and LCS counts fitting u32; no filesystem or ancestry.",
+        "observation_scope": "Pure encoder/decoder input-output transition.",
+        "operator": "U=(a,ops,out); U minus Decode excludes outputs other than ordered retained spans and inserted payloads under bounded consumption. Encoder complement excludes scripts inconsistent with insertion-on-tie traversal; minimality alone is insufficient.",
+        "approximation_semantics": "Conditional source-derived target; finite observations do not prove universal correspondence.",
+        "assumptions": "diff/apply on finite sequences with successful allocations and LCS counts fitting u32; no filesystem or ancestry.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "antecedents",
+        "type": "reverse_reconstruction",
+        "path": "../model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "diff/apply on finite sequences with successful allocations and LCS counts fitting u32; no filesystem or ancestry.",
+        "observation_scope": "Pure encoder/decoder input-output transition.",
+        "operator": "For fixed ops and output b retain all a with Decode(a,ops)=b; deleted lines and omitted tails vary freely. For fixed a and b, retain all compatible scripts. Encoder reconstruction given a and diff(a,b) recovers b uniquely.",
+        "approximation_semantics": "Conditional source-derived target; finite observations do not prove universal correspondence.",
+        "assumptions": "diff/apply on finite sequences with successful allocations and LCS counts fitting u32; no filesystem or ancestry.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "resource",
+        "type": "resource_preimage",
+        "path": "../model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "diff/apply on finite sequences with successful allocations and LCS counts fitting u32; no filesystem or ancestry.",
+        "observation_scope": "Pure encoder/decoder input-output transition.",
+        "operator": "For LCS cell budget B, dimensions satisfy (n+1)(m+1)<=B before allocation overhead. Decoder output storage is the byte sum of kept and inserted lines.",
+        "approximation_semantics": "Conditional source-derived target; finite observations do not prove universal correspondence.",
+        "assumptions": "diff/apply on finite sequences with successful allocations and LCS counts fitting u32; no filesystem or ancestry.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "loss",
+        "type": "information_loss",
+        "path": "../model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "diff/apply on finite sequences with successful allocations and LCS counts fitting u32; no filesystem or ancestry.",
+        "observation_scope": "Pure encoder/decoder input-output transition.",
+        "operator": "Drop operations and omitted tails erase line values; invalid prefixes and malformed counts make multiple scripts observationally equivalent. These many-to-one fibers forbid a unique unrestricted inverse.",
+        "approximation_semantics": "Conditional source-derived target; finite observations do not prove universal correspondence.",
+        "assumptions": "diff/apply on finite sequences with successful allocations and LCS counts fitting u32; no filesystem or ancestry.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "minimum_edits",
+        "type": "edit_optimality",
+        "path": "../model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "diff/apply on finite sequences with successful allocations and LCS counts fitting u32; no filesystem or ancestry.",
+        "observation_scope": "Pure encoder/decoder input-output transition.",
+        "operator": "For diff(a,b), insertion-plus-deletion count equals |a|+|b|-2 LCS(a,b), checked against independent subsequence enumeration for 961 pairs.",
+        "approximation_semantics": "Conditional source-derived target; finite observations do not prove universal correspondence.",
+        "assumptions": "diff/apply on finite sequences with successful allocations and LCS counts fitting u32; no filesystem or ancestry.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "cursor",
+        "type": "invariant_projection",
+        "path": "../model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "diff/apply on finite sequences with successful allocations and LCS counts fitting u32; no filesystem or ancestry.",
+        "observation_scope": "Pure encoder/decoder input-output transition.",
+        "operator": "At each decoder step cursor is in [0,|a|]; keeps preserve source order and inserts occur at their script position. Oversized consumption reaches the end without wrapping.",
+        "approximation_semantics": "Conditional source-derived target; finite observations do not prove universal correspondence.",
+        "assumptions": "diff/apply on finite sequences with successful allocations and LCS counts fitting u32; no filesystem or ancestry.",
+        "evidence": "../model.md#tests"
+      },
+      {
+        "id": "cost",
+        "type": "cost_composition",
+        "path": "../model.md#model",
+        "status": "partial_source_derived_finite_checked",
+        "subject_revision": "bfa67ac2b0312fd539bb92c9a665694b75969b702a64e1fac81bed41e901741f",
+        "domain": "diff/apply on finite sequences with successful allocations and LCS counts fitting u32; no filesystem or ancestry.",
+        "observation_scope": "Pure encoder/decoder input-output transition.",
+        "operator": "diff requires O(n*m) cells/comparisons; decoding scans operation bytes and copies output bytes. Encoding followed by decoding adds both costs; no ancestry or I/O is included.",
+        "approximation_semantics": "Conditional source-derived target; finite observations do not prove universal correspondence.",
+        "assumptions": "diff/apply on finite sequences with successful allocations and LCS counts fitting u32; no filesystem or ancestry.",
+        "evidence": "../model.md#tests"
+      }
+    ]
+  },
+  "children": []
+}

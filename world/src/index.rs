@@ -573,3 +573,152 @@ impl Index {
         out
     }
 }
+
+
+#[cfg(test)]
+mod groupant_tests {
+    use super::*;
+    use crate::world::Text;
+
+    fn field(slot: Slot, word: &str, ids: Vec<Id>) -> FField {
+        FField { slot, text: word.into(), ids, lem: [word.to_string()].into_iter().collect() }
+    }
+    fn fact(n: usize) -> Fact {
+        Fact { n, kind: Kind::Event, src: Id::new(Reg::E, n as u32), key: "run".into(),
+            who: vec![Id::new(Reg::C, 1)], fields: vec![field(Slot::Pred, "run", vec![]),
+                field(Slot::Patient, "person", vec![Id::new(Reg::C, 2)]),
+                field(Slot::Value, "bright", vec![]), field(Slot::About, "bright", vec![])],
+            anchors: vec![1], sent: 1, line: n, cause: None, by: None, neg: false, end: false }
+    }
+    fn world() -> World {
+        World::new(Text { doc: 0, title: "fixture".into(), sents: vec![(10, "fixture".into())] })
+    }
+
+    #[test]
+    fn half_unit_score_oracle() {
+        // Literal integer coefficients, independent of floating score and Slot::weight.
+        let subjects = [0, 6, 2, -4];
+        let sections = [(vec![], false, 0, false), (vec![10], false, 6, true),
+            (vec![9], true, 5, false), (vec![9], false, 1, false),
+            (vec![11], true, 1, false), (vec![1], true, -3, false)];
+        let w = world();
+        let ix = Index::empty();
+        let f = fact(1);
+        let mut cases = 0;
+        for pred in [false, true] { for subject in 0..4 { for others in 0..3 { for words in 0..3 {
+            for (secs, fut, section, insec) in &sections {
+                let q = Query { preds: vec![vec![if pred { "run" } else { "absent" }.into()]],
+                    who: if subject == 0 { vec![] } else { vec![Id::new(Reg::C, subject as u32)] },
+                    role: Some(Slot::Agent), others: vec![Id::new(Reg::C, 2); others],
+                    words: vec![vec!["bright".into()]; words], secs: secs.clone(), fut: *fut };
+                let expected = i32::from(pred) * 6 + subjects[subject] + others as i32 * 3 + words as i32 * 2 + section;
+                let got = ix.score(&w, &f, &q);
+                assert_eq!(got.score * 2.0, f64::from(expected));
+                assert_eq!((got.pred, got.who, got.words, got.insec),
+                    (pred, subject == 1 || subject == 2, words as f64, *insec));
+                cases += 1;
+            }
+        }}}}
+        assert_eq!(cases, 432);
+    }
+
+    #[test]
+    fn rank_filter_projection_and_equal_key_stability() {
+        let w = world();
+        let q = Query { who: vec![Id::new(Reg::C, 99)], secs: vec![1], ..Query::default() };
+        let ix = Index { facts: vec![fact(9), fact(2), fact(5)] };
+        let out = ix.search(&w, &q, |f| f.n != 5);
+        assert_eq!(out.iter().map(|s| (s.n, s.score)).collect::<Vec<_>>(), vec![(2, -3.5), (9, -3.5)]);
+        let mut a = fact(7);
+        a.fields = vec![field(Slot::Pred, "run", vec![])];
+        let mut b = fact(7);
+        b.fields = vec![field(Slot::Value, "bright", vec![])];
+        let q = Query { preds: vec![vec!["run".into()]], words: vec![vec!["bright".into()]; 3], ..Query::default() };
+        for (facts, flags) in [(vec![a.clone(), b.clone()], vec![true, false]), (vec![b, a], vec![false, true])] {
+            let out = Index { facts }.search(&w, &q, |_| true);
+            assert!(out.iter().all(|s| s.score == 3.0 && s.n == 7));
+            assert_eq!(out.iter().map(|s| s.pred).collect::<Vec<_>>(), flags);
+        }
+    }
+
+    #[test]
+    fn roles_and_duplicate_field_evidence() {
+        let w = world();
+        let ix = Index::empty();
+        let mut f = fact(1);
+        f.fields.insert(0, field(Slot::Patient, "", vec![Id::new(Reg::C, 2)]));
+        f.fields.push(field(Slot::Patient, "later", vec![Id::new(Reg::C, 3)]));
+        assert_eq!(f.text(Slot::Patient), None);
+        assert_eq!(f.ids(Slot::Patient), vec![Id::new(Reg::C, 2), Id::new(Reg::C, 2), Id::new(Reg::C, 3)]);
+        assert!(!f.has_id(f.src));
+        for (id, role, expected) in [(1, None, 3.0), (1, Some(Slot::Patient), 1.0),
+            (2, Some(Slot::Patient), 3.0), (3, Some(Slot::Patient), 3.0), (4, Some(Slot::Agent), -2.0)] {
+            let q = Query { who: vec![Id::new(Reg::C, id); 2], role, ..Query::default() };
+            let got = ix.score(&w, &f, &q);
+            assert_eq!((got.score, got.who), (expected, expected > 0.0));
+        }
+    }
+
+    #[test]
+    fn word_maximum_and_predicate_first_field() {
+        let w = world();
+        let ix = Index::empty();
+        let mut f = fact(1);
+        f.fields.push(field(Slot::Pred, "later", vec![]));
+        for (word, half) in [("run", 3), ("bright", 2), ("missing", 0), ("later", 3)] {
+            let q = Query { preds: vec![vec![word.into()]; 2], words: vec![vec![word.into(), word.into()]; 2],
+                others: vec![Id::new(Reg::C, 2); 2], ..Query::default() };
+            let got = ix.score(&w, &f, &q);
+            assert_eq!(got.pred, word == "run");
+            assert_eq!(got.words * 2.0, f64::from(half * 2));
+            assert_eq!(got.score, 3.0 + f64::from(half) + if word == "run" { 3.0 } else { 0.0 });
+        }
+        f.fields = vec![field(Slot::When, "time", vec![]), field(Slot::About, "time", vec![])];
+        let got = ix.score(&w, &f, &Query { words: vec![vec!["time".into()]], ..Query::default() });
+        assert_eq!(got.words, 0.5);
+    }
+
+    #[test]
+    fn section_priority_and_positive_missing_anchor() {
+        let ix = Index::empty();
+        let w = world();
+        let mut f = fact(1);
+        f.anchors = vec![u16::MAX];
+        for (sent, secs, fut, half, insec) in [
+            (1, vec![9, 10], true, 6, true), (1, vec![9, 11], true, 5, false),
+            (1, vec![11], true, 1, false), (2, vec![0], false, 6, true),
+            (u16::MAX, vec![1], true, 1, false), (2, vec![10], false, -3, false),
+            (2, vec![], true, 0, false)] {
+            f.sent = sent;
+            let got = ix.score(&w, &f, &Query { secs, fut, ..Query::default() });
+            assert_eq!((got.score * 2.0, got.insec), (f64::from(half), insec));
+        }
+    }
+
+    #[test]
+    fn label_and_score_joint_preimages() {
+        let w = world();
+        let ix = Index::empty();
+        let base = fact(1);
+        let q = Query { preds: vec![vec!["run".into()]], ..Query::default() };
+        let label = base.label();
+        let score = ix.score(&w, &base, &q);
+        for bits in 0..16 {
+            let mut f = base.clone();
+            f.neg = bits & 1 != 0;
+            f.end = bits & 2 != 0;
+            f.by = (bits & 4 != 0).then(|| Id::new(Reg::E, 99));
+            f.line += bits;
+            if bits & 8 != 0 { f.fields.push(field(Slot::Why, "invisible", vec![])); }
+            let got = ix.score(&w, &f, &q);
+            assert_eq!(f.label(), label);
+            assert_eq!((got.n, got.score, got.pred, got.who, got.words, got.insec, got.why),
+                (score.n, score.score, score.pred, score.who, score.words, score.insec, score.why.clone()));
+        }
+        // Same label alone is insufficient: changing the first predicate changes score.
+        let mut different = base;
+        different.fields[0].lem.clear();
+        assert_eq!(different.label(), label);
+        assert_eq!(ix.score(&w, &different, &q).score, 0.0);
+    }
+}

@@ -1,0 +1,103 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "No macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#model",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete source-bound relation, domain and finite witness in linked section",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete source-bound relation, domain and finite witness in linked section",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "curvature_assumption_fiber",
+        "path": "model.md",
+        "scope": "Concrete source-bound relation, domain and finite witness in linked section",
+        "section": "curvature_assumption_fiber",
+        "status": "partial_source_derived_model",
+        "type": "curvature_assumption_fiber"
+      },
+      {
+        "id": "affine_reproduction",
+        "path": "model.md",
+        "scope": "Concrete source-bound relation, domain and finite witness in linked section",
+        "section": "affine_reproduction",
+        "status": "partial_source_derived_model",
+        "type": "affine_reproduction"
+      },
+      {
+        "id": "domain_partition",
+        "path": "model.md",
+        "scope": "Concrete source-bound relation, domain and finite witness in linked section",
+        "section": "domain_partition",
+        "status": "partial_source_derived_model",
+        "type": "domain_partition"
+      },
+      {
+        "id": "absolute_metric_transport",
+        "path": "model.md",
+        "scope": "Concrete source-bound relation, domain and finite witness in linked section",
+        "section": "absolute_metric_transport",
+        "status": "partial_source_derived_model",
+        "type": "absolute_metric_transport"
+      },
+      {
+        "approximation_semantics": "Exact branch relation at source level; no timing or numerical approximation guarantee.",
+        "assumptions": "Fixed source and inputs other than budget, ordinary Rust execution.",
+        "domain": "Fixed finite knots, integer query and curvature; vary only the usize work budget.",
+        "evidence": "Current source inspection in model.md#descriptant; existing model.md#tests evidence unchanged. No new runtime verification claimed for this specialization.",
+        "id": "budget_masked_validation",
+        "observation_scope": "One source-defined invocation or explicitly bounded trace in the linked section; source reasoning only.",
+        "operator": "B<n maps to WorkBudget; B>=n maps to the budget-independent remaining validation/arithmetic relation.",
+        "path": "model.md",
+        "section": "budget_masked_validation",
+        "status": "partial_source_derived_model",
+        "subject_revision": "83e21dc6ede1e8cfb9c397eb4e3eea7050646fbac380a74a5f9932f703adbe5c",
+        "type": "validation_budget_counterfactual"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "id": "algorithm-piecewise-linear",
+  "kind": "groupant",
+  "registry": {
+    "node": "algorithm-piecewise-linear",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "83e21dc6ede1e8cfb9c397eb4e3eea7050646fbac380a74a5f9932f703adbe5c"
+  },
+  "status": "partial_descriptive_instance"
+}

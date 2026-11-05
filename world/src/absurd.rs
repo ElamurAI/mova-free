@@ -1,4 +1,4 @@
-//! Absurdity check of dependency trees with the absurdity matrix (`docs/absurdity.md`): each verb's agent and
+//! Absurdity check of dependency trees with the absurdity matrix (`docs/knowledge.md#the-absurdity-matrix`): each verb's agent and
 //! patient noun get a graded score 0–4 from the matrix cell `verb|noun` (SUBJ or OBJ column, real-world scale).
 //! Every judgment is logged — absurd and plausible alike — with the cell it used; what the matrix does not know
 //! (verb or noun missing) goes to a gap journal with counts and examples, as the reader's gap journal does.
@@ -74,6 +74,8 @@ impl Matrix {
     }
 
     pub fn score(&self, verb: &str, noun: &str, role: usize) -> Option<u8> {
+        // Only the two configured role columns exist.
+        if role >= 2 { return None; }
         if self.global {
             // a known verbal multiword expression is not literally absurd ("take place", "pay attention")
             let lit = global::absurdity_in(&self.domain, verb, noun).map(|s| s[role]);
@@ -462,4 +464,108 @@ pub fn events(path: &Path, domain: &str, top: usize) -> Result<()> {
         println!("{n:7} {b:4} books  {ev:40} {why}");
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod wave11_models {
+    use super::*;
+    use en::gram::Rel;
+
+    fn node(lemma: &str, upos: UPos, head: usize, rel: Rel) -> Node {
+        Node {
+            form: lemma.into(),
+            lemma: lemma.into(),
+            upos: Some(upos),
+            head,
+            rel,
+        }
+    }
+
+    #[test]
+    fn score_role_boundary() {
+        let m = Matrix::parse(r#"{"eat|cheese":[4,0]}"#).unwrap();
+        for role in [2, 3, usize::MAX] {
+            assert_eq!(m.score("eat", "cheese", role), None, "unsupported role");
+            assert_eq!(Matrix::global().score("eat", "cheese", role), None);
+        }
+    }
+
+    #[test]
+    fn matrix_scores_exhaustive() {
+        for a in 0..=5 {
+            for b in 0..=5 {
+                let m = Matrix::parse(&format!(r#"{{"eat|cheese":[{a},{b}]}}"#));
+                assert_eq!(m.is_ok(), a < 5 && b < 5);
+                if let Ok(m) = m {
+                    assert_eq!(m.score("eat", "cheese", 0), Some(a));
+                    assert_eq!(m.score("eat", "cheese", 1), Some(b));
+                    assert_eq!(m.score("sleep", "cheese", 0), None);
+                }
+            }
+        }
+        for text in [
+            r#"{"eat-cheese":[0,1]}"#,
+            r#"{"eat|cheese":[-1,0]}"#,
+            r#"{"eat|cheese":[256,0]}"#,
+            r#"{"eat|cheese":[0]}"#,
+        ] {
+            assert!(Matrix::parse(text).is_err());
+        }
+    }
+
+    #[test]
+    fn role_identity_finite_oracle() {
+        for a in 0..=4 {
+            for b in 0..=4 {
+                for passive in [false, true] {
+                    let m = Matrix::parse(&format!(r#"{{"eat|cheese":[{a},{b}]}}"#)).unwrap();
+                    let mut t = vec![
+                        node("eat", UPos::VERB, 0, Rel::Root),
+                        node(
+                            "cheese",
+                            UPos::NOUN,
+                            1,
+                            if passive { Rel::OblAgent } else { Rel::Nsubj },
+                        ),
+                        node(
+                            "cheese",
+                            UPos::NOUN,
+                            1,
+                            if passive { Rel::NsubjPass } else { Rel::Obj },
+                        ),
+                    ];
+                    if passive {
+                        t.push(node("be", UPos::AUX, 1, Rel::AuxPass));
+                    }
+                    let (js, gaps) = judge(&m, &t);
+                    assert!(gaps.is_empty());
+                    let actual: Vec<_> = js
+                        .iter()
+                        .map(|j| (j.verb, j.noun, j.role, j.score, j.swapped))
+                        .collect();
+                    assert_eq!(actual, vec![(0, 1, 0, a, Some(b)), (0, 2, 1, b, Some(a))]);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn gap_provenance_and_sparse_cell() {
+        let m = Matrix::parse(r#"{"eat|cheese":[4,0],"sleep|mouse":[0,4]}"#).unwrap();
+        for (verb, noun, want) in [
+            ("unknown", "alien", vec![("verb", "unknown".to_string())]),
+            ("eat", "alien", vec![("noun", "alien".to_string())]),
+            ("eat", "mouse", vec![]),
+        ] {
+            let (js, gaps) = judge(
+                &m,
+                &[
+                    node(verb, UPos::VERB, 0, Rel::Root),
+                    node(noun, UPos::NOUN, 1, Rel::Nsubj),
+                ],
+            );
+            assert!(js.is_empty());
+            assert_eq!(gaps, want);
+        }
+    }
 }

@@ -6,7 +6,7 @@
 //!       of another run (the remaining eligible ones)
 //!   qagen prompt <dir> <batch>           batch prompt without calling the LLM — for review
 //!   qagen run    <dir> [--batches a,b] [--jobs 5] [--max-calls 20]
-//!       LLM (claude -p, Opus high) per batch → raw/, calls.jsonl; one retry only on a format rejection
+//!       Codex CLI through mova-teacher per batch → raw/, calls.jsonl; one retry only on a format rejection
 //!   qagen gate   <dir>                   gates over raw outputs → qa.tsv, rejects.tsv, params.json
 //!   qagen sample <dir> [--n 20] [--seed 7] [--weak 0.5]
 //!       random accepted pairs with paragraphs → sample.md; with --weak — explicit pairs with little support for the answer
@@ -20,7 +20,7 @@
 //!
 //! Then into the database: `db qa <db> <dir>/qa.tsv --run <name> --params <dir>/params.json --path <dir>`
 //! (corrections — also `--replaces <pilot run>`).
-//! Variables: PRAG_MODEL (claude-haiku-5-5), PRAG_EFFORT (medium), DUCKDB (~/bin/duckdb),
+//! Variables: PRAG_MODEL (configured Codex model), PRAG_EFFORT (medium), DUCKDB (~/bin/duckdb),
 //! QAGEN_EN_MODEL ($MOVA_DATA/en/models/en.bin — lemmas for the "doubtful implicit" mark).
 
 use std::collections::BTreeMap;
@@ -46,7 +46,12 @@ fn opts(a: &[String]) -> Result<(Vec<String>, BTreeMap<String, String>)> {
     let mut i = 0;
     while i < a.len() {
         if let Some(k) = a[i].strip_prefix("--") {
-            let v = a.get(i + 1).with_context(|| format!("--{k}: missing value"))?;
+            let v = a
+                .get(i + 1)
+                .with_context(|| format!("--{k}: missing value"))?;
+            if k.is_empty() || v.starts_with("--") {
+                bail!("--{k}: missing value");
+            }
             o.insert(k.to_string(), v.clone());
             i += 2;
         } else {
@@ -66,15 +71,53 @@ fn num<T: std::str::FromStr>(o: &BTreeMap<String, String>, k: &str, d: T) -> Res
 
 fn batches_opt(o: &BTreeMap<String, String>) -> Result<Vec<usize>> {
     match o.get("batches") {
-        Some(s) => s.split(',').map(|x| x.trim().parse::<usize>().with_context(|| format!("--batches {s}"))).collect(),
+        Some(s) => s
+            .split(',')
+            .map(|x| {
+                x.trim()
+                    .parse::<usize>()
+                    .with_context(|| format!("--batches {s}"))
+            })
+            .collect(),
         None => Ok(Vec::new()),
     }
 }
 
+/// Reject misspelled flags before any command reads files or loads models.
+fn validate_options(cmd: &str, pos: &[String], o: &BTreeMap<String, String>) -> Result<()> {
+    let allowed: &[&str] = match (cmd, pos.first().map(String::as_str)) {
+        ("select", _) => &[
+            "paras",
+            "batch",
+            "seed",
+            "min-words",
+            "max-words",
+            "min-sents",
+            "max-sents",
+            "rule",
+            "exclude",
+        ],
+        ("run", _) | ("fix", Some("run")) => &["batches", "jobs", "max-calls"],
+        ("sample", _) => &["n", "seed", "weak"],
+        ("fix", Some("select")) => &["batch"],
+        ("fix", Some("gate")) => &["replaces"],
+        _ => &[],
+    };
+    for k in o.keys() {
+        if !allowed.contains(&k.as_str()) {
+            bail!("unknown option --{k}");
+        }
+    }
+    Ok(())
+}
+
 fn main() -> Result<()> {
     let args: Vec<String> = std::env::args().skip(1).collect();
-    let Some(cmd) = args.first().map(String::as_str) else { return usage() };
+    let Some(cmd) = args.first().map(String::as_str) else {
+        return usage();
+    };
     let (pos, o) = opts(&args[1..])?;
+    validate_options(cmd, &pos, &o)?;
     match (cmd, pos.len()) {
         ("select", 2) => {
             let (db, dir) = (Path::new(&pos[0]), Path::new(&pos[1]));
@@ -98,11 +141,18 @@ fn main() -> Result<()> {
             for f in &pick.exclude {
                 let text = std::fs::read_to_string(f).with_context(|| f.clone())?;
                 for l in text.lines().filter(|l| !l.trim().is_empty()) {
-                    skip.insert(serde_json::from_str::<select::Para>(l).with_context(|| f.clone())?.key());
+                    skip.insert(
+                        serde_json::from_str::<select::Para>(l)
+                            .with_context(|| f.clone())?
+                            .key(),
+                    );
                 }
             }
             if dir.join("raw").join("b000.txt").exists() {
-                bail!("{}: LLM outputs already exist — a new selection would shift the batches; use a new run dir", dir.display());
+                bail!(
+                    "{}: LLM outputs already exist — a new selection would shift the batches; use a new run dir",
+                    dir.display()
+                );
             }
             // fairy tales are public domain: commercial-license gate for training a closed model
             prag::data::license_gate(&[prag::data::Src::Tale])?;
@@ -110,7 +160,8 @@ fn main() -> Result<()> {
             let all = select::read_paras(db, dir)?;
             let idx = select::select(&all, &pick, &skip);
             let mut out = String::new();
-            let mut per: BTreeMap<String, (usize, usize, usize, std::collections::BTreeSet<&str>)> = BTreeMap::new();
+            let mut per: BTreeMap<String, (usize, usize, usize, std::collections::BTreeSet<&str>)> =
+                BTreeMap::new();
             for (j, &i) in idx.iter().enumerate() {
                 let mut p = all[i].clone();
                 p.batch = j / pick.batch;
@@ -128,13 +179,18 @@ fn main() -> Result<()> {
             println!(
                 "paragraphs in database {}, eligible {eligible}, excluded of them {}, selected {} in {} batches (rule v{})",
                 all.len(),
-                all.iter().filter(|p| pick.eligible(p) && skip.contains(&p.key())).count(),
+                all.iter()
+                    .filter(|p| pick.eligible(p) && skip.contains(&p.key()))
+                    .count(),
                 idx.len(),
                 idx.len().div_ceil(pick.batch),
                 pick.rule
             );
             for (b, (n, dl, s, docs)) in &per {
-                println!("  {b}: paragraphs {n} (with dialogue {dl}), sentences {s}, tales {}", docs.len());
+                println!(
+                    "  {b}: paragraphs {n} (with dialogue {dl}), sentences {s}, tales {}",
+                    docs.len()
+                );
             }
             Ok(())
         }
@@ -151,7 +207,13 @@ fn main() -> Result<()> {
             let dir = Path::new(&pos[0]);
             let paras = load_paras(dir)?;
             let job = run::Tales::new(&paras, load_pick(dir)?.rule()?);
-            run::run(dir, &job, &batches_opt(&o)?, num(&o, "jobs", 5)?, num(&o, "max-calls", run::MAX_CALLS)?)
+            run::run(
+                dir,
+                &job,
+                &batches_opt(&o)?,
+                num(&o, "jobs", 5)?,
+                num(&o, "max-calls", run::MAX_CALLS)?,
+            )
         }
         ("gate", 1) => {
             let dir = Path::new(&pos[0]);
@@ -163,8 +225,21 @@ fn main() -> Result<()> {
         ("sample", 1) => {
             let dir = Path::new(&pos[0]);
             let paras = load_paras(dir)?;
-            let weak = o.get("weak").map(|v| v.parse::<f64>().with_context(|| format!("--weak {v}"))).transpose()?;
-            println!("{}", report::sample(dir, &paras, load_pick(dir)?.rule()?, num(&o, "n", 20)?, num(&o, "seed", 7)?, weak)?);
+            let weak = o
+                .get("weak")
+                .map(|v| v.parse::<f64>().with_context(|| format!("--weak {v}")))
+                .transpose()?;
+            println!(
+                "{}",
+                report::sample(
+                    dir,
+                    &paras,
+                    load_pick(dir)?.rule()?,
+                    num(&o, "n", 20)?,
+                    num(&o, "seed", 7)?,
+                    weak
+                )?
+            );
             Ok(())
         }
         ("fix", _) => fix_cmd(&pos, &o),
@@ -176,14 +251,19 @@ fn main() -> Result<()> {
 fn fix_cmd(pos: &[String], o: &BTreeMap<String, String>) -> Result<()> {
     match (pos.first().map(String::as_str), pos.len()) {
         (Some("select"), 3) => {
-            let v = fix::select(Path::new(&pos[1]), Path::new(&pos[2]), num(o, "batch", fix::BATCH)?, &lemma::load()?)?;
+            let v = fix::select(
+                Path::new(&pos[1]),
+                Path::new(&pos[2]),
+                num(o, "batch", fix::BATCH)?,
+                &lemma::load()?,
+            )?;
             println!("{}", serde_json::to_string_pretty(&v)?);
             Ok(())
         }
         (Some("prompt"), 3) => {
             let dir = Path::new(&pos[1]);
             let (paras, items) = (load_paras(dir)?, fix::load_items(dir)?);
-            let fx = fix::Fixes::new(&paras, &items);
+            let fx = fix::Fixes::try_new(&paras, &items)?;
             let b: usize = pos[2].parse().context("batch")?;
             let (ps, its) = fx.all.get(&b).with_context(|| format!("no batch {b}"))?;
             print!("{}", fix::prompt(ps, its));
@@ -192,15 +272,74 @@ fn fix_cmd(pos: &[String], o: &BTreeMap<String, String>) -> Result<()> {
         (Some("run"), 2) => {
             let dir = Path::new(&pos[1]);
             let (paras, items) = (load_paras(dir)?, fix::load_items(dir)?);
-            let fx = fix::Fixes::new(&paras, &items);
-            run::run(dir, &fx, &batches_opt(o)?, num(o, "jobs", 5)?, num(o, "max-calls", 10)?)
+            let fx = fix::Fixes::try_new(&paras, &items)?;
+            run::run(
+                dir,
+                &fx,
+                &batches_opt(o)?,
+                num(o, "jobs", 5)?,
+                num(o, "max-calls", 10)?,
+            )
         }
         (Some("gate"), 2) => {
-            let replaces = o.get("replaces").context("--replaces <pilot run> is required")?;
+            let replaces = o
+                .get("replaces")
+                .context("--replaces <pilot run> is required")?;
             let v = fix::collect(Path::new(&pos[1]), replaces, &lemma::load()?)?;
             println!("{}", serde_json::to_string_pretty(&v)?);
             Ok(())
         }
         _ => usage(),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn missing_option_value_is_rejected() {
+        let a = ["--jobs", "--max-calls", "1"].map(str::to_owned);
+        assert!(opts(&a).is_err());
+    }
+    #[test]
+    fn duplicate_options_keep_last_value() {
+        let a = ["dir", "--jobs", "2", "--jobs", "3"].map(str::to_owned);
+        let (p, o) = opts(&a).unwrap();
+        assert_eq!(p, ["dir"]);
+        assert_eq!(num(&o, "jobs", 1usize).unwrap(), 3);
+    }
+
+    #[test]
+    fn unknown_options_are_rejected_per_command() {
+        for (cmd, sub, key) in [
+            ("select", "dir", "jobs"),
+            ("run", "dir", "job"),
+            ("fix", "gate", "batch"),
+            ("prompt", "dir", "seed"),
+        ] {
+            assert!(
+                validate_options(
+                    cmd,
+                    &[sub.to_owned()],
+                    &BTreeMap::from([(key.to_owned(), "1".into())])
+                )
+                .is_err()
+            );
+        }
+        for (cmd, sub, key) in [
+            ("select", "dir", "paras"),
+            ("run", "dir", "jobs"),
+            ("fix", "gate", "replaces"),
+            ("fix", "run", "batches"),
+        ] {
+            assert!(
+                validate_options(
+                    cmd,
+                    &[sub.to_owned()],
+                    &BTreeMap::from([(key.to_owned(), "1".into())])
+                )
+                .is_ok()
+            );
+        }
     }
 }

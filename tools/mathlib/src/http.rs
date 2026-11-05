@@ -221,3 +221,18 @@ mod tests {
         assert_eq!(civil(11_016), (2000, 2, 29));
     }
 }
+
+#[cfg(test)]
+mod wave33 {
+    use super::*;
+    #[test]
+    fn byte_codecs_and_civil_boundaries() {
+        assert_eq!(hex(&[]), "");
+        assert_eq!(hex(&[0, 15, 16, 255]), "000f10ff");
+        assert_eq!(encode("AZaz09-._~"), "AZaz09-._~");
+        assert_eq!(encode("é"), "%C3%A9");
+        assert_eq!(encode(""), "");
+        assert_eq!(civil(-1), (1969, 12, 31));
+        assert_eq!(civil(11017), (2000, 3, 1));
+    }
+}

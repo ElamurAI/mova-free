@@ -224,3 +224,18 @@ fn octave_test_blocks_external_measure() {
     let _ = std::fs::remove_file(&tmp);
     println!("files {}, blocks {total}, in scope {scope}: pass {pass}, assert {fail_assert}, other error {fail_other}, hang {hang}, crash {crash}", fs.len());
 }
+
+#[test]
+fn wave30_synthetic_selection_helpers() {
+    let b = blocks("%!shared x\n%! x=3;\n%!assert(x,3)\n%!error <bad> error('bad')\nplain\n");
+    assert_eq!(b.len(), 2);
+    assert_eq!(b[0].kind, Kind::Assert);
+    assert!(b[0].code.starts_with("x = [];\n x=3;\nassert"));
+    assert_eq!(b[1].kind, Kind::Error);
+    assert!(!b[1].code.contains("<bad>"));
+    assert_eq!(calls("sum (x) + \"hidden(x)\" + a.foo(x)"), vec!["sum"]);
+    let vars = assigned("x = 1;\nfunction y = f(a, b)\nfor k = 1:2");
+    for name in ["x", "f", "a", "b", "k"] {
+        assert!(vars.contains(name));
+    }
+}

@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p prag --lib wave14_models -- --test-threads=1"
+  ],
+  "children": [],
+  "cost": "For N rows, S slots, C classes: scores remains O(N*C) time and O(C) temporary space; rejection adds O(N) time. Fit cost is sum of six child fits. Ordered prediction costs O(N*S) encoding plus six predictions per selected index. No speedup claimed.",
+  "description": "Evaluation composes supplied training rows, one classifier per Field::ALL entry, ordered predecessor feedback and metric/report projections. The executable domain here is aligned supplied rows and valid six-model sets. run and label additionally load external annotation models and files, enforce source licenses and produce reports; these orchestration paths are not executed.",
+  "forward": [
+    "Evaluation composes supplied training rows, one classifier per Field::ALL entry, ordered predecessor feedback and metric/report projections. The executable domain here is aligned supplied rows and valid six-model sets. run and label additionally load external annotation models and files, enforce source licenses and produce reports; these orchestration paths are not executed."
+  ],
+  "id": "prag-eval",
+  "inverse": [
+    "A score pair leaves confusion counts and sentence identities ambiguous; many gold/pred sequences yield (1,1). Set observations retain kind and six field order but do not recover training keys or learned inactive weights. Reverse composition must retain the same Dict across fitting and sequence prediction."
+  ],
+  "limitations": [
+    "Supplied inputs only; external IO and parser unexecuted.",
+    "Partial syntax; no semantic AST, proof or speed claim."
+  ],
+  "source": "prag/src/eval.rs",
+  "state": "Dictionary coordinates, field ordering and sample indices must agree at every join. Scores now rejects unequal lengths and out-of-domain classes before computing any summary. Reporting time is an observation, not deterministic state."
+}

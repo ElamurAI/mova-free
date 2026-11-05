@@ -1,0 +1,113 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "385 independent prime-prefix cases for limits 0..=384, explicit 2/3/49 boundaries, a 4,096 limit fixture with 564 primes, 12 prefix checks, and deterministic impossible-capacity rejection. Three additional tests exercise eleven independent composite-factor witnesses at 1024 and their own inclusive limits plus every returned prime at 1024, five complete prime-gap fibers including both excluded endpoints and missing-prefix countermodels, and typed capacity rejection preserving preexisting vectors. Actual allocator exhaustion remains unforced.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "Let F be the declared finite fixtures and U be terminating candidate implementations paired with pass/fail. R(P,pass) iff all assertions hold, and R(P,fail) iff some assertion fails or execution panics. U minus R consists of false pass/fail observations. Harness abort/nontermination is excluded.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "0353e3b10ce8e9af4107f0a13ab9034e282257a93c868eb37779616a2e9cea5f",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "385 independent prime-prefix cases for limits 0..=384, explicit 2/3/49 boundaries, a 4,096 limit fixture with 564 primes, 12 prefix checks, and deterministic impossible-capacity rejection. Three additional tests exercise eleven independent composite-factor witnesses at 1024 and their own inclusive limits plus every returned prime at 1024, five complete prime-gap fibers including both excluded endpoints and missing-prefix countermodels, and typed capacity rejection preserving preexisting vectors. Actual allocator exhaustion remains unforced.",
+        "evidence": "model.md#evidence",
+        "id": "failure_fibers",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "A pass reconstructs every implementation satisfying all fixtures, with arbitrary off-fixture behavior. A failure reconstructs implementations or faulty oracle assumptions causing the observed mismatch; it does not uniquely identify the defect.",
+        "path": "model.md",
+        "section": "failure_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "0353e3b10ce8e9af4107f0a13ab9034e282257a93c868eb37779616a2e9cea5f",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "385 independent prime-prefix cases for limits 0..=384, explicit 2/3/49 boundaries, a 4,096 limit fixture with 564 primes, 12 prefix checks, and deterministic impossible-capacity rejection. Three additional tests exercise eleven independent composite-factor witnesses at 1024 and their own inclusive limits plus every returned prime at 1024, five complete prime-gap fibers including both excluded endpoints and missing-prefix countermodels, and typed capacity rejection preserving preexisting vectors. Actual allocator exhaustion remains unforced.",
+        "evidence": "model.md#evidence",
+        "id": "oracle",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "Primality is tested independently by trial division over every divisor 2..value, without a sieve or square-root stopping rule. Prefix tests check order and inclusivity. Capacity tests reject before any huge allocation request. Three additional tests exercise eleven independent composite-factor witnesses at 1024 and their own inclusive limits plus every returned prime at 1024, five complete prime-gap fibers including both excluded endpoints and missing-prefix countermodels, and typed capacity rejection preserving preexisting vectors. Actual allocator exhaustion remains unforced.",
+        "path": "model.md",
+        "section": "oracle",
+        "status": "partial_source_derived",
+        "subject_revision": "0353e3b10ce8e9af4107f0a13ab9034e282257a93c868eb37779616a2e9cea5f",
+        "type": "oracle_correspondence"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "385 independent prime-prefix cases for limits 0..=384, explicit 2/3/49 boundaries, a 4,096 limit fixture with 564 primes, 12 prefix checks, and deterministic impossible-capacity rejection. Three additional tests exercise eleven independent composite-factor witnesses at 1024 and their own inclusive limits plus every returned prime at 1024, five complete prime-gap fibers including both excluded endpoints and missing-prefix countermodels, and typed capacity rejection preserving preexisting vectors. Actual allocator exhaustion remains unforced.",
+        "evidence": "model.md#evidence",
+        "id": "mutation",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "Current compiled mutant changes the square guard from <= to <. The new composite_witnesses_partition_the_prefix test rejects the retained square 4 at its inclusive limit.",
+        "path": "model.md",
+        "section": "mutation",
+        "status": "partial_source_derived",
+        "subject_revision": "0353e3b10ce8e9af4107f0a13ab9034e282257a93c868eb37779616a2e9cea5f",
+        "type": "counterfactual_boundary"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "385 independent prime-prefix cases for limits 0..=384, explicit 2/3/49 boundaries, a 4,096 limit fixture with 564 primes, 12 prefix checks, and deterministic impossible-capacity rejection. Three additional tests exercise eleven independent composite-factor witnesses at 1024 and their own inclusive limits plus every returned prime at 1024, five complete prime-gap fibers including both excluded endpoints and missing-prefix countermodels, and typed capacity rejection preserving preexisting vectors. Actual allocator exhaustion remains unforced.",
+        "evidence": "model.md#evidence",
+        "id": "schedule",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "385 independent prime-prefix cases for limits 0..=384, explicit 2/3/49 boundaries, a 4,096 limit fixture with 564 primes, 12 prefix checks, and deterministic impossible-capacity rejection. Fixed seeds and bounded loops define repeatable observations; wall-clock timing is not modeled. Three additional tests exercise eleven independent composite-factor witnesses at 1024 and their own inclusive limits plus every returned prime at 1024, five complete prime-gap fibers including both excluded endpoints and missing-prefix countermodels, and typed capacity rejection preserving preexisting vectors. Actual allocator exhaustion remains unforced.",
+        "path": "model.md",
+        "section": "schedule",
+        "status": "partial_source_derived",
+        "subject_revision": "0353e3b10ce8e9af4107f0a13ab9034e282257a93c868eb37779616a2e9cea5f",
+        "type": "resource_observation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-sieve-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "0353e3b10ce8e9af4107f0a13ab9034e282257a93c868eb37779616a2e9cea5f"
+  },
+  "status": "partial_source_derived_instance"
+}

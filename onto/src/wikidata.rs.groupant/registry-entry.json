@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "wikidata::t::dump_quirks"
+  ],
+  "children": [],
+  "cost": "Streaming O(bytes) one line; trial loads TSV and perlex maps, tokenizes/sorts senses O(S log S). Ratios/timings are observations not bounds.",
+  "description": "entity_json trim_end/one comma then first{ length>=2. map_or_seq discards all sequences; ids filters exact deprecated/missing. probe bounded bzip prefix tolerates read failure as stop text; emits class-bearing entities. English lexemes Q1860 choose en/en-gb/en-us. map_trial explicitP8814 then unique both sides then gloss>=2 strict lead; only first Q/WN.",
+  "forward": [
+    "entity_json trim_end/one comma then first{ length>=2. map_or_seq discards all sequences; ids filters exact deprecated/missing. probe bounded bzip prefix tolerates read failure as stop text; emits class-bearing entities. English lexemes Q1860 choose en/en-gb/en-us. map_trial explicitP8814 then unique both sides then gloss>=2 strict lead; only first Q/WN.",
+    "ids(v)=[id(s)|rank(s)!=deprecated and datavalue.value.id exists]. entity_json(t)=trim_end(t) minus one final comma if len>=2 and starts{; validity deferred to serde."
+  ],
+  "id": "onto-wikidata",
+  "inverse": [
+    "Deprecated IDs and non-English senses excluded. Equal top gloss cannot map. Direct P8814 may ignore lemma/category mismatch; no stronger guarantee.",
+    "ID list permits discarded deprecated/missing statements. Tokens lose order/count/case/punctuation/trailing s. Mappings lose alternate Q/WN and losing senses."
+  ],
+  "limitations": [
+    "dump_quirks actual serde array/deprecated/line gates executed; no probe/lexeme dump/map_trial or live data.",
+    "Executable approximant gap: no useful percentage metric established for these categorical/effectful observations. No surrogate or production substitution. Future caps 1/2/5/10% require a metric/domain and evidence; no numerical error bound follows here.",
+    "Partial lexical AST, no macro expansion/semantic proof; no live teacher/dump/corpus/database execution"
+  ],
+  "source": "onto/src/wikidata.rs",
+  "state": "Leading space object rejected. category noun/proper→n,verbv,adja,adverbr elseNone. toks stop/byte-len>2 before removing all trailing s. ExplicitWN bypasses lemma failure; gloss tie refuses. Empty probe ratios may nonfinite."
+}

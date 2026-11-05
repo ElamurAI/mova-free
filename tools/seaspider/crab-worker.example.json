@@ -1,0 +1,17 @@
+{
+  "workers": [
+    {
+      "name": "seaspider",
+      "argv": ["/ABSOLUTE/PATH/seaspider-bin/seaspider", "serve",
+               "/ABSOLUTE/PATH/seaspider/config.json",
+               "/ABSOLUTE/PATH/seaspider/deputy.json",
+               "/ABSOLUTE/PATH/seaspider-run/sock/seaspider.sock"],
+      "cwd": "/ABSOLUTE/PATH/seaspider-run",
+      "log": "/ABSOLUTE/PATH/seaspider-run/serve.log",
+      "autostart": false,
+      "stop_marker": "/ABSOLUTE/PATH/seaspider-run/sock/STOP",
+      "stop_grace_seconds": 120,
+      "restart": true
+    }
+  ]
+}

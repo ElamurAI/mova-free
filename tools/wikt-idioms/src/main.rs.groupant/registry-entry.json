@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "wave33::gloss_labels_and_emit_precedence"
+  ],
+  "children": [],
+  "cost": "O(B^2) conservative for repeated plain link suffix scans and label rescans; O(B) text/char buffers; output one row and gloss truncated160 Unicode chars plus ellipsis.",
+  "description": "Line XML reader unescapes title/text and dispatches namespace0 to emit. emit selects English slice via first newline heading heuristic, first eligible POS/gloss and deduplicated register/region senses; title and multiword gates precede six-column TSV and kind precedence.",
+  "forward": [
+    "Line XML reader unescapes title/text and dispatches namespace0 to emit. emit selects English slice via first newline heading heuristic, first eligible POS/gloss and deduplicated register/region senses; title and multiword gates precede six-column TSV and kind precedence."
+  ],
+  "id": "wikt-idioms-text-command",
+  "inverse": [
+    "Colon namespace/long title/no English/no POS exclude output. An unlabeled single word excludes output even with valid gloss.",
+    "TSV row admits many discarded templates, alternate labels, later senses and non-English sections; first POS/gloss projection loses source uniquely."
+  ],
+  "limitations": [
+    "UTF-8 wikitext, line-based export shape. Plain text is heuristic, not complete wiki parser. English boundary deeper-heading limitation and title TSV sanitation gaps remain.",
+    "Partial syntax and bounded synthetic helper checks; no command/corpus/model/download effects, universal proof or percentage surrogate."
+  ],
+  "source": "tools/wikt-idioms/src/main.rs",
+  "state": "At most one row per emit; first POS and first labeled sense retained. Title>60 chars or colon rejects. Single word needs register/variety; all accepted multiwords receive a kind even without idiomatic label."
+}

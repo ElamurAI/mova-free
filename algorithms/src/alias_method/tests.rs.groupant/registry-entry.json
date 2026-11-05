@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms alias_method::tests",
+    "Repeated debug/release, paired syntax, compiled mutant and restored rerun"
+  ],
+  "children": [],
+  "cost": "O(n) build and storage; O(1) draw; bounded standard allocations.",
+  "description": "Independent finite oracle and boundary tests for alias_method. Production: n1..4096; finite nonnegative weights, positive maximum. Normalize by maximum and total. Match a small column with a large column, transfer its deficit, finish residual columns at probability one. Explicit column and coin in [0,1). Dimension precedes weight validation; weights precede empty-mass failure. No RNG.",
+  "forward": [
+    "Independent finite oracle and boundary tests for alias_method. Production: n1..4096; finite nonnegative weights, positive maximum. Normalize by maximum and total. Match a small column with a large column, transfer its deficit, finish residual columns at probability one. Explicit column and coin in [0,1). Dimension precedes weight validation; weights precede empty-mass failure. No RNG."
+  ],
+  "id": "algorithm-alias-method-tests",
+  "inverse": [
+    "All-pass observations admit implementations differing on unsampled inputs. This finite test fiber does not uniquely identify source or prove universality. Production fiber: Multiplying all weights by a positive finite factor preserving representability retains ideal distribution. A single returned category admits many coordinate pairs; its preimage is the union of direct threshold intervals and alias intervals. Neither weights nor draw coordinates are uniquely reconstructed."
+  ],
+  "limitations": [
+    "Partial syntax not semantic proof",
+    "Finite oracle coverage not universal numerical accuracy",
+    "No certified surrogate, timing or allocator fault injection"
+  ],
+  "source": "algorithms/src/alias_method/tests.rs",
+  "state": "Bounded validated numeric inputs, deterministic recurrence, explicit errors/status and standard allocation policy"
+}

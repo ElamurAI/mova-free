@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p en --lib hash::wave27_tests",
+    "Repeated debug/release named outcomes and paired partial syntax"
+  ],
+  "children": [],
+  "cost": "O(B/8) time, O(1) state; collection worst case collision dependent.",
+  "description": "Fx accumulator and map/set aliases",
+  "forward": [
+    "add(h,x)=(rotl64(h,5) xor x)*K mod 2^64; write zero-pads each independent <=8-byte chunk; key golden seed; str_key appends byte length."
+  ],
+  "id": "en-hash",
+  "inverse": [
+    "Single add invertible for fixed x via odd K inverse and inverse rotate; strings have collision preimages, no unique recovery."
+  ],
+  "limitations": [
+    "Empty write preserves state; call partition changes hash; no collision-free or cryptographic claim.",
+    "No executable percent surrogate: no demonstrated useful metric preserving categorical/effect semantics; permitted future caps 1/2/5/10%, no production substitution.",
+    "Partial source-bound modeling, no corpus/API/GPU, allocation faults or exhaustive numerical checks."
+  ],
+  "source": "en/src/hash.rs",
+  "state": "Fx accumulator and map/set aliases"
+}

@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "tests::write_read_round_trip",
+    "tests::wave27_coordination_mentions_and_visibility",
+    "tests::wave27_event_antecedent_and_empty_evaluation"
+  ],
+  "children": [],
+  "cost": "Costs sum repeated resolver and scorer calls: two singleton policies × six systems plus FULL.len+1 cumulative runs plus diagnostics and strip-control reruns. Scoring delegates matching and assignment matrix costs. Error rows capped400 per diagnostic run; report/output buffers and per-document predictions retained.",
+  "description": "Transport resolver partitions to scoring/serialization, accumulate micro counts and render bounded evaluation reports.",
+  "forward": [
+    "gold_of groups first-seen eid and sets anaphoric iff mention key differs from entity minimum (sent,start,-end). visible excludes internal and singleton coordination absent coord-sgl substring override. sys_entities recomputes span heads; out_mentions preserves mention heads, numbers nonempty visible clusters from1 and notes last link/new/sgl. score_all adds score_doc Counts over zip, not average F1. run gold parses/self-checks then verifies document counts, appends baseline/cumulative reports, writes errors, checks strip invariance, optionally writes CoNLL-U."
+  ],
+  "id": "coref-eval",
+  "inverse": [
+    "Given output entities, compatible Sys states may differ in filtered internal mentions, singleton groups, explanations and original heads (sys_entities recomputes them). A metric row admits many gold/pred partitions with identical aggregate counts. Serialized notes constrain last from-link but not complete history."
+  ],
+  "limitations": [
+    "No real corpus, fault injection or exhaustive score checks; existing score source modeled elsewhere. Partial gold-leak equality does not compare head/etype.",
+    "Partial lexical syntax; no executable percentage surrogate; no corpus or universal proof."
+  ],
+  "source": "coref/src/eval.rs",
+  "state": "Gold ordered mentions/entities/anaphoric flags; Sys mentions/clusters/links; report buffer and optional output paths."
+}

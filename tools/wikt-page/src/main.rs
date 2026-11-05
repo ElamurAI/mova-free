@@ -154,3 +154,30 @@ fn find_page(chunk: &str, want: &str) -> Result<Option<Page>> {
 fn unescape(raw: &str) -> Result<String> {
     Ok(quick_xml::escape::unescape(raw)?.into_owned())
 }
+#[cfg(test)]
+mod wave33 {
+    use super::*;
+    #[test]
+    fn xml_ids_text_and_empty_page() {
+        let xml = "<page><title>é&amp;x</title><ns>0</ns><id>7</id><revision><id>8</id><contributor><id>9</id></contributor><text>A &lt; B</text></revision></page>";
+        let p = find_page(xml, "é&x").unwrap().unwrap();
+        assert_eq!(
+            (
+                p.ns.as_str(),
+                p.id.as_str(),
+                p.rev.as_str(),
+                p.text.as_str()
+            ),
+            ("0", "7", "8", "A < B")
+        );
+        assert!(find_page(xml, "missing").unwrap().is_none());
+        assert_eq!(
+            find_page("<page><title>x</title><text/></page>", "x")
+                .unwrap()
+                .unwrap()
+                .text,
+            ""
+        );
+        assert!(unescape("&unknown;").is_err());
+    }
+}

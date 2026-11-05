@@ -192,6 +192,15 @@ fn frame_words(frame: &str) -> Vec<String> {
 }
 
 fn row(a: &Annotator, cues: &Cues, it: &Item, segs: &[(usize, usize)], carried: bool) -> Row {
+    row_with(cues, it, segs, carried, |utt| {
+        let toks = a.tokenize(utt);
+        let forms: Vec<&str> = toks.iter().map(|t| t.form.as_str()).collect();
+        if forms.is_empty() { Vec::new() } else { a.annotate(&forms) }
+    })
+}
+
+// Keep feature projection on the production path while allowing supplied UD observations.
+fn row_with(cues: &Cues, it: &Item, segs: &[(usize, usize)], carried: bool, annotate: impl FnOnce(&str) -> Vec<Word>) -> Row {
     let text = &it.text;
     // quotes are direct speech, not a title or a quoted word ("the title of “Gentlemen Weavers.”"): a span
     // carried over from the previous sentence, of 4+ words, at the start of the sentence, with a speech verb in the frame,
@@ -220,9 +229,7 @@ fn row(a: &Annotator, cues: &Cues, it: &Item, segs: &[(usize, usize)], carried: 
         (false, false, false) => "whole",
         (false, false, true) => "framed",
     };
-    let toks = a.tokenize(&utt);
-    let forms: Vec<&str> = toks.iter().map(|t| t.form.as_str()).collect();
-    let words = if forms.is_empty() { Vec::new() } else { a.annotate(&forms) };
+    let words = annotate(&utt);
     let lw: Vec<String> = words.iter().map(|w| norm_word(&w.form)).collect();
     // words without punctuation
     let content: Vec<usize> = (0..words.len()).filter(|&k| !is_punct(&words[k])).collect();
@@ -383,15 +390,16 @@ fn row(a: &Annotator, cues: &Cues, it: &Item, segs: &[(usize, usize)], carried: 
     r
 }
 
-/// Neighbourhood for the previous sentence's act: the previous sentence of the same document (order − 1).
+/// Neighbourhood for the previous sentence's act: the previous sentence of the same source and document (order − 1).
+/// Duplicate source/document/order keys select the last item; paragraph boundaries do not reset acts.
 pub fn prev_of(items: &[Item]) -> Vec<Option<usize>> {
-    let mut at: HashMap<(&str, i64), usize> = HashMap::new();
+    let mut at: HashMap<(Src, &str, i64), usize> = HashMap::new();
     for (i, it) in items.iter().enumerate() {
         if it.src != Src::Tatoeba && it.ord > 0 {
-            at.insert((it.doc.as_str(), it.ord), i);
+            at.insert((it.src, it.doc.as_str(), it.ord), i);
         }
     }
-    items.iter().map(|it| if it.src == Src::Tatoeba || it.ord <= 1 { None } else { at.get(&(it.doc.as_str(), it.ord - 1)).copied() }).collect()
+    items.iter().map(|it| if it.src == Src::Tatoeba || it.ord <= 1 { None } else { at.get(&(it.src, it.doc.as_str(), it.ord - 1)).copied() }).collect()
 }
 
 // ── Value dictionary ────────────────────────────────────────────────────────────────────────────
@@ -483,5 +491,135 @@ mod tests {
         assert_eq!(f, ["hedge", "thank", "suggest"]);
         assert_eq!(norm_word("n’t"), "not");
         assert_eq!(norm_word("Ca"), "can");
+    }
+}
+
+#[cfg(test)]
+mod wave13_models {
+    use super::*;
+    use en::gram::Feats;
+
+    fn item(src: Src, ord: i64, text: &str) -> Item {
+        Item { key: format!("fixture-{ord}"), src, doc: "same".into(), title: String::new(),
+            para: 1, ord, pos: 0, plen: 1, text: text.into(), batch: 0, ctx: Vec::new() }
+    }
+
+    fn word(form: &str, upos: UPos, tag: Tag, head: usize, rel: Rel) -> Word {
+        Word { form: form.into(), lemma: form.to_lowercase(), upos, tag, feats: Feats::default(), head, rel }
+    }
+
+    #[test]
+    fn prev_source_identity_and_last_duplicate() {
+        let mut xs = vec![item(Src::Tale, 1, ""), item(Src::Gum, 1, ""),
+            item(Src::Tale, 2, ""), item(Src::Gum, 2, ""), item(Src::Tatoeba, 2, "")];
+        assert_eq!(prev_of(&xs), vec![None, None, Some(0), Some(1), None], "source-qualified predecessor");
+        xs.push(item(Src::Tale, 1, ""));
+        assert_eq!(prev_of(&xs)[2], Some(5), "duplicate predecessor is last-wins");
+        xs[2].para = 9;
+        assert_eq!(prev_of(&xs)[2], Some(5), "previous act crosses paragraphs");
+        xs[2].ord = i64::MIN;
+        assert_eq!(prev_of(&xs)[2], None);
+    }
+
+    #[test]
+    fn quote_unicode_state_and_content_bounds() {
+        for (text, expected, state) in [
+            ("“é猫”", vec!["é猫"], None),
+            ("“...”", vec![], None),
+            ("‘don't’", vec!["don't"], None),
+            ("dogs’ bones", vec![], None),
+            ("\"one\" and \"two\"", vec!["one", "two"], None),
+            ("“open", vec!["open"], Some('“')),
+        ] {
+            let (spans, open) = quote_spans(text, None);
+            assert_eq!(open, state);
+            let actual: Vec<_> = spans.iter().map(|&(a,b)| { assert!(a < b && text.is_char_boundary(a) && text.is_char_boundary(b)); &text[a..b] }).collect();
+            assert_eq!(actual, expected, "{text}");
+        }
+        assert_eq!(quote_spans("é” tail", Some('“')), (vec![(0,2)], None));
+        assert_eq!(quote_spans("", Some('"')), (vec![], Some('"')));
+    }
+
+    #[test]
+    fn normalization_and_greedy_cue_loss() {
+        for (input, output) in [("N’T","not"), ("’LL","will"), ("'m","am"), ("'re","are"),
+            ("'ve","have"), ("'d","would"), ("CA","can"), ("wo","will"), ("sha","shall"), ("É","é")] {
+            assert_eq!(norm_word(input), output);
+            assert_eq!(norm_word(output), output);
+        }
+        let cues = Cues { phrases: vec![(vec!["a".into(), "b".into()], "long".into()),
+            (vec!["a".into()], "short".into()), (vec!["b".into()], "overlap".into())] };
+        let ws = ["a","b","a","b","b"].map(str::to_string);
+        assert_eq!(cues.find(&ws), vec![(0,"long"),(2,"long"),(4,"overlap")]);
+        assert_eq!(norm_word("WO"), norm_word("'ll"), "ambiguous normalization preimage");
+        assert_eq!(Cues::load().find(&["thank".into(), "you".into()]), vec![(0,"thank")]);
+    }
+
+    #[test]
+    fn empty_row_literal_and_dictionary_roundtrip() {
+        let r = row_with(&Cues::load(), &item(Src::Tale, 1, ""), &[], false, |u| { assert_eq!(u, ""); vec![] });
+        let expected = ["-","-","-","-","-","none","-","-","1","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","none","-","only","start","tale"];
+        assert_eq!(r, expected);
+        assert_eq!(r.len(), 32);
+        let d = Dict::build(&[r.clone()]);
+        let encoded = d.encode(&r);
+        assert!(encoded.iter().all(|&v| v != UNSEEN));
+        assert_eq!(d.id(slot("w1"), "missing"), UNSEEN);
+        assert_eq!(d.show(slot("w1"), UNSEEN), "w1=?");
+        assert_eq!(d.show(slot("w1"), encoded[slot("w1")]), "w1=-");
+        for act in crate::schema::Act::ALL { assert_ne!(d.id(prev_slot(), act.name()), UNSEEN); }
+        let bytes = serde_json::to_vec(&d).unwrap();
+        let mut restored: Dict = serde_json::from_slice(&bytes).unwrap();
+        assert!(restored.index.is_empty());
+        restored.reindex();
+        assert_eq!(restored.encode(&r), encoded);
+        assert_eq!(serde_json::to_vec(&restored).unwrap(), bytes);
+    }
+
+    #[test]
+    fn supplied_ud_projection_and_quote_selection() {
+        let text = "He said, “Will you please go?”";
+        let it = item(Src::Tale, 1, text);
+        let (segs, _) = quote_spans(text, None);
+        let words = vec![word("Will", UPos::AUX, Tag::MD, 4, Rel::Aux),
+            word("you", UPos::PRON, Tag::PRP, 4, Rel::Nsubj),
+            word("please", UPos::ADV, Tag::RB, 4, Rel::Advmod),
+            word("go", UPos::VERB, Tag::VB, 0, Rel::Root),
+            word("?", UPos::PUNCT, Tag::Stop, 4, Rel::Punct)];
+        let r = row_with(&Cues::load(), &it, &segs, false, |u| {
+            assert_eq!(u, "Will you please go?"); words
+        });
+        for (name, value) in [("w1","will"),("w2","you"),("w3","please"),("wl","go"),
+            ("end","?"),("qm","yes"),("len","4-6"),("rupos","VERB"),("rlem","go"),
+            ("aux1","will"),("inv","yes"),("modal","will"),("subj","you"),("you","yes"),
+            ("please","yes"),("quote","framed"),("sayv","said"),("prev","start")] {
+            assert_eq!(r[slot(name)], value, "{name}");
+        }
+        for (text, carried, expected, quote) in [
+            ("The title “Book” is short.", false, "The title “Book” is short.", "none"),
+            ("“Hello”", false, "Hello", "whole"),
+            ("Still talking.”", true, "Still talking.", "cont"),
+        ] {
+            let (segs,_) = quote_spans(text, if carried { Some('“') } else { None });
+            let r = row_with(&Cues::load(), &item(Src::Gum,1,text), &segs, carried, |u| {
+                assert_eq!(u, expected); vec![]
+            });
+            assert_eq!(r[slot("quote")], quote);
+            assert_eq!(r[slot("genre")], "other");
+        }
+    }
+
+    #[test]
+    fn bucket_boundaries_and_terminal_priority() {
+        for (n, expected) in [(0,"1"),(1,"1"),(2,"2-3"),(3,"2-3"),(4,"4-6"),(6,"4-6"),
+            (7,"7-12"),(12,"7-12"),(13,"13-20"),(20,"13-20"),(21,"21+"),(usize::MAX,"21+")] {
+            assert_eq!(bucket(n), expected);
+        }
+        for (text, end, qm) in [("x!?", "?", "yes"),("x!","!","-"),("x...","…","-"),
+            ("x—","dash","-"),("x; ",",","-"),("why? yes.",".","yes"),("x","none","-")] {
+            let r = row_with(&Cues::load(), &item(Src::Tatoeba,0,text), &[], false, |_| vec![]);
+            assert_eq!(r[slot("end")], end);
+            assert_eq!(r[slot("qm")], qm);
+        }
     }
 }

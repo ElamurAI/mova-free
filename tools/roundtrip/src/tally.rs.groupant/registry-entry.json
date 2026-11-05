@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "tally::wave32_tests::capped_examples_additive_metrics"
+  ],
+  "children": [],
+  "cost": "Merge O(entries log destination keys + kind maps + bounded cloned examples); retained examples <=4 for normal constructed states, source oversized vectors scanned fully.",
+  "description": "Cell.add increments items/bits and keeps first4 examples. Residual.add lazily evaluates example only below cap; add_k adds kind count/bits. Merge adds all scalar/maps in fixed order and concatenates bounded example prefixes. Tally normal/whole remain separate Start maps.",
+  "forward": [
+    "Cell.add increments items/bits and keeps first4 examples. Residual.add lazily evaluates example only below cap; add_k adds kind count/bits. Merge adds all scalar/maps in fixed order and concatenates bounded example prefixes. Tally normal/whole remain separate Start maps."
+  ],
+  "id": "rt-mixed-tally",
+  "inverse": [
+    "Excluded: fifth normal add evaluates closure or preserves example; overflow/nonfinite values are validated. No validation exists for public fields.",
+    "Aggregates admit many ordered event histories; first4 examples constrain prefix only, counts/kinds constrain sums; merge cannot uniquely undo prior totals."
+  ],
+  "limitations": [
+    "Finite synthetic helper evidence only; live corpora, parser/model loading, full orchestration and filesystem failure races excluded.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/roundtrip/src/tally.rs",
+  "state": "Counts fit u64; finite floating metrics for mathematical additivity; f64 rounding means merge regrouping is not exact associativity. Input public fields can violate semantic inequalities."
+}

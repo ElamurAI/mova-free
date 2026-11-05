@@ -2,7 +2,7 @@
 
 GUMReddit was annotated with the GUM pipeline. The rules are the same as in `../gum/convert.md`, with `from: gumreddit`. The rule language is `docs/dialect.md`, conventions are in `../seeds-overview.md`.
 
-**Text first.** FORM and LEMMA in the release are «_» (`seeds/data.md`). Rules with `form=` and `lemma=` (*you*, *such*, *what about*, `ADD`, `NFP`, `AFX`) work only after `get_text.py`. Without text only the feature-based rules apply: `you-feat`, `you-verb-feat`, `obl-fragment`. Without lemmas `adv-degree` would remove `Degree=Pos` from all adverbs, including *well*, *far*, because the condition `lemma!=…` holds on «_». So do not run it without text.
+**Text first.** FORM and LEMMA in the release are «_» (`seeds.md#data`). Rules with `form=` and `lemma=` (*you*, *such*, *what about*, `ADD`, `NFP`, `AFX`) work only after `get_text.py`. Without text only the feature-based rules apply: `you-feat`, `you-verb-feat`, `obl-fragment`. Without lemmas `adv-degree` would remove `Degree=Pos` from all adverbs, including *well*, *far*, because the condition `lemma!=…` holds on «_». So do not run it without text.
 
 Matches were counted by `en expert-check` on the release without text: `gumreddit → mova` on GUMReddit, `mova → gumreddit` on EWT.
 
@@ -15,7 +15,7 @@ from: gumreddit
 to: mova
 match: p[upos=PRON, feats.Person=2, feats.PronType=Prs, !feats.Poss, !feats.Reflex, feats.Number]
 set: p[feats-=Number]
-source: EWT 2.18; seeds/gum-family.md
+source: EWT 2.18; seeds.md#gum-family
 ```
 
 ```convert
@@ -152,7 +152,7 @@ from: mova
 to: gumreddit
 match: p[upos=PRON, feats.Person=2, feats.PronType=Prs, !feats.Poss, !feats.Reflex, !feats.Number]
 set: p[feats+=Number=Sing]
-source: seeds/gum-family.md
+source: seeds.md#gum-family
 ```
 
 ```convert-todo
@@ -162,7 +162,7 @@ from: mova
 to: gumreddit
 match: y[form=you]; n[rel=nmod:unmarked, head=y, next=y]
 set: n[head=@y]; n[rel=@y]; y[head=n]; y[rel=dep]
-source: ../gum/seeds/dep.md
+source: ../gum/seeds.md#dep
 ```
 
 ```convert
@@ -172,7 +172,7 @@ from: mova
 to: gumreddit
 match: h[form=what, head=0]; o[rel=nmod, head=h, after=h]; c[form=about, rel=case, head=o]
 set: o[rel=obl]
-source: ../gum/seeds/obl-fragment.md
+source: ../gum/seeds.md#obl-fragment
 ```
 
 ```convert
@@ -182,7 +182,7 @@ from: mova
 to: gumreddit
 match: p[form=you|yourself, upos=PRON, feats.Person=2]
 set: p[feats+=Number=Sing]
-source: ../gum/seeds/you-number.md
+source: ../gum/seeds.md#you-number
 ```
 
 ```convert
@@ -192,7 +192,7 @@ from: mova
 to: gumreddit
 match: a[upos=ADV, !feats.Degree, !feats.PronType, lemma!=so|just|also|very|even|as|only|about|however|all|already|over|instead|maybe|out|rather|pretty|once|yet|quite|thus|twice|e.g.|anyway|somewhat|i.e.|c.|anyways|namely|merely]
 set: a[feats+=Degree=Pos]
-source: ../gum/seeds/adv-degree.md (GUM: ADV without Degree mostly — only these lemmas)
+source: ../gum/seeds.md#adv-degree (GUM: ADV without Degree mostly — only these lemmas)
 ```
 
 ```convert
@@ -202,7 +202,7 @@ from: mova
 to: gumreddit
 match: a[upos=ADJ, lemma=such]
 set: a[feats-=Degree]
-source: ../gum/seeds/adv-degree.md
+source: ../gum/seeds.md#adv-degree
 ```
 
 ```convert
@@ -212,7 +212,7 @@ from: mova
 to: gumreddit
 match: u[xpos=ADD]
 set: u[xpos=NNP]
-source: ../gum/seeds/xpos-web.md
+source: ../gum/seeds.md#xpos-web
 ```
 
 ```convert
@@ -222,7 +222,7 @@ from: mova
 to: gumreddit
 match: e[xpos=NFP]
 set: e[xpos=SYM]
-source: ../gum/seeds/xpos-web.md
+source: ../gum/seeds.md#xpos-web
 ```
 
 ```convert
@@ -232,7 +232,7 @@ from: mova
 to: gumreddit
 match: p[xpos=AFX]
 set: p[xpos=NN]
-source: ../gum/seeds/xpos-web.md
+source: ../gum/seeds.md#xpos-web
 ```
 
 Matches on EWT — as for GUM, plus `you-feat` 2763: `what-about` 7, `you` 2806, `adv-degree` 5151, `such` 88, `add` 475, `nfp` 499, `afx` 75.

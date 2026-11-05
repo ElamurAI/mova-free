@@ -1,0 +1,51 @@
+{
+  "logs": [
+    {
+      "exit": 0,
+      "receipt": "debug-1-03.log",
+      "sha256": "7282a08dc30fb5408c5e47692dcb866a4bba06330ec07e969b19ef9b34028e5e"
+    },
+    {
+      "exit": 0,
+      "receipt": "debug-2-03.log",
+      "sha256": "7282a08dc30fb5408c5e47692dcb866a4bba06330ec07e969b19ef9b34028e5e"
+    },
+    {
+      "exit": 0,
+      "receipt": "release-1-03.log",
+      "sha256": "1b1f334af02a678f3c076d2855c2542901774b21e849920d56cd626d74dec923"
+    },
+    {
+      "exit": 0,
+      "receipt": "release-2-03.log",
+      "sha256": "6e8c99c9d7516c7d78c8ad623ec9cf422ce1d2c358e5e3b8ffc2e2e205bb561f"
+    },
+    {
+      "exit": 101,
+      "receipt": "mutant-lattice.log",
+      "sha256": "abb35aea6ff680d9649203ec8b62a54fe046ca7df80248483e9b20cb7d321005"
+    },
+    {
+      "exit": 0,
+      "receipt": "restored-lattice.log",
+      "sha256": "4a340fa920635f89591f4d674185e44d810ebd405c20852f160038a5829a9da3"
+    }
+  ],
+  "mutation": {
+    "kind": "compiled_source_behavior",
+    "new": "if gain > 2. {",
+    "old": "if gain > 0. {",
+    "original_sha256": "eeec78ace6a0dadfcff75205bc3718b223cf89d05fc8df94ea2884272f033fbf",
+    "restoration_exact": true,
+    "restored_sha256": "eeec78ace6a0dadfcff75205bc3718b223cf89d05fc8df94ea2884272f033fbf",
+    "source": "tools/hbo/src/lattice.rs",
+    "status": 101
+  },
+  "primary_test": "lattice::wave32::supplied_readings_ties_missing_and_apply",
+  "production_prefix_preserved": true,
+  "schema": 1,
+  "scope": "Finite synthetic actual-code observations, no semantic correctness proof or percent surrogate",
+  "source": "tools/hbo/src/lattice.rs",
+  "source_sha256": "eeec78ace6a0dadfcff75205bc3718b223cf89d05fc8df94ea2884272f033fbf",
+  "syntax_sha256": "7a3f959e9664df4e3ece70317bdb767859df57e1cf28d7dc3609ec4a96a86320"
+}

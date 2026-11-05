@@ -1,0 +1,164 @@
+{
+  "children": [
+    "onto-build-script",
+    "onto-build",
+    "onto-core",
+    "onto-coregate",
+    "onto-coresel",
+    "onto-corevmm",
+    "onto-judge",
+    "onto-model",
+    "onto-tests"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "Resources available; u32 offsets and enum widths representable, CSR externally validated. Live writes, worker races, write-error handling and full data ingestion are modeled but not run.",
+        "domain": "Synthetic UTF8 helper inputs and valid bounded CSR. No teacher/held-out/DB execution. Initial query allowed ambient sense-prior lookup; corrected four isolated runs use absent ONTO_PRIOR.",
+        "id": "behavior-complement",
+        "observation_scope": "coresel uses wdwalk core resolution and corevmm key/verdict readers, build.rs consumes coregate then core.rs includes generated arrays. Graph model feeds store/Kb/query; core checks layer0 Kb properties and ancestry. Builder consumes Zip; judge/corevmm call wdvmm only in unexecuted effectful paths. Passing parser is not successful numeric code emission or teacher correctness.",
+        "operator": "Explicit no candidates cannot enter core; absent fields cannot pass completeness; wrong synset candidates cannot substitute senses. Gate success alone does not exclude invalid numeric/identifier emission, and pure response parse cannot exclude teacher or append failures.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "Resources available; u32 offsets and enum widths representable, CSR externally validated. Live writes, worker races, write-error handling and full data ingestion are modeled but not run.",
+        "domain": "Synthetic UTF8 helper inputs and valid bounded CSR. No teacher/held-out/DB execution. Initial query allowed ambient sense-prior lookup; corrected four isolated runs use absent ONTO_PRIOR.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "coresel uses wdwalk core resolution and corevmm key/verdict readers, build.rs consumes coregate then core.rs includes generated arrays. Graph model feeds store/Kb/query; core checks layer0 Kb properties and ancestry. Builder consumes Zip; judge/corevmm call wdvmm only in unexecuted effectful paths. Passing parser is not successful numeric code emission or teacher correctness.",
+        "operator": "Compiled core admits all rejected/lower-ranked candidates, comments, duplicate dropped values and numeric spellings preserving emitted records. Graph admits repeated edges and senses removed by assembly. Parsed risk empty admits none and malformed valid-ID rows, so response reconstruction is not unique.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "Resources available; u32 offsets and enum widths representable, CSR externally validated. Live writes, worker races, write-error handling and full data ingestion are modeled but not run.",
+        "domain": "Synthetic UTF8 helper inputs and valid bounded CSR. No teacher/held-out/DB execution. Initial query allowed ambient sense-prior lookup; corrected four isolated runs use absent ONTO_PRIOR.",
+        "id": "categorical-state-transport",
+        "observation_scope": "coresel uses wdwalk core resolution and corevmm key/verdict readers, build.rs consumes coregate then core.rs includes generated arrays. Graph model feeds store/Kb/query; core checks layer0 Kb properties and ancestry. Builder consumes Zip; judge/corevmm call wdvmm only in unexecuted effectful paths. Passing parser is not successful numeric code emission or teacher correctness.",
+        "operator": "TSV known/unknown/n/a transports to Field Known/Unknown/NotApplicable; risk none to Known(empty), never Unknown. coregate validates complete categorical cells but not field-value grammar.",
+        "path": "model.md",
+        "required": false,
+        "section": "categorical-state-transport",
+        "status": "partial_source_derived_model",
+        "type": "categorical_state_transport"
+      },
+      {
+        "assumptions": "Resources available; u32 offsets and enum widths representable, CSR externally validated. Live writes, worker races, write-error handling and full data ingestion are modeled but not run.",
+        "domain": "Synthetic UTF8 helper inputs and valid bounded CSR. No teacher/held-out/DB execution. Initial query allowed ambient sense-prior lookup; corrected four isolated runs use absent ONTO_PRIOR.",
+        "id": "sense-identity",
+        "observation_scope": "coresel uses wdwalk core resolution and corevmm key/verdict readers, build.rs consumes coregate then core.rs includes generated arrays. Graph model feeds store/Kb/query; core checks layer0 Kb properties and ancestry. Builder consumes Zip; judge/corevmm call wdvmm only in unexecuted effectful paths. Passing parser is not successful numeric code emission or teacher correctness.",
+        "operator": "coresel filters exact synset; q_synsets accepts noun accepted/also mapping; Core SynMap collect last duplicate vs Graph find first means unique key/POS is necessary for agreement.",
+        "path": "model.md",
+        "required": false,
+        "section": "sense-identity",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Resources available; u32 offsets and enum widths representable, CSR externally validated. Live writes, worker races, write-error handling and full data ingestion are modeled but not run.",
+        "domain": "Synthetic UTF8 helper inputs and valid bounded CSR. No teacher/held-out/DB execution. Initial query allowed ambient sense-prior lookup; corrected four isolated runs use absent ONTO_PRIOR.",
+        "id": "csr-join",
+        "observation_scope": "coresel uses wdwalk core resolution and corevmm key/verdict readers, build.rs consumes coregate then core.rs includes generated arrays. Graph model feeds store/Kb/query; core checks layer0 Kb properties and ancestry. Builder consumes Zip; judge/corevmm call wdvmm only in unexecuted effectful paths. Passing parser is not successful numeric code emission or teacher correctness.",
+        "operator": "Builder dedups(s,r,t) and builds both orientations; model borrowing assumes valid offsets. store validation belongs between loaded bytes and Kb queries; builder does not itself exclude cycles.",
+        "path": "model.md",
+        "required": false,
+        "section": "csr-join",
+        "status": "partial_source_derived_model",
+        "type": "csr_transport"
+      },
+      {
+        "assumptions": "Resources available; u32 offsets and enum widths representable, CSR externally validated. Live writes, worker races, write-error handling and full data ingestion are modeled but not run.",
+        "domain": "Synthetic UTF8 helper inputs and valid bounded CSR. No teacher/held-out/DB execution. Initial query allowed ambient sense-prior lookup; corrected four isolated runs use absent ONTO_PRIOR.",
+        "id": "teacher-effect",
+        "observation_scope": "coresel uses wdwalk core resolution and corevmm key/verdict readers, build.rs consumes coregate then core.rs includes generated arrays. Graph model feeds store/Kb/query; core checks layer0 Kb properties and ancestry. Builder consumes Zip; judge/corevmm call wdvmm only in unexecuted effectful paths. Passing parser is not successful numeric code emission or teacher correctness.",
+        "operator": "corevmm/judge prompts and pure parsers can be tested without wdvmm::ask. Output append errors and in-flight worker effects remain outside demonstrated contracts; probability estimates are not measured frequencies.",
+        "path": "model.md",
+        "required": false,
+        "section": "teacher-effect",
+        "status": "partial_source_derived_model",
+        "type": "effect_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "ontology-core-selection",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "onto/build.rs",
+      "sha256": "439c6f933d542e7a8e680e7a8c89d56fbe3383b8df6f7c5904c2f397a6f5ed37"
+    },
+    {
+      "path": "onto/src/build.rs",
+      "sha256": "8970f801835615c8e0257e138060c2b0abed1cd4c20ff5630e50c3f99a2f50e3"
+    },
+    {
+      "path": "onto/src/core.rs",
+      "sha256": "467680ae687e0fa23854fdcda8f5b4f516c05d7aaaa0627000dc5836f5556f2f"
+    },
+    {
+      "path": "onto/src/coregate.rs",
+      "sha256": "31631d014f9c0c1c1ea1590f95b500cd23343fe3ec2756a174a375be1cf5c2b5"
+    },
+    {
+      "path": "onto/src/coresel.rs",
+      "sha256": "eba8bb318c0d5b43c51db0c35a7eefb527e793ff86f0666ffc16b8492a874d7a"
+    },
+    {
+      "path": "onto/src/corevmm.rs",
+      "sha256": "d7523b9db18a7a06d19398ca9ccd0e1ad7e6b68b015c73e2a8fff5418103bb0c"
+    },
+    {
+      "path": "onto/src/judge.rs",
+      "sha256": "90c6e6dc9343201b3a82e5da024efa5c1252619dafbc1c4ec74a377986c1c606"
+    },
+    {
+      "path": "onto/src/model.rs",
+      "sha256": "2a6d7c57582f7724942f439050bcc6aa2573131bca594a96688ee14c19c9b29a"
+    },
+    {
+      "path": "onto/src/tests.rs",
+      "sha256": "5e6ede24ca951f504198d9f80207be2b2e137c1f51b2dcdc6e3887a4fcd924d6"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

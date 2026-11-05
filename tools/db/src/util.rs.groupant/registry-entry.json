@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "util::tests::time_and_wildcards"
+  ],
+  "children": [],
+  "cost": "sha/time formatting O(input bytes)/O(1) arithmetic respectively; glob O(visited directory entries plus sort) with star matching substring scans. Memory proportional to candidates and returned paths; filesystem effects are reads.",
+  "description": "Time, card labels and simple filesystem glob",
+  "forward": [
+    "sha1_hex returns lowercase digest; ts decomposes seconds using Euclidean day/rem and Gregorian civil conversion. date_suffix takes final ten bytes and tests digit/dash shape. expand handles only ~ and ~/; glob walks components, star-matches directory names, suppresses unreadable directories, retains files and sorts. wild matches prefix, sequential interior fragments and suffix."
+  ],
+  "id": "db-src-util",
+  "inverse": [
+    "Nonmatching glob names cannot enter the next component frontier, and directories cannot remain final outputs. Invalid date shape yields None on safe slicing domain; impossible calendar dates are not excluded.",
+    "A timestamp's compatible seconds are unique within the civil conversion's valid domain, while a date suffix result admits arbitrary prefixes. Sorted glob output does not reconstruct directory iteration order or ignored read errors; SHA1 is many-to-one.",
+    "secs=-1 decomposes into days=-1, rem=86399, avoiding negative time fields. ts uses proleptic Gregorian cycles; now_ts maps preepoch clock error to zero.",
+    "wild splits only star; leading fragment must be prefix, interior fragments found in order consuming their bytes, final fragment suffix. Question mark and brackets are literal, not shell syntax.",
+    "English and escaped legacy labels map to shared English keys; card_part normalizes only the two declared totals and preserves other labels.",
+    "parent_name/stem/file_name use lossy UTF-8; abs canonicalizes with an error on missing paths. expand leaves ~other unchanged; filesystem permissions and races remain external."
+  ],
+  "limitations": [
+    "Finite helper/fixture evidence only; no DuckDB integration or SQL semantics",
+    "Partial syntax projection; no macro expansion or full semantic proof",
+    "No executable approximate profile or speedup claim"
+  ],
+  "source": "tools/db/src/util.rs",
+  "state": "glob output sorted lexicographically, files only; paths need not be canonical. date_suffix is not calendar validation and slicing requires a UTF-8 boundary at len-10. Timestamp computation on i64 seconds has bounded day arithmetic but display years may exceed four digits."
+}

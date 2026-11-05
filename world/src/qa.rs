@@ -226,6 +226,9 @@ fn run1(w: &World, q: &str) -> R {
         }
         "holder" => {
             let (d, times) = q.pos.split_first().ok_or("holder <desc> <time>…")?;
+            if times.is_empty() {
+                return Err("holder <desc> <time>…".into());
+            }
             let o = one(w, d)?;
             let mut out = Vec::new();
             for t in times {
@@ -389,8 +392,18 @@ fn run1(w: &World, q: &str) -> R {
             Ok(with.join("; "))
         }
         "events" => {
-            let from = q.kv.get("from").and_then(|x| x.strip_prefix("^s")).and_then(|x| x.parse::<u16>().ok()).unwrap_or(1);
-            let to_s = q.kv.get("to").and_then(|x| x.strip_prefix("^s")).and_then(|x| x.parse::<u16>().ok()).unwrap_or(u16::MAX);
+            let bound = |key: &str, default: u16| -> Result<u16, String> {
+                match q.kv.get(key) {
+                    None => Ok(default),
+                    Some(x) => x.strip_prefix("^s").and_then(|x| x.parse::<u16>().ok())
+                        .filter(|n| *n > 0).ok_or_else(|| format!("invalid {key} sentence {x:?}")),
+                }
+            };
+            let from = bound("from", 1)?;
+            let to_s = bound("to", u16::MAX)?;
+            if from > to_s {
+                return Err("reversed event interval".into());
+            }
             let mut q2 = Q { pos: Vec::new(), kv: q.kv.clone() };
             q2.kv.remove("from");
             q2.kv.remove("to");
@@ -519,4 +532,132 @@ pub fn answers_md(w: &World, qs: &[Question]) -> (String, Score) {
  n.ctrl_ok, n.ctrl);
     }
     (o, n)
+}
+
+#[cfg(test)]
+mod wave12_models {
+    use super::*;
+    use crate::lang::{Cmd, Ev2, Line};
+    use crate::world::Text;
+
+    fn fixture() -> World {
+        let mut w = World::new(Text {
+            doc: 7,
+            title: "fixture".into(),
+            sents: (1..=3).map(|_| (1, "fixture".into())).collect(),
+        });
+        w.story = None;
+        let cmds = [
+            Cmd::Obj {
+                id: Id::new(Reg::O, 1),
+                ty: OBJ_TYPE.tag("thing").unwrap(),
+                class: None,
+                name: None,
+                at: None,
+                part: None,
+                num: None,
+            },
+            Cmd::Event {
+                id: Id::new(Reg::E, 1),
+                verb: "wait".into(),
+                roles: vec![],
+                why: Some("test".into()),
+                how: None,
+                x: Ev2::default(),
+            },
+        ];
+        for (i, cmd) in cmds.into_iter().enumerate() {
+            w.apply(&Line {
+                no: i + 1,
+                raw: String::new(),
+                cmd,
+                anchors: vec![1],
+            })
+            .unwrap();
+        }
+        w
+    }
+
+    #[test]
+    fn holder_requires_a_time_and_fallback_remains_available() {
+        let w = fixture();
+        assert!(
+            !answer(&w, "holder O1").from_state,
+            "missing time must not produce empty state evidence"
+        );
+        let a = answer(&w, "holder O1 || chrono");
+        assert!(
+            a.from_state && a.text.contains("E1"),
+            "invalid first reading must permit fallback"
+        );
+    }
+
+    #[test]
+    fn interval_validation_does_not_broaden_to_all_events() {
+        let w = fixture();
+        for bad in [
+            "events from=garbage",
+            "events to=^s65536",
+            "events from=^s0",
+            "events from=^s2 to=^s1",
+        ] {
+            assert!(!answer(&w, bad).from_state, "{bad}");
+        }
+        for lo in 1..=3 {
+            for hi in lo..=3 {
+                let a = answer(&w, &format!("events from=^s{lo} to=^s{hi}"));
+                assert_eq!(a.from_state, lo <= 1 && 1 <= hi);
+            }
+        }
+    }
+
+    #[test]
+    fn ordered_substring_verdict_matches_finite_position_oracle() {
+        fn subsequence(text: &[u8], words: &[&[u8]]) -> bool {
+            if words.is_empty() {
+                return true;
+            }
+            (0..text.len()).any(|i| {
+                text[i..].starts_with(words[0])
+                    && subsequence(&text[i + words[0].len()..], &words[1..])
+            })
+        }
+        for mask in 0..32 {
+            let text: String = (0..5)
+                .map(|i| if mask & (1 << i) == 0 { 'a' } else { 'b' })
+                .collect();
+            for pattern in ["a>b", "b>a", "a>a>a", "b>b", "ab>a"] {
+                let parts: Vec<_> = pattern.split('>').map(str::as_bytes).collect();
+                let a = Answer {
+                    text: text.clone(),
+                    from_state: true,
+                };
+                assert_eq!(
+                    verdict(&a, pattern) == Verdict::Hit,
+                    subsequence(text.as_bytes(), &parts)
+                );
+            }
+        }
+        assert_eq!(
+            verdict(
+                &Answer {
+                    text: "a".into(),
+                    from_state: false
+                },
+                "a"
+            ),
+            Verdict::NotInState
+        );
+    }
+
+    #[test]
+    fn supplied_questions_to_report_preserve_counts_and_control_partition() {
+        let w = fixture();
+        let rows = "7\t1\taction\tknown\tchrono\twait\n7\t2\taction\twrong\tchrono\tmissing\n7\t3\taction\tunknown\tunknown\tx\n7\t4\tcontrol\tcontrol\tunknown\tx\n";
+        let qs = read_questions(rows).unwrap();
+        let (md, s) = answers_md(&w, &qs);
+        assert_eq!((s.hit, s.miss, s.none, s.ctrl_ok, s.ctrl), (1, 1, 1, 1, 1));
+        assert!(md.contains("of 3") && md.contains("Honest 1 of 1"));
+        assert!(read_questions("7\tx").is_err());
+    }
 }

@@ -1,0 +1,155 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "All u64 input pairs and Bezout observations.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One terminating exact call.",
+        "operator": "In U of input pairs and candidate triples, U minus graph(E) contains wrong gcds, violated integer Bezout identities and coefficient triples unequal to the deterministic Euclidean result even if their identity holds. This exact recurrence target has finite correspondence evidence, not a formal Rust proof.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "ec9a6f634b6ba2fdb7dc4f1258bfcbf07799ad979dc2f43761a958440d778b3d",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "All u64 input pairs and Bezout observations.",
+        "evidence": "model.md#evidence",
+        "id": "coefficient_fibers",
+        "observation_scope": "One terminating exact call.",
+        "operator": "Given (g,x,y), reconstruct all u64 pairs (a,b) satisfying E(a,b)=(g,x,y). Necessarily ax+by=g and gcd(a,b)=g, but those conditions alone do not enforce the coefficient policy. For g=0 only (0,0) with x=y=0 qualifies; (g,1,0) for g>0 can admit several b. Preserve the recurrence constraint and ambiguity.",
+        "path": "model.md",
+        "section": "coefficient_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "ec9a6f634b6ba2fdb7dc4f1258bfcbf07799ad979dc2f43761a958440d778b3d",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "All u64 input pairs and Bezout observations.",
+        "evidence": "model.md#evidence",
+        "id": "gcd_symmetry",
+        "observation_scope": "One terminating exact call.",
+        "operator": "The gcd projection is unchanged by swapping a,b. Coefficients need not swap under tie and zero conventions; the tests compare only gcd under swapping.",
+        "path": "model.md",
+        "section": "gcd_symmetry",
+        "status": "partial_source_derived",
+        "subject_revision": "ec9a6f634b6ba2fdb7dc4f1258bfcbf07799ad979dc2f43761a958440d778b3d",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "All u64 input pairs and Bezout observations.",
+        "evidence": "model.md#evidence",
+        "id": "zero_boundary",
+        "observation_scope": "One terminating exact call.",
+        "operator": "For a>0 E(a,0)=(a,1,0); for b>0 E(0,b)=(b,0,1); E(0,0)=(0,0,0).",
+        "path": "model.md",
+        "section": "zero_boundary",
+        "status": "partial_source_derived",
+        "subject_revision": "ec9a6f634b6ba2fdb7dc4f1258bfcbf07799ad979dc2f43761a958440d778b3d",
+        "type": "boundary_specialization"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "All u64 input pairs and Bezout observations.",
+        "evidence": "model.md#evidence",
+        "id": "linear_certificate",
+        "observation_scope": "One terminating exact call.",
+        "operator": "For a returned g>0, divisibility of a and b by g plus ax+by=g establishes greatest common divisor over integers: every common divisor divides the displayed combination. Runtime evaluates no potentially large input-coefficient products. Tests check their products with checked i128 operations.",
+        "path": "model.md",
+        "section": "linear_certificate",
+        "status": "partial_source_derived",
+        "subject_revision": "ec9a6f634b6ba2fdb7dc4f1258bfcbf07799ad979dc2f43761a958440d778b3d",
+        "type": "certificate_relation"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "u64 inputs; integer coefficients and explicit finite-machine projection premises.",
+        "evidence": "model.md#evidence",
+        "id": "affine_solution_family",
+        "observation_scope": "One terminating exact call.",
+        "operator": "For (a,b)!=(0,0), let E(a,b)=(g,x0,y0). All integer solutions to ax+by=g are exactly x=x0+k*(b/g), y=y0-k*(a/g), k in Z. This describes certificate solutions, not the graph of the deterministic coefficient policy: only k=0 is returned. For (0,0), every integer coefficient pair solves the equation but only (0,0) is returned. Arbitrary k and products require mathematical integers or checked arithmetic; i128 is not a universal family domain.",
+        "path": "model.md",
+        "section": "affine_solution_family",
+        "status": "partial_source_derived",
+        "subject_revision": "ec9a6f634b6ba2fdb7dc4f1258bfcbf07799ad979dc2f43761a958440d778b3d",
+        "type": "algebraic_relation"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "u64 inputs; integer coefficients and explicit finite-machine projection premises.",
+        "evidence": "model.md#evidence",
+        "id": "divisibility_lattice",
+        "observation_scope": "One terminating exact call.",
+        "operator": "For g>0, positive d divides both a and b iff d divides g. Thus g is the greatest common divisor in the divisibility order and ax+by=c has an integer solution iff g divides c. Sufficiency scales the returned certificate by c/g; necessity follows by divisibility of every linear combination. At (0,0), only c=0 is solvable, and every positive d divides both inputs; no finite positive maximum exists.",
+        "path": "model.md",
+        "section": "divisibility_lattice",
+        "status": "partial_source_derived",
+        "subject_revision": "ec9a6f634b6ba2fdb7dc4f1258bfcbf07799ad979dc2f43761a958440d778b3d",
+        "type": "order_relation"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "u64 inputs; integer coefficients and explicit finite-machine projection premises.",
+        "evidence": "model.md#evidence",
+        "id": "modular_inverse",
+        "observation_scope": "One terminating exact call.",
+        "operator": "For modulus m>=2 and a:u64, gcd(a,m)=1 iff a has an inverse modulo m. The unique representative r in [0,m) is E(a,m).x rem_euclid m. Other Bezout solutions project to the same r. No inverse is inferred when gcd>1; modulus zero is undefined and modulus one is excluded. For verification convert a,r,m to u128: a*r fits u128 for u64 operands; the same product may overflow i128 even though the signed coefficient identity is safe.",
+        "path": "model.md",
+        "section": "modular_inverse",
+        "status": "partial_source_derived",
+        "subject_revision": "ec9a6f634b6ba2fdb7dc4f1258bfcbf07799ad979dc2f43761a958440d778b3d",
+        "type": "quotient_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-extended-gcd",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "ec9a6f634b6ba2fdb7dc4f1258bfcbf07799ad979dc2f43761a958440d778b3d"
+  },
+  "status": "partial_source_derived_instance"
+}

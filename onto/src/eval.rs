@@ -300,3 +300,54 @@ pub fn majority_baseline(qs: &[Q], group: &str) -> String {
     let (best, n) = c.iter().max_by_key(|x| (*x.1, *x.0)).map(|(k, v)| (*k, *v)).unwrap_or(("", 0));
     format!("\"always {best}\" {n}/{} ({:.0}%)", v.len(), 100.0 * n as f64 / v.len().max(1) as f64)
 }
+
+#[cfg(test)]
+mod wave29_ontowiki {
+    use super::*;
+    #[test]
+    fn score_and_zip_tally() {
+        let a = Answer {
+            verdict: Verdict::Unknown,
+            values: vec!["Commerce".into()],
+            lines: vec![],
+        };
+        assert_eq!(score(&a, "commerce"), Status::Correct);
+        assert_eq!(score(&a, "yes"), Status::Unknown);
+        assert_eq!(score(&a, "unknown"), Status::Correct);
+        let q = |id: &str, group: &str| Q {
+            id: id.into(),
+            group: group.into(),
+            query: String::new(),
+            gold: "no".into(),
+        };
+        let qs = vec![q("1", "b"), q("2", "a"), q("3", "lost")];
+        assert_eq!(
+            tally(&qs, &[(a.clone(), Status::Correct), (a, Status::Wrong)]),
+            vec![
+                ("b".into(), [1, 0, 0]),
+                ("a".into(), [0, 0, 1]),
+                ("total".into(), [1, 0, 1])
+            ]
+        );
+        assert_eq!(majority_baseline(&[], "x"), "\"always \" 0/0 (0%)");
+    }
+    #[test]
+    fn frozen_hash_before_utf8() {
+        let dir = std::env::temp_dir().join(format!("onto-eval-wave29-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let p = dir.join("tiny.tsv");
+        std::fs::write(&p, b"i\tg\tq\tyes\textra\n").unwrap();
+        let (q, hash) = read_frozen(&p).unwrap();
+        assert_eq!(q.len(), 1);
+        std::fs::write(p.with_extension("sha256"), hash).unwrap();
+        assert!(read_frozen(&p).is_ok());
+        std::fs::write(&p, [255]).unwrap();
+        assert!(
+            read_frozen(&p)
+                .unwrap_err()
+                .to_string()
+                .contains("gate: hash")
+        );
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+}

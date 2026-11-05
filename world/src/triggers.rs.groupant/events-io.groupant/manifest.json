@@ -1,0 +1,125 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "With finite valid event logs exclude expect_after adding nonadjacent transitions and exclude unknown-event activate writes. Failure of append is silent, so successful durable activation cannot be inferred from return ().",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "An expectation distribution reconstructs all ordered traces with matching accepted adjacency counts and upper medians, including arbitrary excluded pairs. A stored detail has many preimages under sanitization/truncation; a silent activation return leaves both failed and successful append histories.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "event_statistics",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "expect_after considers adjacent original pairs whose first event matches and second is neither message nor task; it does not reconnect across excluded events. Each group has floor(1000*n/N) and upper median of saturating time gaps. Sort descending probability then lexical event. Frequencies may sum below 1000.",
+        "path": "model.md",
+        "section": "event_statistics",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "ordered_trace_projection"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "io_clock",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "activate recognizes EVENTS, gets now, sanitizes tab/newline, truncates detail to 200 Unicode characters and best-effort appends; Task drop invokes task activation with Instant elapsed. episodes reads/reverses/truncates physical rows, not timestamp sorting. fire performs per-event reads then clock/timezone reads, so its input is not an atomic snapshot. This typed effect relation is unexecuted by bounded tests.",
+        "path": "model.md",
+        "section": "io_clock",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "effect_boundary"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "outcome",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "outcome_rate counts all physical rows whose second tab column matches event, even malformed rows, then substring-matches word anywhere in those rows. surprising requires at least 20 matching rows and hits*20 <= rows. expectation_line composes separate reads, not an atomic log snapshot; no native live-log execution.",
+        "path": "model.md",
+        "section": "outcome",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "threshold_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 10395,
+      "start": 2910
+    },
+    "description": "Logical source region \"// ---- The self\" through before \"const NUMBER_WORDS\". expect_after considers adjacent original pairs whose first event matches and second is neither message nor task; it does not reconnect across excluded events. Each group has floor(1000*n/N) and upper median of saturating time gaps. Sort descending probability then lexical event. Frequencies may sum below 1000. activate recognizes EVENTS, gets now, sanitizes tab/newline, truncates detail to 200 Unicode characters and best-effort appends; Task drop invokes task activation with Instant elapsed. episodes reads/reverses/truncates physical rows, not timestamp sorting. fire performs per-event reads then clock/timezone reads, so its input is not an atomic snapshot. This typed effect relation is unexecuted by bounded tests. outcome_rate counts all physical rows whose second tab column matches event, even malformed rows, then substring-matches word anywhere in those rows. surprising requires at least 20 matching rows and hits*20 <= rows. expectation_line composes separate reads, not an atomic log snapshot; no native live-log execution. Parent composition retains shared text/clock/intermediate values. Full-file wrapper and test gaps remain in the root."
+  },
+  "id": "world-triggers-events-io",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../triggers.rs",
+    "sha256": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2"
+  },
+  "status": "partial_source_derived_instance"
+}

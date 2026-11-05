@@ -1,0 +1,13 @@
+//! Abstract research-planning extension. No network, corpus or model calls.
+#[derive(Debug, PartialEq, Eq)]
+pub enum Step { ReadPermittedSources, DraftIndependentExplanation, CheckAttribution, ReviewModels }
+pub fn research_plan() -> Vec<Step> {
+    vec![Step::ReadPermittedSources, Step::DraftIndependentExplanation, Step::CheckAttribution, Step::ReviewModels]
+}
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn attribution_precedes_model_review() {
+        assert_eq!(super::research_plan()[2], super::Step::CheckAttribution);
+    }
+}

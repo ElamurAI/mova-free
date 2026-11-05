@@ -1,0 +1,77 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Whole-source partial syntax artifact; coverage.syntax_nodes selects this fragment's nodes. No expanded or semantic AST.",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "excluded-traces",
+        "path": "model.md",
+        "required": true,
+        "scope": "Explicit inner approximation of U \\ R; see model universe and assumptions.",
+        "section": "Behavior complement",
+        "status": "partial_source_derived",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "compatible-antecedents",
+        "path": "model.md",
+        "required": true,
+        "scope": "Compatible pairs preserve all component sums and max(input timing lengths)=output timing length, including explicit zero suffixes; 3136 bounded pairs yield 32 preimages of the chosen observation. Attribution remains ambiguous.",
+        "section": "Reverse reconstruction",
+        "status": "partial_source_derived",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "aggregation-preimage",
+        "path": "model.md",
+        "required": false,
+        "scope": "Timing vectors align by pass index, not wall-clock order. Recovering per-lesson durations from aggregate timings requires external provenance.",
+        "section": "Specialized relation",
+        "status": "partial_source_derived",
+        "type": "aggregation_preimage"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_checks_executed"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 885,
+      "start": 376
+    },
+    "description": "LearnWork declaration and accumulation implementation.",
+    "syntax_nodes": {
+      "node_ids": [
+        2,
+        8
+      ],
+      "path": "../syntax.json"
+    }
+  },
+  "id": "learning-memo-accounting",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../learning.rs",
+    "sha256": "27a2ad1ec4a2548c007ea360fb817b65843a89a8424910de9ba2b54534459c05"
+  },
+  "status": "partial_with_bounded_correspondence"
+}

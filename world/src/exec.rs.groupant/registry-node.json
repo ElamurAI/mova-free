@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "Existing focused check: cargo test -p world --lib exec::tests -- --nocapture. Named tests: batches_preserve_order_and_cardinality (101 mapped values and empty input); worker_panics_are_errors_instead_of_partial_results (four panicking jobs). The file-root model.md#evidence records actual execution. Mode caching, exit behavior, mixed worker outcomes, GPU shape guards and GPU/CPU agreement remain untested here.",
+    "Six native exec tests: complete finite callback fibers, joined panic prefixes, output Drop accounting and stateful ticket projections; source-extracted compiled reverse-callback mutant."
+  ],
+  "children": [],
+  "cost": "For n jobs, total work is sum of job costs plus O(n+t) aggregation; ideal span is largest chunk cost plus joins. GPU adds loading, model work and O(tokens) intermediate storage; no measured speedup.",
+  "description": "Initialize mode once; CPU parses through ordered workers; GPU composes cached load, tokenize, nonempty gather, predict, shape guards, complete, repair, lowercase and scatter.",
+  "forward": [
+    "Initialize mode once; CPU parses through ordered workers; GPU composes cached load, tokenize, nonempty gather, predict, shape guards, complete, repair, lowercase and scatter."
+  ],
+  "id": "execution-dispatch",
+  "inverse": [
+    "U consists of (build, environment history, texts, tagged Ok/Error/Exit outcome). R selects the latched mode and executes its pipeline. U minus R includes successful truncated returns after worker panic, successful GPU dispatch in a CPU-only build, and switching mode after a valid latch. Resource aborts and parser quality are outside this bound.",
+    "For Ok word batches y, R^-1(y) contains all texts and parser states mapping to y, with input count equal to output count. Casing, ambiguity and approximate GPU outputs prevent unique text recovery."
+  ],
+  "limitations": [
+    "AST and semantic proof absent; parent inference-core composition required.",
+    "Catalog experiments are prospective unless explicitly executed in model.md#evidence.",
+    "New tests use synthetic closures with positive caps; parser/GPU/mode latch and arbitrary callback effects remain outside evidence."
+  ],
+  "source": "world/src/exec.rs",
+  "state": "Source-bound input, intermediate and output observations; see adjacent descriptant."
+}

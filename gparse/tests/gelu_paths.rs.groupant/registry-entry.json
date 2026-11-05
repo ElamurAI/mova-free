@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "activation_configuration_roundtrips; cuda_values_and_derivatives"
+  ],
+  "children": [],
+  "cost": "O(16001) activation/autodiff plus finite-difference operations; excluded experiment O(2048 inference plus 16 repeats).",
+  "description": "Configuration test checks missing GELU defaults Erf, typo errors and Tanh save/load. CUDA grid computes erf/tanh outputs and autodiff at 16001 f32 samples [-8,8]; compares max abs values<0.0005, derivatives<0.001 and tanh central finite-difference<1e-5 (epsilon 1e-4). Corpus parser timing requires 2048 fitting sentences and is excluded.",
+  "forward": [
+    "Configuration test checks missing GELU defaults Erf, typo errors and Tanh save/load. CUDA grid computes erf/tanh outputs and autodiff at 16001 f32 samples [-8,8]; compares max abs values<0.0005, derivatives<0.001 and tanh central finite-difference<1e-5 (epsilon 1e-4). Corpus parser timing requires 2048 fitting sentences and is excluded."
+  ],
+  "id": "gparse-test-gelu-paths",
+  "inverse": [
+    "Passing selected assertions excludes their stated counterexamples within the fixtures. External saved-model/corpus experiment remains unexecuted; success of helper checks cannot establish it.",
+    "Passing maxima admit many error arrays below thresholds; observed approximate outputs do not recover exact inputs/weights. Config text preimage includes ignored keys."
+  ],
+  "limitations": [
+    "Partial lexical syntax; no semantic proof",
+    "Finite synthetic checks only; external corpus/model experiments excluded",
+    "No executable Rust percent surrogate or throughput claim",
+    "Fault injection and exhaustive nonfinite/dimension cases absent"
+  ],
+  "source": "gparse/tests/gelu_paths.rs",
+  "state": "Finite grid thresholds do not imply all-real error or tree agreement; configuration rejection is categorical."
+}

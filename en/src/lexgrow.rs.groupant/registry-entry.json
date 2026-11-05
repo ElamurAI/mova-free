@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "lexgrow::tests::acronyms_and_words",
+    "lexext::tests::grown_words"
+  ],
+  "children": [],
+  "cost": "One pass over SPECIALIST LRAGR (~121 MB) and LEXICON (~56 MB), the OEWN JSON entries and the name lists; BTreeMap rows; about 3 s on 2026-11-04.",
+  "description": "Generator of the lexicon extension (en lexgrow): rows the dictionary lacks from Open English WordNet 2025, the SPECIALIST Lexicon 2026, 2010 U.S. Census surnames and the Names Corpus, with provenance per row, and acronyms with expansions; sorted, deterministic.",
+  "forward": [
+    "SPECIALIST LRAGR single-token open-class rows mapped to PTB tags (NNP for a capitalised noun base; non-noun rows with two capitals dropped); units the dictionary covers in the class keep only an extra NNS of a dictionary NN lemma. OEWN lemmas: NNP for capitalised nouns, NN/VB/VBP/JJ/RB, listed irregular forms, regular morph forms only when SPECIALIST lacks the lemma and WordNet lists none (no plural for -s/-ism nouns). put skips dontuse forms, rows the dictionary has, and forms the dictionary has in the same class. Census (>= 1000 bearers) and Names Corpus names as NNP only when no source has them as common words. Common-word rows of <= 3 letters need a WordNet source. Acronyms: WordNet synset pairs by initials first, then SPECIALIST acronym_of, <= 8 each."
+  ],
+  "id": "en-lexgrow",
+  "inverse": [
+    "A row's source key (EUI, o, c, k; synset or EUI for acronyms) points back to its source record; dropped rows and other forms of covered units are not recoverable.",
+    "Never written: Wiktionary/Wikipedia material, multi-word entries, closed classes, variants of dictionary units (occured, noticable), dontuse forms, abbreviation adjectives, ungiven comparison (lexical), rare surnames, names that are common words."
+  ],
+  "limitations": [
+    "SPECIALIST is biomedical-heavy; rare readings weigh like common ones in the hint",
+    "WordNet-only verbs with irregular forms get their base only",
+    "Mova's own trees are not a source (corpus 0.4 is CC BY-SA; trees drafted by an EWT-trained model)"
+  ],
+  "source": "en/src/lexgrow.rs",
+  "state": "Source files as read and the in-code dictionary; no network or randomness."
+}

@@ -1,0 +1,87 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "first-match",
+        "path": "model.md",
+        "section": "first-match",
+        "status": "partial_source_derived_model",
+        "type": "selection_partition"
+      },
+      {
+        "id": "voice-negation",
+        "path": "model.md",
+        "section": "voice-negation",
+        "status": "partial_source_derived_model",
+        "type": "role_mapping"
+      },
+      {
+        "id": "noun-unicode",
+        "path": "model.md",
+        "section": "noun-unicode",
+        "status": "partial_source_derived_model",
+        "type": "normalization_relation"
+      },
+      {
+        "id": "recipient-choice",
+        "path": "model.md",
+        "section": "recipient-choice",
+        "status": "partial_source_derived_model",
+        "type": "fallback_relation"
+      }
+    ],
+    "tests": {
+      "path": "../model.md#tests",
+      "status": "bounded_native_checks"
+    }
+  },
+  "coverage": {
+    "description": "Event::show, noun, events, book_body and sentences."
+  },
+  "id": "corpus-events-extraction",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../events.rs",
+    "sha256": "3a58733b8be1a9bb005846ebe8c8447a31d8b75b90f3e4d352d9d539c3998d3a"
+  },
+  "status": "partial_source_derived_instance"
+}

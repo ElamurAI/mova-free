@@ -1,0 +1,25 @@
+{
+  "id": "approximation-next-runner",
+  "source": "tools/approx/examples/groupants_next.rs",
+  "description": "Second executable companion/reference validation and bounded CPU timing.",
+  "state": "(fixed fixtures, four budgets, metric checks, paired durations)",
+  "forward": [
+    "Validate byte-edit scalar error, LIS objective loss, scalar range error and S1 probability error.",
+    "Emit independent typed classes and separately finite CHECK observations.",
+    "Require favorable/fallback dispatch for certificate methods; dense/sparse S1 has no fallback."
+  ],
+  "inverse": [
+    "Retain all executions compatible with CHECK aggregates and fixed fixture revision.",
+    "Reject invalid metrics and corrupted actual outputs; timing observations remain nondeterministic."
+  ],
+  "cost": "Bounded fixtures and seven alternating paired rounds; range builds separate from batches of 128 queries.",
+  "checks": [
+    "cargo test -p mova-approx --example groupants_next",
+    "cargo run --release -p mova-approx --example groupants_next"
+  ],
+  "limitations": [
+    "Finite checks do not prove universal accuracy or composition-wide bounds.",
+    "Scalar minima need not be range members; LIS witnesses need not match reference indices; edit semantics are bytes.",
+    "Semantic AST remains absent."
+  ]
+}

@@ -1,4 +1,4 @@
-//! Sarcasm and irony candidates by incongruity, deterministic and explained (docs/pragmatics-algorithms.md,
+//! Sarcasm and irony candidates by incongruity, deterministic and explained (docs/pragmatics.md#algorithms-from-the-literature,
 //! "Sarcasm by incongruity").
 //!
 //! Method (Joshi, Sharma & Bhattacharyya 2015; the negative situations after Riloff et al. 2013): sarcasm says
@@ -103,9 +103,9 @@ fn under(words: &[Word], k: usize, top: usize) -> bool {
         if x == top {
             return true;
         }
-        match words[x].head {
-            0 => return false,
-            h => x = h - 1,
+        match words.get(x).map(|w| w.head) {
+            Some(h) if h > 0 && h <= words.len() => x = h - 1,
+            _ => return false, // A dangling parent supplies no ancestry evidence.
         }
     }
     false
@@ -124,7 +124,7 @@ fn situations(words: &[Word]) -> Vec<(usize, usize)> {
             }
             // ended or denied: the head word or a word right before is in ENDED
             let last = i + n - 1;
-            let ended = (i..=last).any(|k| words[k].head > 0 && ENDED.contains(&lemmas[words[k].head - 1].as_str()))
+            let ended = (i..=last).any(|k| words[k].head.checked_sub(1).and_then(|h| lemmas.get(h)).is_some_and(|l| ENDED.contains(&l.as_str())))
                 || (i > 0 && ENDED.contains(&lemmas[i - 1].as_str()))
                 || words.iter().enumerate().any(|(j, w)| ENDED.contains(&lemmas[j].as_str()) && (i..=last).any(|k| w.head == k + 1));
             if !ended && !out.iter().any(|&(a, b)| a <= last && i <= b) {
@@ -342,5 +342,59 @@ mod tests {
         // "like" as a preposition is no sentiment
         let like = s(&[("It", "it", PRON, 2, Nsubj), ("looks", "look", VERB, 0, Root), ("like", "like", ADP, 4, Case), ("rain", "rain", NOUN, 2, Obl)]);
         assert_eq!(irony(&like, "It looks like rain"), None);
+    }
+}
+
+#[cfg(test)]
+mod wave12_models {
+    use super::*;
+    use en::gram::{Feats, Rel, Tag};
+    fn w(s: &str, head: usize) -> Word {
+        Word { form: s.into(), lemma: s.into(), upos: UPos::ADJ, tag: Tag::JJ, feats: Feats::default(), head, rel: Rel::Dep }
+    }
+
+    #[test]
+    fn finite_polarity_and_cue_oracle() {
+        for (tokens, expected) in [
+            (vec!["great", "bad"], Some((1, 1, 1, 1, 0))),
+            (vec!["great", "good", "bad"], Some((2, 1, 1, 2, 1))),
+            (vec!["bad", "great"], None),
+            (vec!["great", "but", "bad"], None),
+            (vec!["great"], None),
+            (vec![], None),
+        ] {
+            let words: Vec<_> = tokens.iter().map(|s| w(s, 0)).collect();
+            for (text, bonus) in [("", 0), ("WOW lol !! ?! 🙄", 5)] {
+                let actual = irony(&words, text);
+                assert_eq!(actual.as_ref().map(|r| (r.positive, r.negative, r.flips, r.longest_run, r.polarity)), expected);
+                if let Some(r) = actual {
+                    assert_eq!(r.score, 2 + bonus);
+                    assert_eq!(r.pair, ("great".into(), "bad".into()));
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn invalid_heads_abstain_from_ancestry() {
+        for head in [3, usize::MAX] {
+            let r = irony(&[w("great", 0), w("rain", head)], "").expect("linear explicit pair");
+            assert_eq!(r.score, 2);
+            assert_eq!(r.pair, ("great".into(), "rain".into()));
+            assert!(r.why.contains("precedes"));
+            assert!(irony(&[w("bad", head), w("great", 0)], "").is_none());
+        }
+        assert!(irony(&[w("bad", 1), w("great", 0)], "").is_none());
+    }
+
+    #[test]
+    fn supplied_complement_and_ended_situation() {
+        let mut love = w("love", 0);
+        love.upos = UPos::VERB;
+        let words = [love.clone(), w("rain", 1)];
+        let r = irony(&words, "").unwrap();
+        assert_eq!((r.score, r.features), (5, vec!["implicit incongruity", "explicit incongruity"]));
+        assert_eq!(r.pair, ("love".into(), "rain".into()));
+        assert!(irony(&[love, w("no", 3), w("rain", 1)], "").is_none());
     }
 }

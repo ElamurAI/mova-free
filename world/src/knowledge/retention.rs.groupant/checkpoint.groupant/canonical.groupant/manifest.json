@@ -1,0 +1,99 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_derived"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "scope": "Shared whole-source partial projection; fragment byte_range narrows source scope. Macro expansion and semantic analysis absent.",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "scope": "Existing invariant section records local cost; no measurements implied.",
+      "section": "invariant",
+      "status": "source_derived_conditional"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_derived"
+    },
+    "obernants": [
+      {
+        "id": "retention-checkpoint-canonical-behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Canonical payload projection",
+        "section": "behavior-complement",
+        "status": "partial_source_derived_specification",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "retention-checkpoint-canonical-reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "Canonical payload projection",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "retention-checkpoint-canonical-vector-orbits",
+        "path": "model.md",
+        "required": false,
+        "scope": "Canonical payload projection",
+        "section": "vector-orbits",
+        "status": "partial_source_derived_specification",
+        "type": "canonicalization_preimage"
+      },
+      {
+        "id": "retention-checkpoint-canonical-field-retention",
+        "path": "model.md",
+        "required": false,
+        "scope": "Canonical payload projection",
+        "section": "field-retention",
+        "status": "partial_source_derived_specification",
+        "type": "projection_dependency"
+      },
+      {
+        "id": "retention-checkpoint-canonical-canonical-idempotence",
+        "path": "model.md",
+        "required": false,
+        "scope": "Canonical payload projection",
+        "section": "canonical-idempotence",
+        "status": "partial_source_derived_specification",
+        "type": "normalization_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_existing_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 6187,
+      "start": 3326
+    },
+    "description": "Canonical payload projection"
+  },
+  "id": "retention-checkpoint-canonical",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../retention.rs",
+    "revision": "sha256:89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34",
+    "sha256": "89715719216c1a94f9e701e24d4efea0b962bf04f5178d4916d19dc54536fb34"
+  },
+  "status": "partial_source_bound_model"
+}

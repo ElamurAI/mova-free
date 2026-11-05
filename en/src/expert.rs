@@ -3,7 +3,7 @@
 //! dictionaries, not from examples").
 //!
 //! Rules are written by the small agents (Opus) in seeds `en/seeds/**.md`, in ```` ```rule ```` blocks; the language is
-//! `docs/expert.md` (v1: negation of any condition, `unless:`, `or`, `@node`, `lemma.suffix`,
+//! `docs/english.md#the-expert-system-seeds-and-rules` (v1: negation of any condition, `unless:`, `or`, `@node`, `lemma.suffix`,
 //! `next`/`prev`). The engine is deterministic:
 //! 1. for each sentence it enumerates bindings of the `match` nodes to distinct words;
 //! 2. for each binding it checks `require` (all clauses; within a clause at least one `or` alternative);
@@ -754,5 +754,32 @@ mod tests {
         let mut ids: Vec<&str> = rules.iter().map(|r| r.id.as_str()).collect();
         ids.dedup();
         assert_eq!(ids.len(), rules.len(), "duplicate rule id");
+    }
+}
+
+#[cfg(test)]
+mod wave27 {
+    use super::*;
+    #[test]
+    fn bounded_contract() {
+        let (r, e) = parse_file(
+            "~~~\n\x60\x60\x60rule\nrule: x\nmatch: x[]\nrequire: not x[]\nunless: x[lemma=cat]\n\x60\x60\x60\n",
+            "synthetic",
+        );
+        assert!(e.is_empty());
+        let mut s = Sentence::default();
+        s.tokens.push(Token {
+            form: "cat".into(),
+            lemma: "cat".into(),
+            tag: Some(Tag::NN),
+            upos: Some(UPos::NOUN),
+            feats: Default::default(),
+            head: 0,
+            rel: Rel::Root,
+            space_after: true,
+        });
+        assert_eq!(check(&r[0], &s), (1, vec![]));
+        s.tokens[0].lemma = "dog".into();
+        assert_eq!(check(&r[0], &s), (1, vec![vec![1]]));
     }
 }

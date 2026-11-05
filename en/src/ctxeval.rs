@@ -299,3 +299,50 @@ pub fn report(gold_path: &Path, systems: &[System], focus: usize, boot: usize) -
 , n - fixed - broken)?;
     Ok(out)
 }
+
+#[cfg(test)]
+mod wave27 {
+    use super::*;
+    #[test]
+    fn statistics_and_bootstrap() {
+        assert_eq!(mean_sd(&[2.0]), (2.0, 0.0));
+        let (m, s) = mean_sd(&[1.0, 3.0]);
+        assert_eq!(m, 2.0);
+        assert!((s - 2.0_f64.sqrt()).abs() < 1e-12);
+        assert!(mean_sd(&[]).0.is_nan());
+        let seed = vec![vec![Scores::default()]];
+        assert_eq!(bootstrap(&seed, &seed, 1, 8, 7), [(0.0, 0.0); 4]);
+    }
+    #[test]
+    fn synthetic_load_report_and_alignment() {
+        let dir = std::env::temp_dir().join(format!("mova-wave27-ctxeval-{}", std::process::id()));
+        std::fs::create_dir(&dir).unwrap();
+        let p = dir.join("gold.conllu");
+        std::fs::write(
+            &p,
+            "# sent_id = x\n# text = Cat\n1\tCat\tcat\tNOUN\tNN\tNumber=Sing\t0\troot\t_\t_\n",
+        )
+        .unwrap();
+        let gold = conllu::read(&p).unwrap();
+        assert!(System::load("empty", &[], &gold).is_err());
+        let a = System::load("a", std::slice::from_ref(&p), &gold).unwrap();
+        let b = System::load("b", std::slice::from_ref(&p), &gold).unwrap();
+        let text = report(&p, &[a, b], 1, 8).unwrap();
+        assert!(text.contains("+0.00 [+0.00, +0.00]"));
+        assert!(text.contains("unchanged: 1"));
+        let wrong = dir.join("wrong.conllu");
+        std::fs::write(
+            &wrong,
+            "# sent_id = y\n1\tCat\tcat\tNOUN\tNN\t_\t0\troot\t_\t_\n",
+        )
+        .unwrap();
+        assert!(
+            System::load("wrong", &[wrong], &gold)
+                .err()
+                .unwrap()
+                .to_string()
+                .contains("does not match")
+        );
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+}

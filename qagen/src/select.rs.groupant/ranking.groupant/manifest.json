@@ -1,0 +1,72 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "qagen-select-ranking-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "qagen-select-ranking-reverse",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "qagen-select-ranking-specialization",
+        "path": "model.md",
+        "section": "specialization",
+        "status": "partial_source_model",
+        "type": "round_robin_prefix"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 9070,
+      "start": 8454
+    },
+    "description": "Group supplied pool indices by document; sort within each by (seeded key hash,index), label rank r; globally sort (r,document hash,index), take k. Sorting resolves randomized HashMap traversal."
+  },
+  "id": "qagen-select-ranking",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../select.rs",
+    "sha256": "0c35caf4eda91c0a5d36bce728f3846b360b483a66fa4ca3c884964839cd2554"
+  },
+  "status": "partial_source_bound_model"
+}

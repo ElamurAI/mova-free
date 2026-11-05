@@ -1,0 +1,128 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Let R be the deterministic relation specified by Forward including validation precedence and tie rules, X the declared input type and Y its Result type. Behavior complement is (X times Y) minus R. Specifically outputs violating After t selections weights count exactly neighbors in the t-prefix. Output is a permutation; selected vertices are never selected twice. are excluded; a valid-input Err or a wrong successful witness is excluded. Resource, cycle and structural rejections are determined before algorithmic output.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "d6910cc7bbbc852669798f09345feb08754f09ca7d9934750f419b7a1d8ccaac",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_inputs",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "An order p admits every simple undirected graph for which at step t p[t] maximizes prefix-neighbor count with smallest-ID ties. Both empty and complete graphs yield ascending order; graph recovery is nonunique.",
+        "path": "model.md",
+        "section": "compatible_inputs",
+        "status": "partial_source_derived",
+        "subject_revision": "d6910cc7bbbc852669798f09345feb08754f09ca7d9934750f419b7a1d8ccaac",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "prefix_certificate",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "For each prefix P and next v, count(N(v) intersect P)>=count(N(w) intersect P) for every unselected w; equality requires v<=w. These inequalities characterize the complete deterministic order.",
+        "path": "model.md",
+        "section": "prefix_certificate",
+        "status": "partial_source_derived",
+        "subject_revision": "d6910cc7bbbc852669798f09345feb08754f09ca7d9934750f419b7a1d8ccaac",
+        "type": "greedy_certificate"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "row_permutation",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Permuting each adjacency row preserves the successful order because only neighbor membership matters.",
+        "path": "model.md",
+        "section": "row_permutation",
+        "status": "partial_source_derived",
+        "subject_revision": "d6910cc7bbbc852669798f09345feb08754f09ca7d9934750f419b7a1d8ccaac",
+        "type": "representation_invariance"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "complete_fiber",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Every complete graph K_n and every edgeless graph on n vertices produces [0,...,n-1]. These distinct antecedents demonstrate ambiguity for n>=2.",
+        "path": "model.md",
+        "section": "complete_fiber",
+        "status": "partial_source_derived",
+        "subject_revision": "d6910cc7bbbc852669798f09345feb08754f09ca7d9934750f419b7a1d8ccaac",
+        "type": "constructive_preimage"
+      },
+      {
+        "approximation_semantics": "Exact conditional mathematical relation, bounded executable evidence only.",
+        "assumptions": "Sufficient allocation; validated bounded graph domain. Finite checks are not universal proofs.",
+        "domain": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract.",
+        "evidence": "model.md#evidence",
+        "id": "isolated_extension",
+        "observation_scope": "One call or one bounded test suite.",
+        "operator": "Appending one isolated largest-ID vertex leaves the old order as a prefix: its weight is zero and its ID loses every zero-weight tie.",
+        "path": "model.md",
+        "section": "isolated_extension",
+        "status": "partial_source_derived",
+        "subject_revision": "d6910cc7bbbc852669798f09345feb08754f09ca7d9934750f419b7a1d8ccaac",
+        "type": "extension_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "sha256": "a1ce5962aa911e66d61d9e343ef8961effa77cd60dbcf995bed3eb1613daa224",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-maximum-cardinality-search",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "d6910cc7bbbc852669798f09345feb08754f09ca7d9934750f419b7a1d8ccaac"
+  },
+  "status": "partial_source_derived_instance"
+}

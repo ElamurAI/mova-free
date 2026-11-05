@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "builtins::reduce::wave30_tests::geometry_empty_and_ties: column sums, empty product, NaN/first-tie index and column differences."
+  ],
+  "children": [],
+  "cost": "Slice construction/folds/cumulative/find/diff cost O(N+S), where N=numel and S=number of slices; shaped empties can have N=0,S>0. Sort/median cost O(N log(max(L,2))+S), unique O(N log(max(N,2))). Slices retain O(N+S) indices/vector headers; outputs and sorting copies also include S overhead. Repeated diff O(order*(N+S)), with order0 clone passthrough.",
+  "description": "Slice geometry maps dim1 to columns, dim2 to rows, greater dims to singleton cells. sum/prod fold complex values with identities0/1; mean divides by slice length. cumulative and executed nonempty differences, plus several statistics, use real data only. diff order0 returns the original cloned matrix; diff1 zero-length differentiated dimension also clones. minmax selects first strict improving magnitude/real key; sort emits stable slice positions; find emits 1-based column-major indices; unique sorts real values and maps original positions.",
+  "forward": [
+    "Slice geometry maps dim1 to columns, dim2 to rows, greater dims to singleton cells. sum/prod fold complex values with identities0/1; mean divides by slice length. cumulative and executed nonempty differences, plus several statistics, use real data only. diff order0 returns the original cloned matrix; diff1 zero-length differentiated dimension also clones. minmax selects first strict improving magnitude/real key; sort emits stable slice positions; find emits 1-based column-major indices; unique sorts real values and maps original positions."
+  ],
+  "id": "mlab-numerics-reduce",
+  "inverse": [
+    "Sum fibers contain per-slice zero-sum perturbations; extrema plus index constrain all other keys to not exceed selected key with earlier ties excluded. sort result plus index permutation reconstructs cells; unique values alone lose multiplicity/order, inverse map can reconstruct real input."
+  ],
+  "limitations": [
+    "Partial source model; finite synthetic tests only",
+    "No executable surrogate, global numerical proof or resource-failure guarantee"
+  ],
+  "source": "mlab/src/builtins/reduce.rs",
+  "state": "Slice index lists, fold accumulator, stable order, one-based indices"
+}

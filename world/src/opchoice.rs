@@ -36,10 +36,10 @@ impl Op {
     }
     fn apply(self, x: i64, y: i64) -> Option<i64> {
         match self {
-            Op::Add => Some(x + y),
-            Op::Sub => (x >= y).then_some(x - y),
-            Op::Mul => Some(x * y),
-            Op::Div => (y != 0 && x % y == 0).then(|| x / y),
+            Op::Add => x.checked_add(y),
+            Op::Sub => (x >= y).then(|| x.checked_sub(y)).flatten(),
+            Op::Mul => x.checked_mul(y),
+            Op::Div => (x.checked_rem(y) == Some(0)).then(|| x.checked_div(y)).flatten(),
         }
     }
 }
@@ -219,7 +219,7 @@ fn kind(word: &str, pos: &str) -> Option<String> {
     if let Some(v) = C.lock().unwrap().get(&key) {
         return v.clone();
     }
-    let v = crate::dictionary::kind_of(word, pos);
+    let v = crate::wordnet::kind_of(word, pos);
     C.lock().unwrap().insert(key, v.clone());
     v
 }
@@ -591,4 +591,131 @@ pub fn main_args(args: &[String]) -> Result<()> {
         _ => println!("usage: world opchoice train [json] [epochs] | test [json] | explain \"<problem>\""),
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod wave8_models {
+    use super::*;
+
+    fn mention(value: i64) -> Mention {
+        Mention { value, thing: String::new(), adj: BTreeSet::new(), verb: String::new(),
+            ctx: BTreeSet::new(), sentence: 0, in_q: false, per: None,
+            verb_word: String::new(), thing_word: String::new(), holder_asked: None, tree: Vec::new() }
+    }
+
+    fn oracle(op: Op, x: i64, y: i64) -> Option<i64> {
+        let (x, y) = (i128::from(x), i128::from(y));
+        let v = match op {
+            Op::Add => x + y,
+            Op::Sub if x >= y => x - y,
+            Op::Mul => x * y,
+            Op::Div if y != 0 && x % y == 0 => x / y,
+            _ => return None,
+        };
+        i64::try_from(v).ok()
+    }
+
+    #[test]
+    fn arithmetic_domain_oracle() {
+        let mut values: Vec<i64> = (-12..=12).collect();
+        values.extend([i64::MIN, i64::MIN + 1, i64::MAX - 1, i64::MAX]);
+        for x in &values {
+            for y in &values {
+                for op in OPS {
+                    assert_eq!(op.apply(*x, *y), oracle(op, *x, *y), "{op:?} {x} {y}");
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn candidate_structure_and_value_fibers() {
+        for n in 0..=6 {
+            let ms: Vec<_> = (0..n).map(|i| mention((i % 3 + 1) as i64)).collect();
+            let got = candidates(&ms);
+            let key = |c: &Cand| (c.x, c.op, c.y, c.then, c.value);
+            let actual: BTreeSet<_> = got.iter().map(key).collect();
+            assert_eq!(actual.len(), got.len());
+            let mut expected = BTreeSet::new();
+            for x in 0..n {
+                for y in 0..n {
+                    if x == y { continue; }
+                    for op in OPS {
+                        if (op == Op::Add || op == Op::Mul) && x > y { continue; }
+                        if let Some(v) = oracle(op, ms[x].value, ms[y].value) {
+                            expected.insert((x, op, y, None, v));
+                            if (3..=5).contains(&n) {
+                                for z in 0..n {
+                                    if z == x || z == y { continue; }
+                                    for op2 in OPS {
+                                        if let Some(v2) = oracle(op2, v, ms[z].value) {
+                                            expected.insert((x, op, y, Some((op2, z)), v2));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            assert_eq!(actual, expected);
+            for value in 0..=20 {
+                let fiber: Vec<_> = got.iter().filter(|c| c.value == value).map(key).collect();
+                assert_eq!(fiber.len(), expected.iter().filter(|c| c.4 == value).count());
+            }
+        }
+    }
+
+    #[test]
+    fn first_tie_and_weighted_selection() {
+        let ms = vec![mention(6), mention(2)];
+        let cs = candidates(&ms);
+        let mut w = Weights::default();
+        let q = BTreeSet::new();
+        assert!(choose(&w, &ms, &q, &[]).is_none());
+        assert!(std::ptr::eq(choose(&w, &ms, &q, &cs).unwrap(), &cs[0]));
+        w.w.insert("op /".into(), 5);
+        assert_eq!(choose(&w, &ms, &q, &cs).unwrap().value, 3);
+        w.w.insert("op +".into(), 5);
+        assert!(std::ptr::eq(choose(&w, &ms, &q, &cs).unwrap(), &cs[0]));
+    }
+
+    #[test]
+    fn score_is_a_multiset_sum() {
+        let mut w = Weights::default();
+        w.w.insert("a".into(), 3);
+        w.w.insert("b".into(), -2);
+        assert_eq!(w.score(&["a".into(), "missing".into(), "a".into(), "b".into()]), 4);
+        assert_eq!(w.score(&[]), 0);
+    }
+
+    #[test]
+    fn lazy_average_matches_dense_history() {
+        for epochs in 0..=6 {
+            let mut l = Learner::default();
+            l.id("a".into()); l.id("b".into());
+            l.prepared = vec![(vec![0, 1], vec![vec![0,0], vec![1]], 1),
+                              (vec![0, 1], vec![vec![0], vec![1,1]], 0)];
+            let (mut weights, mut sum, mut count) = ([0i64;2], [0i64;2], 0);
+            for _ in 0..epochs {
+                for (vals, fs, gold) in &l.prepared {
+                    for i in 0..2 { sum[i] += weights[i]; }
+                    count += 1;
+                    let scores: Vec<i64> = fs.iter().map(|f| f.iter().map(|i| weights[*i as usize]).sum()).collect();
+                    let best = if scores[1] > scores[0] { 1 } else { 0 };
+                    if vals[best] != *gold {
+                        let g = vals.iter().position(|v| v == gold).unwrap();
+                        for i in &fs[g] { weights[*i as usize] += 1; }
+                        for i in &fs[best] { weights[*i as usize] -= 1; }
+                    }
+                }
+            }
+            l.run(0..2, epochs);
+            assert_eq!(l.w, weights);
+            let actual = l.weights();
+            for (i, name) in ["a","b"].iter().enumerate() {
+                assert_eq!(actual.w.get(*name).copied().unwrap_or(0), sum[i] / count.max(1));
+            }
+        }
+    }
 }

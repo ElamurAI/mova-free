@@ -608,3 +608,147 @@ pub fn creation_order(w: &World, ids: &BTreeSet<Id>) -> Vec<Id> {
     }
     out
 }
+
+#[cfg(test)]
+mod wave9_models {
+    use super::*;
+    use crate::world::{Delta, Entity, State, Text};
+
+    // Independent dense semiring closure: 0 absent, 1 weak, 2 strict.
+    fn oracle(edges: &[(usize, usize, bool)]) -> [[u8; 3]; 3] {
+        let mut d = [[0; 3]; 3];
+        for (i, row) in d.iter_mut().enumerate() { row[i] = 1; }
+        for &(u, v, s) in edges { d[u][v] = d[u][v].max(if s { 2 } else { 1 }); }
+        for k in 0..3 {
+            for i in 0..3 {
+                for j in 0..3 {
+                    if d[i][k] != 0 && d[k][j] != 0 {
+                        d[i][j] = d[i][j].max(d[i][k].max(d[k][j]));
+                    }
+                }
+            }
+        }
+        d
+    }
+
+    fn compare(g: &TimeGraph, edges: &[(usize, usize, bool)]) {
+        let expected = oracle(edges);
+        let closure = g.closure();
+        for u in 0..3 {
+            for v in 0..3 {
+                let want = match expected[u][v] { 0 => None, 1 => Some(false), _ => Some(true) };
+                assert_eq!(g.reach(u, v), want, "reach {u}->{v}: {edges:?}");
+                assert_eq!(closure.le(u, v), want.is_some());
+                assert_eq!(closure.lt(u, v), want == Some(true));
+                if let Some((strict, path)) = g.path(u, v) {
+                    let mut at = u;
+                    let mut got_strict = false;
+                    for ei in path {
+                        let e = &g.edges[ei];
+                        assert!(e.alive);
+                        assert_eq!(e.u, at);
+                        at = e.v;
+                        got_strict |= e.strict;
+                    }
+                    assert_eq!((at, got_strict), (v, strict));
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn finite_time_oracle_and_kill() {
+        let pairs = [(0,1), (0,2), (1,0), (1,2), (2,0), (2,1)];
+        for code in 0..729 {
+            let mut g = TimeGraph::default();
+            for i in 0..3 { g.node(Pt::FS(i), 0); }
+            let mut accepted = Vec::new();
+            let mut digits = code;
+            for (u,v) in pairs {
+                let digit = digits % 3;
+                digits /= 3;
+                if digit == 0 { continue; }
+                let strict = digit == 2;
+                let mut candidate = accepted.clone();
+                candidate.push((u,v,strict));
+                let d = oracle(&candidate);
+                let valid = (0..3).all(|i| d[i][i] != 2);
+                let before = g.edges.len();
+                assert_eq!(g.add(u,v,strict,Why::Time(1)).is_ok(), valid, "code {code}");
+                if valid { accepted = candidate; } else { assert_eq!(g.edges.len(), before); }
+                compare(&g, &accepted);
+            }
+            g.kill(|e| e.u == 1);
+            accepted.retain(|&(u,_,_)| u != 1);
+            compare(&g, &accepted);
+            assert!(g.add(0,0,true,Why::Span).is_err());
+            assert!(g.add(0,0,false,Why::Span).is_ok());
+        }
+    }
+
+    #[test]
+    fn reach_fibers_preserve_ambiguity() {
+        let mut fiber = Vec::new();
+        for mask in 0..8 {
+            let mut g = TimeGraph::default();
+            for i in 0..3 { g.node(Pt::FS(i), 0); }
+            for (bit,(u,v)) in [(0,1),(1,2),(0,2)].into_iter().enumerate() {
+                if mask & (1 << bit) != 0 { g.add(u,v,true,Why::Time(1)).unwrap(); }
+            }
+            if g.reach(0,2) == Some(true) { fiber.push(mask); }
+        }
+        assert_eq!(fiber, vec![3,4,5,6,7]);
+    }
+
+    #[test]
+    fn order_world_identity_and_missing_endpoints() {
+        let mut g = TimeGraph::default();
+        let a = Id::new(Reg::E,1);
+        let b = Id::new(Reg::E,2);
+        assert_eq!(g.order(a,b), Order::Unknown);
+        for (id,wid) in [(a,0),(b,1)] {
+            let s = g.node(Pt::S(id),wid);
+            let e = g.node(Pt::E(id),wid);
+            g.add(s,e,false,Why::Span).unwrap();
+        }
+        assert_eq!(g.order(a,b), Order::OtherWorld);
+        assert_eq!(g.node(Pt::S(a),99),0);
+        assert_eq!(g.wid[0],0); // first identity assignment wins
+        assert_eq!(g.order(a,a), Order::During);
+    }
+
+    #[test]
+    fn knowledge_minimum_ties_and_narrator_depth() {
+        let mut st = Story::new();
+        let w = World::new(Text { doc: 0, title: String::new(), sents: vec![] });
+        let fact = Id::new(Reg::E,1);
+        st.ev.insert(fact, EvMeta { frame: 0, wid: 0, branch: BRANCH.tag("real").unwrap(),
+            branch_log: vec![], main: true, placed: None, sent: 8, line: 1, revealed: vec![], abs: vec![] });
+        st.knows.push(Know { who: Obs::Reader, fact, from: 4, how: None, by: None, line: 1, sent: 9 });
+        st.knows.push(Know { who: Obs::Reader, fact, from: 4, how: None, by: None, line: 2, sent: 10 });
+        assert_eq!(st.known_since(Obs::Reader,fact,&w),Some((4,"know ^s9".into())));
+        assert_eq!(st.known_since(Obs::Narrator,fact,&w).unwrap().0,1);
+        assert_eq!(st.known_since(Obs::C(Id::new(Reg::C,1)),fact,&w),None);
+        let mut f = st.frames[0].clone();
+        f.parent = Some(0); f.level = 1;
+        st.frames.push(f.clone());
+        f.parent = Some(1); f.level = 2; f.narrator = Obs::Reader;
+        st.frames.push(f);
+        assert_eq!((st.depth(),st.narr_depth()),(3,2));
+        assert!(st.is_real(Id::new(Reg::E,99))); // absent metadata is permissive
+    }
+
+    #[test]
+    fn creation_dependency_order_and_cycle_fallback() {
+        let mut w = World::new(Text { doc: 0, title: String::new(), sents: vec![] });
+        let ids: BTreeSet<_> = (1..=3).map(|n| Id::new(Reg::L,n)).collect();
+        for n in 1..=3 {
+            let id = Id::new(Reg::L,n);
+            let delta = if n < 3 { vec![Delta::Set(Field::Parent,Val::Known(V::Id(Id::new(Reg::L,n+1))))] } else { vec![] };
+            w.ents.insert(id, Entity { id, states: vec![State { ver: 1, delta, cause: None, by: "fixture", line: 1, pos: TextPos::default(), note: None }], mentions: vec![] });
+        }
+        assert_eq!(creation_order(&w,&ids),vec![Id::new(Reg::L,3),Id::new(Reg::L,2),Id::new(Reg::L,1)]);
+        w.ents.get_mut(&Id::new(Reg::L,3)).unwrap().states[0].delta.push(Delta::Set(Field::Parent,Val::Known(V::Id(Id::new(Reg::L,1)))));
+        assert_eq!(creation_order(&w,&ids),ids.iter().copied().collect::<Vec<_>>());
+    }
+}

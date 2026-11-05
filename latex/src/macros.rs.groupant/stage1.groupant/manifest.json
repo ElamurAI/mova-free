@@ -1,0 +1,82 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "definition_precedence",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "definition_precedence",
+        "status": "partial_source_derived_model",
+        "type": "definition_precedence"
+      },
+      {
+        "id": "raw_operator_encoding",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "raw_operator_encoding",
+        "status": "partial_source_derived_model",
+        "type": "raw_operator_encoding"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 8481,
+      "start": 4987
+    },
+    "description": "read_newcommand consumes optional star/name, optional count0..9, optional default only if nargs>0, then one token/group body. read_def consumes name and parameter text to Open, reads balanced body, then requires parameter numbers1,2,... in encounter order. read_let consumes optional equals and one target; declareop builds CmdRaw(operatorname), optional star, braces and text.",
+    "source_bytes_sha256": "9090c1b50183c0c9d93712e834f4896bca79e0825967158233b75a58be142eed"
+  },
+  "id": "latex-macros-stage1",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../macros.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "4253c16fd5f46f05dd9e527d4b097d906594f20e8fa54caa014288da5aa48c96"
+  },
+  "status": "partial_source_bound_model"
+}

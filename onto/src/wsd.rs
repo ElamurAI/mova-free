@@ -521,3 +521,24 @@ pub fn global_prior() -> &'static Prior {
     static P: std::sync::OnceLock<Prior> = std::sync::OnceLock::new();
     P.get_or_init(|| Prior::load(&prior_path()).unwrap_or_default())
 }
+
+#[cfg(test)]
+mod wave29_ontowiki {
+    use super::*;
+    #[test]
+    fn normalization_and_prior_collision() {
+        assert_eq!(stem("BERRIES"), "berry");
+        assert_eq!(stem("running"), "runn");
+        assert_eq!(content("The cats-and-dogs 123"), vec!["cat", "dog"]);
+        let dir = std::env::temp_dir().join(format!("onto-wsd-wave29-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let p = dir.join("prior.tsv");
+        assert!(Prior::load(&p).unwrap().share.is_empty());
+        std::fs::write(&p, "word\ts1\t0.3\tfirst\nword\ts1\tbad\tsecond\n").unwrap();
+        let prior = Prior::load(&p).unwrap();
+        assert_eq!(prior.share["s1"], 0.0);
+        assert_eq!(prior.neighbors["word"], "first");
+        std::fs::remove_dir_all(dir).unwrap();
+        assert_eq!(Idf::new(&Graph::default()).w("absent"), 0.0);
+    }
+}

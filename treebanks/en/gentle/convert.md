@@ -1,6 +1,6 @@
 # GENTLE ↔ mova — converter draft
 
-GENTLE was annotated with the GUM pipeline, so the converter is the same too: the rules of `../gum/convert.md` with `from: gentle`. Seeds — `seeds/gum-family.md` and `../gum/seeds/`. The rule language is `docs/dialect.md`, conventions are in `../seeds-overview.md`. Matches were counted by `en expert-check`: `gentle → mova` on GENTLE, `mova → gentle` on EWT, as for GUM.
+GENTLE was annotated with the GUM pipeline, so the converter is the same too: the rules of `../gum/convert.md` with `from: gentle`. Seeds — `seeds.md#gum-family` and `../gum/seeds.md`. The rule language is `docs/dialect.md`, conventions are in `../seeds-overview.md`. Matches were counted by `en expert-check`: `gentle → mova` on GENTLE, `mova → gentle` on EWT, as for GUM.
 
 GENTLE is test only. The main direction is `mova → gentle`: bring the `en` output to GUM customs, so that UFeats and LAS measure quality rather than the difference between dialects.
 
@@ -132,7 +132,7 @@ from: mova
 to: gentle
 match: y[form=you]; n[rel=nmod:unmarked, head=y, next=y]
 set: n[head=@y]; n[rel=@y]; y[head=n]; y[rel=dep]
-source: ../gum/seeds/dep.md
+source: ../gum/seeds.md#dep
 ```
 
 ```convert
@@ -142,7 +142,7 @@ from: mova
 to: gentle
 match: h[form=what, head=0]; o[rel=nmod, head=h, after=h]; c[form=about, rel=case, head=o]
 set: o[rel=obl]
-source: ../gum/seeds/obl-fragment.md
+source: ../gum/seeds.md#obl-fragment
 ```
 
 ```convert
@@ -152,7 +152,7 @@ from: mova
 to: gentle
 match: p[form=you|yourself, upos=PRON, feats.Person=2]
 set: p[feats+=Number=Sing]
-source: ../gum/seeds/you-number.md
+source: ../gum/seeds.md#you-number
 ```
 
 ```convert
@@ -162,7 +162,7 @@ from: mova
 to: gentle
 match: a[upos=ADV, !feats.Degree, !feats.PronType, lemma!=so|just|also|very|even|as|only|about|however|all|already|over|instead|maybe|out|rather|pretty|once|yet|quite|thus|twice|e.g.|anyway|somewhat|i.e.|c.|anyways|namely|merely]
 set: a[feats+=Degree=Pos]
-source: ../gum/seeds/adv-degree.md (GUM: ADV without Degree mostly — only these lemmas)
+source: ../gum/seeds.md#adv-degree (GUM: ADV without Degree mostly — only these lemmas)
 ```
 
 ```convert
@@ -172,7 +172,7 @@ from: mova
 to: gentle
 match: a[upos=ADJ, lemma=such]
 set: a[feats-=Degree]
-source: ../gum/seeds/adv-degree.md
+source: ../gum/seeds.md#adv-degree
 ```
 
 ```convert
@@ -182,7 +182,7 @@ from: mova
 to: gentle
 match: u[xpos=ADD]
 set: u[xpos=NNP]
-source: ../gum/seeds/xpos-web.md
+source: ../gum/seeds.md#xpos-web
 ```
 
 ```convert
@@ -192,7 +192,7 @@ from: mova
 to: gentle
 match: e[xpos=NFP]
 set: e[xpos=SYM]
-source: ../gum/seeds/xpos-web.md
+source: ../gum/seeds.md#xpos-web
 ```
 
 ```convert
@@ -202,7 +202,7 @@ from: mova
 to: gentle
 match: p[xpos=AFX]
 set: p[xpos=NN]
-source: ../gum/seeds/xpos-web.md
+source: ../gum/seeds.md#xpos-web
 ```
 
 Matches on EWT — as for GUM: `what-about` 7, `you` 2806, `adv-degree` 5151, `such` 88, `add` 475, `nfp` 499, `afx` 75.

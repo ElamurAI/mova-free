@@ -1,0 +1,29 @@
+// Exact finite relation oracle; does not claim correspondence for feature extraction.
+fn main() {
+ let mut triples=0; let mut pairs=0; let mut witnesses=0;
+ for old in 0u32..16 {for fresh in 0u32..16 {for changed in 0u32..16 {
+  let merge=(old & !changed)|(fresh & changed);
+  let outside_equal=(old & !changed)==(fresh & !changed);
+  assert_eq!(merge==fresh,outside_equal);triples+=1;
+  if merge!=fresh {witnesses+=1;}
+  for output in 0u32..16 {
+   // Independently expressed per-ID relation.
+   let relation=(0..4).all(|i|{
+    let bit=1<<i; let expected=if changed&bit!=0 {fresh&bit!=0}else{old&bit!=0};
+    (output&bit!=0)==expected
+   });
+   assert_eq!(relation,output==merge);
+   let complement=(0..4).any(|i|{
+    let bit=1<<i;
+    if changed&bit!=0 {(output&bit)!=(fresh&bit)}else{(output&bit)!=(old&bit)}
+   });
+   assert_eq!(complement,!relation);
+   let preimage=(output & !changed)==(old & !changed) && (output & changed)==(fresh & changed);
+   assert_eq!(preimage,relation);pairs+=1;
+  }
+ }}}
+ if std::env::args().any(|a|a=="--negative-control"){
+  assert_eq!(witnesses,0,"false universal carry equivalence");
+ }
+ println!("finite carry oracle: {triples} triples; {pairs} relation/complement/converse pairs; {witnesses} legacy mismatches");
+}

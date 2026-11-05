@@ -1,0 +1,169 @@
+{
+  "children": [
+    "gutenberg-text-command",
+    "kaggle-text-command",
+    "ocrfix-text-command",
+    "school-sents-text-command",
+    "wikt-count-text-command",
+    "wikt-idioms-text-command",
+    "wikt-page-text-command",
+    "wikt-extract-wikitext",
+    "wikt-extract-entry",
+    "wikt-extract-command"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "CPU only. Existing nine tests and seven new exact tests inspected. No downloads, full CLI effects, model loads, live teacher or corpus use. Original production prefixes unchanged; only inline tests. No percent approximation metric/guarantee established.",
+        "domain": "Bounded synthetic UTF-8 text, byte/char slices, passenger rows and in-memory XML/wikitext; finite positive OCR score parameters, bounded arithmetic and allocations. CLI argument/filesystem/network/model/corpus environments are modeled conditionally and not executed.",
+        "id": "behavior-complement",
+        "observation_scope": "Actual joins are within each tool; no cross-tool Rust caller is invented. A possible explicit artifact adapter maps Gutenberg fetched pg-id text into school book_paragraphs -> sentences, losing headers/underscores/short fragments. OCR output is Unicode line text and is not directly a school address TSV. Wiktionary page raw wikitext can be supplied to count/emit helpers only with edition/title/namespace context; these tools do not call one another. Tests exercise actual local helper joins only; cross-tool adapters remain source-derived.",
+        "operator": "For each tagged relation, excluded effects follow its gates: no later matching Gutenberg group, no transitive Kaggle group edge, no short OCR word change, no cut-only two-word school sentence, no translation-subpage En section, no unlabeled single-word idiom row, no mismatched exact XML page. These are scoped source-derived exclusions; independent tool complements are not unioned into an invented pipeline.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "CPU only. Existing nine tests and seven new exact tests inspected. No downloads, full CLI effects, model loads, live teacher or corpus use. Original production prefixes unchanged; only inline tests. No percent approximation metric/guarantee established.",
+        "domain": "Bounded synthetic UTF-8 text, byte/char slices, passenger rows and in-memory XML/wikitext; finite positive OCR score parameters, bounded arithmetic and allocations. CLI argument/filesystem/network/model/corpus environments are modeled conditionally and not executed.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Actual joins are within each tool; no cross-tool Rust caller is invented. A possible explicit artifact adapter maps Gutenberg fetched pg-id text into school book_paragraphs -> sentences, losing headers/underscores/short fragments. OCR output is Unicode line text and is not directly a school address TSV. Wiktionary page raw wikitext can be supplied to count/emit helpers only with edition/title/namespace context; these tools do not call one another. Tests exercise actual local helper joins only; cross-tool adapters remain source-derived.",
+        "operator": "Recover compatible antecedents per tag: catalog rows satisfying first-match/date predicates; passenger feature/group-label fibers; pointed texts sharing corrected skeleton; markup texts sharing emitted sentence; page multisets sharing counts; wikitext sharing gloss; XML sharing Page fields. Preserve multiple possibilities and hidden rejected inputs; no unique corpus reconstruction.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "CPU only. Existing nine tests and seven new exact tests inspected. No downloads, full CLI effects, model loads, live teacher or corpus use. Original production prefixes unchanged; only inline tests. No percent approximation metric/guarantee established.",
+        "domain": "Bounded synthetic UTF-8 text, byte/char slices, passenger rows and in-memory XML/wikitext; finite positive OCR score parameters, bounded arithmetic and allocations. CLI argument/filesystem/network/model/corpus environments are modeled conditionally and not executed.",
+        "id": "text-coordinate-transport",
+        "observation_scope": "Actual joins are within each tool; no cross-tool Rust caller is invented. A possible explicit artifact adapter maps Gutenberg fetched pg-id text into school book_paragraphs -> sentences, losing headers/underscores/short fragments. OCR output is Unicode line text and is not directly a school address TSV. Wiktionary page raw wikitext can be supplied to count/emit helpers only with edition/title/namespace context; these tools do not call one another. Tests exercise actual local helper joins only; cross-tool adapters remain source-derived.",
+        "operator": "School verse marks are UTF-8 clean-string byte offsets; OCR edit alignments use char indices; Kaggle uses passenger u32 ids; Wiktionary streams use compressed byte offsets. An adapter must carry the coordinate tag and cannot reuse equal numeric values across spaces.",
+        "path": "model.md",
+        "required": false,
+        "section": "text-coordinate-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "CPU only. Existing nine tests and seven new exact tests inspected. No downloads, full CLI effects, model loads, live teacher or corpus use. Original production prefixes unchanged; only inline tests. No percent approximation metric/guarantee established.",
+        "domain": "Bounded synthetic UTF-8 text, byte/char slices, passenger rows and in-memory XML/wikitext; finite positive OCR score parameters, bounded arithmetic and allocations. CLI argument/filesystem/network/model/corpus environments are modeled conditionally and not executed.",
+        "id": "lossy-artifact-join",
+        "observation_scope": "Actual joins are within each tool; no cross-tool Rust caller is invented. A possible explicit artifact adapter maps Gutenberg fetched pg-id text into school book_paragraphs -> sentences, losing headers/underscores/short fragments. OCR output is Unicode line text and is not directly a school address TSV. Wiktionary page raw wikitext can be supplied to count/emit helpers only with edition/title/namespace context; these tools do not call one another. Tests exercise actual local helper joins only; cross-tool adapters remain source-derived.",
+        "operator": "Potential Gutenberg text -> school book cleanup strips header/footer, first line behavior, underscores and short cut fragments; reverse is a preimage including lost text. Raw Wiktionary Page.text requires edition/title context to enter count/emit helpers and does not imply six-column idiom TSV equivalence.",
+        "path": "model.md",
+        "required": false,
+        "section": "lossy-artifact-join",
+        "status": "partial_source_derived_model",
+        "type": "information_loss_projection"
+      },
+      {
+        "assumptions": "CPU only. Existing nine tests and seven new exact tests inspected. No downloads, full CLI effects, model loads, live teacher or corpus use. Original production prefixes unchanged; only inline tests. No percent approximation metric/guarantee established.",
+        "domain": "Bounded synthetic UTF-8 text, byte/char slices, passenger rows and in-memory XML/wikitext; finite positive OCR score parameters, bounded arithmetic and allocations. CLI argument/filesystem/network/model/corpus environments are modeled conditionally and not executed.",
+        "id": "effect-prefix-order",
+        "observation_scope": "Actual joins are within each tool; no cross-tool Rust caller is invented. A possible explicit artifact adapter maps Gutenberg fetched pg-id text into school book_paragraphs -> sentences, losing headers/underscores/short fragments. OCR output is Unicode line text and is not directly a school address TSV. Wiktionary page raw wikitext can be supplied to count/emit helpers only with edition/title/namespace context; these tools do not call one another. Tests exercise actual local helper joins only; cross-tool adapters remain source-derived.",
+        "operator": "Each effectful command admits successful prefixes before later failure: pool before verses/counts, earlier Gutenberg rows before write failure, earlier requested pages before missing/parse failure. Pure helper successes do not establish atomic publication or remote availability.",
+        "path": "model.md",
+        "required": false,
+        "section": "effect-prefix-order",
+        "status": "partial_source_derived_model",
+        "type": "failure_trace_partition"
+      },
+      {
+        "assumptions": "CPU only. Existing nine tests and seven new exact tests inspected. No downloads, full CLI effects, model loads, live teacher or corpus use. Original production prefixes unchanged; only inline tests. No percent approximation metric/guarantee established.",
+        "domain": "Bounded synthetic UTF-8 text, byte/char slices, passenger rows and in-memory XML/wikitext; finite positive OCR score parameters, bounded arithmetic and allocations. CLI argument/filesystem/network/model/corpus environments are modeled conditionally and not executed.",
+        "id": "determinism-domain",
+        "observation_scope": "Actual joins are within each tool; no cross-tool Rust caller is invented. A possible explicit artifact adapter maps Gutenberg fetched pg-id text into school book_paragraphs -> sentences, losing headers/underscores/short fragments. OCR output is Unicode line text and is not directly a school address TSV. Wiktionary page raw wikitext can be supplied to count/emit helpers only with edition/title/namespace context; these tools do not call one another. Tests exercise actual local helper joins only; cross-tool adapters remain source-derived.",
+        "operator": "BTreeMap rule conditions and explicit lexical tie keys stabilize selected paths; En reports sort ties by key, while Ukrainian morph/emptydef equal-count rows lack tie keys. Fixed synthetic helper outcomes cannot certify those unexecuted report orders or external subprocess schedules.",
+        "path": "model.md",
+        "required": false,
+        "section": "determinism-domain",
+        "status": "partial_source_derived_model",
+        "type": "ordering_constraint"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "text-corpus-tools",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "tools/gutenberg/src/main.rs",
+      "sha256": "cc6e3c082c5ad468c3a1894250cdc0c8e5dbb97e91fd56f1db678683de8d65b2"
+    },
+    {
+      "path": "tools/kaggle/src/main.rs",
+      "sha256": "c6ae7a7a7d1de14c13347e0b611d2b563e935ade8e8237facab03ac8b566f727"
+    },
+    {
+      "path": "tools/ocrfix/src/main.rs",
+      "sha256": "c0912bb251c79fa61d4601c1a4d5954189ea77b73a96302504f6841b8cca3ab8"
+    },
+    {
+      "path": "tools/school-sents/src/main.rs",
+      "sha256": "c181de82933278ce4fe7521ccdc4603e6ea8dec527dfd53a0dd018bfe01e4117"
+    },
+    {
+      "path": "tools/wikt-count/src/main.rs",
+      "sha256": "3bc0ca359e1fc99a47f77f46f997519a0959a5b970d5a7dc5937ea452ff89098"
+    },
+    {
+      "path": "tools/wikt-idioms/src/main.rs",
+      "sha256": "d6ad8c11764fbe1068df26bd6484965acb7eed4634aa8ba728b338d2771aa62c"
+    },
+    {
+      "path": "tools/wikt-page/src/main.rs",
+      "sha256": "49d0a8b4e3c68dd205f36dff233d3c1dbeb0dd40a4644f1331287a07ef6f329d"
+    },
+    {
+      "path": "tools/wikt-extract/src/wikitext.rs",
+      "sha256": "9e5cd2791b56325199a149259070de1be8f6d97565dbb33167be3c9204251cbd"
+    },
+    {
+      "path": "tools/wikt-extract/src/entry.rs",
+      "sha256": "616d06ec2999c4a18953d53c43f469615c719f0f0167b3e9be754e2ce54c693f"
+    },
+    {
+      "path": "tools/wikt-extract/src/main.rs",
+      "sha256": "ebdf56c9a01a9b36c48afdf40fa5c62a21cabc5d89fd3c12204aff57b88d34a8"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

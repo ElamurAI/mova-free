@@ -121,3 +121,29 @@ pub fn run(u: &Understander, text: &str) -> Result<Report> {
     }
     Ok(rep)
 }
+
+#[cfg(test)]
+mod wave28 {
+    use super::*;
+    #[test]
+    fn wants() {
+        assert!(matches!(parse_want(" ERR:any ").unwrap(),Want::Code(c) if c=="ERR:any"));
+        assert!(matches!(
+            parse_want("≈ 1/2").unwrap(),
+            Want::Value {
+                approx: true,
+                unit: WantUnit::Plain,
+                ..
+            }
+        ));
+        assert!(matches!(
+            parse_want("2 °C").unwrap(),
+            Want::Value {
+                unit: WantUnit::Point(_),
+                ..
+            }
+        ));
+        assert!(parse_want("2 nonsense").is_err());
+        assert!(parse_want("").is_err());
+    }
+}

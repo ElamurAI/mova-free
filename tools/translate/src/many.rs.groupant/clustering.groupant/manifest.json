@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "tie_index",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "tie_index",
+        "status": "partial_source_derived_model",
+        "type": "tie_index"
+      },
+      {
+        "id": "direction_fallback",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "direction_fallback",
+        "status": "partial_source_derived_model",
+        "type": "direction_fallback"
+      },
+      {
+        "id": "empty_singleton",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "empty_singleton",
+        "status": "partial_source_derived_model",
+        "type": "empty_singleton"
+      },
+      {
+        "id": "tradition_partition",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "tradition_partition",
+        "status": "partial_source_derived_model",
+        "type": "tradition_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_helpers_only"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 78500,
+      "start": 77108
+    },
+    "description": "Start singleton clusters; repeatedly select first strict-min average cross-member distance by vector-index scan, append right to left and remove right. square_order concatenates tradition groups and symmetrizes available cross-cost directions, fallback1e9."
+  },
+  "id": "translation-flow-many-clustering",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../many.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "14b6295b8b94f871c0c2fbb90c92d19698cabe47b439443c393135a6d777555f"
+  },
+  "status": "partial_source_bound_model"
+}

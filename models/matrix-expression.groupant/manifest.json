@@ -1,0 +1,154 @@
+{
+  "children": [
+    "mlab-ast",
+    "mlab-builtins-core",
+    "mlab-index",
+    "mlab-lexer",
+    "mlab-ops",
+    "mlab-parser",
+    "mlab-value"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "Source-derived relations; caller enforces valid buffers and resources. f64 NaNs, infinities, casts and zero behavior follow source branches, not mathematical ideal arithmetic. Seven tests observe specific contracts, not all source branches.",
+        "domain": "CPU synthetic bounded strings and well-formed matrices with finite modest indices/dimensions/range spans; no GPU, datasets, external API or live filesystem effects.",
+        "id": "behavior-complement",
+        "observation_scope": "lexer space_before distinguishes [1 -2] from [1 - 2]; Caret and DotCaret are both left-folded by the parser, retaining distinct Pow and EPow tags. Interp resolves End to dimensions and dispatches index/ops/core. value column-major layout must survive index gather and core reshape; transpose permutes it. ops short-circuit logic belongs to interp/vm; core callbacks, files, RNG and timer effects cross group and remain unexecuted here.",
+        "operator": "Accepted bounded composition excludes erased matrix whitespace, right-associated unparenthesized powers, row-major reinterpretation, broadcast of incompatible non-singleton dimensions and successful shape-changing reshape with unequal numel. It does not exclude public malformed values, nonfinite arithmetic or core side effects.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "Source-derived relations; caller enforces valid buffers and resources. f64 NaNs, infinities, casts and zero behavior follow source branches, not mathematical ideal arithmetic. Seven tests observe specific contracts, not all source branches.",
+        "domain": "CPU synthetic bounded strings and well-formed matrices with finite modest indices/dimensions/range spans; no GPU, datasets, external API or live filesystem effects.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "lexer space_before distinguishes [1 -2] from [1 - 2]; Caret and DotCaret are both left-folded by the parser, retaining distinct Pow and EPow tags. Interp resolves End to dimensions and dispatches index/ops/core. value column-major layout must survive index gather and core reshape; transpose permutes it. ops short-circuit logic belongs to interp/vm; core callbacks, files, RNG and timer effects cross group and remain unexecuted here.",
+        "operator": "For observation y, compatible antecedents are text/AST/state triples whose parse/evaluation gives y. Comments and spellings, overwritten/deleted cells, broadcast operand factorizations and reshape dimension syntax cause ambiguity. Transpose is uniquely invertible only on valid recorded Mat; reshape requires original shape; indexing fixes selected cells only.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "Source-derived relations; caller enforces valid buffers and resources. f64 NaNs, infinities, casts and zero behavior follow source branches, not mathematical ideal arithmetic. Seven tests observe specific contracts, not all source branches.",
+        "domain": "CPU synthetic bounded strings and well-formed matrices with finite modest indices/dimensions/range spans; no GPU, datasets, external API or live filesystem effects.",
+        "id": "layout-transport",
+        "observation_scope": "lexer space_before distinguishes [1 -2] from [1 - 2]; Caret and DotCaret are both left-folded by the parser, retaining distinct Pow and EPow tags. Interp resolves End to dimensions and dispatches index/ops/core. value column-major layout must survive index gather and core reshape; transpose permutes it. ops short-circuit logic belongs to interp/vm; core callbacks, files, RNG and timer effects cross group and remain unexecuted here.",
+        "operator": "Mat index k=j*r+i is preserved by reshape buffers, permuted to i*c+j by transpose and gathered by index; substituting row-major storage breaks all three joins.",
+        "path": "model.md",
+        "required": false,
+        "section": "layout-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "Source-derived relations; caller enforces valid buffers and resources. f64 NaNs, infinities, casts and zero behavior follow source branches, not mathematical ideal arithmetic. Seven tests observe specific contracts, not all source branches.",
+        "domain": "CPU synthetic bounded strings and well-formed matrices with finite modest indices/dimensions/range spans; no GPU, datasets, external API or live filesystem effects.",
+        "id": "syntax-context",
+        "observation_scope": "lexer space_before distinguishes [1 -2] from [1 - 2]; Caret and DotCaret are both left-folded by the parser, retaining distinct Pow and EPow tags. Interp resolves End to dimensions and dispatches index/ops/core. value column-major layout must survive index gather and core reshape; transpose permutes it. ops short-circuit logic belongs to interp/vm; core callbacks, files, RNG and timer effects cross group and remain unexecuted here.",
+        "operator": "Lexer preserves whitespace and newline observations; parser contextual sign boundary and index_depth transform them into Matrix/Unary/End versus subtraction/identifier branches.",
+        "path": "model.md",
+        "required": false,
+        "section": "syntax-context",
+        "status": "partial_source_derived_model",
+        "type": "context_partition"
+      },
+      {
+        "assumptions": "Source-derived relations; caller enforces valid buffers and resources. f64 NaNs, infinities, casts and zero behavior follow source branches, not mathematical ideal arithmetic. Seven tests observe specific contracts, not all source branches.",
+        "domain": "CPU synthetic bounded strings and well-formed matrices with finite modest indices/dimensions/range spans; no GPU, datasets, external API or live filesystem effects.",
+        "id": "validation-order",
+        "observation_scope": "lexer space_before distinguishes [1 -2] from [1 - 2]; Caret and DotCaret are both left-folded by the parser, retaining distinct Pow and EPow tags. Interp resolves End to dimensions and dispatches index/ops/core. value column-major layout must survive index gather and core reshape; transpose permutes it. ops short-circuit logic belongs to interp/vm; core callbacks, files, RNG and timer effects cross group and remain unexecuted here.",
+        "operator": "Whole lex precedes parse; index validates selected shape before growth; core reshape computes its unchecked known-dimension product before hole counting, then on bounded arithmetic checks hole count before divisibility/rank/product; error order cannot be commuted across adapters.",
+        "path": "model.md",
+        "required": false,
+        "section": "validation-order",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "Source-derived relations; caller enforces valid buffers and resources. f64 NaNs, infinities, casts and zero behavior follow source branches, not mathematical ideal arithmetic. Seven tests observe specific contracts, not all source branches.",
+        "domain": "CPU synthetic bounded strings and well-formed matrices with finite modest indices/dimensions/range spans; no GPU, datasets, external API or live filesystem effects.",
+        "id": "effects",
+        "observation_scope": "lexer space_before distinguishes [1 -2] from [1 - 2]; Caret and DotCaret are both left-folded by the parser, retaining distinct Pow and EPow tags. Interp resolves End to dimensions and dispatches index/ops/core. value column-major layout must survive index gather and core reshape; transpose permutes it. ops short-circuit logic belongs to interp/vm; core callbacks, files, RNG and timer effects cross group and remain unexecuted here.",
+        "operator": "Most value/lexer/parser paths allocate only; index mutates target after bounded checks; ops linalg may warn; core can mutate interpreter/RNG and inspect files/time or invoke callbacks. Pure helper test evidence never certifies those effects.",
+        "path": "model.md",
+        "required": false,
+        "section": "effects",
+        "status": "partial_source_derived_model",
+        "type": "effect_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "matrix-expression",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "mlab/src/ast.rs",
+      "sha256": "80c1551d46e07871a8060229cd08749c17ac9e6efb01c7e0a2a9c8f7a4caf2ac"
+    },
+    {
+      "path": "mlab/src/builtins/core.rs",
+      "sha256": "8d26d9c57654af7591dfa87298cce7f55541f4d17d513f5e2ddf31f71a8caf15"
+    },
+    {
+      "path": "mlab/src/index.rs",
+      "sha256": "dccd47c7d5a96caaf6583aa82cc003b0236ce035f4ffb3dcec85532379debba8"
+    },
+    {
+      "path": "mlab/src/lexer.rs",
+      "sha256": "ac652c6bc998f3fe37335b5f158ff8ca8228a08318ee977f2976131468100f3d"
+    },
+    {
+      "path": "mlab/src/ops.rs",
+      "sha256": "d0d25c3a91fa1ef8763f81388f344f366b88b572e5b835ce6f7598bf04428ab0"
+    },
+    {
+      "path": "mlab/src/parser.rs",
+      "sha256": "264bd8e53dd7900714d501cf4d523d9f9fd70f7a948b3491cb43def7fc208583"
+    },
+    {
+      "path": "mlab/src/value.rs",
+      "sha256": "557205bca121d43307f9439fa899934fd773fe408c5ec3444988f9be8bbb815c"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

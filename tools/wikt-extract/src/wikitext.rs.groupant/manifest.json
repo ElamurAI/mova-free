@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "wikt-extract-wikitext",
+  "status": "partial_source_bound_model",
+  "source": {
+    "path": "../wikitext.rs",
+    "sha256": "9e5cd2791b56325199a149259070de1be8f6d97565dbb33167be3c9204251cbd",
+    "raw_code_location": "outside_this_sidecar"
+  },
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "wikt-extract-wikitext-behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "wikt-extract-wikitext-reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "wikt-extract-wikitext-gap_accounting",
+        "path": "model.md",
+        "section": "gap_accounting",
+        "status": "partial_source_derived_model",
+        "type": "gap_accounting"
+      },
+      {
+        "id": "wikt-extract-wikitext-parameter_split",
+        "path": "model.md",
+        "section": "parameter_split",
+        "status": "partial_source_derived_model",
+        "type": "parameter_split"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  }
+}

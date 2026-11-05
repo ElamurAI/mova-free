@@ -83,3 +83,59 @@ impl Zip {
         Ok(out)
     }
 }
+
+#[cfg(test)]
+mod wave29_ontowiki {
+    use super::*;
+    #[test]
+    fn stored_archive_and_method_gate() {
+        let mut data = vec![0u8; 30];
+        data[0..4].copy_from_slice(&0x0403_4b50u32.to_le_bytes());
+        data[26..28].copy_from_slice(&1u16.to_le_bytes());
+        data.extend_from_slice(b"xabc");
+        let central = data.len();
+        let mut c = vec![0u8; 46];
+        c[0..4].copy_from_slice(&0x0201_4b50u32.to_le_bytes());
+        c[20..24].copy_from_slice(&3u32.to_le_bytes());
+        c[24..28].copy_from_slice(&3u32.to_le_bytes());
+        c[28..30].copy_from_slice(&1u16.to_le_bytes());
+        data.extend(c);
+        data.push(b'x');
+        let mut end = vec![0u8; 22];
+        end[0..4].copy_from_slice(&0x0605_4b50u32.to_le_bytes());
+        end[10..12].copy_from_slice(&1u16.to_le_bytes());
+        end[16..20].copy_from_slice(&(central as u32).to_le_bytes());
+        data.extend(end);
+        let p = std::env::temp_dir().join(format!("onto-zip-wave29-{}.zip", std::process::id()));
+        std::fs::write(&p, &data).unwrap();
+        let z = Zip::open(&p).unwrap();
+        assert_eq!(z.names().collect::<Vec<_>>(), vec!["x"]);
+        assert_eq!(z.read("x").unwrap(), b"abc");
+        assert!(
+            z.read("absent")
+                .unwrap_err()
+                .to_string()
+                .contains("not in zip")
+        );
+        data[central + 10..central + 12].copy_from_slice(&99u16.to_le_bytes());
+        std::fs::write(&p, &data).unwrap();
+        assert!(
+            Zip::open(&p)
+                .unwrap()
+                .read("x")
+                .unwrap_err()
+                .to_string()
+                .contains("compression method 99")
+        );
+        data[central + 8] = 1;
+        std::fs::write(&p, &data).unwrap();
+        assert!(
+            Zip::open(&p)
+                .err()
+                .unwrap()
+                .to_string()
+                .contains("encryption")
+        );
+        std::fs::remove_file(p).unwrap();
+    }
+}

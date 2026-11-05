@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "Five tests per algorithm, debug/release twice with normalized equality; compiled control and restored rerun; Clippy, formatting, syntax twice."
+  ],
+  "children": [],
+  "cost": "Finite fixture harness only; oracle loops are explicitly bounded by the source fixtures. Production cost: O(log(max(a,m)+1)) Euclidean word iterations and O(1) storage; checked u128 operations, no allocation.",
+  "description": "floor_sum tests.rs exact std-only bounded implementation and checks",
+  "forward": [
+    "Execute five tests, requiring every assertion to hold. Direct independent summation over bounded n uses u128 products and division without Euclidean reciprocity; full-width n uses analytically known triangular and constant sums."
+  ],
+  "id": "algorithm-floor-sum-tests",
+  "inverse": [
+    "Over terminating candidate implementations and pass/fail observations, exclude pass when any assertion fails and failure when all assertions hold. Nontermination and abort are outside this binary observation domain.",
+    "Pass reconstructs the set of implementations agreeing on every observed fixture; off-fixture behavior is unconstrained. Failure reconstructs implementations or incorrect oracle premises that cause a mismatch, not a unique defect.",
+    "Direct independent summation over bounded n uses u128 products and division without Euclidean reciprocity; full-width n uses analytically known triangular and constant sums.",
+    "Initialize accumulator to one instead of zero; boundaries_and_overflow must fail after successful compilation.",
+    "Single-thread runs twice each in debug and release must have identical ordered normalized test records. Build output and timing are excluded. Finite agreement is not universal equivalence."
+  ],
+  "limitations": [
+    "Finite observations are not a universal proof.",
+    "Partial syntax excludes macro expansion and semantic AST analysis.",
+    "Allocation abort is outside normal-return relations."
+  ],
+  "source": "algorithms/src/floor_sum/tests.rs",
+  "state": "Five tests: exhaustive n=0..23,m=1..23,a,b=0..23 (317952 tuples); full-width exact and overflow fixtures; 950 prefix/quotient pairs; distinct sum fibers; 1000 seeded full-width coefficients with n<50."
+}

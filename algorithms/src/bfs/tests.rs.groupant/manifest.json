@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-bfs-tests",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "ca43fa9dec420468f0096916b7dae5b5b6012cdf02fa67230153146425f69bcc",
+    "raw_code_location": "outside_this_sidecar"
+  },
+  "status": "partial_descriptive_instance",
+  "components": {
+    "ast": {
+      "status": "partial",
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "partial syntax; no expansion or resolution"
+    },
+    "approximant": {
+      "status": "partial",
+      "path": "model.md#approximant"
+    },
+    "invariant": {
+      "status": "partial",
+      "path": "model.md#invariant"
+    },
+    "descriptant": {
+      "status": "present",
+      "path": "model.md#descriptant"
+    },
+    "tests": {
+      "status": "executed_bounded_checks",
+      "path": "model.md#tests"
+    },
+    "obernants": [
+      {
+        "id": "behavior-complement",
+        "type": "behavior_complement",
+        "required": true,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "scope": "fixed fixture schedule and test verdicts"
+      },
+      {
+        "id": "reverse-reconstruction",
+        "type": "reverse_reconstruction",
+        "required": true,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "scope": "fixed fixture schedule and test verdicts"
+      },
+      {
+        "id": "oracle-independence",
+        "type": "independent_reference_relation",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "oracle-independence",
+        "scope": "fixed fixture schedule and test verdicts"
+      },
+      {
+        "id": "transformations",
+        "type": "metamorphic_relation",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "transformations",
+        "scope": "fixed fixture schedule and test verdicts"
+      },
+      {
+        "id": "bounded-coverage",
+        "type": "coverage_resource_preimage",
+        "required": false,
+        "status": "partial_source_derived_model",
+        "path": "model.md",
+        "section": "bounded-coverage",
+        "scope": "fixed fixture schedule and test verdicts"
+      }
+    ]
+  }
+}

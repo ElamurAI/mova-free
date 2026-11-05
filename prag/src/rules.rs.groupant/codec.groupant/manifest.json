@@ -1,0 +1,83 @@
+{
+  "children": [
+    {
+      "id": "prag-rules-codec-selection",
+      "path": "selection.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "prag-rules-codec-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "prag-rules-codec-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "prag-rules-codec-specialization",
+        "path": "model.md",
+        "section": "specialization",
+        "status": "partial_source_model",
+        "type": "codec_normalization"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 23621,
+      "start": 1455
+    },
+    "description": "Feat lookup uses 46 names. Atom splits at first colon, retaining subsequent colons. Action lookup searches canonical frame/pronoun/token codes. parse_rules skips the first line, admits rows with >=4 tab fields and known action/all nonempty ampersand atoms, retains status verbatim, takes optional reason column7. Empty atom segments vanish."
+  },
+  "id": "prag-rules-codec",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../rules.rs",
+    "sha256": "ba82334c7c91aaaff7aed9651eae4b2d54b99d66c88cbe3f162fdda3407bc9f3"
+  },
+  "status": "partial_source_bound_model"
+}

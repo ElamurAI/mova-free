@@ -1,0 +1,277 @@
+{
+  "children": [
+    {
+      "id": "study-proposal",
+      "path": "proposal.groupant"
+    },
+    {
+      "id": "study-feedback",
+      "path": "feedback.groupant"
+    },
+    {
+      "id": "study-prepare-finish",
+      "path": "prepare-finish.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial_transition_specification"
+    },
+    "ast": {
+      "status": "not_materialized"
+    },
+    "complementer": {
+      "path": "model.md#complementer",
+      "role": "legacy_pointer",
+      "status": "partial_relational_specification",
+      "type": "reverse_reconstruction"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition (composition)",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "formal_frozen_union": {
+      "path": "../../../../formal/FrozenUnion.lean",
+      "scope": "general set relation; Rust correspondence only on the separately tested finite domain",
+      "status": "specification_proved",
+      "theorem": "MovaFrozenUnion.union_preimage"
+    },
+    "invariant": {
+      "path": "model.md#invariants",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "absent-study-transitions",
+        "path": "model.md#nonbehavior",
+        "required": true,
+        "scope": "one serial invocation, guarded successful study and finish traces",
+        "status": "partial_inner_bound_specification",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "study-antecedents",
+        "path": "model.md#complementer",
+        "required": true,
+        "scope": "compatible artifact histories and frozen-source antecedents",
+        "status": "partial_relational_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "reuse-and-failure-cost",
+        "path": "model.md#reuse-cost",
+        "required": false,
+        "scope": "retained lesson reuse, cached completion and first failing stage",
+        "status": "partial_symbolic_model",
+        "type": "reuse_cost"
+      },
+      {
+        "id": "bound-context-provenance",
+        "path": "model.md",
+        "required": false,
+        "scope": "context, parent packet and parent review byte identities",
+        "section": "bound-context-provenance",
+        "status": "partial_source_model",
+        "type": "provenance_relation"
+      },
+      {
+        "id": "reservation-capacity",
+        "path": "model.md",
+        "required": false,
+        "scope": "remaining nonfrozen sentences before another review",
+        "section": "reservation-capacity",
+        "status": "partial_source_model",
+        "type": "resource_reservation"
+      },
+      {
+        "id": "exercise-feedback-projection",
+        "path": "model.md",
+        "required": false,
+        "scope": "exercise identity and omitted assessment rows",
+        "section": "exercise-feedback-projection",
+        "status": "partial_source_model",
+        "type": "information_projection"
+      },
+      {
+        "id": "feedback-state-stability",
+        "path": "model.md",
+        "required": false,
+        "scope": "fingerprint before and after answering exercises",
+        "section": "feedback-state-stability",
+        "status": "partial_source_model",
+        "type": "state_preservation"
+      },
+      {
+        "id": "weak-support-priority",
+        "path": "model.md",
+        "required": false,
+        "scope": "lexical ordering from weak exercise support",
+        "section": "weak-support-priority",
+        "status": "partial_source_model",
+        "type": "ranking_operator"
+      },
+      {
+        "id": "cold-assessment-boundary",
+        "path": "model.md",
+        "required": false,
+        "scope": "saved checkpoint and question-only child assessment",
+        "section": "cold-assessment-boundary",
+        "status": "partial_source_model",
+        "type": "isolation_contract"
+      },
+      {
+        "id": "seven-output-identity",
+        "path": "model.md",
+        "required": false,
+        "scope": "exact named study output closure",
+        "section": "seven-output-identity",
+        "status": "partial_source_model",
+        "type": "artifact_identity"
+      },
+      {
+        "id": "candidate-lineage",
+        "path": "model.md",
+        "required": false,
+        "scope": "candidate continuation from the baseline checkpoint",
+        "section": "candidate-lineage",
+        "status": "partial_source_model",
+        "type": "lineage_relation"
+      },
+      {
+        "id": "failure-prefix-recovery",
+        "path": "model.md",
+        "required": false,
+        "scope": "compatible trace prefixes from partial study files",
+        "section": "failure-prefix-recovery",
+        "status": "partial_source_model",
+        "type": "prefix_reconstruction"
+      },
+      {
+        "id": "cached-finish-admissibility",
+        "path": "model.md",
+        "required": false,
+        "scope": "existing learned and cross-exam artifacts on finish reentry",
+        "section": "cached-finish-admissibility",
+        "status": "partial_source_model",
+        "type": "cache_validity"
+      },
+      {
+        "id": "retained-lesson-reuse",
+        "path": "model.md",
+        "required": false,
+        "scope": "training-skipped retained material and retained lesson numbering",
+        "section": "retained-lesson-reuse",
+        "status": "partial_source_model",
+        "type": "observational_equivalence"
+      },
+      {
+        "id": "dictionary-meaning-extension",
+        "path": "model.md",
+        "required": false,
+        "scope": "current dictionary records and permitted reviewed extensions",
+        "section": "dictionary-meaning-extension",
+        "status": "partial_source_model",
+        "type": "semantic_preservation_boundary"
+      },
+      {
+        "id": "cloze-literal-admissibility",
+        "path": "model.md",
+        "required": false,
+        "scope": "eligible token spans before distractor selection",
+        "section": "cloze-literal-admissibility",
+        "status": "partial_source_model",
+        "type": "proposal_filter"
+      },
+      {
+        "id": "distractor-canonical-quotient",
+        "path": "model.md",
+        "required": false,
+        "scope": "same-role answer alternatives and deterministic representative choice",
+        "section": "distractor-canonical-quotient",
+        "status": "partial_source_model",
+        "type": "equivalence_quotient"
+      },
+      {
+        "id": "proposal-quota-loss",
+        "path": "model.md",
+        "required": false,
+        "scope": "information discarded by the sixteen-result cap",
+        "section": "proposal-quota-loss",
+        "status": "partial_source_model",
+        "type": "truncation_preimage"
+      },
+      {
+        "id": "prompt-byte-admission",
+        "path": "model.md",
+        "required": false,
+        "scope": "prepared next-review prompt admission before directory creation",
+        "section": "prompt-byte-admission",
+        "status": "partial_source_model",
+        "type": "budget_contract"
+      },
+      {
+        "id": "score-threshold-counterfactual",
+        "path": "model.md",
+        "required": false,
+        "scope": "promotion threshold on four identity-bound grades",
+        "section": "score-threshold-counterfactual",
+        "status": "modeling_hypothesis_with_source_baseline",
+        "type": "decision_counterfactual"
+      },
+      {
+        "id": "teacher-call-accounting",
+        "path": "model.md",
+        "required": false,
+        "scope": "review call sites versus reported teacher-call metadata",
+        "section": "teacher-call-accounting",
+        "status": "partial_source_model",
+        "type": "resource_accounting"
+      },
+      {
+        "id": "frozen-union-preimage",
+        "path": "model.md",
+        "required": false,
+        "scope": "three-source exhaustive set preimages; general relation stated with assumptions",
+        "section": "frozen-union-preimage",
+        "status": "bounded_rust_correspondence",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "lexical-priority-bijection",
+        "path": "model.md",
+        "required": false,
+        "scope": "headword coverage and immutable source metadata in study contexts",
+        "section": "lexical-priority-bijection",
+        "status": "bounded_rust_correspondence",
+        "type": "input_bijection"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "existing_scoped_checks_passed"
+    }
+  },
+  "extensions": {
+    "epoch_memory": "model.md#descriptant",
+    "notes": "Open sidecar; AST, exhaustive filesystem model and executable reverse solver remain missing."
+  },
+  "id": "study-orchestrator",
+  "kind": "groupant",
+  "registry": {
+    "node": "study-orchestrator",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../study.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "8bdc286a3d410509d10ead87281ec350cadf283407de5ebc5af8a25675a81d24"
+  },
+  "status": "partial_descriptive_instance"
+}

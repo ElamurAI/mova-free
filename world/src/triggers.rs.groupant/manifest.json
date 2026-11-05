@@ -1,0 +1,187 @@
+{
+  "children": [
+    {
+      "id": "world-triggers-lexical",
+      "path": "lexical.groupant"
+    },
+    {
+      "id": "world-triggers-determinant",
+      "path": "determinant.groupant"
+    },
+    {
+      "id": "world-triggers-events-io",
+      "path": "events-io.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "For admitted finite pure inputs exclude GHz as an alias for gigahertz, century 1900 reported leap, absent event histories fabricated as recall, and expectation successors message/task. No claim about arbitrary nonfinite values or overflow.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Given fired messages retain all (text,now,tz,lived) tuples with matching ordered trigger observations. Text case and punctuation, unused events and multiple same-total quantity decompositions are ambiguous; formatted rounding creates additional fibers.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "units",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Time quantities carry seconds multiplier; frequencies carry cycles/second. First numbered frequency times first numbered duration yields cycles; without duration the period is reciprocal frequency. Target conversion uses first unnumbered duration unit and sum of all numbered durations. Mean month/year seconds are fixed constants, not civil interval lengths.",
+        "path": "model.md",
+        "section": "units",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "dimensional_projection"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "number_grammar",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "number_word lowercases, rejects a/an and numeric digits, recursively adds hyphen-separated known words. Internal number accepts comma-stripped f64 or table entries including a/an. quantities splits hyphens, so twenty-four hours uses four. No full compositional English number parser is claimed.",
+        "path": "model.md",
+        "section": "number_grammar",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "lexical_admission"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "calendar",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "First numeric word in 1583..9999 is inspected only when whole-word leap or year occurs. Gregorian leap predicate is divisible by 4 except centuries unless divisible by 400. Clock fires on now/today or substring what time; local seconds = now as i64 + 3600*tz. Test domain keeps arithmetic in range.",
+        "path": "model.md",
+        "section": "calendar",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "calendar_constraint"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "event_statistics",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "expect_after considers adjacent original pairs whose first event matches and second is neither message nor task; it does not reconnect across excluded events. Each group has floor(1000*n/N) and upper median of saturating time gaps. Sort descending probability then lexical event. Frequencies may sum below 1000.",
+        "path": "model.md",
+        "section": "event_statistics",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "ordered_trace_projection"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "event_recall",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Recall uses first supplied matching event, fixed EVENTS order, lowercased alphanumeric words with optional trailing s, and saturating age. Future timestamp yields zero age; nonpositive elapsed duration omits took. All histories differing after first matched event remain compatible.",
+        "path": "model.md",
+        "section": "event_recall",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "history_preimage"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "io_clock",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "activate recognizes EVENTS, gets now, sanitizes tab/newline, truncates detail to 200 Unicode characters and best-effort appends; Task drop invokes task activation with Instant elapsed. episodes reads/reverses/truncates physical rows, not timestamp sorting. fire performs per-event reads then clock/timezone reads, so its input is not an atomic snapshot. This typed effect relation is unexecuted by bounded tests.",
+        "path": "model.md",
+        "section": "io_clock",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "effect_boundary"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite English texts, finite positive unit quantities, year domain 1583..9999, in-range explicit u64 clock/i64 timezone, bounded event histories; named external log/graph/manual effects are conditional only.",
+        "evidence": "model.md#tests",
+        "id": "explanation",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "explain first accepts nonempty nerves graph results, otherwise chooses manual by trigger world and substring hooks, scores overlap, filters byte length <160, sorts descending count then ascending byte length then lexical text and takes k. main_args --expect short-circuits to log-based expectation; ordinary CLI joins words, fires then explains. Graph/state/manual/stdout dependencies are unmodeled.",
+        "path": "model.md",
+        "section": "explanation",
+        "status": "partial_source_derived_model",
+        "subject_revision": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2",
+        "type": "ranking_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "id": "world-triggers",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../triggers.rs",
+    "sha256": "4eea913faafa8f764bda808841f34b3f15e48bbd2b1b65f1f95421169d1400d2"
+  },
+  "status": "partial_source_derived_instance"
+}

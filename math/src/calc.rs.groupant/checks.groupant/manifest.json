@@ -1,0 +1,108 @@
+{
+  "children": [
+    {
+      "id": "math-calc-checks-residue-fibers",
+      "path": "residue-fibers.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Parent projection restricted to[55308,62082)",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "priority_relation",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "priority_relation",
+        "status": "partial_source_derived_model",
+        "type": "priority_relation"
+      },
+      {
+        "id": "finite_tolerance",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "finite_tolerance",
+        "status": "partial_source_derived_model",
+        "type": "finite_tolerance"
+      },
+      {
+        "id": "factorial_operand_domain",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "factorial_operand_domain",
+        "status": "partial_source_derived_model",
+        "type": "factorial_operand_domain"
+      },
+      {
+        "id": "availability_boundary",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "availability_boundary",
+        "status": "partial_source_derived_model",
+        "type": "availability_boundary"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 62082,
+      "start": 55308
+    },
+    "description": "approx computes supported f64 expressions; fingerprint computes integer residues; independent prefers exact integer residues then finite f64. Matching is many-to-one, tolerance1e-9 max(1,|result|). Unavailable or matching checks are not global numerical guarantees.",
+    "source_bytes_sha256": "08575a54a01af9fa35881b207934b9957d793c2e0fc7afa85d25c63da5d79d9e"
+  },
+  "id": "math-calc-checks",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../calc.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e"
+  },
+  "status": "partial_source_bound_model"
+}

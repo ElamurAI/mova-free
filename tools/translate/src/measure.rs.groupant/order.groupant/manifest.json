@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "insert_origin",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "insert_origin",
+        "status": "partial_source_derived_model",
+        "type": "insert_origin"
+      },
+      {
+        "id": "strict_lis",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "strict_lis",
+        "status": "partial_source_derived_model",
+        "type": "strict_lis"
+      },
+      {
+        "id": "cardinality",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "cardinality",
+        "status": "partial_source_derived_model",
+        "type": "cardinality"
+      },
+      {
+        "id": "sorted_membership",
+        "path": "model.md",
+        "scope": "source snapshot and declared byte range; domain in model.md#invariant-and-cost",
+        "section": "sorted_membership",
+        "status": "partial_source_derived_model",
+        "type": "sorted_membership"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_helpers_only"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4600,
+      "start": 2622
+    },
+    "description": "base_order sorts Take source positions and Insert offsets after last Take, then returns one-based target positions. moved selects a strict LIS using lower-bound tails and backpointers, returns sorted values off path. order_ok checks kept strict increase and total cardinality."
+  },
+  "id": "translation-flow-measure-order",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../measure.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "c34da721e6921c202314dfe546331c6d192234a2e37de17049bb09e4321dbd5d"
+  },
+  "status": "partial_source_bound_model"
+}

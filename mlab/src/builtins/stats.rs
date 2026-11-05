@@ -1086,3 +1086,32 @@ fn parse_formula(f: &str) -> Result<(String, Vec<String>, bool), MError> {
 fn is_class(v: &Value, c: Class) -> bool {
     matches!(v, Value::Mat(m) if m.class == c)
 }
+
+#[cfg(test)]
+mod wave30 {
+    use super::*;
+    #[test]
+    fn cores_and_failure_order() {
+        assert_eq!(quantile_sorted(&[1.0, 3.0], 0.5), 2.0);
+        assert!(quantile_sorted(&[], 0.5).is_nan());
+        assert_eq!(phi(0.0), 0.5);
+        assert_eq!(phi_inv(0.0), f64::NEG_INFINITY);
+        let t = t_one(&[-1.0, 0.0, 1.0, f64::NAN], 0.0, Tail::Both, false);
+        assert_eq!((t.n, t.mean, t.df, t.p), (3.0, 0.0, 2.0, 1.0));
+        let c = chi2_ind(&[vec![2.0, 2.0], vec![3.0, 3.0]], false).unwrap();
+        assert_eq!((c.chi2, c.df, c.p), (0.0, 1.0, 1.0));
+        assert!(chi2_ind(&[vec![0.0, 0.0], vec![3.0, 3.0]], false).is_err());
+        let r = ols(
+            &[vec![1.0; 4], vec![0.0, 1.0, 2.0, 3.0]],
+            &[1.0, 3.0, 5.0, 7.0],
+            true,
+            false,
+        )
+        .unwrap();
+        assert!((r.beta[0] - 1.0).abs() < 1e-12 && (r.beta[1] - 2.0).abs() < 1e-12);
+        assert_eq!(r.dfe, 2.0);
+        assert!(ols(&[vec![1.0; 4], vec![1.0; 4]], &[1.0; 4], true, false).is_err());
+        let a = anova_one(&[vec![0.0, 2.0], vec![2.0, 4.0]], false);
+        assert_eq!((a.ssb, a.ssw, a.df1, a.df2), (4.0, 4.0, 1.0, 2.0));
+    }
+}

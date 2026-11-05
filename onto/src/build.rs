@@ -523,3 +523,58 @@ impl Builder {
         Ok((g, report))
     }
 }
+
+#[cfg(test)]
+mod wave29 {
+    use super::*;
+    #[test]
+    fn assemble_csr_senses_and_lu_ties() {
+        let mut b = Builder::default();
+        for (key, name) in [(1, "bee"), (2, "ant")] {
+            b.add(CB {
+                src: Some(Src::Oewn),
+                pos: Some(Pos::Noun),
+                key,
+                members: vec![name.into()],
+                ..Default::default()
+            });
+        }
+        b.senses = vec![("bee".into(), vec![0, 1, 0]), ("bee".into(), vec![1])];
+        b.edges = vec![(0, Rel::IsA, 1), (0, Rel::IsA, 1)];
+        b.lus = vec![
+            ("bee".into(), Pos::Verb, 0, 9, 4),
+            ("bee".into(), Pos::Verb, 1, 2, 4),
+        ];
+        let (g, _) = b.finish().unwrap();
+        assert_eq!(g.word(0), "ant");
+        assert_eq!(g.senses_of(1), [0, 1]);
+        assert_eq!(
+            g.out_edges(0),
+            [Edge {
+                rel: Rel::IsA,
+                to: 1
+            }]
+        );
+        assert_eq!(
+            g.in_edges(1),
+            [Edge {
+                rel: Rel::IsA,
+                to: 0
+            }]
+        );
+        assert_eq!(g.lus_of(1).iter().map(|l| l.id).collect::<Vec<_>>(), [2, 9]);
+        assert!(Builder::default().finish().unwrap().0.out.is_empty());
+    }
+    #[test]
+    fn source_parser_helpers_and_bad_edge() {
+        assert_eq!(entity("#x1F419"), Some('🐙'));
+        assert_eq!(entity("#55296"), None);
+        assert_eq!(strip_tags(" a <fen>b</fen>  c "), "a b c");
+        assert_eq!(first_sentence("ééé. next", 2), "éé…");
+        assert!(synset_key("bad").is_err());
+        assert_eq!(synset_key("oewn-42-s").unwrap(), (42, Pos::Sat));
+        let mut b = Builder::default();
+        b.edges.push((0, Rel::IsA, 0));
+        assert!(b.finish().err().unwrap().to_string().contains("outside"));
+    }
+}

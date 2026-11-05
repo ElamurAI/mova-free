@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "mixed::sample::wave32_tests::synthetic_stream_spans"
+  ],
+  "children": [],
+  "cost": "Candidates materialize corpus bytes and sort paths/items O(N log N) with string comparisons. In streams, N items cost O(N) for fixed16 variety scans and shuffles; the ordered by_verse map costs O(N log(V+1) * L), where V is distinct verse keys and L bounds verse-key comparison bytes. Total emitted bytes B include requested D carrier/quote documents AND additional verse-pair documents, plus mono/lines output. Assembly costs O(B + emitted spans); memory O(N + V + B + emitted spans).",
+  "description": "sample reads candidates, sorts IDs, dedups adjacent equal texts only, seeded shuffles/truncates and sorts IDs again by variety. streams builds mono lists, shuffled lines and docs with glue and item byte spans. sentences cuts punctuation with optional closing quote before ASCII space and capital/open quote.",
+  "forward": [
+    "sample reads candidates, sorts IDs, dedups adjacent equal texts only, seeded shuffles/truncates and sorts IDs again by variety. streams builds mono lists, shuffled lines and docs with glue and item byte spans. sentences cuts punctuation with optional closing quote before ASCII space and capital/open quote."
+  ],
+  "id": "rt-mixed-sample",
+  "inverse": [
+    "Excluded: dedup eliminates all duplicate texts irrespective of ID ordering; nonadjacent equal text can survive. Empty sample does not synthesize docs.",
+    "Gold item indices plus original items and glue reconstruct emitted lines; shuffled lines alone have seed/permutation ambiguity, and truncated sample cannot recover rejected candidates."
+  ],
+  "limitations": [
+    "Finite synthetic helper evidence only; live corpora, parser/model loading, full orchestration and filesystem failure races excluded.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/roundtrip/src/mixed/sample.rs",
+  "state": "Valid item.var<16; finite docs and arithmetic 2*d, text allocation fits usize. No corpus candidates or writes executed; synthetic streams only."
+}

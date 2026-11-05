@@ -1,0 +1,125 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "Source bytes [20624,21873): validation; the operation-specific contracts below define observation projections.",
+        "operator": "Nonempty successfully tokenized input with only anchors cannot yield a command. A valid non-cursor command without anchors is rejected only after argument/command checks. Any remaining token starting '^' is a misplaced-anchor error.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "Source bytes [20624,21873): validation; the operation-specific contracts below define observation projections.",
+        "operator": "For successful (Cmd,anchors), retain all trimmed command strings satisfying prior stages and either exact explicit anchor tail or cursor-sent fallback. Repeated/zero anchors are retained and do not collapse. For FormatErr, raw and no reconstruct supplied inputs, but msg alone has broad error fibers.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "line_admission",
+        "observation_scope": "Source bytes [20624,21873): validation; the operation-specific contracts below define observation projections.",
+        "operator": "parse_line returns None only on trimmed empty input. It scans trailing ^s tokens right-to-left before validating remaining anchors, Args, command, unused arguments and finally required anchor. Cursor sent supplies a default only without explicit anchors. Error stores untrimmed raw and supplied number, success stores trimmed raw.",
+        "path": "model.md",
+        "section": "line_admission",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "failure_partition"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "anchor_domain",
+        "observation_scope": "Source bytes [20624,21873): validation; the operation-specific contracts below define observation projections.",
+        "operator": "Tail tokens starting ^s parse as u16, so zero and repeated values are admitted, and integer parsing also permits accepted standard u16 spellings. Explicit anchors override cursor sent without equality checking. know's from is a separate stricter positive check.",
+        "path": "model.md",
+        "section": "anchor_domain",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "admission_constraint"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "error_trace",
+        "observation_scope": "Source bytes [20624,21873): validation; the operation-specific contracts below define observation projections.",
+        "operator": "Failure order is token quotes, tail-anchor parse from rightmost, misplaced anchor, no command, Args scanning, command-specific field checks, leftover arguments, missing-anchor. Oracle uses lines with multiple defects to distinguish these phases; no generic lexical-versus-semantic priority is assumed.",
+        "path": "model.md",
+        "section": "error_trace",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "ordered_failure"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 21873,
+      "start": 20624
+    },
+    "description": "Source bytes [20624,21873): validation; the operation-specific contracts below define observation projections."
+  },
+  "id": "world-lang-validation",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../lang.rs",
+    "sha256": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe"
+  },
+  "status": "partial_source_derived_instance"
+}

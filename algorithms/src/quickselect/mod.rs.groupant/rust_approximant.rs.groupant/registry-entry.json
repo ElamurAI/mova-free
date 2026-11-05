@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "Standalone embedded tests with mova_approx contract"
+  ],
+  "children": [],
+  "cost": "Sample sizes 257,129,65,33; stack sample and O(n) certificate pass. On rejection clone and standard exact select, O(n) work and O(n) space. No universal speedup; tight budgets or adversaries may trigger fallback.",
+  "description": "Executable bounded quickselect approximation",
+  "forward": [
+    "Sample evenly spaced positions and select sample quantile. Count L values below and E equal to candidate over full input. Its rank interval is [L,L+E-1]. Compute distance d from target k; return if 100*d<=percent*n, else clone and exact select, reporting d=0. Products use u128 on <=64-bit usize targets. This provides rank error, not numerical value error. Immutable API does not promise production in-place partition."
+  ],
+  "id": "algorithm-quickselect-rust-approximant",
+  "inverse": [
+    "For valid input, exclude results absent from input, with reported distance differing from full rank counts, or 100*d>percent*n. Invalid k excludes Some. This necessary complement approximation also permits some candidates excluded by deterministic sample choice.",
+    "For observed v,d,k,n,b, compatible multisets contain v at counts L,E>0 with distance(k,[L,L+E-1])=d and 100*d<=percent*n. Exact fallback requires k in interval and d=0. Compatible orderings additionally satisfy deterministic sample/fallback conditions; permutations can change branch. Conservative preimage, not unique recovery."
+  ],
+  "limitations": [
+    "Experimental opt-in API; no universal speedup; partial source model without expanded semantic AST."
+  ],
+  "source": "algorithms/src/quickselect/mod.rs.groupant/rust_approximant.rs",
+  "state": "Immutable slices of u64 with valid zero-based index; invalid index returns None"
+}

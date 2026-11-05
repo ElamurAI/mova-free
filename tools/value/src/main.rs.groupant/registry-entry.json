@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "wave33_tests::subprocess_status_precedes_stdout_and_reverses_stderr_tail"
+  ],
+  "children": [],
+  "cost": "Child runtime/output dominates sh; TSV/report O(bytes+paired cells); builds/bench costs unknown. No ablation quality/timing claim.",
+  "description": "main parses option windows, creates runs, removes old worktree/branch ignoring errors, adds copy, builds global/math/world, benches without then with, writes report, then removes artifacts. sh checks subprocess status before lossy stdout. bench zips last time header with final line, skips two columns.",
+  "forward": [
+    "main parses option windows, creates runs, removes old worktree/branch ignoring errors, adds copy, builds global/math/world, benches without then with, writes report, then removes artifacts. sh checks subprocess status before lossy stdout. bench zips last time header with final line, skips two columns."
+  ],
+  "id": "value-cli",
+  "inverse": [
+    "Nonzero process status excludes Ok stdout; report cannot precede both successful benches. Earlier failure does not guarantee cleanup.",
+    "stdout admits many programs/environment/stderr histories. Rounded deltas admit many metric pairs and discarded timing cells; original benchmark state unrecoverable."
+  ],
+  "limitations": [
+    "Partial syntax and finite fixtures, not universal semantic proof.",
+    "Value full workflow, arbitrary manifests and external IO failures are not exercised."
+  ],
+  "source": "tools/value/src/main.rs",
+  "state": "Only bounded sh fixture executed; main/bench unexecuted. TSV/report pairing positional, no key equality validation. NaN comparisons false; higher-is-better counts regardless of metric semantics. Cleanup not transactional."
+}

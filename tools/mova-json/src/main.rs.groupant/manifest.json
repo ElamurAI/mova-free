@@ -1,0 +1,89 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "source_derived_partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "source_derived_partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "source_derived_partial"
+    },
+    "obernants": [
+      {
+        "assumptions": [
+          "Trusted local files without concurrent writers; git available for merge and rebind commands.",
+          "Finite native evidence does not establish universal correctness."
+        ],
+        "domain": "The explicit source-bound domain in model.md.",
+        "id": "mova-json-cli-behavior-complement",
+        "observation": "Return value, written file bytes, stdout report and exit status.",
+        "path": "model.md",
+        "revision": "a695655b9cf317aacc9bc086b75fdaad382da91966196492dcaf7a7bdb2dbc8e",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "subject": "tools/mova-json/src/main.rs",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": [
+          "Trusted local files without concurrent writers; git available for merge and rebind commands.",
+          "Finite native evidence does not establish universal correctness."
+        ],
+        "domain": "The explicit source-bound domain in model.md.",
+        "id": "mova-json-cli-reverse-reconstruction",
+        "observation": "Return value, written file bytes, stdout report and exit status.",
+        "path": "model.md",
+        "revision": "a695655b9cf317aacc9bc086b75fdaad382da91966196492dcaf7a7bdb2dbc8e",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "subject": "tools/mova-json/src/main.rs",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": [
+          "Trusted local files without concurrent writers; git available for merge and rebind commands."
+        ],
+        "domain": "The explicit source-bound domain in model.md.",
+        "id": "mova-json-cli-flag-partition",
+        "observation": "Return value, written file bytes, stdout report and exit status.",
+        "path": "model.md",
+        "revision": "a695655b9cf317aacc9bc086b75fdaad382da91966196492dcaf7a7bdb2dbc8e",
+        "section": "flag-partition",
+        "status": "source_derived_finite_checked",
+        "subject": "tools/mova-json/src/main.rs",
+        "type": "command_arity_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "bounded_native_evidence"
+    }
+  },
+  "id": "mova-json-cli",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../main.rs",
+    "sha256": "a695655b9cf317aacc9bc086b75fdaad382da91966196492dcaf7a7bdb2dbc8e"
+  },
+  "status": "partial_source_bound_model"
+}

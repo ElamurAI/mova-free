@@ -1,0 +1,159 @@
+{
+  "children": [
+    "vfs-snapbench",
+    "vfs-error",
+    "vfs-host",
+    "vfs-journal",
+    "vfs-api",
+    "vfs-memory",
+    "vfs-path",
+    "vfs-gates"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "No universal POSIX equivalence, atomic host confinement or transactional mkdir_all/import/export. RealFs operations and snapbench main unexecuted. No useful effect-preserving percentage surrogate.",
+        "domain": "CPU synthetic finite trees, valid UTF8 paths, bounded counters/allocation, dedicated TMPDIR host fixtures. No concurrent host mutations; trusted export roots and safe temporary prefixes.",
+        "id": "behavior-complement",
+        "observation_scope": "Actual callers: mlab/src/interp.rs owns Box<dyn vfs::FileSystem>, mlab/src/builtins/files.rs and table.rs call it; open selects backend. Memory path->error->journal joins tested. wasi-host is sibling consumer of Vfs/Errno projections, not owned here. snapbench and test fixtures are independent observation paths, not production callers.",
+        "operator": "Under Fault=None and bounded arithmetic, single-file quota failures do not install edits; virtual absolute paths cannot implicitly read host. Host race and transfer partial effects excluded from this inner source-derived claim.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "No universal POSIX equivalence, atomic host confinement or transactional mkdir_all/import/export. RealFs operations and snapbench main unexecuted. No useful effect-preserving percentage surrogate.",
+        "domain": "CPU synthetic finite trees, valid UTF8 paths, bounded counters/allocation, dedicated TMPDIR host fixtures. No concurrent host mutations; trusted export roots and safe temporary prefixes.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Actual callers: mlab/src/interp.rs owns Box<dyn vfs::FileSystem>, mlab/src/builtins/files.rs and table.rs call it; open selects backend. Memory path->error->journal joins tested. wasi-host is sibling consumer of Vfs/Errno projections, not owned here. snapbench and test fixtures are independent observation paths, not production callers.",
+        "operator": "Restored state admits arbitrary intervening histories; journal drops and TSV sanitization erase information. Linux errno1 admits Perm and NotCapable; backend tag required to interpret metadata.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "No universal POSIX equivalence, atomic host confinement or transactional mkdir_all/import/export. RealFs operations and snapbench main unexecuted. No useful effect-preserving percentage surrogate.",
+        "domain": "CPU synthetic finite trees, valid UTF8 paths, bounded counters/allocation, dedicated TMPDIR host fixtures. No concurrent host mutations; trusted export roots and safe temporary prefixes.",
+        "id": "backend-dispatch",
+        "observation_scope": "Actual callers: mlab/src/interp.rs owns Box<dyn vfs::FileSystem>, mlab/src/builtins/files.rs and table.rs call it; open selects backend. Memory path->error->journal joins tested. wasi-host is sibling consumer of Vfs/Errno projections, not owned here. snapbench and test fixtures are independent observation paths, not production callers.",
+        "operator": "open(mem,limits) installs Vfs, real ignores limits, dir canonicalizes root; shared trait does not imply identical journals or metadata.",
+        "path": "model.md",
+        "required": false,
+        "section": "backend-dispatch",
+        "status": "partial_source_derived_model",
+        "type": "tagged_union"
+      },
+      {
+        "assumptions": "No universal POSIX equivalence, atomic host confinement or transactional mkdir_all/import/export. RealFs operations and snapbench main unexecuted. No useful effect-preserving percentage surrogate.",
+        "domain": "CPU synthetic finite trees, valid UTF8 paths, bounded counters/allocation, dedicated TMPDIR host fixtures. No concurrent host mutations; trusted export roots and safe temporary prefixes.",
+        "id": "state-trace-split",
+        "observation_scope": "Actual callers: mlab/src/interp.rs owns Box<dyn vfs::FileSystem>, mlab/src/builtins/files.rs and table.rs call it; open selects backend. Memory path->error->journal joins tested. wasi-host is sibling consumer of Vfs/Errno projections, not owned here. snapbench and test fixtures are independent observation paths, not production callers.",
+        "operator": "Snapshot includes root,cwd,clock,next_ino,usage,tmp and excludes limits,journal,fault. Restoration equality applies to dump projection.",
+        "path": "model.md",
+        "required": false,
+        "section": "state-trace-split",
+        "status": "partial_source_derived_model",
+        "type": "snapshot_projection"
+      },
+      {
+        "assumptions": "No universal POSIX equivalence, atomic host confinement or transactional mkdir_all/import/export. RealFs operations and snapbench main unexecuted. No useful effect-preserving percentage surrogate.",
+        "domain": "CPU synthetic finite trees, valid UTF8 paths, bounded counters/allocation, dedicated TMPDIR host fixtures. No concurrent host mutations; trusted export roots and safe temporary prefixes.",
+        "id": "failure-effects",
+        "observation_scope": "Actual callers: mlab/src/interp.rs owns Box<dyn vfs::FileSystem>, mlab/src/builtins/files.rs and table.rs call it; open selects backend. Memory path->error->journal joins tested. wasi-host is sibling consumer of Vfs/Errno projections, not owned here. snapbench and test fixtures are independent observation paths, not production callers.",
+        "operator": "Single-file quota preflight precedes tick; mkdir_all/import/export can preserve a successful prefix. No parent-wide rollback follows.",
+        "path": "model.md",
+        "required": false,
+        "section": "failure-effects",
+        "status": "partial_source_derived_model",
+        "type": "effect_boundary"
+      },
+      {
+        "assumptions": "No universal POSIX equivalence, atomic host confinement or transactional mkdir_all/import/export. RealFs operations and snapbench main unexecuted. No useful effect-preserving percentage surrogate.",
+        "domain": "CPU synthetic finite trees, valid UTF8 paths, bounded counters/allocation, dedicated TMPDIR host fixtures. No concurrent host mutations; trusted export roots and safe temporary prefixes.",
+        "id": "caller-join",
+        "observation_scope": "Actual callers: mlab/src/interp.rs owns Box<dyn vfs::FileSystem>, mlab/src/builtins/files.rs and table.rs call it; open selects backend. Memory path->error->journal joins tested. wasi-host is sibling consumer of Vfs/Errno projections, not owned here. snapbench and test fixtures are independent observation paths, not production callers.",
+        "operator": "mlab file/table builtins use Interp.fs trait; sibling WASI translates errno via wasi number while host Display uses Linux number. Do not identify these numeric coordinate systems.",
+        "path": "model.md",
+        "required": false,
+        "section": "caller-join",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "virtual-filesystem-state",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "vfs/examples/snapbench.rs",
+      "sha256": "df7ed460def0653789b6f33967fa58474d125c02c9fbbe9b33dd063be4132579"
+    },
+    {
+      "path": "vfs/src/error.rs",
+      "sha256": "014e34da6df423523e02b9c8f1683d6762f8c29b3f83401b321afa136d382dac"
+    },
+    {
+      "path": "vfs/src/host.rs",
+      "sha256": "d7a0bb0efff6f8f477ede3d425e9e7340f555a79891bf436985944d23b5c12fc"
+    },
+    {
+      "path": "vfs/src/journal.rs",
+      "sha256": "c6c2ac019263f12fbff99c8fdd94e12ba6b4a17fafb77a6f19e99834338daf1d"
+    },
+    {
+      "path": "vfs/src/lib.rs",
+      "sha256": "815d266a4f655f394cffdf7af67bb88468908ac9edadbffebdebe0fd419fd4ed"
+    },
+    {
+      "path": "vfs/src/mem.rs",
+      "sha256": "d97f98687ddc88ba17464b64dadc223583c39dcfa90f14bc44410cada557ca95"
+    },
+    {
+      "path": "vfs/src/path.rs",
+      "sha256": "6ccba30c719a6edef0250d92427618fc4a91ef1b4d097d65ffa3b9b70f95ba59"
+    },
+    {
+      "path": "vfs/tests/vfs.rs",
+      "sha256": "698bd9736a44e4242956651b41ab29138dd247738ff68b0009efb44cfb0aa0a2"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

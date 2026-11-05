@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "Selected onto wave29_tests / hs::t:: actual-code tests; repeated debug/release and compiled controls"
+  ],
+  "children": [],
+  "cost": "BFS O(Va+Ea); K candidate ancestry maps plus O(K²) dominance; loader full rows memory and repeated insertion traversal.",
+  "description": "BFS first shortest taxonomic predecessors; prop sorts ancestor seed indices, chooses first visible nonempty layer then descendant-minimal concepts. Mixed values Undetermined, equal values nearest depth then index. add gates precede insertion; TSV loaders retain valid prefixes.",
+  "forward": [
+    "A_l={i:assert[i].concept∈Anc(c), prop=p, layer=l}; l*=first l∈layer_chain(L) with A_l≠∅. M={i∈A_l*:¬∃j∈A_l*, c_i≠c_j ∧ c_i∈Anc(c_j)}. If values(M) singleton: win=argmin(depth(c_i),i); else Undetermined."
+  ],
+  "id": "onto-kb",
+  "inverse": [
+    "Invisible layer cannot decide; dominated seed cannot win same layer; incomparable mixed values exclude Known; rejected insertion excludes vector/index changes.",
+    "Known constrains winner/minimal values/proof, admits invisible or other-property seeds; Undetermined requires both minimal values, many graph preimages. Failed load allows arbitrary suffix."
+  ],
+  "limitations": [
+    "Partial lexical AST, no semantic proof",
+    "No live teacher/corpus/model/DB execution",
+    "No validated executable percentage surrogate",
+    "Synthetic finite tests do not cover all public malformed states"
+  ],
+  "source": "onto/src/kb.rs",
+  "state": "Valid indices/DAG/layer chain and private indices assumed. gates=false disables strict/cycle only, not duplicates/same-concept conflict. u16 depth unguarded. ## Visibility switch domain  The layer-chain equations, invisible-layer exclusion and invisible-seed preimage freedom require `leak_all_layers == false`. With the diagnostic switch true, prop instead scans all layer indices in reverse order, independent of the requested layer's parent chain; a nominally invisible layer can then decide. Index/acyclicity assumptions still apply. The executed fixtures keep the switch false; its compiled mutant deliberately sets true and fails the real-layer assertion."
+}

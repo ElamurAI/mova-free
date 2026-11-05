@@ -1,0 +1,29 @@
+// HISTORICAL ONLY: run against values.rs at baseline 1e63aaf0a, SHA f450843ba1c92f35884eb71667d432f36a34f6316c9b8a252811e0dac87ddbe6.
+// Includes adjacent source; current command-start policy intentionally invalidates this witness assertion.
+// Bounded observations of production judgment semantics; no source mutation.
+#[path = "../values.rs"]
+mod values;
+use std::collections::BTreeSet;
+fn main() {
+    let input = "char C1 name=A\nchar C2 name=B\nevent E1 verb=catch agent=C1 patient=C2\nset C2 freedom=captive status=free cause=E1\n";
+    let relief = global::principle_by_rule("relieve_harm_state").expect("fixture requires relief rule").id;
+    let mut observed = BTreeSet::new();
+    for _ in 0..256 {
+        let result = values::judge(input);
+        let harm = result.iter().filter(|j| j.principle == "do-no-harm").count();
+        let help = result.iter().filter(|j| j.principle == relief).count();
+        let mercy = result.iter().filter(|j| j.principle == "forgiveness").count();
+        // Sorted principle/agent/violation/line projection; membership can still differ.
+        let mut projection: Vec<_> = result.iter().map(|j| (j.principle, j.agent.clone(), j.violated, j.line)).collect();
+        projection.sort();
+        assert_eq!(harm, 1);
+        assert!(mercy <= 1);
+        assert_eq!(help, mercy);
+        observed.insert(projection);
+    }
+    if std::env::args().any(|x| x == "--false-determinism") {
+        assert_eq!(observed.len(), 1, "false model: sorting judgments removes traversal dependence");
+    }
+    assert_eq!(observed.len(), 2, "bounded sample did not exhibit both anticipated schedules; inspect, do not silently retry");
+    println!("{{\"calls\":256,\"distinct_sorted_observations\":2,\"scope\":\"finite randomized HashMap observations; no schedule probability claim\"}}");
+}

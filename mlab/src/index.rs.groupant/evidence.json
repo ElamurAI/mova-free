@@ -1,0 +1,31 @@
+{
+  "assertion_control": {
+    "changed_assertion": "assert_eq!(m.re, vec![10., 20., 0., 7.]);",
+    "compile_success": true,
+    "exact_restoration": true,
+    "exit": 101,
+    "original_assertion": "assert_eq!(m.re, vec![10., 20., 0., 8.]);",
+    "restored_exit": 0,
+    "source": "mlab/src/index.rs",
+    "test": "index::wave30::gather_update"
+  },
+  "covered": "vector orientation, shape-error rollback, zero-filled growth, duplicate writes/deletes, colon column, NaN index rejection, logical masks",
+  "kind": "actual_code_semantics",
+  "positive_executions": 4,
+  "production_control": {
+    "compile_exit": 0,
+    "mutant_exit": 101,
+    "new": "m.re[k] = v.re[s] + 1.0;",
+    "old": "m.re[k] = v.re[s];",
+    "restored_exit": 0,
+    "restored_sha256": "dccd47c7d5a96caaf6583aa82cc003b0236ce035f4ffb3dcec85532379debba8",
+    "source": "mlab/src/index.rs",
+    "test": "index::wave30::gather_update"
+  },
+  "source": "mlab/src/index.rs",
+  "source_sha256": "dccd47c7d5a96caaf6583aa82cc003b0236ce035f4ffb3dcec85532379debba8",
+  "tests": [
+    "index::wave30::gather_update"
+  ],
+  "unexecuted": "2D growth/deletion and huge-index panic/resource cases unexecuted"
+}

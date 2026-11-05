@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "Compiled math executable no-argument usage in debug/release",
+    "two identical syntax projections"
+  ],
+  "children": [],
+  "cost": "Model load+understanding/evaluation+O(output bytes); file/model storage dominates, no global cap.",
+  "description": "Missing command errors before model load. Nonempty args load model before eval/test/parse or unknown-command rejection. eval prints errors; i128 overflow falls back to reparsing rendered Expr in unitless big calc with10s limit. test aggregates suite; parse splits whitespace.",
+  "forward": [
+    "Missing command errors before model load. Nonempty args load model before eval/test/parse or unknown-command rejection. eval prints errors; i128 overflow falls back to reparsing rendered Expr in unitless big calc with10s limit. test aggregates suite; parse splits whitespace."
+  ],
+  "id": "math-classic-cli",
+  "inverse": [
+    "Printed answer admits many questions/trees. Overflow-rendered expression cannot reconstruct original dimensional semantics; load failure can mask invalid command."
+  ],
+  "limitations": [
+    "Model-backed eval/test/parse and fallback unexecuted; usage/compile evidence only.",
+    "Partial lexical AST; no semantic proof or executable percentage surrogate"
+  ],
+  "source": "math/src/main.rs",
+  "state": "Arguments, loaded Understander, report text"
+}

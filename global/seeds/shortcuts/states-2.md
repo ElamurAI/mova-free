@@ -1,6 +1,6 @@
 # States, actions and concepts from fables (level-1 gaps, 2026-09-30)
 
-**Gist.** Gaps that level 3 found in the worlds of Aesop's fables ("The Fox and the Crow", "The Lion and the Mouse", "The Hare and the Tortoise"), closed with general human knowledge. The draft was written by the LLM (Opus) and checked by the Linguist: `angry` is neutral (waking someone is not harm); the link "calm → perception" was rejected (links have no negation).
+**Gist.** Gaps that level 3 found in the worlds of Aesop's fables ("The Fox and the Crow", "The Lion and the Mouse", "The Hare and the Tortoise"), closed with general human knowledge. The draft was written by the LLM and checked by the Linguist: `angry` is neutral (waking someone is not harm); the link "calm → perception" was rejected (links have no negation).
 
 **Conditions and exceptions.** Pride can be healthy or excessive — by itself it is neither trouble nor relief; sleep is a normal state.
 

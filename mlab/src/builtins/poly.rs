@@ -221,3 +221,39 @@ pub fn register(r: &mut Registry) {
     });
 }
 
+
+#[cfg(test)]
+mod wave30_tests {
+    use super::*;
+    #[test]
+    fn horner_and_division_contract() {
+        let mut r = Registry::new();
+        register(&mut r);
+        let mut it = Interp::capture();
+        let out = r.get("polyval").unwrap()(
+            &mut it,
+            &[
+                Value::Mat(Mat::row(vec![2.0, -3.0, 1.0])),
+                Value::Mat(Mat::row(vec![0.0, 2.0])),
+            ],
+            1,
+        )
+        .unwrap();
+        let Value::Mat(m) = &out[0] else { panic!() };
+        assert_eq!(m.re, vec![1.0, 3.0]);
+        let out = r.get("deconv").unwrap()(
+            &mut it,
+            &[
+                Value::Mat(Mat::row(vec![1.0, -3.0, 2.0])),
+                Value::Mat(Mat::row(vec![1.0, -1.0])),
+            ],
+            2,
+        )
+        .unwrap();
+        let Value::Mat(q) = &out[0] else { panic!() };
+        let Value::Mat(rem) = &out[1] else { panic!() };
+        assert_eq!(q.re, vec![1.0, -2.0]);
+        assert_eq!(rem.re, vec![0.0; 3]);
+        assert!(r.get("deconv").unwrap()(&mut it, &[Value::num(1.0), Value::num(0.0)], 1).is_err());
+    }
+}

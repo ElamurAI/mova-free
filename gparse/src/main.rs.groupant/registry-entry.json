@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "wave30::score_zip_and_plan_failure_precedence; train/eval/annotate external effects remain unexecuted",
+    "2026-11-04: wave30::breakdown_by_length_vocabulary_and_genre; wave30::partial_annotation_keeps_and_drops; wave30::scramble_is_a_fixed_permutation. CUDA (external run): GP_PA=0 trains byte-identical weights to no GP_PA; two identical runs identical."
+  ],
+  "children": [],
+  "cost": "Corpus bytes and network inference/training dominate; plan O(S log S); scoring O(min paired tokens); optimizer state O(parameters), batch BT² and gradients. Epoch estimates can differ after sampling; no timing certificate.",
+  "description": "CLI dispatches train/eval/annotate/plan by arguments; plan parses positive budget before cfg and corpus. score counts only zipped sentence/token pairs, LAS additionally requires matching head, percentages divide max(n,1). train validates dev schedule, reads/selects corpora, optionally loads vocab/config/weights, allocates optimizer, writes model metadata, then runs shuffled batches with joint loss and warmup/decay. Full-dev strict improvements save weights; quick proxies cannot select checkpoint. annotate predicts, updates score comments, refills lexical fields and postverbal-not corrections then writes output.",
+  "forward": [
+    "CLI dispatches train/eval/annotate/plan by arguments; plan parses positive budget before cfg and corpus. score counts only zipped sentence/token pairs, LAS additionally requires matching head, percentages divide max(n,1). train validates dev schedule, reads/selects corpora, optionally loads vocab/config/weights, allocates optimizer, writes model metadata, then runs shuffled batches with joint loss and warmup/decay. Full-dev strict improvements save weights; quick proxies cannot select checkpoint. annotate predicts, updates score comments, refills lexical fields and postverbal-not corrections then writes output."
+  ],
+  "id": "gparse-cli",
+  "inverse": [
+    "Zero or malformed plan budget excludes any cfg/corpus open. Incorrect head excludes LAS even if label matches. Proxy dev epoch cannot replace best checkpoint unless no dev files; equal full mean does not save. Annotation cannot preserve original raw formatting.",
+    "Scores constrain counts over zipped pairs, not full dataset size; many unpaired suffixes and correct/incorrect arrangements give same percentages. Saved checkpoint is compatible with many earlier epochs below best mean and does not reveal all optimizer/RNG state."
+  ],
+  "limitations": [
+    "Partial lexical syntax; no semantic proof",
+    "Finite synthetic checks only; external corpus/model experiments excluded",
+    "No executable Rust percent surrogate or throughput claim",
+    "Fault injection and exhaustive nonfinite/dimension cases absent"
+  ],
+  "source": "gparse/src/main.rs",
+  "state": "Training effects are nontransactional; partial metadata/checkpoint/log writes may survive errors. Score empty=all zero and truncation is intentional source behavior, not aligned-input verification. Default learning loss arc+rel+half(xpos+upos). No live training selected."
+}

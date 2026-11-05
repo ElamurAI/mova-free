@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-modular-power",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "be662de347e48f75c3a12b6238d7bca7d65114a1a79e4627723aab4e16299991"
+  },
+  "components": {
+    "ast": {
+      "path": "syntax.json",
+      "status": "partial",
+      "format": "rust_syntax_projection"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "be662de347e48f75c3a12b6238d7bca7d65114a1a79e4627723aab4e16299991",
+        "domain": "All u64 triples paired with Result<u64,ZeroModulus> observations.",
+        "observation_scope": "One scalar call.",
+        "operator": "U consists of all input triples paired with Err or Ok(u64). U minus R contains Ok when m=0, Err when m>0, and Ok(r) with m>0 but r>=m or wrong power congruence. Exact mathematical target, bounded-tested.",
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "residue_fibers",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "residue_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "be662de347e48f75c3a12b6238d7bca7d65114a1a79e4627723aab4e16299991",
+        "domain": "All u64 triples paired with Result<u64,ZeroModulus> observations.",
+        "observation_scope": "One scalar call.",
+        "operator": "Err admits exactly m=0 triples. Ok(r) admits all triples with m>r and b^e congruent to r mod m. Different bases/exponents/moduli retain ambiguity; e=0 restricts r=1%m and m=1 permits all b,e with r=0.",
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "base_reduction",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "base_reduction",
+        "status": "partial_source_derived",
+        "subject_revision": "be662de347e48f75c3a12b6238d7bca7d65114a1a79e4627723aab4e16299991",
+        "domain": "All u64 triples paired with Result<u64,ZeroModulus> observations.",
+        "observation_scope": "One scalar call.",
+        "operator": "For m>0, P(b,e,m)=P(b%m,e,m); changing a base by a multiple of m is valid only if it fits u64. Fixed-seed tests exercise reduction.",
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "exponent_addition",
+        "type": "algebraic_composition",
+        "path": "model.md",
+        "section": "exponent_addition",
+        "status": "partial_source_derived",
+        "subject_revision": "be662de347e48f75c3a12b6238d7bca7d65114a1a79e4627723aab4e16299991",
+        "domain": "All u64 triples paired with Result<u64,ZeroModulus> observations.",
+        "observation_scope": "One scalar call.",
+        "operator": "For m>0 and a+c fitting u64, P(x,a+c,m)=P(x,a,m)*P(x,c,m) mod m. Tests use a,c<=31 and widened products.",
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "parity_boundary",
+        "type": "boundary_specialization",
+        "path": "model.md",
+        "section": "parity_boundary",
+        "status": "partial_source_derived",
+        "subject_revision": "be662de347e48f75c3a12b6238d7bca7d65114a1a79e4627723aab4e16299991",
+        "domain": "All u64 triples paired with Result<u64,ZeroModulus> observations.",
+        "observation_scope": "One scalar call.",
+        "operator": "P(x,0,m)=1%m. For m>1, P(m-1,e,m)=1 for even e and m-1 for odd e. Explicit (-2)^3 mod u64::MAX probes accumulator multiplication overflow.",
+        "approximation_semantics": "Conditional relation with bounded evidence; no universal proof.",
+        "assumptions": "Standard Rust arithmetic and oracle, ordinary terminating execution.",
+        "evidence": "model.md#evidence"
+      }
+    ]
+  },
+  "children": []
+}

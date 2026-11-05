@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p mova-twin --locked",
+    "mova-modelcheck groupants with integrated registry"
+  ],
+  "children": [],
+  "cost": "Let H be bytes hashed and N tree entries, J JSON bytes and d feature count. Prepare/replay costs O(H+sum directory k log k+J+d^3); execution adds command duration and polling, output scans/hashes and repeated fingerprints; save requires serialization, file sync and directory sync. Memory includes model O(d^2), serialized JSON and per-directory maps. No duration guarantee follows from requested timeout.",
+  "description": "Mathematical twin CLI",
+  "forward": [
+    "Parse command shape and spec; prepare validates, fingerprints and derives cohort, optionally verifies/replays a parent, then predicts. predict prints without spawning. run creates a fresh directory, copies binary, persists forecast before execution, checks local outputs/fingerprints, saves observation and only when accepted applies the library update and saves checkpoint. report projects stored evidence."
+  ],
+  "id": "mathematical-twin-cli",
+  "inverse": [
+    "Behavior complement targets U minus R on the explicitly scoped observations.",
+    "Reverse reconstruction is a compatible antecedent relation; hashes, summaries and rounded arithmetic do not uniquely recover history."
+  ],
+  "limitations": [
+    "Source-derived partial models; no semantic AST or full proof.",
+    "Filesystem errors may leave a partial ledger. Hashes assume collision resistance and trusted immutable reads; they do not authenticate data and are vulnerable to coordinated rewrites/TOCTOU. Explicit arbitrary commands are not sandboxed. There is no automatic search, teacher or shell interpreter, but caller can explicitly supply a shell executable. report validates stored hashes only when updated.json exists and does not replay the model."
+  ],
+  "source": "tools/twin/src/main.rs",
+  "state": "(argv,spec,filesystem,parent checkpoint,forecast,observation,model)"
+}

@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "print::tests::canonical_latex; print::tests::plain_text; integration golden outputs and corrupted_printer_turns_gate_red",
+    "Two debug/two release selected runs; paired syntax"
+  ],
+  "children": [],
+  "cost": "LaTeX O(N+output) with recursive stack O(D); text creates subtree strings and can repeat copying across nested wrappers, conservative O(D*output+N). Allocation failure unmodeled.",
+  "description": "to_latex walks AST using command-word and digit separators; optional right brackets escape, unknown followed by brace gets relax, aligned leading bracket gets relax. Scripts print primes/sub/sup, trailing empty table row compensated. to_text projects style/group distinctions to Unicode with all-or-none sub/sup conversion; to_sexpr exposes selected structure and unknown start positions.",
+  "forward": [
+    "to_latex walks AST using command-word and digit separators; optional right brackets escape, unknown followed by brace gets relax, aligned leading bracket gets relax. Scripts print primes/sub/sup, trailing empty table row compensated. to_text projects style/group distinctions to Unicode with all-or-none sub/sup conversion; to_sexpr exposes selected structure and unknown start positions."
+  ],
+  "id": "latex-print",
+  "inverse": [
+    "Normal printer cannot use fault substitutions; intentional SwapFrac/DropSup/DropLast change only applicable structures. Plain text is not an injective encoding of the AST.",
+    "Canonical string preimage includes ASTs differing only spans and potentially nonnormalized structures; normalized parser trees are the intended round-trip domain. Text preimage additionally varies styles, groups, presentation variants and column metadata."
+  ],
+  "limitations": [
+    "Partial source models and finite tests, no semantic proof or expanded AST.",
+    "No useful executable percentage approximant metric established; future caps1/2/5/10% only.",
+    "No live VMM/API/corpus/GPU/full-school/held-out execution; allocation and extreme sizes untested."
+  ],
+  "source": "latex/src/print.rs",
+  "state": "Arbitrary publicly constructed ASTs need not round trip; empty string prints empty Row, numeric boundary spaces preserve separate Num nodes, prime count bounded by u8 representation."
+}

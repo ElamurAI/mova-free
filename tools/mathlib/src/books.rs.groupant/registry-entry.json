@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "books::tests::book_licenses",
+    "books::tests::topics_and_hosts",
+    "books::tests::aim_list_parses"
+  ],
+  "children": [],
+  "cost": "For B input bytes, R rows and L extracted links: parsing/normalization O(B), sort O(P log P), hash joins expected O(R), AIM/link dedup can be quadratic. File and DNS/network latencies unbounded; cache bodies and rows use O(B+R) storage.",
+  "description": "fetch caches raw OpenStax/AIM/OTL pages; build constructs Rows in OpenStax, sorted OTL subject/page, AIM order, then derives license/topic/PDF and cross-catalog joins. find_pdfs caches pages, skips prohibited candidates, ranks links and merges previous output rows.",
+  "forward": [
+    "fetch caches raw OpenStax/AIM/OTL pages; build constructs Rows in OpenStax, sorted OTL subject/page, AIM order, then derives license/topic/PDF and cross-catalog joins. find_pdfs caches pages, skips prohibited candidates, ranks links and merges previous output rows."
+  ],
+  "id": "mathlib-books",
+  "inverse": [
+    "Inner exclusions: explicit closed license conflict forces Other, so the same row cannot remain allowed; NC/ND/unknown variants never satisfy BookLicense::allowed. Cached page save does not make a request. This does not imply build is network-free: GitHub DNS checks remain.",
+    "For a TSV row y, compatible raw catalog rows are all schema inputs whose normalized title/surname, precedence-selected license and PDF projections produce y. Entity decoding, whitespace collapse and dropped fields create many antecedents; cross-catalog provenance cannot be uniquely reconstructed from the row alone."
+  ],
+  "limitations": [
+    "No network/DNS/download, real catalog/corpus/model/teacher or database execution. Effect paths are source-derived; finite helper tests are not universal verification. No executable percentage surrogate or speed claim; future caps require metric/domain/reference and remain 1/2/5/10%."
+  ],
+  "source": "tools/mathlib/src/books.rs",
+  "state": "OTL repeated integer ids retain the first sorted-page occurrence (missing ids share -1). Title plus surname keys are normalization classes, not identities. License overrides precede PDF substitution, so PDF substitution is not a second license reconciliation pass. Output order follows row construction; HashMap count ties need not print stably."
+}

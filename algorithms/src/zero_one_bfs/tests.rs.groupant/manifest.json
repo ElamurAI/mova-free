@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "id": "algorithm-zero-one-bfs-tests",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "87b2ff0120fc61a24d12fcd23697ca53aa5d7405f3ae7c2d29f9b66fff7c526b"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "87b2ff0120fc61a24d12fcd23697ca53aa5d7405f3ae7c2d29f9b66fff7c526b",
+        "domain": "Deterministic finite fixture executions and assertion verdict vectors for the adjacent implementation; not an all-input proof.",
+        "operator": "In the universe of fixture/verdict pairs, excluded behavior contains a passing verdict when any encoded expected value differs, or a claim of universal correctness from these finite fixtures. The independent oracle enumerates paths rather than reproducing the production scheduling mechanism.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "Deterministic fixture assertion outcomes.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "verdict_preimage",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "verdict_preimage",
+        "status": "partial_source_derived",
+        "subject_revision": "87b2ff0120fc61a24d12fcd23697ca53aa5d7405f3ae7c2d29f9b66fff7c526b",
+        "domain": "Deterministic finite fixture executions and assertion verdict vectors for the adjacent implementation; not an all-input proof.",
+        "operator": "Given the all-pass assertion vector, recover all candidate implementations agreeing with the fixture map on exactly the executed inputs. This set includes the reference and implementations that fail on untested inputs; it does not identify unique source code. A failing oracle assertion constrains the preimage to implementations disagreeing on that concrete graph/source/output.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "Deterministic fixture assertion outcomes.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "oracle_correspondence",
+        "type": "finite_relation",
+        "path": "model.md",
+        "section": "oracle_correspondence",
+        "status": "partial_source_derived",
+        "subject_revision": "87b2ff0120fc61a24d12fcd23697ca53aa5d7405f3ae7c2d29f9b66fff7c526b",
+        "domain": "Deterministic finite fixture executions and assertion verdict vectors for the adjacent implementation; not an all-input proof.",
+        "operator": "Simple paths suffice because all weights are nonnegative: deleting a cycle never raises cost. Enumeration covers 19,683 graph codes and 59,049 graph/source comparisons including self loops. Oracle seen-state prevents cyclic recursion.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "Deterministic fixture assertion outcomes.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "mutation_separation",
+        "type": "distinguishability_relation",
+        "path": "model.md",
+        "section": "mutation_separation",
+        "status": "partial_source_derived",
+        "subject_revision": "87b2ff0120fc61a24d12fcd23697ca53aa5d7405f3ae7c2d29f9b66fff7c526b",
+        "domain": "Deterministic finite fixture executions and assertion verdict vectors for the adjacent implementation; not an all-input proof.",
+        "operator": "Replacing the production checked edge increment by zero must disagree on a reachable unit-weight edge; the exhaustive oracle assertion rejects this compiled mutation. An initial reversed-comparison mutant allowed positive-cycle growth and was manually stopped, so it is not counted as an assertion witness.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "Deterministic fixture assertion outcomes.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "coverage_boundary",
+        "type": "coverage_relation",
+        "path": "model.md",
+        "section": "coverage_boundary",
+        "status": "partial_source_derived",
+        "subject_revision": "87b2ff0120fc61a24d12fcd23697ca53aa5d7405f3ae7c2d29f9b66fff7c526b",
+        "domain": "Deterministic finite fixture executions and assertion verdict vectors for the adjacent implementation; not an all-input proof.",
+        "operator": "Fixtures sample graph semantics, source/endpoint priority, disconnected behavior and metamorphic identities. They do not exercise allocation failure or the defensive checked-distance overflow return. Repeatability means identical normalized named test outcomes across two debug and two release runs, not identical timings.",
+        "assumptions": "Successful allocations; mathematical path semantics; finite oracle correspondence only.",
+        "observation_scope": "Deterministic fixture assertion outcomes.",
+        "approximation_semantics": "Source-derived relation with finite evidence, no formal semantic proof.",
+        "evidence": "model.md#evidence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  }
+}

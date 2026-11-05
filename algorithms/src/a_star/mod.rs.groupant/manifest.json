@@ -1,0 +1,157 @@
+{
+  "schema": 1,
+  "id": "algorithm-a-star",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "76a320c9ade011864661dd9edcbad7ca6d200346cbdea407d626eaedf024670d"
+  },
+  "children": [
+    
+  ],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "source_derived"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "76a320c9ade011864661dd9edcbad7ca6d200346cbdea407d626eaedf024670d",
+        "domain": "Finite directed adjacency lists of usize endpoints and u64 weights, usize start and goal, a u64 heuristic vector. Input remains immutable; allocations succeed. Observations are typed errors, None, or a u128 distance with a vertex witness.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "Within the declared input/result universe, excluded transitions include accepting a failed validation, incorrect first-error payloads, returning a non-realizable or nonminimal path, a cyclic witness, None for a reachable goal, and wrapped arithmetic. This is a source-derived inner description of semantic nonbehavior, not an empirical complement of sampled outcomes.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "path_preimages",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "path_preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "76a320c9ade011864661dd9edcbad7ca6d200346cbdea407d626eaedf024670d",
+        "domain": "Finite directed adjacency lists of usize endpoints and u64 weights, usize start and goal, a u64 heuristic vector. Input remains immutable; allocations succeed. Observations are typed errors, None, or a u128 distance with a vertex witness.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "For a distance-only observation d, candidate antecedents are every admitted graph/start/goal/heuristic with a realizing path of cost d and no cheaper path; None has precisely unreachable-goal antecedents. For a full Path observation additionally require the deterministic heap/strict-parent trace to select those vertices. Omitting this trace is explicitly an outer reconstruction approximation. Errors recover inputs with exactly the first failing check. Self-loop changes and multiple consistent heuristics give nonunique fibers.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "potential_reweighting",
+        "type": "potential_relation",
+        "path": "model.md",
+        "section": "potential_reweighting",
+        "status": "partial_source_derived",
+        "subject_revision": "76a320c9ade011864661dd9edcbad7ca6d200346cbdea407d626eaedf024670d",
+        "domain": "Finite directed adjacency lists of usize endpoints and u64 weights, usize start and goal, a u64 heuristic vector. Input remains immutable; allocations succeed. Observations are typed errors, None, or a u128 distance with a vertex witness.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "For every admitted arc define reduced cost w+h(v)-h(u)>=0 in mathematical integers. A start-to-v path has reduced sum g+h(v)-h(start), so the A* priority differs from reduced distance by the fixed constant h(start). This explains settlement; it does not admit merely guessed heuristic values.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "heuristic_independence",
+        "type": "projection_relation",
+        "path": "model.md",
+        "section": "heuristic_independence",
+        "status": "partial_source_derived",
+        "subject_revision": "76a320c9ade011864661dd9edcbad7ca6d200346cbdea407d626eaedf024670d",
+        "domain": "Finite directed adjacency lists of usize endpoints and u64 weights, usize start and goal, a u64 heuristic vector. Input remains immutable; allocations succeed. Observations are typed errors, None, or a u128 distance with a vertex witness.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "On a fixed graph/start/goal every two admitted heuristic vectors produce the same distance or None. Their witness paths may differ because heap order changes. Zero heuristic is always admitted after endpoint validation and recovers Dijkstra distance semantics.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "path_certificate",
+        "type": "certificate_relation",
+        "path": "model.md",
+        "section": "path_certificate",
+        "status": "partial_source_derived",
+        "subject_revision": "76a320c9ade011864661dd9edcbad7ca6d200346cbdea407d626eaedf024670d",
+        "domain": "Finite directed adjacency lists of usize endpoints and u64 weights, usize start and goal, a u64 heuristic vector. Input remains immutable; allocations succeed. Observations are typed errors, None, or a u128 distance with a vertex witness.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "A returned vertex list begins at start, ends at goal, contains no repeated vertex and traverses actual arcs. With parallel arcs the minimum capacity-free edge weight between successive vertices sums to the returned distance. This realizes an upper bound; optimality additionally requires the settlement argument or an independent lower-bound oracle.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "weight_order",
+        "type": "order_relation",
+        "path": "model.md",
+        "section": "weight_order",
+        "status": "partial_source_derived",
+        "subject_revision": "76a320c9ade011864661dd9edcbad7ca6d200346cbdea407d626eaedf024670d",
+        "domain": "Finite directed adjacency lists of usize endpoints and u64 weights, usize start and goal, a u64 heuristic vector. Input remains immutable; allocations succeed. Observations are typed errors, None, or a u128 distance with a vertex witness.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "Increasing edge weights on fixed topology cannot reduce the optimal distance. A previously consistent heuristic stays consistent under increases. Reachability stays fixed. Witness equality is not implied; decreasing weights can invalidate a previously admitted heuristic.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "validation_partition",
+        "type": "error_partition",
+        "path": "model.md",
+        "section": "validation_partition",
+        "status": "partial_source_derived",
+        "subject_revision": "76a320c9ade011864661dd9edcbad7ca6d200346cbdea407d626eaedf024670d",
+        "domain": "Finite directed adjacency lists of usize endpoints and u64 weights, usize start and goal, a u64 heuristic vector. Input remains immutable; allocations succeed. Observations are typed errors, None, or a u128 distance with a vertex witness.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "Start and goal errors precede vector-length and goal-value errors. Endpoints are checked globally before any consistency inequality, including disconnected components. Within each scan stored row and edge order fixes the first failure. ArithmeticOverflow is a defensive checked-sum error; current bounded fixtures exceed u64 but do not reach u128 exhaustion.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "redundant_loops",
+        "type": "closure_relation",
+        "path": "model.md",
+        "section": "redundant_loops",
+        "status": "partial_source_derived",
+        "subject_revision": "76a320c9ade011864661dd9edcbad7ca6d200346cbdea407d626eaedf024670d",
+        "domain": "Finite directed adjacency lists of usize endpoints and u64 weights, usize start and goal, a u64 heuristic vector. Input remains immutable; allocations succeed. Observations are typed errors, None, or a u128 distance with a vertex witness.",
+        "observation_scope": "One terminating call, or fixed finite test invocation for test sources.",
+        "operator": "Adding nonnegative self loops preserves consistency, reachability, shortest distance and the chosen strict-improvement trace. Duplicating an identical arc also preserves strict improvements. This supplies concrete many-to-one full-output preimages rather than a claim of unique graph recovery.",
+        "approximation_semantics": "Source-derived relation; outer inverse restrictions explicitly stated; finite checks do not prove universality.",
+        "assumptions": "Successful allocation and trusted Rust/library dependencies; declared input semantics.",
+        "evidence": "model.md#evidence"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  }
+}

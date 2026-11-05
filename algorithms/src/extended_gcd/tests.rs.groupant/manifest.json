@@ -1,0 +1,113 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "9,409 bounded pairs (0..=96 squared), 49 extremal pairs, explicit zero conventions, consecutive Fibonacci pairs up to u64 overflow, and 4,096 deterministic full-width pairs. Three additional tests exercise 20 affine alternatives across five input pairs including zeros/ties, four divisor lattices and 20 bounded linear-solvability searches, five independent residue scans and one full-width u128 inverse check. The coefficient-policy counterexample rejects a valid alternate certificate; modulus/product premises are explicit.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "Let F be the declared finite fixtures and U be terminating candidate implementations paired with pass/fail. R(P,pass) iff all assertions hold, and R(P,fail) iff some assertion fails or execution panics. U minus R consists of false pass/fail observations. Harness abort/nontermination is excluded.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "a6e86038241ed801ad34ec81c215554711e55fef2f2de2ab308acca2bbf827c4",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "9,409 bounded pairs (0..=96 squared), 49 extremal pairs, explicit zero conventions, consecutive Fibonacci pairs up to u64 overflow, and 4,096 deterministic full-width pairs. Three additional tests exercise 20 affine alternatives across five input pairs including zeros/ties, four divisor lattices and 20 bounded linear-solvability searches, five independent residue scans and one full-width u128 inverse check. The coefficient-policy counterexample rejects a valid alternate certificate; modulus/product premises are explicit.",
+        "evidence": "model.md#evidence",
+        "id": "failure_fibers",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "A pass reconstructs every implementation satisfying all fixtures, with arbitrary off-fixture behavior. A failure reconstructs implementations or faulty oracle assumptions causing the observed mismatch; it does not uniquely identify the defect.",
+        "path": "model.md",
+        "section": "failure_fibers",
+        "status": "partial_source_derived",
+        "subject_revision": "a6e86038241ed801ad34ec81c215554711e55fef2f2de2ab308acca2bbf827c4",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "9,409 bounded pairs (0..=96 squared), 49 extremal pairs, explicit zero conventions, consecutive Fibonacci pairs up to u64 overflow, and 4,096 deterministic full-width pairs. Three additional tests exercise 20 affine alternatives across five input pairs including zeros/ties, four divisor lattices and 20 bounded linear-solvability searches, five independent residue scans and one full-width u128 inverse check. The coefficient-policy counterexample rejects a valid alternate certificate; modulus/product premises are explicit.",
+        "evidence": "model.md#evidence",
+        "id": "oracle",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "The bounded oracle enumerates common divisors without Euclidean recurrence. Full-width checks use checked Bezout identity, divisibility, coefficient bounds and gcd symmetry; those checks certify each observed gcd independently. Three additional tests exercise 20 affine alternatives across five input pairs including zeros/ties, four divisor lattices and 20 bounded linear-solvability searches, five independent residue scans and one full-width u128 inverse check. The coefficient-policy counterexample rejects a valid alternate certificate; modulus/product premises are explicit.",
+        "path": "model.md",
+        "section": "oracle",
+        "status": "partial_source_derived",
+        "subject_revision": "a6e86038241ed801ad34ec81c215554711e55fef2f2de2ab308acca2bbf827c4",
+        "type": "oracle_correspondence"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "9,409 bounded pairs (0..=96 squared), 49 extremal pairs, explicit zero conventions, consecutive Fibonacci pairs up to u64 overflow, and 4,096 deterministic full-width pairs. Three additional tests exercise 20 affine alternatives across five input pairs including zeros/ties, four divisor lattices and 20 bounded linear-solvability searches, five independent residue scans and one full-width u128 inverse check. The coefficient-policy counterexample rejects a valid alternate certificate; modulus/product premises are explicit.",
+        "evidence": "model.md#evidence",
+        "id": "mutation",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "Current compiled mutant adds b/g to returned x. The new affine_family_is_not_the_coefficient_policy test rejects it. This mutation targets the coefficient output; the valid shifted-family countermodels separately distinguish identity from exact policy.",
+        "path": "model.md",
+        "section": "mutation",
+        "status": "partial_source_derived",
+        "subject_revision": "a6e86038241ed801ad34ec81c215554711e55fef2f2de2ab308acca2bbf827c4",
+        "type": "counterfactual_boundary"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical model with bounded correspondence evidence, not a formal proof.",
+        "assumptions": "Standard Rust arithmetic and trustworthy independent oracle; resource assumptions stated in the model.",
+        "domain": "9,409 bounded pairs (0..=96 squared), 49 extremal pairs, explicit zero conventions, consecutive Fibonacci pairs up to u64 overflow, and 4,096 deterministic full-width pairs. Three additional tests exercise 20 affine alternatives across five input pairs including zeros/ties, four divisor lattices and 20 bounded linear-solvability searches, five independent residue scans and one full-width u128 inverse check. The coefficient-policy counterexample rejects a valid alternate certificate; modulus/product premises are explicit.",
+        "evidence": "model.md#evidence",
+        "id": "schedule",
+        "observation_scope": "Complete finite terminating harness run.",
+        "operator": "9,409 bounded pairs (0..=96 squared), 49 extremal pairs, explicit zero conventions, consecutive Fibonacci pairs up to u64 overflow, and 4,096 deterministic full-width pairs. Fixed seeds and bounded loops define repeatable observations; wall-clock timing is not modeled. Three additional tests exercise 20 affine alternatives across five input pairs including zeros/ties, four divisor lattices and 20 bounded linear-solvability searches, five independent residue scans and one full-width u128 inverse check. The coefficient-policy counterexample rejects a valid alternate certificate; modulus/product premises are explicit.",
+        "path": "model.md",
+        "section": "schedule",
+        "status": "partial_source_derived",
+        "subject_revision": "a6e86038241ed801ad34ec81c215554711e55fef2f2de2ab308acca2bbf827c4",
+        "type": "resource_observation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-extended-gcd-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "a6e86038241ed801ad34ec81c215554711e55fef2f2de2ab308acca2bbf827c4"
+  },
+  "status": "partial_source_derived_instance"
+}

@@ -1,0 +1,91 @@
+{
+  "children": [
+    {
+      "id": "study-feedback-priority",
+      "path": "priority.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "study-feedback-forward",
+        "path": "model.md",
+        "required": false,
+        "scope": "Feedback and lexical projection",
+        "section": "forward",
+        "status": "partial_source_model",
+        "type": "forward_relation"
+      },
+      {
+        "id": "study-feedback-behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Feedback and lexical projection",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "study-feedback-reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "Feedback and lexical projection",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "study-feedback-coupling",
+        "path": "model.md",
+        "required": false,
+        "scope": "Feedback and lexical projection",
+        "section": "coupling",
+        "status": "partial_source_model",
+        "type": "interaction_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4974,
+      "start": 2400
+    },
+    "description": "Feedback and lexical projection"
+  },
+  "id": "study-feedback",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../study.rs",
+    "sha256": "8bdc286a3d410509d10ead87281ec350cadf283407de5ebc5af8a25675a81d24"
+  },
+  "status": "partial_source_bound_model"
+}

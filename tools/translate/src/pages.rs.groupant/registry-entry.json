@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "pages::wave32::translation_and_page_costs"
+  ],
+  "children": [],
+  "cost": "Directory scans+sorting O(Plog P) and file bytes; block comparisons call delegated parser/encoder costs. Dir totals O(residual cells); add_block O(stage cells+page cells+row bytes). No actual page read, annotation or site publication performed.",
+  "description": "chapters gathers Hebrew verse and English sentence pages, sorts numeric verse/sentence coordinates and builds chapter records, then book/chapter sorts. run uses JPS chapter runs for both language page blocks, gives translated/source texts to site decoder, merges translation residual and page Tally. Dir::total adds all three translation residual totals to page cells in LAYERS excluding Meta. add_block increments all counters, records bounded failure ids and merges tallies.",
+  "forward": [
+    "chapters gathers Hebrew verse and English sentence pages, sorts numeric verse/sentence coordinates and builds chapter records, then book/chapter sorts. run uses JPS chapter runs for both language page blocks, gives translated/source texts to site decoder, merges translation residual and page Tally. Dir::total adds all three translation residual totals to page cells in LAYERS excluding Meta. add_block increments all counters, records bounded failure ids and merges tallies."
+  ],
+  "id": "translation-flow-pages",
+  "inverse": [
+    "Page cost excludes Class::Meta while translation cost includes all classes. Empty control tallies cannot establish page exactness; page failure does not overwrite independent translation gate. Missing page directories silently skipped, encountered read_page errors propagate.",
+    "Dir totals admit all distributions of cells whose admitted sums match, with Meta page cells unconstrained. Aggregated block counters lose individual page content and failures beyond cap. Chapter page composition needs source paths/mapping to recover pages; rendered aggregate cannot recover them."
+  ],
+  "limitations": [
+    "Source-derived effectful CLI/corpus paths only; no live model/annotator/training/filesystem/site run.",
+    "Finite synthetic helper checks and partial syntax; no universal proof or executable percent surrogate."
+  ],
+  "source": "tools/translate/src/pages.rs",
+  "state": "Page naming domain is Tanakh indices<39: vkey accepts NT/DC but indexing BOOKS then can panic; valid fixture scope must respect this. Finite residuals, representable counters. Translation gate and page exact count distinct; pointer inequality selects shuffled encoder control and skips page execution."
+}

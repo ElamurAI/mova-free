@@ -1,0 +1,107 @@
+{
+  "children": [
+    {
+      "id": "math-calc-parser",
+      "path": "parser.groupant"
+    },
+    {
+      "id": "math-calc-evaluation",
+      "path": "evaluation.groupant"
+    },
+    {
+      "id": "math-calc-checks",
+      "path": "checks.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Partial lexical Rust syntax, no macro expansion/semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "evaluation_order",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "evaluation_order",
+        "status": "partial_source_derived_model",
+        "type": "evaluation_order"
+      },
+      {
+        "id": "binding_effect",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "binding_effect",
+        "status": "partial_source_derived_model",
+        "type": "binding_effect"
+      },
+      {
+        "id": "numeric_observation",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "numeric_observation",
+        "status": "partial_source_derived_model",
+        "type": "numeric_observation"
+      },
+      {
+        "id": "check_scope",
+        "path": "model.md",
+        "scope": "Concrete source relation under stated domain",
+        "section": "check_scope",
+        "status": "partial_source_derived_model",
+        "type": "check_scope"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "id": "math-calc",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../calc.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e"
+  },
+  "status": "partial_source_bound_model"
+}

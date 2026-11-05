@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "eval::wave29_ontowiki::frozen_hash_before_utf8",
+    "eval::wave29_ontowiki::score_and_zip_tally"
+  ],
+  "children": [],
+  "cost": "O(B) hash/parse; score O(value bytes); tally O(min(Q,R)*groups); query costs additive. Shuffle O(E log E+V), storage O(E+V). Counters and offsets require representability.",
+  "description": "read_frozen: bytes→SHA256→optional with_extension(sha256) gate→UTF8→TSV>=4. score branches verdict gold first, frame values before Unknown fallback. run converts query errors to Unknown. tally zips Q/results, preserves first group encounter, appends total; shuffled permutes taxonomic targets then rebuilds CSR.",
+  "forward": [
+    "read_frozen: bytes→SHA256→optional with_extension(sha256) gate→UTF8→TSV>=4. score branches verdict gold first, frame values before Unknown fallback. run converts query errors to Unknown. tally zips Q/results, preserves first group encounter, appends total; shuffled permutes taxonomic targets then rebuilds CSR.",
+    "S(a,g)=Correct if g∈{yes,no,undetermined} and code(a)=g; otherwise Unknown iff verdict Unknown else Wrong. For g=unknown, Correct iff Unknown else Wrong. For frame g: Correct iff ∃v∈values:v≈ASCII g, else Unknown iff Unknown else Wrong."
+  ],
+  "id": "onto-eval",
+  "inverse": [
+    "Exclude parsing after hash mismatch; Correct unknown gold with non-Unknown verdict; tally counts outside zipped prefix. Do not exclude Correct frame on Unknown. leak_check compares verdict only, not values/proofs.",
+    "Correct/frame g admits every Answer containing an ASCII-case equivalent g with arbitrary verdict/other values. Tally admits arbitrary IDs/queries/gold and unmatched suffix. Shuffled result admits different original target arrangements preserving multiset."
+  ],
+  "limitations": [
+    "Scoring, tally, empty majority and tiny hash/UTF8 failure ordering executed. Query execution, graph shuffle/leak/unknown controls/report effects unexecuted; no frozen benchmark set read.",
+    "Executable approximant gap: no useful percentage metric established for these categorical/effectful observations. No surrogate or production substitution. Future caps 1/2/5/10% require a metric/domain and evidence; no numerical error bound follows here.",
+    "Partial lexical AST, no macro expansion/semantic proof; no live teacher/dump/corpus/database execution"
+  ],
+  "source": "onto/src/eval.rs",
+  "state": "Frame match is Correct even for Unknown verdict. Hash sidecar absence allowed; mismatch precedes decoding. The final appended total row sums to min(Q.len,R.len); input group named total creates another total row, and group_acc selects the first matching label, which can be that subgroup. Empty yields total[0,0,0]. Taxonomic target multiset and non-taxonomic edges survive shuffle; topology need not."
+}

@@ -1,0 +1,160 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Mathematical target with bounded finite evidence, not a proof.",
+        "assumptions": "Ordinary Rust execution, sufficient allocation, byte equality.",
+        "domain": "All finite byte slices and returned usize vector observations.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One byte-sequence call.",
+        "operator": "Universe: finite byte inputs paired with arbitrary pairs of usize vectors. Excluded outputs have wrong lengths, zero odd radii, out-of-range spans, unequal symmetric byte pairs in a claimed span, or a radius whose next valid outer pair still matches. The model describes excluded behavior independently of negative tests.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "cea6f11d714a489468a1f7413bb11a28b3290747668c92c240ee717f233fc49a",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Mathematical target with bounded finite evidence, not a proof.",
+        "assumptions": "Ordinary Rust execution, sufficient allocation, byte equality.",
+        "domain": "All finite byte slices and returned usize vector observations.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_antecedents",
+        "observation_scope": "One byte-sequence call.",
+        "operator": "Given two radius vectors of equal length n, compatible inputs are exactly byte strings of length n satisfying 1<=odd[i]<=min(i+1,n-i) and 0<=even[i]<=min(i,n-i), every symmetric equality inside every claimed span, and inequality of the next outer byte pair whenever that pair exists. Empty vectors admit empty input. Inconsistent equalities/inequalities admit no input; injective symbol relabelings exhibit nonunique antecedents.",
+        "path": "model.md",
+        "section": "compatible_antecedents",
+        "status": "partial_source_derived",
+        "subject_revision": "cea6f11d714a489468a1f7413bb11a28b3290747668c92c240ee717f233fc49a",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Mathematical target with bounded finite evidence, not a proof.",
+        "assumptions": "Ordinary Rust execution, sufficient allocation, byte equality.",
+        "domain": "All finite byte slices and returned usize vector observations.",
+        "evidence": "model.md#evidence",
+        "id": "relabeling_boundaries",
+        "observation_scope": "One byte-sequence call.",
+        "operator": "Injective byte relabeling preserves both vectors. A constant string has odd[i]=min(i+1,n-i), even[i]=min(i,n-i). UTF-8 bytes need not share the character-level palindrome structure.",
+        "path": "model.md",
+        "section": "relabeling_boundaries",
+        "status": "partial_source_derived",
+        "subject_revision": "cea6f11d714a489468a1f7413bb11a28b3290747668c92c240ee717f233fc49a",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Exact mathematical target under assumptions; bounded executed evidence only.",
+        "assumptions": "Ordinary successful Rust execution, sufficient allocation and exact byte equality. Mathematical sums; test sums fit usize. Finite fixtures do not establish unrestricted correctness.",
+        "domain": "Radius vectors of common length n<=256, byte witnesses.",
+        "evidence": "model.md#evidence",
+        "falsifiable_check": "joint_parity_constraints_reconstruct_and_reject rejects o=[1,1,1],e=[0,1,1], despite legal bounds.",
+        "id": "joint_output_feasibility",
+        "observation_scope": "Named relations and bounded source correspondence fixtures.",
+        "operator": "Require 1<=o[i]<=min(i+1,n-i), 0<=e[i]<=min(i,n-i). Union symmetric pairs in both parities and add inequality edges for next outer pairs when in bounds. Feasible iff no edge collapses to one class; distinct class bytes construct a witness. Larger n additionally requires 256-colorability; the bounded routine does not decide this.",
+        "path": "model.md",
+        "section": "joint_output_feasibility",
+        "status": "partial_source_derived",
+        "subject_revision": "cea6f11d714a489468a1f7413bb11a28b3290747668c92c240ee717f233fc49a",
+        "type": "constraint_feasibility"
+      },
+      {
+        "approximation_semantics": "Exact mathematical target under assumptions; bounded executed evidence only.",
+        "assumptions": "Ordinary successful Rust execution, sufficient allocation and exact byte equality. Mathematical sums; test sums fit usize. Finite fixtures do not establish unrestricted correctness.",
+        "domain": "Input s of length n and t=reverse(s); empty case vacuous.",
+        "evidence": "model.md#evidence",
+        "falsifiable_check": "reversal_centers_and_injective_symbols checks five fixtures including aab, where naive reversal fails.",
+        "id": "reversal_centers",
+        "observation_scope": "Named relations and bounded source correspondence fixtures.",
+        "operator": "o_t[i]=o_s[n-1-i]. e_t[0]=0 and e_t[i]=e_s[n-i] for 1<=i<n. Even centers are gaps; simply reversing the even vector is incorrect.",
+        "path": "model.md",
+        "section": "reversal_centers",
+        "status": "partial_source_derived",
+        "subject_revision": "cea6f11d714a489468a1f7413bb11a28b3290747668c92c240ee717f233fc49a",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Exact mathematical target under assumptions; bounded executed evidence only.",
+        "assumptions": "Ordinary successful Rust execution, sufficient allocation and exact byte equality. Mathematical sums; test sums fit usize. Finite fixtures do not establish unrestricted correctness.",
+        "domain": "Fixed input and nonempty half-open intervals [a,b) within its length.",
+        "evidence": "model.md#evidence",
+        "falsifiable_check": "interval_membership_count_and_lossy_projection compares every interval with two-ended equality on five fixtures.",
+        "id": "interval_membership",
+        "observation_scope": "Named relations and bounded source correspondence fixtures.",
+        "operator": "Let L=b-a,c=a+floor(L/2). Palindrome membership iff L even and e[c]>=L/2, or L odd and o[c]>=floor(L/2)+1. Complete radii encode every nonempty interval's membership, not bytes.",
+        "path": "model.md",
+        "section": "interval_membership",
+        "status": "partial_source_derived",
+        "subject_revision": "cea6f11d714a489468a1f7413bb11a28b3290747668c92c240ee717f233fc49a",
+        "type": "observation_projection"
+      },
+      {
+        "approximation_semantics": "Exact mathematical target under assumptions; bounded executed evidence only.",
+        "assumptions": "Ordinary successful Rust execution, sufficient allocation and exact byte equality. Mathematical sums; test sums fit usize. Finite fixtures do not establish unrestricted correctness.",
+        "domain": "Full radii observed through C=sum(o)+sum(e).",
+        "evidence": "model.md#evidence",
+        "falsifiable_check": "interval_membership_count_and_lossy_projection checks direct counts and the collision.",
+        "id": "palindrome_count_loss",
+        "observation_scope": "Named relations and bounded source correspondence fixtures.",
+        "operator": "C counts all nonempty palindromic intervals: each radius level contributes one distinct interval at its center/parity. aab and abb have equal C=4 but different even vectors, so count cannot recover location or radii.",
+        "path": "model.md",
+        "section": "palindrome_count_loss",
+        "status": "partial_source_derived",
+        "subject_revision": "cea6f11d714a489468a1f7413bb11a28b3290747668c92c240ee717f233fc49a",
+        "type": "information_loss"
+      },
+      {
+        "approximation_semantics": "Exact mathematical target under assumptions; bounded executed evidence only.",
+        "assumptions": "Ordinary successful Rust execution, sufficient allocation and exact byte equality. Mathematical sums; test sums fit usize. Finite fixtures do not establish unrestricted correctness.",
+        "domain": "Fixed input, center and in-bounds candidate radius in either parity.",
+        "evidence": "model.md#evidence",
+        "falsifiable_check": "joint_parity_constraints_reconstruct_and_reject checks maximality contradictions; reversal_centers_and_injective_symbols rejects ab->aa invariance.",
+        "id": "maximal_boundary_constraints",
+        "observation_scope": "Named relations and bounded source correspondence fixtures.",
+        "operator": "Span symmetry alone does not imply maximality. The next outer pair must differ if present; otherwise a boundary stops expansion. Odd zero is excluded. Injective byte maps preserve equalities and inequalities; collapsing symbols can lengthen palindromes.",
+        "path": "model.md",
+        "section": "maximal_boundary_constraints",
+        "status": "partial_source_derived",
+        "subject_revision": "cea6f11d714a489468a1f7413bb11a28b3290747668c92c240ee717f233fc49a",
+        "type": "boundary_exclusion"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-manacher",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "cea6f11d714a489468a1f7413bb11a28b3290747668c92c240ee717f233fc49a"
+  },
+  "status": "partial_source_derived_instance"
+}

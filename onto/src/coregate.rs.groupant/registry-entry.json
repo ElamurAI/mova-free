@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test --offline --locked -p onto --bin onto -- --exact --test-threads=1 coregate::wave29::ordered_gate_and_empty_domain",
+    "Paired source syntax; repeated bounded debug/release tests; mapped compiled controls"
+  ],
+  "children": [],
+  "cost": "O(B+RC+11C+R) expected map work, with BTree field lookup factors. O(B+R+C) storage; no allocation-failure Result.",
+  "description": "read_core trims columns and validates domain. Property rows check width20→membership→field→status→synset consistency, group into maps, then check completeness by core and FIELDS order, homogeneous status, none-only-risk, singleton known number.",
+  "forward": [
+    "read_core trims columns and validates domain. Property rows check width20→membership→field→status→synset consistency, group into maps, then check completeness by core and FIELDS order, homogeneous status, none-only-risk, singleton known number."
+  ],
+  "id": "onto-coregate",
+  "inverse": [
+    "Parsed rows retain within-cell order; comments, blank lines and interleavings between cells are unrecoverable. Core whitespace and extra columns lost."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no semantic proof",
+    "Categorical/structural/effect semantics lack executable percent surrogate",
+    "Only selected synthetic branches tested; external effects unexecuted"
+  ],
+  "source": "onto/src/coregate.rs",
+  "state": "Success has every core×11 field and one synset per key; duplicate core entries retained. Empty core/props succeeds; empty unknown reason, numeric values and units unvalidated."
+}

@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "crab-consult-queue",
+  "status": "partial_source_bound_model",
+  "children": [],
+  "source": {
+    "path": "../consult_queue.rs",
+    "sha256": "053a4ca997479da5028c2f61ae7bbd79188cbf7279a9725d906b50f0fa0db6a4",
+    "raw_code_location": "outside_this_sidecar"
+  },
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "Partial syntax only; no semantic proof",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial_source_derived"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial_source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial_source_derived"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Descriptant",
+      "status": "partial_source_derived"
+    },
+    "tests": {
+      "path": "model.md#checks",
+      "status": "finite_native_checks"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "source_derived_finite_checked",
+        "subject_revision": "053a4ca997479da5028c2f61ae7bbd79188cbf7279a9725d906b50f0fa0db6a4"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "source_derived_finite_checked",
+        "subject_revision": "053a4ca997479da5028c2f61ae7bbd79188cbf7279a9725d906b50f0fa0db6a4"
+      },
+      {
+        "id": "advice_is_not_action",
+        "type": "partial_exclusion",
+        "path": "model.md",
+        "section": "advice_is_not_action",
+        "status": "source_derived_finite_checked",
+        "subject_revision": "053a4ca997479da5028c2f61ae7bbd79188cbf7279a9725d906b50f0fa0db6a4"
+      }
+    ]
+  }
+}

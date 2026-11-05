@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p mova-approx",
+    "negative_control_rejects_mean_instead_of_maximum"
+  ],
+  "cost": "O(n) scan, O(1) scratch; analytic scope copy O(bytes).",
+  "description": "Shared bounded-error contracts and typed evidence for experimental executable approximants.",
+  "forward": [
+    "Accept supported budgets and finite nonnegative metrics at or below the maximum.",
+    "Finite observations never establish an analytic bound."
+  ],
+  "id": "approximation-contract",
+  "inverse": [
+    "All finite tuples with recorded count and maximum remain compatible.",
+    "Reject invalid errors, empty samples, zero-reference mismatches and unsupported budgets."
+  ],
+  "limitations": [
+    "Caller-provided analytic bounds are not proved.",
+    "Semantic AST and general caller metric correspondence remain open."
+  ],
+  "source": "tools/approx/src/lib.rs",
+  "state": "(budget, errors or analytic bound, evidence scope)"
+}

@@ -1,0 +1,217 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "source syntax only; no expansion or semantic resolution",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "description": "model.md#approximant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "single-call absent outcomes in explicit universe",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "compatible inputs preserving ambiguity",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "zero_weight_shift",
+        "path": "model.md",
+        "scope": "specialization domain defined in linked section",
+        "section": "zero_weight_shift",
+        "status": "partial_source_derived_model",
+        "type": "zero_weight_shift"
+      },
+      {
+        "id": "capacity_order",
+        "path": "model.md",
+        "scope": "specialization domain defined in linked section",
+        "section": "capacity_order",
+        "status": "partial_source_derived_model",
+        "type": "capacity_order"
+      },
+      {
+        "id": "dimension_preimage",
+        "path": "model.md",
+        "scope": "specialization domain defined in linked section",
+        "section": "dimension_preimage",
+        "status": "partial_source_derived_model",
+        "type": "dimension_preimage"
+      }
+    ],
+    "rust_approximants": [
+      {
+        "assumptions": [
+          "Standard fractional knapsack relaxation upper-bounds integral optimum.",
+          "Certified greedy uses exact integer certificate; uncertified inputs invoke exact reference.",
+          "Allocation errors carry no numeric guarantee."
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 1,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "relaxation_certificate",
+          "metric_kind": "objective_loss"
+        },
+        "domain": "Finite u64-value usize-weight slices on usize<=64 targets; successful result.",
+        "error_percent": 1,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md#tests",
+            "sha256": "7a3c6d3be9fb84fd842d4b0deeebbeba5d960e470d65a5946181a3d46a21f04f"
+          }
+        ],
+        "id": "knapsack-1pct",
+        "metric": "Relative objective loss (OPT-value)/OPT; zero when OPT=0; feasibility exact.",
+        "path": "rust_approximant.rs",
+        "sha256": "34a3f81d27cf907d40262abcb8a999c3e2748fe06c1c6262dfbde4c0957f0729",
+        "source": {
+          "path": "../mod.rs",
+          "raw_code_location": "outside_this_sidecar",
+          "sha256": "0d355b40bb480ee7f8a6abcc9b00172853f63ded64a07b274e4c20f1cba1bb6e"
+        },
+        "status": "analytical_certificate_with_finite_differential_checks"
+      },
+      {
+        "assumptions": [
+          "Standard fractional knapsack relaxation upper-bounds integral optimum.",
+          "Certified greedy uses exact integer certificate; uncertified inputs invoke exact reference.",
+          "Allocation errors carry no numeric guarantee."
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 2,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "relaxation_certificate",
+          "metric_kind": "objective_loss"
+        },
+        "domain": "Finite u64-value usize-weight slices on usize<=64 targets; successful result.",
+        "error_percent": 2,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md#tests",
+            "sha256": "7a3c6d3be9fb84fd842d4b0deeebbeba5d960e470d65a5946181a3d46a21f04f"
+          }
+        ],
+        "id": "knapsack-2pct",
+        "metric": "Relative objective loss (OPT-value)/OPT; zero when OPT=0; feasibility exact.",
+        "path": "rust_approximant.rs",
+        "sha256": "34a3f81d27cf907d40262abcb8a999c3e2748fe06c1c6262dfbde4c0957f0729",
+        "source": {
+          "path": "../mod.rs",
+          "raw_code_location": "outside_this_sidecar",
+          "sha256": "0d355b40bb480ee7f8a6abcc9b00172853f63ded64a07b274e4c20f1cba1bb6e"
+        },
+        "status": "analytical_certificate_with_finite_differential_checks"
+      },
+      {
+        "assumptions": [
+          "Standard fractional knapsack relaxation upper-bounds integral optimum.",
+          "Certified greedy uses exact integer certificate; uncertified inputs invoke exact reference.",
+          "Allocation errors carry no numeric guarantee."
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 5,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "relaxation_certificate",
+          "metric_kind": "objective_loss"
+        },
+        "domain": "Finite u64-value usize-weight slices on usize<=64 targets; successful result.",
+        "error_percent": 5,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md#tests",
+            "sha256": "7a3c6d3be9fb84fd842d4b0deeebbeba5d960e470d65a5946181a3d46a21f04f"
+          }
+        ],
+        "id": "knapsack-5pct",
+        "metric": "Relative objective loss (OPT-value)/OPT; zero when OPT=0; feasibility exact.",
+        "path": "rust_approximant.rs",
+        "sha256": "34a3f81d27cf907d40262abcb8a999c3e2748fe06c1c6262dfbde4c0957f0729",
+        "source": {
+          "path": "../mod.rs",
+          "raw_code_location": "outside_this_sidecar",
+          "sha256": "0d355b40bb480ee7f8a6abcc9b00172853f63ded64a07b274e4c20f1cba1bb6e"
+        },
+        "status": "analytical_certificate_with_finite_differential_checks"
+      },
+      {
+        "assumptions": [
+          "Standard fractional knapsack relaxation upper-bounds integral optimum.",
+          "Certified greedy uses exact integer certificate; uncertified inputs invoke exact reference.",
+          "Allocation errors carry no numeric guarantee."
+        ],
+        "bound_kind": "analytical",
+        "budget_percent": 10,
+        "classification": {
+          "assurance_kind": "per_input_certificate",
+          "method_kind": "relaxation_certificate",
+          "metric_kind": "objective_loss"
+        },
+        "domain": "Finite u64-value usize-weight slices on usize<=64 targets; successful result.",
+        "error_percent": 10,
+        "evidence": [
+          {
+            "path": "rust_approximant.rs.groupant/model.md#tests",
+            "sha256": "7a3c6d3be9fb84fd842d4b0deeebbeba5d960e470d65a5946181a3d46a21f04f"
+          }
+        ],
+        "id": "knapsack-10pct",
+        "metric": "Relative objective loss (OPT-value)/OPT; zero when OPT=0; feasibility exact.",
+        "path": "rust_approximant.rs",
+        "sha256": "34a3f81d27cf907d40262abcb8a999c3e2748fe06c1c6262dfbde4c0957f0729",
+        "source": {
+          "path": "../mod.rs",
+          "raw_code_location": "outside_this_sidecar",
+          "sha256": "0d355b40bb480ee7f8a6abcc9b00172853f63ded64a07b274e4c20f1cba1bb6e"
+        },
+        "status": "analytical_certificate_with_finite_differential_checks"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "extensions": {
+    "epoch_memory": "model.md#descriptant",
+    "limits": "bounded semantic evidence; source syntax is partial"
+  },
+  "id": "algorithm-knapsack",
+  "kind": "groupant",
+  "registry": {
+    "node": "algorithm-knapsack",
+    "path": "../../../../models/contracts.json"
+  },
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "0d355b40bb480ee7f8a6abcc9b00172853f63ded64a07b274e4c20f1cba1bb6e"
+  },
+  "status": "partial_descriptive_instance"
+}

@@ -229,3 +229,24 @@ pub fn select(g: &Graph, core_path: &Path, seeds: &Path, align: &Path, out: &Pat
     }
     Ok(SelReport { text })
 }
+
+#[cfg(test)]
+mod wave29 {
+    use super::*;
+    #[test]
+    fn applicability_and_provenance() {
+        assert!(!applicable("animal", "material"));
+        assert!(applicable("magical", "risk"));
+        assert!(!applicable("magical", "mass"));
+        assert!(!applicable("unknown", "risk"));
+        assert_eq!(
+            parse_source("Q18498 wolf P1034 normal (2 steps)"),
+            (18498, 1034, "normal", 2)
+        );
+        assert_eq!(
+            parse_source("xQ12 Q42 P70000 preferred deprecated"),
+            (42, 4464, "preferred", 0)
+        );
+        assert_eq!(parse_source(""), (0, 0, "-", 0));
+    }
+}

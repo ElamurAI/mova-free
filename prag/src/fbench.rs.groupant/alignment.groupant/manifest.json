@@ -1,0 +1,78 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "id": "prag-fbench-alignment-behavior-complement",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "prag-fbench-alignment-reverse-reconstruction",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "prag-fbench-alignment-specialization",
+        "path": "model.md",
+        "section": "specialization",
+        "status": "partial_source_model",
+        "type": "fbench_alignment_projection"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 8503,
+      "start": 6925
+    },
+    "description": "Eligibility: nonempty gold verb with matching first word OR at least two matching agent/patient/to/place entities. Weight=4*head equality+full verb equality+2*role matches+kind equality. Sort descending weight then ascending gold/system positions and greedily accept unused endpoints."
+  },
+  "id": "prag-fbench-alignment",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../fbench.rs",
+    "sha256": "ccddfbd624b5584905d4bf9f0a80eacfadbc4aeece072d68e0c216b36e7b04e3"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,16 @@
+[package]
+name = "roundtrip"
+version.workspace = true
+edition = "2024"
+# license: Elamur Cosmic License (LICENSE.md at the repo root)
+publish = false
+description = "Round-trip (autoencoder) diagnostic of Mova's layers: text → tokens → UD tree → frames → world and back, with the residual each layer would need to come back byte for byte."
+
+[dependencies]
+en = { path = "../../en" }
+prag = { path = "../../prag" }
+anyhow = "1.0.104"
+langseg = { path = "../langseg" }
+hbo = { path = "../hbo" }
+macula = { path = "../macula" }
+unicode-normalization = "0.1.25"

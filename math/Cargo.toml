@@ -6,8 +6,9 @@ edition = "2024"
 description = "Mova math: exact rationals, symbolic Expr tree, units with dimension checks and affine temperature, steps and independent checks; English questions → Expr via UD trees from en."
 
 [dependencies]
+mova-teacher = { path = "../teacher" }
 en = { path = "../en" }
-# global level (level 1): verb classes and shortcuts (docs/design-three-levels.md)
+# global level (level 1): verb classes and shortcuts (docs/architecture.md)
 global = { path = "../global" }
 anyhow = "1.0.104"
 # v2: exact arithmetic on big integers and rationals — dashu (MIT OR Apache-2.0), chosen by benchmark (bigbench/)

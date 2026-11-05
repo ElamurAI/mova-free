@@ -1,0 +1,13 @@
+[package]
+name = "mova-teacher"
+version.workspace = true
+edition = "2024"
+publish = false
+description = "Shared Codex CLI teacher transport for Mova training."
+
+[dependencies]
+anyhow = "1.0.104"
+serde_json = "1.0.151"
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"

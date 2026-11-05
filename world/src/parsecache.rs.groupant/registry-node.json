@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "cargo test -p world --lib parsecache:: -- --test-threads=1",
+    "Four native transition tests: 120 batches, 2768 complement candidates, complete output fibers, 32 failure histories and envelope guards; compiled missing-predicate mutant",
+    "mova-modelcheck groupants for source/AST/section/fragment integrity only"
+  ],
+  "children": [],
+  "cost": "Identity costs total hashed dependency bytes. For n input occurrences, u cached keys, k missing occurrences and parsed/output Word size W: lookup/insert O((n+k) log(u+k)) string comparisons plus parser cost and cloning O(W); hashing/serialization O(serialized map bytes). BTreeMap comparisons include text length. Write clones T and serializes it twice, increasing peak memory by O(T bytes).",
+  "description": "Cache state is (key,path,T,refresh,hits,misses,repaired). open computes a dependency identity then reads or discards the envelope; parse counts input occurrences, parses missing occurrences, validates batch cardinality, overwrites by text, and returns final-map lookups. finish rechecks identity before conditional publication.",
+  "forward": [
+    "Cache state is (key,path,T,refresh,hits,misses,repaired). open computes a dependency identity then reads or discards the envelope; parse counts input occurrences, parses missing occurrences, validates batch cardinality, overwrites by text, and returns final-map lookups. finish rechecks identity before conditional publication."
+  ],
+  "id": "parse-cache",
+  "inverse": [
+    "Complement and all-compatible-preimage models appear first in the typed catalog.",
+    "Duplicate overwrite, failed counter updates and accepted JSON representations remain explicit ambiguity."
+  ],
+  "limitations": [
+    "Partial inference-core child; parent integration required.",
+    "No parser linguistic correctness, complete identity dependency proof, live model IO, concurrent writer test or crash durability proof.",
+    "Partial syntax projection is not semantic proof."
+  ],
+  "source": "world/src/parsecache.rs",
+  "state": "(dependency key, text-to-Word map, refresh flag, hit/miss attempt counters, repaired flag, envelope bytes)"
+}

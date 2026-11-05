@@ -1,0 +1,113 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "Passing fixtures do not establish universal correctness, asymptotic complexity, allocator exhaustion behavior or Unicode semantics. A compiler failure does not count as a killed mutation.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "27dee1b3a1fe564682f70131c1d14dbda70d7f8a380295de5a62cf1ebc0de5b1",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "preimages",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "A named assertion failure identifies a violated fixture relation but may have many implementation causes. Passing observations retain all implementations agreeing on the enumerated finite domain.",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "27dee1b3a1fe564682f70131c1d14dbda70d7f8a380295de5a62cf1ebc0de5b1",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "oracle-independence",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "Binary pairs: 511 texts through length 8 times 127 patterns through length 6 = 64,897 independent window comparisons. Long periodic and nonperiodic cases, overlaps, empty boundaries and every byte. Mutation adds one to returned offsets; exhaustive_offsets fails.",
+        "path": "model.md",
+        "section": "oracle-independence",
+        "status": "partial_source_derived",
+        "subject_revision": "27dee1b3a1fe564682f70131c1d14dbda70d7f8a380295de5a62cf1ebc0de5b1",
+        "type": "refinement_relation"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "mutation-sensitivity",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "The compiled intentional production mutation must reach its named assertion and fail; exact production bytes are restored and the positive suite reruns.",
+        "path": "model.md",
+        "section": "mutation-sensitivity",
+        "status": "partial_source_derived",
+        "subject_revision": "27dee1b3a1fe564682f70131c1d14dbda70d7f8a380295de5a62cf1ebc0de5b1",
+        "type": "counterfactual_relation"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "repeatability",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "Two serial debug runs and two serial optimized runs must have identical normalized test identities and outcomes. Timing fields are excluded; no speed claim follows.",
+        "path": "model.md",
+        "section": "repeatability",
+        "status": "partial_source_derived",
+        "subject_revision": "27dee1b3a1fe564682f70131c1d14dbda70d7f8a380295de5a62cf1ebc0de5b1",
+        "type": "metamorphic_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-two-way-matching-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "27dee1b3a1fe564682f70131c1d14dbda70d7f8a380295de5a62cf1ebc0de5b1"
+  },
+  "status": "partial_source_derived_instance"
+}

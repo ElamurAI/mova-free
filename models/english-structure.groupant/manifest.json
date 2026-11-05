@@ -1,0 +1,164 @@
+{
+  "children": [
+    "en-annotate",
+    "en-construct",
+    "en-expert",
+    "en-explain",
+    "en-lin",
+    "en-model",
+    "en-parse",
+    "en-store",
+    "en-ud"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Child source-bound partial syntax; no composed semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "assumptions": "No allocator exhaustion, integer-overflow proof, fsync or concurrent save guarantee. Environment EN_AGR/EN_PX/EN_BEAM can change semantics; tests use explicit beam1 where available. Preflight discovered empty-trained PTagger panics on nonempty tagging; model/explain use nonempty synthetic training and preserve that gap.",
+        "domain": "Bounded synthetic sentences and same-build serializable types; parallel arrays aligned, graph symbols valid, valid tree indices, finite table scores and bounded counters. Tests exercise2 synthetic one-token training sentences only for model/explain, never corpus/held-out/API/GPU.",
+        "id": "behavior-complement",
+        "observation_scope": "Heads use root0 and1-based word coordinates; Graph truncates heads to u16, while parser/UD use usize. Ud children returns0-based child indices. GNode lemma references global dictionary or local graph heap; Store fingerprint binds global IDs but not arbitrary target serde schema. annotate repairs tree whereas kbest/complete/explain/Model.encode do not; treating them as identical is invalid. Expert consumes conllu Sentence, not Graph directly; callers must preserve tags/features/relations when adapting. Construct callbacks must return enough dependent entries and valid renderable heads.",
+        "operator": "Compatible composition cannot equate completion/kbest with repair-aware annotate, cannot accept changed envelope checksum, cannot bind one sentence word to two expert variables, cannot label equality with a rounded construction floor red. Invalid public coordinates and empty-trained taggers are outside admitted runtime contract.",
+        "path": "model.md",
+        "required": true,
+        "section": "behavior-complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": "No allocator exhaustion, integer-overflow proof, fsync or concurrent save guarantee. Environment EN_AGR/EN_PX/EN_BEAM can change semantics; tests use explicit beam1 where available. Preflight discovered empty-trained PTagger panics on nonempty tagging; model/explain use nonempty synthetic training and preserve that gap.",
+        "domain": "Bounded synthetic sentences and same-build serializable types; parallel arrays aligned, graph symbols valid, valid tree indices, finite table scores and bounded counters. Tests exercise2 synthetic one-token training sentences only for model/explain, never corpus/held-out/API/GPU.",
+        "id": "reverse-reconstruction",
+        "observation_scope": "Heads use root0 and1-based word coordinates; Graph truncates heads to u16, while parser/UD use usize. Ud children returns0-based child indices. GNode lemma references global dictionary or local graph heap; Store fingerprint binds global IDs but not arbitrary target serde schema. annotate repairs tree whereas kbest/complete/explain/Model.encode do not; treating them as identical is invalid. Expert consumes conllu Sentence, not Graph directly; callers must preserve tags/features/relations when adapting. Construct callbacks must return enough dependent entries and valid renderable heads.",
+        "operator": "For observed graph/annotation/report y, preimage is all text/model/table/rule states satisfying the forward pipeline and same y; morphology/backoff, aggregated scores and parse selection lose information. Store typed roundtrip recovers model values but not unique map byte order or training antecedents. Explained.text alone exactly preserves its input string.",
+        "path": "model.md",
+        "required": true,
+        "section": "reverse-reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": "No allocator exhaustion, integer-overflow proof, fsync or concurrent save guarantee. Environment EN_AGR/EN_PX/EN_BEAM can change semantics; tests use explicit beam1 where available. Preflight discovered empty-trained PTagger panics on nonempty tagging; model/explain use nonempty synthetic training and preserve that gap.",
+        "domain": "Bounded synthetic sentences and same-build serializable types; parallel arrays aligned, graph symbols valid, valid tree indices, finite table scores and bounded counters. Tests exercise2 synthetic one-token training sentences only for model/explain, never corpus/held-out/API/GPU.",
+        "id": "head-coordinate-transport",
+        "observation_scope": "Heads use root0 and1-based word coordinates; Graph truncates heads to u16, while parser/UD use usize. Ud children returns0-based child indices. GNode lemma references global dictionary or local graph heap; Store fingerprint binds global IDs but not arbitrary target serde schema. annotate repairs tree whereas kbest/complete/explain/Model.encode do not; treating them as identical is invalid. Expert consumes conllu Sentence, not Graph directly; callers must preserve tags/features/relations when adapting. Construct callbacks must return enough dependent entries and valid renderable heads.",
+        "operator": "Parser tree index i is token i+1; annotation heads stay usize; GNode head=(parser head as u16); Ud children maps head h to slot h-1. Validity requires heads<=n and graph n<=65535 for lossless coordinate transport.",
+        "path": "model.md",
+        "required": false,
+        "section": "head-coordinate-transport",
+        "status": "partial_source_derived_model",
+        "type": "representation_transport"
+      },
+      {
+        "assumptions": "No allocator exhaustion, integer-overflow proof, fsync or concurrent save guarantee. Environment EN_AGR/EN_PX/EN_BEAM can change semantics; tests use explicit beam1 where available. Preflight discovered empty-trained PTagger panics on nonempty tagging; model/explain use nonempty synthetic training and preserve that gap.",
+        "domain": "Bounded synthetic sentences and same-build serializable types; parallel arrays aligned, graph symbols valid, valid tree indices, finite table scores and bounded counters. Tests exercise2 synthetic one-token training sentences only for model/explain, never corpus/held-out/API/GPU.",
+        "id": "annotation-branch-join",
+        "observation_scope": "Heads use root0 and1-based word coordinates; Graph truncates heads to u16, while parser/UD use usize. Ud children returns0-based child indices. GNode lemma references global dictionary or local graph heap; Store fingerprint binds global IDs but not arbitrary target serde schema. annotate repairs tree whereas kbest/complete/explain/Model.encode do not; treating them as identical is invalid. Expert consumes conllu Sentence, not Graph directly; callers must preserve tags/features/relations when adapting. Construct callbacks must return enough dependent entries and valid renderable heads.",
+        "operator": "repair is between parse and child features only in annotate. complete and kbest recompute child-derived UPOS/FEATS without that transformation; equal raw parser candidates need not imply equal final annotations.",
+        "path": "model.md",
+        "required": false,
+        "section": "annotation-branch-join",
+        "status": "partial_source_derived_model",
+        "type": "branch_composition"
+      },
+      {
+        "assumptions": "No allocator exhaustion, integer-overflow proof, fsync or concurrent save guarantee. Environment EN_AGR/EN_PX/EN_BEAM can change semantics; tests use explicit beam1 where available. Preflight discovered empty-trained PTagger panics on nonempty tagging; model/explain use nonempty synthetic training and preserve that gap.",
+        "domain": "Bounded synthetic sentences and same-build serializable types; parallel arrays aligned, graph symbols valid, valid tree indices, finite table scores and bounded counters. Tests exercise2 synthetic one-token training sentences only for model/explain, never corpus/held-out/API/GPU.",
+        "id": "model-wire-boundary",
+        "observation_scope": "Heads use root0 and1-based word coordinates; Graph truncates heads to u16, while parser/UD use usize. Ud children returns0-based child indices. GNode lemma references global dictionary or local graph heap; Store fingerprint binds global IDs but not arbitrary target serde schema. annotate repairs tree whereas kbest/complete/explain/Model.encode do not; treating them as identical is invalid. Expert consumes conllu Sentence, not Graph directly; callers must preserve tags/features/relations when adapting. Construct callbacks must return enough dependent entries and valid renderable heads.",
+        "operator": "Annotator save packs before directory/write/rename. Unpack gate order magic/size->version->enum sizes->dictionary->length->checksum->typed body. Accepted envelope does not certify caller-selected target type.",
+        "path": "model.md",
+        "required": false,
+        "section": "model-wire-boundary",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "assumptions": "No allocator exhaustion, integer-overflow proof, fsync or concurrent save guarantee. Environment EN_AGR/EN_PX/EN_BEAM can change semantics; tests use explicit beam1 where available. Preflight discovered empty-trained PTagger panics on nonempty tagging; model/explain use nonempty synthetic training and preserve that gap.",
+        "domain": "Bounded synthetic sentences and same-build serializable types; parallel arrays aligned, graph symbols valid, valid tree indices, finite table scores and bounded counters. Tests exercise2 synthetic one-token training sentences only for model/explain, never corpus/held-out/API/GPU.",
+        "id": "observability-cost",
+        "observation_scope": "Heads use root0 and1-based word coordinates; Graph truncates heads to u16, while parser/UD use usize. Ud children returns0-based child indices. GNode lemma references global dictionary or local graph heap; Store fingerprint binds global IDs but not arbitrary target serde schema. annotate repairs tree whereas kbest/complete/explain/Model.encode do not; treating them as identical is invalid. Expert consumes conllu Sentence, not Graph directly; callers must preserve tags/features/relations when adapting. Construct callbacks must return enough dependent entries and valid renderable heads.",
+        "operator": "Explain requests parser trace then independently Model.encode, so semantic presentation includes repeated inference and trace stack copies. Parent runtime is sum of real calls, not max child cost or assumed shared cache.",
+        "path": "model.md",
+        "required": false,
+        "section": "observability-cost",
+        "status": "partial_source_derived_model",
+        "type": "cost_composition"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "see_source_local_evidence"
+    }
+  },
+  "id": "english-structure",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "en/src/annotate.rs",
+      "sha256": "4a126331234c7e07afb148d028ffbe6f82a26f283c3600aaa3fd61c2378e4983"
+    },
+    {
+      "path": "en/src/construct.rs",
+      "sha256": "1dd11904c2b1d624d1fa103df363a8a5160dabd9a1bdabc4244c0665007490e7"
+    },
+    {
+      "path": "en/src/expert.rs",
+      "sha256": "689926d4aba7abd837cd06ce824b1ed37e3003c4fa35a54f78c48539dc3954c4"
+    },
+    {
+      "path": "en/src/explain.rs",
+      "sha256": "ab866ac31b19110845322bb1d8447f8f0da1a84f016d668f08b5efc72a6322a9"
+    },
+    {
+      "path": "en/src/lin.rs",
+      "sha256": "ccdf9cfeac841bbc109458b20420aab3da372e86f3c25c2d4311825ef81c6b8e"
+    },
+    {
+      "path": "en/src/model.rs",
+      "sha256": "023594242516cb19fd415ee95f0c0552561aa2db663c798a1bc697168f3d9ae6"
+    },
+    {
+      "path": "en/src/parse.rs",
+      "sha256": "d81fdc47528917de8434c9cb0d01ae36b49e4628a8a938fb946a8bb3e4017c29"
+    },
+    {
+      "path": "en/src/store.rs",
+      "sha256": "4d2334d78a3ae22bd7c9da897ba94b29024bb1690a9bb3d3ac1d7139a4446810"
+    },
+    {
+      "path": "en/src/ud.rs",
+      "sha256": "19a766eb839a61ba264bce906003f711c41d81cb8cbdd36544de4267831072df"
+    }
+  ],
+  "status": "partial_descriptive_instance"
+}

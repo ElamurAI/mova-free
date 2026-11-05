@@ -1,0 +1,104 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_model"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "composition",
+      "status": "partial_source_model"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial_source_model"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "partial_source_model"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_model"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Partial source-derived absent-behavior relation, conditional on stated dependency premises",
+        "assumptions": [
+          "Fixed source/dependency revision",
+          "Only returned-call and I/O premises explicitly stated in model.md"
+        ],
+        "domain": "Returned round/write_world traces with supplied cache, numbered response text and sequential successful I/O premises; no native teacher/filesystem evidence.",
+        "evidence": "model.md checks and file-level evidence.md separate native fixtures from source inspection",
+        "id": "world-principles-teacher-retention-behavior-complement",
+        "observation_scope": "Tagged output/state/dependency observations specified in model.md; runtime strings alone retain all compatible branch fibers",
+        "operator": "U_scope minus R_scope",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "subject_revision": {
+          "path": "../../principles.rs",
+          "sha256": "cdb5ef0db3da9ca5761580326e66abbbfbbb8e69414a57485adf5fc5b1aa8c42"
+        },
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Ambiguous relational fibers; no unique recovery or complete search claim",
+        "assumptions": [
+          "Fixed source/dependency revision",
+          "Only returned-call and I/O premises explicitly stated in model.md"
+        ],
+        "domain": "Returned round/write_world traces with supplied cache, numbered response text and sequential successful I/O premises; no native teacher/filesystem evidence.",
+        "evidence": "model.md checks and file-level evidence.md separate native fixtures from source inspection",
+        "id": "world-principles-teacher-retention-reverse-reconstruction",
+        "observation_scope": "Tagged output/state/dependency observations specified in model.md; runtime strings alone retain all compatible branch fibers",
+        "operator": "{x | R_scope(x, observed output)}",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "subject_revision": {
+          "path": "../../principles.rs",
+          "sha256": "cdb5ef0db3da9ca5761580326e66abbbfbbb8e69414a57485adf5fc5b1aa8c42"
+        },
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "world-principles-teacher-retention-coupling",
+        "path": "model.md",
+        "section": "coupling",
+        "status": "partial_source_model",
+        "type": "constraint_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "partial_source_model"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 8476,
+      "start": 3595
+    },
+    "description": "round gates on disabled flag, daily stop and call budget, obtains pending batch, makes one external teacher call, then appends call count, verdict rows and ideas before write_world. Verdicts default U; parsed numbered lines overwrite earlier ones, accepting first T/F/U character; absent/invalid indices are ignored. write_world emits every cached T row with sources/notes then atomically replaces the derived world and attempts a brain update."
+  },
+  "id": "world-principles-teacher-retention",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../principles.rs",
+    "sha256": "cdb5ef0db3da9ca5761580326e66abbbfbbb8e69414a57485adf5fc5b1aa8c42"
+  },
+  "status": "partial_source_bound_model"
+}

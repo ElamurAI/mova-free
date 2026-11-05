@@ -1,0 +1,35 @@
+{
+  "checks": [
+    "11 source-local tests; five compiled mutation controls",
+    "composition_wave25: reduction_reachability_rejects_dominator_transfer, unit_flow_bfs_join, clique_order_core_coordinates_join",
+    "Full library: 782 checks twice debug and twice release; see model.md"
+  ],
+  "children": [
+    "algorithm-minimum-cost-flow",
+    "algorithm-minimum-cost-flow-tests",
+    "algorithm-maximum-cardinality-search",
+    "algorithm-maximum-cardinality-search-tests",
+    "algorithm-k-core",
+    "algorithm-k-core-tests",
+    "algorithm-dominators",
+    "algorithm-dominators-tests",
+    "algorithm-transitive-reduction-dag",
+    "algorithm-transitive-reduction-dag-tests"
+  ],
+  "cost": "Flow V<=64,E<=512,limit<=1024: O((limit+1)V(E+V)) time/O(V+E) memory. Other V<=256,E<=65536: MCS and core O(V²+E) including matrix validation; dominators O(V²(V+E)) conservative fixed-point time/O(V²+E) memory; reduction O(V³+E)/O(V²). Matrix allocation dominates sparse validation. No timing claims.",
+  "description": "Compute capped minimum-cost maximum flow, deterministic maximum-cardinality selection, maximal induced k-core, start-relative dominator sets, and unique DAG transitive reduction. Graph observations remain tagged by directedness, vertex labels, edge multiplicity and objective.",
+  "forward": [
+    "Compute capped minimum-cost maximum flow, deterministic maximum-cardinality selection, maximal induced k-core, start-relative dominator sets, and unique DAG transitive reduction. Graph observations remain tagged by directedness, vertex labels, edge multiplicity and objective.",
+    "The five implementations are std-only and have no production calls between them. Test joins can compare limit1/unit-cost admitted DAG flow with unweighted shortest-path distance; MCS/core share a simple-undirected graph after explicit validation. DAG reduction may feed reachability consumers but must not replace the graph for dominator queries. Directed-to-undirected conversion is an explicit semantic transformation, not shared representation."
+  ],
+  "id": "graph-structure",
+  "inverse": [
+    "Exclude flow witnesses violating capacity, conservation, exact sum of cost*flow or capped lexicographic optimum; MCS orders violating prefix priority/ties; cores omitting feasible induced subsets; dominator membership contradicted by an avoiding path; or reductions with changed closure/redundant retained edges. Exclude invalid directedness joins, wrapping checked arithmetic and treating rejected negative cycles as zero-cost empty output.",
+    "Empty and complete simple graphs both yield ascending MCS order. At k=1 a three-vertex path and triangle both yield all vertices. Adding loops to a directed chain preserves its dominator sets; adding any subset of reachable pairs to a reduced DAG preserves its reduction. Flow value/cost/witness admits changes to unused capacities/costs that preserve optimality. Thus neither the aggregate result nor these individual projections reconstructs a unique original graph."
+  ],
+  "limitations": [
+    "Source/sink and all vertex IDs must retain coordinates across joins. Allocation failure is outside typed errors. Exact integer/categorical outputs admit no generic percentage relaxation; deterministic witness need not be a canonical optimum. Flow negative-cycle refusal is stronger than source-reachable refusal.",
+    "Finite tests and source-derived models are not a universal proof."
+  ],
+  "state": "Flow respects capacity/conservation and exact cost; MCS chooses maximum selected-neighbor count with lowest-ID tie; k-core is maximal with live degree>=k; dominators characterize every start-to-v path, empty for unreachable v; reduction preserves reachability and keeps only essential DAG edges."
+}

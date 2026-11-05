@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms barycentric_lagrange::tests",
+    "Repeated debug/release profiles and compiled mutation receipts in model.md#tests"
+  ],
+  "children": [],
+  "cost": "O(n²) multiplies, O(n) sums; stack 64 f64, no allocation or callbacks.",
+  "description": "Sorted 1..64 nodes in [-1,1], gaps >=1e-8, finite |y|<=1e100 and query in hull. Reciprocal weights w_i=1/product_{j!=i}(x_i-x_j); output sum(w_i*y_i/(x-x_i))/sum(w_i/(x-x_i)). Exact node returns its stored y after all validation. Scale terms by maximum absolute term before summing. Size precedes nonfinite, domain, spacing, then arithmetic checks. Underflow in node products can produce Arithmetic even for valid bounded inputs.",
+  "forward": [
+    "Sorted 1..64 nodes in [-1,1], gaps >=1e-8, finite |y|<=1e100 and query in hull. Reciprocal weights w_i=1/product_{j!=i}(x_i-x_j); output sum(w_i*y_i/(x-x_i))/sum(w_i/(x-x_i)). Exact node returns its stored y after all validation. Scale terms by maximum absolute term before summing. Size precedes nonfinite, domain, spacing, then arithmetic checks. Underflow in node products can produce Arithmetic even for valid bounded inputs."
+  ],
+  "id": "algorithm-barycentric-lagrange",
+  "inverse": [
+    "At x=0, nodes [(-1,2),(1,4)] and [(-1,1),(1,5)] both map to3; a single evaluation cannot reconstruct node ordinates."
+  ],
+  "limitations": [
+    "Partial syntax is not semantic proof",
+    "Finite polynomial/shape checks do not establish universal f64 accuracy",
+    "No certified cheaper executable surrogate; numerical percentage profiles unsupported",
+    "No speed claim, callback panic recovery or allocator experiment"
+  ],
+  "source": "algorithms/src/barycentric_lagrange/mod.rs",
+  "state": "Validated bounded f64 inputs, stack recurrence, explicit validation errors and iterative statuses where applicable"
+}

@@ -607,3 +607,41 @@ fn trapz(_: &mut Interp, a: &[Value], _: usize) -> Result<Vec<Value>, MError> {
     }
     one(Mat::row(out))
 }
+
+#[cfg(test)]
+mod wave30_tests {
+    use super::*;
+    #[test]
+    fn maps_and_trapezoid_contract() {
+        assert_eq!(map_point(Map::Finite(2.0, 6.0), 0.0), (4.0, 3.0));
+        assert_eq!(map_point(Map::Right(2.0), 0.5), (3.0, 4.0));
+        assert_eq!(map_point(Map::Left(2.0), 0.5), (1.0, 4.0));
+        assert_eq!(map_point(Map::Both, 0.0), (0.0, 1.0));
+        let mut it = Interp::capture();
+        let out = trapz(
+            &mut it,
+            &[Value::num(2.0), Value::Mat(Mat::row(vec![1.0, 3.0, 5.0]))],
+            1,
+        )
+        .unwrap();
+        let Value::Mat(m) = &out[0] else { panic!() };
+        assert_eq!(m.re, vec![12.0]);
+        assert!(
+            trapz(
+                &mut it,
+                &[
+                    Value::Mat(Mat::row(vec![0.0, 1.0])),
+                    Value::Mat(Mat::row(vec![1.0, 3.0, 5.0]))
+                ],
+                1
+            )
+            .is_err()
+        );
+        assert!(
+            ode45(&mut it, &[], 1)
+                .unwrap_err()
+                .msg
+                .contains("struct output")
+        );
+    }
+}

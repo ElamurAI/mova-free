@@ -1,0 +1,155 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "Within U = finite input texts paired with arbitrary vector pairs, absent behaviors include unequal output lengths, nonpermutation A, L[0]!=0, and any adjacent L value differing from direct byte-prefix equality. This is a source-derived inner characterization of excluded outputs under successful allocation.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "6d51acf8a319ef825660c6fc96d629c384239d949fa1fe36d6917c12aee639c4",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "preimages",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "For fixed (A,L), retain every length-n byte text whose suffix order is A and whose adjacent common-prefix lengths are L. The fiber is usually non-singleton: ([1,0],[0,1]) admits every equal-byte pair, including three pairs over {0,1,2}. Order/LCP do not recover byte labels.",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "6d51acf8a319ef825660c6fc96d629c384239d949fa1fe36d6917c12aee639c4",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "rank-state",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "Fix suffix order A. The inverse-rank vector is uniquely rank[A[r]]=r; an inconsistent rank is excluded. Fix rank without T and the compatible inputs remain all texts inducing that suffix order; rank does not supply byte identity.",
+        "path": "model.md",
+        "section": "rank-state",
+        "status": "partial_source_derived",
+        "subject_revision": "6d51acf8a319ef825660c6fc96d629c384239d949fa1fe36d6917c12aee639c4",
+        "type": "state_preimage"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "carried-prefix",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "At each start with positive rank, common is a lower bound on LCP with its lexicographic predecessor. After measuring h, the next candidate starts at max(h-1,0); encountering the least suffix resets the bound. This relies on suffix-order predecessor constraints, not arbitrary permutations.",
+        "path": "model.md",
+        "section": "carried-prefix",
+        "status": "partial_source_derived",
+        "subject_revision": "6d51acf8a319ef825660c6fc96d629c384239d949fa1fe36d6917c12aee639c4",
+        "type": "refinement_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "interval-minimum",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "For fixed ranks a<b, LCP(T[A[a]..],T[A[b]..]) = min L[a+1..=b]. The interval is nonempty and the suffix order must correspond to this exact text; swapping a suffix array from another text invalidates the premise.",
+        "path": "model.md",
+        "section": "interval-minimum",
+        "status": "partial_source_derived",
+        "subject_revision": "6d51acf8a319ef825660c6fc96d629c384239d949fa1fe36d6917c12aee639c4",
+        "type": "composition_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "relabel",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "A strictly increasing byte map on the observed alphabet preserves both A and L. Injective decreasing maps preserve equality lengths only for a fixed pair of offsets, not the ordered arrays; noninjective maps can lengthen prefixes.",
+        "path": "model.md",
+        "section": "relabel",
+        "status": "partial_source_derived",
+        "subject_revision": "6d51acf8a319ef825660c6fc96d629c384239d949fa1fe36d6917c12aee639c4",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "distinct-substrings",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "For fixed n and L, the number of distinct nonempty substrings is n(n+1)/2 - sum L. This mathematical integer identity is tested with explicit substring sets at n=5; API does not perform the potentially overflowing product.",
+        "path": "model.md",
+        "section": "distinct-substrings",
+        "status": "partial_source_derived",
+        "subject_revision": "6d51acf8a319ef825660c6fc96d629c384239d949fa1fe36d6917c12aee639c4",
+        "type": "projection_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite evidence is not a general proof.",
+        "assumptions": "Successful allocation; exact bytes and stated transformation premises.",
+        "domain": "Finite byte slices and ordinary terminating Rust calls with successful allocation.",
+        "evidence": "model.md#evidence",
+        "id": "constant-text",
+        "observation_scope": "Public call or scoped state.",
+        "operator": "For n equal bytes, A=[n-1,...,0] and L=[0,1,...,n-1]. For n=0 both vectors are empty. Long constant fixtures exercise maximal carried prefixes and finite suffix bounds.",
+        "path": "model.md",
+        "section": "constant-text",
+        "status": "partial_source_derived",
+        "subject_revision": "6d51acf8a319ef825660c6fc96d629c384239d949fa1fe36d6917c12aee639c4",
+        "type": "boundary_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-lcp-array",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "6d51acf8a319ef825660c6fc96d629c384239d949fa1fe36d6917c12aee639c4"
+  },
+  "status": "partial_source_derived_instance"
+}

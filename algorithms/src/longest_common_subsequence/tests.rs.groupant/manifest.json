@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-longest-common-subsequence-tests",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "ab71a32fd5dfb5dc7907b59efe9ff5c94a4fe16446c15d04638ba014a82082fd"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "operator": "A passing outcome excludes observed disagreements on enumerated fixtures and oracle comparisons; untested behaviors remain admitted. This relation describes exclusions within the finite observation universe.",
+        "domain": "Finite deterministic test fixtures and implementation observations.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One finite test-suite execution.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "ab71a32fd5dfb5dc7907b59efe9ff5c94a4fe16446c15d04638ba014a82082fd",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "preimages",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "operator": "A passing report admits all implementations agreeing on these fixtures, including incorrect ones elsewhere. A failed assertion constrains a mismatch at its fixture, not unique source reconstruction.",
+        "domain": "Finite deterministic test fixtures and implementation observations.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One finite test-suite execution.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "ab71a32fd5dfb5dc7907b59efe9ff5c94a4fe16446c15d04638ba014a82082fd",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "oracle",
+        "type": "observational_equivalence",
+        "path": "model.md",
+        "section": "oracle",
+        "status": "partial_source_derived",
+        "operator": "Enumerate all subsequences by bitmask and scan the second input; compare 63 squared binary-word pairs through length five. The oracle does not share the rolling recurrence.",
+        "domain": "Finite deterministic test fixtures and implementation observations.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One finite test-suite execution.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "ab71a32fd5dfb5dc7907b59efe9ff5c94a4fe16446c15d04638ba014a82082fd",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "relations",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "relations",
+        "status": "partial_source_derived",
+        "operator": "Tests observe symmetry, identity, simultaneous reversal, common fresh-symbol append, one-sided bounds, generic values and a nonunique preimage counterexample.",
+        "domain": "Finite deterministic test fixtures and implementation observations.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One finite test-suite execution.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "ab71a32fd5dfb5dc7907b59efe9ff5c94a4fe16446c15d04638ba014a82082fd",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "sensitivity",
+        "type": "counterfactual_model",
+        "path": "model.md",
+        "section": "sensitivity",
+        "status": "partial_source_derived",
+        "operator": "Changing the equality recurrence from diagonal+1 to diagonal is a compiled production fault that the independent oracle must reject. Other faults remain unproven.",
+        "domain": "Finite deterministic test fixtures and implementation observations.",
+        "assumptions": "Lawful Eq where relevant; representable arithmetic and successful allocation where required.",
+        "observation_scope": "One finite test-suite execution.",
+        "approximation_semantics": "Source-derived relation with bounded evidence, not universal verification.",
+        "subject_revision": "ab71a32fd5dfb5dc7907b59efe9ff5c94a4fe16446c15d04638ba014a82082fd",
+        "evidence": "model.md#evidence"
+      }
+    ]
+  }
+}

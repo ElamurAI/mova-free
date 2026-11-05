@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "id": "algorithm-chinese-remainder",
+  "kind": "groupant",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "b15b049f54c0162ef8bf88a23e53ca99af3f2b9054e68498a74051433c494112"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "operator": "U minus graph(S) excludes unnormalized Some, wrong LCM or wrong solution class, None for compatible reached prefix, accepting a zero modulus, wrong first zero index, and an overflow not selected by the left-to-right policy. Mathematical unsatisfiability of the entire list alone does not force None when an earlier merge overflows.",
+        "domain": "Finite slices of u64 congruences and candidate Result<Option<Congruence>,Error> observations, with normal terminating execution.",
+        "assumptions": "Standard Rust arithmetic, successful resources and the stated domain. Finite oracle correspondence is not proof.",
+        "observation_scope": "One terminating exact call.",
+        "approximation_semantics": "Exact mathematical relation target with finite correspondence evidence; no universal semantic proof.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "b15b049f54c0162ef8bf88a23e53ca99af3f2b9054e68498a74051433c494112",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "constraint_preimages",
+        "type": "reverse_reconstruction",
+        "operator": "For Some(r,M), all compatible input lists whose total LCM is M and whose intersection is r+M*Z reconstruct the output, with r<M and M>0. Many lists fit: [(8,18)] and [(2,6),(8,9)]. Prefix LCM divides final M, hence no overflow occurs for these valid lists. Error and None preimages additionally obey the preflight and first terminal prefix policy; they do not uniquely recover inputs.",
+        "domain": "Finite slices of u64 congruences and candidate Result<Option<Congruence>,Error> observations, with normal terminating execution.",
+        "assumptions": "Standard Rust arithmetic, successful resources and the stated domain. Finite oracle correspondence is not proof.",
+        "observation_scope": "One terminating exact call.",
+        "approximation_semantics": "Exact mathematical relation target with finite correspondence evidence; no universal semantic proof.",
+        "path": "model.md",
+        "section": "constraint_preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "b15b049f54c0162ef8bf88a23e53ca99af3f2b9054e68498a74051433c494112",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "solution_family",
+        "type": "algebraic_relation",
+        "operator": "For Some(r,M), integer solutions are exactly x=r+k*M for k in Z. This family uses mathematical integers; no arbitrary machine multiplication is implied.",
+        "domain": "Finite slices of u64 congruences and candidate Result<Option<Congruence>,Error> observations, with normal terminating execution.",
+        "assumptions": "Standard Rust arithmetic, successful resources and the stated domain. Finite oracle correspondence is not proof.",
+        "observation_scope": "One terminating exact call.",
+        "approximation_semantics": "Exact mathematical relation target with finite correspondence evidence; no universal semantic proof.",
+        "path": "model.md",
+        "section": "solution_family",
+        "status": "partial_source_derived",
+        "subject_revision": "b15b049f54c0162ef8bf88a23e53ca99af3f2b9054e68498a74051433c494112",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "compatibility",
+        "type": "certificate_relation",
+        "operator": "Two positive-modulus constraints intersect iff their residue difference is divisible by gcd(m,n). For a successful list, output satisfies every input and output modulus equals LCM, jointly certifying equality of solution classes rather than mere membership.",
+        "domain": "Finite slices of u64 congruences and candidate Result<Option<Congruence>,Error> observations, with normal terminating execution.",
+        "assumptions": "Standard Rust arithmetic, successful resources and the stated domain. Finite oracle correspondence is not proof.",
+        "observation_scope": "One terminating exact call.",
+        "approximation_semantics": "Exact mathematical relation target with finite correspondence evidence; no universal semantic proof.",
+        "path": "model.md",
+        "section": "compatibility",
+        "status": "partial_source_derived",
+        "subject_revision": "b15b049f54c0162ef8bf88a23e53ca99af3f2b9054e68498a74051433c494112",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "permutation",
+        "type": "metamorphic_relation",
+        "operator": "On positive-modulus lists whose total mathematical LCM fits u64, permutations preserve Some or None. Outside this domain, overflow can precede a contradiction in one order and follow it in another. Zero error indices also change under permutation.",
+        "domain": "Finite slices of u64 congruences and candidate Result<Option<Congruence>,Error> observations, with normal terminating execution.",
+        "assumptions": "Standard Rust arithmetic, successful resources and the stated domain. Finite oracle correspondence is not proof.",
+        "observation_scope": "One terminating exact call.",
+        "approximation_semantics": "Exact mathematical relation target with finite correspondence evidence; no universal semantic proof.",
+        "path": "model.md",
+        "section": "permutation",
+        "status": "partial_source_derived",
+        "subject_revision": "b15b049f54c0162ef8bf88a23e53ca99af3f2b9054e68498a74051433c494112",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "normalization",
+        "type": "quotient_relation",
+        "operator": "Replacing an input residue by any u64 value congruent modulo its positive modulus preserves output. All Some residues are canonical in [0,M). Residue addition must remain within u64 when used as a machine transformation.",
+        "domain": "Finite slices of u64 congruences and candidate Result<Option<Congruence>,Error> observations, with normal terminating execution.",
+        "assumptions": "Standard Rust arithmetic, successful resources and the stated domain. Finite oracle correspondence is not proof.",
+        "observation_scope": "One terminating exact call.",
+        "approximation_semantics": "Exact mathematical relation target with finite correspondence evidence; no universal semantic proof.",
+        "path": "model.md",
+        "section": "normalization",
+        "status": "partial_source_derived",
+        "subject_revision": "b15b049f54c0162ef8bf88a23e53ca99af3f2b9054e68498a74051433c494112",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "redundancy",
+        "type": "closure_relation",
+        "operator": "Within positive-modulus lists of representable total LCM, duplicate constraints and insertion of any residue modulo one preserve output. Adding the returned class to a successful list preserves it. Outside the domain error ordering must be rechecked.",
+        "domain": "Finite slices of u64 congruences and candidate Result<Option<Congruence>,Error> observations, with normal terminating execution.",
+        "assumptions": "Standard Rust arithmetic, successful resources and the stated domain. Finite oracle correspondence is not proof.",
+        "observation_scope": "One terminating exact call.",
+        "approximation_semantics": "Exact mathematical relation target with finite correspondence evidence; no universal semantic proof.",
+        "path": "model.md",
+        "section": "redundancy",
+        "status": "partial_source_derived",
+        "subject_revision": "b15b049f54c0162ef8bf88a23e53ca99af3f2b9054e68498a74051433c494112",
+        "evidence": "model.md#evidence"
+      },
+      {
+        "id": "error_precedence",
+        "type": "boundary_specialization",
+        "operator": "Any zero modulus wins globally, choosing smallest index. With positive moduli each merge checks incompatibility before overflow, but an earlier overflow masks later contradictions. Empty input is Some(0,1).",
+        "domain": "Finite slices of u64 congruences and candidate Result<Option<Congruence>,Error> observations, with normal terminating execution.",
+        "assumptions": "Standard Rust arithmetic, successful resources and the stated domain. Finite oracle correspondence is not proof.",
+        "observation_scope": "One terminating exact call.",
+        "approximation_semantics": "Exact mathematical relation target with finite correspondence evidence; no universal semantic proof.",
+        "path": "model.md",
+        "section": "error_precedence",
+        "status": "partial_source_derived",
+        "subject_revision": "b15b049f54c0162ef8bf88a23e53ca99af3f2b9054e68498a74051433c494112",
+        "evidence": "model.md#evidence"
+      }
+    ]
+  }
+}

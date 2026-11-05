@@ -1,0 +1,87 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "status": "available_partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "available_partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "available_partial"
+    },
+    "invariant": {
+      "path": "model.md",
+      "status": "available_partial"
+    },
+    "obernants": [
+      {
+        "id": "excluded",
+        "path": "model.md",
+        "status": "available_partial",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "fibers",
+        "path": "model.md",
+        "status": "available_partial",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "required-fields",
+        "path": "model.md",
+        "section": "Required serialized fields",
+        "status": "available_partial",
+        "type": "serialized_field_admission"
+      },
+      {
+        "id": "row-framing",
+        "path": "model.md",
+        "section": "JSONL row framing",
+        "status": "available_partial",
+        "type": "jsonl_row_framing"
+      },
+      {
+        "id": "finite-barrier",
+        "path": "model.md",
+        "section": "Nonfinite refusal before opening",
+        "status": "available_partial",
+        "type": "preopen_refusal"
+      },
+      {
+        "id": "whole-read",
+        "path": "model.md",
+        "section": "Fail-whole journal parsing",
+        "status": "available_partial",
+        "type": "fail_whole_observation"
+      }
+    ],
+    "tests": {
+      "path": "../model.md#evidence",
+      "status": "available_partial"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4144,
+      "start": 2807
+    },
+    "description": "journal production operations"
+  },
+  "id": "prag-opus-journal",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../opus.rs",
+    "sha256": "0169f72bddab55f9e493b85a86918b5f0adbcf5153c7c12725bb249f2ed5c136"
+  },
+  "status": "available_partial"
+}

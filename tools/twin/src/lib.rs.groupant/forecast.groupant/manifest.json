@@ -1,0 +1,87 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "No syntax projection, macro expansion or semantic AST; byte ranges bind the reviewed snapshot only.",
+      "status": "not_materialized"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "epoch-memory",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "twin-forecast-behavior-complement",
+        "path": "model.md",
+        "required": true,
+        "scope": "Prediction and observed-support projection",
+        "section": "behavior-complement",
+        "status": "partial_source_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "twin-forecast-reverse-reconstruction",
+        "path": "model.md",
+        "required": true,
+        "scope": "Prediction and observed-support projection",
+        "section": "reverse-reconstruction",
+        "status": "partial_source_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "twin-forecast-rmse-observation",
+        "path": "model.md",
+        "required": false,
+        "scope": "Prediction and observed-support projection",
+        "section": "rmse-observation",
+        "status": "partial_source_model",
+        "type": "history_projection"
+      },
+      {
+        "id": "twin-forecast-box-boundary",
+        "path": "model.md",
+        "required": false,
+        "scope": "Prediction and observed-support projection",
+        "section": "box-boundary",
+        "status": "partial_source_model",
+        "type": "support_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 4386,
+      "start": 3501
+    },
+    "description": "Prediction and observed-support projection"
+  },
+  "id": "twin-forecast",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../lib.rs",
+    "sha256": "89a5a0b5a5dc0fde578e2108b7418ee6b47a64b59b2d132c10e8b802d5e93e9d"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -1,0 +1,59 @@
+//! Bounded groupant correspondence for actual Index scoring/search/label APIs.
+//! Valid one-based sentence anchors and finite small counts; no parser or extraction claim.
+use world::{index::{Fact,FField,Index,Kind,Query,Slot},types::{Id,Reg},world::{Text,World}};
+fn field(slot:Slot, word:&str, ids:Vec<Id>)->FField {
+ FField{slot,text:word.into(),ids,lem:[word.to_string()].into_iter().collect()}
+}
+fn fact(n:usize)->Fact {
+ Fact{n,kind:Kind::Event,src:Id::new(Reg::E,n as u32),key:"run".into(),
+  who:vec![Id::new(Reg::C,1)],fields:vec![
+   field(Slot::Pred,"run",vec![]),field(Slot::Patient,"person",vec![Id::new(Reg::C,2)]),
+   field(Slot::Value,"bright",vec![]),field(Slot::About,"bright",vec![])],
+  anchors:vec![1],sent:1,line:n,cause:None,by:None,neg:false,end:false}
+}
+fn query()->Query {Query{preds:vec![],who:vec![],role:None,others:vec![],words:vec![],secs:vec![],fut:false}}
+fn main(){
+ let false_formula=std::env::args().any(|s|s=="--false-formula");
+ let w=World::new(Text{doc:0,title:"fixture".into(),sents:vec![(10,"fixture".into())]});
+ let idx=Index::default();let f=fact(1);let mut cases=0;
+ // Independent scalar tables encode the model, not calls to score or Slot::weight.
+ let subject_points=[0.,3.,1.,-2.];let other_points=[0.,1.5,3.];let word_points=[0.,1.,2.];
+ let sections=[(vec![],false,0.,false),(vec![10],false,3.,true),
+  (vec![9],true,2.5,false),(vec![9],false,0.5,false),
+  (vec![11],true,0.5,false),(vec![1],true,-1.5,false)];
+ for pred in [false,true] {for subject in 0..4 {for others in 0..3 {for words in 0..3 {
+  for (secs,fut,section_points,insec) in &sections {
+   let mut q=query();q.preds=vec![vec![if pred{"run"}else{"absent"}.into()]];
+   q.who=match subject {0=>vec![],1=>vec![Id::new(Reg::C,1)],2=>vec![Id::new(Reg::C,2)],_=>vec![Id::new(Reg::C,3)]};
+   q.role=Some(Slot::Agent);q.others=vec![Id::new(Reg::C,2);others];
+   q.words=vec![vec!["bright".into()];words];q.secs=secs.clone();q.fut=*fut;
+   let expected=if pred {if false_formula{4.}else{3.}} else{0.}
+      +subject_points[subject]+other_points[others]+word_points[words]+section_points;
+   let got=idx.score(&w,&f,&q);
+   assert_eq!(got.score,expected,"feature case {cases}");
+   assert_eq!((got.pred,got.who,got.words,got.insec),(pred,subject==1||subject==2,word_points[words],*insec));
+   cases+=1;
+  }
+ }}}}
+ assert_eq!(cases,432);
+ // All-negative candidates remain eligible; filtering and n order are independent.
+ let ix=Index{facts:vec![fact(9),fact(2),fact(5)]};let mut q=query();
+ q.who=vec![Id::new(Reg::C,99)];q.secs=vec![1];
+ let ranked=ix.search(&w,&q,|f|f.n!=5);
+ assert_eq!(ranked.iter().map(|x|x.n).collect::<Vec<_>>(),vec![2,9]);
+ assert!(ranked.iter().all(|s|s.score==-3.5));
+ // Equal score/n preserves input order; score decomposition is nonunique.
+ let mut predicate=fact(7);predicate.fields=vec![field(Slot::Pred,"run",vec![])];
+ let mut words=fact(7);words.fields=vec![field(Slot::Value,"bright",vec![])];
+ let mut q=query();q.preds=vec![vec!["run".into()]];q.words=vec![vec!["bright".into()];3];
+ for (facts,flags) in [(vec![words.clone(),predicate.clone()],vec![false,true]),
+                       (vec![predicate,words],vec![true,false])] {
+  let ranked=Index{facts}.search(&w,&q,|_|true);
+  assert!(ranked.iter().all(|s|s.score==3.&&s.n==7));
+  assert_eq!(ranked.iter().map(|s|s.pred).collect::<Vec<_>>(),flags);
+ }
+ let label=f.label();
+ for bits in 0..8 {let mut variant=f.clone();variant.neg=bits&1!=0;variant.end=bits&2!=0;
+  variant.by=(bits&4!=0).then(||Id::new(Reg::E,99));assert_eq!(variant.label(),label);}
+ println!("{{\"score_cases\":432,\"ranking_cases\":3,\"label_fiber_cases\":8,\"source_semantics\":\"bounded valid-anchor observations\"}}");
+}

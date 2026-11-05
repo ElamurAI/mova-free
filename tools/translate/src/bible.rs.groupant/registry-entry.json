@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "bible::tests::split_by_book"
+  ],
+  "children": [],
+  "cost": "Book lookup bounded85 comparisons; key parse O(input prefix bytes); pool O(B+Nlog V) memory O(input bytes+output). usfm_files sorts paths by stripped zst suffix O(Flog F); decompression proportional decoded bytes with unbounded external file resource risk, not exercised.",
+  "description": "Book identity enumerates39 OT+27 NT+19 DC codes; split_of uses book%10 test3/8, dev5, otherwise train. vkey parses first three dot components and ignores suffix. read_pool reads main file then companion .verses, maps duplicate ids last-wins, joins sentences per verse in pool order with single separator when accumulator nonempty and drops trim-empty results.",
+  "forward": [
+    "Book identity enumerates39 OT+27 NT+19 DC codes; split_of uses book%10 test3/8, dev5, otherwise train. vkey parses first three dot components and ignores suffix. read_pool reads main file then companion .verses, maps duplicate ids last-wins, joins sentences per verse in pool order with single separator when accumulator nonempty and drops trim-empty results."
+  ],
+  "id": "translation-flow-bible",
+  "inverse": [
+    "Unknown book labels cannot produce vkey; extra dot suffix cannot alter parsed first three components. Split membership depends only book index, never chapter/verse. Missing companion file prevents returned verse map.",
+    "show restricted known-book keys has vkey(show(k))=Some(k); vkey preimages include arbitrary ignored suffixes and numeric spellings accepted by parse. Joined pool output cannot recover sentence boundaries or duplicate-id history without side information."
+  ],
+  "limitations": [
+    "Source-derived effectful CLI/corpus paths only; no live model/annotator/training/filesystem/site run.",
+    "Finite synthetic helper checks and partial syntax; no universal proof or executable percent surrogate."
+  ],
+  "source": "tools/translate/src/bible.rs",
+  "state": "VKey u8/u16/u16; known book codes case-sensitive, zero chapter/verse accepted. code outside0..85 yields ?. Numeric parse failure returns None. Filesystem/USFM decompression source-derived only; no real pool read."
+}

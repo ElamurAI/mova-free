@@ -1,0 +1,142 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Source lexical projection only; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Lazy heap/key registry and suffix-save state.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Lazy heap/key registry and suffix-save state.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "heap_max",
+        "path": "model.md",
+        "scope": "Lazy heap/key registry and suffix-save state.",
+        "section": "heap_max",
+        "status": "partial_source_derived_model",
+        "type": "heap_max"
+      },
+      {
+        "id": "key_zero",
+        "path": "model.md",
+        "scope": "Lazy heap/key registry and suffix-save state.",
+        "section": "key_zero",
+        "status": "partial_source_derived_model",
+        "type": "key_zero"
+      },
+      {
+        "id": "failure_order",
+        "path": "model.md",
+        "scope": "Lazy heap/key registry and suffix-save state.",
+        "section": "failure_order",
+        "status": "partial_source_derived_model",
+        "type": "failure_order"
+      },
+      {
+        "id": "save_suffix",
+        "path": "model.md",
+        "scope": "Lazy heap/key registry and suffix-save state.",
+        "section": "save_suffix",
+        "status": "partial_source_derived_model",
+        "type": "save_suffix"
+      },
+      {
+        "id": "legacy_decode_fiber",
+        "path": "model.md",
+        "scope": "Compatible original-key histories for the unchanged terminal-CR decoder; no historical repair.",
+        "section": "legacy_decode_fiber",
+        "status": "partial_source_derived_model",
+        "type": "legacy_decode_fiber"
+      },
+      {
+        "id": "heap_label_framing",
+        "path": "model.md",
+        "scope": "heap(kind,name) admission against the heaps.tsv row codec: LF and terminal CR are lossy, other UTF-8 names exact.",
+        "section": "heap_label_framing",
+        "status": "partial_source_derived_model",
+        "type": "framing_admission"
+      },
+      {
+        "id": "heap_admission_order",
+        "path": "model.md",
+        "scope": "heap error precedence (admission, existing name/kind, exhaustion) and unchanged state on every error.",
+        "section": "heap_admission_order",
+        "status": "partial_source_derived_model",
+        "type": "first_error_state_preservation"
+      },
+      {
+        "id": "heap_label_roundtrip",
+        "path": "model.md",
+        "scope": "Admitted heap names and numbers across save/reopen under unique well-formed heap files, one writer and successful I/O.",
+        "section": "heap_label_roundtrip",
+        "status": "partial_source_derived_model",
+        "type": "persistence_roundtrip"
+      },
+      {
+        "id": "legacy_heap_decode_fiber",
+        "path": "model.md",
+        "scope": "Compatible historical heap-row antecedents for CRLF and LF-split rows; no repair or reinterpretation.",
+        "section": "legacy_heap_decode_fiber",
+        "status": "partial_source_derived_model",
+        "type": "legacy_decode_fiber"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 7435,
+      "start": 2092
+    },
+    "description": "Lazy heap/key registry and suffix-save state.",
+    "source_bytes_sha256": "3e95f17a897518a0292210caf7339c05303c7a887bc2bbbda89203b5de158a1e"
+  },
+  "id": "kg-id-registry",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../id.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "2d9a9d00550ecd11000c8885ddb3418afd6835bd06c1a52f057a191145d4db52"
+  },
+  "status": "partial_source_bound_model"
+}

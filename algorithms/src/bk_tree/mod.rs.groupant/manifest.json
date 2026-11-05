@@ -1,0 +1,126 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "For admitted words W,q,r, an output pair (i,d) is excluded if i is outside W, d is not exact byte edit distance, or d>r. A proposed output list omitting any in-radius index, adding an outside index, duplicating an index or breaking ascending index order is excluded. Overlength query paired with Ok is excluded even for an empty tree.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "0a7f8f3af54eeb8261c40986b4efea131cf9cdcc91e49a5c650c17012d68999d",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "A returned list identifies distances only for reported indexes; all dictionaries and queries yielding those distances and excluding other indexes beyond r are compatible. Byte renaming by a bijection preserves edit distances. Empty output may mean empty dictionary or a nonempty dictionary with every word farther than r; inversion is nonunique.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "0a7f8f3af54eeb8261c40986b4efea131cf9cdcc91e49a5c650c17012d68999d",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "triangle_pruning",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "Edges outside inclusive [d-r,d+r] cannot contain a radius match by triangle inequality. Saturating usize endpoints safely cover huge radii; usize::MAX admits every word.",
+        "path": "model.md",
+        "section": "triangle_pruning",
+        "status": "partial_relational_specification",
+        "subject_revision": "0a7f8f3af54eeb8261c40986b4efea131cf9cdcc91e49a5c650c17012d68999d",
+        "type": "triangle_pruning"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "byte_metric_join",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "Calls existing levenshtein::distance on u8 slices. Distances count bytes including NUL and255, not Unicode scalars or graphemes. L<=256 gives distance<=256 and bounded DP arithmetic.",
+        "path": "model.md",
+        "section": "byte_metric_join",
+        "status": "partial_relational_specification",
+        "subject_revision": "0a7f8f3af54eeb8261c40986b4efea131cf9cdcc91e49a5c650c17012d68999d",
+        "type": "byte_metric_join"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "duplicate_fiber",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "Equal byte vectors merge into one metric node but retain every original index in insertion order. Query output sorting restores global input order across traversal branches.",
+        "path": "model.md",
+        "section": "duplicate_fiber",
+        "status": "partial_relational_specification",
+        "subject_revision": "0a7f8f3af54eeb8261c40986b4efea131cf9cdcc91e49a5c650c17012d68999d",
+        "type": "duplicate_fiber"
+      },
+      {
+        "approximation_semantics": "Mathematical relation; finite correspondence evidence only",
+        "assumptions": "Successful standard allocations, terminating single-threaded calls",
+        "domain": "Declared bounded API inputs, states and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "validation_order",
+        "observation_scope": "Exact values, index order, state transitions and named assertions",
+        "operator": "More than4096 entries errors first, then any word longer than256. Query length is checked before empty-tree handling. An empty word is valid and an empty dictionary produces empty matches. Allocator exhaustion is outside recoverable errors.",
+        "path": "model.md",
+        "section": "validation_order",
+        "status": "partial_relational_specification",
+        "subject_revision": "0a7f8f3af54eeb8261c40986b4efea131cf9cdcc91e49a5c650c17012d68999d",
+        "type": "validation_order"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-bk-tree",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "0a7f8f3af54eeb8261c40986b4efea131cf9cdcc91e49a5c650c17012d68999d"
+  },
+  "status": "partial_source_derived_instance"
+}

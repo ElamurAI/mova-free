@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "wave31::parsing_and_trait_composition",
+    "limits_parse"
+  ],
+  "children": [],
+  "cost": "O(input bytes) parsing, O(file bytes) trait copy buffer; OS/memory backend costs remain separate; FNV O(bytes)/O(1).",
+  "description": "Public types, limits parser, FileSystem dispatch and hashing.",
+  "forward": [
+    "parse_size trims, parses u64, multiplies by 1024^suffix with checked_mul. Limits starts defaults and applies comma entries in order. open mem constructs Vfs+limits; real constructs RealFs; dir canonicalizes nonempty root. Trait copy read then write returns byte length; read_to_string UTF8-decodes successful read."
+  ],
+  "id": "vfs-api",
+  "inverse": [
+    "Same Limits admits omitted defaults, whitespace and repeated overwritten keys. exists=false admits missing/denied/type errors; copy length admits arbitrary equal-length data. Hash preimages collide."
+  ],
+  "limitations": [
+    "Finite checks only; partial source syntax, no expanded semantic AST.",
+    "No numerical surrogate: categorical/effect semantics lack useful metric; future caps 1/2/5/10 require domain and reference."
+  ],
+  "source": "vfs/src/lib.rs",
+  "state": "Duplicate limit keys last-win. exists collapses every stat error to false. FNV uses wrapping u64 product. Limits affect mem dispatch only."
+}

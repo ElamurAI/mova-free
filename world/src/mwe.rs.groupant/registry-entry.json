@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p world --lib mwe::wave10_models -- --test-threads=1",
+    "Repeated debug/release, finite oracles and compiled production control; see model.md#evidence."
+  ],
+  "children": [],
+  "cost": "Let B be input bytes, N retained rows, G gold groups, P predictions, K maximum set length. Parsing O(B+N log N+annotations log G), plus strings. judge O(P*G*(K^2+K log K)) worst case due to vector membership and distinct-set collection, memory O(G+K). Prediction includes opaque global lookup plus linear scans of previous predictions; no measured speed bound.",
+  "description": "Verbal multiword expression projection, prediction and greedy observation.",
+  "forward": [
+    "read_cupt filters rows and groups annotations, producing aligned dense Sent arrays. predict combines fixed global contiguous spans and dependency pairs under knobs. judge greedily consumes one unused gold for each prediction sharing at least two distinct valid token positions including a VERB. score=r-w; pr reports 100*r/max(1,r+w),100*r/max(1,g)."
+  ],
+  "id": "world-mwe",
+  "inverse": [
+    "Behavior complement first: inner excluded relation under fixed declared scope.",
+    "Reverse reconstruction second: all compatible antecedents, generally nonunique."
+  ],
+  "limitations": [
+    "Partial syntax only; no semantic AST or general correctness proof.",
+    "No live global dictionary, parser, teacher, corpus, GPU or full-school evidence."
+  ],
+  "source": "world/src/mwe.rs",
+  "state": "Supplied CUpt bytes, aligned Sent arrays, ordered gold/predictions, configuration and process-global expression/idiom snapshots."
+}

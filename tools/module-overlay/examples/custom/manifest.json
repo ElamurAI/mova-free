@@ -1,0 +1,42 @@
+{
+  "base_snapshot": "base.json",
+  "base_snapshot_sha256": "aa318673ee027b73775844d85eee73b632b0966093dfbcec9fe3e31fe98650cb",
+  "cargo_manifests": [
+    "tools/example-whale/Cargo.toml"
+  ],
+  "files": [
+    {
+      "action": "replace",
+      "executable": false,
+      "expected_upstream_sha256": "409ea95afcd7893f679e097f0e9913c7d3e46c8a3fd1a39cf9d127e7ec40023a",
+      "sha256": "25b00a81b2004607048f30a69a2aaef6e05dea5193daef95ce639e9c892c6a00",
+      "source": "module.txt",
+      "target": "module.txt"
+    },
+    {
+      "action": "add",
+      "executable": false,
+      "expected_upstream_sha256": null,
+      "sha256": "7f248198328364985175fd334fc64eea5e1855e08b2ddcc72323884177c53ccb",
+      "source": "whale.rs.txt",
+      "target": "tools/example-whale/src/lib.rs"
+    },
+    {
+      "action": "add",
+      "executable": false,
+      "expected_upstream_sha256": null,
+      "sha256": "ce894f8723a63fd6cf3c800d9779ca635363259dc3dbe2ef494e6569593e6afe",
+      "source": "whale-Cargo.toml.txt",
+      "target": "tools/example-whale/Cargo.toml"
+    },
+    {
+      "action": "add",
+      "executable": false,
+      "expected_upstream_sha256": null,
+      "sha256": "e1bce6136493ff446a501d3e83167beeb7ae3c3dee28965502d0715177ae34d3",
+      "source": "octopus-pipeline.json",
+      "target": "pipelines/octopus-research.json"
+    }
+  ],
+  "schema": 1
+}

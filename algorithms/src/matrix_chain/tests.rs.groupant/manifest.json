@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "id": "algorithm-matrix-chain-tests",
+  "kind": "groupant",
+  "status": "partial_descriptive_instance",
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "9d3f22d739419465c0b5e17bc2815f5fc4ab0893b79c5796f4e498d794cb5cf5",
+    "raw_code_location": "outside_this_sidecar"
+  },
+  "registry": {
+    "node": "algorithm-matrix-chain-tests",
+    "path": "../../../../models/contracts.json"
+  },
+  "components": {
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "scope": "source syntax only; no expansion or semantic resolution",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "invariant": {
+      "description": "model.md#approximant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "scope": "explicit domain in linked section",
+        "status": "partial_relational_specification",
+        "required": true
+      },
+      {
+        "id": "reverse_reconstruction",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "scope": "explicit domain in linked section",
+        "status": "partial_relational_specification",
+        "required": true
+      },
+      {
+        "id": "oracle_relation",
+        "type": "oracle_relation",
+        "path": "model.md",
+        "section": "oracle_relation",
+        "scope": "explicit domain in linked section",
+        "status": "partial_relational_specification"
+      },
+      {
+        "id": "metamorphic_relation",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "metamorphic_relation",
+        "scope": "explicit domain in linked section",
+        "status": "partial_relational_specification"
+      },
+      {
+        "id": "mutation_separation",
+        "type": "mutation_separation",
+        "path": "model.md",
+        "section": "mutation_separation",
+        "scope": "explicit domain in linked section",
+        "status": "partial_relational_specification"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "existing_checks_referenced"
+    }
+  },
+  "extensions": {
+    "epoch_memory": "model.md#descriptant",
+    "limits": "Finite evidence; no executable approximate surrogate or substitution claim."
+  }
+}

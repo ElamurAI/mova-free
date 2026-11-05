@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "prag::tests::frame_and_quote",
+    "prag::tests::rules_off_show_red",
+    "prag::tests::narrator_closes_quote",
+    "prag::tests::jps_quotes",
+    "prag::tests::negation_and_acts"
+  ],
+  "children": [],
+  "cost": "n rows: kids O(n), subtree fixed point worst O(n² log n), repeated candidates can add n. String scans O(B), joins O(R log R)+sort, memory O(R+B). No filesystem timings.",
+  "description": "Rules=(known default plus with) minus without. Words projects rows. quote finds first qualifying frame/subtree. read selects form/act/polarity in rule order. read_sentence maps(rows,open_before,rules) to reading/speech/frame/open_after. words_only removes punctuation/renumbers; prag carries state by book. JPS quote boolean fold independent; compare joins verse observations.",
+  "forward": [
+    "Rules=(known default plus with) minus without. Words projects rows. quote finds first qualifying frame/subtree. read selects form/act/polarity in rule order. read_sentence maps(rows,open_before,rules) to reading/speech/frame/open_after. words_only removes punctuation/renumbers; prag carries state by book. JPS quote boolean fold independent; compare joins verse observations."
+  ],
+  "id": "macula-pragmatics",
+  "inverse": [
+    "Unknown library rule names cannot enable behavior. Disabled carry prevents continuation solely from prior open. Aaron's does not open quote; nothingness not negation. Supplied rows invoke no teacher.",
+    "Reading admits many rows/heads/histories. With carry disabled both old booleans compatible; Cont with carry/no close requires prior open. Quote may ignore old open. Final JPS state loses positions/nesting."
+  ],
+  "limitations": [
+    "Finite fixtures, not exhaustive rules/malformed rows or filesystem compare.",
+    "Partial source syntax, finite tests, no semantic proof or executable percent surrogate"
+  ],
+  "source": "tools/macula/src/prag.rs",
+  "state": "Nonempty10-column rows/head domains required. without overrides with. Frame may open next sentence. Negation and polarity distinct. Quote recognizer flat, lowercase-s possessive heuristic."
+}

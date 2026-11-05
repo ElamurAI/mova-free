@@ -2,7 +2,7 @@
 
 The rule language is `docs/dialect.md`. Conventions beyond the specification are in `../seeds-overview.md`. Matches were counted by `en expert-check`: `pronouns → mova` on Pronouns, `mova → pronouns` on EWT.
 
-Pronouns is a test of independent possessives. The main thing for us is `mova → pronouns`: so that UFeats on it measures quality rather than the difference in norms (`seeds/conventions.md`).
+Pronouns is a test of independent possessives. The main thing for us is `mova → pronouns`: so that UFeats on it measures quality rather than the difference in norms (`seeds.md#conventions`).
 
 ## pronouns → mova
 
@@ -73,7 +73,7 @@ from: pronouns
 to: mova
 match: v[form=is, feats.Number=Sing, !feats.Person]
 set: v[feats+=Person=3]
-source: seeds/errors.md
+source: seeds.md#errors
 ```
 
 Next, agreement — the same rules as in `../atis/convert.md`:
@@ -152,7 +152,7 @@ source: EWT 2.18
 
 Matches on Pronouns: `pass-subj` 25, `voice` 20, `it-nom` 40 (all *it* here are subjects, so `it-acc` after it — 0), `indep-gender` 171, `theirs-plur` 57, `is-person` 10, `agree-noun` 70, `agree-pron` 10, `adj-degree` 15.
 
-**Singular *they*.** `theirs-plur` erases the very thing Pronouns was created for: `Number=Sing` on *theirs*. The UD guideline for English requires `Plur` by form (`docs/_en/feat/Number.md`, `pos/PRON.md`), and `mova` = EWT. As with the number of *you* in GUM (`../gum/seeds/you-number.md`), this is a candidate for borrowing in `dialects/mova/seeds/`. There the singular of *they/theirs* is worth preserving as a feature or in MISC.
+**Singular *they*.** `theirs-plur` erases the very thing Pronouns was created for: `Number=Sing` on *theirs*. The UD guideline for English requires `Plur` by form (`docs/_en/feat/Number.md`, `pos/PRON.md`), and `mova` = EWT. As with the number of *you* in GUM (`../gum/seeds.md#you-number`), this is a candidate for borrowing in `dialects/mova/seeds.md`. There the singular of *they/theirs* is worth preserving as a feature or in MISC.
 
 ## mova → pronouns
 
@@ -164,7 +164,7 @@ from: mova
 to: pronouns
 match: s[rel=nsubj:pass]
 set: s[rel=nsubj]
-source: seeds/conventions.md
+source: seeds.md#conventions
 ```
 
 ```convert
@@ -174,7 +174,7 @@ from: mova
 to: pronouns
 match: v[feats.Voice]
 set: v[feats-=Voice]
-source: seeds/conventions.md
+source: seeds.md#conventions
 ```
 
 ```convert
@@ -184,7 +184,7 @@ from: mova
 to: pronouns
 match: p[upos=PRON, feats.PronType=Prs]
 set: p[feats-=Case]
-source: seeds/conventions.md
+source: seeds.md#conventions
 ```
 
 ```convert
@@ -194,7 +194,7 @@ from: mova
 to: pronouns
 match: p[form=it, upos=PRON]
 set: p[feats-=Gender]
-source: seeds/conventions.md
+source: seeds.md#conventions
 ```
 
 ```convert
@@ -204,7 +204,7 @@ from: mova
 to: pronouns
 match: p[form=mine|yours|theirs, upos=PRON, feats.Poss=Yes]
 set: p[feats+=Gender=Neut]
-source: seeds/conventions.md
+source: seeds.md#conventions
 ```
 
 ```convert
@@ -224,7 +224,7 @@ from: mova
 to: pronouns
 match: a[upos=ADJ, feats.Degree=Pos]
 set: a[feats-=Degree]
-source: seeds/conventions.md
+source: seeds.md#conventions
 ```
 
 

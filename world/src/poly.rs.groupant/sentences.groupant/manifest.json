@@ -1,0 +1,125 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "For finite Tok arrays exclude lost, repeated, overlapping or out-of-bounds token ranges; a lowercase continuation excludes a split after its preceding terminal run.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "For range vector Q retain every finite Tok array whose boundary relation yields Q, including arbitrary token forms and space_after flags compatible with the same boundaries. Q cannot identify the words.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "partition",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "For n tokens, Q is an ordered sequence [a_i,b_i), a_0=0, b_last=n, b_i=a_next and a_i<b_i; n=0 gives Q empty. Oracle exhausts the six-symbol alphabet through length four independently via flattened coverage.",
+        "path": "model.md",
+        "section": "partition",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "partition_conservation"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "continuation",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "After a terminal run extended over closers/terminals, suppress the break iff the next first Unicode character is lowercase or one of comma/semicolon/colon/hyphen/en-dash/em-dash. EOF forces the run end; empty next token does not continue. Oracle includes accented cases and punctuation.",
+        "path": "model.md",
+        "section": "continuation",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "boundary_suppression"
+      },
+      {
+        "approximation_semantics": "candidate inner exclusion bound or set-valued compatible relation, conditional source-derived",
+        "assumptions": "Finite inputs and successful allocation. No integer overflow or concurrent mutation assumed; dependency semantics and other limits are explicit in model.md.",
+        "domain": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects.",
+        "evidence": "model.md#tests",
+        "id": "terminal_alphabet",
+        "observation_scope": "one finite call; explicit I/O effects only where stated",
+        "operator": "Terminal is nonempty and every character belongs to . ! ? …; closer is an exact token from the fixed eight-string set. Mixed '.x' and '(' do not qualify. This is a token-level rule, not general linguistic punctuation.",
+        "path": "model.md",
+        "section": "terminal_alphabet",
+        "status": "partial_source_derived_model",
+        "subject_revision": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c",
+        "type": "admission_constraint"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 1779,
+      "start": 650
+    },
+    "description": "Logical source region \"fn terminal(\" through before \"/// Cut out\". For n tokens, Q is an ordered sequence [a_i,b_i), a_0=0, b_last=n, b_i=a_next and a_i<b_i; n=0 gives Q empty. Oracle exhausts the six-symbol alphabet through length four independently via flattened coverage. After a terminal run extended over closers/terminals, suppress the break iff the next first Unicode character is lowercase or one of comma/semicolon/colon/hyphen/en-dash/em-dash. EOF forces the run end; empty next token does not continue. Oracle includes accented cases and punctuation. Terminal is nonempty and every character belongs to . ! ? …; closer is an exact token from the fixed eight-string set. Mixed '.x' and '(' do not qualify. This is a token-level rule, not general linguistic punctuation. Parent composition retains shared text/clock/intermediate values. Full-file wrapper and test gaps remain in the root."
+  },
+  "id": "world-poly-sentences",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../poly.rs",
+    "sha256": "f6ccf7819c162aed84def7e58a81624ad362eac3703b605583831049fde0813c"
+  },
+  "status": "partial_source_derived_instance"
+}

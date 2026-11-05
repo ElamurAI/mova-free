@@ -1,0 +1,86 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "scope": "Explicit gap: no syntax projection or semantic AST.",
+      "status": "not_materialized"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "path": "model.md",
+        "scope": "U is positive-cap input/job-completion vectors paired with returned results. R joins every worker and concatenates in spawn order. U minus R contains Ok after a joined panic and Ok with a permutation different from ordered concatenation, under normal allocation/unwind.",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "antecedents",
+        "path": "model.md",
+        "scope": "Given y and deterministic f, each compatible x has length len(y) and x_i in f^-1(y_i). All compatible positive caps remain possible because output omits partition boundaries.",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "chunk-envelope",
+        "path": "model.md",
+        "scope": "For c=max(ceil(n/t),1), worker j covers [jc,min((j+1)c,n)). These intervals partition [0,n); n=0 spawns zero workers.",
+        "section": "chunk-envelope",
+        "status": "partial_source_derived_model",
+        "type": "partition_geometry"
+      },
+      {
+        "id": "panic-frontier",
+        "path": "model.md",
+        "scope": "Err retains existence of at least one join panic but discards worker index, payload and successful outputs. par_map changes the observation to an expect panic; completed effects are not reversed.",
+        "section": "panic-frontier",
+        "status": "partial_source_derived_model",
+        "type": "failure_recovery"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "coverage_recorded"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 2029,
+      "start": 929
+    },
+    "description": "Compute cap-bounded chunk size; spawn slices in order, collect all joins, collect Result, then flatten."
+  },
+  "id": "execution-ordered-workers",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../exec.rs",
+    "sha256": "180f88005a4cd3852f649059e420951c1fe9ad4a699c9d175358169f25e43b4d"
+  },
+  "status": "partial_source_derived_instance"
+}

@@ -27,8 +27,8 @@ use crate::duck::{Duck, Stage};
 use crate::tsv::{self, Tsv, V};
 use crate::util;
 
-const STATE_SQL: &str = include_str!("../../../db/sql/state.sql");
-const LOAD_SQL: &str = include_str!("../../../db/sql/load.sql");
+const STATE_SQL: &str = include_str!("../sql/state.sql");
+const LOAD_SQL: &str = include_str!("../sql/load.sql");
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Docs {
@@ -263,47 +263,28 @@ pub fn gate(fs: &FullSentence, reg: &Registry) -> String {
     "ok".into()
 }
 
-/// Treebank card `treebanks/<language>/<code>/README.md`: license, genres, authors, part sizes.
-/// Card labels are English or (older cards) Ukrainian (`util::CARD_*`); keys in the result are English.
+/// Treebank facts: the row of `dir` in `treebanks/cards.tsv` (licence, genres, authors, part sizes).
+/// The card reference stored in the database is `<cards.tsv>#<UD name>`.
 fn card(lang: &str, dir: &str) -> Result<(String, Value)> {
-    let code = dir.split_once('-').map_or(dir, |x| x.1).to_lowercase();
     let repo = std::env::var("MOVA_REPO").map(std::path::PathBuf::from).unwrap_or_else(|_| Path::new(env!("CARGO_MANIFEST_DIR")).join("../.."));
-    let path = repo.join("treebanks").join(lang).join(&code).join("README.md");
-    let path = util::abs(&path).with_context(|| format!("treebank card {dir}"))?;
-    let text = std::fs::read_to_string(&path)?;
+    let path = repo.join("treebanks").join("cards.tsv");
+    let path = util::abs(&path).with_context(|| format!("treebank facts for {dir}"))?;
+    let row = util::card_row(&path, |r| r.get("ud_name").is_some_and(|x| x == dir)).with_context(|| format!("treebank {dir}"))?;
+    if row.get("lang").map(String::as_str) != Some(lang) {
+        bail!("{}: {dir} is not a treebank of language {lang}", path.display());
+    }
+    let volume = util::card_volume(&row).with_context(|| format!("{}: {dir}", path.display()))?;
     let mut fields = Map::new();
-    let mut volume = Map::new();
-    let mut in_volume = false;
-    for line in text.lines() {
-        if line.starts_with("## ") {
-            in_volume = util::CARD_SIZE_HEADINGS.contains(&line.trim());
-            continue;
-        }
-        let cells: Vec<&str> = line.split('|').map(str::trim).collect();
-        if cells.len() < 4 {
-            continue;
-        }
-        if in_volume {
-            let part = cells[1].trim_matches('*');
-            let nums: Vec<i64> = cells[2..cells.len() - 1].iter().filter_map(|c| c.chars().filter(char::is_ascii_digit).collect::<String>().parse().ok()).collect();
-            let part = util::card_part(part);
-            if ["train", "dev", "test", "total"].contains(&part) && nums.len() == 5 {
-                volume.insert(part.to_string(), json!(nums));
-            }
-        } else if let Some((_, key)) = util::CARD_FIELDS.iter().find(|(label, _)| *label == cells[1]) {
-            fields.insert(key.to_string(), json!(cells[2]));
-        }
+    for (key, col) in [("ud_name", "ud_name"), ("license", "license"), ("genres", "genres"), ("authors", "authors"), ("code", "ud_code")] {
+        fields.insert(key.to_string(), json!(row.get(col).cloned().unwrap_or_default()));
     }
-    if fields.get("ud_name").and_then(Value::as_str) != Some(dir) {
-        bail!("{}: card is not for {dir}", path.display());
-    }
-    let p = path.to_string_lossy().into_owned();
+    let p = format!("{}#{dir}", path.to_string_lossy());
     Ok((p.clone(), json!({"card": p, "fields": fields, "volume": volume})))
 }
 
-const CALIB_RUNS: &str = include_str!("../../../db/calib-runs.tsv");
+const CALIB_RUNS: &str = include_str!("../data/calib-runs.tsv");
 
-/// Effort of a calibration run: from `db/calib-runs.tsv` (with an explanation), otherwise from the directory name, otherwise "unknown".
+/// Effort of a calibration run: from `tools/db/data/calib-runs.tsv` (with an explanation), otherwise from the directory name, otherwise "unknown".
 fn calib_effort(name: &str) -> (String, Option<String>) {
     for line in CALIB_RUNS.lines().filter(|l| !l.starts_with('#') && !l.trim().is_empty()) {
         let c: Vec<&str> = line.split('\t').collect();
@@ -313,6 +294,22 @@ fn calib_effort(name: &str) -> (String, Option<String>) {
     }
     let e = ["high", "medium", "low"].into_iter().find(|e| name.contains(&format!("-{e}"))).unwrap_or("unknown");
     (e.to_string(), None)
+}
+
+/// Prefer persisted teacher provenance; only legacy runs without it use the historical model.
+fn calib_model(dir: &Path) -> String {
+    for file in ["batch-state.json", "cwd/codex-calls.jsonl", "codex-teacher/codex-calls.jsonl"] {
+        if let Ok(text) = std::fs::read_to_string(dir.join(file)) {
+            for document in std::iter::once(text.as_str()).chain(text.lines()) {
+                if let Ok(v) = serde_json::from_str::<Value>(document) {
+                    if let Some(model) = v["model"].as_str() {
+                        return model.to_owned();
+                    }
+                }
+            }
+        }
+    }
+    "claude-opus-5-5".into()
 }
 
 /// An `annot` calibration run: mode from the first step of `calls.jsonl`, effort (`calib_effort`), call totals.
@@ -337,7 +334,9 @@ fn calib_run(dir: &Path) -> (String, String, Value) {
         _ => "unknown mode",
     };
     let report = std::fs::read_to_string(dir.join("report.txt")).unwrap_or_default().lines().next().unwrap_or("").to_string();
-    let params = json!({"flow": step, "effort": effort, "effort_note": effort_note, "calls": calls, "output_tokens": out_tokens, "secs": (secs * 10.0).round() / 10.0, "report": report, "model": "claude-opus-5-5"});
+    let model = calib_model(dir);
+    let flow = if model.starts_with("gpt-") { flow.replace("Opus", "Codex teacher") } else { flow.to_string() };
+    let params = json!({"flow": step, "effort": effort, "effort_note": effort_note, "calls": calls, "output_tokens": out_tokens, "secs": (secs * 10.0).round() / 10.0, "report": report, "model": model});
     (format!("annot calib · {flow} · effort {effort}"), effort.to_string(), params)
 }
 
@@ -736,22 +735,93 @@ mod tests {
     }
 
     #[test]
-    fn treebank_card_labels() {
-        // the committed EWT card (Ukrainian labels for now) and an English card as the generator writes it
-        let (_, p) = card("en", "UD_English-EWT").unwrap();
+    fn treebank_facts_from_cards_tsv() {
+        // the committed table, and a synthetic one through MOVA_REPO
+        let (c, p) = card("en", "UD_English-EWT").unwrap();
+        assert!(c.ends_with("treebanks/cards.tsv#UD_English-EWT"), "{c}");
         assert!(p["fields"]["license"].as_str().is_some_and(|s| !s.is_empty()), "{p}");
         assert!(p["volume"]["train"].is_array() && p["volume"]["total"].is_array(), "{p}");
         let dir = std::env::temp_dir().join(format!("mova-db-card-{}", std::process::id()));
-        let cdir = dir.join("treebanks/xx/zz");
-        std::fs::create_dir_all(&cdir).unwrap();
-        std::fs::write(cdir.join("README.md"), "| Field | Value |\n|---|---|\n| UD name | UD_Xx-ZZ |\n| License | CC BY 4.0 |\n\n## Size\n\n| Split | Sentences | Tokens | Words | Multiword tokens | Empty nodes |\n|---|---:|---:|---:|---:|---:|\n| test | 1 | 2 | 2 | 0 | 0 |\n| **total** | 1 | 2 | 2 | 0 | 0 |\n").unwrap();
+        std::fs::create_dir_all(dir.join("treebanks")).unwrap();
+        let head = "ud_name\tlang\ttreebank\tud_code\tlicense\tgenres\tauthors\ttrain\tdev\ttest\ttotal\n";
+        std::fs::write(dir.join("treebanks/cards.tsv"), format!("{head}UD_Xx-ZZ\txx\tzz\txx_zz\tCC BY 4.0\tnews\tA B\t\t\t1 2 2 0 0\t1 2 2 0 0\n")).unwrap();
         // SAFETY: test-only env change; no other test reads MOVA_REPO concurrently with a different value
         unsafe { std::env::set_var("MOVA_REPO", &dir) };
         let r = card("xx", "UD_Xx-ZZ");
+        let wrong_lang = card("yy", "UD_Xx-ZZ");
+        let missing = card("xx", "UD_Xx-QQ");
         unsafe { std::env::remove_var("MOVA_REPO") };
-        let (_, p) = r.unwrap();
+        let (c, p) = r.unwrap();
         assert_eq!(p["fields"]["license"], "CC BY 4.0");
+        assert_eq!(p["fields"]["code"], "xx_zz");
         assert_eq!(p["volume"]["total"], json!([1, 2, 2, 0, 0]));
+        assert!(p["volume"].get("train").is_none());
+        // the stored reference resolves back to the same sizes (export's size check reads it)
+        assert_eq!(Value::Object(util::card_volume(&util::card_lookup(&c).unwrap()).unwrap()), p["volume"]);
+        // a legacy per-treebank card path resolves through the folder's cards.tsv
+        let legacy = dir.join("treebanks/xx/zz/README.md");
+        assert_eq!(util::card_lookup(&legacy.to_string_lossy()).unwrap()["ud_name"], "UD_Xx-ZZ");
+        assert!(wrong_lang.is_err() && missing.is_err());
         let _ = std::fs::remove_dir_all(&dir);
+    }
+}
+#[cfg(test)]
+mod teacher_provenance_tests {
+    #[test]
+    fn codex_runs_are_not_labelled_as_legacy_claude() {
+        let dir = std::env::temp_dir().join(format!("mova-db-teacher-{}", std::process::id()));
+        std::fs::create_dir_all(dir.join("cwd")).unwrap();
+        assert_eq!(super::calib_model(&dir), "claude-opus-5-5");
+        std::fs::write(dir.join("cwd/codex-calls.jsonl"), "{\"provider\":\"codex\",\"model\":\"gpt-6.1-terra\"}\n").unwrap();
+        assert_eq!(super::calib_model(&dir), "gpt-6.1-terra");
+        std::fs::write(dir.join("batch-state.json"), "{\n  \"model\": \"gpt-custom\"\n}\n").unwrap();
+        assert_eq!(super::calib_model(&dir), "gpt-custom");
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+}
+
+#[cfg(test)]
+mod wave31 {
+    use super::*;
+
+    #[test]
+    fn option_and_comment_representation() {
+        for (value, expected) in [
+            ("newdoc", Docs::NewDoc),
+            ("idprefix", Docs::IdPrefix),
+            ("file", Docs::File),
+        ] {
+            assert_eq!(Docs::parse(value).unwrap(), expected);
+        }
+        for (value, expected) in [
+            ("new", Match::New),
+            ("auto", Match::Auto),
+            ("existing", Match::Existing),
+        ] {
+            assert_eq!(Match::parse(value).unwrap(), expected);
+        }
+        assert!(Docs::parse("File").is_err());
+        assert!(Match::parse("").is_err());
+        assert!(Opts::new("unknown", "ud").is_err());
+        for (source, tool) in [
+            ("gold", "human"),
+            ("silver", "opus"),
+            ("bronze", "rust"),
+            ("udpipe", "udpipe"),
+        ] {
+            let mut opts = Opts::new(source, "custom").unwrap();
+            assert_eq!(opts.tool(), tool);
+            assert_eq!(opts.matching, Match::Auto);
+            assert_eq!(opts.docs, Docs::NewDoc);
+            opts.tool = Some("override".into());
+            assert_eq!(opts.tool(), "override");
+        }
+        assert_eq!(comment_kv("# x = "), ("x".into(), Some("".into())));
+        assert_eq!(comment_kv("# x"), ("x".into(), None));
+        assert_eq!(comment_kv("# x=a"), ("x=a".into(), None));
+        assert_eq!(
+            comment_kv("# x = a = b"),
+            ("x".into(), Some("a = b".into()))
+        );
     }
 }

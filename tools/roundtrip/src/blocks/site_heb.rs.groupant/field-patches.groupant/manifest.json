@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "misc_order",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "misc_order",
+        "status": "partial_source_derived_model",
+        "type": "misc_order"
+      },
+      {
+        "id": "pair_delete",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "pair_delete",
+        "status": "partial_source_derived_model",
+        "type": "pair_delete"
+      },
+      {
+        "id": "position_charge",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "position_charge",
+        "status": "partial_source_derived_model",
+        "type": "position_charge"
+      },
+      {
+        "id": "overwrite_fiber",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "overwrite_fiber",
+        "status": "partial_source_derived_model",
+        "type": "overwrite_fiber"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 24180,
+      "start": 20286
+    },
+    "description": "Compare ten fields; FEATS/MISC canonical target becomes set/delete operations over maps, otherwise whole replacement. apply mutates fields sequentially and normalizes pair ordering; nonempty patch set adds position charge."
+  },
+  "id": "roundtrip-hebrew-row-codec-field-patches",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../site_heb.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "5ba678eb77695e001029e2e896df29afa8a17070cc5d77562524d4c4cb84e4cd"
+  },
+  "status": "partial_source_bound_model"
+}

@@ -3,9 +3,9 @@
 The rules are written in the `convert` language from `docs/dialect.md`: the v1 seed rule language plus `set` actions. They were run with the real engine `en convert` / `en convert-check` (`en::convert`, commit b23ef218 of 26.09.2026). Results are in the "Check" section. Rule ids follow the repo custom: `mova.ud-next.*` for the `mova → ud-next` direction, `ud-next.*` for the reverse.
 
 **What is converted to what.**
-- `mova` — the state as of 26.09.2026: UD 2.18 with EWT conventions and our own normalizations. It does not yet contain the `ud-next` changes: they are only proposed in `dialects/mova/`.
+- `mova` — the base without the `ud-next` layer: UD 2.18 with EWT conventions and our own normalizations. The decisions on each `ud-next` change are in `dialects/mova/`.
 - `ud-next` — the same EWT conventions plus guideline changes after 2.18 (`seeds/`). This is how EWT 2.19 would look if it follows the new guidelines. EWT `dev` branches are not in the snapshot, so there is no real EWT 2.19 to compare with yet.
-- If Mova accepts the proposals, `mova` itself will become like `ud-next` at these points. Then these rules, with `from`/`to` swapped, will become part of the `mova → ud-2.18` converter.
+- Where `mova` takes a `ud-next` change, these rules, with `from`/`to` swapped, convert it back to `ud-2.18`.
 
 **Two changes affect annotation:**
 - *who* pronouns (`seeds/en-wh-case.md`);
@@ -189,7 +189,7 @@ Engine `en convert` / `en convert-check`, 26.09.2026, EWT 2.18 train+dev+test (`
 
 **What this means.**
 - The forward direction makes EWT 2.18 conform to `ud-next`.
-- The reverse one restores EWT except for the 9 deliberately lost `discourse`. These 9 already contradict the 2.18 guideline (`dialects/ud-2.18/seeds/discourse-adverbs.md`), so no MISC marks are introduced for them (`dialects/mova/seeds/discourse-adverbs.md`).
+- The reverse one restores EWT except for the 9 deliberately lost `discourse`. These 9 already contradict the 2.18 guideline (`dialects/ud-2.18/seeds.md#discourse-adverbs`), so no MISC marks are introduced for them (`dialects/mova/seeds.md#discourse-adverbs`).
 - For other English treebanks the reverse *whom* → lemma *whom* does not give identity: GUM, GENTLE, LinES and ParTUT already have the lemma *who*. That is handled by the treebank converters (`treebanks/en/*/convert.md`), not by this file.
 - If EWT 2.19 annotates `Case` manually differently than by function, `convert-check ud-next` on it will show where our rule disagrees with theirs. That will be a useful report, not an error.
 

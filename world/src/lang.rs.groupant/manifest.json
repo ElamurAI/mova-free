@@ -1,0 +1,213 @@
+{
+  "children": [
+    {
+      "id": "world-lang-interfaces",
+      "path": "interfaces.groupant"
+    },
+    {
+      "id": "world-lang-lexing",
+      "path": "lexing.groupant"
+    },
+    {
+      "id": "world-lang-values",
+      "path": "values.groupant"
+    },
+    {
+      "id": "world-lang-validation",
+      "path": "validation.groupant"
+    },
+    {
+      "id": "world-lang-commands",
+      "path": "commands.groupant"
+    },
+    {
+      "id": "world-lang-narrative",
+      "path": "narrative.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "section": "Composition",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "nonbehavior",
+        "observation_scope": "Whole source, including declarations, all helpers/dispatch, parse_all and native tests",
+        "operator": "Exclude rel endpoints in O/L/R/E/P/B/F/K, snapshot-form IDs, exact duplicate key spellings, unmatched quotes, misplaced anchors and multiple event placements. These exclusions are conditional on this grammar and fixed dependency catalogs; no exclusion of all semantically invalid worlds is claimed.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "antecedents",
+        "observation_scope": "Whole source, including declarations, all helpers/dispatch, parse_all and native tests",
+        "operator": "For observation (Cmd,anchors), reconstruct every line whose trim/token/Args/dispatch relation yields that pair. Whitespace between tokens, allowed key-order permutations and accepted quote variants form nonunique fibers; Args attrs preserve their source order, so not all key permutations are equivalent. The 784-string relation domain is completely enumerated with independent expected fibers; general UTF-8 reconstruction remains relational.",
+        "path": "model.md",
+        "section": "antecedents",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "registry_roles",
+        "observation_scope": "Whole source, including declarations, all helpers/dispatch, parse_all and native tests",
+        "operator": "Role Agent permits C; Patient C/O/L; To C/L; At L; Instr O. Relation a and b are C-only; event/causal/time IDs are E where requested. Identity parsing accepts uppercase registry prefix and one to six decimal digits without leading zero; snapshot @ forms are excluded by types::Id. Native 45-cell role matrix and complete endpoint fibers check correspondence.",
+        "path": "model.md",
+        "section": "registry_roles",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "admission_constraint"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "quotes_keys",
+        "observation_scope": "Whole source, including declarations, all helpers/dispatch, parse_all and native tests",
+        "operator": "tokens groups characters between literal double quotes and splits Unicode whitespace outside; there is no escape syntax. Args requires lowercase ASCII key names, splits the first '=', rejects repeated spellings and positions after any key, and validates complete outer quote pairs. text trims value edges; quote flags are enforced by ID/word consumers but intentionally ignored by some numeric/tag/text consumers.",
+        "path": "model.md",
+        "section": "quotes_keys",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "lexical_projection"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "line_admission",
+        "observation_scope": "Whole source, including declarations, all helpers/dispatch, parse_all and native tests",
+        "operator": "parse_line returns None only on trimmed empty input. It scans trailing ^s tokens right-to-left before validating remaining anchors, Args, command, unused arguments and finally required anchor. Cursor sent supplies a default only without explicit anchors. Error stores untrimmed raw and supplied number, success stores trimmed raw.",
+        "path": "model.md",
+        "section": "line_admission",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "failure_partition"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "closed_values",
+        "observation_scope": "Whole source, including declarations, all helpers/dispatch, parse_all and native tests",
+        "operator": "Closed tags and Act use exact catalog membership; word grammar and field domains come from types. Text has at most 25 whitespace-separated words. Tag sets reject duplicate tags then normalize with V::tags. num accepts zero or one-to-six ASCII digits with no leading zero, or NUM_WORD tags, so 999999 is accepted; the narrower comment is not an enforced bound.",
+        "path": "model.md",
+        "section": "closed_values",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "value_projection"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "command_modes",
+        "observation_scope": "Whole source, including declarations, all helpers/dispatch, parse_all and native tests",
+        "operator": "Twenty-five Cmd variants dispatch by exact lowercase command name; frame/claim/time/branch/know/reveal are the six v3 variants. Plan creation versus closure and belief creation versus modification are separate field-presence branches; parse acceptance does not guarantee referenced entities exist or mutations are allowed.",
+        "path": "model.md",
+        "section": "command_modes",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "sum_type_partition"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "placement",
+        "observation_scope": "Whole source, including declarations, all helpers/dispatch, parse_all and native tests",
+        "operator": "ev2 consumes before/after/during/same and rejects more than one. Ev2::placement on manually constructed state prioritizes before, after, during, same; parser-created Ev2 never needs that conflict resolution. reveal has its own placement parser; time requires exactly one relation or absolute at text.",
+        "path": "model.md",
+        "section": "placement",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "mutual_exclusion"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "field_aliases",
+        "observation_scope": "Whole source, including declarations, all helpers/dispatch, parse_all and native tests",
+        "operator": "Args rejects duplicate textual keys, but attrs maps aliases at/to/in to the same Field::At without enforcing semantic uniqueness. Thus set C1 at=L1 to=L2 is admitted with two ordered Field::At entries; downstream policy is not modeled. This is not advertised as duplicate-field rejection.",
+        "path": "model.md",
+        "section": "field_aliases",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "information_loss"
+      },
+      {
+        "approximation_semantics": "partial source-derived exclusion bound or relational reconstruction; finite observations are not analytical guarantees",
+        "assumptions": "Fixed types and Act catalogs, finite input, successful allocation; registry existence and narrative validity belong to downstream executors.",
+        "domain": "Finite UTF-8 change-language lines with fixed types::* closed sets and prag::schema::Act; finite line numbers. Observation is Option<Line> or FormatErr. Inverse syntax fibers project to Cmd plus anchors and intentionally omit raw/no; full Line observations retain trimmed spelling and supplied line number. No world state or I/O is an input.",
+        "evidence": "model.md#tests",
+        "id": "batch",
+        "observation_scope": "Whole source, including declarations, all helpers/dispatch, parse_all and native tests",
+        "operator": "parse_all enumerates physical text.lines positions from one, independently parses every line and appends success/error to separate order-preserving vectors. Blank lines disappear but numbering remains physical; no rollback, execution or stop-on-first-error behavior is introduced.",
+        "path": "model.md",
+        "section": "batch",
+        "status": "partial_source_derived_model",
+        "subject_revision": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe",
+        "type": "ordered_partition"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "bounded_evidence"
+    }
+  },
+  "id": "world-lang",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../lang.rs",
+    "sha256": "9bcaf61d3d16dd697e2a04d9bc263bad9284bb9f46372422a152a2d798f87bfe"
+  },
+  "status": "partial_source_derived_instance"
+}

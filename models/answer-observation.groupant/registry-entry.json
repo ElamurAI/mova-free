@@ -1,0 +1,34 @@
+{
+  "checks": [
+    "cargo test -p world --test groupant_joins question_frame_reader_join_preserves_multiset_coverage",
+    "cargo test -p world --test groupant_joins sense_animacy_joins_who_question_eligibility"
+  ],
+  "children": [
+    "world-reader",
+    "world-ans",
+    "world-qud",
+    "world-sense",
+    "world-ftqa",
+    "world-report",
+    "world-rreport",
+    "world-qa",
+    "world-qa3"
+  ],
+  "cost": "Use branch-specific child costs, not the sum of every owned file. A reader call pays question parsing + ans baseline + index/routing + span/coverage on at most the selected anchor, plus rendering; shared lexical expansions can repeat. Cover over W occurrences and T tree tokens costs roughly O((W+T)*L) expected lookup/expansion work. Standalone ans ranking is O(E*(Q*L+H)+E log E), with possible relaxed retry. QUD over S sentences, T tokens and Q open questions has conservative O(S*Q*T^2 + S*T log(S*T)) work plus lexical lookup and reasons. Sense check is O(V*T) plus global queries. Parsing, dictionary initialization, IO and memory failures remain external; no throughput or composed approximation bound.",
+  "description": "Question input, answer observations and scoped measurement with preserved identity and denominator boundaries.",
+  "forward": [
+    "This parent owns reader.rs, ans.rs, qud.rs and sense.rs as a modeling subtree. Its behavior is a tagged relation over separate entry points, not one invented pipeline. Reader uses ans lexical/rendering/baseline helpers, qframe parsing, index search and span extraction on joined worlds/trees. ans also offers a standalone world-answer path. QUD tracks supplied or annotated sentences and consults sense animacy for noun Who slots. Sense independently emits parse plausibility flags from fixed global knowledge. Common lexical/tree/world context constrains all joins.",
+    "Ownership children are world-reader, world-ans, world-qud and world-sense. Actual call edges are reader->ans, reader->qframe/index/span and qud->sense->global; tree/world/types and lexical en dependencies cross this subtree. Ownership is not the call graph: no reader->qud or ans->sense execution is asserted. Composition joins the same Qa/frame, ordered facts, source/own-world anchor interpretation and lexical version. All reverse relations retain these shared intermediates. Structural source bindings cover owned children only; cross-subtree dependencies require parent inventory and independent evidence.",
+    "Fairytale input/reconstruction supplies ordered QA records; report evaluates answer-source projections and aggregates separate all/answered denominators."
+  ],
+  "id": "answer-observation",
+  "inverse": [
+    "Domain U consists of tagged supplied-world answer, reader-arbitration, QUD-transition and sense-flag observations with finite scores, valid dependency structures and a fixed lexical snapshot. An inner exclusion model rejects reader state selection below confidence six, normalized coverage outside [0,1], complete QUD attachment removing unrelated questions, or noun Who eligibility contradicted by fixed animacy (absent alternative fillers). These exclusions concern implemented policies; semantically wrong answers remain possible. Child complements cannot simply be united because the tags and shared intermediates differ.",
+    "For parent relation R, B(y)={x : R(x,y)} retains compatible worlds, fact orders, trees, query frames, lexical snapshot and prior QUD stack. Reader text may come from baseline, span or slot; retain that source tag and anchor if observed. Equal text alone loses this distinction. Reverse composition unions over shared compatible intermediates, rather than multiplying independent score, frame and lexical fibers. No unique history or inverse solver is claimed."
+  ],
+  "limitations": [
+    "Full qframe/parser acquisition, reader::read end-to-end arbitration, lexical factual validity, arbitrary malformed trees, large integer boundaries, nonfinite scores, and all world alignment scenarios are outside executed parent evidence. No teacher/GPU/corpus or training run. Partial child syntax does not become a composed semantic AST. Final children and exact source bindings are reconciled; structural validation checks their identity, not semantic completeness."
+  ],
+  "source": null,
+  "state": "Tagged supplied-world/reader/QUD/sense inputs with fixed lexical context and compatible shared intermediates."
+}

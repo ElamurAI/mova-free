@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "rustc --edition 2024 --test --crate-name mova_algorithm_topological_sort algorithms/src/topological_sort/mod.rs",
+    "independent oracle, two normalized runs, rejected source mutation"
+  ],
+  "cost": "O(E+V log(V+1)) time and O(V) auxiliary space",
+  "description": "Original deterministic topological_sort, global validation and bounded independent oracle.",
+  "forward": [
+    "Validate all edges in adjacency order; malformed graphs return first InvalidEdge. Valid graphs with a cycle return Cycle. Otherwise return the lexicographically least permutation p in which every edge tail precedes its head; empty graph returns []."
+  ],
+  "id": "algorithm-topological-sort",
+  "inverse": [
+    "In U=domain inputs crossed with all declared return values for one call, C=U minus R where R is the forward specification. This excludes every wrong successful vector/order, incorrect error and wrong first-failure precedence. Exact for the specification; partial source-derived absent-behavior approximant for Rust. Allocation failure, panic and elapsed time are outside U.",
+    "For every return y, Pre(y)={G | R(G,y)} retains ALL compatible graphs. Successful fibers contain all DAGs with y as lexicographically first valid ordering, including compatible parallel-edge multiplicities. Error fibers contain all graphs satisfying the exact invalid-edge or cycle rule. No source argument, unique recovery or implemented inverse executor is assumed."
+  ],
+  "limitations": [
+    "Bounded tests are not unrestricted proof.",
+    "Syntax projection excludes expansion and semantic resolution."
+  ],
+  "source": "algorithms/src/topological_sort/mod.rs",
+  "state": "all finite directed adjacency lists with duplicates and self loops; outputs are tagged errors or vertex permutations"
+}

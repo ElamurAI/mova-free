@@ -1,0 +1,34 @@
+{
+  "checks": [
+    "bitset_and_mitm_join_exhaustive_attainable_objectives",
+    "smawk_partition_and_knuth_join_independent_dp_oracles"
+  ],
+  "children": [
+    "algorithm-bitset-subset-sum",
+    "algorithm-bitset-subset-sum-tests",
+    "algorithm-meet-in-middle-knapsack",
+    "algorithm-meet-in-middle-knapsack-tests",
+    "algorithm-smawk",
+    "algorithm-smawk-tests",
+    "algorithm-divide-conquer-dp",
+    "algorithm-divide-conquer-dp-tests",
+    "algorithm-knuth-optimal-bst",
+    "algorithm-knuth-optimal-bst-tests"
+  ],
+  "cost": "Bitset O(n*ceil((T+1)/64)) packed work; MITM O(2^(n/2) log2^(n/2)); SMAWK O(rows+cols) callbacks; partition O(layers*n*log n); Knuth O(n²). Callback/allocations count and caps remain leaf-specific.",
+  "description": "Exact integer subset/knapsack objectives and structured matrix/partition/tree dynamic programming with explicit work and allocation bounds.",
+  "forward": [
+    "Exact integer subset/knapsack objectives and structured matrix/partition/tree dynamic programming with explicit work and allocation bounds.",
+    "Weight=profit subset embedding links target reachability with attainable knapsack objectives. Totally-monotone identity minima transport coordinates into convex interval costs and positive BST weights in the harness."
+  ],
+  "id": "dynamic-programming-optimization",
+  "inverse": [
+    "For exact integer targets, exclude a bitset true decision with no subset summing to target, a knapsack objective unattainable under capacity or below the feasible maximum, a SMAWK column that is not the leftmost row minimum, a partition value violating the minimum over exactly the requested nonempty contiguous intervals, or a BST value violating the successful-key interval recurrence. SMAWK/partition exclusions are conditional on total-monotonicity/monotone-split premises: arbitrary callbacks outside those premises may yield incorrect answers without validation errors. Native categorical exclusions also include overflow wraparound, violating word/state/cell or callback caps, and returning partial answers on budget failure. These integer targets do not carry f64 tolerances.",
+    "A reachability true output retains all item multisets having at least one target-sum subset; false retains those having none. For [1,1] at target1, two distinct index masks share the same decision and knapsack objective, and objective-only output does not recover either witness. Fixed SMAWK minima j_i constrain each lawful row by M[i,j_i]<=M[i,j] and strict inequality for earlier j on ties; row offsets preserve minimizer indices while changing values. A partition scalar retains many interval-cost arrays and boundary choices, subject to nonempty contiguous ranges and structural premises; it does not reconstruct a split witness. BST cost similarly admits different weight vectors or tied optimal trees. Checked integer values are exact when successful under the stated premises, while an error identifies only a broad resource/domain fiber."
+  ],
+  "limitations": [
+    "SMAWK every submatrix must have monotone leftmost minima; merely full-matrix monotone minima is insufficient. Partition monotone optima must hold at every layer. These properties are not verified dynamically. BST is successful-key-only objective.",
+    "Finite tests and source-derived models are not a universal proof."
+  ],
+  "state": "Exact feasible objectives, caller structural assumptions, checked integer arithmetic and leftmost ties retain distinct contracts. Resource errors never masquerade as approximation."
+}

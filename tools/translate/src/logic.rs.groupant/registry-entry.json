@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "logic::tests::every_kind_of_change_is_seen",
+    "logic::tests::contradictions_and_their_control"
+  ],
+  "children": [],
+  "cost": "O(nm) LCS cells, O(F log F) fact maps with string comparisons; matched role scans O(sum Rx*Ry). probe runs up to4 comparisons plus membership scans.",
+  "description": "Project frames to lowercased events and numbers; lexicon maps verbs/entities. Multiset counts shared events/facts, LCS aligns ordered events. Count negation, both-present modal mismatch, numbers deficit, crossing transitive nonpronoun role or named-role mismatch.",
+  "forward": [
+    "Project frames to lowercased events and numbers; lexicon maps verbs/entities. Multiset counts shared events/facts, LCS aligns ordered events. Count negation, both-present modal mismatch, numbers deficit, crossing transitive nonpronoun role or named-role mismatch."
+  ],
+  "id": "translation-meta-logic",
+  "inverse": [
+    "Unmatched events are gaps, not contradictions. Missing modal alone cannot contradict. Permuting complete events preserves the verb-multiset gap term. Contradictions depend on the ordered verb LCS and its tie-selected pairs: repeated verbs with different negation or roles can pair differently and increase or decrease distance. No permutation-invariance law is asserted for contradiction distance.",
+    "Logic totals admit many event sequences and fact assignments. Zero contradiction permits omitted events, missing modals and pronoun/name uncertainty; original sentences cannot be reconstructed."
+  ],
+  "limitations": [
+    "No live corpus/model/teacher/GPU execution or language accuracy claim",
+    "Partial syntax and finite tests; full effectful paths unexecuted; no percentage surrogate"
+  ],
+  "source": "tools/translate/src/logic.rs",
+  "state": "Valid role slots0..3, finite tokens, u64/i64 counters no overflow, LCS safe width. perturb numeric increment excludes u64::MAX. These are parser-derived diagnostics, not proof of textual entailment."
+}

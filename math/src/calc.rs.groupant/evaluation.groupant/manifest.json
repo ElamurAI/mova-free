@@ -1,0 +1,112 @@
+{
+  "children": [
+    {
+      "id": "math-calc-evaluation-mixed-zero",
+      "path": "mixed-zero.groupant"
+    },
+    {
+      "id": "math-calc-evaluation-ranged-binding",
+      "path": "ranged-binding.groupant"
+    }
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Parent projection restricted to[17753,55308)",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "state_prefix",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "state_prefix",
+        "status": "partial_source_derived_model",
+        "type": "state_prefix"
+      },
+      {
+        "id": "argument_multiplicity",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "argument_multiplicity",
+        "status": "partial_source_derived_model",
+        "type": "argument_multiplicity"
+      },
+      {
+        "id": "resource_accounting",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "resource_accounting",
+        "status": "partial_source_derived_model",
+        "type": "resource_accounting"
+      },
+      {
+        "id": "numeric_coercion",
+        "path": "model.md",
+        "scope": "Actual byte-scoped behavior under parent domain",
+        "section": "numeric_coercion",
+        "status": "partial_source_derived_model",
+        "type": "numeric_coercion"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 55308,
+      "start": 17753
+    },
+    "description": "Env/eval implement ordered state changes, capped notes, exact/real coercions, lazy forms and inclusive binders. Range errors retain current variable; CRT writes modulus. Parent calls comb/nt and can duplicate evaluation. Work includes big arithmetic and every reached callee.",
+    "source_bytes_sha256": "01f83cfb8d8c47679064fdfea960ddeac4e7df3336a3ac4b37222ad7ccb7f0b5"
+  },
+  "id": "math-calc-evaluation",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../calc.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "81be7f264f451792e6521af7540fb14850fc88a724600813ecb4f74b0df5964e"
+  },
+  "status": "partial_source_bound_model"
+}

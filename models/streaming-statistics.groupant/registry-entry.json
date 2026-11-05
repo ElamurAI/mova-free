@@ -1,0 +1,33 @@
+{
+  "checks": [
+    "merged_moments_join_compensated_centered_sums",
+    "frequency_summaries_join_literal_histogram_certificates",
+    "histogram_intervals_join_sorted_rank_and_exact_counts"
+  ],
+  "children": [
+    "algorithm-misra-gries",
+    "algorithm-misra-gries-tests",
+    "algorithm-space-saving",
+    "algorithm-space-saving-tests",
+    "algorithm-histogram-quantiles",
+    "algorithm-histogram-quantiles-tests",
+    "algorithm-streaming-moments",
+    "algorithm-streaming-moments-tests"
+  ],
+  "cost": "Misra-Gries and Space-Saving O(k) worst update and O(k) state with deterministic BTreeMap order; histogram O(1) update/O(b) query/state, b<=10^6; moments O(1) update/merge/state.",
+  "description": "Summarize one accepted stream using bounded heavy-hitter counters, histogram rank/value intervals and online or merged moments.",
+  "forward": [
+    "Summarize one accepted stream using bounded heavy-hitter counters, histogram rank/value intervals and online or merged moments.",
+    "Only shared successfully accepted inputs yield common N. There is no transaction across separate components. Exact counts, sorted ranks and direct finite mean/variance serve as independent fixture observations. The harness tests MG=SS jointly on 800 updates; histogram and moments use separate fixtures. A shared accepted-prefix execution across all four is not exercised."
+  ],
+  "id": "streaming-statistics",
+  "inverse": [
+    "Exclude frequency intervals omitting the exact accepted-stream count, rank/value rectangles omitting the sorted requested rank, mismatched accepted-prefix N and successful nonfinite moment output. A rejected individual update must not mutate that component; no cross-component rollback is promised.",
+    "Compatible streams lie in the intersection of frequency intervals, histogram bucket occupancies and moment constraints with execution consistency. Permutations and unrecorded identities/within-bucket values remain ambiguous; rounded moments may distinguish some permutations."
+  ],
+  "limitations": [
+    "Frequency error/N, quantile value/rank intervals and floating variance are different metrics. Moment arithmetic has no universal relative-error certificate. Map allocation failure lies outside the Result contract; histogram allocation is fallible.",
+    "Finite tests and source-derived models are not a universal proof."
+  ],
+  "state": "Accepted prefix counts agree under shared legal updates; counter, bucket and moment statistics retain different conservation and error relations."
+}

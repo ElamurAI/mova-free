@@ -20,16 +20,16 @@ target/release/en expert-check dialects/ud-2.18/seeds \
 
 | seed | the guideline says | EWT 2.18 | why |
 |---|---|---|---|
-| [iobj-sole](seeds/iobj-sole.md) | `iobj` only with `obj`/`ccomp`; with `xcomp` — `obj` | 795 `iobj`: 243 without `obj`/`ccomp`, of them 93 with `xcomp` | 2.12 amendment "Sole iobj" |
-| [iobj-to-phrase](seeds/iobj-to-phrase.md) | *to me* — `nmod` | *to* phrase on a verb: `obl` 1285, `nmod` 0 | v1 leftover |
-| [imperative-do](seeds/imperative-do.md) | VB with an auxiliary — `Inf` | with imperative *do*: `Mood=Imp\|Fin` 98, `Inf` 8 | EWT annotates by sentence type |
-| [subjunctive](seeds/subjunctive.md) | subjunctive → `Inf` / `Ind` | `Mood=Sub` 57: VB 49, *were* 8; ≥5 subjunctives remained `Inf` | `Mood.md` not updated; `Tense.md` already mentions the subjunctive |
-| [modal-mood](seeds/modal-mood.md) | every finite form has `Mood` | MD with `Fin` without `Mood` — 4049; validator warning | open question, #1118 |
-| [depictives](seeds/depictives.md) | `acl` (:612) and `advmod` (:878) | ADJ depictive `advcl` 22, `acl` 0, `advmod` 0 | 2.10 amendment |
-| [clausal-predicate](seeds/clausal-predicate.md) | the copula is the head, the clause is `ccomp` | `nsubj:outer`/`csubj:outer` 257, old analysis 0 | 2.10 amendment |
-| [wh-pronouns](seeds/wh-pronouns.md) | TODO: `Case` and the lemma *who* for *whom*; `Poss` for *whose* | *whom* with lemma *whom* 23; `Case` 0 of 447; *whose* `Poss=Yes` 13 of 13 | the decision was made after 2.18 |
-| [discourse-adverbs](seeds/discourse-adverbs.md) | only non-adverbial markers | ADV with `discourse` — 9 (in GUM — 78) | boundary by meaning, not by word class |
-| [v1-labels](seeds/v1-labels.md) | examples with `dobj`, `nsubjpass`, `neg`, `mwe`… (36 lines) | 0 | the text has not been updated since v1 |
+| [iobj-sole](seeds.md#iobj-sole) | `iobj` only with `obj`/`ccomp`; with `xcomp` — `obj` | 795 `iobj`: 243 without `obj`/`ccomp`, of them 93 with `xcomp` | 2.12 amendment "Sole iobj" |
+| [iobj-to-phrase](seeds.md#iobj-to-phrase) | *to me* — `nmod` | *to* phrase on a verb: `obl` 1285, `nmod` 0 | v1 leftover |
+| [imperative-do](seeds.md#imperative-do) | VB with an auxiliary — `Inf` | with imperative *do*: `Mood=Imp\|Fin` 98, `Inf` 8 | EWT annotates by sentence type |
+| [subjunctive](seeds.md#subjunctive) | subjunctive → `Inf` / `Ind` | `Mood=Sub` 57: VB 49, *were* 8; ≥5 subjunctives remained `Inf` | `Mood.md` not updated; `Tense.md` already mentions the subjunctive |
+| [modal-mood](seeds.md#modal-mood) | every finite form has `Mood` | MD with `Fin` without `Mood` — 4049; validator warning | open question, #1118 |
+| [depictives](seeds.md#depictives) | `acl` (:612) and `advmod` (:878) | ADJ depictive `advcl` 22, `acl` 0, `advmod` 0 | 2.10 amendment |
+| [clausal-predicate](seeds.md#clausal-predicate) | the copula is the head, the clause is `ccomp` | `nsubj:outer`/`csubj:outer` 257, old analysis 0 | 2.10 amendment |
+| [wh-pronouns](seeds.md#wh-pronouns) | TODO: `Case` and the lemma *who* for *whom*; `Poss` for *whose* | *whom* with lemma *whom* 23; `Case` 0 of 447; *whose* `Poss=Yes` 13 of 13 | the decision was made after 2.18 |
+| [discourse-adverbs](seeds.md#discourse-adverbs) | only non-adverbial markers | ADV with `discourse` — 9 (in GUM — 78) | boundary by meaning, not by word class |
+| [v1-labels](seeds.md#v1-labels) | examples with `dobj`, `nsubjpass`, `neg`, `mwe`… (36 lines) | 0 | the text has not been updated since v1 |
 
 Conclusion: mostly the `_en` text is out of date, while the EWT data follow later universal amendments. Genuine inconsistencies in the data themselves:
 - 8 imperatives with `Inf`;

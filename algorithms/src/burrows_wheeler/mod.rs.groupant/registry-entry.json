@@ -1,0 +1,29 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline burrows_wheeler::tests::",
+    "Twice per debug/release; identical normalized identities. Compiled per-source mutation and exact restoration; strict Clippy; narrow rustfmt; repeated syntax."
+  ],
+  "children": [],
+  "cost": "Comparison-sort cyclic doubling and final sort take O(n log² n) time and O(n) storage. LF candidate decoding takes O(n+256); inverse's canonical retransformation adds O(n log² n), so complete inverse is O(n log² n+256), not linear. Allocation failure may panic/abort. No benchmark gain is claimed.",
+  "description": "burrows_wheeler exact byte algorithm",
+  "forward": [
+    "Sort all n cyclic rotations lexicographically with equal rotations ordered by ascending source offset. Return their last bytes C and the row p whose source offset is zero. Empty T returns ([],0). Inverse checks p then computes an LF candidate and accepts it iff its canonical transform equals (C,p).",
+    "Every doubling order is a permutation. Ranks identify and order cyclic prefixes of the current width; pair sorting doubles width. shifted avoids overflowing i+width. Final (rank,offset) sorting makes periodic ties deterministic. LF maps each byte occurrence to the same ordered occurrence in the sorted first column."
+  ],
+  "id": "algorithm-burrows-wheeler",
+  "inverse": [
+    "In the universe of text/result pairs, exclude altered byte multiplicities, wrong sorted-rotation last columns, and noncanonical primary rows. Inverse rejects out-of-range p before any reachability check, and rejects unreachable in-range (C,p) pairs. Source-derived excluded behavior is not a semantic proof.",
+    "The full canonical pair (C,p) has exactly one input text when reachable, recovered by inverse; otherwise the fiber is empty. Projection to C alone retains ambiguity: abab and baba both produce bbaa, with primary rows 0 and 2. Neither column-only reconstruction nor accepting every LF cycle recovers the original.",
+    "Equal rotations of a periodic text are ordered by original offset. If the least cyclic period is d (so d divides n), each equal-rotation class has n/d members; source offset zero is first in its class. For bbaa only primary 0 or 2 is canonical; 1 and 3 are rejected despite decoding periodic candidates.",
+    "LF(i)=number of column bytes less than C[i] plus count of equal bytes strictly before i. Stable occurrence numbering gives a permutation; equal symbols alone do not identify which occurrence was meant. Following LF n times from p reconstructs a candidate, not reachability certification.",
+    "At width w<n, sorting (rank[i],rank[(i+w) mod n]) refines cyclic prefixes to length 2w. Once width reaches n, order of those prefixes agrees with full rotations, including equality. Saturating doubling cannot stall before reaching valid slice length n.",
+    "For a strictly increasing map f of byte support, transform(f(T))=(f(C),p). Sorting equivalence and stable tie offsets survive; mere injectivity without byte-order preservation does not preserve row order.",
+    "For n=0, p=0 is the sole valid metadata and decodes empty. For n>0, p>=n gives InvalidPrimaryIndex. For remaining metadata, canonical retransformation equality chooses Ok(candidate) versus InvalidTransform. These precedence partitions cover every byte column and usize primary.",
+    "For each byte b, count_b(T)=count_b(C), since predecessor offsets form a permutation. This necessary condition does not certify a valid encoded pair. The inverse finite search oracle enumerates all possible input texts separately."
+  ],
+  "limitations": [
+    "Partial syntax excludes macro expansion and semantic resolution. Finite enumeration is not a general proof; allocation exhaustion and throughput are untested. No executable approximation profile or downstream inference claim."
+  ],
+  "source": "algorithms/src/burrows_wheeler/mod.rs",
+  "state": "Finite byte slices and ordinary terminating Rust calls with successful allocation."
+}

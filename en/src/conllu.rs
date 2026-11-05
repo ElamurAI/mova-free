@@ -61,6 +61,9 @@ pub fn read(path: &Path) -> Result<Vec<Sentence>> {
             if !cur.tokens.is_empty() {
                 out.push(std::mem::take(&mut cur));
             }
+            // A permissively accepted incomplete range cannot cross sentences.
+            range_end = 0;
+            range_space = true;
             continue;
         }
         if let Some(rest) = line.strip_prefix("# sent_id = ") {
@@ -94,9 +97,16 @@ pub fn read(path: &Path) -> Result<Vec<Sentence>> {
             space_after = range_space;
             range_end = 0;
         }
-        let rel = match Rel::parse(cols[7]).or_else(|| cols[7].split_once(':').and_then(|(b, _)| Rel::parse(b))) {
+        let rel = match Rel::parse(cols[7])
+            .or_else(|| cols[7].split_once(':').and_then(|(b, _)| Rel::parse(b)))
+        {
             Some(r) => r,
-            None => bail!("{}:{}: unknown UD relation '{}'", path.display(), no + 1, cols[7]),
+            None => bail!(
+                "{}:{}: unknown UD relation '{}'",
+                path.display(),
+                no + 1,
+                cols[7]
+            ),
         };
         cur.tokens.push(Token {
             form: cols[1].to_string(),
@@ -150,9 +160,22 @@ pub enum Col {
 }
 
 impl Col {
-    pub const ALL: [Col; 10] = [Col::Id, Col::Form, Col::Lemma, Col::Upos, Col::Xpos, Col::Feats, Col::Head, Col::Deprel, Col::Deps, Col::Misc];
+    pub const ALL: [Col; 10] = [
+        Col::Id,
+        Col::Form,
+        Col::Lemma,
+        Col::Upos,
+        Col::Xpos,
+        Col::Feats,
+        Col::Head,
+        Col::Deprel,
+        Col::Deps,
+        Col::Misc,
+    ];
     pub fn name(self) -> &'static str {
-        ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"][self as usize]
+        [
+            "ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC",
+        ][self as usize]
     }
 }
 
@@ -200,13 +223,23 @@ impl FullSentence {
     }
     /// sent_id or line number — for messages.
     pub fn label(&self) -> String {
-        if self.sent.id.is_empty() { format!("line {}", self.line) } else { self.sent.id.clone() }
+        if self.sent.id.is_empty() {
+            format!("line {}", self.line)
+        } else {
+            self.sent.id.clone()
+        }
     }
 
     /// Rebuild `sent` and `words` from `rows` — the same way `read` builds a sentence (has_* layers stay).
     /// Word IDs must be consecutive from 1: the head number is an index into `sent.tokens`.
+    /// On error, both derived views stay unchanged; caller edits to raw rows/comments remain.
     pub fn refresh(&mut self) -> Result<()> {
-        let mut s = Sentence { has_feats: self.sent.has_feats, has_lemmas: self.sent.has_lemmas, has_forms: self.sent.has_forms, ..Default::default() };
+        let mut s = Sentence {
+            has_feats: self.sent.has_feats,
+            has_lemmas: self.sent.has_lemmas,
+            has_forms: self.sent.has_forms,
+            ..Default::default()
+        };
         for c in &self.comments {
             if let Some(rest) = c.strip_prefix("# sent_id = ") {
                 s.id = rest.to_string();
@@ -214,7 +247,9 @@ impl FullSentence {
                 s.text = rest.to_string();
             }
         }
-        self.words.clear();
+        // Build both views privately; publishing a partial map would invalidate the
+        // previously usable sentence if a later row fails validation.
+        let mut words = Vec::with_capacity(self.rows.len());
         let (mut range_end, mut range_space) = (0usize, true);
         for (k, row) in self.rows.iter().enumerate() {
             let c = &row.0;
@@ -228,7 +263,12 @@ impl FullSentence {
             }
             let id: usize = c[0].parse().unwrap_or(0);
             if id != s.tokens.len() + 1 {
-                bail!("{}: word with ID '{}' out of place (expected {})", s.id, c[0], s.tokens.len() + 1);
+                bail!(
+                    "{}: word with ID '{}' out of place (expected {})",
+                    s.id,
+                    c[0],
+                    s.tokens.len() + 1
+                );
             }
             let mut space_after = !c[9].contains("SpaceAfter=No");
             if range_end > 0 && id < range_end {
@@ -237,7 +277,9 @@ impl FullSentence {
                 space_after = range_space;
                 range_end = 0;
             }
-            let rel = match Rel::parse(&c[7]).or_else(|| c[7].split_once(':').and_then(|(b, _)| Rel::parse(b))) {
+            let rel = match Rel::parse(&c[7])
+                .or_else(|| c[7].split_once(':').and_then(|(b, _)| Rel::parse(b)))
+            {
                 Some(r) => r,
                 None => bail!("{}: unknown UD relation '{}'", s.id, c[7]),
             };
@@ -251,8 +293,9 @@ impl FullSentence {
                 rel,
                 space_after,
             });
-            self.words.push(k);
+            words.push(k);
         }
+        self.words = words;
         self.sent = s;
         Ok(())
     }
@@ -303,7 +346,10 @@ impl Doc {
             if line.contains('\r') {
                 bail!("line {}: CR — CoNLL-U lines end with LF only", no + 1);
             }
-            let s = cur.get_or_insert_with(|| FullSentence { line: no + 1, ..Default::default() });
+            let s = cur.get_or_insert_with(|| FullSentence {
+                line: no + 1,
+                ..Default::default()
+            });
             if line.starts_with('#') {
                 if !s.rows.is_empty() {
                     bail!("line {}: comment in the middle of a sentence", no + 1);
@@ -313,7 +359,9 @@ impl Doc {
             }
             let cols: Vec<String> = line.split('\t').map(str::to_string).collect();
             let n = cols.len();
-            let cols: [String; 10] = cols.try_into().map_err(|_| anyhow::anyhow!("line {}: {n} columns, expected 10", no + 1))?;
+            let cols: [String; 10] = cols
+                .try_into()
+                .map_err(|_| anyhow::anyhow!("line {}: {n} columns, expected 10", no + 1))?;
             s.rows.push(Row(cols));
         }
         if let Some(s) = cur.take() {
@@ -321,7 +369,8 @@ impl Doc {
         }
         for s in &mut doc.sents {
             let line = s.line;
-            s.refresh().with_context(|| format!("sentence at line {line}"))?;
+            s.refresh()
+                .with_context(|| format!("sentence at line {line}"))?;
         }
         // file layers — as in `read`: present if at least 5% of words have a value other than "_"
         let (mut n, mut f, mut l, mut w) = (0usize, 0usize, 0usize, 0usize);
@@ -404,11 +453,24 @@ mod full_tests {
         }
         let d = Doc::parse(&cases[0]).unwrap();
         assert_eq!(d.sents.len(), 2);
-        assert_eq!((d.sents[0].rows.len(), d.sents[0].words.len(), d.sents[0].comments.len()), (6, 4, 3));
+        assert_eq!(
+            (
+                d.sents[0].rows.len(),
+                d.sents[0].words.len(),
+                d.sents[0].comments.len()
+            ),
+            (6, 4, 3)
+        );
         // view — as in `read`: words only; the space after the token Don't comes from the multiword line
         let s = &d.sents[0].sent;
-        assert_eq!((s.id.as_str(), s.text.as_str(), s.tokens.len()), ("a", "Don't go.", 4));
-        assert_eq!(s.tokens.iter().map(|t| t.space_after).collect::<Vec<_>>(), [false, false, false, true]);
+        assert_eq!(
+            (s.id.as_str(), s.text.as_str(), s.tokens.len()),
+            ("a", "Don't go.", 4)
+        );
+        assert_eq!(
+            s.tokens.iter().map(|t| t.space_after).collect::<Vec<_>>(),
+            [false, false, false, true]
+        );
         assert!(s.tokens[0].feats.has(crate::gram::Feat::MoodInd));
         assert_eq!(d.sents[0].word(2).get(Col::Form), "go");
         // negative control: editing a raw column changes the text
@@ -428,10 +490,71 @@ mod full_tests {
         assert!(err("1\tHi\thi\tINTJ\tUH\t_\t0\tzzz\t_\t_\n").contains("unknown UD relation"));
     }
 
+    #[test]
+    fn wave26_training_range_state_is_sentence_local() {
+        // An incomplete range is accepted by the permissive reader, but must
+        // not affect the next sentence.
+        let text = "1-3\tx\t_\t_\t_\t_\t_\t_\t_\tSpaceAfter=No\n1\tx\tx\tNOUN\tNN\t_\t0\troot\t_\t_\n\n1\ty\ty\tNOUN\tNN\t_\t0\troot\t_\t_\n";
+        let path =
+            std::env::temp_dir().join(format!("mova-wave26-range-{}.conllu", std::process::id()));
+        std::fs::write(&path, text).unwrap();
+        let result = read(&path);
+        std::fs::remove_file(&path).unwrap();
+        let training = result.unwrap();
+        let full = Doc::parse(text).unwrap();
+        assert_eq!(training.len(), 2);
+        assert!(!training[0].tokens[0].space_after);
+        assert!(
+            training[1].tokens[0].space_after,
+            "range state crossed sentence separator"
+        );
+        for (a, b) in training.iter().zip(&full.sents) {
+            assert_eq!(
+                serde_json::to_value(a).unwrap(),
+                serde_json::to_value(&b.sent).unwrap()
+            );
+        }
+    }
+
+    #[test]
+    fn wave26_refresh_error_preserves_derived_view() {
+        for (column, bad) in [(Col::Id, "99"), (Col::Deprel, "unknown_relation")] {
+            let mut doc = Doc::parse(S1).unwrap();
+            let s = &mut doc.sents[0];
+            let old_words = s.words.clone();
+            let old_sent = serde_json::to_value(&s.sent).unwrap();
+            let row = *s.words.last().unwrap();
+            s.rows[row].set(column, bad);
+            assert!(s.refresh().is_err());
+            assert_eq!(
+                s.words, old_words,
+                "failed refresh changed the word-to-row map"
+            );
+            assert_eq!(serde_json::to_value(&s.sent).unwrap(), old_sent);
+            assert_eq!(
+                s.rows[row].get(column),
+                bad,
+                "raw caller edits are retained"
+            );
+            s.rows[row].set(column, if column == Col::Id { "4" } else { "punct" });
+            s.refresh().unwrap();
+            assert_eq!(s.words, old_words);
+            assert_eq!(serde_json::to_value(&s.sent).unwrap(), old_sent);
+        }
+    }
+
     /// All English UD 2.18 treebanks: writing without edits gives the same bytes; the view is the same as `read` gives.
     #[test]
     fn full_round_trip_all_english_treebanks() {
-        let root = std::env::var("EN_UD_DIR").unwrap_or_else(|_| format!("{}/en/ud/ud-treebanks-v2.18", std::env::var("MOVA_DATA").unwrap_or_else(|_| format!("{}/mova-data", std::env::var("HOME").unwrap_or_default()))));
+        let root = std::env::var("EN_UD_DIR").unwrap_or_else(|_| {
+            format!(
+                "{}/en/ud/ud-treebanks-v2.18",
+                std::env::var("MOVA_DATA").unwrap_or_else(|_| format!(
+                    "{}/mova-data",
+                    std::env::var("HOME").unwrap_or_default()
+                ))
+            )
+        });
         // the UD treebanks are data, not part of the repo: without them (a fresh checkout) the test is skipped
         if !std::path::Path::new(&root).is_dir() {
             eprintln!("skipped: no UD 2.18 treebanks at {root} (EN_UD_DIR)");
@@ -441,28 +564,63 @@ mod full_tests {
             .unwrap_or_else(|e| panic!("{root}: {e} (UD 2.18 treebanks — EN_UD_DIR)"))
             .flatten()
             .filter(|e| e.file_name().to_string_lossy().starts_with("UD_English-"))
-            .flat_map(|e| std::fs::read_dir(e.path()).unwrap().flatten().map(|f| f.path()))
+            .flat_map(|e| {
+                std::fs::read_dir(e.path())
+                    .unwrap()
+                    .flatten()
+                    .map(|f| f.path())
+            })
             .filter(|p| p.extension().is_some_and(|x| x == "conllu"))
             .collect();
         files.sort();
-        assert!(files.len() >= 29, "{} English files — expected 29", files.len());
+        assert!(
+            files.len() >= 29,
+            "{} English files — expected 29",
+            files.len()
+        );
         for p in &files {
             let text = std::fs::read_to_string(p).unwrap();
             let doc = Doc::parse(&text).unwrap_or_else(|e| panic!("{}: {e:#}", p.display()));
             let out = doc.text();
             if out != text {
-                let at = out.bytes().zip(text.bytes()).position(|(a, b)| a != b).unwrap_or(out.len().min(text.len()));
-                panic!("{}: output differs from byte {at} (lengths {} and {})", p.display(), out.len(), text.len());
+                let at = out
+                    .bytes()
+                    .zip(text.bytes())
+                    .position(|(a, b)| a != b)
+                    .unwrap_or(out.len().min(text.len()));
+                panic!(
+                    "{}: output differs from byte {at} (lengths {} and {})",
+                    p.display(),
+                    out.len(),
+                    text.len()
+                );
             }
             let old = read(p).unwrap();
-            let new: Vec<&Sentence> = doc.sents.iter().map(|s| &s.sent).filter(|s| !s.tokens.is_empty()).collect();
+            let new: Vec<&Sentence> = doc
+                .sents
+                .iter()
+                .map(|s| &s.sent)
+                .filter(|s| !s.tokens.is_empty())
+                .collect();
             assert_eq!(old.len(), new.len(), "{}", p.display());
             for (a, b) in old.iter().zip(&new) {
-                assert_eq!((&a.id, &a.text, a.has_feats, a.has_lemmas, a.has_forms), (&b.id, &b.text, b.has_feats, b.has_lemmas, b.has_forms), "{}", p.display());
+                assert_eq!(
+                    (&a.id, &a.text, a.has_feats, a.has_lemmas, a.has_forms),
+                    (&b.id, &b.text, b.has_feats, b.has_lemmas, b.has_forms),
+                    "{}",
+                    p.display()
+                );
                 assert_eq!(a.tokens.len(), b.tokens.len(), "{} {}", p.display(), a.id);
                 for (x, y) in a.tokens.iter().zip(&b.tokens) {
                     assert!(
-                        x.form == y.form && x.lemma == y.lemma && x.tag == y.tag && x.upos == y.upos && x.feats == y.feats && x.head == y.head && x.rel == y.rel && x.space_after == y.space_after,
+                        x.form == y.form
+                            && x.lemma == y.lemma
+                            && x.tag == y.tag
+                            && x.upos == y.upos
+                            && x.feats == y.feats
+                            && x.head == y.head
+                            && x.rel == y.rel
+                            && x.space_after == y.space_after,
                         "{} {}: {x:?} / {y:?}",
                         p.display(),
                         a.id

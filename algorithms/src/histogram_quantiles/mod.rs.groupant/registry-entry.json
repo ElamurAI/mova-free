@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "Repeated debug and release normalized outcomes",
+    "Independent finite references and compiled mutant control",
+    "Two identical syntax projections"
+  ],
+  "children": [],
+  "cost": "O(b) construction/query/state, O(1) update; b<=1,000,000",
+  "description": "Discrete fixed-width quantile intervals",
+  "forward": [
+    "See model.md forward and invariant"
+  ],
+  "id": "algorithm-histogram-quantiles",
+  "inverse": [
+    "Distinct complement and reconstruction relations in model.md"
+  ],
+  "limitations": [
+    "Finite evidence not universal proof",
+    "Partial syntax not semantic AST",
+    "No standalone executable surrogate",
+    "No whole-pipeline composed error bound"
+  ],
+  "source": "algorithms/src/histogram_quantiles/mod.rs",
+  "state": "Inclusive min,max,width; exact per-bucket u64 counts, total N"
+}

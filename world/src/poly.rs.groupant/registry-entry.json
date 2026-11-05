@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p world --lib bounded_models (debug/release twice)",
+    "mova-modelcheck syntax twice; groupants source/type checks; compiled source mutation controls"
+  ],
+  "children": [],
+  "cost": "Let N be total input bytes, L the line count, B selected bytes, T token characters and Bout output bytes. Whole-call time is O(N+L+B+T+Bout), excluding opaque annotation and I/O latency. Whole-call retained memory is O(N+L+B+Bout) plus token and annotator storage; N accounts for prep retaining the full raw input even when selection is short.",
+  "description": "terminal/closer classify tokens; sentences partitions them. prep reads raw text and calls story_paragraphs, then acquires the annotator, tokenizes each selected paragraph, detokenizes sentence slices, emits indexed TSV and summary. story_paragraphs checks marker ordering before indexing. Tests are a separate bounded evidence region.",
+  "forward": [
+    "terminal/closer classify tokens; sentences partitions them. prep reads raw text and calls story_paragraphs, then acquires the annotator, tokenizes each selected paragraph, detokenizes sentence slices, emits indexed TSV and summary. story_paragraphs checks marker ordering before indexing. Tests are a separate bounded evidence region."
+  ],
+  "id": "world-poly",
+  "inverse": [
+    "On finite tokens, exclude a range containing an out-of-bounds index, overlapping ranges, or lost tokens. On malformed marker order exclude a successful extraction or parser acquisition. Oracle: partition enumeration and reversed-marker public rejection.",
+    "For paragraph vector P, return all marker-bounded books whose selected lines collapse to P, including arbitrary excluded prefixes/suffixes and alternative whitespace. For ranges Q, retain all token forms producing Q; sentence ranges cannot reconstruct words. Oracle: whitespace variants and heading cut fixtures."
+  ],
+  "limitations": [
+    "Finite observations only; no semantic AST or global proof.",
+    "Opaque dependencies and I/O gaps listed in adjacent descriptant; no live-state tests."
+  ],
+  "source": "world/src/poly.rs",
+  "state": "Finite UTF-8 Gutenberg books with exact line markers/headings; finite Tok arrays; explicit named input/output paths. Observations are ranges, extracted paragraphs, errors and conditional TSV effects."
+}

@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Shared parent lexical projection; fragment byte scope above",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Source byte range [18733,22422); lexical, not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Source byte range [18733,22422); lexical, not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "multiplicity",
+        "path": "model.md",
+        "scope": "Source byte range [18733,22422); lexical, not proof",
+        "section": "multiplicity",
+        "status": "partial_source_derived_model",
+        "type": "multiplicity"
+      },
+      {
+        "id": "failure_precedence",
+        "path": "model.md",
+        "scope": "Source byte range [18733,22422); lexical, not proof",
+        "section": "failure_precedence",
+        "status": "partial_source_derived_model",
+        "type": "failure_precedence"
+      },
+      {
+        "id": "branch_relation",
+        "path": "model.md",
+        "scope": "Source byte range [18733,22422); lexical, not proof",
+        "section": "branch_relation",
+        "status": "partial_source_derived_model",
+        "type": "branch_relation"
+      },
+      {
+        "id": "resource_cost",
+        "path": "model.md",
+        "scope": "Source byte range [18733,22422); lexical, not proof",
+        "section": "resource_cost",
+        "status": "partial_source_derived_model",
+        "type": "resource_cost"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "partial_bounded_parent_evidence"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 22422,
+      "start": 18733
+    },
+    "description": "right_index stores nonmissing key rows in appearance order. innerjoin enumerates all matches then stable sorts by left keys. join rejects any duplicate right key before scanning left and requires every left row match. combine omits right keys, suffixes colliding names.",
+    "source_bytes_sha256": "d27bf43bc878e09b39d5dfed590192324505f5fdcd30b09d3155d4aca6efd6f9"
+  },
+  "id": "mlab-builtins-table-joins",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../table.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "f1b0959092cfcdd3cbd171a48d252ce4c1e652b1e56ed030c160e7667d8cbb54"
+  },
+  "status": "partial_source_bound_model"
+}

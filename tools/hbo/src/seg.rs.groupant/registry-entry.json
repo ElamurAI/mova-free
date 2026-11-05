@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "seg::wave32::supplied_states_context_fallback_and_codec"
+  ],
+  "children": [],
+  "cost": "U units,B bytes,E table entries,L alternatives,P prefix alternatives,C generated prefix×suffix candidates,K=min(max_k,U). Prefix context construction copies O(K²) units. For each prefix p whose rest lookup does not supply suffixes, suffix contexts copy O(K_p²) units, K_p=min(max_k,remaining units). Total context copying is O(K²+sum_p K_p²), conservatively O((P+1)K²), with actual UTF-8 unit byte lengths multiplying copy work; per-prefix rest concatenation additionally totals O(PB). BTree lookup O(log E) comparisons, candidate sorting O(C log C); cuts/normalization add O(C(B+U)), partial lex scans matching forms. Evaluation span membership O(Pgold*Ppred). Memory O(E text+C(U+B)+sentence keys).",
+  "description": "Candidate pipeline: fitting commonest lex label; partial-point lex merge; eligible pointed thin fallback; longest accepted prefix context and rest/suffix Cartesian alternatives; host/chain filters; greedy-first or stable share ordering; consonant validation and unsplit fallback; sequential neighbour smoothing. save/load project tables/options and rebuild letters index.",
+  "forward": [
+    "Candidate pipeline: fitting commonest lex label; partial-point lex merge; eligible pointed thin fallback; longest accepted prefix context and rest/suffix Cartesian alternatives; host/chain filters; greedy-first or stable share ordering; consonant validation and unsplit fallback; sequential neighbour smoothing. save/load project tables/options and rebuild letters index."
+  ],
+  "id": "hbo-seg",
+  "inverse": [
+    "Consonant-checked nonempty admissible outputs cannot lose/invent unpointed letters after removing H. This does not hold as a blanket claim for empty form: fallback Cut(0) is returned even though spells rejects it. Context does not rerank lexp/rules.",
+    "Pieces plus written form determine cut strings under valid coordinates; pieces alone admit all forms with matching unit length. Candidate winners admit many count tables and context histories. save cannot recover fallback, lex/rest booleans, absent level versus default Pointed, or original TSV order."
+  ],
+  "limitations": [
+    "Finite supplied-input checks only; no corpus, training, external annotator, GPU, throughput or semantic-understanding claim. Allocation exhaustion and malformed arbitrary model arithmetic are not exhaustively exercised. No useful numerical surrogate is implemented; future caps may only be 1/2/5/10% with a declared metric."
+  ],
+  "source": "tools/hbo/src/seg.rs",
+  "state": "Nonempty well-formed gold words; unit sums/usize and u32 counts representable. Valid cuts sum to units and exclude zero-length Cut. H consumes0; leading cut moves previous vowels. Probability domain positive table totals, finite host factor>=0, finite K>=0 with total+K>0. Public malformed states can violate premises."
+}

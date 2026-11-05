@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms k_core::tests::",
+    "Repeated standalone debug/release, strict Clippy, compiled mutant, paired syntax."
+  ],
+  "children": [],
+  "cost": "Simple undirected graph n<=256,m<=65536. Repeatedly delete vertices with live degree below k; return ascending survivors, unique maximal induced minimum-degree-k subgraph. FIFO deletion, each edge visited O(1) after O(V^2+E) validation. O(V^2+E) time/storage. k=0 retains all. Seidman (1983).",
+  "description": "k_core mod exact graph contract",
+  "forward": [
+    "Simple undirected graph n<=256,m<=65536. Repeatedly delete vertices with live degree below k; return ascending survivors, unique maximal induced minimum-degree-k subgraph. FIFO deletion, each edge visited O(1) after O(V^2+E) validation. O(V^2+E) time/storage. k=0 retains all. Seidman (1983)."
+  ],
+  "id": "algorithm-k-core",
+  "inverse": [
+    "Let R be the deterministic relation specified by Forward including validation precedence and tie rules, X the declared input type and Y its Result type. Behavior complement is (X times Y) minus R. Specifically outputs violating Deleted vertices cannot belong to any minimum-degree-k induced subgraph. For live vertices degree equals count of live neighbors; survivor set is maximal. are excluded; a valid-input Err or a wrong successful witness is excluded. Resource, cycle and structural rejections are determined before algorithmic output.",
+    "Given survivor set S, compatible graphs make G[S] minimum degree at least k and every vertex outside S eventually peelable. For k=1, a three-vertex path and a triangle differ but both can yield all vertices when no isolated vertices. Errors identify violated validation predicates."
+  ],
+  "limitations": [
+    "Finite checks only; allocation failure untyped; partial syntax; no approximate executable profiles."
+  ],
+  "source": "algorithms/src/k_core/mod.rs",
+  "state": "Allocated graph inputs and typed Result outputs, standard terminating Rust; allocation failure outside contract."
+}

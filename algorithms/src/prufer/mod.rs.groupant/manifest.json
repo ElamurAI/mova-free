@@ -1,0 +1,112 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-prufer-behavior_complement",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "U contains labeled edge lists or words, explicit n, and candidate Result values. Wrong lengths/labels, loops, reversed duplicates, or cyclic n-1 edge lists cannot yield Ok. For valid trees, code from a nonminimum current leaf is excluded; decode outputs with wrong degrees, noncanonical edge order, cycles or missing connectivity are excluded.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "59d4e190daaba583967077effd6cdadcedbd0ef1d2a21708b74222da5768864b",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-prufer-reverse_reconstruction",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "For n>=2 fixed n, the valid code identifies one undirected labeled tree; encoding forgets edge order and endpoint orientation, so its concrete edge-list fiber contains all permutations and orientations of that tree. Decode with fixed n has one compatible word. Without n, [] also represents the distinct n=0,1,2 conventions; omitting n loses that distinction.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "59d4e190daaba583967077effd6cdadcedbd0ef1d2a21708b74222da5768864b",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-prufer-degree_fiber",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "For n>=2, fixing just decoded degree vector d admits every word of length n-2 with exactly d(v)-1 occurrences of v; occurrence order is lost by the degree observation. Different such words may encode different trees. Full code retains this order and restores the unique labeled edge set.",
+        "path": "model.md",
+        "section": "degree_fiber",
+        "status": "partial_relational_specification",
+        "subject_revision": "59d4e190daaba583967077effd6cdadcedbd0ef1d2a21708b74222da5768864b",
+        "type": "degree_fiber"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-prufer-tree_validation_partition",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "encode first rejects n>MAX_VERTICES, then edges.len()!=n.saturating_sub(1), then processes edges in order: u label, v label, self-loop, normalized duplicate, DSU cycle. A reversed repeat reports RepeatedEdge before the cycle check; a first cycle reports NotTree before inspecting later edges. With n-1 distinct loopless edges, acyclicity implies connectedness for n>0. decode checks cap then length then labels. Thus a wrong-length word with an invalid symbol yields WrongLength. n=0/1 accept only empty edge lists and words.",
+        "path": "model.md",
+        "section": "tree_validation_partition",
+        "status": "partial_relational_specification",
+        "subject_revision": "59d4e190daaba583967077effd6cdadcedbd0ef1d2a21708b74222da5768864b",
+        "type": "tree_validation_partition"
+      },
+      {
+        "approximation_semantics": "Source-derived exact target relation; finite checks are not a semantic proof",
+        "assumptions": "Validated labels, documented cap and deterministic integer operations",
+        "domain": "Documented capped API domain, or explicitly bounded deterministic test universe",
+        "evidence": "model.md#evidence",
+        "id": "algorithm-prufer-canonical_tree_identity",
+        "observation_scope": "Typed errors, canonical graph/code outputs and named assertions",
+        "operator": "For fixed n>=2, decode(encode(n,E)) equals the sorted set of normalized edges {(min(u,v),max(u,v))}; it need not equal E as an ordered oriented list. encode(decode(n,C))=C for every valid word. At each elimination the heap chooses the smallest live degree-one label, so the star/path fixture [(4,0),(4,1),(4,2),(4,3),(3,5)] yields [4,4,4,3]. The degree fiber alone loses this temporal order: for n=4 codes [0,1] and [1,0] have the same degrees [2,2,1,1] but different decoded trees.",
+        "path": "model.md",
+        "section": "canonical_tree_identity",
+        "status": "partial_relational_specification",
+        "subject_revision": "59d4e190daaba583967077effd6cdadcedbd0ef1d2a21708b74222da5768864b",
+        "type": "canonical_tree_identity"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-prufer",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "59d4e190daaba583967077effd6cdadcedbd0ef1d2a21708b74222da5768864b"
+  },
+  "status": "partial_source_derived_instance"
+}

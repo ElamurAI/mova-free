@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p world --lib story::wave9_models -- --test-threads=1"
+  ],
+  "cost": "With V endpoints and E stored edges, path is O(V+E), add one path plus append; kill O(E). closure iterates at most V+2 rounds, scanning live edges and cloning V/64-word rows: O(V E ceil(V/64)) time and O(V ceil(V/64)) result memory. Dead edges still occupy adjacency storage. known_since scans K knowledge and R reveals. creation_order costs up to 64 scans of N candidates with ordered-set lookup and entity snapshot work.",
+  "description": "State is (point identity map, world ids, live tagged edges, frames, canonical metadata, knowledge and reveals). add accepts u<=v or u<v exactly when a return path does not form a strict cycle; equal-node weak insertion is a no-op. path prefers any strict witness. order is an ordered classifier of endpoint reachability, not a complete Allen algebra. known_since takes the first minimum sentence among explicit knowledge, reveals, telling, listeners and narrator opening. creation_order orders six supported registries with bounded dependency passes.",
+  "forward": [
+    "State is (point identity map, world ids, live tagged edges, frames, canonical metadata, knowledge and reveals). add accepts u<=v or u<v exactly when a return path does not form a strict cycle; equal-node weak insertion is a no-op. path prefers any strict witness. order is an ordered classifier of endpoint reachability, not a complete Allen algebra. known_since takes the first minimum sentence among explicit knowledge, reveals, telling, listeners and narrator opening. creation_order orders six supported registries with bounded dependency passes.",
+    "Time, frame, observer and reproduction fragments share Id/Pt identity. narr::register creates endpoints and metadata; narr::relate inserts endpoint constraints; World::apply supplies outer rollback. Frame worlds and canonical metadata must agree on wid. Knowledge sentence time is independent of story endpoint order."
+  ],
+  "id": "world-story",
+  "inverse": [
+    "Within the add-generated graph universe, transitions accepting a strict return cycle are absent. With missing event endpoints order cannot certify any relation. Different start-node world ids preclude all order labels except OtherWorld. These exclusions do not promise that raw add rejects cross-world edges.",
+    "Given only order(a,b), retain every valid graph whose prioritized classifier returns that label. The fiber discards edge provenance, redundant paths, other nodes and absolute chronology. For the acyclic strict three-edge family (0,1),(1,2),(0,2), reach(0,2)=strict has exactly masks 3,4,5,6,7; enumeration is complete only on those eight candidates."
+  ],
+  "limitations": [
+    "Partial source models and bounded synthetic tests; no universal coverage.",
+    "Parent acyclicity, valid typed variants and sufficient resources are premises; arbitrary mutable state corruption and panic rollback are unmodeled.",
+    "No live parser, corpus, training, persistence, GPU or throughput evidence."
+  ],
+  "source": "world/src/story.rs",
+  "state": "On graphs constructed through add, no live cycle contains a strict edge. Pt identity reuses its first world id; callers must maintain same-world edge premises. A public Order is a projection of constraints, not their converse. Stack and parent acyclicity are established by narrative commands, not validated by recursive narr_level."
+}

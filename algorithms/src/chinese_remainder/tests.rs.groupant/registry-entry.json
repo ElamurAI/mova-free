@@ -1,0 +1,25 @@
+{
+  "id": "algorithm-chinese-remainder-tests",
+  "source": "algorithms/src/chinese_remainder/tests.rs",
+  "children": [],
+  "description": "chinese_remainder finite verification harness",
+  "state": "Five tests: exhaustive pairs m,n=1..10 and a=0..m,b=0..n; empty, modulus one, normalization and shared factors; full-width equal/dividing moduli, wide products, overflow and zero precedence; all six permutations and redundancy for 432 triples with moduli 6,8,9; distinct input fibers reconstructing (8,18).",
+  "cost": "Bounded finite divisor/residue enumeration.",
+  "forward": [
+    "Report pass iff all fixed finite assertions hold; otherwise fail. Five tests: exhaustive pairs m,n=1..10 and a=0..m,b=0..n; empty, modulus one, normalization and shared factors; full-width equal/dividing moduli, wide products, overflow and zero precedence; all six permutations and redundancy for 432 triples with moduli 6,8,9; distinct input fibers reconstructing (8,18)."
+  ],
+  "inverse": [
+    "Over terminating candidate implementations paired with pass/fail, excluded observations comprise pass with any failed assertion and fail with every assertion satisfied. Aborts/nontermination are outside this binary domain.",
+    "A pass reconstructs all implementations agreeing with every finite fixture, leaving arbitrary off-fixture behavior. Failure reconstructs implementations or faulty oracle premises causing the mismatch, never uniquely identifies a defect.",
+    "Independently scan 1..product(moduli) for the least common positive period, then 0..period for the first simultaneous residue. Bounded fixtures keep this brute force finite without Euclidean coefficients or production merge recurrence.",
+    "Change compatibility check difference % gcd != 0 to == 0. This compiled production-source mutant rejects compatible constraints and is rejected by neutral_normalization_and_non_coprime.",
+    "Single-thread repeated debug/release runs preserve normalized test records, excluding timestamps, build progress and elapsed time. This is finite evidence, not universal equivalence."
+  ],
+  "checks": [
+    "Debug/release twice, strict Clippy, fmt, production mutation and repeated partial syntax."
+  ],
+  "limitations": [
+    "Finite evidence not universal proof.",
+    "Macro expansion and semantic AST analysis absent."
+  ]
+}

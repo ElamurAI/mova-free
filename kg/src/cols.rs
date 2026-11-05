@@ -255,3 +255,39 @@ mod tests {
         fs::remove_dir_all(dir).unwrap();
     }
 }
+
+#[cfg(test)]
+mod wave29 {
+    use super::*;
+    #[test]
+    fn codec_boundaries_and_errors() {
+        let values = [0, u64::MAX, 1, 1 << 63, 0];
+        assert_eq!(
+            undelta_u64(&delta_u64(&values), values.len()).unwrap(),
+            values
+        );
+        assert_eq!(
+            unzigzag_u64(&zigzag_u64(&values), values.len()).unwrap(),
+            values
+        );
+        assert!(undelta_u64(&[128], 1).is_err());
+        assert!(undelta_u64(&[128; 11], 1).is_err());
+        assert!(unplanes_u32(&[0; 3], 1).is_err());
+        assert_eq!(undelta_u64(&[1, 9], 1).unwrap(), vec![1]);
+        assert_eq!(
+            unplanes_u32(&planes_u32(&[0, u32::MAX, 0x12345678]), 3).unwrap(),
+            vec![0, u32::MAX, 0x12345678]
+        );
+        assert_eq!(
+            flag::parse("uk,checked,uk"),
+            Some(flag::LANG_UK | flag::CHECKED)
+        );
+        assert_eq!(flag::parse(""), None);
+        let mut e = Edges::default();
+        e.push(7, 2, 9, 11, 12, flag::LANG_UK);
+        assert_eq!(e.filter(0).len(), 1);
+        assert_eq!(e.filter(flag::CHECKED).len(), 0);
+        assert_eq!(e.out(6), 0..0);
+        assert_eq!(e.out(7), 0..1);
+    }
+}

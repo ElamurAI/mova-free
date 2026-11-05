@@ -1,0 +1,113 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Proposed inner bound of absent behavior under the stated premises; source-derived and checked on finite fixtures, not proved for all Rust executions.",
+        "assumptions": "Lawful ordering/cloning where required, standard Rust and successful allocation.",
+        "domain": "Implementations paired with finite test outcomes.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "Declared finite fixtures.",
+        "operator": "In the universe of implementations and test outcomes, any passing implementation that disagrees with an asserted sampled oracle equality is excluded, assuming faithful assertions. Unsampled bugs may still pass.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "cbef6c9887ed574315295467305832f92644f442aea3c1e377097984d2211a37",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Source-derived relation; bounded executable evidence only, no unrestricted proof.",
+        "assumptions": "Lawful ordering/cloning where required, standard Rust and successful allocation.",
+        "domain": "Implementations paired with finite test outcomes.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_antecedents",
+        "observation_scope": "Declared finite fixtures.",
+        "operator": "A pass reconstructs the set of implementations agreeing on all sampled observations; a failure reconstructs those violating at least one assertion. Neither observation uniquely recovers implementation or universal correctness.",
+        "path": "model.md",
+        "section": "compatible_antecedents",
+        "status": "partial_source_derived",
+        "subject_revision": "cbef6c9887ed574315295467305832f92644f442aea3c1e377097984d2211a37",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with finite executed checks; no unrestricted semantic proof.",
+        "assumptions": "Lawful total ordering; value-preserving independent clones where required; source-bound tests; no panics, overflow or allocation failure.",
+        "domain": "The exact finite fixtures and assertions in this test source, with the production implementation under test.",
+        "evidence": "model.md#evidence",
+        "id": "metamorphic_oracle",
+        "observation_scope": "Operation observations or finite traces explicitly specified by the relation.",
+        "operator": "Passing requires the declared production observations to satisfy their decomposition, transport, reconstruction and update relations on every enumerated fixture. Premises are checked separately by explicit counterexamples. Relations may miss correlated errors, so independent scan checks remain necessary.",
+        "path": "model.md",
+        "section": "metamorphic_oracle",
+        "status": "bounded_checked",
+        "subject_revision": "cbef6c9887ed574315295467305832f92644f442aea3c1e377097984d2211a37",
+        "type": "metamorphic_test_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with finite executed checks; no unrestricted semantic proof.",
+        "assumptions": "Lawful total ordering; value-preserving independent clones where required; source-bound tests; no panics, overflow or allocation failure.",
+        "domain": "The exact finite fixtures and assertions in this test source, with the production implementation under test.",
+        "evidence": "model.md#evidence",
+        "id": "premise_boundary",
+        "observation_scope": "Operation observations or finite traces explicitly specified by the relation.",
+        "operator": "Observation of the non-strict order-collapse counterexample excludes extending strict order-embedding claims to merely monotone maps. Index-only observations retain ambiguous value preimages. Passing these assertions constrains the claims on these concrete inputs; it does not establish their maximal domains.",
+        "path": "model.md",
+        "section": "premise_boundary",
+        "status": "bounded_checked",
+        "subject_revision": "cbef6c9887ed574315295467305832f92644f442aea3c1e377097984d2211a37",
+        "type": "assumption_boundary_relation"
+      },
+      {
+        "approximation_semantics": "Source-derived conditional relation with finite executed checks; no unrestricted semantic proof.",
+        "assumptions": "Lawful total ordering; value-preserving independent clones where required; source-bound tests; no panics, overflow or allocation failure.",
+        "domain": "The exact finite fixtures and assertions in this test source, with the production implementation under test.",
+        "evidence": "model.md#evidence",
+        "id": "mutation_partition",
+        "observation_scope": "Operation observations or finite traces explicitly specified by the relation.",
+        "operator": "The finite test suite partitions implementations into accepted and rejected sets. The recorded compiled production mutant belongs to the rejected set at a named correspondence assertion. This is sensitivity to that defect, not completeness for all defects or a general proof of the model.",
+        "path": "model.md",
+        "section": "mutation_partition",
+        "status": "bounded_checked",
+        "subject_revision": "cbef6c9887ed574315295467305832f92644f442aea3c1e377097984d2211a37",
+        "type": "mutation_detection_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-segment-tree-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "cbef6c9887ed574315295467305832f92644f442aea3c1e377097984d2211a37"
+  },
+  "status": "partial_source_derived_instance"
+}

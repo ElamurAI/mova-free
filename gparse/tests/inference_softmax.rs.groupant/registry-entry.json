@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "compare_counts_tuple_changes_and_shape_errors"
+  ],
+  "children": [],
+  "cost": "O(number of tuple/string comparisons), plus cloned fixture; external experiment adds inference/loading/timing.",
+  "description": "compare asserts outer/inner shape equality then counts differing sentence vectors and individual prediction tuples. Synthetic helper test changes XPOS only and catches shape panics. Ignored experiment loads external model/corpus, alternates 8 rounds, requires per-mode repeated tuples, compares hidden/arc abs deltas<0.01, checks scored equality.",
+  "forward": [
+    "compare asserts outer/inner shape equality then counts differing sentence vectors and individual prediction tuples. Synthetic helper test changes XPOS only and catches shape panics. Ignored experiment loads external model/corpus, alternates 8 rounds, requires per-mode repeated tuples, compares hidden/arc abs deltas<0.01, checks scored equality."
+  ],
+  "id": "gparse-test-inference-softmax",
+  "inverse": [
+    "Passing selected assertions excludes their stated counterexamples within the fixtures. External saved-model/corpus experiment remains unexecuted; success of helper checks cannot establish it.",
+    "A (sentences,tokens) delta admits all mismatch locations and types with those counts; zero delta admits any identical aligned tuple pair."
+  ],
+  "limitations": [
+    "Partial lexical syntax; no semantic proof",
+    "Finite synthetic checks only; external corpus/model experiments excluded",
+    "No executable Rust percent surrogate or throughput claim",
+    "Fault injection and exhaustive nonfinite/dimension cases absent"
+  ],
+  "source": "gparse/tests/inference_softmax.rs",
+  "state": "Comparison count zero means exact tuple equality only after shape validation, not equal probabilities. Existing timed external experiment is not executed."
+}

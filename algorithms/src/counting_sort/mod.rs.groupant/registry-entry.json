@@ -1,0 +1,29 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline counting_sort::tests::",
+    "Strict Clippy; debug/release; compiled negative control",
+    "2026-10-30: three new production-linked relation tests, explicit false-relation countermodels, separate compiled mutants, debug/release twice and strict Clippy."
+  ],
+  "children": [],
+  "cost": "O(n+span) time and O(span) auxiliary usize elements on success. Validation errors O(n) time and O(1) space. No timing measurements.",
+  "description": "counting_sort exact implementation",
+  "forward": [
+    "For empty input return Ok unchanged. Otherwise span=max-min+1: overflow returns RangeOverflow; span above budget returns BucketLimitExceeded; fallible histogram reserve failure returns AllocationFailed. Each error preserves input. Success returns the unique ascending permutation with the same multiplicities."
+  ],
+  "id": "algorithm-counting-sort",
+  "inverse": [
+    "Within observations (input, budget, allocator outcome, Result, output slice), exclude changed input on Err, changed length or multiplicity, nonascending success, success past a range/budget failure, and error variants inconsistent with validation precedence. This is a source-derived relation, not just negative fixtures.",
+    "A successful sorted output admits every input permutation of that multiset, with budget at least its inclusive span and successful reserve; empty output admits empty input and any budget. Errors admit unchanged input with matching overflow, budget or allocation branch. Original order is generally not recoverable.",
+    "For successful sorting S, S(S(x))=S(x). Translation by a constant preserving usize bounds preserves order and span. Tests check idempotence and the narrow span at usize::MAX.",
+    "For a fixed ascending y and successful allocation, S(x,b)=y iff H(x)=H(y) and b>=span(y), with empty input needing zero buckets. All distinct permutations survive; support alone is insufficient. Oracle histogram_fibers_retain_multiplicity_not_order enumerates 256 four-place inputs and finds 12 predecessors of [2,2,4,5].",
+    "For strictly increasing f on the finite input support with every image representable, S(f(x),b2)=f(S(x,b1)) when both allocations succeed and budgets cover their respective inclusive spans. A nonlinear or affine map may change the required budget. Wrapping arithmetic violates the premise. The checked affine map 3v+11 and insufficient transformed budget are tested.",
+    "For nonempty x with representable span s, successful budget antecedents are b>=s conditional on successful allocation; b<s yields precisely BucketLimitExceeded{s,b} unchanged. This is an upper ray, independent of input length. Repeated singleton-valued inputs need one bucket. The test scans budgets 0 through 6 at span 3.",
+    "Validation partitions calls in order: empty succeeds; unrepresentable inclusive span yields RangeOverflow regardless of budget; otherwise s>b yields BucketLimitExceeded; otherwise reserve failure yields AllocationFailed; otherwise success. All error fibers retain original order because no writes precede reserve. Capacity overflow is deterministic evidence; physical allocator exhaustion is untested.",
+    "After counting, H[j] equals multiplicity of min+j. Reconstruction writes disjoint intervals [sum_{i<j}H[i],sum_{i<=j}H[i]) with min+j. These intervals partition [0,n), including empty buckets; histogram zeros do not remove gaps from the resource span. Replacing min+j by min preserves length but violates values and histogram, rejected by the compiled mutant."
+  ],
+  "limitations": [
+    "Partial syntax has opaque macros and no semantic type resolution. Finite evidence is not proof. Exact algorithms have no approximate execution profiles; supported approximant caps remain 1%, 2%, 5%, 10%."
+  ],
+  "source": "algorithms/src/counting_sort/mod.rs",
+  "state": "Finite integer slices and ordinary terminating execution including allocator outcomes."
+}

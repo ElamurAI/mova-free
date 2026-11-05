@@ -1,0 +1,96 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant-and-cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant-and-cost",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "escaped_ascii",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "escaped_ascii",
+        "status": "partial_source_derived_model",
+        "type": "escaped_ascii"
+      },
+      {
+        "id": "link_stack",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "link_stack",
+        "status": "partial_source_derived_model",
+        "type": "link_stack"
+      },
+      {
+        "id": "tag_heuristic",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "tag_heuristic",
+        "status": "partial_source_derived_model",
+        "type": "tag_heuristic"
+      },
+      {
+        "id": "scalar_step",
+        "path": "model.md",
+        "scope": "Bound source or byte range; one-call observations plus explicitly named state",
+        "section": "scalar_step",
+        "status": "partial_source_derived_model",
+        "type": "scalar_step"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 9596,
+      "start": 6318
+    },
+    "description": "Byte scanner handles escapes, link opens/closes, star/backtick runs and HTML/autolink tags; otherwise advances by next scalar. link_close balances brackets and skips escaped bytes."
+  },
+  "id": "roundtrip-markdown-layout-inline-layout",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../site_md.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "ced26c9c453717c6472e4b11b282c0490a386e7399f5b899524f72d998d12eb3"
+  },
+  "status": "partial_source_bound_model"
+}

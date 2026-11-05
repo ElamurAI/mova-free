@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "wave30_synthetic_measure",
+    "Paired lexical syntax generation; bounded debug/release and compiled assertion controls in receipt"
+  ],
+  "children": [],
+  "cost": "Parser O(bytes); interpreter work depends on function and point count; measure O(n) plus generated code/rows. No files loaded in selected test.",
+  "description": "parser: table searches exact array header and end delimiter, parses SC_ tokens; mlab_eval builds numeric vector, calls Interp::capture/run, parses Inf/-Inf/NaN and enforces output count.\n\nmetric: measure retains normal reference values only; e=abs((got-want)/want)/EPSILON with NaN got=>infinity, strict greater updates first worst. Existing CASES bound4eps; synthetic tests do not certify those datasets.",
+  "forward": [
+    "parser: table searches exact array header and end delimiter, parses SC_ tokens; mlab_eval builds numeric vector, calls Interp::capture/run, parses Inf/-Inf/NaN and enforces output count.",
+    "metric: measure retains normal reference values only; e=abs((got-want)/want)/EPSILON with NaN got=>infinity, strict greater updates first worst. Existing CASES bound4eps; synthetic tests do not certify those datasets."
+  ],
+  "id": "mlab-ext-boost",
+  "inverse": [
+    "parser: Parsed rows admit whitespace and ignored text variants; emitted numeric output admits code representations rounding to same f64.",
+    "metric: Stat admits all row sets with same normal count and maximum relative discrepancy, including arbitrary excluded rows; worst_x alone not full error curve."
+  ],
+  "limitations": [
+    "Synthetic bounded rectangular rows with valid col index; dataset suites deliberately not executed.",
+    "Partial lexical AST, no macro expansion or semantic proof",
+    "No executable numerical surrogate or global error bound",
+    "External frozen dataset/effect paths unexecuted"
+  ],
+  "source": "mlab/tests/ext_boost.rs",
+  "state": "Frozen file rows, interpreter text outputs and Stat(n,max_eps,worst_x)."
+}

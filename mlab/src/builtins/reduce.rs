@@ -406,3 +406,23 @@ fn diff1(m: &Mat, dim: usize) -> Mat {
         out
     }
 }
+
+#[cfg(test)]
+mod wave30_tests {
+    use super::*;
+    #[test]
+    fn geometry_empty_and_ties() {
+        let m = Mat::new(2, 2, vec![1.0, 3.0, 2.0, 4.0]);
+        let out = reduce_c(&m, Some(1), 0.0, |a, b| (a.0 + b.0, a.1 + b.1)).unwrap();
+        let Value::Mat(s) = &out[0] else { panic!() };
+        assert_eq!((s.rows, s.cols), (1, 2));
+        assert_eq!(s.re, vec![4.0, 6.0]);
+        let empty = reduce_c(&Mat::empty(), None, 1.0, ops::cmul).unwrap();
+        let Value::Mat(e) = &empty[0] else { panic!() };
+        assert_eq!(e.re, vec![1.0]);
+        let out = minmax(&[Value::Mat(Mat::row(vec![f64::NAN, 4.0, 4.0]))], 2, true).unwrap();
+        let Value::Mat(idx) = &out[1] else { panic!() };
+        assert_eq!(idx.re, vec![2.0]);
+        assert_eq!(diff1(&m, 2).re, vec![1.0, 1.0]);
+    }
+}

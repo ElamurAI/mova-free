@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "kind": "groupant",
+  "id": "algorithm-huffman",
+  "status": "partial_source_derived_instance",
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "a44596d9cb69d76e85f9ea01846cbf07468e1947a32107313452886265eb7046"
+  },
+  "children": [],
+  "components": {
+    "ast": {
+      "path": "syntax.json",
+      "format": "rust_syntax_projection",
+      "status": "partial"
+    },
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    },
+    "obernants": [
+      {
+        "id": "nonbehavior",
+        "type": "behavior_complement",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "domain": "Finite slices of u64 weights; every position is a distinct symbol even when its weight is zero. Codes are vectors of booleans in original order. Successful allocation, ordinary usize<=64-bit platforms.",
+        "operator": "Exclude wrong symbol count, empty code for any present symbol, duplicate or prefix-related codes, suboptimal weighted cost, and ties/orientations inconsistent with creation-order merging. Empty and singleton conventions are part of the exact behavior.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "a44596d9cb69d76e85f9ea01846cbf07468e1947a32107313452886265eb7046",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "compatible_antecedents",
+        "type": "reverse_reconstruction",
+        "path": "model.md",
+        "section": "compatible_antecedents",
+        "domain": "Finite slices of u64 weights; every position is a distinct symbol even when its weight is zero. Codes are vectors of booleans in original order. Successful allocation, ordinary usize<=64-bit platforms.",
+        "operator": "For an observed code forest C, compatible weights are all nonnegative u64 vectors whose ordered merge inequalities select its oriented tree under (sum,index) comparisons. Ties permit <= only when creation index wins. Positive scaling within u64 preserves comparisons, so recovery is generally nonunique; [1,1] and [5,9] both yield [false],[true].",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "a44596d9cb69d76e85f9ea01846cbf07468e1947a32107313452886265eb7046",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "prefix_free",
+        "type": "output_constraint",
+        "path": "model.md",
+        "section": "prefix_free",
+        "domain": "Finite slices of u64 weights; every position is a distinct symbol even when its weight is zero. Codes are vectors of booleans in original order. Successful allocation, ordinary usize<=64-bit platforms.",
+        "operator": "For distinct symbols i,j, neither code_i nor code_j prefixes the other. This enables unique decoding of a stream when symbol count or termination convention is supplied; singleton false is not an empty code.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "a44596d9cb69d76e85f9ea01846cbf07468e1947a32107313452886265eb7046",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "optimal_cost",
+        "type": "optimization_relation",
+        "path": "model.md",
+        "section": "optimal_cost",
+        "domain": "Finite slices of u64 weights; every position is a distinct symbol even when its weight is zero. Codes are vectors of booleans in original order. Successful allocation, ordinary usize<=64-bit platforms.",
+        "operator": "For n>=2, weighted path length equals the sum of all merged subtree weights. Choosing two least weights permits an optimal sibling pair by exchange; contraction reduces to the smaller problem.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "a44596d9cb69d76e85f9ea01846cbf07468e1947a32107313452886265eb7046",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "positive_scaling",
+        "type": "metamorphic_relation",
+        "path": "model.md",
+        "section": "positive_scaling",
+        "domain": "Finite slices of u64 weights; every position is a distinct symbol even when its weight is zero. Codes are vectors of booleans in original order. Successful allocation, ordinary usize<=64-bit platforms.",
+        "operator": "Multiplying all weights by the same positive integer, without u64 overflow, preserves all comparisons and exact codes, and multiplies weighted cost.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "a44596d9cb69d76e85f9ea01846cbf07468e1947a32107313452886265eb7046",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "zero_weights",
+        "type": "boundary_exclusion",
+        "path": "model.md",
+        "section": "zero_weights",
+        "domain": "Finite slices of u64 weights; every position is a distinct symbol even when its weight is zero. Codes are vectors of booleans in original order. Successful allocation, ordinary usize<=64-bit platforms.",
+        "operator": "Zero weights remain leaves and may receive long codes. All-zero inputs still have deterministic nonempty prefix-free codes and weighted cost zero; deleting zero symbols changes the coding problem.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "a44596d9cb69d76e85f9ea01846cbf07468e1947a32107313452886265eb7046",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "tie_schedule",
+        "type": "determinism",
+        "path": "model.md",
+        "section": "tie_schedule",
+        "domain": "Finite slices of u64 weights; every position is a distinct symbol even when its weight is zero. Codes are vectors of booleans in original order. Successful allocation, ordinary usize<=64-bit platforms.",
+        "operator": "Equal weights are resolved by unique creation index; original symbols precede newly created nodes. For [1,1,1] the exact codes are [true,false],[true,true],[false].",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "a44596d9cb69d76e85f9ea01846cbf07468e1947a32107313452886265eb7046",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      },
+      {
+        "id": "weight_information_loss",
+        "type": "information_loss",
+        "path": "model.md",
+        "section": "weight_information_loss",
+        "domain": "Finite slices of u64 weights; every position is a distinct symbol even when its weight is zero. Codes are vectors of booleans in original order. Successful allocation, ordinary usize<=64-bit platforms.",
+        "operator": "Codes expose relative merge choices, not absolute weights. Different integer weight vectors share a code set; even optimal length vectors do not determine bit orientation.",
+        "assumptions": "Stable Eq semantics where relevant; successful allocation; ordinary Rust execution.",
+        "observation_scope": "Documented public outputs.",
+        "approximation_semantics": "Exact mathematical target; finite evidence does not establish a universal proof.",
+        "subject_revision": "a44596d9cb69d76e85f9ea01846cbf07468e1947a32107313452886265eb7046",
+        "evidence": "model.md#evidence",
+        "status": "partial_source_derived"
+      }
+    ]
+  }
+}

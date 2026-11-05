@@ -933,3 +933,71 @@ fn case_map(a: &[Value], name: &str, up: bool) -> Result<Vec<Value>, MError> {
     let s = str_arg(a, 0, name)?;
     Ok(vec![Value::str(&if up { s.to_uppercase() } else { s.to_lowercase() })])
 }
+
+#[cfg(test)]
+mod wave30 {
+    use super::*;
+    fn matrix(v: Vec<Value>) -> Mat {
+        match v.into_iter().next().unwrap() {
+            Value::Mat(m) => m,
+            _ => panic!("matrix expected"),
+        }
+    }
+    #[test]
+    fn constructors() {
+        let mut it = Interp::capture();
+        let input = Value::Mat(Mat::row(vec![1., 2., 3., 4., 5., 6.]));
+        let r = matrix(
+            reshape(
+                &mut it,
+                &[input.clone(), Value::num(2.), Value::Mat(Mat::empty())],
+                1,
+            )
+            .unwrap(),
+        );
+        assert_eq!((r.rows, r.cols), (2, 3));
+        assert_eq!(r.re, vec![1., 2., 3., 4., 5., 6.]);
+        let bad = reshape(
+            &mut it,
+            &[input, Value::Mat(Mat::empty()), Value::Mat(Mat::empty())],
+            1,
+        );
+        assert!(bad.is_err());
+        assert_eq!(
+            matrix(
+                linspace(
+                    &mut it,
+                    &[Value::num(2.), Value::num(9.), Value::num(1.)],
+                    1
+                )
+                .unwrap()
+            )
+            .re,
+            vec![9.]
+        );
+        assert!(
+            matrix(
+                linspace(
+                    &mut it,
+                    &[Value::num(2.), Value::num(9.), Value::num(0.)],
+                    1
+                )
+                .unwrap()
+            )
+            .is_empty()
+        );
+        for n in [3, 4, 6] {
+            let m = magic_square(n);
+            let target = (n * (n * n + 1) / 2) as f64;
+            for k in 0..n {
+                assert_eq!((0..n).map(|j| m.at(k, j)).sum::<f64>(), target);
+                assert_eq!((0..n).map(|i| m.at(i, k)).sum::<f64>(), target);
+            }
+        }
+        warning(&mut it, &[Value::str("off")], 0).unwrap();
+        assert!(!it.warnings_on);
+        warning(&mut it, &[Value::str("on")], 0).unwrap();
+        assert!(it.warnings_on);
+        assert!(parse_double("2D1") == Some(20.));
+    }
+}

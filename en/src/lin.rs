@@ -10,6 +10,7 @@ use crate::conllu::Sentence;
 use crate::dict;
 use crate::gram::{Rel, Sym, Tag};
 use crate::hash::FastMap;
+use std::collections::BTreeMap;
 
 /// Node for linearization: tag, relation to head, head (0 — root), lowercase lemma.
 #[derive(Clone, Copy, Debug)]
@@ -306,5 +307,203 @@ impl Linearizer {
         }
         order.reverse();
         *ds = order;
+    }
+}
+
+/// Punctuation from clause structure, for a generated tree that has none (the frames' realizer): the marks to add,
+/// each as (head, mark, tag) with heads 1-based; the linearizer then orders them like any dependent. Rules after the
+/// UD English conventions (a mark hangs on the phrase it introduces or closes):
+/// - the root takes the final full stop;
+/// - a coordinated clause with its own subject takes a comma before its conjunction («…, and she sat»), and in a list
+///   of three or more every conjunct after the first takes one («A, B, and C»);
+/// - a parataxis, a vocative, a discourse word take a comma;
+/// - an apposition takes a comma before it («Bill, the lizard»; the closing one is left out: the linearizer cannot
+///   tell two commas of one phrase apart and puts both before it).
+///
+/// With a learned table (`set_punct_table`), a word whose (relation, tag, head's tag) the table knows takes the marks
+/// most often hung on such words in the training text; the rules stay for the words it does not know.
+pub fn punctuate(tags: &[Tag], rels: &[Rel], heads: &[usize]) -> Vec<(usize, String, Tag)> {
+    let n = tags.len().min(rels.len()).min(heads.len());
+    let table = PUNCT.get();
+    let known = |i: usize| table.and_then(|t| t.predict(&PunctTable::key(tags, rels, heads, i)));
+    if table.is_some() {
+        let mut out = Vec::new();
+        for i in 0..n {
+            match known(i) {
+                Some(marks) => out.extend(marks.into_iter().map(|(m, t)| (i + 1, m, t))),
+                None => out.extend(rule_marks(tags, rels, heads, i).into_iter().map(|(m, t)| (i + 1, m.to_string(), t))),
+            }
+        }
+        return out;
+    }
+    (0..n).flat_map(|i| rule_marks(tags, rels, heads, i).into_iter().map(move |(m, t)| (i + 1, m.to_string(), t))).collect()
+}
+
+/// The rules' marks for word `i` (0-based).
+fn rule_marks(tags: &[Tag], rels: &[Rel], heads: &[usize], i: usize) -> Vec<(&'static str, Tag)> {
+    let n = tags.len().min(rels.len()).min(heads.len());
+    let mut out: Vec<(&'static str, Tag)> = Vec::new();
+    let kids = |h: usize| (0..n).filter(move |&k| heads[k] == h + 1);
+    match rels[i].base() {
+        Rel::Conj => {
+            let h = heads[i];
+            let clause = tags[i].is_verb() && kids(i).any(|k| matches!(rels[k].base(), Rel::Nsubj | Rel::Expl));
+            let list = h > 0 && kids(h - 1).filter(|&k| rels[k].base() == Rel::Conj).count() >= 2;
+            if clause || list {
+                out.push((",", Tag::Comma));
+            }
+        }
+        Rel::Parataxis | Rel::Vocative | Rel::Discourse | Rel::Appos => out.push((",", Tag::Comma)),
+        _ => {}
+    }
+    if heads[i] == 0 {
+        out.push((".", Tag::Stop));
+    }
+    out
+}
+
+/// Punctuation learned from parsed text (the UD convention of attaching a mark to the phrase it opens or closes:
+/// demarneffe-2021): for a word's (relation, tag, head's tag), how often each set of marks hung
+/// on it (`.`, `, ,`, `( )`, none …). Counted in a `BTreeMap`, so the table and its choices never depend on order.
+#[derive(Default, Debug, Clone, PartialEq)]
+pub struct PunctTable {
+    by: BTreeMap<String, BTreeMap<String, u32>>,
+}
+
+/// The table `punctuate` uses, once set.
+static PUNCT: std::sync::OnceLock<PunctTable> = std::sync::OnceLock::new();
+
+/// Sets the learned punctuation for this process (the first call wins).
+pub fn set_punct_table(t: PunctTable) {
+    let _ = PUNCT.set(t);
+}
+
+impl PunctTable {
+    /// The key of word `i` (0-based): its relation, its tag, its head's tag (`ROOT` for the root).
+    fn key(tags: &[Tag], rels: &[Rel], heads: &[usize], i: usize) -> String {
+        let h = heads[i];
+        format!("{}\t{}\t{}", rels[i].name(), tags[i].name(), if h == 0 { "ROOT" } else { tags[h - 1].name() })
+    }
+
+    /// Counts the marks hung on every word of a parsed sentence (a mark: a word whose relation is `punct`).
+    pub fn learn(&mut self, forms: &[&str], tags: &[Tag], rels: &[Rel], heads: &[usize]) {
+        let n = forms.len().min(tags.len()).min(rels.len()).min(heads.len());
+        for i in (0..n).filter(|&i| rels[i].base() != Rel::Punct) {
+            let mut marks: Vec<String> = (0..n).filter(|&k| heads[k] == i + 1 && rels[k].base() == Rel::Punct).map(|k| format!("{}\u{1}{}", forms[k], tags[k].name())).collect();
+            marks.sort();
+            *self.by.entry(Self::key(tags, rels, heads, i)).or_default().entry(marks.join(" ")).or_default() += 1;
+        }
+    }
+
+    /// The marks for a key: the most frequent set, when the key was seen at least 3 times and the set holds more than
+    /// half of them; `Some(empty)` when that set is «no mark»; `None` when the table does not know.
+    fn predict(&self, key: &str) -> Option<Vec<(String, Tag)>> {
+        let m = self.by.get(key)?;
+        let total: u32 = m.values().sum();
+        let (sig, best) = m.iter().max_by(|a, b| a.1.cmp(b.1).then(b.0.cmp(a.0)))?;
+        if total < 3 || *best * 2 <= total {
+            return None;
+        }
+        Some(sig.split(' ').filter(|x| !x.is_empty()).filter_map(|x| {
+            let (f, t) = x.split_once('\u{1}')?;
+            Some((f.to_string(), Tag::parse(t)?))
+        }).collect())
+    }
+
+    /// As TSV: key (three columns), the marks, the count.
+    pub fn write(&self) -> String {
+        let mut o = String::new();
+        for (k, m) in &self.by {
+            for (sig, c) in m {
+                o.push_str(&format!("{k}\t{}\t{c}\n", sig.replace('\u{1}', "\u{2}")));
+            }
+        }
+        o
+    }
+
+    pub fn read(s: &str) -> PunctTable {
+        let mut t = PunctTable::default();
+        for l in s.lines() {
+            let c: Vec<&str> = l.split('\t').collect();
+            if c.len() != 5 {
+                continue;
+            }
+            if let Ok(n) = c[4].parse::<u32>() {
+                t.by.entry(format!("{}\t{}\t{}", c[0], c[1], c[2])).or_default().insert(c[3].replace('\u{2}', "\u{1}"), n);
+            }
+        }
+        t
+    }
+}
+
+#[cfg(test)]
+mod punct_tests {
+    use super::*;
+
+    /// «the dog barked and she sat»: a comma before the coordinated clause and the full stop; the control without a
+    /// subject in the second clause («barked and sat») gets no comma.
+    #[test]
+    fn commas_from_clause_structure() {
+        let tags = [Tag::DT, Tag::NN, Tag::VBD, Tag::CC, Tag::PRP, Tag::VBD];
+        let rels = [Rel::Det, Rel::Nsubj, Rel::Root, Rel::Cc, Rel::Nsubj, Rel::Conj];
+        let heads = [2, 3, 0, 6, 6, 3];
+        assert_eq!(punctuate(&tags, &rels, &heads), vec![(3, ".".to_string(), Tag::Stop), (6, ",".to_string(), Tag::Comma)]);
+        let tags = [Tag::DT, Tag::NN, Tag::VBD, Tag::CC, Tag::VBD];
+        let rels = [Rel::Det, Rel::Nsubj, Rel::Root, Rel::Cc, Rel::Conj];
+        let heads = [2, 3, 0, 5, 3];
+        assert_eq!(punctuate(&tags, &rels, &heads), vec![(3, ".".to_string(), Tag::Stop)]);
+    }
+
+    /// The table learns «Label: value» (a colon on an appos after a noun root), keeps the rules for what it has not
+    /// seen, and needs a majority: a key seen 2:2 says nothing.
+    #[test]
+    fn learned_marks_and_their_limits() {
+        let mut t = PunctTable::default();
+        let (forms, tags, rels, heads) = (["Who", "acts", ":", "you"], [Tag::WP, Tag::NNS, Tag::Colon, Tag::PRP], [Rel::Compound, Rel::Root, Rel::Punct, Rel::Appos], [2, 0, 4, 2]);
+        for _ in 0..3 {
+            t.learn(&forms, &tags, &rels, &heads);
+        }
+        assert_eq!(t.predict(&PunctTable::key(&tags, &rels, &heads, 3)), Some(vec![(":".to_string(), Tag::Colon)]));
+        // the root never had a mark here: the table says «none», not the rules' full stop
+        assert_eq!(t.predict(&PunctTable::key(&tags, &rels, &heads, 1)), Some(vec![]));
+        // the TSV keeps it
+        assert_eq!(PunctTable::read(&t.write()), t);
+        // negative control: a tie is not a majority
+        let mut u = PunctTable::default();
+        u.learn(&forms, &tags, &rels, &heads);
+        u.learn(&forms, &tags, &rels, &heads);
+        let other = [Rel::Compound, Rel::Root, Rel::Punct, Rel::Appos];
+        u.learn(&["Who", "acts", ",", "you"], &[Tag::WP, Tag::NNS, Tag::Comma, Tag::PRP], &other, &heads);
+        u.learn(&["Who", "acts", ",", "you"], &[Tag::WP, Tag::NNS, Tag::Comma, Tag::PRP], &other, &heads);
+        assert_eq!(u.predict(&PunctTable::key(&tags, &rels, &heads, 3)), None);
+    }
+}
+
+#[cfg(test)]
+mod wave27 {
+    use super::*;
+    #[test]
+    fn bounded_contract() {
+        let m = Linearizer::default();
+        let nodes = [
+            Node {
+                tag: Tag::NN,
+                rel: Rel::Root,
+                head: 0,
+                lex: dict::w::THE,
+            },
+            Node {
+                tag: Tag::DT,
+                rel: Rel::Det,
+                head: 1,
+                lex: dict::w::THE,
+            },
+        ];
+        assert_eq!(m.order(&nodes, false), vec![1, 2]);
+        let s = m.explain(&nodes, false);
+        assert_eq!((s[0].left, s[0].level, s[0].counts), (false, None, (0, 0)));
+        assert!(m.order(&[], false).is_empty());
+        assert!(!mood(&[], false));
+        assert!(mood(&[], true));
     }
 }

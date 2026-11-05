@@ -1,0 +1,100 @@
+{
+  "nodes": [
+    {
+      "checks": [
+        "cargo test --manifest-path tools/module-overlay/Cargo.toml --jobs 2",
+        "Fourteen native fixtures pass debug/release; new masked/visible drift controls reject an external target-insensitive-gate mutation. No production composer or live runtime change."
+      ],
+      "children": [],
+      "cost": "Bounded byte scans, map ordering and filesystem effects; see source-specific cost model.",
+      "description": "Bound external source composition",
+      "forward": [
+        "See the source-bound forward relation and effect boundaries in model.md."
+      ],
+      "id": "module-overlay-library",
+      "inverse": [
+        "Typed behavior complement first and nonunique reverse reconstruction second; specialized views preserve their observation scopes.",
+        "Fixed replacement projection loses overwritten originals; equal final source maps do not imply old-base admission or unchanged provenance. See the specialized source-bound models."
+      ],
+      "limitations": [
+        "Finite native fixtures and partial source-derived relations, not a semantic compatibility proof.",
+        "Stable inputs and exclusively owned output parent required; no hostile concurrent-writer snapshot guarantee."
+      ],
+      "source": "tools/module-overlay/src/lib.rs",
+      "state": "Bound input metadata, exact byte copies and explicit output/status observations in the declared domain."
+    },
+    {
+      "checks": [
+        "cargo test --manifest-path tools/module-overlay/Cargo.toml --jobs 2"
+      ],
+      "children": [],
+      "cost": "Bounded byte scans, map ordering and filesystem effects; see source-specific cost model.",
+      "description": "Explicit source-composition CLI",
+      "forward": [
+        "See the source-bound forward relation and effect boundaries in model.md."
+      ],
+      "id": "module-overlay-cli",
+      "inverse": [
+        "Typed behavior complement first and nonunique reverse reconstruction second; specialized views preserve their observation scopes."
+      ],
+      "limitations": [
+        "Finite native fixtures and partial source-derived relations, not a semantic compatibility proof.",
+        "Stable inputs and exclusively owned output parent required; no hostile concurrent-writer snapshot guarantee."
+      ],
+      "source": "tools/module-overlay/src/main.rs",
+      "state": "Bound input metadata, exact byte copies and explicit output/status observations in the declared domain."
+    },
+    {
+      "checks": [
+        "cargo test --manifest-path tools/module-overlay/Cargo.toml --jobs 2",
+        "Fourteen native fixtures pass debug/release; new masked/visible drift controls reject an external target-insensitive-gate mutation. No production composer or live runtime change."
+      ],
+      "children": [],
+      "cost": "Bounded byte scans, map ordering and filesystem effects; see source-specific cost model.",
+      "description": "Bounded source-composition evidence",
+      "forward": [
+        "See the source-bound forward relation and effect boundaries in model.md."
+      ],
+      "id": "module-overlay-fixtures",
+      "inverse": [
+        "Typed behavior complement first and nonunique reverse reconstruction second; specialized views preserve their observation scopes.",
+        "Fixed replacement projection loses overwritten originals; equal final source maps do not imply old-base admission or unchanged provenance. See the specialized source-bound models."
+      ],
+      "limitations": [
+        "Finite native fixtures and partial source-derived relations, not a semantic compatibility proof.",
+        "Stable inputs and exclusively owned output parent required; no hostile concurrent-writer snapshot guarantee."
+      ],
+      "source": "tools/module-overlay/src/tests.rs",
+      "state": "Bound input metadata, exact byte copies and explicit output/status observations in the declared domain."
+    },
+    {
+      "checks": [
+        "cargo test --manifest-path tools/module-overlay/Cargo.toml --jobs 2",
+        "Fourteen native fixtures pass debug/release; new masked/visible drift controls reject an external target-insensitive-gate mutation. No production composer or live runtime change."
+      ],
+      "children": [
+        "module-overlay-library",
+        "module-overlay-cli",
+        "module-overlay-fixtures"
+      ],
+      "cost": "Fixed bounded inventory/planning/copy passes; see composed source model.",
+      "description": "Bound CLI-to-source-overlay composition with distinct byte and semantic evidence boundaries.",
+      "forward": [
+        "CLI delegates exact bound composition; successful receipts do not infer build, semantic or model-registration success."
+      ],
+      "groupant_path": "tools/module-overlay/composition.groupant",
+      "id": "module-overlay-composition",
+      "inverse": [
+        "Missing originals and excluded state make reverse reconstruction nonunique; publication and model admissibility are separate gates.",
+        "Fixed replacement projection loses overwritten originals; equal final source maps do not imply old-base admission or unchanged provenance. See the specialized source-bound models."
+      ],
+      "limitations": [
+        "Three-file source-bound partial composition, not a whole-Mova proof.",
+        "Parent must attach the supplied registry fragment to the central public tree."
+      ],
+      "state": "Manifest/snapshot identities, source trees, output, receipt and model-gap observations."
+    }
+  ],
+  "root": "module-overlay-composition",
+  "schema": 1
+}

@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --offline manacher::tests::",
+    "Compiled source mutant rejected by exact boundary test",
+    "Current typed relations and corresponding focused Rust tests are listed in adjacent model.md and model.md#evidence."
+  ],
+  "children": [],
+  "cost": "Two linear passes: O(n) byte comparisons, O(n) output words, O(1) auxiliary words. Each successful comparison beyond the mirror lower bound advances the right frontier; at most one failed comparison per center. No throughput measurement.",
+  "description": "manacher exact byte implementation",
+  "forward": [
+    "For byte sequence s of length n return odd/even vectors of length n. odd[i] is maximal r>=1 with palindrome s[i+1-r..i+r]; even[i] is maximal r>=0 with palindrome s[i-r..i+r]. The even center is immediately before i. Empty input yields two empty vectors."
+  ],
+  "id": "algorithm-manacher",
+  "inverse": [
+    "Universe: finite byte inputs paired with arbitrary pairs of usize vectors. Excluded outputs have wrong lengths, zero odd radii, out-of-range spans, unequal symmetric byte pairs in a claimed span, or a radius whose next valid outer pair still matches. The model describes excluded behavior independently of negative tests.",
+    "Given two radius vectors of equal length n, compatible inputs are exactly byte strings of length n satisfying 1<=odd[i]<=min(i+1,n-i) and 0<=even[i]<=min(i,n-i), every symmetric equality inside every claimed span, and inequality of the next outer byte pair whenever that pair exists. Empty vectors admit empty input. Inconsistent equalities/inequalities admit no input; injective symbol relabelings exhibit nonunique antecedents."
+  ],
+  "limitations": [
+    "Partial syntax; finite tests do not prove all inputs; byte rather than Unicode character semantics."
+  ],
+  "source": "algorithms/src/manacher/mod.rs",
+  "state": "All finite byte slices and returned usize vector observations."
+}

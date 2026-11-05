@@ -496,6 +496,17 @@ pub fn parse_rules(text: &str) -> Vec<Rule> {
     out
 }
 
+/// Select supplied rules in file order, without loading files or process configuration.
+/// Unknown modes use accepted rules only; unknown statuses are never selected.
+pub fn select_rules(text: &str, mode: &str) -> Vec<Rule> {
+    if mode == "off" {
+        return Vec::new();
+    }
+    parse_rules(text).into_iter()
+        .filter(|r| r.status == "accepted" || mode == "proposed" && r.status == "proposed")
+        .collect()
+}
+
 static OVERRIDE: Mutex<Option<Arc<Vec<Rule>>>> = Mutex::new(None);
 static LOADED: OnceLock<Arc<Vec<Rule>>> = OnceLock::new();
 
@@ -515,7 +526,7 @@ pub fn active() -> Arc<Vec<Rule>> {
             return Arc::new(Vec::new());
         }
         let text = std::env::var("PRAG_RULES_FILE").ok().and_then(|p| std::fs::read_to_string(p).ok()).unwrap_or_else(|| EMBEDDED.to_string());
-        Arc::new(parse_rules(&text).into_iter().filter(|r| r.status == "accepted" || mode == "proposed" && r.status == "proposed").collect())
+        Arc::new(select_rules(&text, &mode))
     }).clone()
 }
 
@@ -1119,6 +1130,7 @@ pub fn drop_frames(r: &mut Read, gone: &BTreeSet<usize>) {
         f.quote = f.quote.iter().filter_map(|&q| map.get(q).copied().flatten()).collect();
         f.cause = f.cause.and_then(|c| map.get(c).copied().flatten());
         f.next = f.next.and_then(|c| map.get(c).copied().flatten());
+        f.link = f.link.take().and_then(|(x, rl, w)| map.get(x).copied().flatten().map(|y| (y, rl, w)));
         r.frames.push(f);
         r.pred.push(p);
     }
@@ -1171,6 +1183,17 @@ pub fn apply_rule(r: &mut Read, rule: &Rule) -> usize {
 
 /// The action at one site only (the learner scores sites one by one): the changed read, or None if nothing changed.
 pub fn apply_at(r: &Read, site: Site, a: Action) -> Option<Read> {
+    if r.pred.len() != r.frames.len() {
+        return None;
+    }
+    let valid = match site {
+        Site::Frame(fi) => fi < r.frames.len() && site_kind(a) == 0,
+        Site::Ent(fi, k) => site_kind(a) == 1 && r.frames.get(fi).and_then(|f| slot_ent(f, k)).is_some(),
+        Site::Token(s, i) => site_kind(a) == 2 && r.trees.get(s).is_some_and(|t| i < t.len()),
+    };
+    if !valid {
+        return None;
+    }
     let mut x = r.clone();
     if a == Action::Drop {
         let Site::Frame(fi) = site else { return None };
@@ -1211,5 +1234,214 @@ mod tests {
         assert_eq!(r.len(), 1);
         assert_eq!(r[0].action, Action::AgentFromHead);
         assert!(r[0].say().contains("conj"));
+    }
+}
+
+#[cfg(test)]
+mod wave15_models {
+    use super::*;
+    use crate::frames::{Ask, Asked};
+
+    fn read(n: usize) -> Read {
+        Read { frames: (0..n).map(|_| Frame::new(Kind::Event, String::new())).collect(),
+            pred: vec![(0, usize::MAX); n], ..Read::default() }
+    }
+    fn ent(id: &str) -> Ent { Ent { id: id.into(), text: id.into(), ..Ent::default() } }
+    fn rule(action: Action, conditions: &[&str]) -> Rule {
+        Rule { id: "fixture".into(), status: "accepted".into(),
+            atoms: conditions.iter().map(|s| Atom::parse(s).unwrap()).collect(),
+            action, reason: String::new() }
+    }
+
+    #[test]
+    fn invalid_direct_sites_are_no_change() {
+        let r = read(1);
+        assert!(apply_at(&r, Site::Frame(7), Action::Drop).is_none(),
+            "an absent frame cannot be dropped");
+        assert!(apply_at(&r, Site::Frame(7), Action::AgentNone).is_none());
+        assert!(apply_at(&r, Site::Ent(0, 0), Action::Resolve(Cand::Unresolve)).is_none());
+        assert!(apply_at(&r, Site::Token(0, 0), Action::AddNounAgent).is_none());
+        let mut broken = r.clone();
+        broken.pred.clear();
+        assert!(apply_at(&broken, Site::Frame(0), Action::Drop).is_none());
+        assert_eq!(apply_rule(&mut broken, &rule(Action::Drop, &[])), 0);
+        assert_eq!(broken.frames, r.frames);
+    }
+
+    #[test]
+    fn codec_roundtrips_and_rejects_unknown_rows() {
+        for f in FEATS {
+            let a = Atom { f, v: "x:y".into() };
+            assert_eq!(Atom::parse(&a.code()), Some(a));
+        }
+        let all = frame_actions().into_iter().chain(ent_actions()).chain(TOKEN_ACTIONS).collect::<Vec<_>>();
+        assert_eq!(all.iter().map(|a| a.code()).collect::<BTreeSet<_>>().len(), all.len());
+        for a in all { assert_eq!(Action::parse(&a.code()), Some(a)); }
+        assert_eq!(Atom::parse("unknown:x"), None);
+        assert_eq!(Action::parse("kind-say-unknown"), None);
+        let text = format!("{HEADER}\na\taccepted\tswap\tkind:event\tx\t0\t0\tnote\nshort\n            b\taccepted\tunknown\tkind:event\nc\taccepted\tswap\tunknown:x\nd\todd\tdrop\t&&\ne\taccepted\tswap\tlemma:x:y\n");
+        let got = parse_rules(&text);
+        assert_eq!(got.iter().map(|r| r.id.as_str()).collect::<Vec<_>>(), ["a", "d", "e"]);
+        assert_eq!(got[0].reason, "note");
+        assert!(got[1].atoms.is_empty());
+        assert_eq!(got[1].status, "odd");
+        assert_eq!(got[2].atoms[0].v, "x:y");
+        assert!(parse_rules("a\taccepted\tdrop\t").is_empty(), "first line is always a header");
+    }
+
+    #[test]
+    fn roles_transfer_preserves_fields_and_blocks_overwrite() {
+        let mut r = read(1);
+        r.frames[0].patient = Some(ent("parcel"));
+        r.frames[0].attrs = vec!["red".into()];
+        r.frames[0].cond = true;
+        let x = apply_at(&r, Site::Frame(0), Action::PatientToTo).unwrap();
+        assert_eq!(x.frames[0].recipient, r.frames[0].patient);
+        assert_eq!(x.frames[0].patient, None);
+        assert_eq!(x.frames[0].attrs, ["red"]);
+        assert!(x.frames[0].cond);
+        assert!(apply_at(&x, Site::Frame(0), Action::PatientToTo).is_none());
+        let y = apply_at(&x, Site::Frame(0), Action::ToToPatient).unwrap();
+        assert_eq!(y.frames, r.frames);
+        r.frames[0].recipient = Some(ent("receiver"));
+        assert!(apply_at(&r, Site::Frame(0), Action::PatientToTo).is_none());
+        let swapped = apply_at(&r, Site::Frame(0), Action::Swap).unwrap();
+        assert_eq!(swapped.frames[0].agent, r.frames[0].patient);
+        assert_eq!(apply_at(&swapped, Site::Frame(0), Action::Swap).unwrap().frames, r.frames);
+    }
+
+    #[test]
+    fn oblique_actions_choose_first_eligible_and_preserve_order() {
+        let mut r = read(1);
+        r.frames[0].obls = vec![("with".into(), ent("tool")), ("by".into(), ent("worker")), ("by".into(), ent("other"))];
+        let x = apply_at(&r, Site::Frame(0), Action::AgentFromBy).unwrap();
+        assert_eq!(x.frames[0].agent.as_ref().unwrap().id, "worker");
+        assert_eq!(x.frames[0].obls.iter().map(|(_, e)| e.id.as_str()).collect::<Vec<_>>(), ["tool", "other"]);
+        assert!(apply_at(&x, Site::Frame(0), Action::AgentFromBy).is_none());
+        let y = apply_at(&x, Site::Frame(0), Action::OblToPatient).unwrap();
+        assert_eq!(y.frames[0].patient.as_ref().unwrap().id, "tool");
+        assert_eq!(y.frames[0].obls.len(), 1);
+    }
+
+    #[test]
+    fn site_order_and_pronoun_candidate_resolution() {
+        let mut r = read(3);
+        r.frames[0].agent = Some(ent("alpha"));
+        r.frames[1].agent = Some(ent("beta"));
+        let pron = Ent { pron: Some("She".into()), ..ent("she") };
+        r.frames[2].patient = Some(pron.clone());
+        r.frames[2].obls = vec![("with".into(), pron)];
+        assert_eq!(sites(&r), [Site::Frame(0), Site::Frame(1), Site::Frame(2), Site::Ent(2, 1), Site::Ent(2, 4)]);
+        let x = apply_at(&r, Site::Ent(2, 1), Action::Resolve(Cand::PrevAgent)).unwrap();
+        assert_eq!(x.frames[2].patient.as_ref().unwrap().id, "beta");
+        assert_eq!(x.frames[2].patient.as_ref().unwrap().pron.as_deref(), Some("She"));
+        assert!(apply_at(&x, Site::Ent(2, 1), Action::Resolve(Cand::PrevAgent)).is_none());
+        let y = apply_at(&x, Site::Ent(2, 1), Action::Resolve(Cand::Unresolve)).unwrap();
+        assert_eq!(y.frames[2].patient.as_ref().unwrap().id, "she");
+        let z = apply_at(&r, Site::Ent(2, 4), Action::Resolve(Cand::LineAgent)).unwrap();
+        assert_eq!(z.frames[2].obls[0].1.id, "alpha");
+    }
+
+    #[test]
+    fn rule_order_and_guard_observations() {
+        let mut r = read(3);
+        r.frames[1].kind = Kind::Bare;
+        let say = rule(Action::KindSay(Act::Ask), &["kind:event", "has-agent:no"]);
+        assert_eq!(apply_rule(&mut r, &say), 2);
+        assert_eq!(r.frames.iter().map(|f| f.kind).collect::<Vec<_>>(),
+            [Kind::Say(Act::Ask), Kind::Bare, Kind::Say(Act::Ask)]);
+        assert_eq!(apply_rule(&mut r, &say), 0);
+        let event = rule(Action::KindEvent, &["kind:say"]);
+        assert_eq!(apply_rule(&mut r, &event), 2);
+        let mut reverse = read(1);
+        assert_eq!(apply_rule(&mut reverse, &event), 0);
+        assert_eq!(apply_rule(&mut reverse, &say), 1);
+        assert_ne!(reverse.frames[0].kind, r.frames[0].kind);
+        let observed = atoms(&r, Site::Frame(0), Action::Swap);
+        assert!(observed.contains(&Atom::parse("kind:event").unwrap()));
+        assert!(observed.contains(&Atom::parse("has-agent:no").unwrap()));
+        assert!(!observed.contains(&Atom::parse("has-agent:yes").unwrap()));
+    }
+
+    #[test]
+    fn drop_reindexes_all_frame_references() {
+        let mut r = read(4);
+        r.frames[0].quote = vec![1, 2, 3, 99];
+        r.frames[0].cause = Some(2);
+        r.frames[0].next = Some(1);
+        r.frames[0].link = Some((3, Rel::Conj, Some("and".into())));
+        r.roots = vec![0, 1, 3];
+        r.asked = vec![Asked { word: "why".into(), frame: 2, what: Ask::Cause },
+            Asked { word: "why".into(), frame: 1, what: Ask::Cause }];
+        r.aliases = vec![("alias".into(), "name".into())];
+        drop_frames(&mut r, &BTreeSet::from([1, 99]));
+        assert_eq!(r.frames.len(), 3);
+        assert_eq!(r.pred.len(), 3);
+        assert_eq!(r.frames[0].quote, [1, 2]);
+        assert_eq!(r.frames[0].cause, Some(1));
+        assert_eq!(r.frames[0].next, None);
+        assert_eq!(r.frames[0].link.as_ref().unwrap().0, 2);
+        assert_eq!(r.roots, [0, 2]);
+        assert_eq!(r.asked.len(), 1);
+        assert_eq!(r.asked[0].frame, 1);
+        assert_eq!(r.aliases, [("alias".into(), "name".into())]);
+    }
+
+    #[test]
+    fn selection_preserves_status_and_file_order() {
+        let mut text = format!("{HEADER}\n");
+        for (id, status) in [("z", "accepted"), ("a", "proposed"), ("b", "rejected"), ("c", "other"), ("z", "accepted")] {
+            text.push_str(&format!("{id}\t{status}\tdrop\tkind:event\n"));
+        }
+        let ids = |mode| select_rules(&text, mode).into_iter().map(|r| r.id).collect::<Vec<_>>();
+        assert_eq!(ids(""), ["z", "z"]);
+        assert_eq!(ids("unknown"), ["z", "z"]);
+        assert_eq!(ids("proposed"), ["z", "a", "z"]);
+        assert!(ids("off").is_empty());
+    }
+
+    #[test]
+    fn finite_transfer_and_drop_relations() {
+        let options = [None, Some(ent("a")), Some(ent("b"))];
+        for patient in &options {
+            for recipient in &options {
+                let mut r = read(1);
+                r.frames[0].patient = patient.clone();
+                r.frames[0].recipient = recipient.clone();
+                let got = apply_at(&r, Site::Frame(0), Action::PatientToTo);
+                let enabled = patient.is_some() && recipient.is_none();
+                assert_eq!(got.is_some(), enabled);
+                if let Some(got) = got {
+                    assert_eq!(got.frames[0].patient, None);
+                    assert_eq!(got.frames[0].recipient, *patient);
+                }
+            }
+        }
+        for mask in 0u8..16 {
+            let mut r = read(4);
+            for i in 0..4 { r.frames[i].attrs = vec![i.to_string()]; }
+            r.roots = (0..4).collect();
+            let gone = (0..4).filter(|i| mask & (1 << i) != 0).collect::<BTreeSet<_>>();
+            let survivors = (0..4).filter(|i| mask & (1 << i) == 0).collect::<Vec<_>>();
+            drop_frames(&mut r, &gone);
+            assert_eq!(r.frames.iter().map(|f| f.attrs[0].parse::<usize>().unwrap()).collect::<Vec<_>>(), survivors);
+            assert_eq!(r.roots, (0..survivors.len()).collect::<Vec<_>>());
+            assert_eq!(r.pred.len(), survivors.len());
+        }
+    }
+
+    #[test]
+    fn reverse_fibers_keep_ambiguous_antecedents() {
+        let mut a = read(1);
+        a.frames[0].agent = Some(ent("alpha"));
+        let mut b = a.clone();
+        b.frames[0].agent = Some(ent("beta"));
+        let xa = apply_at(&a, Site::Frame(0), Action::AgentNone).unwrap();
+        let xb = apply_at(&b, Site::Frame(0), Action::AgentNone).unwrap();
+        assert_ne!(a.frames, b.frames);
+        assert_eq!(xa.frames, xb.frames);
+        for prior in [a, b] {
+            assert_eq!(apply_at(&prior, Site::Frame(0), Action::AgentNone).unwrap().frames, xa.frames);
+        }
     }
 }

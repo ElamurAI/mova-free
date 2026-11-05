@@ -495,3 +495,26 @@ fn gates_green_and_negative_controls_red() {
         eprintln!("{name}: red — {}", r.unwrap_err());
     }
 }
+
+#[test]
+fn wave31_sparse_copy_and_partial_directory_failure() {
+    let mut v = Vfs::empty();
+    v.write("/f", b"a").unwrap();
+    let shared = v.read_shared("/f").unwrap();
+    v.write_at("/f", 3, b"z").unwrap();
+    assert_eq!(v.read("/f").unwrap(), [b'a', 0, 0, b'z']);
+    assert_eq!(&**shared, b"a");
+    let before = v.dump();
+    assert_eq!(v.write_at("/f", u64::MAX, b"x").unwrap_err().errno, Errno::FBig);
+    assert_eq!(v.dump(), before);
+    v.limits.max_files = 2;
+    assert_eq!(v.mkdir_all("/a/b").unwrap_err().errno, Errno::DQuot);
+    assert_eq!(v.stat("/a").unwrap().kind, FileType::Dir);
+    assert_eq!(v.stat("/a/b").unwrap_err().errno, Errno::NoEnt);
+    let snap = v.snapshot();
+    v.limits.max_file_size = 0;
+    let total = v.journal.total();
+    v.restore(&snap);
+    assert_eq!(v.limits.max_file_size, 0);
+    assert_eq!(v.journal.total(), total + 1);
+}

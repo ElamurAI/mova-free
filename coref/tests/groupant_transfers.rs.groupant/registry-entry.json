@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "groupant_reject_global_assignment_as_greedy_replacement",
+    "groupant_exact_match_priority_survives_large_residual_group",
+    "groupant_assignment_transpose_negative_and_empty_boundaries",
+    "groupant_total_key_zero_ties_join_heap_sort",
+    "groupant_integer_assignment_relation_and_noninteger_rejection"
+  ],
+  "children": [],
+  "cost": "Harness cost sums actual matching and separate oracle work for each constructed case. Bounded sorted residuals cost O(PG log(PG)) with PG<=262144 and min(P,G)>=128; other matching cases retain scan cost O(PG min(P,G)). Assignment is O(r^2 c) and tiny 2x2 objective enumeration is finite. Test allocation and padding are harness work; no measured speed claim is encoded.",
+  "description": "Five independent supplied-input observations call actual match_mentions, assign_max and algorithm-library primitives. They reject a global-assignment replacement of greedy overlap matching, retain duplicate exact-span priority, inspect empty/negative/rectangular assignment boundaries, compare stable matching identities with sorted total keys, and compare exactly representable integer maximum objectives with negative-cost minimum assignment and a tiny enumerated oracle. Expanded residual groups cross the min-side-128 sorted-selector threshold; 127-side cases retain scanning.",
+  "forward": [
+    "Five independent supplied-input observations call actual match_mentions, assign_max and algorithm-library primitives. They reject a global-assignment replacement of greedy overlap matching, retain duplicate exact-span priority, inspect empty/negative/rectangular assignment boundaries, compare stable matching identities with sorted total keys, and compare exactly representable integer maximum objectives with negative-cost minimum assignment and a tiny enumerated oracle. Expanded residual groups cross the min-side-128 sorted-selector threshold; 127-side cases retain scanning.",
+    "Test-observation joins only: actual matcher output identities are checked against explicit policy expectations and actual heap-sorted total keys; actual float maximum assignment objectives are checked against independent integer minimum-assignment and enumerated objectives on their common domain. assign_max is not installed inside the greedy matcher. The algorithm-library nodes remain in their existing hierarchy."
+  ],
+  "id": "coref-groupant-transfers",
+  "inverse": [
+    "The bounded observation universe excludes reporting the optimum 8 as the greedy result for the leading [[5,4],[4,0]] case, allowing residual overlap to displace exact matches, and reversing zero-overlap ties. For the integer adapter it excludes accepting an unrepresentable fractional matrix as an exact integer comparison. These are different tagged exclusions, not one shared optimizer specification.",
+    "A match vector admits many span layouts and overlap tables; an optimal scalar admits many matrices and tied assignments. Retain the policy, group ordering, dimensions and integer-domain tag before taking preimages. Padding zeros and unobserved unmatched mentions can vary without determining unique antecedents."
+  ],
+  "limitations": [
+    "Named tests are finite observations: residual sides 128/129 activate sorting, 127 retains scanning, and 81 integer 2x2 matrices exercise the assignment relation. Reservation-failure and overflow fallback may remain source-local rather than forced by this harness. Equality of scalar optimal values does not imply equality of tied assignment vectors. Nonfinite/ragged and malformed partition semantics remain outside this evidence.",
+    "Finite integration evidence is recorded; checks do not establish a general proof."
+  ],
+  "source": "coref/tests/groupant_transfers.rs",
+  "state": "Each test keeps the operation and metric explicit. Greedy identity equality is stronger than objective equality and differs from optimal assignment. Exact matches precede residual selection. Tie keys order prediction before gold. Integer maximum/minimum comparisons share rectangular shape, exact conversion and sign convention; fractional fixtures are outside that adapter's admitted relation."
+}

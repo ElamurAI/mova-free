@@ -1,0 +1,126 @@
+{
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "conditional"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "domain": "Declared bounded public API and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "behavior_complement",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "For accepted affine solution (v,N), Av!=b or any column vector u with Au!=0 is excluded; missing nullspace dimension n-rank(A) is excluded. None is excluded for a consistent system.",
+        "path": "model.md",
+        "section": "behavior_complement",
+        "status": "partial_relational_specification",
+        "subject_revision": "df058a4564d5545f898c6040ae8789063deb63e601e4dbf89c7fd676e27a6b08",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "domain": "Declared bounded public API and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "reverse_reconstruction",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Observed (v,N) admits all matrices and rhs whose deterministic RREF selection yields that affine basis; multiplying a row and its rhs by nonzero c preserves the result. None has many inconsistent preimages, e.g. 0*x=1 and 0*x=2.",
+        "path": "model.md",
+        "section": "reverse_reconstruction",
+        "status": "partial_relational_specification",
+        "subject_revision": "df058a4564d5545f898c6040ae8789063deb63e601e4dbf89c7fd676e27a6b08",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "domain": "Declared bounded public API and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "pivot_ties",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Columns ascend, first available nonzero row chosen. Pivot row normalized; eliminate every other row. Free columns ascend, set own free coordinate1 and others0, yielding a deterministic basis.",
+        "path": "model.md",
+        "section": "pivot_ties",
+        "status": "partial_relational_specification",
+        "subject_revision": "df058a4564d5545f898c6040ae8789063deb63e601e4dbf89c7fd676e27a6b08",
+        "type": "pivot_ties"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "domain": "Declared bounded public API and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "solution_space",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "All solutions are particular+sum t_i nullspace[i]. Empty equation set yields zero particular and identity basis; zero variables returns empty solution iff every rhs is zero.",
+        "path": "model.md",
+        "section": "solution_space",
+        "status": "partial_relational_specification",
+        "subject_revision": "df058a4564d5545f898c6040ae8789063deb63e601e4dbf89c7fd676e27a6b08",
+        "type": "solution_space"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "domain": "Declared bounded public API and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "finite_field",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Fixed p998244353 supports Fermat inverses only for nonzero pivots. Normalize raw u64 before arithmetic; products<2^60 and subtraction expression uses+p to avoid underflow.",
+        "path": "model.md",
+        "section": "finite_field",
+        "status": "partial_relational_specification",
+        "subject_revision": "df058a4564d5545f898c6040ae8789063deb63e601e4dbf89c7fd676e27a6b08",
+        "type": "finite_field"
+      },
+      {
+        "approximation_semantics": "Conditional mathematical specification; finite tests only",
+        "assumptions": "Validated size/domain and successful standard allocations",
+        "domain": "Declared bounded public API and finite fixtures",
+        "evidence": "model.md#evidence",
+        "id": "validation_order",
+        "observation_scope": "Values, shape, validation and named assertions",
+        "operator": "Rows>128 or variables>128 returns TooLarge before shape checks. Then rhs length and every row width must match. Standard allocations can abort; no error conflation with mathematical inconsistency.",
+        "path": "model.md",
+        "section": "validation_order",
+        "status": "partial_relational_specification",
+        "subject_revision": "df058a4564d5545f898c6040ae8789063deb63e601e4dbf89c7fd676e27a6b08",
+        "type": "validation_order"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-gaussian-elimination-modular",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "df058a4564d5545f898c6040ae8789063deb63e601e4dbf89c7fd676e27a6b08"
+  },
+  "status": "partial_source_derived_instance"
+}

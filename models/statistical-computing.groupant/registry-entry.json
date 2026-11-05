@@ -1,0 +1,35 @@
+{
+  "checks": [
+    "Seven exact selected tests twice debug and twice release; native-commands.json",
+    "Seven compiled mutants each failing actual selected assertion and exact restored positive rerun; controls.json",
+    "Seven source syntax projections generated twice byte-identically; local-registry-entries.json"
+  ],
+  "children": [
+    "mlab-builtins-stats",
+    "mlab-builtins-table",
+    "mlab-mcgate",
+    "mlab-rng",
+    "mlab-table",
+    "mlab-ext-boost",
+    "mlab-ext-nist"
+  ],
+  "cost": "For n rows,w columns,k keys: grouping/sort O(k*n log n), copying O(nw), innerjoin output m can be nl*nr and costs expected hash matching plus O(m log m) ordering. OLS O(np²+p³), chi2 O(rc), t/ANOVA O(n). Tiny Monte Carlo scales O(K) fixed-sized simulations with300 chi2 draws per replicate and unbounded worst-case polar rejection. External parser cost O(bytes); no speed measurement. Table make name checks cost O(w²) comparisons; table::dedupe may retry suffixes and cost O(w³) string comparisons plus text work. Pivot/import callers inherit that collision cost.",
+  "description": "Rng(seed) advances xoshiro state, feeding mcgate's eight H0 scenarios. stats::t_one/t_two/anova_one/corr_p/ols/chi2_ind produce p vectors; mcgate emits count(p<=a)/len with 4.5*sqrt(a(1-a)/len)+margin for four ALPHAS. Table comparison/groups supply sorted category identities to stats::crosstab and ANOVA; stats::mode delegates table builtin agg. Builtin joins use table::row_key, aggregate summaries use table::groups and scatter results. Boost/NIST helpers transport interpreter output into relative-EPS or LRE acceptance regions; selected synthetic tests call actual helpers without external data.",
+  "forward": [
+    "Rng(seed) advances xoshiro state, feeding mcgate's eight H0 scenarios. stats::t_one/t_two/anova_one/corr_p/ols/chi2_ind produce p vectors; mcgate emits count(p<=a)/len with 4.5*sqrt(a(1-a)/len)+margin for four ALPHAS. Table comparison/groups supply sorted category identities to stats::crosstab and ANOVA; stats::mode delegates table builtin agg. Builtin joins use table::row_key, aggregate summaries use table::groups and scatter results. Boost/NIST helpers transport interpreter output into relative-EPS or LRE acceptance regions; selected synthetic tests call actual helpers without external data.",
+    "Actual joins: stats imports builtins::table::{opts,opt}, table::groups, value::Table; mcgate imports stats and Rng; ext_boost/ext_nist import Interp whose registry resolves the same builtins. Invalid adapter example: group equality on NaN does not imply matching hash keys. Another: row-key signed zero canonicalization must agree with numerical sorting equality. Benchmark/calibration or full external dataset results are not inferred from helper tests. Paired ttest length compatibility precedes option parsing; only the minimum cleaned-sample-count check follows options. agg count and numel both count original values, so NaN insertion changes both. iso_date selects date-only formatting only for exactly integral inputs; rounded nonintegral midnight keeps a time-bearing pattern."
+  ],
+  "id": "statistical-computing",
+  "inverse": [
+    "Composition excludes missing-key join pairs even though group summaries include missing groups; excludes 1 from uniform draws; excludes cached-normal state advance; excludes rejection only on p==alpha because stats verdict is strict. Zero-K mcgate cannot claim ok rows. Synthetic helper success excludes no possible failure in unexecuted external data suites.",
+    "Given gate fractions, antecedents are all p-vectors with matching threshold counts and scenario-compatible RNG/statistical states; original samples/seed generally not unique. Group sums and fitted beta admit many observation tables; missing rows and dropped columns cannot be recovered. Boost/NIST scalar error reports admit all curves beneath or attaining their maxima/caps."
+  ],
+  "limitations": [
+    "Partial lexical syntax, no macro expansion or semantic proof",
+    "No executable approximate surrogate or end-to-end error budget",
+    "No external datasets, filesystem failure injection or Monte Carlo calibration",
+    "Uncalled source branches remain source-derived models; no universal source-level proof",
+    "No strict Clippy claim; existing dependency/target lints are outside this modeling change"
+  ],
+  "state": "For well-shaped bounded values, internal indices are zero-based and exposed sort permutations one-based; tables retain name/column/kind alignment when caller inputs satisfy representation preconditions. RNG cache distinguishes state-consuming polar generation from spare consumption. Missingness is operation-specific: groups coalesce NaNs, joins exclude them, t tests drop them, covariance propagates them. These policies must not be silently equated."
+}

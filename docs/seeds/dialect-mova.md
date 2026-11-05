@@ -34,14 +34,14 @@ Lines the actions do not touch are carried over byte for byte: comments, multiwo
 
 ## The seeds in this folder
 
-Each seed in `dialects/mova/seeds/` records one `mova` convention where UD 2.18 guidelines, post-2.18 changes and EWT data could point in different directions. Each entry below states what `mova` does, its scope, examples, and how it relates to standard export. Status values: **adopted** (part of `mova`), **pending** (`mova` keeps current EWT practice until UD settles the question), **not applicable**.
+Each seed in `dialects/mova/seeds.md` records one `mova` convention where UD 2.18 guidelines, post-2.18 changes and EWT data could point in different directions. Each entry below states what `mova` does, its scope, examples, and how it relates to standard export. Status values: **adopted** (part of `mova`), **pending** (`mova` keeps current EWT practice until UD settles the question), **not applicable**.
 
 Only three conventions change `mova` annotation relative to EWT 2.18: case and lemma on *who*-pronouns (`wh-case`), adverbs moved out of `discourse` (`discourse-adverbs`), and imperative main verbs that EWT marks `Inf` (`imperative-do`). The rest confirm that `mova` follows EWT data where the English guideline text is out of date.
 
 ---
 
 ### clausal-predicate
-`dialects/mova/seeds/clausal-predicate.md`
+`dialects/mova/seeds.md#clausal-predicate`
 
 **Status.** Adopted.
 **Gist.** When the predicate of a copular sentence is a clause, `mova` follows the UD 2.10 amendment and EWT: the predicate of the inner clause is the head, *be* is `cop`, and the subject of the outer clause is `nsubj:outer` (or `csubj:outer` for a clausal outer subject). The older analysis with the copula as head and the clause as `ccomp` is not used.
@@ -50,7 +50,7 @@ Only three conventions change `mova` annotation relative to EWT 2.18: case and l
 **Sources.** UD 2.18 `docs/changes.md` (Multiple subjects); UD `docs/_en/specific-syntax.md` (older analysis); checked by `en.verbal.outer-subject-needs-cop` and `en.verbal.cop-verb-head-outer` (`en/seeds/verbal`).
 
 ### depictives
-`dialects/mova/seeds/depictives.md`
+`dialects/mova/seeds.md#depictives`
 
 **Status.** Adopted.
 **Gist.** An optional depictive adjective (a secondary predicate describing a participant's state during the event) is `advcl` of the verb, as in the UD 2.10 amendment, `_en/dep/advcl.md` and EWT data. The older `acl` and `advmod` analyses are not used.
@@ -59,7 +59,7 @@ Only three conventions change `mova` annotation relative to EWT 2.18: case and l
 **Sources.** UD 2.18 `docs/changes.md` (Optional depictives); UD `docs/_en/dep/advcl.md`; UD `docs/_en/specific-syntax.md`.
 
 ### discourse-adverbs
-`dialects/mova/seeds/discourse-adverbs.md`
+`dialects/mova/seeds.md#discourse-adverbs`
 
 **Status.** Adopted.
 **Gist.** `discourse` is reserved for interjections, discourse particles, list numbering and emoticons, following the post-2.18 definition. An adverb is never `discourse` but `advmod`; a prepositional phrase is never `discourse` but `obl`.
@@ -68,7 +68,7 @@ Only three conventions change `mova` annotation relative to EWT 2.18: case and l
 **Sources.** UD `ud-next` `_u-dep/discourse.md`; UD 2.18 discourse guideline ("non-adverbial discourse markers"); gates `udnext.discourse-not-adv`, `udnext.discourse-not-pp` (error).
 
 ### feat-layer-ids
-`dialects/mova/seeds/feat-layer-ids.md`
+`dialects/mova/seeds.md#feat-layer-ids`
 
 **Status.** Adopted.
 **Gist.** Any layered feature identifiers that `mova` introduces (for example, for agreement with several participants in other languages) are named with lowercase Latin letters only, `[a-z]+`, without digits.
@@ -77,7 +77,7 @@ Only three conventions change `mova` annotation relative to EWT 2.18: case and l
 **Sources.** UD `docs/_u-overview/feat-layers.md`; UD validator `utils.py`.
 
 ### features-context
-`dialects/mova/seeds/features-context.md`
+`dialects/mova/seeds.md#features-context`
 
 **Status.** Principle adopted; `Exponence` pending.
 **Gist.** Feature values are taken from context, but where context and word form conflict, the form wins (post-2.18 clarification no. 18). `mova` keeps its "FEATS from the subject" normalization with an explicit limit: agreement never overrides an unambiguous form. `VBZ` is always `Number=Sing|Person=3`; `VBP` is never `Sing|3`; *was* is always `Sing`.
@@ -86,7 +86,7 @@ Only three conventions change `mova` annotation relative to EWT 2.18: case and l
 **Sources.** UD `docs/changes.md` (Morphosyntactic features, clarification no. 18); UD issue #1233; gates `udnext.vbz-3sg`, `udnext.vbp-not-3sg` (applied to `en` output and silver data).
 
 ### imperative-do
-`dialects/mova/seeds/imperative-do.md`
+`dialects/mova/seeds.md#imperative-do`
 
 **Status.** Adopted.
 **Gist.** In an imperative with *do*, both *do* and the main `VB` verb have `Mood=Imp|VerbForm=Fin` — following EWT practice rather than the letter of `_en/feat/VerbForm.md` (which would give the main verb `Inf`). So *Go!* and *Don't go!* are annotated the same way on the lexical verb.
@@ -95,7 +95,7 @@ Only three conventions change `mova` annotation relative to EWT 2.18: case and l
 **Sources.** UD `docs/_en/feat/VerbForm.md`; EWT 2.18 data; English seed `en/seeds/verbal/imperative.md` (`en.verbal.imperative-do-main-verb`; `en.verbal.vb-aux-infinitive` excludes imperative *do*).
 
 ### iobj-sole
-`dialects/mova/seeds/iobj-sole.md`
+`dialects/mova/seeds.md#iobj-sole`
 
 **Status.** Adopted.
 **Gist.** Following the UD 2.12 "Sole iobj" amendment and EWT (rather than the older text of `_en/dep/iobj.md` and `_en/specific-syntax.md`), `iobj` may be the only internal argument and may co-occur with `xcomp` when the verb takes an addressee or recipient.
@@ -104,7 +104,7 @@ Only three conventions change `mova` annotation relative to EWT 2.18: case and l
 **Sources.** UD 2.18 `docs/changes.md` (Sole iobj); UD `docs/_en/dep/iobj.md`; UD `docs/_en/specific-syntax.md`; VerbNet.
 
 ### modal-mood
-`dialects/mova/seeds/modal-mood.md`
+`dialects/mova/seeds.md#modal-mood`
 
 **Status.** Pending (UD issues #1118, #1155).
 **Gist.** Modals (`MD`) keep the EWT convention: `VerbForm=Fin` without `Mood`, `Number` or `Person`. `Mood=Pot/Nec/Cnd` is not added, and neither is `Mood=Ind`.
@@ -113,16 +113,16 @@ Only three conventions change `mova` annotation relative to EWT 2.18: case and l
 **Sources.** UD `docs/_u-feat/Mood.md`; UD auxiliary data (`data.json`); UD issues #1118, #1155, #1233.
 
 ### no-effect
-`dialects/mova/seeds/no-effect.md`
+`dialects/mova/seeds.md#no-effect`
 
 **Status.** Accepted as is / not applicable.
 **Gist.** A list of post-2.18 changes that do not affect English `mova` annotation: general documentation of `expl:pass` and `expl:pv`; validator data; the English treebank list; other languages and the website; UD v1 labels in `specific-syntax.md`.
 **Conditions and exceptions.** The Perl script `conllu_convert_uposf_to_xpos.pl` is not part of the conversion pipeline (pipeline mechanics are in Rust). Examples taken from `specific-syntax.md` must have v1 labels replaced (`dobj` → `obj`, etc.). For a future language-independent layer, `expl:pass`/`expl:pv` (a subtype shared by three language groups), `flat:redup` and `expl:rel` are noted. Validator data are to be compared again before 2.19.
 **Examples.** None.
-**Sources.** Linked seeds in `dialects/ud-next/seeds/` and `dialects/ud-2.18/seeds/`.
+**Sources.** Linked seeds in `dialects/ud-next/seeds.md` and `dialects/ud-2.18/seeds.md`.
 
 ### spoken-subtypes
-`dialects/mova/seeds/spoken-subtypes.md`
+`dialects/mova/seeds.md#spoken-subtypes`
 
 **Status.** Pending.
 **Gist.** The spoken-language subtypes documented for French after 2.18 — `discourse:filler`, `discourse:tag`, `conj:reform` — are not used in `mova` for now.
@@ -131,7 +131,7 @@ Only three conventions change `mova` annotation relative to EWT 2.18: case and l
 **Sources.** UD `ud-next` French spoken subtypes; UD issues #1290, #1280, #1273, #1289.
 
 ### subjunctive
-`dialects/mova/seeds/subjunctive.md`
+`dialects/mova/seeds.md#subjunctive`
 
 **Status.** Adopted.
 **Gist.** The subjunctive is marked `Mood=Sub`, as in EWT, GUM and ParTUT, rather than following the note in `_en/feat/Mood.md` that maps it to `Inf`/`Ind`. Present subjunctive (a bare `VB` without an auxiliary, with its own subject, after *suggest/insist/recommend that*, *it is vital that*, etc.): `Mood=Sub|Tense=Pres|VerbForm=Fin`, person and number from the subject. Past subjunctive *were* with a singular subject: `Mood=Sub|Tense=Past`.
@@ -140,7 +140,7 @@ Only three conventions change `mova` annotation relative to EWT 2.18: case and l
 **Sources.** UD `docs/_en/feat/Mood.md`, `docs/_en/feat/Tense.md`; checked by `en.verbal.subjunctive-present-feats` (`en/seeds/verbal/subjunctive.md`).
 
 ### to-phrase-obl
-`dialects/mova/seeds/to-phrase-obl.md`
+`dialects/mova/seeds.md#to-phrase-obl`
 
 **Status.** Adopted.
 **Gist.** A *to*-phrase attached to a verb (e.g. a recipient: *gave it to me*) is `obl`, as in EWT and the universal `obl`/`nmod` guidelines. The `nmod` reading in `_en/dep/iobj.md` is a UD v1 leftover.
@@ -149,7 +149,7 @@ Only three conventions change `mova` annotation relative to EWT 2.18: case and l
 **Sources.** UD `docs/_en/dep/iobj.md`; UD `docs/changes.md` (no. 17); universal `obl`, `nmod` pages.
 
 ### wh-case
-`dialects/mova/seeds/wh-case.md`
+`dialects/mova/seeds.md#wh-case`
 
 **Status.** Adopted (from `ud-next`).
 **Gist.** *Whom* has lemma *who* (*whomever* → *whoever*). *Who*/*whoever* get `Case=Nom` or `Case=Acc` according to their syntactic function; *whom*/*whomever* are always `Acc`, since the form wins. *Whose* with a noun (`nmod:poss`) is `Case=Gen|Poss=Yes`; independent *whose* is `Poss=Yes`.
@@ -158,7 +158,7 @@ Only three conventions change `mova` annotation relative to EWT 2.18: case and l
 **Sources.** UD `ud-next` `_en/pos/PRON.md`; UD issue #517; gates `udnext.whom-who-acc`, `udnext.who-case`, `udnext.whose-dependent` (error); hints `udnext.who-object-acc`, `udnext.who-subject-nom`, `udnext.whose-independent` (warn); `en.morph.whom-acc` (`en/seeds/morph/pron-wh.md`).
 
 ### xpos-not-empty
-`dialects/mova/seeds/xpos-not-empty.md`
+`dialects/mova/seeds.md#xpos-not-empty`
 
 **Status.** Adopted.
 **Gist.** XPOS is never an empty string: an unknown XPOS is written as `_`. This is enforced by the CoNLL-U writer for all export targets, not only `ud-next` (validator 0.2.8, `empty-string-in-xpos`, which 2.19 treats as a level-2 error).

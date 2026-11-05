@@ -1,0 +1,46 @@
+// Independent finite semantic relation. Does not call production or implement its byte codec.
+#[derive(Clone,Copy,Debug,PartialEq,Eq)]
+struct Token { structure:u8, tag:u8, lemma:u8 }
+fn token(n:u8)->Token{Token{structure:n&1,tag:(n>>1)&1,lemma:(n>>2)&1}}
+fn feature(t:Token)->u8 { if t.structure==1 {1<<t.lemma} else {0} }
+fn main(){
+ let mut pairs=0;let mut blind=0;let mut feature_equal_changed=0;
+ for a in 0..8 {for b in 0..8 {
+  let (x,y)=(token(a),token(b)); let same=x==y;
+  let fiber:Vec<_>=(0..8).map(token).filter(|z|*z==x).collect();
+  assert_eq!(same,fiber.contains(&y));
+  let complement=x.structure!=y.structure||x.tag!=y.tag||x.lemma!=y.lemma;
+  assert_eq!(!same,complement);
+  if x.structure==y.structure && !same {blind+=1;}
+  if !same && feature(x)==feature(y){feature_equal_changed+=1;}
+  if same {assert_eq!(feature(x),feature(y));}
+  pairs+=1;
+ }}
+ let mut chains=0;let mut carry_cases=0;let mut incomplete_failures=0;
+ // Two IDs, three versions, eight semantic states per token.
+ for initial in 0u16..64 {for middle in 0u16..64 {for final_state in 0u16..64 {
+  let states=[initial,middle,final_state].map(|s|[token((s&7)as u8),token((s>>3)as u8)]);
+  let mut changed=0u8;let mut legacy_changed=0u8;
+  for id in 0..2 {for edge in 0..2 {
+   if states[edge][id]!=states[edge+1][id]{changed|=1<<id;}
+   if states[edge][id].structure!=states[edge+1][id].structure{legacy_changed|=1<<id;}
+  }}
+  for wanted in 0..2 {
+   let membership=|ts:[Token;2]| (0..2).fold(0u8,|m,id|m|if feature(ts[id])&(1<<wanted)!=0{1<<id}else{0});
+   let old=membership(states[0]);let fresh=membership(states[2]);
+   assert_eq!((old^fresh)&!changed,0);
+   let carry=(old&!changed)|(fresh&changed); assert_eq!(carry,fresh);
+   if (old&!legacy_changed)|(fresh&legacy_changed)!=fresh {incomplete_failures+=1;}
+   // Full converse for candidate predecessor membership, including inside-C freedom.
+   for predecessor in 0u8..4 {
+    let output=(predecessor&!changed)|(fresh&changed);
+    assert_eq!(output==fresh,predecessor&!changed==fresh&!changed);
+   }
+   carry_cases+=1;
+  }
+  chains+=1;
+ }}}
+ assert_eq!(pairs,64);assert!(blind>0&&feature_equal_changed>0&&incomplete_failures>0);
+ println!("semantic pairs={pairs}; structural blind pairs={blind}; changed but feature-equal={feature_equal_changed}; two-ID three-version chains={chains}; pointwise carry cases={carry_cases}; incomplete legacy failures={incomplete_failures}");
+ if std::env::args().any(|a|a=="--negative-control"){assert_eq!(incomplete_failures,0,"false structural-only delta completeness");}
+}

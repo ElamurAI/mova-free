@@ -1,17 +1,17 @@
 //! db — the Mova annotation database on DuckDB. Design note: parses of fairy-tale sentences (the same trees,
 //! pragmatics and everything else) are written there; it lives in the dev workspace; the whole Mova corpus is
-//! moved into it as well. Database — `$MOVA_DATA/db/mova.duckdb`; schema and queries — `db/` in the repo.
+//! moved into it as well. Database — `$MOVA_DATA/db/mova.duckdb`; schema, SQL, queries and manifests — `tools/db/` in the repo.
 //!
 //!   db init   <db>
 //!   db load   <db> <source> <dialect> [--kind K] [--docs newdoc|idprefix|file] [--match new|auto|existing]
 //!             [--run name] [--layer ud] [--lang en] [--origin O] [--method text] [--license L] [--genre G]
 //!             [--tool T] <files.conllu>…
-//!   db corpus <db> [corpus.tsv]                    the whole Mova corpus per the manifest (`db/corpus.tsv`)
+//!   db corpus <db> [corpus.tsv]                    the whole Mova corpus per the manifest (`tools/db/data/corpus.tsv`)
 //!   db tales  <db> <manifest.jsonl> <raw> <run dir> <train.conllu>…
 //!   db export <db> <key=value>… > out.conllu        keys: file run source tool layer dialect origin doc sent sid aid gate
 //!   db verify <db> [file]                           lossless: export = file, counters, size from the card
-//!   db stats  <db>                                  overview (`db/sql/stats.sql`)
-//!   db sql    <db> <file.sql>                       query (e.g. `db/queries/*.sql`), markdown output
+//!   db stats  <db>                                  overview (`tools/db/sql/stats.sql`)
+//!   db sql    <db> <file.sql>                       query (e.g. `tools/db/queries/*.sql`), markdown output
 //!   db migrate <db>                                 schema migrations (`schema.sql` from "-- migrate:v"), idempotent
 //!   db prag   <db> <labels.tsv> --run name --source silver|rust [--tool opus|rust] [--origin O] [--method M]
 //!             [--params params.json] [--path P] [--note N]   pragmatics layer (crate `prag`)
@@ -40,9 +40,9 @@ use anyhow::{Context, Result, bail};
 use duck::Duck;
 use load::{Docs, Match, Opts};
 
-const SCHEMA: &str = include_str!("../../../db/schema.sql");
-const CORPUS: &str = include_str!("../../../db/corpus.tsv");
-const STATS: &str = include_str!("../../../db/sql/stats.sql");
+const SCHEMA: &str = include_str!("../schema.sql");
+const CORPUS: &str = include_str!("../data/corpus.tsv");
+const STATS: &str = include_str!("../sql/stats.sql");
 
 fn usage() -> Result<()> {
     bail!(
@@ -288,4 +288,52 @@ fn qa_cmd(duck: &Duck, a: &[String]) -> Result<()> {
         None => println!("questions: run {} (run {run_id}), rows {n}", o.run),
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod wave31 {
+    use super::*;
+
+    #[test]
+    fn cli_rejections_precede_database_effects() {
+        let stage = duck::Stage::new("wave31-cli").unwrap();
+        let db = stage.path("never-created.duckdb");
+        let duck = Duck {
+            bin: stage.path("nonexistent-executable"),
+            db: db.clone(),
+        };
+        assert!(usage().is_err());
+        for args in [
+            vec![],
+            vec!["invalid", "ud", "x"],
+            vec!["gold", "ud", "--unknown", "x"],
+            vec!["gold", "ud", "--docs", "bad"],
+            vec!["gold", "ud", "--match", "bad"],
+            vec!["gold", "ud", "--run"],
+        ] {
+            let a: Vec<String> = args.into_iter().map(str::to_string).collect();
+            assert!(load_cmd(&duck, &a).is_err());
+        }
+        assert!(
+            prag_cmd(&duck, &["missing.tsv".into()])
+                .unwrap_err()
+                .to_string()
+                .contains("--run")
+        );
+        assert!(
+            qa_cmd(&duck, &["missing.tsv".into(), "--bad".into(), "x".into()])
+                .unwrap_err()
+                .to_string()
+                .contains("unknown option")
+        );
+        assert!(!db.exists());
+        std::fs::write(&db, "existing").unwrap();
+        assert!(
+            init(&duck)
+                .unwrap_err()
+                .to_string()
+                .contains("already exists")
+        );
+        assert_eq!(std::fs::read_to_string(&db).unwrap(), "existing");
+    }
 }

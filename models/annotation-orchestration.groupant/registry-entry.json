@@ -1,0 +1,42 @@
+{
+  "checks": [
+    "11 owned unit checks and6 fake-process integration checks, twice debug/release (see retained named outcomes)",
+    "Six compiled production mutations, nonzero test exits and exact restoration"
+  ],
+  "children": [
+    "annot-batch",
+    "annot-codex-batch",
+    "annot-hints",
+    "annot-llm",
+    "annot-main",
+    "annot-repair",
+    "annot-tests-codex-batches",
+    "annotation-review-guard",
+    "annotation-review-controller",
+    "fish-annotation-contract",
+    "fish-annotation-executor",
+    "fish-annotation-api",
+    "fish-swarm-composition",
+    "fish-batch-packing",
+    "fish-pages-composition"
+  ],
+  "cost": "B bytes, R requests, P partial rows, N tokens: prompt/serialization O(B), map operations logarithmic, partial request matching O(P*R), plus delegated expert/gate/training/transport work. No runtime speed or remote-cost estimate.",
+  "description": "Draft Ann/Item -> optional repair/hints -> llm prompt blocks -> batch request/state -> codex snapshot+partial queue -> batch reply parsing -> main Outcome patch/blind gates -> finish files/report and optional corpus. Only the bounded pure/helper and fake-process prefix is executed.",
+  "forward": [
+    "Draft Ann/Item -> optional repair/hints -> llm prompt blocks -> batch request/state -> codex snapshot+partial queue -> batch reply parsing -> main Outcome patch/blind gates -> finish files/report and optional corpus. Only the bounded pure/helper and fake-process prefix is executed.",
+    "ann.rs is an existing cross-group gate/type dependency, not duplicate ownership. main and batch share Outcome::add_patch_reply/finish; llm direct fixed+variable concatenation differs by two separating newlines from codex message-block join. hints advise only; repair precedes draft gates; optional post-gate FEATS replacement is not re-gated.",
+    "Bounded packet packing and immutable page supervision distinguish source-ID intent accounting from Task jobs and actual validated model reviews."
+  ],
+  "id": "annotation-orchestration",
+  "inverse": [
+    "Unknown reply ids, missing/broken/gate-failed patches do not become accepted final annotations. Queue rejects sticky failures before launch, but existing final sentinel bypasses validation. No inference from fake success to live quality.",
+    "Final Ann admits many draft/patch antecedents; result envelopes admit overwritten duplicates/discarded thinking. Queue final permits fresh or resumed execution histories; source state and prompt are not uniquely recoverable."
+  ],
+  "limitations": [
+    "No end-to-end training or finish/API execution",
+    "No executable percent surrogate; 1/2/5/10% metric unsupported",
+    "Duplicate ids and invalid state indexing remain explicit assumptions",
+    "Cache/source provenance and source ownership are separately supplied by a private caller; page completion can include explicit deferrals and quarantines."
+  ],
+  "state": "Unique ids, consistent forms and in-range state indices are required at adapters. Accepted patch outputs pass existing ann::check. Queue final name follows all local successes under immutable inputs/single worker; finish is not transactional."
+}

@@ -1,0 +1,82 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "composition": {
+      "path": "model.md#composition",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "delimiter_suffix",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "delimiter_suffix",
+        "status": "partial_source_derived_model",
+        "type": "delimiter_suffix"
+      },
+      {
+        "id": "outer_group_quotient",
+        "path": "model.md",
+        "scope": "Concrete transition within source byte range; finite evidence is not proof",
+        "section": "outer_group_quotient",
+        "status": "partial_source_derived_model",
+        "type": "outer_group_quotient"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 12754,
+      "start": 8481
+    },
+    "description": "match_pattern walks pattern. Literal tokens must match next input (skip spaces unless literal Space). Param consumes a normal argument when followed by no literals, otherwise collect_until scans through whole groups until the delimiter suffix appears at depth0. Exactly one outer group is stripped from the captured argument.",
+    "source_bytes_sha256": "8cbedbfce46a7d3341f99cdd78b0ffa2527247a51c77bed3389789d94d036f85"
+  },
+  "id": "latex-macros-stage2",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../macros.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "4253c16fd5f46f05dd9e527d4b097d906594f20e8fa54caa014288da5aa48c96"
+  },
+  "status": "partial_source_bound_model"
+}

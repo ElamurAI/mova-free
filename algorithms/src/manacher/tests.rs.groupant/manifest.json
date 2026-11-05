@@ -1,0 +1,115 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Mathematical target with bounded finite evidence, not a proof.",
+        "assumptions": "Ordinary Rust execution, sufficient allocation, byte equality.",
+        "domain": "Deterministic test executions over the explicitly enumerated finite byte fixtures.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "One deterministic test-suite execution.",
+        "operator": "Within the universe of these test runs paired with pass/fail observations, pass is excluded if any specified assertion is false. Fail is excluded when every assertion completes true in the ordinary execution model. Untested inputs and compiler/runtime defects remain outside the observation.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "2b2e21a31eccd4bc0f41d7bd1b3741eb7aad9ba609f708e3afb6747ffd1ba5e7",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Mathematical target with bounded finite evidence, not a proof.",
+        "assumptions": "Ordinary Rust execution, sufficient allocation, byte equality.",
+        "domain": "Deterministic test executions over the explicitly enumerated finite byte fixtures.",
+        "evidence": "model.md#evidence",
+        "id": "compatible_antecedents",
+        "observation_scope": "One deterministic test-suite execution.",
+        "operator": "A passing observation admits every candidate implementation agreeing with all checked fixture observations; it cannot identify the source or constrain all untested inputs. A failing observation admits executions with at least one violated assertion; the assertion trace narrows the compatible implementations.",
+        "path": "model.md",
+        "section": "compatible_antecedents",
+        "status": "partial_source_derived",
+        "subject_revision": "2b2e21a31eccd4bc0f41d7bd1b3741eb7aad9ba609f708e3afb6747ffd1ba5e7",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Mathematical target with bounded finite evidence, not a proof.",
+        "assumptions": "Ordinary Rust execution, sufficient allocation, byte equality.",
+        "domain": "Deterministic test executions over the explicitly enumerated finite byte fixtures.",
+        "evidence": "model.md#evidence",
+        "id": "relabeling_boundaries",
+        "observation_scope": "One deterministic test-suite execution.",
+        "operator": "Fixture-preserving injective byte relabeling should preserve tested output; long constant fixtures exercise maximal radii.",
+        "path": "model.md",
+        "section": "relabeling_boundaries",
+        "status": "partial_source_derived",
+        "subject_revision": "2b2e21a31eccd4bc0f41d7bd1b3741eb7aad9ba609f708e3afb6747ffd1ba5e7",
+        "type": "metamorphic_relation"
+      },
+      {
+        "approximation_semantics": "Exact mathematical target under assumptions; bounded executed evidence only.",
+        "assumptions": "Ordinary successful Rust execution, sufficient allocation and exact byte equality. Mathematical sums; test sums fit usize. Finite fixtures do not establish unrestricted correctness.",
+        "domain": "Candidate vectors on named fixtures with at most 256 positions.",
+        "evidence": "model.md#evidence",
+        "falsifiable_check": "Run equality_constraints_reconstruct_and_reject or joint_parity_constraints_reconstruct_and_reject; reject in-bounds contradictory vectors.",
+        "id": "constraint_witness_gate",
+        "observation_scope": "Named relations and bounded source correspondence fixtures.",
+        "operator": "Reconstruction succeeds iff bounds hold and no required inequality lies inside an equality class; returned witnesses must reproduce the candidate through production. Joint constraints, not individual bounds, determine feasibility.",
+        "path": "model.md",
+        "section": "constraint_witness_gate",
+        "status": "partial_source_derived",
+        "subject_revision": "2b2e21a31eccd4bc0f41d7bd1b3741eb7aad9ba609f708e3afb6747ffd1ba5e7",
+        "type": "constraint_correspondence"
+      },
+      {
+        "approximation_semantics": "Exact mathematical target under assumptions; bounded executed evidence only.",
+        "assumptions": "Ordinary successful Rust execution, sufficient allocation and exact byte equality. Mathematical sums; test sums fit usize. Finite fixtures do not establish unrestricted correctness.",
+        "domain": "Named distinct-output fixture pairs and deterministic projection assertions.",
+        "evidence": "model.md#evidence",
+        "falsifiable_check": "Run compressed_observation_and_collapsing_symbols or interval_membership_count_and_lossy_projection; full-vector equality is a rejected alternative.",
+        "id": "observation_loss_gate",
+        "observation_scope": "Named relations and bounded source correspondence fixtures.",
+        "operator": "Projection equality admits distinct full vectors: the sum observation cannot identify its antecedent. Passing interval/position assertions additionally constrains production at every named interval/threshold.",
+        "path": "model.md",
+        "section": "observation_loss_gate",
+        "status": "partial_source_derived",
+        "subject_revision": "2b2e21a31eccd4bc0f41d7bd1b3741eb7aad9ba609f708e3afb6747ffd1ba5e7",
+        "type": "information_loss"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-manacher-tests",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../tests.rs",
+    "sha256": "2b2e21a31eccd4bc0f41d7bd1b3741eb7aad9ba609f708e3afb6747ffd1ba5e7"
+  },
+  "status": "partial_source_derived_instance"
+}

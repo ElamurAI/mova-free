@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "blocks::site_md::tests::a_page_gives_itself_back_and_its_prose_goes_up",
+    "blocks::site_md::tests::inline_marks_and_order"
+  ],
+  "children": [],
+  "cost": "Inline scans can be O(B²) for repeated '['/'<' suffix searches. page lines and concatenation O(B) typical. repeat clones growing Copier each trial: O(total preceding history bytes) per text piece, possibly quadratic. Natural sort keys O(id bytes), sort O(P log P); filesystem rereads selected pages.",
+  "description": "page_volume decomposes Markdown with ordered fence/table/comment/foreign/heading/list/prose cases; inline records removed markup at UTF-8 text offsets. with_marks renders exact written strings on generated offsets. give replaces endpoint-marked given prose or matching Unparsed bodies, repeat selects copies at len>=24 and cost<=0.25 literal bits. page ids/sections/natural sorting feed runs then stride-before-split sampling.",
+  "forward": [
+    "page_volume decomposes Markdown with ordered fence/table/comment/foreign/heading/list/prose cases; inline records removed markup at UTF-8 text offsets. with_marks renders exact written strings on generated offsets. give replaces endpoint-marked given prose or matching Unparsed bodies, repeat selects copies at len>=24 and cost<=0.25 literal bits. page ids/sections/natural sorting feed runs then stride-before-split sampling."
+  ],
+  "id": "roundtrip-markdown-layout",
+  "inverse": [
+    "Generated layout does not discard original byte sequence on tested fixtures; foreign paragraphs never become English text blocks. Given replacement cannot remove interior markup. repeat requires both length and price conditions.",
+    "Volume with text, ordered marks and literal pieces reconstructs written bytes; prose-only view has infinitely many markup antecedents. Natural keys identify leading-zero/overflow-equivalent numeric runs; path id tie-break preserves deterministic sorting but not injective key."
+  ],
+  "limitations": [
+    "Partial source syntax and finite pure-code tests only; no model loading, live corpus/site/lesson workflows, full pipeline or persistent learning claim.",
+    "No executable percentage surrogate or semantic proof; explicit codec domains and resource limits apply."
+  ],
+  "source": "tools/roundtrip/src/blocks/site_md.rs",
+  "state": "UTF-8 strings; generated marks in nondecreasing valid byte coordinates; finite representable sums. Environment chrome/repeat flags held fixed; actual filesystem listing/sampling not exercised."
+}

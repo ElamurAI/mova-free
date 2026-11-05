@@ -1594,3 +1594,107 @@ pub fn explore_big(base: Vec<Rule>, big: &[Vec<en::annotate::Word>], domain: &st
 pub fn big_score(rules: &[Rule], big: &[Vec<en::annotate::Word>], domain: &str) -> Vec<(i64, i64)> {
     absurd_per(&Matrix::global(), &Matrix::global_in(domain), big, rules)
 }
+
+#[cfg(test)]
+mod wave29_worldlearn {
+    use super::*;
+    fn word(rel: Rel, head: usize) -> Word {
+        Word {
+            form: "fixture".into(),
+            lemma: "fixture".into(),
+            upos: UPos::NOUN,
+            tag: Tag::NN,
+            head,
+            rel,
+        }
+    }
+    #[test]
+    fn packed_subsets_and_empty_bootstrap() {
+        let atoms = [(0, 0), (3, 1), (17, 1), (31, 65534)];
+        let codes: Vec<_> = atoms.iter().copied().map(acode).collect();
+        let mut keys = vec![123];
+        skeys(&codes, &mut keys);
+        assert_eq!(keys.len(), 14);
+        assert_eq!(
+            keys.iter()
+                .copied()
+                .collect::<std::collections::BTreeSet<_>>()
+                .len(),
+            14
+        );
+        for k in keys {
+            let a = sdecode(k);
+            assert!((1..=3).contains(&a.len()));
+            assert!(a.iter().all(|x| atoms.contains(x)));
+        }
+        for a in atoms {
+            assert_eq!(adecode(acode(a)), a);
+        }
+        skeys(&[], &mut Vec::new());
+        assert_eq!(boot(&[]), 1.0);
+        assert_eq!(boot(&[1, 1]), 0.0);
+        assert_eq!(boot(&[-1, -1]), 1.0);
+        assert_eq!(verdict(1, 0, 0.05), "neutral");
+        assert_eq!(verdict(1, 0, 0.049), "positive");
+    }
+    #[test]
+    fn counting_requires_correct_heads_and_orders_candidates() {
+        let data = vec![Sent {
+            w: vec![
+                word(Rel::Obj, 0),
+                word(Rel::Obj, 0),
+                word(Rel::Obj, 1),
+                word(Rel::Obj, 0),
+            ],
+            gold: vec![
+                (0, Rel::Nsubj),
+                (0, Rel::Obj),
+                (0, Rel::Nsubj),
+                (0, Rel::Nsubj),
+            ],
+        }];
+        let fs = vec![vec![vec![acode((0, 7)), acode((3, 1))]; 4]];
+        let fix = fix_counts(&data, &fs);
+        assert_eq!(fix.len(), 3);
+        assert!(fix.values().all(|&x| x == 2));
+        let candidates = score_from(&data, &fs, &fix, 2);
+        assert_eq!(candidates.len(), 3);
+        assert!(candidates.iter().all(|x| (x.1, x.2) == (2, 1)));
+        assert_eq!(candidates[0].0.atoms, vec![(0, 7)]);
+        assert_eq!(candidates[2].0.atoms.len(), 2);
+        assert!(score_from(&data, &fs, &fix, 3).is_empty());
+    }
+    #[test]
+    fn permissive_parse_and_set_valued_changes() {
+        let rows = parse_rules(
+            "# ignored\ngeneral\tobj\tnsubj\t17:1,bad,0:7,17:1\nwrong\tUNKNOWN\tobj\t0:1\n",
+        );
+        assert_eq!(rows.len(), 1);
+        let r = rows[0].1.clone();
+        assert_eq!(r.atoms, vec![(17, 1), (0, 7), (17, 1)]);
+        assert_eq!(parse_rules(&r.machine())[0].1, r);
+        let broad = Rule {
+            from: Rel::Obj,
+            to: Rel::Nsubj,
+            atoms: vec![],
+        };
+        assert!(broad.covers(&r));
+        assert!(Change::Add(r.clone()).holds_in(std::slice::from_ref(&broad)));
+        assert_eq!(
+            Change::Add(r.clone())
+                .apply_to(std::slice::from_ref(&broad))
+                .len(),
+            2
+        );
+        let dup = vec![r.clone(), broad.clone(), r.clone()];
+        assert_eq!(
+            Change::Remove(r.clone()).apply_to(&dup),
+            vec![broad.clone()]
+        );
+        assert_eq!(
+            Change::Replace(r, broad.clone()).apply_to(&dup),
+            vec![broad; 3]
+        );
+        assert!(parse_rules("domain\tobj\tnsubj\tbad")[0].1.atoms.is_empty());
+    }
+}

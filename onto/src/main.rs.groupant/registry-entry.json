@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "Selected onto wave29_tests / hs::t:: actual-code tests; repeated debug/release and compiled controls"
+  ],
+  "children": [],
+  "cost": "opt O(A), config O(file bytes); startup load/seed/core costs; other command effects delegated, no whole-run bound.",
+  "description": "Dispatch routes queries/build/evaluation/bridge/HS/Wikidata/teacher operations. load_kb checked snapshot→layers→relations→defaults→core check; gate off permits warning. opt first key successor; wd_cfg reads langs only if present. Paths from env/defaults.",
+  "forward": [
+    "opt(args,k)=args[min{i:args_i=k}+1] when index exists; load_kb=core_gate∘defaults∘relations∘layers∘snapshot_load, with early Result failure and prefix loader effects."
+  ],
+  "id": "onto-main",
+  "inverse": [
+    "Absent/dangling first key excludes Some(opt); later duplicate cannot override. Snapshot error excludes later seed load. Bad command errors do not uniformly mean no prior effects.",
+    "Opt value preimage includes arbitrary args with same first-key successor. Kb loses startup paths/env; reports lose original args/timing."
+  ],
+  "limitations": [
+    "Partial lexical AST, no semantic proof",
+    "No live teacher/corpus/model/DB execution",
+    "No validated executable percentage surrogate",
+    "Synthetic finite tests do not cover all public malformed states"
+  ],
+  "source": "onto/src/main.rs",
+  "state": "No generic dry run/transaction. Subcommands may mkdir/load before arg validation. Only pure option/config helpers executed."
+}

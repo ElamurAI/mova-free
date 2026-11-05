@@ -4,7 +4,7 @@ The rule language is `docs/dialect.md`. Conventions beyond the specification are
 
 CTeTex is test only, so the main direction is `mova → ctetex`: the `en` output must be brought to CTeTex customs so that quality is measured rather than the difference between dialects. `ctetex → mova` is needed for the round trip and for checking the two roads to the goal.
 
-CTeTex FEATS are incomplete (`seeds/feats-minimal.md`). On the way there the converter does not fill them in: a test does not need training. On the way back it reduces the full `mova` FEATS to the CTeTex set.
+CTeTex FEATS are incomplete (`seeds.md#feats-minimal`). On the way there the converter does not fill them in: a test does not need training. On the way back it reduces the full `mova` FEATS to the CTeTex set.
 
 ## ctetex → mova
 
@@ -16,7 +16,7 @@ to: mova
 match: h[upos=NOUN|PROPN]; n[upos=NOUN|PROPN, rel=nmod, head=h, before=h]
 require: none c[rel=case, head=n]
 set: n[rel=compound]
-source: UD en compound; seeds/nmod-compound.md
+source: UD en compound; seeds.md#nmod-compound
 ```
 
 ```convert
@@ -26,7 +26,7 @@ from: ctetex
 to: mova
 match: v[upos=VERB]; p[upos=ADP|ADV, rel=compound, head=v, after=v]
 set: p[rel=compound:prt]
-source: UD en compound:prt; seeds/old-conventions.md
+source: UD en compound:prt; seeds.md#old-conventions
 ```
 
 ```convert
@@ -71,7 +71,7 @@ source: UD docs/changes.md No. 14; EWT README v2.14 (#518)
 
 Matches: `nn-compound` 472 (of 487 `nmod` nouns before a head noun, 15 have a preposition), `prt` 14, `poss` 16, `wh-advmod` 36, `an` 41, `enum` 25.
 
-`nn-compound` takes not only adjacent pairs (307, `seeds/nmod-compound.md`) but also chains: in *Speed Dump Lag Frames* several `nmod` attach to *Frames*. In EWT such chains are also `compound`.
+`nn-compound` takes not only adjacent pairs (307, `seeds.md#nmod-compound`) but also chains: in *Speed Dump Lag Frames* several `nmod` attach to *Frames*. In EWT such chains are also `compound`.
 
 ## mova → ctetex
 
@@ -82,7 +82,7 @@ from: mova
 to: ctetex
 match: p[rel=compound:prt]
 set: p[rel=compound]
-source: seeds/old-conventions.md
+source: seeds.md#old-conventions
 ```
 
 ```convert
@@ -92,7 +92,7 @@ from: mova
 to: ctetex
 match: p[form=my|your|his|its|our|their, upos=PRON, rel=nmod:poss]
 set: p[upos=DET]; p[rel=nmod]
-source: seeds/old-conventions.md
+source: seeds.md#old-conventions
 ```
 
 ```convert
@@ -102,7 +102,7 @@ from: mova
 to: ctetex
 match: v[rel=advcl]; w[form=when|where, rel=advmod, head=v, before=v]
 set: w[upos=SCONJ]; w[rel=mark]
-source: seeds/old-conventions.md
+source: seeds.md#old-conventions
 ```
 
 ```convert
@@ -112,7 +112,7 @@ from: mova
 to: ctetex
 match: d[form=an, upos=DET]
 set: d[lemma=an]
-source: seeds/old-conventions.md
+source: seeds.md#old-conventions
 ```
 
 ```convert
@@ -122,7 +122,7 @@ from: mova
 to: ctetex
 match: h[upos=VERB|ADJ|ADV|AUX]; n[upos=NUM|X, rel=discourse, head=h, before=h]
 set: n[rel=nummod]
-source: seeds/lists.md
+source: seeds.md#lists
 ```
 
 ```convert
@@ -132,7 +132,7 @@ from: mova
 to: ctetex
 match: t[]
 set: t[feats-=Person]; t[feats-=VerbForm]; t[feats-=Mood]; t[feats-=Voice]; t[feats-=Case]; t[feats-=Gender]; t[feats-=PronType]; t[feats-=Poss]; t[feats-=Reflex]; t[feats-=Definite]; t[feats-=Degree]; t[feats-=NumType]; t[feats-=NumForm]; t[feats-=Polarity]; t[feats-=Foreign]; t[feats-=Abbr]; t[feats-=Style]
-source: seeds/feats-minimal.md
+source: seeds.md#feats-minimal
 ```
 
 ```convert
@@ -142,7 +142,7 @@ from: mova
 to: ctetex
 match: t[upos=PROPN|PRON|DET|ADJ|NUM|ADV|ADP|X|SYM]
 set: t[feats-=Number]
-source: seeds/feats-minimal.md (PROPN without Number — 293 of 293)
+source: seeds.md#feats-minimal (PROPN without Number — 293 of 293)
 ```
 
 ```convert
@@ -152,7 +152,7 @@ from: mova
 to: ctetex
 match: v[upos=VERB, feats.Tense=Pres]
 set: v[feats-=Tense]
-source: seeds/feats-minimal.md (VERB Tense=Pres — 0)
+source: seeds.md#feats-minimal (VERB Tense=Pres — 0)
 ```
 
 ```convert
@@ -162,7 +162,7 @@ from: mova
 to: ctetex
 match: v[upos=VERB, feats.Tense=Past]
 set: v[feats-=Number]
-source: seeds/feats-minimal.md (VERB Tense=Past — 286, without Number)
+source: seeds.md#feats-minimal (VERB Tense=Past — 286, without Number)
 ```
 
 ```convert
@@ -172,7 +172,7 @@ from: mova
 to: ctetex
 match: v[upos=VERB, feats.Number=Plur]
 set: v[feats-=Number]
-source: seeds/feats-minimal.md
+source: seeds.md#feats-minimal
 ```
 
 **Needs string XPOS:** CTeTex has no XPOS. A `xpos=_` action is needed — clear XPOS. If `xpos=` accepts only PTB tags, this is `convert-todo`. The rule itself is `t[]` → `t[xpos=_]`, as in `../atis/convert.md`.

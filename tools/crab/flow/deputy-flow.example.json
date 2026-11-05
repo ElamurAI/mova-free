@@ -1,0 +1,142 @@
+{
+ "_comment": "Work-flow capabilities for the Crab deputy: merge into a deputy configuration's capabilities. \"Do the Fish have work?\", \"Show the Fish queues.\", \"Is any worker clogged?\", \"What needs my attention?\".",
+ "capabilities": {
+  "fish-flow": {
+   "handler": "crab_flow",
+   "parameters": {
+    "operation": "status",
+    "group": "fish"
+   },
+   "intent": {
+    "observes": true,
+    "request_predicates": [
+     "ask",
+     "check",
+     "inspect",
+     "review",
+     "read",
+     "show",
+     "look",
+     "get",
+     "tell",
+     "see",
+     "diagnose",
+     "find",
+     "know",
+     "report",
+     "take",
+     "have",
+     "list"
+    ],
+    "observations": [
+     "work",
+     "queue",
+     "stack",
+     "backlog",
+     "flow",
+     "clog",
+     "clogged",
+     "starve",
+     "starved",
+     "job"
+    ],
+    "entities": [
+     "fish"
+    ],
+    "subordinate_predicates": [
+     "run",
+     "work",
+     "clog",
+     "starve"
+    ]
+   }
+  },
+  "workers-flow": {
+   "handler": "crab_flow",
+   "parameters": {
+    "operation": "status"
+   },
+   "intent": {
+    "observes": true,
+    "request_predicates": [
+     "ask",
+     "check",
+     "inspect",
+     "review",
+     "read",
+     "show",
+     "look",
+     "get",
+     "tell",
+     "see",
+     "diagnose",
+     "find",
+     "know",
+     "report",
+     "take",
+     "have",
+     "list"
+    ],
+    "observations": [
+     "work",
+     "queue",
+     "stack",
+     "backlog",
+     "flow",
+     "clog",
+     "clogged",
+     "starve",
+     "starved",
+     "job"
+    ],
+    "entities": [
+     "worker",
+     "animal"
+    ],
+    "subordinate_predicates": [
+     "run",
+     "work",
+     "clog",
+     "starve"
+    ]
+   }
+  },
+  "crab-attention": {
+   "handler": "crab_flow",
+   "parameters": {
+    "operation": "attention"
+   },
+   "intent": {
+    "observes": true,
+    "request_predicates": [
+     "ask",
+     "check",
+     "inspect",
+     "review",
+     "read",
+     "show",
+     "look",
+     "get",
+     "tell",
+     "see",
+     "diagnose",
+     "find",
+     "know",
+     "report",
+     "take",
+     "have",
+     "need",
+     "want",
+     "require"
+    ],
+    "observations": [
+     "attention"
+    ],
+    "entities": [
+     "crab"
+    ],
+    "addressee": true
+   }
+  }
+ }
+}

@@ -1,0 +1,13 @@
+// Bounded CPU timing: compile with rustc -C opt-level=3 and the recorded global dependency.
+// Compare identical fixtures/dependencies in separate source checkouts; timings are not course throughput.
+#[path = "../values.rs"] mod values;
+use std::{hint::black_box,time::Instant};
+fn digest(s:&str)->u64{s.bytes().fold(14695981039346656037u64,|h,b|(h^(b as u64)).wrapping_mul(1099511628211))}
+fn main(){for k in [0,4,16,64]{
+ let extra=(0..k).map(|i|format!(" z{i:03}=zzzz_neutral")).collect::<String>();
+ let text=format!("char C1 name=A\nchar C2 name=B\nevent E1 verb=catch agent=C1\nset C2 freedom=captive cause=E1{extra}\nevent E2 verb=release agent=C1\nset C2 freedom=free cause=E2{extra}\n");
+ let signature=digest(&format!("{:?}",values::judge(&text)));
+ for _ in 0..32{black_box(values::judge(black_box(&text)));}
+ let start=Instant::now();for _ in 0..2000{black_box(values::judge(black_box(&text)));}
+ println!("{k}\t{signature}\t{}",start.elapsed().as_secs_f64()*1000.0);
+}}

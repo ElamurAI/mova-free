@@ -1,0 +1,99 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md#approximant",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../syntax.json",
+      "scope": "Partial lexical source projection; no macro expansion or semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md#invariant",
+      "scope": "The scope-specific cost statement within the invariant-and-cost document; no runtime speed measurement inferred.",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md#invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "branch_selection",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "branch_selection",
+        "status": "partial_source_derived_model",
+        "type": "branch_selection"
+      },
+      {
+        "id": "narrowing",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "narrowing",
+        "status": "partial_source_derived_model",
+        "type": "narrowing"
+      },
+      {
+        "id": "shape_transport",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "shape_transport",
+        "status": "partial_source_derived_model",
+        "type": "shape_transport"
+      },
+      {
+        "id": "nonfinite_gap",
+        "path": "model.md",
+        "scope": "Bound byte fragment",
+        "section": "nonfinite_gap",
+        "status": "partial_source_derived_model",
+        "type": "nonfinite_gap"
+      }
+    ],
+    "tests": {
+      "path": "model.md#tests",
+      "status": "executed_bounded_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 14603,
+      "start": 13655
+    },
+    "description": "map(m,f)=(rows,cols,f(re)); cmap applies f to (re,im_or_zeros) and narrows; map_parts separately transforms stored parts and narrows. csqrt(x,0) returns real sqrt if x>=0 else positive imaginary root; nonzero y uses hypot half-angle formula.",
+    "source_bytes_sha256": "213c05152d7ab02cb578db409c86b1c79a7efc832b97ab4fea31f7c3f1eefac6"
+  },
+  "id": "mlab-numerics-elem-mapping",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../elem.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "09570b244d52019b5a08f99b48dd7fc01d163a267c89b0580689a53db36a0e8e"
+  },
+  "status": "partial_source_bound_model"
+}

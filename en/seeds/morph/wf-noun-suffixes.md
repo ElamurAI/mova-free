@@ -52,3 +52,23 @@ require: n[xpos=NNS, feats.Number=Plur|Ptan]
 severity: warn
 source: Jespersen MEG VI 16.1₁; Sweet NEG I §1000
 ```
+
+```derive
+# suffix <affix> <classes of the stem> <tags of the result> [after=<endings of the stem>] | <gloss>; see wf-adj-suffixes.
+suffix ness   A    NN    | the quality of being <stem>
+suffix ity    A    NN    | the quality of being <stem>
+suffix ism    N,A  NN    | the doctrine or practice of <stem>
+suffix ist    N,A  NN    | one who practises <stem>
+suffix hood   N    NN    | the state of being a <stem>
+suffix ship   N    NN    | the state of being a <stem>
+suffix ment   V    NN    | the act or result: <stem>
+suffix ation  V    NN    | the act or result: <stem>
+suffix ion    V    NN    after=ate,ct,ute,ss,pt | the act or result: <stem>
+suffix er     V    NN    | one who or that which <stem>s
+suffix or     V    NN    after=ate,ct,it,ss | one who or that which <stem>s
+# A noun derived here inflects like any regular noun (the plural lemma is the singular: tokenizers → tokenizer).
+# inflect <ending> <class of the derived stem> <tags of the result>; only on a word derived by these rules: the forms
+# of dictionary words are in the dictionary already.
+inflect s     N    NNS
+inflect es    N    NNS
+```

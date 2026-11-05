@@ -1,0 +1,102 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "partial"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "../../syntax.json",
+      "scope": "Shared parent syntax restricted to coverage byte interval; no semantic resolution",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "partial"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "Epoch",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "partial"
+    },
+    "obernants": [
+      {
+        "id": "behavior_complement",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "behavior_complement",
+        "status": "partial_source_derived_model",
+        "type": "behavior_complement"
+      },
+      {
+        "id": "reverse_reconstruction",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "reverse_reconstruction",
+        "status": "partial_source_derived_model",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "id": "set_add_equivalence",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "set_add_equivalence",
+        "status": "partial_source_derived_model",
+        "type": "set_add_equivalence"
+      },
+      {
+        "id": "outside_owner_projection",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "outside_owner_projection",
+        "status": "partial_source_derived_model",
+        "type": "outside_owner_projection"
+      },
+      {
+        "id": "future_condition_influence",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "future_condition_influence",
+        "status": "partial_source_derived_model",
+        "type": "future_condition_influence"
+      },
+      {
+        "id": "subtraction_cancellation",
+        "path": "model.md",
+        "scope": "One invocation within Scope; forward relation and caller premises fixed; finite checks constrain but do not prove correspondence.",
+        "section": "subtraction_cancellation",
+        "status": "partial_source_derived_model",
+        "type": "subtraction_cancellation"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "Tests",
+      "status": "bounded_actual_helper_checks"
+    }
+  },
+  "coverage": {
+    "byte_range": {
+      "end": 61055,
+      "start": 58152
+    },
+    "description": "At depth<3 and with a named owner, inspect the full event list for direct facts and applicable owner relations; reject moved-after-relation histories. Otherwise initialize an optional unknown from initial_ev and any told Is state, then fold events matching owner/thing/time, excluding Is/Rel and outside events for owner=None. Set and Add both add; Sub subtracts."
+  },
+  "id": "math-qread-constraints-temporal-fold",
+  "kind": "groupant_fragment",
+  "schema": 1,
+  "source": {
+    "path": "../../../qread.rs",
+    "raw_code_location": "outside_this_sidecar",
+    "sha256": "8389b8d58f68121743d6346e638601297c3725483f4b9fcd2eb8cd47ef2d028a"
+  },
+  "status": "partial_source_bound_model"
+}

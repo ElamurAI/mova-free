@@ -1,0 +1,130 @@
+{
+  "children": [
+    "fish-swarm-library",
+    "fish-swarm-cli"
+  ],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "forward",
+      "status": "partial_source_derived"
+    },
+    "ast": {
+      "status": "not_materialized"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "cost",
+      "status": "symbolic_source_derived"
+    },
+    "descriptant": {
+      "path": "model.md",
+      "section": "domain",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "invariant",
+      "status": "partial_source_derived"
+    },
+    "obernants": [
+      {
+        "assumptions": [
+          "Cooperative filesystem, conforming pinned executor, independently checked observer policy."
+        ],
+        "domain": "Two local source leaves plus explicitly assumed executor interface.",
+        "id": "behavior-complement",
+        "observation": "CLI control, queue admission, executor identity and priority snapshots.",
+        "operator": "Source-derived composition formulas and limits in model.md.",
+        "path": "model.md",
+        "section": "behavior-complement",
+        "status": "source_derived_with_finite_checks",
+        "type": "behavior_complement"
+      },
+      {
+        "assumptions": [
+          "Cooperative filesystem, conforming pinned executor, independently checked observer policy."
+        ],
+        "domain": "Two local source leaves plus explicitly assumed executor interface.",
+        "id": "reverse-reconstruction",
+        "observation": "CLI control, queue admission, executor identity and priority snapshots.",
+        "operator": "Source-derived composition formulas and limits in model.md.",
+        "path": "model.md",
+        "section": "reverse-reconstruction",
+        "status": "source_derived_with_finite_checks",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "assumptions": [
+          "Cooperative filesystem, conforming pinned executor, independently checked observer policy."
+        ],
+        "domain": "Two local source leaves plus explicitly assumed executor interface.",
+        "id": "interface-identity-join",
+        "observation": "CLI control, queue admission, executor identity and priority snapshots.",
+        "operator": "Source-derived composition formulas and limits in model.md.",
+        "path": "model.md",
+        "section": "interface-identity-join",
+        "status": "source_derived_with_finite_checks",
+        "type": "compatibility_boundary"
+      },
+      {
+        "assumptions": [
+          "Cooperative filesystem, conforming pinned executor, independently checked observer policy."
+        ],
+        "domain": "Two local source leaves plus explicitly assumed executor interface.",
+        "id": "quiescence-join",
+        "observation": "CLI control, queue admission, executor identity and priority snapshots.",
+        "operator": "Source-derived composition formulas and limits in model.md.",
+        "path": "model.md",
+        "section": "quiescence-join",
+        "status": "source_derived_with_finite_checks",
+        "type": "independent_evidence_join"
+      },
+      {
+        "assumptions": [
+          "Cooperative filesystem, conforming pinned executor, independently checked observer policy."
+        ],
+        "domain": "Two local source leaves plus explicitly assumed executor interface.",
+        "id": "process-liveness-join",
+        "observation": "CLI control, queue admission, executor identity and priority snapshots.",
+        "operator": "Source-derived composition formulas and limits in model.md.",
+        "path": "model.md",
+        "section": "process-liveness-join",
+        "status": "source_derived_with_finite_checks",
+        "type": "process_liveness_exclusion"
+      },
+      {
+        "assumptions": [
+          "Cooperative filesystem, conforming pinned executor, independently checked observer policy."
+        ],
+        "domain": "Two local source leaves plus explicitly assumed executor interface.",
+        "id": "quarantine-progress-join",
+        "observation": "CLI control, queue admission, executor identity and priority snapshots.",
+        "operator": "Source-derived composition formulas and limits in model.md.",
+        "path": "model.md",
+        "section": "quarantine-progress-join",
+        "status": "source_derived_with_finite_checks",
+        "type": "progress_without_replay"
+      }
+    ],
+    "tests": {
+      "path": "model.md",
+      "section": "checks",
+      "status": "finite_checks"
+    }
+  },
+  "id": "fish-swarm-composition",
+  "kind": "groupant_group",
+  "schema": 1,
+  "source_bindings": [
+    {
+      "path": "tools/fish-swarm/src/lib.rs",
+      "sha256": "d21c64916c360776d0caa1292f309ee01f17fb5bc001f47c2afffdbe9af97dc6"
+    },
+    {
+      "path": "tools/fish-swarm/src/main.rs",
+      "sha256": "e6f6f5fc2cdadbcb90ea175a8abd3a9e319c4bf77ba507e9ef1550f0ad3f8fe0"
+    }
+  ],
+  "status": "partial_source_bound_model"
+}

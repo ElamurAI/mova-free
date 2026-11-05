@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "cargo test -p math --lib plan::tests",
+    "two identical syntax projections"
+  ],
+  "children": [],
+  "cost": "Step+trace bytes plus delegated arithmetic; enumerate product of ranges, max visited steps, list100000, timeout poll every4096 visited cases. claim instead caps condition-passing cases and has no leaf-level timeout poll; evaluator checks remain delegated. Independent checks add work; no hard global wall-clock/resource isolation.",
+  "description": "Nonunderscore ids bind values. Execution error records and breaks; false checks accumulate but later steps continue; answer only if no failures. Gate can leave Some answer with failures. verified iff failures empty and answer present. Linear solve before polynomial; dependent inclusive enumeration; bounded claim falsification. Panic becomes empty error trace.",
+  "forward": [
+    "Nonunderscore ids bind values. Execution error records and breaks; false checks accumulate but later steps continue; answer only if no failures. Gate can leave Some answer with failures. verified iff failures empty and answer present. Linear solve before polynomial; dependent inclusive enumeration; bounded claim falsification. Panic becomes empty error trace."
+  ],
+  "id": "math-plan-gate",
+  "inverse": [
+    "Trace constrains compatible plans/envs but loses metadata and computation paths. Verified answer admits wrong problem models that pass internal checks. vars_of retains last duplicate id index."
+  ],
+  "limitations": [
+    "Finite checks not proof; no meaningful percentage surrogate for categorical gate.",
+    "Partial lexical AST; no semantic proof or executable percentage surrogate"
+  ],
+  "source": "math/src/plan.rs",
+  "state": "Ordered steps, Env vars/subtraces, answer/fails"
+}

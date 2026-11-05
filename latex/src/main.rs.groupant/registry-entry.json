@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "cargo test -p latex --features math --bin latex wave28"
+  ],
+  "children": [],
+  "cost": "Linear argument scan plus all tex bytes retained and delegated macro/parse/gate work; corpus traversal delegated, no input cap.",
+  "description": "main dispatches first argument parse/tex/corpus else usage2. cmd_parse retains last positional source/macros option, reads macros before parsing; read/syntax errors fail but unknown/red gate/unsupported math succeed. tex loads all documents before globally scanning macros, reports formula errors yet succeeds. corpus options overwrite, invalid limit=None, bad fault=usage, disabled math=2, other tokens paths.",
+  "forward": [
+    "main dispatches first argument parse/tex/corpus else usage2. cmd_parse retains last positional source/macros option, reads macros before parsing; read/syntax errors fail but unknown/red gate/unsupported math succeed. tex loads all documents before globally scanning macros, reports formula errors yet succeeds. corpus options overwrite, invalid limit=None, bad fault=usage, disabled math=2, other tokens paths."
+  ],
+  "id": "latex-main",
+  "inverse": [
+    "Success includes clean/unknown formulas, unsupported math and tex formula errors; cannot recover quality. Many overwritten argument lists produce same final options. Usage2 has several causes.",
+    "Tex read failure precedes scanning all macros/formulas. Missing parse source precedes macro read. Invalid fault excludes corpus run. Success does not imply gate green."
+  ],
+  "limitations": [
+    "Partial source-derived model and finite synthetic checks",
+    "No universal proof or executable percentage surrogate",
+    "No live corpus, frozen VMM, teacher/API, training or GPU execution"
+  ],
+  "source": "latex/src/main.rs",
+  "state": "Tex macro scope spans all loaded files in input order; separate parsed/clean/gate counts. Console/output are effects. No teacher route."
+}

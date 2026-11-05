@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms piecewise_linear::tests",
+    "Repeated debug/release, compiled production mutant and restored hashes; see model.md#tests"
+  ],
+  "children": [],
+  "cost": "O(n) validation and O(log n) binary search, O(1) storage, no allocation. Caller budget bounds validated knots; overflow rejects rather than wrapping. Work budget is not a wall-clock deadline. No approximate floating evaluation or relative error tier is advertised.",
+  "description": "At least two strictly increasing i64 abscissae with i64 ordinates and an integer in-domain query. Exact rational chord value N/h, where N=y_left*(x_right-x)+y_right*(x-x_left). Exact knot queries return ordinate/1. Under caller-supplied exact samples of a C² function on full domain with |f''|<=M, absolute error<=M*h²/8.",
+  "forward": [
+    "At least two strictly increasing i64 abscissae with i64 ordinates and an integer in-domain query. Exact rational chord value N/h, where N=y_left*(x_right-x)+y_right*(x-x_left). Exact knot queries return ordinate/1. Under caller-supplied exact samples of a C² function on full domain with |f''|<=M, absolute error<=M*h²/8."
+  ],
+  "id": "algorithm-piecewise-linear",
+  "inverse": [
+    "A rational output N/h constrains a weighted sum of neighboring ordinates. Infinitely many underlying C² functions have the same samples and midpoint while respecting sufficiently large curvature. Querying exact knot0,y0 admits different neighboring knots. Even with fixed samples, adding c*(x-a)*(x-b) changes interior values while preserving endpoint data."
+  ],
+  "limitations": [
+    "Partial syntax, not semantic proof",
+    "Finite oracles do not establish universal accuracy",
+    "No performance measurement or automatic substitution",
+    "This kernel allocates no storage and has no allocation-error variant"
+  ],
+  "source": "algorithms/src/piecewise_linear/mod.rs",
+  "state": "Validated integer inputs and checked exact arithmetic states"
+}

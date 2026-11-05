@@ -1,0 +1,127 @@
+{
+  "children": [],
+  "components": {
+    "approximant": {
+      "path": "model.md",
+      "section": "Forward",
+      "status": "bounded_checked"
+    },
+    "ast": {
+      "format": "rust_syntax_projection",
+      "path": "syntax.json",
+      "status": "partial"
+    },
+    "cost": {
+      "path": "model.md",
+      "section": "Cost",
+      "status": "symbolic_unmeasured"
+    },
+    "descriptant": {
+      "path": "model.md#descriptant",
+      "status": "present"
+    },
+    "invariant": {
+      "path": "model.md",
+      "section": "Invariant",
+      "status": "source_derived"
+    },
+    "obernants": [
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "nonbehavior",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "Successful results cannot omit input bytes, contain gap-gap columns, or have a suboptimal score. This is global linear-gap byte alignment; there are no affine gaps, local alignment or sequence-specific assumptions.",
+        "path": "model.md",
+        "section": "nonbehavior",
+        "status": "partial_source_derived",
+        "subject_revision": "817ed9aca7e61db40d395261402d71d1e89021cc43c8a416daed29e1f1d28124",
+        "type": "behavior_complement"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "preimages",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "Deleting None entries independently from each column side uniquely reconstructs the two inputs. A score alone admits many input pairs; even complete columns do not recover scoring parameters uniquely.",
+        "path": "model.md",
+        "section": "preimages",
+        "status": "partial_source_derived",
+        "subject_revision": "817ed9aca7e61db40d395261402d71d1e89021cc43c8a416daed29e1f1d28124",
+        "type": "reverse_reconstruction"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "validation-order",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "Checked dimensions precede CellLimit and allocations. Boundary scores are checked before interior cells. ScoreOverflow may reject even when the mathematically best path fits, because every candidate addition is checked.",
+        "path": "model.md",
+        "section": "validation-order",
+        "status": "partial_source_derived",
+        "subject_revision": "817ed9aca7e61db40d395261402d71d1e89021cc43c8a416daed29e1f1d28124",
+        "type": "domain_partition"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "tie-order",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "Strict greater-than replacement preserves diagonal on a tie; deletion wins a deletion/insertion tie when diagonal is worse. This local traceback rule selects one optimal path, not a lexicographically minimum forward alignment.",
+        "path": "model.md",
+        "section": "tie-order",
+        "status": "partial_source_derived",
+        "subject_revision": "817ed9aca7e61db40d395261402d71d1e89021cc43c8a416daed29e1f1d28124",
+        "type": "refinement_relation"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "prefix-table",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "A table cell retains every optimal path to its two prefixes, but only one predecessor is recorded. Discarded optimal alternatives cannot be recovered from that predecessor alone.",
+        "path": "model.md",
+        "section": "prefix-table",
+        "status": "partial_source_derived",
+        "subject_revision": "817ed9aca7e61db40d395261402d71d1e89021cc43c8a416daed29e1f1d28124",
+        "type": "state_preimage"
+      },
+      {
+        "approximation_semantics": "Exact target relation; bounded checks are not universal proof.",
+        "assumptions": "Fixed source, exact byte semantics and stated transformation premises.",
+        "domain": "Finite byte inputs within stated budgets and representability premises.",
+        "evidence": "model.md#evidence",
+        "id": "score-scaling",
+        "observation_scope": "Public result or explicitly named state/fixture.",
+        "operator": "Multiplying all scores by a positive integer preserves the chosen path when every intermediate checked sum remains representable. Overflow changes the admissible domain, so this is a conditional law.",
+        "path": "model.md",
+        "section": "score-scaling",
+        "status": "partial_source_derived",
+        "subject_revision": "817ed9aca7e61db40d395261402d71d1e89021cc43c8a416daed29e1f1d28124",
+        "type": "metamorphic_relation"
+      }
+    ],
+    "tests": {
+      "path": "model.md#evidence",
+      "status": "bounded_executed"
+    }
+  },
+  "id": "algorithm-needleman-wunsch",
+  "kind": "groupant",
+  "schema": 1,
+  "source": {
+    "path": "../mod.rs",
+    "sha256": "817ed9aca7e61db40d395261402d71d1e89021cc43c8a416daed29e1f1d28124"
+  },
+  "status": "partial_source_derived_instance"
+}

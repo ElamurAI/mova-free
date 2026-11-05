@@ -1,8 +1,10 @@
-//! School tooling: the checks and safe edits of the lesson files and the pupils' dictionary that used to be done
-//! with one-off scripts. Agents use these commands, never their own scripts (docs/school-tools.md).
+//! School tooling: the checks and safe edits of the lesson files that used to be done with one-off scripts. Agents use
+//! these commands, never their own scripts (docs/school.md#tools). The pupils' dictionary file (`dictionary_path`)
+//! and the argument helpers are shared with the dictionary builder, a closed tool.
 //! Deterministic (ordered maps, sorted files); every length is counted in Unicode characters, never bytes.
 //!
-//! An option line of a lesson: `exercise:|test:|exam: question | right | wrong | wrong | wrong`.
+//! An option line of a lesson: `exercise:|test:|exam: question | option | option | option | option`, the right option
+//! marked with a leading `*` and standing anywhere (an unmarked line is the old form: the right option first).
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Path, PathBuf};
@@ -10,7 +12,15 @@ use std::path::{Path, PathBuf};
 use anyhow::{Context, Result, bail};
 
 pub const KNOWLEDGE_USAGE: &str = "\
-usage: world knowledge balance [course|dir|file...] [--band L_lo,L_hi,S_lo,S_hi] [--list out.tsv] [--chunk N --prefix p]
+usage: world knowledge retain split LESSON TRAIN_OUT EXAM_OUT
+       world knowledge retain train LESSON NEW_STATE [BASE_STATE]
+       world knowledge retain practice LESSON NEW_STATE BASE_STATE
+       world knowledge retain test STATE EXAM_ONLY_LESSON
+         retained graph and learned weights; test never reads a lesson or updates weights
+       world knowledge bench <course> [--round N | --tier quick|medium|full] [--seed N] [--plan] [--no-cache]
+         approximate school probes: quick by default, medium every fifth automatic round, full every twentieth;
+         explicit probes do not advance the cadence; artifacts and cursor in MOVA_BENCH_ROOT (default $MOVA_DATA/runs/school-bench)
+       world knowledge balance [course|dir|file...] [--band L_lo,L_hi,S_lo,S_hi] [--list out.tsv] [--chunk N --prefix p]
          how often the right answer is strictly the longest (L) or strictly the shortest (S) option, per lesson and in all;
          the lessons outside the band (default 1/6,1/3,1/10,1/3, and S > 0); --list writes every lesson, --chunk splits
          the lessons outside the band into files p001.tsv, p002.tsv, … of N lessons each
@@ -24,22 +34,14 @@ usage: world knowledge balance [course|dir|file...] [--band L_lo,L_hi,S_lo,S_hi]
          copies the lesson files into <dir>/<course>/<file>
        world knowledge restore-lines <dir> <file> <line|from-to...>
          puts back only the given lines of one file from its snapshot in <dir>
-  (a course is a folder of data/school; with no course: every primary course)
-";
-
-pub const DICTIONARY_USAGE: &str = "\
-usage: world dictionary merge <records.tsv...> [--check]
-         validates records (6 TAB fields, UTF-8, word lower-case, no dates), skips the words already in
-         data/dictionary-improved.tsv and appends the new ones; --check only validates
-       world dictionary gaps [--split N --prefix p]
-         the words of the primary lessons without a record (from the records on disk), split into p001.txt, … of N words
+  (a course is a folder of the school courses; with no course: every primary course)
 ";
 
 pub fn school_root() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("data").join("school")
+    crate::knowledge::courses_root()
 }
 
-fn dictionary_path() -> PathBuf {
+pub fn dictionary_path() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("data").join("dictionary-improved.tsv")
 }
 
@@ -60,6 +62,16 @@ pub fn option_line(line: &str) -> Option<(&str, Vec<&str>)> {
     KINDS.contains(&k).then(|| (k, v.split('|').map(str::trim).collect()))
 }
 
+/// The fields in reading order: question, the right option (its `*` dropped), the wrong ones in their order. A line
+/// with no `*` (the old form) or with more than one (reported by `lint`) is returned as it is.
+pub fn canon<'a>(f: &[&'a str]) -> Vec<&'a str> {
+    let marked: Vec<usize> = (1..f.len()).filter(|&i| f[i].starts_with('*')).collect();
+    match marked.as_slice() {
+        [r] => std::iter::once(f[0]).chain(std::iter::once(f[*r].trim_start_matches('*').trim_start())).chain((1..f.len()).filter(|i| i != r).map(|i| f[i])).collect(),
+        _ => f.to_vec(),
+    }
+}
+
 /// An option line rebuilt from its fields: the indent kept, one space around every `|`.
 fn rebuild(line: &str, key: &str, fields: &[&str]) -> String {
     let indent = &line[..line.len() - line.trim_start().len()];
@@ -77,7 +89,7 @@ fn lessons_in(dir: &Path) -> Vec<PathBuf> {
     v
 }
 
-/// The lesson files named by the arguments: a course (a folder of data/school), a folder, or a file; none — every
+/// The lesson files named by the arguments: a course (a folder of the school courses), a folder, or a file; none — every
 /// primary course (`knowledge::course_names`: no philosophy, no programming, no maths `lessons`).
 pub fn lesson_files(args: &[String]) -> Result<Vec<PathBuf>> {
     let names: Vec<String> = if args.is_empty() { crate::knowledge::course_names().into_iter().map(String::from).collect() } else { args.to_vec() };
@@ -94,18 +106,18 @@ pub fn lesson_files(args: &[String]) -> Result<Vec<PathBuf>> {
         } else if r.is_file() {
             v.push(r);
         } else {
-            bail!("«{a}» is neither a course of data/school, nor a folder, nor a file");
+            bail!("«{a}» is neither a course of the school courses ($MOVA_DATA/school/courses), nor a folder, nor a file");
         }
     }
     Ok(v)
 }
 
-/// A file's name for the reports: relative to data/school when it lies there.
+/// A file's name for the reports: relative to the school courses when it lies there.
 fn show(p: &Path) -> String {
     p.strip_prefix(school_root()).unwrap_or(p).display().to_string()
 }
 
-/// One lesson file named in an edit or a restore: a path, a path under data/school, or a bare file name found in
+/// One lesson file named in an edit or a restore: a path, a path under the school courses, or a bare file name found in
 /// exactly one course.
 pub fn resolve_file(s: &str) -> Result<PathBuf> {
     let p = Path::new(s);
@@ -164,6 +176,7 @@ pub fn tally(text: &str) -> Tally {
     let mut t = Tally::default();
     for line in text.lines() {
         let Some((_, f)) = option_line(line) else { continue };
+        let f = canon(&f);
         if f.len() < 3 {
             continue;
         }
@@ -346,6 +359,11 @@ pub fn lint_text(text: &str) -> Vec<Finding> {
         if !spacing_ok(line) {
             v.push(Finding { line: n, kind: "spacing", detail: "not exactly one space on each side of a |".into() });
         }
+        let stars = f.iter().skip(1).filter(|o| o.starts_with('*')).count();
+        if stars > 1 {
+            v.push(Finding { line: n, kind: "stars", detail: format!("{stars} options marked right with *, not one") });
+        }
+        let f = canon(&f);
         let opts = &f[1.min(f.len())..];
         for a in 0..opts.len() {
             for b in a + 1..opts.len() {
@@ -457,7 +475,7 @@ pub fn apply_edits(text: &str, edits: &[Edit]) -> std::result::Result<String, Ve
             bad.push(format!("{at}: the new text «{new}» is empty or holds |, a tab or a newline"));
             continue;
         }
-        let at_pos: Vec<usize> = (1..before.len()).filter(|&i| before[i] == old).collect();
+        let at_pos: Vec<usize> = (1..before.len()).filter(|&i| before[i].trim_start_matches('*').trim_start() == old).collect();
         if at_pos.is_empty() {
             bad.push(format!("{at}: «{old}» is not an option there"));
             continue;
@@ -470,8 +488,11 @@ pub fn apply_edits(text: &str, edits: &[Edit]) -> std::result::Result<String, Ve
             bad.push(format!("{at}: «{old}» would not change"));
             continue;
         }
+        // the right option keeps its `*` (and its place)
+        let starred = if before[at_pos[0]].starts_with('*') { format!("*{new}") } else { new.to_string() };
         let mut after = before.clone();
-        after[at_pos[0]] = new;
+        after[at_pos[0]] = &starred;
+        let (cb, ca) = (canon(&before), canon(&after));
         if after.len() != 5 {
             bad.push(format!("{at}: {} wrong options, not 3", after.len().saturating_sub(2)));
             continue;
@@ -480,11 +501,11 @@ pub fn apply_edits(text: &str, edits: &[Edit]) -> std::result::Result<String, Ve
             bad.push(format!("{at}: the question would change"));
             continue;
         }
-        if at_pos[0] != 1 && after[1] != before[1] {
-            bad.push(format!("{at}: the right answer would stop being first"));
+        if ca[1] != cb[1] && cb[1] != old {
+            bad.push(format!("{at}: the right answer would change"));
             continue;
         }
-        let low: Vec<String> = after[1..].iter().map(|x| x.to_lowercase()).collect();
+        let low: Vec<String> = ca[1..].iter().map(|x| x.to_lowercase()).collect();
         if low.iter().collect::<BTreeSet<_>>().len() != low.len() {
             bad.push(format!("{at}: «{new}» would duplicate another option"));
             continue;
@@ -589,7 +610,7 @@ pub fn restore_lines(dir: &Path, f: &Path, lines: &[usize]) -> Result<String> {
     if saved.len() != now.len() {
         bail!("{} has {} lines and its snapshot {}: the lines do not match, nothing restored", show(f), now.len(), saved.len());
     }
-    if let Some(&x) = lines.iter().find(|&&x| x > now.len()) {
+    if let Some(&x) = lines.iter().find(|&&x| x == 0 || x > now.len()) {
         bail!("{} has no line {x}, nothing restored", show(f));
     }
     let mut out = String::new();
@@ -605,112 +626,6 @@ pub fn restore_lines(dir: &Path, f: &Path, lines: &[usize]) -> Result<String> {
     Ok(format!("{}: {changed} of {} lines restored\n{out}", show(f), lines.len()))
 }
 
-// ---- the dictionary ---------------------------------------------------------------------------------------------
-
-/// A field that is or starts with a date (2026-10-10, 10.10.2026, 10.10).
-fn looks_like_date(f: &str) -> bool {
-    let b: Vec<char> = f.trim().chars().collect();
-    let d = |i: usize| b.get(i).is_some_and(char::is_ascii_digit);
-    let iso = b.len() >= 10 && (0..4).all(d) && b[4] == '-' && d(5) && d(6) && b[7] == '-' && d(8) && d(9);
-    let dotted = {
-        let parts: Vec<&str> = f.trim().split('.').collect();
-        (2..=3).contains(&parts.len()) && parts.iter().all(|p| !p.is_empty() && p.len() <= 4 && p.chars().all(|c| c.is_ascii_digit())) && parts[0].len() <= 2 && parts[1].len() <= 2
-    };
-    iso || dotted
-}
-
-/// Validate a records file: the good records (word, the line) and every problem.
-pub fn validate_records(bytes: &[u8], name: &str) -> (Vec<(String, String)>, Vec<String>) {
-    let text = match std::str::from_utf8(bytes) {
-        Ok(t) => t,
-        Err(e) => return (Vec::new(), vec![format!("{name}: not UTF-8 ({e})")]),
-    };
-    let mut good = Vec::new();
-    let mut bad = Vec::new();
-    for (i, l) in text.split('\n').enumerate() {
-        let at = format!("{name}:{}", i + 1);
-        if l.trim().is_empty() || l.starts_with('#') {
-            continue;
-        }
-        if l.contains('\r') {
-            bad.push(format!("{at}: a carriage return"));
-            continue;
-        }
-        let c: Vec<&str> = l.split('\t').collect();
-        if c.len() != 6 {
-            bad.push(format!("{at}: {} TAB fields, not 6 (a tab inside a field?)", c.len()));
-            continue;
-        }
-        let w = c[0];
-        if w.trim() != w || w.is_empty() {
-            bad.push(format!("{at}: the word «{w}» is empty or has spaces at its ends"));
-        } else if w.to_lowercase() != w {
-            bad.push(format!("{at}: the word «{w}» is not lower-case"));
-        } else if c.iter().any(|f| f.trim().is_empty()) {
-            bad.push(format!("{at}: «{w}» has an empty field"));
-        } else if c.iter().any(|f| looks_like_date(f)) {
-            bad.push(format!("{at}: «{w}» carries a date; records never do"));
-        } else {
-            good.push((w.to_string(), l.to_string()));
-        }
-    }
-    (good, bad)
-}
-
-/// Merge records into the dictionary file: the report; refuses everything if a record is bad.
-pub fn merge(inputs: &[PathBuf], into: &Path, check: bool) -> Result<String> {
-    let have_text = std::fs::read_to_string(into).with_context(|| format!("reading {}", into.display()))?;
-    let have: BTreeSet<String> = have_text.lines().filter(|l| !l.starts_with('#')).filter_map(|l| l.split('\t').next()).map(|w| w.to_lowercase()).collect();
-    let mut bad = Vec::new();
-    let mut new: Vec<(String, String)> = Vec::new();
-    let mut skipped = Vec::new();
-    let mut repeated = Vec::new();
-    let mut seen = BTreeSet::new();
-    let mut good_n = 0;
-    for p in inputs {
-        let (good, b) = validate_records(&std::fs::read(p).with_context(|| format!("reading {}", p.display()))?, &p.display().to_string());
-        bad.extend(b);
-        good_n += good.len();
-        for (w, l) in good {
-            if have.contains(&w) {
-                skipped.push(w);
-            } else if !seen.insert(w.clone()) {
-                repeated.push(w);
-            } else {
-                new.push((w, l));
-            }
-        }
-    }
-    let mut out = format!("{good_n} good records, {} bad; {} new, {} already in the dictionary, {} repeated in the input\n", bad.len(), new.len(), skipped.len(), repeated.len());
-    if !skipped.is_empty() {
-        let more = if skipped.len() > 60 { format!(" … and {} more", skipped.len() - 60) } else { String::new() };
-        out += &format!("already in (skipped): {}{more}\n", skipped[..skipped.len().min(60)].join(" "));
-    }
-    if !repeated.is_empty() {
-        out += &format!("repeated (the first kept): {}\n", repeated.join(" "));
-    }
-    for b in &bad {
-        out += &format!("  {b}\n");
-    }
-    if !bad.is_empty() {
-        print!("{out}");
-        bail!("{} bad records: nothing merged", bad.len());
-    }
-    if check {
-        return Ok(out + "checked only, nothing merged\n");
-    }
-    let mut t = have_text;
-    if !t.is_empty() && !t.ends_with('\n') {
-        t.push('\n');
-    }
-    for (_, l) in &new {
-        t += l;
-        t.push('\n');
-    }
-    std::fs::write(into, t)?;
-    Ok(out + &format!("{} records appended to {}\n", new.len(), into.display()))
-}
-
 // ---- arguments --------------------------------------------------------------------------------------------------
 
 /// Take `--name value` out of the arguments.
@@ -724,13 +639,13 @@ fn take_value(args: &mut Vec<String>, name: &str) -> Result<Option<String>> {
     Ok(Some(v))
 }
 
-fn take_switch(args: &mut Vec<String>, name: &str) -> bool {
+pub fn take_switch(args: &mut Vec<String>, name: &str) -> bool {
     let k = args.len();
     args.retain(|a| a != name);
     args.len() != k
 }
 
-fn chunking(args: &mut Vec<String>, flag: &str) -> Result<Option<(usize, String)>> {
+pub fn chunking(args: &mut Vec<String>, flag: &str) -> Result<Option<(usize, String)>> {
     let n = take_value(args, flag)?;
     let p = take_value(args, "--prefix")?;
     match (n, p) {
@@ -800,46 +715,6 @@ pub fn knowledge_args(all: &[String]) -> Result<()> {
     Ok(())
 }
 
-/// `world dictionary merge|gaps …`
-pub fn dictionary_args(all: &[String]) -> Result<()> {
-    let cmd = all[1].as_str();
-    let mut args: Vec<String> = all[2..].to_vec();
-    if take_switch(&mut args, "--help") || take_switch(&mut args, "-h") {
-        print!("{DICTIONARY_USAGE}");
-        return Ok(());
-    }
-    match cmd {
-        "merge" => {
-            let check = take_switch(&mut args, "--check");
-            if args.is_empty() || args.iter().any(|a| a.starts_with("--")) {
-                bail!("{DICTIONARY_USAGE}");
-            }
-            let inputs: Vec<PathBuf> = args.iter().map(PathBuf::from).collect();
-            print!("{}", merge(&inputs, &dictionary_path(), check)?);
-        }
-        "gaps" => {
-            let split = chunking(&mut args, "--split")?;
-            if !args.is_empty() {
-                bail!("{DICTIONARY_USAGE}");
-            }
-            let gaps = crate::dictionary::primary_gaps(&dictionary_path())?;
-            match split {
-                Some((n, p)) => {
-                    let fs = write_chunks(&gaps, n, &p, ".txt")?;
-                    println!("{} words of the primary lessons without a record, in {} files {p}001.txt…", gaps.len(), fs.len());
-                }
-                None => {
-                    for w in &gaps {
-                        println!("{w}");
-                    }
-                    println!("{} words of the primary lessons without a record", gaps.len());
-                }
-            }
-        }
-        _ => bail!("{DICTIONARY_USAGE}"),
-    }
-    Ok(())
-}
 
 #[cfg(test)]
 mod tests {
@@ -853,6 +728,19 @@ mod tests {
     }
 
     const LESSON: &str = "course: t\nlesson: 1\ntitle: T\nfact: f\nexercise: Q one? | right answer here | no | nope | nah\ntest: Q two? | ok | a longer wrong | another long wrong | still longer wrong\nexam: Q three? | mid size | tiny | a much longer one | ab\n";
+
+    #[test]
+    fn the_star_marks_the_right_option() {
+        // the same three questions with the right option moved and starred: the same tally
+        let starred = "course: t\nlesson: 1\ntitle: T\nfact: f\nexercise: Q one? | no | *right answer here | nope | nah\ntest: Q two? | a longer wrong | another long wrong | still longer wrong | *ok\nexam: Q three? | *mid size | tiny | a much longer one | ab\n";
+        assert_eq!(tally(starred), tally(LESSON));
+        // an edit of the right option keeps its star and its place
+        let out = apply_edits(starred, &[Edit { line: 5, old: "right answer here".into(), new: "the right answer".into() }]).unwrap();
+        assert!(out.contains("exercise: Q one? | no | *the right answer | nope | nah"));
+        // negative control: two stars are reported
+        assert!(lint_text("test: Q? | *a | *b | c | d\n").iter().any(|f| f.kind == "stars"));
+        assert!(!lint_text(starred).iter().any(|f| f.kind == "stars"));
+    }
 
     #[test]
     fn tally_counts_characters_not_bytes() {
@@ -1004,49 +892,163 @@ mod tests {
         assert!(line_numbers(&["0".into()]).is_err());
         assert_eq!(line_numbers(&["4-6".into(), "5".into(), "2".into()]).unwrap(), vec![2, 4, 5, 6]);
     }
+}
 
-    #[test]
-    fn records_are_validated() {
-        let good = "word\tnoun\tmeaning\tsense\texample | example\tnote\n";
-        assert_eq!(validate_records(good.as_bytes(), "t").0.len(), 1);
-        for bad in [
-            "Word\tnoun\tm\ts\te\tn\n",
-            "word\tnoun\tm\ts\te\n",
-            "word\tnoun\tm\ts\te\tn\t2026-10-10\n",
-            "2026-10-10\tword\tnoun\tm\ts\te\n",
-            "word\tnoun\tm\t10.10\te\tn\n",
-            "word\tnoun\t\ts\te\tn\n",
-            "word\tnoun\tm\ts\te\tn\r\n",
-        ] {
-            let (g, b) = validate_records(bad.as_bytes(), "t");
-            assert!(g.is_empty() && b.len() == 1, "{bad:?}: {b:?}");
+#[cfg(test)]
+mod wave9_models {
+    use super::*;
+    struct Fixture(PathBuf);
+    impl Fixture {
+        fn new(name: &str) -> Self {
+            let p = std::env::temp_dir()
+                .join(format!("mova-wave9-school-{}-{name}", std::process::id()));
+            std::fs::create_dir(&p).unwrap();
+            Self(p)
         }
-        assert!(!validate_records(&[0xff, b'\n'], "t").1.is_empty());
-        assert!(!looks_like_date("about 10.5 metres") && looks_like_date("10.10.2026"));
     }
+    impl Drop for Fixture {
+        fn drop(&mut self) {
+            let _ = std::fs::remove_dir_all(&self.0);
+        }
+    }
+    #[test]
+    fn restore_zero_refuses_without_effect() {
+        let d = Fixture::new("zero");
+        let f = d.0.join("a.lesson");
+        let s = d.0.join("snapshot");
+        std::fs::write(&f, "saved\n").unwrap();
+        snapshot(&[f.clone()], &s).unwrap();
+        std::fs::write(&f, "current\n").unwrap();
+        assert!(restore_lines(&s, &f, &[0]).is_err());
+        assert_eq!(std::fs::read_to_string(&f).unwrap(), "current\n");
+    }
+    #[test]
+    fn parser_canonical_fibers_and_tally() {
+        for right in 0..4 {
+            for length in 0..=6 {
+                let mut opts = ["a".to_string(), "bb".into(), "ccc".into(), "dddd".into()];
+                opts[right] = format!("*{}", "é".repeat(length));
+                let line = format!(" test : Q | {} ", opts.join(" | "));
+                let (kind, fields) = option_line(&line).unwrap();
+                assert_eq!(kind, "test");
+                let c = canon(&fields);
+                assert_eq!(c[0], "Q");
+                assert_eq!(c[1], "é".repeat(length));
+                let lengths: Vec<_> = (0..4).filter(|&i| i != right).map(|i| i + 1).collect();
+                assert_eq!(
+                    tally(&line),
+                    Tally {
+                        n: 1,
+                        l: usize::from(lengths.iter().all(|&x| length > x)),
+                        s: usize::from(lengths.iter().all(|&x| length < x))
+                    }
+                );
+                assert_eq!(fix_spaces(&fix_spaces(&line)), fix_spaces(&line));
+            }
+        }
+        assert_eq!(canon(&[]), Vec::<&str>::new());
+        for s in ["#test: q | a", "Test: q | a", "fact: q | a", ""] {
+            assert!(option_line(s).is_none());
+        }
+        assert_eq!(canon(&["q", "*a", "*b"]), vec!["q", "*a", "*b"]);
+    }
+    #[test]
+    fn edit_transaction_and_argument_effects() {
+        let text = "test: Q | *a | b | c | d\r\n";
+        let e = |old: &str, new: &str| Edit {
+            line: 1,
+            old: old.into(),
+            new: new.into(),
+        };
+        assert_eq!(
+            apply_edits(text, &[e("b", "z"), e("z", "y")]).unwrap(),
+            "test: Q | *a | y | c | d\r\n"
+        );
+        for new in ["", "a", "C", "x|y", "x\ny"] {
+            assert!(apply_edits(text, &[e("b", "z"), e("z", new)]).is_err());
+        }
+        assert!(
+            apply_edits(
+                text,
+                &[Edit {
+                    line: 0,
+                    old: "b".into(),
+                    new: "z".into()
+                }]
+            )
+            .is_err()
+        );
+        let mut args = vec![
+            "--chunk".into(),
+            "bad".into(),
+            "--prefix".into(),
+            "p".into(),
+            "tail".into(),
+        ];
+        assert!(chunking(&mut args, "--chunk").is_err());
+        assert_eq!(args, vec!["tail"]);
+        assert!(
+            lint_text("test: q | *a | *b | c | d\n")
+                .iter()
+                .any(|x| x.kind == "stars")
+        );
+    }
+    #[test]
+    fn fractions_and_line_sets() {
+        for n in 1..=16 {
+            for k in 0..=n {
+                for a in 0..=5 {
+                    for b in 1..=5 {
+                        let f = Frac::parse(&format!("{a}/{b}")).unwrap();
+                        assert_eq!(f.above(k, n), (k * b) < (a * n));
+                        assert_eq!(f.below(k, n), (k * b) > (a * n));
+                    }
+                }
+            }
+        }
+        for bad in ["NaN", "inf", "-0.1", "1/0", "1/2/3"] {
+            assert!(Frac::parse(bad).is_err());
+        }
+        assert!(Band::default().off(&Tally::default()).is_empty());
+        assert_eq!(
+            line_numbers(&["2-4".into(), "3".into()]).unwrap(),
+            vec![2, 3, 4]
+        );
+        for bad in ["0", "4-2", "1-2-3", ""] {
+            assert!(line_numbers(&[bad.into()]).is_err());
+        }
+    }
+}
+#[cfg(test)]
+mod wave34_models {
+    use super::*;
 
     #[test]
-    fn the_dictionary_on_disk_validates() {
-        let (good, bad) = validate_records(&std::fs::read(dictionary_path()).unwrap(), "dictionary-improved.tsv");
-        assert!(bad.is_empty(), "{:?}", &bad[..bad.len().min(5)]);
-        assert!(good.len() > 10_000);
-    }
-
-    #[test]
-    fn merge_skips_known_and_refuses_bad() {
-        let d = tmp("merge");
-        let into = d.join("dict.tsv");
-        std::fs::write(&into, "# header\nold\tn\tm\ts\te\tn").unwrap();
-        let a = d.join("a.tsv");
-        std::fs::write(&a, "old\tn\tm\ts\te\tn\nnew\tn\tm\ts\te\tn\nnew\tn\tm2\ts\te\tn\n").unwrap();
-        merge(&[a.clone()], &into, true).unwrap();
-        assert_eq!(std::fs::read_to_string(&into).unwrap().lines().count(), 2);
-        let out = merge(&[a.clone()], &into, false).unwrap();
-        assert!(out.contains("1 new, 1 already in the dictionary, 1 repeated"), "{out}");
-        assert_eq!(std::fs::read_to_string(&into).unwrap(), "# header\nold\tn\tm\ts\te\tn\nnew\tn\tm\ts\te\tn\n");
-        let b = d.join("b.tsv");
-        std::fs::write(&b, "fresh\tn\tm\ts\te\tn\nBad\tn\tm\ts\te\tn\n").unwrap();
-        assert!(merge(&[b], &into, false).is_err());
-        assert!(!std::fs::read_to_string(&into).unwrap().contains("fresh"));
+    fn restore_preflight_and_duplicate_selection() {
+        let root = std::env::temp_dir().join(format!("mova-wave34-restore-{}", std::process::id()));
+        std::fs::create_dir(&root).unwrap();
+        struct Clean(PathBuf);
+        impl Drop for Clean {
+            fn drop(&mut self) {
+                let _ = std::fs::remove_dir_all(&self.0);
+            }
+        }
+        let _clean = Clean(root.clone());
+        let file = root.join("fixture.lesson");
+        let snap = root.join("saved");
+        std::fs::write(&file, "old1\r\nold2\n").unwrap();
+        snapshot(&[file.clone()], &snap).unwrap();
+        let current = "new1\r\nnew2\n";
+        std::fs::write(&file, current).unwrap();
+        for indices in [vec![1, 0], vec![1, 4]] {
+            assert!(restore_lines(&snap, &file, &indices).is_err());
+            assert_eq!(std::fs::read_to_string(&file).unwrap(), current);
+        }
+        let report = restore_lines(&snap, &file, &[1, 1]).unwrap();
+        assert!(report.contains("1 of 2 lines restored"), "{report}");
+        assert_eq!(std::fs::read_to_string(&file).unwrap(), "old1\r\nnew2\n");
+        std::fs::write(&file, "short").unwrap();
+        assert!(restore_lines(&snap, &file, &[1]).is_err());
+        assert_eq!(std::fs::read_to_string(&file).unwrap(), "short");
     }
 }

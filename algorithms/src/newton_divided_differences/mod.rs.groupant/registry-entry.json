@@ -1,0 +1,24 @@
+{
+  "checks": [
+    "polynomial_oracle checks degrees 0..5, 23 rational queries and coefficients [1,3,1]; boundaries checks empty, order, difference overflow, evaluation overflow and NaN; ambiguous_query witnesses nonunique scalar output.",
+    "Change coefficient difference subtraction to addition; polynomial_oracle assertion fails."
+  ],
+  "children": [],
+  "cost": "O(n^2) build, O(n) evaluation, O(n) storage; Rust allocation failure/panic excluded from Result.",
+  "description": "Nonempty finite matched slices with strictly increasing nodes. Backward c[i]=(c[i]-c[i-1])/(x[i]-x[i-j]) for j=1..n-1; descending i preserves old column. Evaluate v=c[last], then v=v*(q-node[i])+c[i] in reverse. Constructor validates shape/finiteness/order first; query validates finite q first. Coefficients accessor is immutable.",
+  "forward": [
+    "Nonempty finite matched slices with strictly increasing nodes. Backward c[i]=(c[i]-c[i-1])/(x[i]-x[i-j]) for j=1..n-1; descending i preserves old column. Evaluate v=c[last], then v=v*(q-node[i])+c[i] in reverse. Constructor validates shape/finiteness/order first; query validates finite q first. Coefficients accessor is immutable."
+  ],
+  "id": "algorithm-newton-divided-differences",
+  "inverse": [
+    "At q=0, polynomials x and 0 give identical 0; query does not identify coefficients. Fixed distinct nodes plus complete real coefficients uniquely recover node values through nested evaluation, but coefficients without nodes do not identify original samples and f64 rounding loses information."
+  ],
+  "limitations": [
+    "Partial source projection, no semantic proof",
+    "Finite fixtures do not guarantee accuracy",
+    "No executable approximation profile or speed claim",
+    "Rust allocation failures and callback panics are not caught"
+  ],
+  "source": "algorithms/src/newton_divided_differences/mod.rs",
+  "state": "Validated finite arrays, rolling recurrence state or bounded quadrature level; tests observe result tags and traces"
+}

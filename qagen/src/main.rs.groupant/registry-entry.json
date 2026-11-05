@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p qagen --lib --bins -- --skip lemma::tests::doubt_with_en_model --test-threads=1"
+  ],
+  "children": [],
+  "cost": "O(argument bytes) cloning and O(K log K) ordered insertion; downstream costs dominate, with unbounded supplied filenames and text sizes.",
+  "description": "Parse command/positionals and key-value options, reject missing/unknown flags before dispatch, then select, prompt, run, gate, sample or fix operations.",
+  "forward": [
+    "Parse command/positionals and key-value options, reject missing/unknown flags before dispatch, then select, prompt, run, gate, sample or fix operations."
+  ],
+  "id": "qagen-main",
+  "inverse": [
+    "Parsed option map loses duplicate overwritten values and original option ordering. Identical dispatch values admit defaults or explicit equal values."
+  ],
+  "limitations": [
+    "Finite synthetic fixtures, partial syntax projection.",
+    "No numerical surrogate or live teacher/model/database/corpus tests; multi-file writes remain nontransactional."
+  ],
+  "source": "qagen/src/main.rs",
+  "state": "Duplicate option retains last value. A following --token is not consumed as a value. Command whitelist is checked before file/model/database dispatch."
+}

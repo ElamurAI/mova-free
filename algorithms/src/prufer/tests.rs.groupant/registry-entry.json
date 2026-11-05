@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "cargo test -p mova-algorithms --lib prufer --offline"
+  ],
+  "children": [],
+  "cost": "Bounded exhaustive enumeration only: subset/closure MST oracle, short word tree checks, or subset clique oracle. These test costs are exponential in their tiny fixed domains, not production performance measurements.",
+  "description": "Execute three named deterministic tests over the actual public API. All words for n=0..6 compare both directions with independent adjacency-matrix leaf elimination, connectivity, edge uniqueness, canonical order and degree laws; explicit minimum-leaf example and invalid tree/code boundaries. Acceptance is conjunction of all named assertions, not a proof over unenumerated inputs.",
+  "forward": [
+    "Execute three named deterministic tests over the actual public API. All words for n=0..6 compare both directions with independent adjacency-matrix leaf elimination, connectivity, edge uniqueness, canonical order and degree laws; explicit minimum-leaf example and invalid tree/code boundaries. Acceptance is conjunction of all named assertions, not a proof over unenumerated inputs."
+  ],
+  "id": "algorithm-prufer-tests",
+  "inverse": [
+    "The all-pass observation admits every implementation agreeing on sampled assertions, including ones wrong elsewhere. A failing assertion constrains the mismatching observation but need not uniquely identify a defect. Named identities preserve more information than only a count."
+  ],
+  "limitations": [
+    "Finite oracle coverage is not proof.",
+    "Partial syntax leaves macros opaque; no performance claim."
+  ],
+  "source": "algorithms/src/prufer/tests.rs",
+  "state": "Independent oracles do not call production graph algorithms. Fixtures are deterministic and do not modify process-global state; positive runs use exactly restored production source."
+}
